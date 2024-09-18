@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.SWPKoiContructor.services;
+package com.example.SWPKoiContructor.services.functionalService;
 
 import com.example.SWPKoiContructor.utils.FileUtility;
 import org.springframework.stereotype.Service;
