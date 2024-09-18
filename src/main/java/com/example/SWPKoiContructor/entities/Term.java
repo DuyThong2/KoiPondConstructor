@@ -52,7 +52,6 @@ public class Term {
     @Column(name="pay_on_start_of_construction")
     private boolean payOnStartOfConstruction;
     
-    
     private String description;
     
     @Column(name="is_template")
