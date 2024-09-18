@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,17 +44,15 @@ public class ConstructionStage {
     @JoinColumn(name = "construction_id")
     private Construction construction;
 
-    @OneToMany(mappedBy = "Construction_Stage_Detail")
-    private ConstructionStageDetail constructionStageDetail;
+    @OneToMany(mappedBy = "constructionStage")
+    private List<ConstructionStageDetail> constructionStageDetail;
 
-    public ConstructionStage(int constructionStageId, String constructionStageName, double constructionStagePrice, String constructionStageDescription, int constructionStageStatus, Construction construction, ConstructionStageDetail constructionStageDetail) {
+    public ConstructionStage(int constructionStageId, String constructionStageName, double constructionStagePrice, String constructionStageDescription, int constructionStageStatus) {
         this.constructionStageId = constructionStageId;
         this.constructionStageName = constructionStageName;
         this.constructionStagePrice = constructionStagePrice;
         this.constructionStageDescription = constructionStageDescription;
         this.constructionStageStatus = constructionStageStatus;
-        this.construction = construction;
-        this.constructionStageDetail = constructionStageDetail;
     }
 
     public ConstructionStage() {
@@ -107,13 +106,15 @@ public class ConstructionStage {
         this.construction = construction;
     }
 
-    public ConstructionStageDetail getConstructionStageDetail() {
+    public List<ConstructionStageDetail> getConstructionStageDetail() {
         return constructionStageDetail;
     }
 
-    public void setConstructionStageDetail(ConstructionStageDetail constructionStageDetail) {
+    public void setConstructionStageDetail(List<ConstructionStageDetail> constructionStageDetail) {
         this.constructionStageDetail = constructionStageDetail;
     }
+
+    
     
     
     

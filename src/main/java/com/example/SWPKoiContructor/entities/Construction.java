@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import java.util.List;
 import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -33,19 +35,17 @@ public class Construction {
     @Column(name = "construction_status")
     private int constructionStatus;
     
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "project_id")
     private Project project;
     
-    @OneToMany(mappedBy = "Construction_Stage")
-    private ConstructionStage constructionStage; 
+    @OneToMany(mappedBy = "construction")
+    private List<ConstructionStage> constructionStage; 
 
-    public Construction(int constructionId, String constructionName, int constructionStatus, Project project, ConstructionStage constructionStage) {
+    public Construction(int constructionId, String constructionName, int constructionStatus) {
         this.constructionId = constructionId;
         this.constructionName = constructionName;
         this.constructionStatus = constructionStatus;
-        this.project = project;
-        this.constructionStage = constructionStage;
     }
 
     public Construction() {
@@ -83,13 +83,15 @@ public class Construction {
         this.project = project;
     }
 
-    public ConstructionStage getConstructionStage() {
+    public List<ConstructionStage> getConstructionStage() {
         return constructionStage;
     }
 
-    public void setConstructionStage(ConstructionStage constructionStage) {
+    public void setConstructionStage(List<ConstructionStage> constructionStage) {
         this.constructionStage = constructionStage;
     }
+
+   
 
     
     

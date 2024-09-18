@@ -181,6 +181,15 @@ public class Project {
         this.isSharedAble = isSharedAble;
     }
 
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
+    
     
     
     

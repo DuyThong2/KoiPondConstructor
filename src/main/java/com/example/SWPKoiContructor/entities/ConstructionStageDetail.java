@@ -39,7 +39,7 @@ public class ConstructionStageDetail {
     private int constructionStageDetailStatus;
     
     @ManyToOne
-    @JoinColumn(name = "construction_stage_detail_id")
+    @JoinColumn(name = "construction_stage_id")
     private ConstructionStage constructionStage;
 
     public ConstructionStageDetail(int constructionStageDetailId, String constructionStageDetailName, double constructionStageDetailPrice, String constructionStageDetailDescription, int constructionStageDetailStatus, ConstructionStage constructionStage) {
