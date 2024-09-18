@@ -64,9 +64,11 @@ public class Project {
     @Column(name="is_shareable")
     private boolean isSharedAble;
     
+
     @OneToOne()
     @JoinColumn(name = "contract_id")
     private Contract contract;
+
 
     public Project(String projectName, String address, String style, String description, Date dateStart, Date dateEnd, int status, String imgURL, String content, int stage, boolean isSharedAble) {
         this.projectName = projectName;
@@ -191,6 +193,7 @@ public class Project {
     }
 
     
+
 
     
     
