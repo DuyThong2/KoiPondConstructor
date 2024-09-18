@@ -181,7 +181,6 @@ public class Contract {
         this.contractNote = contractNote;
     }
 
-    
 
     public Term getTerm() {
         return term;
