@@ -20,7 +20,7 @@ import javax.persistence.Table;
 //Tạm xong
 @Entity
 @Table(name = "Package")
-public class Package {
+public class Parcel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "package_id")
@@ -41,13 +41,13 @@ public class Package {
     @Column(name = "package_status")
     private boolean package_status;
     
-    @OneToOne(mappedBy = "Package")
+    @OneToOne(mappedBy = "parcel")
     private Quotes quotes;
 
-    public Package() {
+    public Parcel() {
     }
 
-    public Package(int packageId, String packageName, double constructionPriceOnSquareRoot, double designOnSquareRoot, String packageDescription, boolean package_status, Quotes quotes) {
+    public Parcel(int packageId, String packageName, double constructionPriceOnSquareRoot, double designOnSquareRoot, String packageDescription, boolean package_status, Quotes quotes) {
         this.packageId = packageId;
         this.packageName = packageName;
         this.constructionPriceOnSquareRoot = constructionPriceOnSquareRoot;

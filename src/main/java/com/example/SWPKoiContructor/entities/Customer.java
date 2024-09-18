@@ -47,4 +47,92 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private List<Quotes> quotes;
+
+    public Customer(String username, String customerPhone, String customerEmail, String password, boolean status, String userType, List<Consultant> consultant, List<Quotes> quotes) {
+        this.username = username;
+        this.customerPhone = customerPhone;
+        this.customerEmail = customerEmail;
+        this.password = password;
+        this.status = status;
+        this.userType = userType;
+        this.consultant = consultant;
+        this.quotes = quotes;
+    }
+
+    public Customer() {
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public List<Consultant> getConsultant() {
+        return consultant;
+    }
+
+    public void setConsultant(List<Consultant> consultant) {
+        this.consultant = consultant;
+    }
+
+    public List<Quotes> getQuotes() {
+        return quotes;
+    }
+
+    public void setQuotes(List<Quotes> quotes) {
+        this.quotes = quotes;
+    }
+    
+    
 }

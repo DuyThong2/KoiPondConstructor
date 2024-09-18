@@ -65,9 +65,133 @@ public class Quotes {
     
     @OneToOne
     @JoinColumn(name = "package_id")
-    private Package pakage;
+    private Parcel parcel;
     
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
+
+    public Quotes(String quotesName, String quotesContent, double quotesTotalPrice, double quotesArea, Date quotesDate, int quotesStatus, double quotesDesignCost, double quotesConstructionCost, Customer customer, Consultant consultant, Parcel pakage, Staff staff) {
+        this.quotesName = quotesName;
+        this.quotesContent = quotesContent;
+        this.quotesTotalPrice = quotesTotalPrice;
+        this.quotesArea = quotesArea;
+        this.quotesDate = quotesDate;
+        this.quotesStatus = quotesStatus;
+        this.quotesDesignCost = quotesDesignCost;
+        this.quotesConstructionCost = quotesConstructionCost;
+        this.customer = customer;
+        this.consultant = consultant;
+        this.parcel = pakage;
+        this.staff = staff;
+    }
+
+    public Quotes() {
+    }
+
+    public int getQuotesId() {
+        return quotesId;
+    }
+
+    public void setQuotesId(int quotesId) {
+        this.quotesId = quotesId;
+    }
+
+    public String getQuotesName() {
+        return quotesName;
+    }
+
+    public void setQuotesName(String quotesName) {
+        this.quotesName = quotesName;
+    }
+
+    public String getQuotesContent() {
+        return quotesContent;
+    }
+
+    public void setQuotesContent(String quotesContent) {
+        this.quotesContent = quotesContent;
+    }
+
+    public double getQuotesTotalPrice() {
+        return quotesTotalPrice;
+    }
+
+    public void setQuotesTotalPrice(double quotesTotalPrice) {
+        this.quotesTotalPrice = quotesTotalPrice;
+    }
+
+    public double getQuotesArea() {
+        return quotesArea;
+    }
+
+    public void setQuotesArea(double quotesArea) {
+        this.quotesArea = quotesArea;
+    }
+
+    public Date getQuotesDate() {
+        return quotesDate;
+    }
+
+    public void setQuotesDate(Date quotesDate) {
+        this.quotesDate = quotesDate;
+    }
+
+    public int getQuotesStatus() {
+        return quotesStatus;
+    }
+
+    public void setQuotesStatus(int quotesStatus) {
+        this.quotesStatus = quotesStatus;
+    }
+
+    public double getQuotesDesignCost() {
+        return quotesDesignCost;
+    }
+
+    public void setQuotesDesignCost(double quotesDesignCost) {
+        this.quotesDesignCost = quotesDesignCost;
+    }
+
+    public double getQuotesConstructionCost() {
+        return quotesConstructionCost;
+    }
+
+    public void setQuotesConstructionCost(double quotesConstructionCost) {
+        this.quotesConstructionCost = quotesConstructionCost;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Consultant getConsultant() {
+        return consultant;
+    }
+
+    public void setConsultant(Consultant consultant) {
+        this.consultant = consultant;
+    }
+
+    public Parcel getPakage() {
+        return this.parcel;
+    }
+
+    public void setPakage(Parcel pakage) {
+        this.parcel = pakage;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
+    }
+    
+    
 }

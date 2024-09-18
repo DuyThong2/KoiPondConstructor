@@ -64,7 +64,7 @@ public class Consultant {
     @JoinColumn(name = "pre_design_id")
     private PreDesign predesign;
     
-    @OneToMany(mappedBy = "Consultant")
+    @OneToMany(mappedBy = "consultant")
     private List<Quotes> quotes;
     
     @ManyToOne
