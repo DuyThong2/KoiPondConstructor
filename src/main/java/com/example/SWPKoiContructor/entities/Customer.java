@@ -47,6 +47,9 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer")
     private List<Quotes> quotes;
+    
+    @OneToMany(mappedBy="customer")
+    private List<Contract> contracts;
 
     public Customer(String username, String customerPhone, String customerEmail, String password, boolean status, String userType, List<Consultant> consultant, List<Quotes> quotes) {
         this.username = username;
@@ -133,6 +136,15 @@ public class Customer {
     public void setQuotes(List<Quotes> quotes) {
         this.quotes = quotes;
     }
+
+    public List<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setContracts(List<Contract> contracts) {
+        this.contracts = contracts;
+    }
+    
     
     
 }

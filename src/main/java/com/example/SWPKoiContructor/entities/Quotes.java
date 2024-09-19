@@ -70,6 +70,9 @@ public class Quotes {
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
+    
+    @OneToOne(mappedBy = "quote")
+    private Contract contract;
 
     public Quotes(String quotesName, String quotesContent, double quotesTotalPrice, double quotesArea, Date quotesDate, int quotesStatus, double quotesDesignCost, double quotesConstructionCost, Customer customer, Consultant consultant, Parcel pakage, Staff staff) {
         this.quotesName = quotesName;
@@ -192,6 +195,24 @@ public class Quotes {
     public void setStaff(Staff staff) {
         this.staff = staff;
     }
+
+    public Parcel getParcel() {
+        return parcel;
+    }
+
+    public void setParcel(Parcel parcel) {
+        this.parcel = parcel;
+    }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+    
+    
     
     
 }
