@@ -16,48 +16,77 @@ import org.springframework.stereotype.Repository;
  *
  * @author Admin
  */
-
 @Repository
 public class ContractDAO {
-    
+
     private EntityManager entityManager;
 
     public ContractDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-    
-    public List<Contract> getListContract(){
-        TypedQuery<Contract> tq = entityManager.createQuery("SELECT c FROM Contract c ORDER BY c.dateCreate DESC ",Contract.class);
+
+    public List<Contract> getListContract() {
+        TypedQuery<Contract> tq = entityManager.createQuery("SELECT c FROM Contract c ORDER BY c.dateCreate DESC ", Contract.class);
         return tq.getResultList();
     }
-    
-    public Contract getContractById(int id){
-        TypedQuery<Contract> tq = entityManager.createQuery("select c from Contract c where c.contractId = :id ",Contract.class);
+
+    public Contract getContractById(int id) {
+        TypedQuery<Contract> tq = entityManager.createQuery("select c from Contract c where c.contractId = :id ", Contract.class);
         tq.setParameter("id", id);
         return tq.getSingleResult();
     }
+
+    public List<Contract> getContractListOfCustomer(int customerId) {
+        // Correct the JPQL query to filter contracts by customer ID
+        TypedQuery<Contract> tq = entityManager.createQuery(
+                "SELECT c FROM Contract c WHERE c.customer.id = :customerId",
+                Contract.class
+        );
+        
+
+        // Set the customerId parameter
+        tq.setParameter("customerId", customerId);
+
+        // Return the result list
+        return tq.getResultList();
+    }
     
-    public Contract createNewContract(Contract contract){
+    
+    public List<Contract> getContractListOfConsultant(int consultantId){
+        TypedQuery<Contract> tq = entityManager.createQuery(
+                "SELECT c FROM Contract c WHERE c.quote.staff.staffId = :id",
+                Contract.class
+        );
         
-        Contract contractCreated =  entityManager.merge(contract);
-        
+
+        // Set the customerId parameter
+        tq.setParameter("id", consultantId);
+
+        // Return the result list
+        return tq.getResultList();
+    }
+
+    public Contract createNewContract(Contract contract) {
+
+        Contract contractCreated = entityManager.merge(contract);
+
         return contractCreated;
     }
-    
-    public Contract updateContract(Contract contract){
+
+    public Contract updateContract(Contract contract) {
         return entityManager.merge(contract);
     }
-    
-    public void removeContractById(int id){
+
+    public void removeContractById(int id) {
         Contract contract = getContractById(id);
         entityManager.remove(contract);
-        
+
     }
-    
-    public Contract updateContractStatus(int status, int id){
+
+    public Contract updateContractStatus(int status, int id) {
         Contract contract = getContractById(id);
         contract.setContractStatus(status);
         return contract;
     }
-    
+
 }

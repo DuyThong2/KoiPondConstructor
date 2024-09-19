@@ -63,7 +63,7 @@ public class Quotes {
     @JoinColumn(name = "consultant_id")
     private Consultant consultant;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "package_id")
     private Parcel parcel;
     
