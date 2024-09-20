@@ -59,7 +59,7 @@ public class Quotes {
     @JoinColumn(name = "customer_id")
     private Customer customer;
     
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "consultant_id")
     private Consultant consultant;
     
