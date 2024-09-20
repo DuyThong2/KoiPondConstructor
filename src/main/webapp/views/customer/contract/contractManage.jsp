@@ -58,16 +58,25 @@
                                     <td>${contract.contractTerm}</td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${contract.contractStatus == 1}">
-                                                <span class="badge badge-warning">Pending</span>
-                                            </c:when>
-                                            <c:when test="${contract.contractStatus == 2}">
-                                                <span class="badge badge-success">Approved</span>
-                                            </c:when>
-                                            <c:when test="${contract.contractStatus == 3}">
-                                                <span class="badge badge-danger">Rejected</span>
-                                            </c:when>
-                                        </c:choose>
+                                        <c:when test="${contract.contractStatus == 1}">
+                                            <span class="badge badge-warning badge-status">Pending</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 2}">
+                                            <span class="badge badge-success badge-status">Approved</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 3}">
+                                            <span class="badge badge-danger badge-status">Rejected (Customer)</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 4}">
+                                            <span class="badge badge-danger badge-status">Rejected (Manager)</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 5}">
+                                            <span class="badge badge-secondary badge-status">Canceled</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 6}">
+                                            <span class="badge badge-success badge-status">Accepted</span>
+                                        </c:when>
+                                    </c:choose>
                                     </td>
                                     <td>${contract.contractNote}</td>
                                     <td><a href="/customer/contract/${contract.contractId}" class="btn btn-info">Click Here</a></td>

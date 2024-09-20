@@ -1,205 +1,186 @@
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Create Contract</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .quote-info {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        .quote-info h4 {
-            margin-bottom: 15px;
-        }
-        .customer-avatar {
-            max-width: 150px;
-            border-radius: 50%;
-            margin-bottom: 15px;
-        }
-        .customer-info {
-            text-align: center;
-        }
-    </style>
-</head>
-<body>
+    <head>
+        <title>Contract Details</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            .section-header {
+                margin-bottom: 20px;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 5px;
+            }
+            .contract-section {
+                margin-bottom: 40px;
+            }
+            .project-section, .term-section {
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+            }
+            .btn-custom {
+                margin-top: 20px;
+                padding: 10px 20px;
+            }
+            .status-badge {
+                font-size: 1.2em;
+                padding: 10px 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mt-5">
+            <div class="row">
+                <!-- Contract Details Section (70%) -->
+                <div class="col-md-8 contract-section">
+                    <h2 class="section-header text-primary">Contract Details</h2>
+                    <table class="table table-hover table-striped">
+                        <tr>
+                            <th>Contract ID</th>
+                            <td>${contract.contractId}</td>
+                        </tr>
+                        <tr>
+                            <th>Contract Document</th>
+                            <td>
+                                <form action="/download/${contract.fileURL}" method="get">
+                                    <button type="submit" class="btn btn-primary">Download Contract</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Date Created</th>
+                            <td>${contract.dateCreate}</td>
+                        </tr>
+                        <tr>
+                            <th>Contract Status</th>
+                            <td>
+                                <c:choose>
+                                        <c:when test="${contract.contractStatus == 1}">
+                                            <span class="badge badge-warning badge-status">Pending</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 2}">
+                                            <span class="badge badge-success badge-status">Approved</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 3}">
+                                            <span class="badge badge-danger badge-status">Rejected (Customer)</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 4}">
+                                            <span class="badge badge-danger badge-status">Rejected (Manager)</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 5}">
+                                            <span class="badge badge-secondary badge-status">Canceled</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 6}">
+                                            <span class="badge badge-success badge-status">Accepted</span>
+                                        </c:when>
+                                    </c:choose>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Total Price</th>
+                            <td>${contract.totalPrice}</td>
+                        </tr>
+                        <tr>
+                            <th>Price on Concept Design</th>
+                            <td>${contract.priceOnConceptDesign}</td>
+                        </tr>
+                        <tr>
+                            <th>Price on Construction Design</th>
+                            <td>${contract.priceOnConstructionDesign}</td>
+                        </tr>
+                        <tr>
+                            <th>Price on Detail Design</th>
+                            <td>${contract.priceOnDetailDesign}</td>
+                        </tr>
+                        <tr>
+                            <th>Price on Raw Construction</th>
+                            <td>${contract.priceOnRawConstruction}</td>
+                        </tr>
+                        <tr>
+                            <th>Price on Complete Construction</th>
+                            <td>${contract.priceOnCompleteConstruction}</td>
+                        </tr>
+                        <!-- Replaced file URL with a button -->
+                        
+                        <!-- Contract Status moved back into the table -->
+                        
+                    </table>
 
-<div class="container mt-5">
-    <div class="row">
-        <!-- Left Column for Quote Information -->
-        <div class="col-md-4">
-            <div class="quote-info">
-                <h4>Quote Information</h4>
-                <!-- Customer Avatar -->
-                <div class="customer-info">
-                    <img src="${quote.customer.avatarURL}" alt="Customer Avatar" class="customer-avatar img-fluid"/>
-                    <p><strong>${quote.customer.username}</strong></p>
+                    <!-- Approve/Reject buttons placed below the main table -->
+                    <c:choose>
+                        <c:when test="${contract.contractStatus == 4}">
+                            <div class="">
+                                <form action="/consultant/contract/edit" method="PUT" class="d-inline">
+                                    <input type="hidden" name="id" value="${contract.contractId}" >
+                                    <button name="status" type="submit" value="2" class="btn btn-success">Approve</button>
+                                </form>
+                                <form action="/customer/contract/statusEdit" method="PUT" class="d-inline">
+                                    <input type="hidden" name="id" value="${contract.contractId}" >
+                                    <button name="status" type="submit" value="3" class="btn btn-danger">Reject</button>
+                                </form>
+                            </div>
+                        </c:when>
+                    </c:choose>
                 </div>
-                <!-- Quote Information -->
-                <p><strong>Quote ID:</strong> ${quote.quotesId}</p>
-                <p><strong>Quote Name:</strong> ${quote.quotesName}</p>
-                <p><strong>Customer:</strong> ${quote.customer.username}</p>
-                <p><strong>Total Design Cost:</strong> ${quote.quotesDesignCost}</p>
-                <p><strong>Total Construction Cost:</strong> ${quote.quotesConstructionCost}</p>
-                <p><strong>Area:</strong> ${quote.quotesArea} m²</p>
-                <p><strong>Total Price:</strong> ${quote.quotesTotalPrice}</p>
+
+                <!-- Term and Project Details Section (30%) -->
+                <div class="col-md-4">
+                    <!-- Associated Project Details -->
+                    <div class="project-section mb-4">
+                        <h4 class="section-header text-primary">Associated Project</h4>
+                        <c:if test="${not empty contract.project}">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Project ID</th>
+                                    <td>${contract.project.projectId}</td>
+                                </tr>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <td>${contract.project.projectName}</td>
+                                </tr>
+                                <tr>
+                                    <th>Customer Name</th>
+                                    <td>${contract.customer.username}</td>
+                                </tr>
+                                <tr>
+                                    <th>Project Description</th>
+                                    <td>${contract.project.description}</td>
+                                </tr>
+                            </table>
+                        </c:if>
+                        <c:if test="${empty contract.project}">
+                            <p class="text-muted">No project is associated with this contract.</p>
+                        </c:if>
+                    </div>
+
+                    <!-- Associated Term Details -->
+                    <div class="term-section mb-4">
+                        <h4 class="section-header text-primary">Associated Term</h4>
+                        <c:if test="${not empty contract.term}">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Term ID</th>
+                                    <td>${contract.term.termId}</td>
+                                </tr>
+                                <tr>
+                                    <th>Term Description</th>
+                                    <td>${contract.term.description}</td>
+                                </tr>
+                            </table>
+                        </c:if>
+                        <c:if test="${empty contract.term}">
+                            <p class="text-muted">No terms are associated with this contract.</p>
+                        </c:if>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Right Column for Contract Creation Form -->
-        <div class="col-md-8">
-            <h2 class="mb-4">Create Contract</h2>
-
-            <!-- Bind the form to the "contract" object -->
-            <form:form action="${pageContext.request.contextPath}/consultant/contract/create" modelAttribute="contract" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="true">
-
-                <!-- Total Price (Read-Only, auto-calculated) -->
-                <div class="form-group">
-                    <label for="totalPrice">Total Price:</label>
-                    <form:input path="totalPrice" step="0.01" class="form-control" readonly="readonly"/>
-                </div>
-
-                <!-- Design Costs -->
-                <h4>Design Phases</h4>
-
-                <!-- Conceptual Design -->
-                <div class="form-group">
-                    <label for="priceOnConceptDesign">Conceptual Design:</label>
-                    <form:input path="priceOnConceptDesign" step="0.01" class="form-control"/>
-                </div>
-
-                <!-- Detailed Design -->
-                <div class="form-group">
-                    <label for="priceOnDetailDesign">Detailed Design:</label>
-                    <form:input path="priceOnDetailDesign" step="0.01" class="form-control"/>
-                </div>
-
-                <!-- Construction Design -->
-                <div class="form-group">
-                    <label for="priceOnConstructionDesign">Construction Design:</label>
-                    <form:input path="priceOnConstructionDesign" step="0.01" class="form-control"/>
-                </div>
-
-                <!-- Construction Costs -->
-                <h4>Construction Phases</h4>
-
-                <!-- Raw Construction -->
-                <div class="form-group">
-                    <label for="priceOnRawConstruction">Raw Construction:</label>
-                    <form:input path="priceOnRawConstruction" step="0.01" class="form-control"/>
-                </div>
-
-                <!-- Complete Construction -->
-                <div class="form-group">
-                    <label for="priceOnCompleteConstruction">Complete Construction:</label>
-                    <form:input path="priceOnCompleteConstruction" step="0.01" class="form-control"/>
-                </div>
-
-                <!-- Term Selection Dropdown -->
-                <div class="form-group">
-                    <label for="term">Select Term:</label>
-                    <form:select path="term.termId" class="form-control">
-                        <form:options items="${terms}" itemValue="termId" itemLabel="description"/>
-                    </form:select>
-                </div>
-
-                <!-- Button to Adjust Costs -->
-                <div class="form-group">
-                    <button type="button" class="btn btn-warning" onclick="autoAdjust()">Auto Adjust Costs</button>
-                </div>
-
-                <!-- Contract Note -->
-                <div class="form-group">
-                    <label for="contractNote">Contract Note:</label>
-                    <form:textarea path="contractNote" class="form-control"/>
-                </div>
-
-                <!-- File Input (for file upload) -->
-                <div class="form-group">
-                    <label for="file">Choose file:</label>
-                    <input type="file" id="file" name="file" class="form-control-file" required/>
-                </div>
-
-                <button type="submit" class="btn btn-primary">Create Contract</button>
-            </form:form>
-        </div>
-    </div>
-
-    <!-- JavaScript for Auto Adjustment -->
-    <script>
-        const maxDesignCost = ${quote.quotesDesignCost};  // Design cost from the Quote
-        const maxConstructionCost = ${quote.quotesConstructionCost};  // Construction cost from the Quote
-
-        function autoAdjust() {
-            adjustDesignCosts();
-            adjustConstructionCosts();
-            updateTotalPrice();
-        }
-
-        function adjustDesignCosts() {
-            let concept = parseFloat(document.getElementById('conceptDesign').value) || 0;
-            let detail = parseFloat(document.getElementById('detailDesign').value) || 0;
-            let construction = parseFloat(document.getElementById('constructionDesign').value) || 0;
-
-            let totalDesign = concept + detail + construction;
-
-            if (totalDesign !== maxDesignCost) {
-                let difference = maxDesignCost - totalDesign;
-
-                // Adjust values proportionally
-                let proportion = difference / totalDesign;
-                concept += concept * proportion;
-                detail += detail * proportion;
-                construction += construction * proportion;
-
-                // Set the adjusted values back to the input fields
-                document.getElementById('conceptDesign').value = concept.toFixed(2);
-                document.getElementById('detailDesign').value = detail.toFixed(2);
-                document.getElementById('constructionDesign').value = construction.toFixed(2);
-
-                totalDesign = maxDesignCost;  // Ensure the total matches the quote design cost
-            }
-        }
-
-        function adjustConstructionCosts() {
-            let raw = parseFloat(document.getElementById('rawConstruction').value) || 0;
-            let complete = parseFloat(document.getElementById('completeConstruction').value) || 0;
-
-            let totalConstruction = raw + complete;
-
-            if (totalConstruction !== maxConstructionCost) {
-                let difference = maxConstructionCost - totalConstruction;
-
-                // Adjust values proportionally
-                let proportion = difference / totalConstruction;
-                raw += raw * proportion;
-                complete += complete * proportion;
-
-                // Set the adjusted values back to the input fields
-                document.getElementById('rawConstruction').value = raw.toFixed(2);
-                document.getElementById('completeConstruction').value = complete.toFixed(2);
-            }
-        }
-
-        function updateTotalPrice() {
-            const totalDesignCost = parseFloat(document.getElementById('conceptDesign').value) || 0;
-            const totalConstructionCost = parseFloat(document.getElementById('rawConstruction').value) || 0;
-            const totalPrice = totalDesignCost + totalConstructionCost;
-
-            document.getElementById('totalPrice').value = totalPrice.toFixed(2);
-        }
-    </script>
-
-</div>
-
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
-</body>
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </body>
 </html>

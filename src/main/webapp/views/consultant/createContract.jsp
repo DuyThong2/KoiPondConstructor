@@ -131,6 +131,11 @@
                     <label for="contractNote">Contract Note:</label>
                     <form:textarea path="contractNote" id="contractNote" class="form-control"/>
                 </div>
+                
+                <div class="form-group">
+                    <label for="contractNote">Contract Term:</label>
+                    <form:textarea path="contractTerm" id="contractTerm" class="form-control"/>
+                </div>
 
                 <!-- File Input (for file upload) -->
                 <div class="form-group">

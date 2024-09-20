@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.SWPKoiContructor.controller.manager;
+package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Contract;
 import com.example.SWPKoiContructor.entities.Customer;
@@ -66,13 +66,20 @@ public class ContractController {
         model.addAttribute("contract", contract);
         return "manager/contract/contractDetail";
     }
+    
+    @GetMapping("/consultant/contract/viewDetail/{id}")
+    public String viewDetailContractByConsultant(Model model, @PathVariable("id") int id) {
+        Contract contract = contractService.getContractById(id);
+        model.addAttribute("contract", contract);
+        return "manager/contract/contractDetail";
+    }
 
     @GetMapping("/consultant/contract")
     public String getContractListOfConsultant(Model model) {
         Staff staff = staffService.getStaffById(2);
         List<Contract> list = contractService.getContractListOfConsultant(staff.getStaffId());
         model.addAttribute("contracts", list);
-        return "consultant/contract/contractManage";
+        return "consultant/contractManage";
     }
 
     @GetMapping("/consultant/contract/create")
@@ -90,13 +97,6 @@ public class ContractController {
     @PostMapping("/consultant/contract/create")
     public String saveContract(@ModelAttribute("contract") Contract contract,
             @RequestParam("file") MultipartFile file){
-        // Retrieve the quote
-        
-
-        // Set contract fields based on the quote's design and construction costs
-        
-
-        // Set other contract fields
         String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
         contract.setFileURL(fileURL);
         contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
@@ -105,7 +105,7 @@ public class ContractController {
         // Save the contract entity
         contractService.createContract(contract);
 
-        return "redirect:/consultant/contract";  // Redirect to contract listing page after saving
+        return "redirect:/consultant/contract/viewDetail"+contract.getContractId();  // Redirect to contract listing page after saving
     }
 
     @GetMapping("/customer/contract")
@@ -125,10 +125,74 @@ public class ContractController {
         return "customer/contract/contractDetail";
     }
 
-    @PutMapping("/customer/contract/{id}")
+    @PostMapping("/customer/contract/editStatus")
     public String editStatusByCustomer(@RequestParam("id") int contractId, @RequestParam("status") int status) {
         Contract contract = contractService.changeStatusContract(status, contractId);
         return "redirect:/customer/contract/" + contractId;
 
     }
+    
+    @PostMapping("/manager/contract/editStatus")
+    public String editStatusByManager(@RequestParam("id") int contractId, @RequestParam("status") int status) {
+        Contract contract = contractService.changeStatusContract(status, contractId);
+        return "redirect:/manager/contract/viewDetail/" + contractId;
+
+    }
+    
+    @PostMapping("/consultant/contract/editStatus")
+    public String editStatusByConsultant(@RequestParam("id") int contractId, @RequestParam("status") int status) {
+        Contract contract = contractService.changeStatusContract(status, contractId);
+        return "redirect:/consultant/contract/viewDetail/" + contractId;
+
+    }
+    
+    @GetMapping("/manager/contract/edit")
+    public String updateContractByManager(@RequestParam("id") int contractId, Model model){
+        Contract contract = contractService.getContractById(contractId);
+        model.addAttribute("contract", contract);
+        model.addAttribute("quote",contract.getQuote());
+        model.addAttribute("terms", termService.getAllTemplateTerm());
+        model.addAttribute("customer",contract.getCustomer());
+        return "manager/contract/editContract";
+    }
+    
+    @PutMapping("/manager/contract/edit")
+    public String saveUpdatedContractByManager(@ModelAttribute("contract") Contract contract,
+            @RequestParam("file") MultipartFile file){
+        String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
+        contract.setFileURL(fileURL);
+        contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
+        contract.setDateCreate(new Date());
+
+        // Save the contract entity
+        contractService.createContract(contract);
+
+        return "redirect:/manager/contract/viewDetail/"+contract.getContractId();  // Redirect to contract listing page after saving
+    }
+    
+    @GetMapping("/consultant/contract/edit")
+    public String updateContractByConsultant(@RequestParam("id") int contractId, Model model){
+        Contract contract = contractService.getContractById(contractId);
+        model.addAttribute("contract", contract);
+        model.addAttribute("quote",contract.getQuote());
+        model.addAttribute("terms", termService.getAllTemplateTerm());
+        model.addAttribute("customer",contract.getCustomer());
+        return "manager/contract/editContract";
+    }
+    
+    @PutMapping("/consultant/contract/edit")
+    public String saveUpdatedContractByConsultant(@ModelAttribute("contract") Contract contract,
+            @RequestParam("file") MultipartFile file){
+        String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
+        contract.setFileURL(fileURL);
+        contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
+        contract.setDateCreate(new Date());
+
+        // Save the contract entity
+        contractService.createContract(contract);
+
+        return "redirect:/manager/contract/viewDetail/"+contract.getContractId();  // Redirect to contract listing page after saving
+    }
+    
+    
 }

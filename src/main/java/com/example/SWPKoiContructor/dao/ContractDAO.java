@@ -39,7 +39,7 @@ public class ContractDAO {
     public List<Contract> getContractListOfCustomer(int customerId) {
         // Correct the JPQL query to filter contracts by customer ID
         TypedQuery<Contract> tq = entityManager.createQuery(
-                "SELECT c FROM Contract c WHERE c.customer.id = :customerId",
+                "SELECT c FROM Contract c WHERE c.customer.id = :customerId and c.contractStatus != 1 or c.contractStatus != 4",
                 Contract.class
         );
         
