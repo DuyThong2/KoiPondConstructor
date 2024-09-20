@@ -60,7 +60,7 @@ public class Consultant {
     @JoinColumn(name = "customer_id")
     private Customer customer;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "pre_design_id")
     private PreDesign predesign;
     

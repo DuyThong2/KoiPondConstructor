@@ -32,7 +32,7 @@ public class ConsultantController {
     @GetMapping("")
     public String getConsultantList(Model model){
         List<Consultant> list = consultantService.getConsultantList();
-        model.addAttribute("consultant",list);
+        model.addAttribute("consultants",list);
         return "manager/consultant/consultantManage";
     }
 }
