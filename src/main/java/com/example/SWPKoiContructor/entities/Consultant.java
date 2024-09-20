@@ -64,8 +64,8 @@ public class Consultant {
     @JoinColumn(name = "pre_design_id")
     private PreDesign predesign;
     
-    @OneToMany(mappedBy = "consultant")
-    private List<Quotes> quotes;
+    @OneToOne(mappedBy = "consultant")
+    private Quotes quotes;
     
     @ManyToOne
     @JoinColumn(name = "staff_id")
@@ -74,7 +74,7 @@ public class Consultant {
     public Consultant() {
     }
 
-    public Consultant(int consultantId, String consultantCustomerName, Calendar consultantDateTime, String consultantPhone, String consultantContent, String consultantType, int consultantStatus, String consultant_email, Customer customer, PreDesign predesign, List<Quotes> quotes, Staff staff) {
+    public Consultant(int consultantId, String consultantCustomerName, Calendar consultantDateTime, String consultantPhone, String consultantContent, String consultantType, int consultantStatus, String consultant_email, Customer customer, PreDesign predesign, Quotes quotes, Staff staff) {
         this.consultantId = consultantId;
         this.consultantCustomerName = consultantCustomerName;
         this.consultantDateTime = consultantDateTime;
@@ -88,6 +88,8 @@ public class Consultant {
         this.quotes = quotes;
         this.staff = staff;
     }
+
+    
 
     
 
@@ -171,14 +173,15 @@ public class Consultant {
         this.predesign = predesign;
     }
 
-    public List<Quotes> getQuotes() {
+    public Quotes getQuotes() {
         return quotes;
     }
 
-    public void setQuotes(List<Quotes> quotes) {
+    public void setQuotes(Quotes quotes) {
         this.quotes = quotes;
     }
 
+    
     
 
     public Staff getStaff() {
