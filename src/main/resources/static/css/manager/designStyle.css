@@ -1,0 +1,48 @@
+/* Global styles for body */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
+
+/* Header container */
+.header-container {
+    display: flex;
+    align-items: center;
+    background-color: #d3d3d3; /* Light grey background */
+    height: 60px;
+    padding: 0 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.staff-container {
+    display: flex;
+    align-items: center; /* Căn giữa tiêu đề và danh sách theo chiều dọc */
+    gap: 5px; /* Khoảng cách giữa tiêu đề và danh sách */
+}
+
+ul.list-group-horizontal {
+    display: flex;
+    flex-wrap: wrap; /* Để các mục nằm ngang và tự động xuống dòng nếu cần */
+}
+
+.list-group-item {
+    background-color: #f8f9fa; /* Màu nền nhẹ hơn */
+    border: 1px solid #dee2e6;
+    border-radius: 5px; /* Bo góc cho đẹp */
+    transition: all 0.3s ease;
+}
+
+.list-group-item:hover {
+    background-color: #e2e6ea; /* Hiệu ứng hover */
+    transform: translateY(-2px); /* Hiệu ứng khi hover */
+}
+
+
+/* Optional media queries for responsiveness */
+@media (max-width: 768px) {
+    .title-container h1 {
+        font-size: 16px;
+    }
+}
