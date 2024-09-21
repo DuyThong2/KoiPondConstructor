@@ -12,12 +12,15 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
  * @author Admin
  */
+@Component
 public class FileUtility {
     public static final String ROOT_DIR = System.getProperty("user.home") + "/Desktop/uploads/";
     
