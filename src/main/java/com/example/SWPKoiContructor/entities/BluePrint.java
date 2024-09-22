@@ -100,6 +100,16 @@ public class BluePrint {
     public void setBluePrintStatus(boolean bluePrintStatus) {
         this.bluePrintStatus = bluePrintStatus;
     }
+
+    public DesignStage getDesignStage() {
+        return designStage;
+    }
+
+    public void setDesignStage(DesignStage designStage) {
+        this.designStage = designStage;
+    }
+    
+    
     
     
 }

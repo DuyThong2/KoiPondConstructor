@@ -26,11 +26,11 @@ public class Design {
     @Column(name = "design_status")
     private int status;
     
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "project_id")
     private Project project;
     
-    @OneToMany(mappedBy = "design")
+    @OneToMany(mappedBy = "design", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DesignStage> designStage;
     
     
@@ -75,6 +75,27 @@ public class Design {
     public void setProject(Project project) {
         this.project = project;
     }
+
+    public List<DesignStage> getDesignStage() {
+        return designStage;
+    }
+
+    public void setDesignStage(List<DesignStage> designStage) {
+        this.designStage = designStage;
+    }
+    
+    //convinience method
+    public void addDesignStage(DesignStage designStage){
+        this.designStage.add(designStage);
+        designStage.setDesign(this);
+    }
+    
+    public void removeDesignStage(DesignStage designStage){
+        this.designStage.remove(designStage);
+        designStage.setDesign(null);
+    }
+    
+    
     
     
 }

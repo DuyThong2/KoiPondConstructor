@@ -5,12 +5,13 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -35,18 +36,18 @@ public class PreDesign {
     @Column(name = "pre_design_description")
     private String preDesignDescription;
     
-    @OneToOne(mappedBy = "predesign")
-    private Consultant consultant;
+    @OneToMany(mappedBy = "predesign")
+    private List<Consultant> consultant;
 
     public PreDesign() {
     }
 
-    public PreDesign(int preDesignId, String preDesignName, String preDesignImgUrl, String preDesignDescription, Consultant consultant) {
+    public PreDesign(int preDesignId, String preDesignName, String preDesignImgUrl, String preDesignDescription) {
         this.preDesignId = preDesignId;
         this.preDesignName = preDesignName;
         this.preDesignImgUrl = preDesignImgUrl;
         this.preDesignDescription = preDesignDescription;
-        this.consultant = consultant;
+        
     }
 
     public int getPreDesignId() {
@@ -81,13 +82,15 @@ public class PreDesign {
         this.preDesignDescription = preDesignDescription;
     }
 
-    public Consultant getConsultant() {
+    public List<Consultant> getConsultant() {
         return consultant;
     }
 
-    public void setConsultant(Consultant consultant) {
+    public void setConsultant(List<Consultant> consultant) {
         this.consultant = consultant;
     }
+
+    
     
     
 }

@@ -74,6 +74,16 @@ public class DesignStageDetail {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public DesignStage getDesignStage() {
+        return designStage;
+    }
+
+    public void setDesignStage(DesignStage designStage) {
+        this.designStage = designStage;
+    }
+    
+    
     
     
 }

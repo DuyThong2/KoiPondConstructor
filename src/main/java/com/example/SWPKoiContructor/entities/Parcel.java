@@ -5,12 +5,16 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+
 import javax.persistence.OneToOne;
+
 import javax.persistence.Table;
 
 /**
@@ -41,20 +45,20 @@ public class Parcel {
     @Column(name = "package_status")
     private boolean package_status;
     
-    @OneToOne(mappedBy = "parcel")
-    private Quotes quotes;
+    @OneToMany(mappedBy = "parcel")
+    private List<Quotes> quotes;
 
     public Parcel() {
     }
 
-    public Parcel(int packageId, String packageName, double constructionPriceOnSquareRoot, double designOnSquareRoot, String packageDescription, boolean package_status, Quotes quotes) {
+    public Parcel(int packageId, String packageName, double constructionPriceOnSquareRoot, double designOnSquareRoot, String packageDescription, boolean package_status) {
         this.packageId = packageId;
         this.packageName = packageName;
         this.constructionPriceOnSquareRoot = constructionPriceOnSquareRoot;
         this.designOnSquareRoot = designOnSquareRoot;
         this.packageDescription = packageDescription;
         this.package_status = package_status;
-        this.quotes = quotes;
+        
     }
 
     public int getPackageId() {
@@ -105,13 +109,15 @@ public class Parcel {
         this.package_status = package_status;
     }
 
-    public Quotes getQuotes() {
+    public List<Quotes> getQuotes() {
         return quotes;
     }
 
-    public void setQuotes(Quotes quotes) {
+    public void setQuotes(List<Quotes> quotes) {
         this.quotes = quotes;
     }
+
+    
     
     
 }

@@ -8,6 +8,7 @@ package com.example.SWPKoiContructor.services;
 import com.example.SWPKoiContructor.dao.ContractDAO;
 import com.example.SWPKoiContructor.entities.Contract;
 import java.util.List;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,15 @@ public class ContractService {
         return contractDAO.getListContract();
     }
     
+    public List<Contract> getContractListOfCustomer(int id){
+        List<Contract> list = contractDAO.getContractListOfCustomer(id);
+        return list;
+    }
+    
+    public List<Contract> getContractListOfConsultant(int id){
+        return contractDAO.getContractListOfConsultant(id);
+    }
+    
     public Contract getContractById(int id){
         return contractDAO.getContractById(id);
     }
@@ -43,4 +53,6 @@ public class ContractService {
     public Contract changeStatusContract(int status, int id){
         return contractDAO.updateContractStatus(status, id);
     }
+    
+    
 }

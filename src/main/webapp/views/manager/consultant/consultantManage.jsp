@@ -1,9 +1,16 @@
+<%-- 
+    Document   : consultantManage
+    Created on : Sep 20, 2024, 10:06:00 AM
+    Author     : HP
+--%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Admin Dashboard</title>
+        <title>Contract Details</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
@@ -25,7 +32,6 @@
         </style>
     </head>
     <body>
-
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
@@ -57,65 +63,53 @@
 
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <h2 class="mb-4">Contract List</h2>
+                    <h2 class="mb-4">Consultant List</h2>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Date Created</th>
-                                <th>File URL</th>
-                                <th>Total Price</th>
-                                <th>Price on Concept Design</th>
-                                <th>Price on Construction Design</th>
-                                <th>Price on Detail Design</th>
-                                <th>Price on Raw Construction</th>
-                                <th>Price on Complete Construction</th>
-                                <th>Contract Term</th>
-                                <th>Contract Status</th>
-                                <th>Contract Note</th>
-                                <th>View Detail</th>
+                                <th>Customer Name</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>Content</th>
+                                <th>Pre Design</th>
+                                <th>Staff</th>
+                                <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="contract" items="${contracts}">
+                            <c:forEach var="consultant" items="${consultants}">
                                 <tr>
-                                    <td>${contract.dateCreate}</td>
-                                    <td><a href="/download/${contract.fileURL}">${contract.fileURL}</a></td>
-                                    <td>${contract.totalPrice}</td>
-                                    <td>${contract.priceOnConceptDesign}</td>
-                                    <td>${contract.priceOnConstructionDesign}</td>
-                                    <td>${contract.priceOnDetailDesign}</td>
-                                    <td>${contract.priceOnRawConstruction}</td>
-                                    <td>${contract.priceOnCompleteConstruction}</td>
-                                    <td>${contract.contractTerm}</td>
+                                    <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>               
+                                    <td>${consultant.consultantCustomerName}</td>
+                                    <td>${consultant.consultantPhone}</td>
+                                    <td>${consultant.consultant_email}</td>
+                                    <td>${consultant.consultantContent}</td>
+                                    <td>${consultant.predesign.preDesignName}</td>
+                                    <td>${consultant.staff.username}</td>
                                     <td>
                                         <c:choose>
-                                        <c:when test="${contract.contractStatus == 1}">
+                                        <c:when test="${consultant.consultantStatus == 1}">
                                             <span class="badge badge-warning badge-status">Pending</span>
                                         </c:when>
-                                        <c:when test="${contract.contractStatus == 2}">
-                                            <span class="badge badge-success badge-status">Approved</span>
+                                        <c:when test="${consultant.consultantStatus == 2}">
+                                            <span class="badge badge-secondary badge-status">Approved</span>
                                         </c:when>
-                                        <c:when test="${contract.contractStatus == 3}">
-                                            <span class="badge badge-danger badge-status">Rejected (Customer)</span>
+                                        <c:when test="${consultant.consultantStatus == 3}">
+                                            <span class="badge badge-danger badge-status">Rejected</span>
                                         </c:when>
-                                        <c:when test="${contract.contractStatus == 4}">
-                                            <span class="badge badge-danger badge-status">Rejected (Manager)</span>
-                                        </c:when>
-                                        <c:when test="${contract.contractStatus == 5}">
-                                            <span class="badge badge-secondary badge-status">Canceled</span>
-                                        </c:when>
-                                        <c:when test="${contract.contractStatus == 6}">
-                                            <span class="badge badge-success badge-status">Accepted</span>
-                                        </c:when>
-                                    </c:choose>
+                                        <c:when test="${consultant.consultantStatus == 4}">
+                                            <span class="badge badge-success badge-status">Done</span>
+                                        </c:when>      
+                                        </c:choose>
                                     </td>
-                                    <td>${contract.contractNote}</td>
-                                    <td><a href="/manager/contract/viewDetail/${contract.contractId}" class="btn btn-info">Click Here</a></td>
+                                    <td><a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-info">Edit Staff</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
-                    
+
                     <!-- Pagination Controls -->
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <!-- Previous Button -->
@@ -146,5 +140,6 @@
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
     </body>
 </html>

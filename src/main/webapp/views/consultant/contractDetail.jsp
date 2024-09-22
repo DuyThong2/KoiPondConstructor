@@ -56,13 +56,12 @@
                         <tr>
                             <th>Contract Status</th>
                             <td>
-                                
-                                    <c:choose>
+                                <c:choose>
                                         <c:when test="${contract.contractStatus == 1}">
                                             <span class="badge badge-warning badge-status">Pending</span>
                                         </c:when>
                                         <c:when test="${contract.contractStatus == 2}">
-                                            <span class="badge badge-success badge-status">Approved by company</span>
+                                            <span class="badge badge-success badge-status">Approved</span>
                                         </c:when>
                                         <c:when test="${contract.contractStatus == 3}">
                                             <span class="badge badge-danger badge-status">Rejected (Customer)</span>
@@ -77,7 +76,6 @@
                                             <span class="badge badge-success badge-status">Accepted</span>
                                         </c:when>
                                     </c:choose>
-                                
                             </td>
                         </tr>
                         <tr>
@@ -111,23 +109,16 @@
                     </table>
 
                     <!-- Approve/Reject buttons placed below the main table -->
-                     <c:choose>
-                        <c:when test="${contract.contractStatus == 2}">
-                            <div class="mt-4 text-center">
-                                <form action="/customer/contract/editStatus" method="POST" class="d-inline">
-                                    <input type="hidden" name="id" value="${contract.contractId}">
-                                    <input type="hidden" name="status" value="6">
-                                    <button type="submit" class="btn btn-success">Accept</button>
+                    <c:choose>
+                        <c:when test="${contract.contractStatus == 4}">
+                            <div class="">
+                                <form action="/consultant/contract/edit" method="PUT" class="d-inline">
+                                    <input type="hidden" name="id" value="${contract.contractId}" >
+                                    <button name="status" type="submit" value="2" class="btn btn-success">Approve</button>
                                 </form>
-                                <form action="/customer/contract/editStatus" method="POST" class="d-inline">
-                                    <input type="hidden" name="id" value="${contract.contractId}">
-                                    <input type="hidden" name="status" value="3">
-                                    <button type="submit" class="btn btn-warning">Reject</button>
-                                </form>
-                                <form action="/customer/contract/editStatus" method="POST" class="d-inline">
-                                    <input type="hidden" name="id" value="${contract.contractId}">
-                                    <input type="hidden" name="status" value="5">
-                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                <form action="/customer/contract/statusEdit" method="PUT" class="d-inline">
+                                    <input type="hidden" name="id" value="${contract.contractId}" >
+                                    <button name="status" type="submit" value="3" class="btn btn-danger">Reject</button>
                                 </form>
                             </div>
                         </c:when>
