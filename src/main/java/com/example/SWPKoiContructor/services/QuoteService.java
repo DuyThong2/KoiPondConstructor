@@ -7,6 +7,8 @@ package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.QuoteDAO;
 import com.example.SWPKoiContructor.entities.Quotes;
+import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,5 +27,14 @@ public class QuoteService {
     
     public Quotes getQuoteById(int id){
         return quoteDAO.getQuoteById(id);
+    }
+    
+    public List<Quotes> getQuoteList(){
+        return quoteDAO.getQuotesList();
+    }
+    
+    @Transactional
+    public Quotes createNewQuotes(Quotes quotes){
+        return quoteDAO.createNewQuotes(quotes);
     }
 }

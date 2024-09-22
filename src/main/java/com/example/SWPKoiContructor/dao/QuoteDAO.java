@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Quotes;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
@@ -24,9 +25,19 @@ public class QuoteDAO {
         this.entityManager = entityManager;
     }
     
+    public List<Quotes> getQuotesList(){
+        TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q", Quotes.class);
+        return tq.getResultList();
+    }
+    
     public Quotes getQuoteById(int id){
         TypedQuery<Quotes> tq = entityManager.createQuery("select q from Quotes q where q.quotesId = :id", Quotes.class);
         tq.setParameter("id", id);
         return tq.getSingleResult();
+    }
+    
+    public Quotes createNewQuotes(Quotes quotes){
+        Quotes newQuotes = entityManager.merge(quotes);
+        return newQuotes;
     }
 }

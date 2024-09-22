@@ -1,6 +1,6 @@
 <%-- 
-    Document   : consultantManage
-    Created on : Sep 20, 2024, 10:06:00 AM
+    Document   : quoteManage
+    Created on : Sep 21, 2024, 8:22:30 PM
     Author     : HP
 --%>
 
@@ -37,19 +37,19 @@
                 <!-- Sidebar -->
                 <nav class="col-md-2 d-none d-md-block sidebar">
                     <div class="sidebar-sticky">
-                        <h4 class="text-center py-3">Admin Dashboard</h4>
+                        <h4 class="text-center py-3">Consultant Dashboard</h4>
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/dashboard">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/contracts">Contracts</a>
+                                <a class="nav-link" href="/admin/contracts">Consultant</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/projects">Projects</a>
+                                <a class="nav-link" href="/admin/projects">Quotes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/terms">Terms</a>
+                                <a class="nav-link" href="/admin/terms">Contract</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/reports">Reports</a>
@@ -63,48 +63,60 @@
 
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <h2 class="mb-4">Consultant List</h2>
+                    <h2 class="mb-4">Quote List</h2>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Date Created</th>
-                                <th>Customer Name</th>
-                                <th>Phone</th>
-                                <th>Email</th>
+                                <th>Date</th>
+                                <th>Quote Name</th>
                                 <th>Content</th>
-                                <th>Pre Design</th>
-                                <th>Staff</th>
+                                <th>Area</th>
+                                <th>Design Cost</th>
+                                <th>Construction Cost</th>
+                                <th>Total Price</th>                                
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="consultant" items="${consultants}">
+                            <c:forEach var="quote" items="${quoteList}">
                                 <tr>
-                                    <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>               
-                                    <td>${consultant.consultantCustomerName}</td>
-                                    <td>${consultant.consultantPhone}</td>
-                                    <td>${consultant.consultant_email}</td>
-                                    <td>${consultant.consultantContent}</td>
-                                    <td>${consultant.predesign.preDesignName}</td>
-                                    <td>${consultant.staff.username}</td>
+                                    <td>${quote.quotesDate}</td>               
+                                    <td>${quote.quotesName}</td>
+                                    <td>${quote.quotesContent}</td>
+                                    <td>${quote.quotesArea}</td>
+                                    <td>${quote.quotesDesignCost}</td>
+                                    <td>${quote.quotesConstructionCost}</td>
+                                    <td>${quote.quotesTotalPrice}</td>
                                     <td>
                                         <c:choose>
-                                        <c:when test="${consultant.consultantStatus == 1}">
-                                            <span class="badge badge-warning badge-status">Pending</span>
-                                        </c:when>
-                                        <c:when test="${consultant.consultantStatus == 2}">
-                                            <span class="badge badge-secondary badge-status">Approved</span>
-                                        </c:when>
-                                        <c:when test="${consultant.consultantStatus == 3}">
-                                            <span class="badge badge-danger badge-status">Rejected</span>
-                                        </c:when>
-                                        <c:when test="${consultant.consultantStatus == 4}">
-                                            <span class="badge badge-success badge-status">Done</span>
-                                        </c:when>      
+                                            <c:when test="${quote.quotesStatus == 1}">
+                                                <span class="badge badge-warning badge-status">Pending</span>
+                                            </c:when>
+                                            <c:when test="${quote.quotesStatus == 2}">
+                                                <span class="badge badge-secondary badge-status">Approved</span>
+                                            </c:when>
+                                            <c:when test="${quote.quotesStatus == 3}">
+                                                <span class="badge badge-danger badge-status">Rejected</span>
+                                            </c:when>
+                                            <c:when test="${quote.quotesStatus == 4}">
+                                                <span class="badge badge-success badge-status">accepted</span>
+                                            </c:when>
+                                            <c:when test="${quote.quotesStatus == 5}">
+                                                <span class="badge badge-success badge-status">refused</span>
+                                            </c:when>
+                                            <c:when test="${quote.quotesStatus == 6}">
+                                                <span class="badge badge-success badge-status">refused</span>
+                                            </c:when>
+                                            <c:when test="${quote.quotesStatus == 7}">
+                                                <span class="badge badge-success badge-status">cancel</span>
+                                            </c:when>
                                         </c:choose>
                                     </td>
-                                    <td><a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-info">Edit Staff</a></td>
+                                    <td>
+                                        <a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-info">Edit Status</a>                                      
+                                        <a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-primary">Detail</a> 
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>
@@ -143,3 +155,4 @@
 
     </body>
 </html>
+

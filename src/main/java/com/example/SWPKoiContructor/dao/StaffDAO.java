@@ -34,17 +34,18 @@ public class StaffDAO {
     
 
     public List<Staff> getListStaff(){
-        TypedQuery<Staff> tq = entityManager.createQuery("SELECT * FROM Staff", Staff.class);
+        TypedQuery<Staff> tq = entityManager.createQuery("SELECT s FROM Staff s", Staff.class);
         return tq.getResultList();
     }
     
-    public List<Staff> getListConsultantStaff(){
-        TypedQuery<Staff> tq = entityManager.createQuery("SELECT * FROM Staff s WHERE s.staff_role = 'Consultant", Staff.class);
-        return tq.getResultList();
+    public List<Staff> getListStaffByRole(String role){
+        TypedQuery<Staff> tq = entityManager.createQuery("SELECT s FROM Staff s WHERE s.staffRole = :role", Staff.class);
+    tq.setParameter("role", role);
+    return tq.getResultList();
     }
     
     public Staff getStaffById(int id){
-        TypedQuery<Staff> tq = entityManager.createQuery("SELECT * FROM Staff s WHERE s.staff_id = :id", Staff.class);
+        TypedQuery<Staff> tq = entityManager.createQuery("SELECT s FROM Staff s WHERE s.staffId = :id", Staff.class);
         tq.setParameter("id", id);
         return tq.getSingleResult();
     }

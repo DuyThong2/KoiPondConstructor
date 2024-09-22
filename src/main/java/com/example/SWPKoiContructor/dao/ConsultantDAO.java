@@ -39,9 +39,16 @@ public class ConsultantDAO {
     }
     
     //search theo name
-    public List<Consultant> getConsultantByCusName(String name){
+    public List<Consultant> getConsultantListByCusName(String name){
         TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c WHERE c.consultantCustomerName like :ConsultantCusName", Consultant.class);
         tq.setParameter("ConsultantCusName", "%" + name + "%");
+        return tq.getResultList();
+    }
+    
+    //search theo staffId
+    public List<Consultant> getConsultantListByStaffId(int staffId){
+        TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c WHERE c.staff.staffId = :staffId", Consultant.class);
+        tq.setParameter("staffId", staffId);
         return tq.getResultList();
     }
     

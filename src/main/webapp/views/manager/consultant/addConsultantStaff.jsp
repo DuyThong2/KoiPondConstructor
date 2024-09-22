@@ -1,12 +1,12 @@
 <%-- 
-    Document   : consultantManage
-    Created on : Sep 20, 2024, 10:06:00 AM
+    Document   : addConsultantStaff
+    Created on : Sep 20, 2024, 11:32:15 PM
     Author     : HP
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -28,6 +28,9 @@
             }
             .sidebar a:hover {
                 background-color: #495057;
+            }
+            .current{
+                background-color: #ECECEC;
             }
         </style>
     </head>
@@ -63,49 +66,54 @@
 
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <h2 class="mb-4">Consultant List</h2>
+                    <h2 class="mb-4">Consultant Staff List</h2>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Date Created</th>
-                                <th>Customer Name</th>
+                                <th>Id</th>
+                                <th>Staff Name</th>
                                 <th>Phone</th>
-                                <th>Email</th>
-                                <th>Content</th>
-                                <th>Pre Design</th>
-                                <th>Staff</th>
+                                <th>Email</th>                                                              
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="consultant" items="${consultants}">
-                                <tr>
-                                    <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>               
-                                    <td>${consultant.consultantCustomerName}</td>
-                                    <td>${consultant.consultantPhone}</td>
-                                    <td>${consultant.consultant_email}</td>
-                                    <td>${consultant.consultantContent}</td>
-                                    <td>${consultant.predesign.preDesignName}</td>
-                                    <td>${consultant.staff.username}</td>
+                            <c:forEach var="staff" items="${consultantStaffList}">
+
+                                <tr class=${consultant.staff.staffId == staff.staffId?"current":""}>                                  
+                                    <td>${staff.staffId}</td>
+                                    <td>${staff.username}</td>
+                                    <td>${staff.staffPhone}</td>
+                                    <td>${staff.staffEmail}</td>
                                     <td>
                                         <c:choose>
-                                        <c:when test="${consultant.consultantStatus == 1}">
-                                            <span class="badge badge-warning badge-status">Pending</span>
-                                        </c:when>
-                                        <c:when test="${consultant.consultantStatus == 2}">
-                                            <span class="badge badge-secondary badge-status">Approved</span>
-                                        </c:when>
-                                        <c:when test="${consultant.consultantStatus == 3}">
-                                            <span class="badge badge-danger badge-status">Rejected</span>
-                                        </c:when>
-                                        <c:when test="${consultant.consultantStatus == 4}">
-                                            <span class="badge badge-success badge-status">Done</span>
-                                        </c:when>      
+                                            <c:when test="${staff.status}">
+                                                <span class="badge badge-warning badge-status">Active</span>
+                                            </c:when>
+                                            <c:when test="${staff.status}">
+                                                <span class="badge badge-secondary badge-status">Not Active</span>
+                                            </c:when>                                          
                                         </c:choose>
                                     </td>
-                                    <td><a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-info">Edit Staff</a></td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${consultant.staff.staffId != staff.staffId}">
+                                                <form action="/manager/consultant/viewConsultantStaffList/editConsultantStaff" method="POST" class="d-inline">
+                                                    <input type="hidden" name="id" value="${consultant.consultantId}">
+                                                    <input type="hidden" name="staffId" value="${staff.staffId}">
+                                                    <button type="submit" class="btn btn-info">Update Staff</button>
+                                                </form>             
+                                            </c:when>
+                                            <c:when test="${consultant.staff.staffId == staff.staffId}">
+                                                <a class="btn btn-success" style="pointer-events: none;">Current Staff</a>
+                                            </c:when>
+                                        </c:choose>
+                                    </td>
+
+
                                 </tr>
+
                             </c:forEach>
                         </tbody>
                     </table>
@@ -135,11 +143,7 @@
 
             </div>
         </div>
-
-        <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
     </body>
+
 </html>
+

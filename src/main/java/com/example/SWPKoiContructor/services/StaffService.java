@@ -7,6 +7,7 @@ package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.StaffDAO;
 import com.example.SWPKoiContructor.entities.Staff;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,6 +24,13 @@ public class StaffService {
         this.staffDAO = staffDAO;
     }
     
+    public List<Staff> getStaffList(){
+        return staffDAO.getListStaff();
+    }
+    
+    public List<Staff> getStaffListByRole(String role){
+        return staffDAO.getListStaffByRole(role);
+    }
     
     public Staff getStaffById(int id){
         return staffDAO.getStaffById(id);

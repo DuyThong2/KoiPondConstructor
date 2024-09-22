@@ -1,6 +1,6 @@
 <%-- 
     Document   : consultantManage
-    Created on : Sep 20, 2024, 10:06:00 AM
+    Created on : Sep 21, 2024, 3:23:55 PM
     Author     : HP
 --%>
 
@@ -37,19 +37,19 @@
                 <!-- Sidebar -->
                 <nav class="col-md-2 d-none d-md-block sidebar">
                     <div class="sidebar-sticky">
-                        <h4 class="text-center py-3">Admin Dashboard</h4>
+                        <h4 class="text-center py-3">Consultant Dashboard</h4>
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/dashboard">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/contracts">Contracts</a>
+                                <a class="nav-link" href="/admin/contracts">Consultant</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/projects">Projects</a>
+                                <a class="nav-link" href="/admin/projects">Quotes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/terms">Terms</a>
+                                <a class="nav-link" href="/admin/terms">Contract</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/reports">Reports</a>
@@ -72,22 +72,20 @@
                                 <th>Phone</th>
                                 <th>Email</th>
                                 <th>Content</th>
-                                <th>Pre Design</th>
-                                <th>Staff</th>
+                                <th>Pre Design</th>                                
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="consultant" items="${consultants}">
+                            <c:forEach var="consultant" items="${consultantList}">
                                 <tr>
                                     <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>               
                                     <td>${consultant.consultantCustomerName}</td>
                                     <td>${consultant.consultantPhone}</td>
                                     <td>${consultant.consultant_email}</td>
                                     <td>${consultant.consultantContent}</td>
-                                    <td>${consultant.predesign.preDesignName}</td>
-                                    <td>${consultant.staff.username}</td>
+                                    <td>${consultant.predesign.preDesignName}</td>                                    
                                     <td>
                                         <c:choose>
                                         <c:when test="${consultant.consultantStatus == 1}">
@@ -104,7 +102,10 @@
                                         </c:when>      
                                         </c:choose>
                                     </td>
-                                    <td><a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-info">Edit Staff</a></td>
+                                    <td>
+                                        <a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-info">Edit Status</a>
+                                        <a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-primary">Create Quote</a>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>

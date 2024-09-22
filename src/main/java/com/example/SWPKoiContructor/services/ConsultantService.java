@@ -7,6 +7,7 @@ package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.ConsultantDAO;
 import com.example.SWPKoiContructor.entities.Consultant;
+import com.example.SWPKoiContructor.entities.Staff;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -28,16 +29,26 @@ public class ConsultantService {
     }
     
     public List<Consultant> getConsultantListByCusName(String cusName){
-        return consultantDAO.getConsultantByCusName(cusName);
+        return consultantDAO.getConsultantListByCusName(cusName);
     }
     
     public Consultant getConsultantById(int id){
         return consultantDAO.getConsultantById(id);
     }
     
+    public List<Consultant> getConsultantListByStaffId(int staffId){
+        return consultantDAO.getConsultantListByStaffId(staffId);
+    }
+    
     @Transactional
     public Consultant updateConsultant(Consultant consultant){
         return consultantDAO.updateConsultant(consultant);
     }
+    
+    @Transactional
+    public Consultant updateConsultantStaff(int id, Staff staff){
+        return consultantDAO.updateConsultantStaff(id, staff);
+    }
+    
     
 }
