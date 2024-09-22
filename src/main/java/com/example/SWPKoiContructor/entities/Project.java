@@ -62,7 +62,7 @@ public class Project {
     
     private int stage;
     
-    @Column(name="is_shareable")
+    @Column(name="is_shareable", columnDefinition= "bit default 0")
     private boolean isSharedAble;
     
 

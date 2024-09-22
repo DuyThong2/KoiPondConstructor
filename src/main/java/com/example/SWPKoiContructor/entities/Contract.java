@@ -59,6 +59,8 @@ public class Contract {
     @ManyToOne
     @JoinColumn(name = "term_id")
     private Term term;
+
+
     
     @OneToOne(mappedBy = "contract")
     private Project project;

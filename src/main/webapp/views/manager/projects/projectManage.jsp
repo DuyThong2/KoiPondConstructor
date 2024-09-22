@@ -44,25 +44,25 @@
                         <h4 class="text-center py-3">Admin Dashboard</h4>
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+                                <a class="nav-link" href="/manager/dashboard">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/contracts">Contracts</a>
+                                <a class="nav-link" href="/manager/contracts">Contracts</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/manager/design">Design</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/projects">Projects</a>
+                                <a class="nav-link" href="/manager/projects">Projects</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/terms">Terms</a>
+                                <a class="nav-link" href="/manager/terms">Terms</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/reports">Reports</a>
+                                <a class="nav-link" href="/manager/reports">Reports</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/settings">Settings</a>
+                                <a class="nav-link" href="/manager/settings">Settings</a>
                             </li>
                         </ul>
                     </div>
@@ -76,6 +76,7 @@
                             <tr>
                                 <th>Project Id</th>
                                 <th>Project Name</th>
+                                <th>Customer Name</th>
                                 <th>Date Start</th>
                                 <th>Status</th>
                                 <th>More</th>
@@ -87,8 +88,8 @@
                                 <tr>
                                     <td>${project.projectId}</td>
                                     <td>${project.projectName}</td>
+                                    <td>${project.contract.quote.customer.username}</td>
                                     <td>${project.dateStart}</td>
-
                                     <td>
                                         <c:choose>
                                             <c:when test="${project.status == 1}">
@@ -106,12 +107,11 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="/manager/project/${project.projectId}" class="btn btn-info">Detail</a>
-                                        <a href="/manager/project/${project.projectId}" class="btn btn-warning">Edit Staff</a>
+                                        <a href="/manager/projects/${project.projectId}" class="btn btn-info">Detail</a>
+                                        <a href="/manager/projects/${project.projectId}" class="btn btn-warning">Edit Staff</a>
                                     </td>
                                 </tr>
                             </c:forEach>
-
                         </tbody>
                     </table>    
 
