@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -33,16 +35,28 @@ public class Design {
     @OneToMany(mappedBy = "design", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DesignStage> designStage;
     
+    @ManyToMany()
+    @JoinTable(
+    name = "Staff_Design",
+    joinColumns = @JoinColumn(name = "design_id"),
+    inverseJoinColumns = @JoinColumn(name = "staff_id")
+    )
+    private List<Staff> staff;
+    
     
     
     public Design() {
     }
 
-    public Design(int designId, String designName, int status) {
+    public Design(int designId, String designName, int status, Project project, List<DesignStage> designStage, List<Staff> staff) {
         this.designId = designId;
         this.designName = designName;
         this.status = status;
+        this.project = project;
+        this.designStage = designStage;
+        this.staff = staff;
     }
+
 
     public int getDesignId() {
         return designId;
@@ -93,6 +107,14 @@ public class Design {
     public void removeDesignStage(DesignStage designStage){
         this.designStage.remove(designStage);
         designStage.setDesign(null);
+    }
+
+    public List<Staff> getStaff() {
+        return staff;
+    }
+
+    public void setStaff(List<Staff> staff) {
+        this.staff = staff;
     }
     
     

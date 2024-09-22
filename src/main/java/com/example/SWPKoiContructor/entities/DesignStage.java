@@ -25,7 +25,7 @@ public class DesignStage {
     private String designStageName;
     
     @Column(name = "design_stage_status")
-    private int designStageStatus;
+    private int designStageStatus; // ---- 1:Pending ; 2:Proccessing; 3: completed/ 4: Canceled
     
     @Column(name = "design_stage_price")
     private double designStagePrice;
@@ -46,13 +46,19 @@ public class DesignStage {
     public DesignStage() {
     }
 
-    public DesignStage(int designStageId, String designStageName, int designStageStatus, double designStagePrice, String summaryFile) {
+    public DesignStage(int designStageId, String designStageName, int designStageStatus, double designStagePrice, String summaryFile, Design design, List<DesignStageDetail> designDetail, List<BluePrint> bluePrint) {
         this.designStageId = designStageId;
         this.designStageName = designStageName;
         this.designStageStatus = designStageStatus;
         this.designStagePrice = designStagePrice;
         this.summaryFile = summaryFile;
+        this.design = design;
+        this.designDetail = designDetail;
+        this.bluePrint = bluePrint;
     }
+    
+    
+
 
     public int getDesignStageId() {
         return designStageId;

@@ -11,13 +11,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- *
- * @author HP
- */
+
 @Entity
 @Table(name = "Staff")
 public class Staff {
@@ -50,7 +48,11 @@ public class Staff {
     
     @OneToMany(mappedBy = "staff")
     private List<Quotes> quotes;
-
+    
+    @ManyToMany(mappedBy = "staff")
+    private List<Design> design;
+    
+    
     public Staff() {
     }
 
@@ -66,6 +68,20 @@ public class Staff {
         this.quotes = quotes;
     }
 
+    public Staff(int staffId, String staffEmail, String username, String staffPhone, String staffRole, String password, boolean status, String userType, List<Consultant> consultant, List<Quotes> quotes, List<Design> design) {
+        this.staffId = staffId;
+        this.staffEmail = staffEmail;
+        this.username = username;
+        this.staffPhone = staffPhone;
+        this.staffRole = staffRole;
+        this.password = password;
+        this.status = status;
+        this.userType = userType;
+        this.consultant = consultant;
+        this.quotes = quotes;
+        this.design = design;
+    }
+    
     public int getStaffId() {
         return staffId;
     }
@@ -144,6 +160,14 @@ public class Staff {
 
     public void setQuotes(List<Quotes> quotes) {
         this.quotes = quotes;
+    }
+
+    public List<Design> getDesign() {
+        return design;
+    }
+
+    public void setDesign(List<Design> design) {
+        this.design = design;
     }
     
     
