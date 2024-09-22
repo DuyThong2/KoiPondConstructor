@@ -34,6 +34,7 @@ public class ProjectController {
     public String PrọectDetail(@PathVariable("id") int id, Model model){
         Project project = projectService.getProjectById(id);
         Customer customer = project.getContract().getCustomer();
+        model.addAttribute("customer",customer);
          model.addAttribute("project",project);
         return "manager/projects/projectDetail";
     }

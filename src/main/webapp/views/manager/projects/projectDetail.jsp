@@ -139,8 +139,6 @@
                                        <div class="user-info mb-4">
                                            <h5>Name</h5>
                                            <p>${customer.username}</p>
-                                           <h5>Current Address</h5>
-                                           <p>${customer.address}</p>
                                            <h5>Phone Number</h5>
                                            <p>${customer.customerPhone}</p>
                                            <h5>Email</h5>
@@ -174,13 +172,37 @@
                                                <p><strong>Start Date:</strong> ${project.dateStart}</p>
                                            </div>
                                            <div class="info-item">
-                                               <p><strong>End Date:</strong> ${project.dateEnd}</p>
+                                               <p><strong>End Date:</strong>
+                                                  <c:choose>
+                                                     <c:when test="${empty project.dateEnd}">
+                                                        Not yet
+                                                     </c:when>
+                                                     <c:otherwise>
+                                                        ${project.dateEnd}
+                                                     </c:otherwise>
+                                                  </c:choose>
+                                               </p>
                                            </div>
                                            <div class="info-item">
-                                               <p><strong>Project Status:</strong> ${project.status}</p>
+                                               <p><strong>Project Status:</strong>
+                                                  <c:choose>
+                                                     <c:when test="${project.status == 1}">Pending</c:when>
+                                                     <c:when test="${project.status == 2}">Processing</c:when>
+                                                     <c:when test="${project.status == 3}">Completed</c:when>
+                                                     <c:when test="${project.status == 4}">Canceled</c:when>
+                                                  </c:choose>
+                                               </p>
                                            </div>
                                            <div class="info-item">
-                                               <p><strong>Stage:</strong> ${project.stage}</p>
+                                              <p><strong>Stage:</strong>
+                                                 <c:choose>
+                                                    <c:when test="${project.stage == 1}">Planning</c:when>
+                                                    <c:when test="${project.stage == 2}">Design</c:when>
+                                                    <c:when test="${project.stage == 3}">Construction</c:when>
+                                                    <c:when test="${project.stage == 4}">Maintenance</c:when>
+                                                    <c:when test="${project.stage == 5}">Finish</c:when>
+                                                 </c:choose>
+                                              </p>
                                            </div>
                                            <div class="info-item">
                                                <p><strong>Is Shareable:</strong> ${project.isSharedAble}</p>

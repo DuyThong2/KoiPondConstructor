@@ -79,6 +79,7 @@
                                 <th>Customer Name</th>
                                 <th>Date Start</th>
                                 <th>Status</th>
+                                 <th>Stage</th>
                                 <th>More</th>
                             </tr>
                         </thead>
@@ -103,6 +104,25 @@
                                             </c:when>
                                             <c:when test="${project.status == 4}">
                                                 <span class="badge badge-warning">Cancelled</span>
+                                            </c:when>
+                                        </c:choose>
+                                    </td>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${project.stage == 1}">
+                                                <span class="badge badge-secondary">Planning</span>
+                                            </c:when>
+                                            <c:when test="${project.stage == 2}">
+                                                <span class="badge badge-primary">Design</span>
+                                            </c:when>
+                                            <c:when test="${project.stage == 3}">
+                                                <span class="badge badge-success">Construction</span>
+                                            </c:when>
+                                            <c:when test="${project.stage == 4}">
+                                                <span class="badge badge-warning">Maintenance</span>
+                                            </c:when>
+                                            <c:when test="${project.stage == 5}">
+                                                <span class="badge badge-dark">Finish</span>
                                             </c:when>
                                         </c:choose>
                                     </td>
