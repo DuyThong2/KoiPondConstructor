@@ -21,7 +21,7 @@ import javax.persistence.Table;
  */
 
 @Entity
-@Table(name = "users")
+@Table(name = "Users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User {
     
@@ -106,13 +106,25 @@ public class User {
         this.password = password;
     }
 
-    public boolean isEnable() {
+    public boolean isEnabled() {
         return enabled;
     }
 
-    public void setEnable(boolean enable) {
-        this.enabled = enable;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
+
+    
+
+    public Authority getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
+    }
+    
+    
     
     
 }

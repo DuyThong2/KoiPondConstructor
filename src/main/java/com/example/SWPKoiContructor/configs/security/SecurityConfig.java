@@ -49,12 +49,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Updated to join by user_id (id) from 'users' table and return 'email'
         jdbcUserDetailsManager.setUsersByUsernameQuery(
-                "SELECT email, password, enabled FROM users WHERE email = ?"
+                "SELECT email, password, enabled FROM [Users] WHERE email = ? "
         );
 
         // Updated to join by user_id
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
-                "SELECT u.email, a.authority FROM users u JOIN authorities a ON u.id = a.user_id WHERE u.email = ?"
+                "SELECT u.email, a.authority FROM [Users] u JOIN authorities a ON u.id = a.user_id WHERE u.email = ? "
         );
 
         return jdbcUserDetailsManager;
