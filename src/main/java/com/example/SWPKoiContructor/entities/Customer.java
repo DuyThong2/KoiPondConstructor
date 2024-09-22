@@ -143,6 +143,16 @@ public class Customer {
         this.contracts = contracts;
     }
     
+    public void addContract(Contract contract){
+        this.contracts.add(contract);
+        contract.setCustomer(this);
+        
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" + "customerId=" + customerId + ", username=" + username + ", customerPhone=" + customerPhone + ", customerEmail=" + customerEmail + ", password=" + password + ", status=" + status + ", userType=" + userType + '}';
+    }
     
     
 }

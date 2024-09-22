@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -62,11 +63,11 @@ public class Contract {
     @OneToOne(mappedBy = "contract")
     private Project project;
     
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "quote_id")
     private Quotes quote;
     
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
@@ -221,6 +222,8 @@ public class Contract {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+    
+    
     
     
     

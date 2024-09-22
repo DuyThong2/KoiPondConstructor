@@ -61,18 +61,21 @@
                     <h2 class="mb-4">Create Contract</h2>
 
                     <!-- Bind the form to the "contract" object -->
-                    <form:form action="${pageContext.request.contextPath}/manager/contract/edit" modelAttribute="contract" method="PUT" enctype="multipart/form-data" class="needs-validation" novalidate="true">
-
+                    <form:form action="${pageContext.request.contextPath}/consultant/contract/edit" modelAttribute="contract" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
 
 
                         <form:hidden path="customer.customerId" value="${customer.customerId}" />
+                        <div class="form-group">
+                            <label for="totalPrice">Total Price:</label>
+                            <form:input type="hidden" path="contractId" id="totalPrice" step="0.01" class="form-control" readonly="readonly"/>
+                        </div>
 
 
                         <!-- Total Price (Read-Only, auto-calculated) -->
                         <div class="form-group">
                             <label for="totalPrice">Total Price:</label>
-                            <form:input path="totalPrice" id="totalPrice" step="0.01" value="${contract.totalPrice}" class="form-control" readonly="readonly"/>
+                            <form:input path="totalPrice" id="totalPrice" step="0.01" class="form-control" readonly="readonly"/>
                         </div>
 
                         <!-- Design Costs -->
@@ -81,25 +84,25 @@
                         <!-- Conceptual Design -->
                         <div class="form-group">
                             <label for="priceOnConceptDesign">Conceptual Design:</label>
-                            <form:input type="number" path="priceOnConceptDesign" value="${contract.priceOnConceptDesign}" id="conceptDesign" step="0.01" class="form-control"/>
+                            <form:input type="number" path="priceOnConceptDesign" id="conceptDesign" step="0.01" class="form-control"/>
                         </div>
 
                         <!-- Detailed Design -->
                         <div class="form-group">
                             <label for="priceOnDetailDesign">Detailed Design:</label>
-                            <form:input type="number" path="priceOnDetailDesign" value="${contract.priceOnDetailDesign}" id="detailDesign" step="0.01" class="form-control"/>
+                            <form:input type="number" path="priceOnDetailDesign" id="detailDesign" step="0.01" class="form-control"/>
                         </div>
 
                         <!-- Construction Design -->
                         <div class="form-group">
                             <label for="priceOnConstructionDesign">Construction Design:</label>
-                            <form:input type="number" path="priceOnConstructionDesign" value="${contract.priceOnConstructionDesign}" id="constructionDesign" step="0.01" class="form-control"/>
+                            <form:input type="number" path="priceOnConstructionDesign" id="constructionDesign" step="0.01" class="form-control"/>
                         </div>
 
                         <!-- Total Design Cost (Used for calculation only) -->
                         <div class="form-group">
                             <label for="totalDesignCost">Total Design Cost:</label>
-                            <input type="number" id="totalDesignCost" step="0.01"  class="form-control" readonly="readonly"/>
+                            <input type="number" id="totalDesignCost" step="0.01" class="form-control" readonly="readonly"/>
                         </div>
 
                         <!-- Construction Costs -->
@@ -108,13 +111,13 @@
                         <!-- Raw Construction -->
                         <div class="form-group">
                             <label for="priceOnRawConstruction">Raw Construction:</label>
-                            <form:input type="number" path="priceOnRawConstruction" value="${contract.priceOnRawConstruction}" id="rawConstruction" step="0.01" class="form-control"/>
+                            <form:input type="number" path="priceOnRawConstruction" id="rawConstruction" step="0.01" class="form-control"/>
                         </div>
 
                         <!-- Complete Construction -->
                         <div class="form-group">
                             <label for="priceOnCompleteConstruction">Complete Construction:</label>
-                            <form:input type="number" path="priceOnCompleteConstruction" value="${contract.priceOnCompleteConstruction}" id="completeConstruction" step="0.01" class="form-control"/>
+                            <form:input type="number" path="priceOnCompleteConstruction" id="completeConstruction" step="0.01" class="form-control"/>
                         </div>
 
                         <!-- Total Construction Cost (Used for calculation only) -->
@@ -141,7 +144,6 @@
                             <label for="contractNote">Contract Note:</label>
                             <form:textarea path="contractNote" value = "${contract.contractNote}" id="contractNote" class="form-control"/>
                         </div>
-
                         <div class="form-group">
                             <label for="contractNote">Contract Term:</label>
                             <form:textarea path="contractTerm" value = "${contract.contractTerm}" id="contractNote" class="form-control"/>

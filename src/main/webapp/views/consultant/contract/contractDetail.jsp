@@ -57,25 +57,25 @@
                             <th>Contract Status</th>
                             <td>
                                 <c:choose>
-                                        <c:when test="${contract.contractStatus == 1}">
-                                            <span class="badge badge-warning badge-status">Pending</span>
-                                        </c:when>
-                                        <c:when test="${contract.contractStatus == 2}">
-                                            <span class="badge badge-success badge-status">Approved</span>
-                                        </c:when>
-                                        <c:when test="${contract.contractStatus == 3}">
-                                            <span class="badge badge-danger badge-status">Rejected (Customer)</span>
-                                        </c:when>
-                                        <c:when test="${contract.contractStatus == 4}">
-                                            <span class="badge badge-danger badge-status">Rejected (Manager)</span>
-                                        </c:when>
-                                        <c:when test="${contract.contractStatus == 5}">
-                                            <span class="badge badge-secondary badge-status">Canceled</span>
-                                        </c:when>
-                                        <c:when test="${contract.contractStatus == 6}">
-                                            <span class="badge badge-success badge-status">Accepted</span>
-                                        </c:when>
-                                    </c:choose>
+                                    <c:when test="${contract.contractStatus == 1}">
+                                        <span class="badge badge-warning badge-status">Pending</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 2}">
+                                        <span class="badge badge-success badge-status">Approved</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 3}">
+                                        <span class="badge badge-danger badge-status">Rejected (Customer)</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 4}">
+                                        <span class="badge badge-danger badge-status">Rejected (Manager)</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 5}">
+                                        <span class="badge badge-secondary badge-status">Canceled</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 6}">
+                                        <span class="badge badge-success badge-status">Accepted</span>
+                                    </c:when>
+                                </c:choose>
                             </td>
                         </tr>
                         <tr>
@@ -103,9 +103,9 @@
                             <td>${contract.priceOnCompleteConstruction}</td>
                         </tr>
                         <!-- Replaced file URL with a button -->
-                        
+
                         <!-- Contract Status moved back into the table -->
-                        
+
                     </table>
 
                     <!-- Approve/Reject buttons placed below the main table -->
@@ -114,11 +114,7 @@
                             <div class="">
                                 <form action="/consultant/contract/edit" method="PUT" class="d-inline">
                                     <input type="hidden" name="id" value="${contract.contractId}" >
-                                    <button name="status" type="submit" value="2" class="btn btn-success">Approve</button>
-                                </form>
-                                <form action="/customer/contract/statusEdit" method="PUT" class="d-inline">
-                                    <input type="hidden" name="id" value="${contract.contractId}" >
-                                    <button name="status" type="submit" value="3" class="btn btn-danger">Reject</button>
+                                    <button type="submit" class="btn btn-success">EDIT</button>
                                 </form>
                             </div>
                         </c:when>
@@ -159,19 +155,79 @@
                     <div class="term-section mb-4">
                         <h4 class="section-header text-primary">Associated Term</h4>
                         <c:if test="${not empty contract.term}">
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>Term ID</th>
-                                    <td>${contract.term.termId}</td>
-                                </tr>
-                                <tr>
-                                    <th>Term Description</th>
-                                    <td>${contract.term.description}</td>
-                                </tr>
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Term ID</th>
+                                        <td>${contract.term.termId}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Term Description</th>
+                                        <td>${contract.term.description}</td>
+                                    </tr>
+
+                                    <!-- Payment on Design Stages -->
+                                    <tr>
+                                        <th>Payment on Concept Design</th>
+                                        <td>${contract.term.percentOnDesign1}%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment on Detailed Design</th>
+                                        <td>${contract.term.percentOnDesign2}%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment on Construction Design</th>
+                                        <td>${contract.term.percentOnDesign3}%</td>
+                                    </tr>
+
+                                    <!-- Payment on Construction Stages -->
+                                    <tr>
+                                        <th>Payment on Rough Construction</th>
+                                        <td>${contract.term.percentOnConstruct1}%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment on Final Construction</th>
+                                        <td>${contract.term.percentOnConstruct2}%</td>
+                                    </tr>
+
+                                    <!-- Conditional Message for Payment Timing -->
+                                    <tr>
+                                        <th>Payment Timing for Design</th>
+                                        <td>
+                                            <c:if test="${contract.term.payOnStartOfDesign}">
+                                                Pay at the start of the design stage.
+                                            </c:if>
+                                            <c:if test="${!contract.term.payOnStartOfDesign}">
+                                                Payment follows normal design stage completion.
+                                            </c:if>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment Timing for Construction</th>
+                                        <td>
+                                            <c:if test="${contract.term.payOnStartOfConstruction}">
+                                                Pay at the start of the construction stage.
+                                            </c:if>
+                                            <c:if test="${!contract.term.payOnStartOfConstruction}">
+                                                Payment follows normal construction stage completion.
+                                            </c:if>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Conditional Message for Follow Contract -->
+                                    <tr>
+                                        <th>Payment Based on Contract</th>
+                                        <td>
+                                            <c:if test="${contract.term.followContract}">
+                                                Pay the amount stated in the contract at the end of each stage.
+                                            </c:if>
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </c:if>
                         <c:if test="${empty contract.term}">
-                            <p class="text-muted">No terms are associated with this contract.</p>
+                            <p>No terms are associated with this contract.</p>
                         </c:if>
                     </div>
                 </div>
