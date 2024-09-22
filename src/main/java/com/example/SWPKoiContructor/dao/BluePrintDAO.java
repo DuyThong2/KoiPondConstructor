@@ -15,17 +15,11 @@ public class BluePrintDAO {
         this.entityManager = entityManager;
     }
 
-    public List<BluePrint> getBluePrintListOfDesignStage(int id) {
-        TypedQuery<BluePrint> bp = entityManager.createQuery("SELECT bp FROM BluePrint bp WHERE bp.designStage.designStageId = :id", BluePrint.class);
-        bp.setParameter("id", id);
-        return bp.getResultList();
-    }
-
-    public BluePrint getBluePrintOfDesignStage(int id) {
-        TypedQuery<BluePrint>bp = entityManager.createQuery(
-                "SELECT bp FROM BluePrint bp WHERE bp.designStage.designStageId = :id", BluePrint.class);
-        bp.setParameter("id", id);
-        return bp.getSingleResult();
+    public List<BluePrint> findByDesignStageId(int id) {
+        TypedQuery<BluePrint> query = entityManager.createQuery(
+                "SELECT b FROM BluePrint b WHERE b.designStage.designStageId = :id", BluePrint.class);
+        query.setParameter("id", id);
+        return query.getResultList();
     }
 
 }
