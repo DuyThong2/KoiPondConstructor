@@ -107,7 +107,7 @@ public class ContractDAO {
 
     public List<Contract> getSortedAndPaginatedByCustomer(int id, int page, int size, String sortBy, String sortDirection) {
         // Create the JPQL query with the correct alias
-        String jpql = "SELECT p FROM Contract p WHERE p.customer.customerId = :id AND (p.contractStatus != 1 AND p.contractStatus != 4) ORDER BY p." + sortBy + " " + sortDirection;
+        String jpql = "SELECT p FROM Contract p WHERE p.customer.id = :id AND (p.contractStatus != 1 AND p.contractStatus != 4) ORDER BY p." + sortBy + " " + sortDirection;
 
         // Create TypedQuery
         TypedQuery<Contract> query = entityManager.createQuery(jpql, Contract.class);
@@ -125,7 +125,7 @@ public class ContractDAO {
 
     public List<Contract> getSortedAndPaginatedByConsultant(int id, int page, int size, String sortBy, String sortDirection) {
         // Tạo truy vấn động cho việc sắp xếp
-        String jpql = "SELECT p FROM Contract p WHERE p.quote.staff.staffId = :id ORDER BY p." + sortBy + " " + sortDirection;
+        String jpql = "SELECT p FROM Contract p WHERE p.quote.staff.id = :id ORDER BY p." + sortBy + " " + sortDirection;
 
         // Tạo TypedQuery
         TypedQuery<Contract> query = entityManager.createQuery(jpql, Contract.class);
@@ -149,8 +149,8 @@ public class ContractDAO {
     public int getTotalContracts(boolean isCustomer, int id) {
         // Construct the appropriate condition based on the isCustomer flag
         String append = isCustomer
-                ? "c.quote.staff.staffId = :id"
-                : "c.customer.customerId = :id AND (c.contractStatus != 1 AND c.contractStatus != 4)";
+                ? "c.quote.staff.id = :id"
+                : "c.customer.id = :id AND (c.contractStatus != 1 AND c.contractStatus != 4)";
 
         // Construct the JPQL query
         String jpql = "SELECT COUNT(c) FROM Contract c WHERE " + append;

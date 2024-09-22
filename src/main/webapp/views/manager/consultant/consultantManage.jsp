@@ -87,7 +87,7 @@
                                     <td>${consultant.consultant_email}</td>
                                     <td>${consultant.consultantContent}</td>
                                     <td>${consultant.predesign.preDesignName}</td>
-                                    <td>${consultant.staff.username}</td>
+                                    <td>${consultant.staff.name}</td>
                                     <td>
                                         <c:choose>
                                         <c:when test="${consultant.consultantStatus == 1}">

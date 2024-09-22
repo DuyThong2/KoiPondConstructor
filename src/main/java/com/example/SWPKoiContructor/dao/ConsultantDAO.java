@@ -47,7 +47,7 @@ public class ConsultantDAO {
     
     //search theo staffId
     public List<Consultant> getConsultantListByStaffId(int staffId){
-        TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c WHERE c.staff.staffId = :staffId", Consultant.class);
+        TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c WHERE c.staff.id = :staffId", Consultant.class);
         tq.setParameter("staffId", staffId);
         return tq.getResultList();
     }

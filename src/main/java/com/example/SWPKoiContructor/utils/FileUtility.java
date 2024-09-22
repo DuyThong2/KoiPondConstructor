@@ -24,19 +24,19 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUtility {
     public static final String ROOT_DIR = System.getProperty("user.home") + "/Desktop/uploads/";
     
-    public static final String CUSTOMER_DIR = ROOT_DIR+ "customer/";
-    public static final String STAFF_DIR = ROOT_DIR +"staff/";
+    public static final String USER_DIR = ROOT_DIR+ "user/";
+   
     
     public static final String DESIGN_SUM_DIR = ROOT_DIR + "design/summaryFile/";
     public static final String DESIGN_BLUEPRINT_DIR = ROOT_DIR+ "design/bluePrint/";
-    public static final String PRE_DESIGN_DIR = ROOT_DIR+ "predesign/";
+    public static final String PRE_DESIGN_DIR = ROOT_DIR+ "preDesign/";
     
     
     public static final String BLOG_DIR = ROOT_DIR +"blog/";
     
     public static final String PROJECT_DIR = ROOT_DIR +"project/";
     
-    public static final String CONTRACT_DIR = ROOT_DIR+"contract/";
+    public static final String CONTRACT_DIR = ROOT_DIR+"contracts/";
      
     public String handleFileUpload(MultipartFile file, String directory) {
         try {

@@ -11,6 +11,7 @@ import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Quotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.Term;
+import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.TermService;
 import com.example.SWPKoiContructor.services.ContractService;
 import com.example.SWPKoiContructor.services.CustomerService;
@@ -93,16 +94,17 @@ public class ContractController {
 
     @GetMapping("/consultant/contract")
     public String listContractsByConsultant(Model model,
+            HttpSession session,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size,
             @RequestParam(defaultValue = "dateCreate") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection) {
         // Fetch paginated contracts using the service
-        int consultantId = 2;
-        List<Contract> contracts = contractService.getContractListOfConsultant(2, page, size, sortBy, sortDirection);
+        User user = (User) session.getAttribute("user");
+        List<Contract> contracts = contractService.getContractListOfConsultant(user.getId(), page, size, sortBy, sortDirection);
 
         // Fetch the total number of contracts for pagination
-        int totalContracts = contractService.countContracts(false, consultantId);
+        int totalContracts = contractService.countContracts(false, user.getId());
         int totalPages = (int) Math.ceil((double) totalContracts / size);
 
         // Add attributes to the model for JSP rendering
