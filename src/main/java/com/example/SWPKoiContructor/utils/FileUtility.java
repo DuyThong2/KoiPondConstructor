@@ -37,6 +37,7 @@ public class FileUtility {
     public static final String PROJECT_DIR = ROOT_DIR +"project/";
     
     public static final String CONTRACT_DIR = ROOT_DIR+"contract/";
+    
      
     public String handleFileUpload(MultipartFile file, String directory) {
         try {
