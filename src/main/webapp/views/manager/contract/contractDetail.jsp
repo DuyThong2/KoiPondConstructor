@@ -140,6 +140,64 @@
                                     <th>Term Description</th>
                                     <td>${contract.term.description}</td>
                                 </tr>
+
+                                <!-- Payment on Design Stages -->
+                                <tr>
+                                    <th>Payment on Concept Design</th>
+                                    <td>${contract.term.percentOnDesign1}%</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment on Detailed Design</th>
+                                    <td>${contract.term.percentOnDesign2}%</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment on Construction Design</th>
+                                    <td>${contract.term.percentOnDesign3}%</td>
+                                </tr>
+
+                                <!-- Payment on Construction Stages -->
+                                <tr>
+                                    <th>Payment on Rough Construction</th>
+                                    <td>${contract.term.percentOnConstruct1}%</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment on Final Construction</th>
+                                    <td>${contract.term.percentOnConstruct2}%</td>
+                                </tr>
+
+                                <!-- Conditional Message for Payment Timing -->
+                                <tr>
+                                    <th>Payment Timing for Design</th>
+                                    <td>
+                                        <c:if test="${contract.term.payOnStartOfDesign}">
+                                            Pay at the start of the design stage.
+                                        </c:if>
+                                        <c:if test="${!contract.term.payOnStartOfDesign}">
+                                            Payment follows normal design stage completion.
+                                        </c:if>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Timing for Construction</th>
+                                    <td>
+                                        <c:if test="${contract.term.payOnStartOfConstruction}">
+                                            Pay at the start of the construction stage.
+                                        </c:if>
+                                        <c:if test="${!contract.term.payOnStartOfConstruction}">
+                                            Payment follows normal construction stage completion.
+                                        </c:if>
+                                    </td>
+                                </tr>
+
+                                <!-- Conditional Message for Follow Contract -->
+                                <tr>
+                                    <th>Payment Based on Contract</th>
+                                    <td>
+                                        <c:if test="${contract.term.followContract}">
+                                            Pay the amount stated in the contract at the end of each stage.
+                                        </c:if>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </c:if>
@@ -180,6 +238,14 @@
                                     <input type="hidden" name="status" value="5">
                                     <button type="submit" class="btn btn-danger">Cancel</button>
                                 </form>
+                            </div>
+                        </c:when>
+                        <c:when test="${contract.contractStatus == 6}">
+                            <div class="mt-4 text-center">
+                                <p>Status: <span class="badge badge-success">Accept by Customer</span></p>
+                                <form action="/manager/project/create" method="POST" class="d-inline">
+                                    <input type="hidden" name="id" value="${contract.contractId}">
+                                    <button type="submit" class="btn btn-primary">CREATE PROJECT</button>
                             </div>
                         </c:when>
                     </c:choose>

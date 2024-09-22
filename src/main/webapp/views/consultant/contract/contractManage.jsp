@@ -14,17 +14,14 @@
             <!-- Sort Form -->
             <form method="get" action="/manager/contract">
                 <div class="form-row align-items-center">
-                    <!-- Sort By -->
                     <div class="col-auto">
                         <label for="sortBy">Sort by:</label>
                         <select name="sortBy" id="sortBy" class="form-control">
                             <option value="dateCreate" ${sortBy == 'dateCreate' ? 'selected' : ''}>Date Created</option>
                             <option value="totalPrice" ${sortBy == 'totalPrice' ? 'selected' : ''}>Total Price</option>
-                            
+                          
                         </select>
                     </div>
-
-                    <!-- Sort Direction -->
                     <div class="col-auto">
                         <label for="sortDirection">Direction:</label>
                         <select name="sortDirection" id="sortDirection" class="form-control">
@@ -32,28 +29,12 @@
                             <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
                         </select>
                     </div>
-
-                    <!-- Filter By Status -->
-                    <div class="col-auto">
-                        <label for="statusFilter">Status:</label>
-                        <select name="statusFilter" id="statusFilter" class="form-control">
-                            <option value="" ${statusFilter == null ? 'selected' : ''}>All</option>
-                            <option value="1" ${statusFilter == 1 ? 'selected' : ''}>Pending</option>
-                            <option value="2" ${statusFilter == 2 ? 'selected' : ''}>Approved</option>
-                            <option value="3" ${statusFilter == 3 ? 'selected' : ''}>Rejected (Customer)</option>
-                            <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Rejected (Manager)</option>
-                            <option value="5" ${statusFilter == 5 ? 'selected' : ''}>Canceled</option>
-                            <option value="6" ${statusFilter == 6 ? 'selected' : ''}>Accepted by customer</option>
-                        </select>
-                    </div>
-
                     <input type="hidden" name="page" value="${currentPage}">
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mt-2">Apply</button>
+                        <button type="submit" class="btn btn-primary mt-2">Sort</button>
                     </div>
                 </div>
             </form>
-
 
             <!-- Table for contracts -->
             <table class="table table-bordered table-hover mt-3">
@@ -62,7 +43,6 @@
                         <th>Date Created</th>
                         <th>File URL</th>
                         <th>Total Price</th>
-                        
                         <th>Contract Term</th>
                         <th>Contract Status</th>
                         <th>Contract Note</th>
@@ -100,7 +80,7 @@
                                 </c:choose>
                             </td>
                             <td>${contract.contractNote}</td>
-                            <td><a href="/manager/contract/viewDetail/${contract.contractId}" class="btn btn-info">View</a></td>
+                            <td><a href="/consultant/contract/viewDetail/${contract.contractId}" class="btn btn-info">View</a></td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -110,7 +90,7 @@
             <div class="d-flex justify-content-between align-items-center mt-4">
                 <!-- Previous Button -->
                 <c:if test="${currentPage > 0}">
-                    <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&lt;</a>
+                    <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}" class="btn btn-primary">&lt;</a>
                 </c:if>
                 <c:if test="${currentPage == 0}">
                     <button class="btn btn-primary" disabled>&lt;</button>
@@ -121,13 +101,12 @@
 
                 <!-- Next Button -->
                 <c:if test="${currentPage < totalPages - 1}">
-                    <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&gt;</a>
+                    <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}" class="btn btn-primary">&gt;</a>
                 </c:if>
                 <c:if test="${currentPage == totalPages - 1}">
                     <button class="btn btn-primary" disabled>&gt;</button>
                 </c:if>
             </div>
-
         </div>
 
     </body>
