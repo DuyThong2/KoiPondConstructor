@@ -40,4 +40,8 @@ public class QuoteDAO {
         Quotes newQuotes = entityManager.merge(quotes);
         return newQuotes;
     }
+    
+    public Quotes saveQuote(Quotes quotes){
+        return entityManager.merge(quotes);
+    }
 }

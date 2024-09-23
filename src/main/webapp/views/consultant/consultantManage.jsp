@@ -104,7 +104,7 @@
                                     </td>
                                     <td>
                                         <a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-info">Edit Status</a>
-                                        <a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-primary">Create Quote</a>
+                                        <a href="/consultant/quote/createNewQuotes/${consultant.consultantId}" class="btn btn-primary">Create Quote</a>
                                     </td>
                                 </tr>
                             </c:forEach>
