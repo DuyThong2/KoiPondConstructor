@@ -11,6 +11,7 @@ import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Quotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.Term;
+import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.TermService;
 import com.example.SWPKoiContructor.services.ContractService;
 import com.example.SWPKoiContructor.services.CustomerService;
@@ -93,16 +94,21 @@ public class ContractController {
 
     @GetMapping("/consultant/contract")
     public String listContractsByConsultant(Model model,
+            HttpSession session,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size,
             @RequestParam(defaultValue = "dateCreate") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection) {
         // Fetch paginated contracts using the service
-        int consultantId = 2;
-        List<Contract> contracts = contractService.getContractListOfConsultant(2, page, size, sortBy, sortDirection);
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            // Redirect to login page or show an error if the user is not logged in
+            return "redirect:/login";  // Adjust as needed for your project
+        }
+        List<Contract> contracts = contractService.getContractListOfConsultant(user.getId(), page, size, sortBy, sortDirection);
 
         // Fetch the total number of contracts for pagination
-        int totalContracts = contractService.countContracts(false, consultantId);
+        int totalContracts = contractService.countContracts(false, user.getId());
         int totalPages = (int) Math.ceil((double) totalContracts / size);
 
         // Add attributes to the model for JSP rendering
@@ -120,13 +126,14 @@ public class ContractController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size,
             @RequestParam(defaultValue = "dateCreate") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDirection) {
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            HttpSession session) {
         // Fetch paginated contracts using the service
-        int customerId = 2;
-        List<Contract> contracts = contractService.getContractListOfCustomer(customerId, page, size, sortBy, sortDirection);
+        User user = (User) session.getAttribute("user");
+        List<Contract> contracts = contractService.getContractListOfCustomer(user.getId(), page, size, sortBy, sortDirection);
 
         // Fetch the total number of contracts for pagination
-        long totalContracts = contractService.countContracts(true, customerId);
+        long totalContracts = contractService.countContracts(true, user.getId());
         int totalPages = (int) Math.ceil((double) totalContracts / size);
 
         // Add attributes to the model for JSP rendering
@@ -165,13 +172,18 @@ public class ContractController {
     public String createContract(Model model, @RequestParam("quoteId") int quoteId) {
         Contract contract = new Contract();
         Quotes quote = quotesService.getQuoteById(quoteId);
-        model.addAttribute("quote", quote);
-        model.addAttribute("customer", quote.getCustomer());
-        List<Term> terms = termService.getAllTemplateTerm();  // Get all available terms for the dropdown
-        model.addAttribute("contract", contract);
-        model.addAttribute("terms", terms);
+        if (quote.getContract() == null) {
+            model.addAttribute("quote", quote);
+            model.addAttribute("customer", quote.getCustomer());
+            List<Term> terms = termService.getAllTemplateTerm();  // Get all available terms for the dropdown
+            model.addAttribute("contract", contract);
+            model.addAttribute("terms", terms);
 
-        return "consultant/contract/createContract";
+            return "consultant/contract/createContract";
+        } else {
+            return "redirect:/consultant/contract";
+        }
+
     }
 
     @PostMapping("/consultant/contract/create")

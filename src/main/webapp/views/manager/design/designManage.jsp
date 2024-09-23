@@ -79,7 +79,7 @@
                                     --%>
                                     <td>${designList[0].designId}</td>
                                     <td>${designList[0].designName}</td>
-                                    <td>${designList[1].username}</td>
+                                    <td>${designList[1].name}</td>
                                     <td>
                                         <c:choose>
                                             <c:when test="${designList[0].status == 1}">

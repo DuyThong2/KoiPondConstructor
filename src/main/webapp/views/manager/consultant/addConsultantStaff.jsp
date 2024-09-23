@@ -83,7 +83,7 @@
 
                                 <tr class=${consultant.staff.staffId == staff.staffId?"current":""}>                                  
                                     <td>${staff.staffId}</td>
-                                    <td>${staff.username}</td>
+                                    <td>${staff.name}</td>
                                     <td>${staff.staffPhone}</td>
                                     <td>${staff.staffEmail}</td>
                                     <td>
