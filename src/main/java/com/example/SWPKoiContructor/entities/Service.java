@@ -36,6 +36,9 @@ public class Service {
     
     @OneToMany(mappedBy="service")
     private List<ServiceDetail>  serviceDetails;
+    
+    @OneToMany(mappedBy = "service")
+    private List<ServicePrice> servicePrice;
 
     public Service(String serviceName, String serviceDescription, String serviceContent, boolean serviceStatus) {
         this.serviceName = serviceName;

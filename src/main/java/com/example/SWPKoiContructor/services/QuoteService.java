@@ -37,4 +37,9 @@ public class QuoteService {
     public Quotes createNewQuotes(Quotes quotes){
         return quoteDAO.createNewQuotes(quotes);
     }
+    
+    @Transactional
+    public Quotes saveQuotes(Quotes quotes){
+        return quoteDAO.saveQuote(quotes);
+    }
 }

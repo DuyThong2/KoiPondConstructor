@@ -48,6 +48,14 @@ public class ServiceDetail {
     @ManyToOne
     @JoinColumn(name="service_id")
     private Service service;
+    
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+    
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
+    private Staff staff;
 
     public ServiceDetail(double price, Date dateRegister, int rating, int serviceDetailStatus, String feedback) {
         this.price = price;
