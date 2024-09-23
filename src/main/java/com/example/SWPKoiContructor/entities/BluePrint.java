@@ -44,15 +44,18 @@ public class BluePrint {
     public BluePrint() {
     }
 
-    public BluePrint(int BluePrintId, String title, String imgUrl, Date dateCreate, String description, boolean bluePrintStatus) {
+    public BluePrint(int BluePrintId, String title, String imgUrl, Date dateCreate, String description, boolean bluePrintStatus, DesignStage designStage) {
         this.BluePrintId = BluePrintId;
         this.title = title;
         this.imgUrl = imgUrl;
         this.dateCreate = dateCreate;
         this.description = description;
         this.bluePrintStatus = bluePrintStatus;
+        this.designStage = designStage;
     }
 
+
+    
     public int getBluePrintId() {
         return BluePrintId;
     }
@@ -100,6 +103,16 @@ public class BluePrint {
     public void setBluePrintStatus(boolean bluePrintStatus) {
         this.bluePrintStatus = bluePrintStatus;
     }
+
+    public DesignStage getDesignStage() {
+        return designStage;
+    }
+
+    public void setDesignStage(DesignStage designStage) {
+        this.designStage = designStage;
+    }
+    
+    
     
     
 }

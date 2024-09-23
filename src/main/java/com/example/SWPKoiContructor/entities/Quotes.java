@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -59,17 +60,20 @@ public class Quotes {
     @JoinColumn(name = "customer_id")
     private Customer customer;
     
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "consultant_id")
     private Consultant consultant;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "package_id")
     private Parcel parcel;
     
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
+    
+    @OneToOne(mappedBy = "quote", cascade = CascadeType.ALL)
+    private Contract contract;
 
     public Quotes(String quotesName, String quotesContent, double quotesTotalPrice, double quotesArea, Date quotesDate, int quotesStatus, double quotesDesignCost, double quotesConstructionCost, Customer customer, Consultant consultant, Parcel pakage, Staff staff) {
         this.quotesName = quotesName;
@@ -192,6 +196,30 @@ public class Quotes {
     public void setStaff(Staff staff) {
         this.staff = staff;
     }
+
+    public Parcel getParcel() {
+        return parcel;
+    }
+
+    public void setParcel(Parcel parcel) {
+        this.parcel = parcel;
+    }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
+    @Override
+    public String toString() {
+        return "Quotes{" + "quotesId=" + quotesId + ", quotesName=" + quotesName + ", quotesContent=" + quotesContent + ", quotesTotalPrice=" + quotesTotalPrice + ", quotesArea=" + quotesArea + ", quotesDate=" + quotesDate + ", quotesStatus=" + quotesStatus + ", quotesDesignCost=" + quotesDesignCost + ", quotesConstructionCost=" + quotesConstructionCost + '}';
+    }
+    
+    
+    
     
     
 }

@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -26,23 +28,35 @@ public class Design {
     @Column(name = "design_status")
     private int status;
     
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "project_id")
     private Project project;
     
-    @OneToMany(mappedBy = "design")
+    @OneToMany(mappedBy = "design", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DesignStage> designStage;
+    
+    @ManyToMany()
+    @JoinTable(
+    name = "Staff_Design",
+    joinColumns = @JoinColumn(name = "design_id"),
+    inverseJoinColumns = @JoinColumn(name = "staff_id")
+    )
+    private List<Staff> staff;
     
     
     
     public Design() {
     }
 
-    public Design(int designId, String designName, int status) {
+    public Design(int designId, String designName, int status, Project project, List<DesignStage> designStage, List<Staff> staff) {
         this.designId = designId;
         this.designName = designName;
         this.status = status;
+        this.project = project;
+        this.designStage = designStage;
+        this.staff = staff;
     }
+
 
     public int getDesignId() {
         return designId;
@@ -75,6 +89,35 @@ public class Design {
     public void setProject(Project project) {
         this.project = project;
     }
+
+    public List<DesignStage> getDesignStage() {
+        return designStage;
+    }
+
+    public void setDesignStage(List<DesignStage> designStage) {
+        this.designStage = designStage;
+    }
+    
+    //convinience method
+    public void addDesignStage(DesignStage designStage){
+        this.designStage.add(designStage);
+        designStage.setDesign(this);
+    }
+    
+    public void removeDesignStage(DesignStage designStage){
+        this.designStage.remove(designStage);
+        designStage.setDesign(null);
+    }
+
+    public List<Staff> getStaff() {
+        return staff;
+    }
+
+    public void setStaff(List<Staff> staff) {
+        this.staff = staff;
+    }
+    
+    
     
     
 }

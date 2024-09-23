@@ -25,7 +25,7 @@ public class DesignStage {
     private String designStageName;
     
     @Column(name = "design_stage_status")
-    private int designStageStatus;
+    private int designStageStatus; // ---- 1:Pending ; 2:Proccessing; 3: completed/ 4: Canceled
     
     @Column(name = "design_stage_price")
     private double designStagePrice;
@@ -37,7 +37,7 @@ public class DesignStage {
     @JoinColumn(name = "design_id")
     private Design design;
     
-    @OneToMany(mappedBy = "designStage")
+    @OneToMany(mappedBy = "designStage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DesignStageDetail> designDetail;
     
     @OneToMany(mappedBy = "designStage")
@@ -46,13 +46,19 @@ public class DesignStage {
     public DesignStage() {
     }
 
-    public DesignStage(int designStageId, String designStageName, int designStageStatus, double designStagePrice, String summaryFile) {
+    public DesignStage(int designStageId, String designStageName, int designStageStatus, double designStagePrice, String summaryFile, Design design, List<DesignStageDetail> designDetail, List<BluePrint> bluePrint) {
         this.designStageId = designStageId;
         this.designStageName = designStageName;
         this.designStageStatus = designStageStatus;
         this.designStagePrice = designStagePrice;
         this.summaryFile = summaryFile;
+        this.design = design;
+        this.designDetail = designDetail;
+        this.bluePrint = bluePrint;
     }
+    
+    
+
 
     public int getDesignStageId() {
         return designStageId;
@@ -92,6 +98,52 @@ public class DesignStage {
 
     public void setSummaryFile(String summaryFile) {
         this.summaryFile = summaryFile;
+    }
+
+    public Design getDesign() {
+        return design;
+    }
+
+    public void setDesign(Design design) {
+        this.design = design;
+    }
+
+    public List<DesignStageDetail> getDesignDetail() {
+        return designDetail;
+    }
+
+    public void setDesignDetail(List<DesignStageDetail> designDetail) {
+        this.designDetail = designDetail;
+    }
+
+    public List<BluePrint> getBluePrint() {
+        return bluePrint;
+    }
+
+    public void setBluePrint(List<BluePrint> bluePrint) {
+        this.bluePrint = bluePrint;
+    }
+    
+    
+    //convinience method
+    public void addDesignStageDetail(DesignStageDetail designStageDetail){
+        this.designDetail.add(designStageDetail);
+        designStageDetail.setDesignStage(this);
+    }
+    
+    public void removeDesignStageDetail(DesignStageDetail designStageDetail){
+        this.designDetail.remove(designStageDetail);
+        designStageDetail.setDesignStage(null);
+    }
+    
+    public void addBlueprint(BluePrint bluePrint){
+        this.bluePrint.add(bluePrint);
+        bluePrint.setDesignStage(this);
+    }
+    
+    public void removeBlueprint(BluePrint bluePrint){
+        this.bluePrint.remove(bluePrint);
+        bluePrint.setDesignStage(null);
     }
     
     

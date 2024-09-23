@@ -91,7 +91,17 @@ public class Construction {
         this.constructionStage = constructionStage;
     }
 
+    //Convinience method
    
+    public void addConstructionStage(ConstructionStage constructionStage){
+        this.constructionStage.add(constructionStage);
+        constructionStage.setConstruction(this);
+    }
+    
+    public void removeConstructionStage(ConstructionStage constructionStage){
+        this.constructionStage.remove(constructionStage);
+        constructionStage.setConstruction(null);
+    }
 
     
     

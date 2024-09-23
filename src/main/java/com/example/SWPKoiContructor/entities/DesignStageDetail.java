@@ -36,12 +36,15 @@ public class DesignStageDetail {
     public DesignStageDetail() {
     }
 
-    public DesignStageDetail(int id, String name, String description, int status) {
+    public DesignStageDetail(int id, String name, String description, int status, DesignStage designStage) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
+        this.designStage = designStage;
     }
+    
+
 
     public int getId() {
         return id;
@@ -74,6 +77,16 @@ public class DesignStageDetail {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public DesignStage getDesignStage() {
+        return designStage;
+    }
+
+    public void setDesignStage(DesignStage designStage) {
+        this.designStage = designStage;
+    }
+    
+    
     
     
 }

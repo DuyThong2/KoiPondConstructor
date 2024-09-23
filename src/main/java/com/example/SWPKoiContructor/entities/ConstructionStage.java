@@ -115,6 +115,17 @@ public class ConstructionStage {
     }
 
     
+    //Convinience method
+    public void addContructionDetailStage(ConstructionStageDetail constructionStageDetail){
+        this.constructionStageDetail.add(constructionStageDetail);
+        constructionStageDetail.setConstructionStage(this);
+    }
+    
+    public void removeConstructionStageDetail(ConstructionStageDetail constructionStageDetail){
+        this.constructionStageDetail.remove(constructionStageDetail);
+        constructionStageDetail.setConstructionStage(null);
+    }
+    
     
     
     

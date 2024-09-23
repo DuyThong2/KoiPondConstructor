@@ -30,6 +30,7 @@
             <option value="designBlueprint">Design Blueprint</option>
             <option value="blog">Blog</option>
             <option value="project">Project</option>
+            <option value="construction">Construction</option>
         </select><br><br>
 
         <label for="subDir">Sub Directory (optional):</label>

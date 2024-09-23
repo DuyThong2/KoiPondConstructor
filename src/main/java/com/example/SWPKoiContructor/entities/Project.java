@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -61,13 +62,19 @@ public class Project {
     
     private int stage;
     
-    @Column(name="is_shareable")
+    @Column(name="is_shareable", columnDefinition= "bit default 0")
     private boolean isSharedAble;
     
 
     @OneToOne()
     @JoinColumn(name = "contract_id")
     private Contract contract;
+    
+    @OneToOne(mappedBy="project", cascade = CascadeType.ALL,orphanRemoval = true)
+    private Construction construction;
+    
+    @OneToOne(mappedBy="project", cascade = CascadeType.ALL,orphanRemoval = true)
+    private Design design;
 
 
     public Project(String projectName, String address, String style, String description, Date dateStart, Date dateEnd, int status, String imgURL, String content, int stage, boolean isSharedAble) {
@@ -192,10 +199,45 @@ public class Project {
         this.contract = contract;
     }
 
+    public Construction getConstruction() {
+        return construction;
+    }
+
+    public void setConstruction(Construction construction) {
+        this.construction = construction;
+    }
+
+    public Design getDesign() {
+        return design;
+    }
+
+    public void setDesign(Design design) {
+        this.design = design;
+    }
+
+    
     
 
 
+    public void addDesign(Design design){
+        this.design = design;
+        design.setProject(this);
+    }
     
+    public void addConstruction(Construction construction){
+        this.construction = construction;
+        construction.setProject(this);
+    }
+    
+    public void removeDesign(Design design){
+        this.design = null;
+        design.setProject(null);
+    }
+    
+    public void removeConstruction(Construction construction){
+        this.construction = null;
+        construction.setProject(null);
+    }
     
     
     
