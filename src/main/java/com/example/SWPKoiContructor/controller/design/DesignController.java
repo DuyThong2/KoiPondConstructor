@@ -15,24 +15,44 @@ import com.example.SWPKoiContructor.services.CustomerService;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class DesignController {
 
+    @Autowired
     private FileUtility fileUtility;
+
+    @Autowired
     private DesignService designService;
+
+    @Autowired
     private StaffService staffService;
+
+    @Autowired
     private DesignStageService designStageService;
+
+    @Autowired
     private DesignStageDetailService designStageDetailService;
+
+    @Autowired
     private BluePrintService bluePrintService;
+
+    @Autowired
     private ProjectService projectService;
+
+    @Autowired
     private CustomerService customerService;
 
     public DesignController(DesignService designService, StaffService staffService, DesignStageService designStageService, DesignStageDetailService designStageDetailService, BluePrintService bluePrintService, ProjectService projectService, CustomerService customerService) {
@@ -70,11 +90,9 @@ public class DesignController {
             return "redirect:/login";
         }
 
-        // Lấy danh sách thiết kế phân trang
         List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size);
-        int totalPages = designService.getTotalPagesByDesigner(user.getId(), size); // Tổng số trang
+        int totalPages = designService.getTotalPagesByDesigner(user.getId(), size);
 
-        // Đưa dữ liệu vào model để sử dụng trong trang JSP
         model.addAttribute("designs", designs);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -89,33 +107,100 @@ public class DesignController {
         model.addAttribute("desgin", design);
         model.addAttribute("customer", customer);
         model.addAttribute("project", project);
-        return "designer/designDetail";
+        return "designer/designProject";
     }
 
     @GetMapping("/designer/design/{id}")
-public String designBluePrint(@PathVariable("id") int id, Model model) {
-    Design design = designService.getDesignById(id);
-    Project project = design.getProject();
-    Customer customer = project.getContract().getCustomer();
-    model.addAttribute("design", design);
-    model.addAttribute("customer", customer);
-    model.addAttribute("project", project);
+    public String designProject(@PathVariable("id") int id, Model model) {
+        Design design = designService.getDesignById(id);
+        Project project = design.getProject();
+        model.addAttribute("design", design);
+        model.addAttribute("project", project);
 
-    // Fetch design stages for the project
-    List<DesignStage> ds = designStageService.getDesignStageByDesignId(id);
-    model.addAttribute("designStage", ds);
-    
-    // Determine the current stage based on status
-    String currentStage = "conceptual"; // default to conceptual if none are in progress
-    for (DesignStage stage : ds) {
-        if (stage.getDesignStageStatus() == 1) { // Status 1 is Pending
-            currentStage = stage.getDesignStageName().toLowerCase(); // e.g., conceptual, basic, or detail
-            break;
-        }
+        List<DesignStage> designStages = designStageService.getDesignStageByDesignId(id);
+        model.addAttribute("designStages", designStages);
+
+        return "designer/designDetail";
     }
-    model.addAttribute("currentStage", currentStage);
+
+    @GetMapping("/designer/design/stage")
+    public String viewDesignStage(
+            @RequestParam("designId") int designId,
+            @RequestParam("stageName") String stageName,
+            Model model) {
+
+        Design design = designService.getDesignById(designId);
+        model.addAttribute("design", design);
+        model.addAttribute("project", design.getProject());
+
+        List<DesignStage> designStages = designStageService.getDesignStageByDesignIdAndName(designId, stageName);
+        model.addAttribute("designStages", designStages);
+        model.addAttribute("currentStageName", stageName);
+
+        return "designer/designStageDetail";
+    }
+
+    @GetMapping("/designer/manage/blueprint/{designStageId}")
+    public String manageBlueprint(
+            @PathVariable("designStageId") int designStageId,
+            Model model) {
+        // Get the design stage details
+        DesignStage designStage = designStageService.getDesignStageById(designStageId);
+        model.addAttribute("designStage", designStage);
+        // Fetch existing blueprints for this stage
+        List<BluePrint> blueprints = bluePrintService.findByDesignStageId(designStageId);
+        model.addAttribute("blueprints", blueprints);
+
+        return "designer/manageBlueprint";
+    }
+
+    @PostMapping("/designer/blueprint/upload")
+    public String uploadBlueprint(
+            @RequestParam("designStageId") int designStageId,
+            @RequestParam("file") MultipartFile file) {
+
+        DesignStage designStage = designStageService.getDesignStageById(designStageId);
+
+        String uploadedFilePath = fileUtility.handleFileUpload(file, FileUtility.DESIGN_BLUEPRINT_DIR);
+
+        BluePrint blueprint = new BluePrint();
+        blueprint.setDesignStage(designStage);
+        blueprint.setImgUrl("/" + uploadedFilePath); 
+        blueprint.setDateCreate(new Date());
+
+        bluePrintService.saveBluePrint(blueprint);
+
+        return "redirect:/designer/manage/blueprint/" + designStageId;
+    }
+
     
-    return "designer/designProject";
-}
+    @PostMapping("/updateSummary")
+    public String updateSummaryFile(
+            @RequestParam("designStageId") int designStageId,
+            @RequestParam("file") MultipartFile file) {
+        DesignStage designStage = designStageService.getDesignStageById(designStageId);
+
+        // Handle file upload
+        String uploadedFilePath = fileUtility.handleFileUpload(file, FileUtility.DESIGN_SUM_DIR);
+
+        // Update the design stage with the new summary file path
+        designStage.setSummaryFile("/" + uploadedFilePath);
+        designStageService.updateDesignStage(designStage);
+
+        return "redirect:/designer/manage/blueprint/" + designStageId;
+    }
+
+    
+    @GetMapping("/delete/{bluePrintId}")
+    public String deleteBlueprint(
+            @PathVariable("bluePrintId") int bluePrintId,
+            @RequestParam("designStageId") int designStageId) {
+        // Delete the blueprint file and its record from the database
+        BluePrint bluePrint = bluePrintService.getBluePrintById(bluePrintId);
+        fileUtility.deleteFile(bluePrint.getImgUrl(), FileUtility.DESIGN_BLUEPRINT_DIR);
+        bluePrintService.deleteBluePrint(bluePrintId);
+
+        return "redirect:/designer/manage/blueprint/" + designStageId;
+    }
 
 }

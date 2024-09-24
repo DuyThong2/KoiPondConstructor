@@ -22,4 +22,18 @@ public class BluePrintDAO {
         return query.getResultList();
     }
 
+    public void saveBluePrint(BluePrint bluePrint) {
+        entityManager.persist(bluePrint);
+    }
+
+    public BluePrint getBluePrintById(int bluePrintId) {
+        return entityManager.find(BluePrint.class, bluePrintId);
+    }
+
+    public void deleteBluePrint(int bluePrintId) {
+        BluePrint bluePrint = getBluePrintById(bluePrintId);
+        if (bluePrint != null) {
+            entityManager.remove(bluePrint);
+        }
+    }
 }

@@ -8,18 +8,37 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class DesignStageDAO {
+
     private EntityManager entityManager;
 
     public DesignStageDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
     
-    public List<DesignStage> getDesignStageByDesignId(int id){
+    public DesignStage getDesignStageById(int id) {
+        TypedQuery<DesignStage> ds = entityManager.createQuery(
+                "SELECT ds FROM DesignStage ds WHERE ds.designStageId = :id ", DesignStage.class);
+        ds.setParameter("id", id);
+        return ds.getSingleResult();
+    }
+    
+    public List<DesignStage> getDesignStageByDesignId(int id) {
         TypedQuery<DesignStage> ds = entityManager.createQuery(
                 "SELECT ds FROM DesignStage ds WHERE ds.design.designId = :id ", DesignStage.class);
         ds.setParameter("id", id);
         return ds.getResultList();
     }
 
+    public List<DesignStage> getDesignStageByDesignIdAndName(int designId, String stageName) {
+        TypedQuery<DesignStage> query = entityManager.createQuery(
+            "SELECT ds FROM DesignStage ds WHERE ds.design.designId = :designId AND ds.designStageName LIKE :stageName",
+            DesignStage.class);
+        query.setParameter("designId", designId);
+        query.setParameter("stageName", "%" + stageName + "%");
+        return query.getResultList();
+    }
     
+    public DesignStage updateDesignStage(DesignStage designStage) {
+        return entityManager.merge(designStage);
+    }
 }

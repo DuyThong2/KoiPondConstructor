@@ -28,8 +28,8 @@ public class DesignDAO {
         design.setParameter("id", id);
         return design.getSingleResult();
     }
-    
-   // Hàm phân trang và sắp xếp
+
+    // Hàm phân trang và sắp xếp
     public List<Design> getSortedAndPaginatedByDesigner(int staffId, int page, int size) {
         String jpql = "SELECT d FROM Design d JOIN d.staff s WHERE s.id = :staffId ORDER BY d.status ASC";
         TypedQuery<Design> query = entityManager.createQuery(jpql, Design.class);
@@ -45,5 +45,9 @@ public class DesignDAO {
         TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
         query.setParameter("staffId", staffId);
         return query.getSingleResult();
+    }
+
+    public Design createADesign(Design design) {
+        return entityManager.merge(design);
     }
 }
