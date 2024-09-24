@@ -28,8 +28,8 @@ public class StaffService {
         return staffDAO.getListStaff();
     }
     
-    public List<Staff> getStaffListByRole(String role){
-        return staffDAO.getListStaffByRole(role);
+    public List<Staff> getStaffListByRole(String department){
+        return staffDAO.getListStaffByRole(department);
     }
     
     public Staff getStaffById(int id){

@@ -103,8 +103,8 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-info">Edit Status</a>
-                                        <a href="/consultant/quote/createNewQuotes/${consultant.consultantId}" class="btn btn-primary">Create Quote</a>
+                                        <a href="/consultant/viewConsultantDetail/${consultant.consultantId}" class="btn btn-info">Detail</a>
+                                        
                                     </td>
                                 </tr>
                             </c:forEach>

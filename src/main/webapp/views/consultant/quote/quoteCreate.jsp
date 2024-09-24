@@ -43,11 +43,11 @@
                         <!-- Customer Avatar -->
                         <div class="customer-info">
                             <img src="" alt="Customer Avatar" class="customer-avatar img-fluid"/>
-                            <p><strong>${customer.username}</strong></p>
+                            <p><strong>${customer.name}</strong></p>
                         </div>
                         <!-- Customer Information -->
-                        <p><strong>Phone:</strong> ${customer.customerPhone}</p>
-                        <p><strong>Email:</strong> ${customer.customerEmail}</p>
+                        <p><strong>Phone:</strong> ${customer.phone}</p>
+                        <p><strong>Email:</strong> ${customer.email}</p>
                         <p><strong>Content:</strong> ${consultant.consultantContent}</p>
                     </div>
                 </div>
@@ -61,7 +61,9 @@
 
                         <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
 
-                        <form:hidden path="customer.customerId" value="${customer.customerId}" />
+                        <form:hidden path="customer.id" value="${customer.id}" />
+                        
+                        <form:hidden path="staff.id" value="${staff.id}" />
 
                         <!-- Quotes Name -->
                         <div class="form-group">
