@@ -17,6 +17,9 @@ public class ProjectService {
     public List<Project> getProjectList(){
         return projectDAO.getProjectList();
     }
+    public List<Project> getProjectListIsSharable(){
+        return projectDAO.getProjectListIsSharable();
+    }
 
 
     public Project getProjectById(int id){

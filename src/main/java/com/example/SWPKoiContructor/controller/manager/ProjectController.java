@@ -43,6 +43,7 @@ public class ProjectController {
          model.addAttribute("project",project);
         return "manager/projects/projectDetail";
     }
+
     
     @PostMapping("/manager/project/projectCreate")
     public String createProjectPage(@RequestParam("contractId") int contractId, Model model){
@@ -62,4 +63,5 @@ public class ProjectController {
         projectService.createProject(project);
         return "manager/project/viewDetail/"+project.getProjectId();
     }
+
 }
