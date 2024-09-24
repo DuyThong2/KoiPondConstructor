@@ -43,12 +43,12 @@
                         <!-- Customer Avatar -->
                         <div class="customer-info">
                             <img src="" alt="Customer Avatar" class="customer-avatar img-fluid"/>
-                            <p><strong>${quote.customer.username}</strong></p>
+                            <p><strong>${quote.customer.name}</strong></p>
                         </div>
                         <!-- Quote Information -->
                         <p><strong>Quote ID:</strong> ${quote.quotesId}</p>
                         <p><strong>Quote Name:</strong> ${quote.quotesName}</p>
-                        <p><strong>Customer:</strong> ${quote.customer.username}</p>
+                        <p><strong>Customer:</strong> ${quote.customer.name}</p>
                         <p><strong>Total Design Cost:</strong> ${quote.quotesDesignCost}</p>
                         <p><strong>Total Construction Cost:</strong> ${quote.quotesConstructionCost}</p>
                         <p><strong>Area:</strong> ${quote.quotesArea} m²</p>
@@ -62,11 +62,12 @@
 
                     <!-- Bind the form to the "contract" object -->
                     <form:form action="${pageContext.request.contextPath}/manager/contract/edit" modelAttribute="contract" method="PUT" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                        <form:hidden path="contractId" value="${contract.contractId}"/>
 
                         <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
 
 
-                        <form:hidden path="customer.customerId" value="${customer.customerId}" />
+                        <form:hidden path="customer.id" value="${customer.id}" />
 
 
                         <!-- Total Price (Read-Only, auto-calculated) -->

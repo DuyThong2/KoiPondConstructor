@@ -1,5 +1,6 @@
 package com.example.SWPKoiContructor.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,7 +34,7 @@ public class Design {
     private Project project;
     
     @OneToMany(mappedBy = "design", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DesignStage> designStage;
+    private List<DesignStage> designStage = new ArrayList<>();
     
     @ManyToMany()
     @JoinTable(
@@ -41,7 +42,7 @@ public class Design {
     joinColumns = @JoinColumn(name = "design_id"),
     inverseJoinColumns = @JoinColumn(name = "staff_id")
     )
-    private List<Staff> staff;
+    private List<Staff> staff = new ArrayList<>();
     
     
     
@@ -56,6 +57,13 @@ public class Design {
         this.designStage = designStage;
         this.staff = staff;
     }
+
+    public Design(String designName, int status) {
+        this.designName = designName;
+        this.status = status;
+    }
+    
+    
 
 
     public int getDesignId() {
@@ -117,6 +125,30 @@ public class Design {
         this.staff = staff;
     }
     
+    public List<DesignStage> createListOfDesignStage(Project project){
+        Term term = project.getContract().getTerm();
+        Contract contract = project.getContract();
+        DesignStage conceptDesign = null;
+        DesignStage detailDesign = null;
+        DesignStage constructionDesign= null;
+        if (term.isFollowContract()){
+            conceptDesign = new DesignStage("concept design",1,contract.getPriceOnConceptDesign(), null);
+            detailDesign = new DesignStage("detail design",1,contract.getPriceOnDetailDesign(), null);
+            constructionDesign = new DesignStage("construction design",1,contract.getPriceOnConstructionDesign(), null);
+            
+        }else{
+            double contractCost = contract.getTotalPrice();
+            conceptDesign = new DesignStage("concept design",1,contractCost*term.getPercentOnDesign1(), null);
+            detailDesign = new DesignStage("detail design",1,contractCost*term.getPercentOnDesign2(), null);
+            constructionDesign = new DesignStage("construction design",1,contractCost*term.getPercentOnDesign3(), null);
+        }
+        
+        List<DesignStage> result = new ArrayList<>();
+        result.add(conceptDesign);
+        result.add(detailDesign);
+        result.add(constructionDesign);
+        return result;
+    }
     
     
     

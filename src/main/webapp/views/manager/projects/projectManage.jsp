@@ -89,7 +89,7 @@
                                 <tr>
                                     <td>${project.projectId}</td>
                                     <td>${project.projectName}</td>
-                                    <td>${project.contract.quote.customer.username}</td>
+                                    <td>${project.contract.quote.customer.name}</td>
                                     <td>${project.dateStart}</td>
                                     <td>
                                         <c:choose>

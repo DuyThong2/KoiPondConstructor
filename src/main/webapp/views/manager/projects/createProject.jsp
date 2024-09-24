@@ -1,3 +1,4 @@
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,6 +28,7 @@
         <!-- Form binding to the project model -->
         <form:form method="POST" modelAttribute="project" action="/manager/project/create">
         
+            <form:hidden path="contract.contractId" value="${contract.contractId}"/>
             <!-- Project Name -->
             <div class="form-group">
                 <label for="projectName" class="form-label">Project Name</label>

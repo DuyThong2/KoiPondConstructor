@@ -1,5 +1,6 @@
 package com.example.SWPKoiContructor.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +44,13 @@ public class DesignStageDetail {
         this.status = status;
         this.designStage = designStage;
     }
+
+    public DesignStageDetail(String name, String description, int status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+    
     
 
 
