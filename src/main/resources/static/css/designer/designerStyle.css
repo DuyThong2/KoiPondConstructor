@@ -1,24 +1,32 @@
-
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f8f9fa;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    padding-top: 80px; /* Add padding to prevent content from hiding behind the fixed header */
 }
+
 .container {
-    max-width: 90%;
-    margin: auto;
-    padding: 20px;
-    flex: 1; /* Allow the container to grow and shrink */
+    max-width: 95%;
+    margin: 20px;
+    padding: 0;
+    flex: 1;
 }
+
 .nav {
+    margin: 10px , 0, 10px, 0;
     padding: 20px;
     background-color: #343a40;
     display: flex;
     justify-content: space-between;
     align-items: center;
     border-radius: 10px;
+    position: fixed;
+    top: 0;
+    width: 95%;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 .nav a {
     color: #ffffff;
@@ -26,9 +34,11 @@ body {
     text-decoration: none;
     font-weight: bold;
 }
+
 .nav a:hover {
     text-decoration: underline;
 }
+
 .nav input {
     width: 350px;
     padding: 8px;
@@ -37,6 +47,7 @@ body {
     margin-right: 10px;
     font-size: 16px;
 }
+
 .nav .btn-logout {
     background-color: #dc3545;
     color: white;
@@ -46,37 +57,45 @@ body {
     font-size: 16px;
     font-weight: bold;
 }
+
 .nav .btn-logout:hover {
     background-color: #c82333;
 }
+
 table {
     margin-top: 20px;
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
 th, td {
     padding: 15px;
     text-align: left;
     border-bottom: 1px solid #ddd;
 }
+
 th {
     background-color: #343a40;
     color: white;
     border-radius: 5px;
 }
+
 td {
     font-size: 15px;
 }
+
 .badge {
     font-size: 14px;
     padding: 5px 10px;
     border-radius: 5px;
 }
+
 .pagination {
     margin-top: 20px;
     text-align: center;
 }
+
 .pagination a {
     margin: 0 5px;
     padding: 8px 20px;
@@ -85,10 +104,12 @@ td {
     color: #343a40;
     text-decoration: none;
 }
+
 .pagination a.active {
     background-color: #343a40;
     color: #ffffff;
 }
+
 .btn-info {
     background-color: #17a2b8;
     color: white;
@@ -96,15 +117,18 @@ td {
     border-radius: 5px;
     font-weight: bold;
 }
+
 .btn-info:hover {
     background-color: #138496;
     color: white;
 }
+
 .btn-primary {
     padding: 8px 15px;
     border-radius: 5px;
     font-weight: bold;
 }
+
 .pagination-controls {
     margin-top: 20px;
     display: flex;
@@ -116,6 +140,7 @@ td {
     padding: 10px 0;
     width: 100%;
 }
+
 .pagination-controls span {
     margin: 0 20px;
     font-size: 16px;

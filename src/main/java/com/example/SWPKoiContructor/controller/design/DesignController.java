@@ -3,6 +3,7 @@ package com.example.SWPKoiContructor.controller.design;
 import com.example.SWPKoiContructor.entities.BluePrint;
 import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Design;
+import com.example.SWPKoiContructor.entities.DesignStage;
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.DesignService;
@@ -13,6 +14,7 @@ import com.example.SWPKoiContructor.services.BluePrintService;
 import com.example.SWPKoiContructor.services.CustomerService;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.utils.FileUtility;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
@@ -81,11 +83,39 @@ public class DesignController {
 
     @GetMapping("/designer/viewDetail/{id}")
     public String designDetail(@PathVariable("id") int id, Model model) {
-        Project project = projectService.getProjectById(id);
+        Design design = designService.getDesignById(id);
+        Project project = design.getProject();
         Customer customer = project.getContract().getCustomer();
+        model.addAttribute("desgin", design);
         model.addAttribute("customer", customer);
         model.addAttribute("project", project);
         return "designer/designDetail";
     }
+
+    @GetMapping("/designer/design/{id}")
+public String designBluePrint(@PathVariable("id") int id, Model model) {
+    Design design = designService.getDesignById(id);
+    Project project = design.getProject();
+    Customer customer = project.getContract().getCustomer();
+    model.addAttribute("design", design);
+    model.addAttribute("customer", customer);
+    model.addAttribute("project", project);
+
+    // Fetch design stages for the project
+    List<DesignStage> ds = designStageService.getDesignStageByDesignId(id);
+    model.addAttribute("designStage", ds);
+    
+    // Determine the current stage based on status
+    String currentStage = "conceptual"; // default to conceptual if none are in progress
+    for (DesignStage stage : ds) {
+        if (stage.getDesignStageStatus() == 1) { // Status 1 is Pending
+            currentStage = stage.getDesignStageName().toLowerCase(); // e.g., conceptual, basic, or detail
+            break;
+        }
+    }
+    model.addAttribute("currentStage", currentStage);
+    
+    return "designer/designProject";
+}
 
 }

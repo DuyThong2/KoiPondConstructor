@@ -1,3 +1,4 @@
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -65,14 +66,6 @@
                 margin-bottom: 20px;
             }
 
-            /* Custom input styles */
-            input[type="file"] {
-                padding: 8px;
-                border: 1px solid #ced4da;
-                border-radius: 5px;
-                background-color: #f0f0f0;
-            }
-
             .btn {
                 font-weight: bold;
                 padding: 10px 20px;
@@ -112,17 +105,16 @@
                     <div class="info-item">
                         <p><strong>Phone Number:</strong> ${customer.phone}</p>
                     </div>
-                    <div class="info-item">
+                    <div class="info-item mb-4">
                         <p><strong>Email:</strong> ${customer.email}</p>
                     </div>
-                    <a href="#" class="btn btn-primary w-100">Design Status</a>
-                    <a href="#" class="btn btn-secondary w-100">To Design</a>
+                    <a href="#" class="btn btn-primary w-100 mb-4">Design Status</a>
+                    <a href="/designer/design/${desgin.designId}" class="btn btn-secondary w-100">To Design</a>
                 </div>
 
                 <!-- Project Information -->
                 <div class="info-box">
                     <h4>Project Information</h4>
-                    <form method="post" enctype="multipart/form-data">
                         <div class="info-item">
                             <p><strong>Project Name:</strong> ${project.projectName}</p>
                         </div>
@@ -157,13 +149,11 @@
                             </p>
                         </div>
                         <div class="info-item">
-                            <textarea class="form-control" name="description" rows="3">${project.description}</textarea>
+                            <p><strong>Description</strong> ${project.description}</p>
                         </div>
                         <div class="info-item">
-                            <input type="file" name="sketchUpload" class="form-control">
+                            <p><a href="/download/${project.imgURL}" class="btn btn-link">Download Project Image</a></p>
                         </div>
-                        <button type="submit" class="btn btn-danger">Update</button>
-                    </form>
                 </div>
             </div>
         </div>

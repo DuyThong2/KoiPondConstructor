@@ -13,7 +13,7 @@ public class DesignStageService {
         this.designStageDao = designStageDAO;
     }
     
-    public List<DesignStage> getDesignStageListOfDesign(int id){
-        return designStageDao.getDesignStageListOfDesign(id);
+    public List<DesignStage> getDesignStageByDesignId(int id){
+        return designStageDao.getDesignStageByDesignId(id);
     }
 }

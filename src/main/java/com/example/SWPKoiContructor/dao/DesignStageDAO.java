@@ -14,11 +14,12 @@ public class DesignStageDAO {
         this.entityManager = entityManager;
     }
     
-    public List<DesignStage> getDesignStageListOfDesign(int id){
-        TypedQuery<DesignStage> ds = entityManager.createQuery("SELECT ds FROM DesignStage ds WHERE ds.design.designId = :id ", DesignStage.class);
+    public List<DesignStage> getDesignStageByDesignId(int id){
+        TypedQuery<DesignStage> ds = entityManager.createQuery(
+                "SELECT ds FROM DesignStage ds WHERE ds.design.designId = :id ", DesignStage.class);
         ds.setParameter("id", id);
         return ds.getResultList();
     }
-    
+
     
 }
