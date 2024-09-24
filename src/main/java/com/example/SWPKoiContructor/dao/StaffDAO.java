@@ -7,6 +7,7 @@ package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Staff;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -49,7 +50,19 @@ public class StaffDAO {
         tq.setParameter("id", id);
         return tq.getSingleResult();
     }
-    
+    public List<Staff> getTopStaffList(){
+        TypedQuery<String> typedQuery= entityManager.createQuery("Select distinct c.staffRole From Staff c",String.class);
+        List<String> roleList= typedQuery.getResultList();
+        List<Staff> listStaff = new ArrayList<>();
+        roleList.forEach(role ->{
+            List<Staff> staffList= getListStaffByRole(role);
+            Staff staff = staffList.get(0);
+            listStaff.add(staff);
+        });
+        return listStaff;
+    }
+
+
     public Staff createStaff(Staff staff){
         Staff createStaff = entityManager.merge(staff);
         return createStaff;

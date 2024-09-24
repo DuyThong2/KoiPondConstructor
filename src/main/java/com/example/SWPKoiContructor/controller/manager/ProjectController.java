@@ -38,4 +38,5 @@ public class ProjectController {
          model.addAttribute("project",project);
         return "manager/projects/projectDetail";
     }
+
 }
