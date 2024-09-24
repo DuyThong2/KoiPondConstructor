@@ -29,37 +29,36 @@ public class ProjectController {
     }
 
     @GetMapping("/manager/projects")
-    public String ProjectList(Model model){
+    public String ProjectList(Model model) {
         List<Project> list = projectService.getProjectList();
         model.addAttribute("projectList", list);
         return "manager/projects/projectManage";
     }
 
     @GetMapping("/manager/projects/{id}")
-    public String PrọectDetail(@PathVariable("id") int id, Model model){
+    public String ProjectDetail(@PathVariable("id") int id, Model model) {
         Project project = projectService.getProjectById(id);
         Customer customer = project.getContract().getCustomer();
-        model.addAttribute("customer",customer);
-         model.addAttribute("project",project);
+        model.addAttribute("customer", customer);
+        model.addAttribute("project", project);
         return "manager/projects/projectDetail";
     }
-    
+
     @PostMapping("/manager/project/projectCreate")
-    public String createProjectPage(@RequestParam("contractId") int contractId, Model model){
+    public String createProjectPage(@RequestParam("contractId") int contractId, Model model) {
         Project project = new Project();
-        model.addAttribute("project",project);
+        model.addAttribute("project", project);
         return "manager/project/createProject";
-        
-        
+
     }
-    
+
     @PostMapping("/manager/project/create")
-    public String createProject(@ModelAttribute("project") Project project){
+    public String createProject(@ModelAttribute("project") Project project) {
         LocalDate localDate = LocalDate.now();
         project.setDateStart(Utility.localDateToUtilDate(localDate));
         project.setStage(1);
         project.setIsSharedAble(false);
         projectService.createProject(project);
-        return "manager/project/viewDetail/"+project.getProjectId();
+        return "manager/project/viewDetail/" + project.getProjectId();
     }
 }

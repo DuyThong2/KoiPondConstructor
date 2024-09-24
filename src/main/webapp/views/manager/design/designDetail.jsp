@@ -29,6 +29,9 @@
                 </thead>
                 <tbody>
                     <c:forEach var="stage" items="${design.designStage}">
+                        <%--
+                        <c:forEach var="detail" items="${design.DesignStageDetail}">
+                        --%>
                         <tr>
                             <td>${stage.designStageName}</td>
                             <td>${stage.designStagePrice}</td>
