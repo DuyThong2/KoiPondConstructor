@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,9 +34,33 @@ public class ProjectController {
     }
 
     @GetMapping("/manager/projects")
-    public String ProjectList(Model model) {
-        List<Project> list = projectService.getProjectList();
+
+    public String ProjectList(Model model,
+    @RequestParam(defaultValue = "1") int page,
+    @RequestParam(defaultValue = "5") int size,
+    @RequestParam(defaultValue = "status") String sortBy,
+    @RequestParam(defaultValue = "asc") String sortType,
+                              @RequestParam(required = false) Integer statusFilter,
+                              @RequestParam(required = false) Integer stageFilter){
+        List<Project> list;
+        long projectNum;
+        if(stageFilter!=null || statusFilter!=null){
+            list = projectService.getPaginationProjectListByStatusAndStage(page,size,sortBy,sortType,statusFilter,stageFilter);
+           projectNum =  projectService.countProjectFilter(statusFilter,stageFilter);
+        }else{
+           list= projectService.getPaginationProjectList(page,size,sortBy,sortType);
+           projectNum = projectService.countProject();
+        }
+        long totalPage= (long) Math.ceil(projectNum/(double)size);
+        page = Math.max(page, 1);
+        model.addAttribute("currentPage",page);
+        model.addAttribute("size",size);
+        model.addAttribute("sortBy",sortBy);
+        model.addAttribute("sortType",sortType);
+        model.addAttribute("totalPage",totalPage);
         model.addAttribute("projectList", list);
+        model.addAttribute("statusFilter",statusFilter);
+        model.addAttribute("stageFilter",stageFilter);
         return "manager/projects/projectManage";
     }
 
@@ -82,5 +107,8 @@ public class ProjectController {
         }
 
     }
+
+
+
 
 }

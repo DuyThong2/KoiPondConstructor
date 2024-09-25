@@ -36,6 +36,7 @@
     </head>
     <body>
 
+       
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
@@ -70,7 +71,58 @@
 
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    
                     <h2 class="mb-4">Project List</h2>
+                    <form method="get" action="/manager/projects">
+                        <div class="form-row align-items-center">
+                            <!-- Sort By -->
+                            <div class="col-auto">
+                                <label for="sortBy">Sort by:</label>
+                                <select name="sortBy" id="sortBy" class="form-control">
+                                    <option value="status" ${sortBy == 'status' ? 'selected' : ''}>Status</option>
+                                    <option value="dateStart" ${sortBy == 'dateStart' ? 'selected' : ''}>Date Start</option>
+                                    <option value="projectName" ${sortBy == 'projectName' ? 'selected' : ''}>Project Name</option>
+                                </select>
+                            </div>
+            
+                            <!-- Sort Direction -->
+                            <div class="col-auto">
+                                <label for="sortType">Type:</label>
+                                <select name="sortType" id="sortType" class="form-control">
+                                    <option value="asc" ${sortType == 'asc' ? 'selected' : ''}>Ascending</option>
+                                    <option value="desc" ${sortType == 'desc' ? 'selected' : ''}>Descending</option>
+                                </select>
+                            </div>
+            
+                            <!-- Filter By Status -->
+                            <div class="col-auto">
+                                <label for="statusFilter">Status:</label>
+                                <select name="statusFilter" id="statusFilter" class="form-control">
+                                    <option value="" ${statusFilter == null ? 'selected' : ''}>All</option>
+                                    <option value="1" ${statusFilter == 1 ? 'selected' : ''}>Pending</option>
+                                    <option value="2" ${statusFilter == 2 ? 'selected' : ''}>Processing</option>
+                                    <option value="3" ${statusFilter == 3 ? 'selected' : ''}>Accepted</option>
+                                    <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Cancel</option>
+                                </select>
+                            </div>
+                            <div class="col-auto">
+                                <label for="stageFilter">Stage:</label>
+                                <select name="stageFilter" id="stageFilterr" class="form-control">
+                                    <option value="" ${stageFilter == null ? 'selected' : ''}>All</option>
+                                    <option value="1" ${stageFilter == 1 ? 'selected' : ''}>Planing</option>
+                                    <option value="2" ${stageFilter == 2 ? 'selected' : ''}>Design</option>
+                                    <option value="3" ${stageFilter == 3 ? 'selected' : ''}>Construction</option>
+                                    <option value="4" ${stageFilter == 4 ? 'selected' : ''}>Maintenance</option>
+                                    <option value="5" ${stageFilter == 5 ? 'selected' : ''}>Finish</option>
+                                </select>
+                            </div>
+            
+                            <input type="hidden" name="page" value="${currentPage}">
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary mt-2">Apply</button>
+                            </div>
+                        </div>
+                    </form>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">
                             <tr>
@@ -138,11 +190,28 @@
                     <!-- Pagination Controls -->
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <!-- Previous Button -->
-                        <button class="btn btn-primary" disabled>Previous</button>
+                        <c:if test="${currentPage!=1}">
+                            <form href="manager/projects/">
+                                <button class="btn btn-primary" type="submit">Previous</button>
+                                <input type="hidden" name="page" value="${currentPage-1}">
+                                <input type="hidden" name="size" value="${size}">
+                                <input type="hidden" name="sortBy" value="${sortBy}">
+                                <input type="hidden" name="sortType" value="${sortType}">
+                            </form>
+                        </c:if>
+                        
                         <!-- Page Indicator (Static for this example) -->
-                        <span>Page <strong>1</strong> of <strong>1</strong></span>
+                        <span>Page <strong>${currentPage}</strong> of <strong>${totalPage}</strong></span>
                         <!-- Next Button -->
-                        <button class="btn btn-primary" disabled>Next</button>
+                        <c:if test="${(currentPage)!=totalPage}">
+                            <form href="manager/projects/">
+                                <button class="btn btn-primary" type="submit">Previous</button>
+                                <input type="hidden" name="page" value="${currentPage+1}">
+                                <input type="hidden" name="size" value="${size}">
+                                <input type="hidden" name="sortBy" value="${sortBy}">
+                                <input type="hidden" name="sortType" value="${sortType}">
+                            </form>
+                        </c:if>
                     </div>
                 </main>
             </div>
