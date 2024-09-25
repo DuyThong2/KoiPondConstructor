@@ -41,6 +41,32 @@ public class QuoteController {
         this.parcelService = parcelService;
     }
 
+    //MANAGER SITE
+    @GetMapping("/manager/quote")
+    public String getQuoteList(Model model){
+        List<Quotes> quoteList = quoteService.getQuoteList();
+        model.addAttribute("quoteList", quoteList);
+        return "manager/quote/quoteManage";
+    }
+    
+    @GetMapping("/manager/quote/detail/{id}")
+    public String getQuoteById(@PathVariable("id")int quoteId, Model model){
+        Quotes quotes = quoteService.getQuoteById(quoteId);
+        model.addAttribute("quotes", quotes);
+        return "manager/quote/quoteDetail";
+    }
+    
+    @GetMapping("/manager/quote/detail/updateStatus")
+    public String managerUpdateQuoteStatus(@RequestParam("quoteId")int quoteId, @RequestParam("statusId")int statusId, Model model){
+        Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
+        return "redirect:/manager/quote/detail/" + quoteId;
+    }
+    
+    
+    
+    
+    
+    //CONSULTANT SITE
     @GetMapping("consultant/quote")
     public String getQuoteListByStaffId(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");

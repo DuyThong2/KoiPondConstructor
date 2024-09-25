@@ -45,6 +45,13 @@ public class ConsultantController {
         return "manager/consultant/consultantManage";
     }
     
+    @GetMapping("/manager/consultant/detail/{id}")
+    public String getConsultantById(@PathVariable("id")int consultantId, Model model){
+        Consultant consultant = consultantService.getConsultantById(consultantId);
+        model.addAttribute("consultant", consultant);
+        return "manager/consultant/consultantDetail";
+    }
+    
     @GetMapping("/manager/consultant/viewConsultantStaffList/{id}")
     public String getConsultantStaffList(@PathVariable("id")int id,Model model){
         List<Staff> list = staffService.getStaffListByRole("Consulting");
@@ -57,7 +64,7 @@ public class ConsultantController {
     public String updateConsultantStaff(@RequestParam("id")int id, @RequestParam("staffId")int staffId,Model model){
         Staff consultantStaff = staffService.getStaffById(staffId);
         Consultant consultant = consultantService.updateConsultantStaff(id, consultantStaff);
-        return "redirect:/manager/consultant/viewConsultantStaffList/" + id;
+        return "redirect:/manager/consultant/detail/" + id;
     }
     
     
