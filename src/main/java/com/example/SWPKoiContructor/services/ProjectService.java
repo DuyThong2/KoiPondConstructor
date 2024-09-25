@@ -31,7 +31,10 @@ public class ProjectService {
     }
 
     public Project getProjectById(int id) {
-        return projectDAO.getProjectById(id);
+       
+            return projectDAO.getProjectById(id);
+        
+        
     }
 
     @Transactional
@@ -101,6 +104,35 @@ public class ProjectService {
         return construction;
     }
     
+    @Transactional
+    public void propagateStatusToProject(int projectId) {
+        Project project = getProjectById(projectId);
+        
+        if (project != null) {
+            Design design = project.getDesign();
+            Construction construction = project.getConstruction();
+
+            // Step 1: Update Project Status Based on Design and Construction
+            if (design != null && design.getStatus() == 3 && (construction == null || construction.getConstructionStatus() == 3)) {
+                project.setStatus(3); // Completed (Both Design and Construction are completed)
+                project.setStage(5); // Finish
+            } else if (construction != null && construction.getConstructionStatus() == 2) {
+                project.setStatus(2); // Processing
+                project.setStage(3); // Construction
+            } else if (design != null && design.getStatus() == 2) {
+                project.setStatus(2); // Processing
+                project.setStage(2); // Design
+            } else {
+                project.setStatus(1); // Pending (if both are in Pending or if Design is not complete and Construction hasn't started)
+                project.setStage(1); // Planning
+            }
+
+            // Step 2: Save the updated project status and stage
+            projectDAO.updateProject(project);
+        } else {
+            throw new RuntimeException("Project not found with id: " + projectId);
+        }
+    }
     
 
 }
