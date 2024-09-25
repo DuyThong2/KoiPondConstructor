@@ -1,10 +1,12 @@
 package com.example.SWPKoiContructor.controller.design;
 
 import com.example.SWPKoiContructor.entities.BluePrint;
+import com.example.SWPKoiContructor.entities.Contract;
 import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Design;
 import com.example.SWPKoiContructor.entities.DesignStage;
 import com.example.SWPKoiContructor.entities.Project;
+import com.example.SWPKoiContructor.entities.Quotes;
 import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.DesignService;
 import com.example.SWPKoiContructor.services.DesignStageDetailService;
@@ -54,7 +56,8 @@ public class DesignController {
 
     @Autowired
     private CustomerService customerService;
-
+    
+    
     public DesignController(DesignService designService, StaffService staffService, DesignStageService designStageService, DesignStageDetailService designStageDetailService, BluePrintService bluePrintService, ProjectService projectService, CustomerService customerService) {
         this.designService = designService;
         this.staffService = staffService;
@@ -100,18 +103,21 @@ public class DesignController {
     }
 
     @GetMapping("/designer/viewDetail/{id}")
-    public String designDetail(@PathVariable("id") int id, Model model) {
+    public String designProject(@PathVariable("id") int id, Model model) {
         Design design = designService.getDesignById(id);
         Project project = design.getProject();
+        Contract contract = project.getContract();
+        Quotes quote = contract.getQuote();
         Customer customer = project.getContract().getCustomer();
         model.addAttribute("desgin", design);
         model.addAttribute("customer", customer);
         model.addAttribute("project", project);
+        model.addAttribute("quote", quote);
         return "designer/designProject";
     }
 
     @GetMapping("/designer/design/{id}")
-    public String designProject(@PathVariable("id") int id, Model model) {
+    public String designDetail(@PathVariable("id") int id, Model model) {
         Design design = designService.getDesignById(id);
         Project project = design.getProject();
         model.addAttribute("design", design);
@@ -165,7 +171,7 @@ public class DesignController {
 
         BluePrint blueprint = new BluePrint();
         blueprint.setDesignStage(designStage);
-        blueprint.setImgUrl("/" + uploadedFilePath); 
+        blueprint.setImgUrl("/" + uploadedFilePath);
         blueprint.setDateCreate(new Date());
 
         bluePrintService.saveBluePrint(blueprint);
@@ -173,7 +179,6 @@ public class DesignController {
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
 
-    
     @PostMapping("/updateSummary")
     public String updateSummaryFile(
             @RequestParam("designStageId") int designStageId,
@@ -190,7 +195,6 @@ public class DesignController {
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
 
-    
     @GetMapping("/delete/{bluePrintId}")
     public String deleteBlueprint(
             @PathVariable("bluePrintId") int bluePrintId,
@@ -203,4 +207,20 @@ public class DesignController {
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
 
+    @GetMapping("/customer/project/design/{id}")
+    public String customerViewDesign(@PathVariable("id") int id, Model model) {
+        Design design = designService.getDesignById(id);
+        Project project = design.getProject();
+        Contract contract = project.getContract();
+        Quotes quote = contract.getQuote();
+        model.addAttribute("design", design);
+        model.addAttribute("project", project);
+        model.addAttribute("quote", quote);
+        List<DesignStage> designStages = designStageService.getDesignStageByDesignId(id);
+        model.addAttribute("designStages", designStages);
+
+        return "customer/design/designDetail";
+    }
+    
+    
 }
