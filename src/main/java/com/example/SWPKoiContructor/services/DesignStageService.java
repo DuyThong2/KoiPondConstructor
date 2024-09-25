@@ -5,11 +5,16 @@ import com.example.SWPKoiContructor.dao.DesignStageDetailDAO;
 import com.example.SWPKoiContructor.entities.DesignStage;
 import com.example.SWPKoiContructor.entities.DesignStageDetail;
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 public class DesignStageService {
+
+   
+    private DesignStageDAO designStageDao;
 
     private DesignStageDAO designStageDAO;
     private DesignService designService;
@@ -54,6 +59,26 @@ public class DesignStageService {
 
     }
     
+
+        
+    public DesignStage getDesignStageById(int id) {
+        return designStageDao.getDesignStageById(id);
+    }
+    
+    public List<DesignStage> getDesignStageByDesignId(int id) {
+        return designStageDao.getDesignStageListOfDesign(id);
+    }
+    
+     
+    public List<DesignStage> getDesignStageByDesignIdAndName(int designId, String stageName) {
+        return designStageDao.getDesignStageByDesignIdAndName(designId, stageName);
+    }
+    
+    @Transactional
+    public DesignStage updateDesignStage(DesignStage designStage) {
+        return designStageDao.updateDesignStage(designStage);
+    }
+    
     private void allowNextDesignStage(int designId, int completedStageId) {
         List<DesignStage> stages = designStageDAO.findByDesignIdOrderById(designId);
 
@@ -70,5 +95,6 @@ public class DesignStageService {
         }
 
         // Check if the whole design is complete
+
     }
 }

@@ -18,8 +18,23 @@ public class DesignStageDAO {
 
     public List<DesignStage> getDesignStageListOfDesign(int id) {
         TypedQuery<DesignStage> ds = entityManager.createQuery("SELECT ds FROM DesignStage ds WHERE ds.design.designId = :id ", DesignStage.class);
+
         ds.setParameter("id", id);
         return ds.getResultList();
+    }
+
+
+    public List<DesignStage> getDesignStageByDesignIdAndName(int designId, String stageName) {
+        TypedQuery<DesignStage> query = entityManager.createQuery(
+            "SELECT ds FROM DesignStage ds WHERE ds.design.designId = :designId AND ds.designStageName LIKE :stageName",
+            DesignStage.class);
+        query.setParameter("designId", designId);
+        query.setParameter("stageName", "%" + stageName + "%");
+        return query.getResultList();
+    }
+    
+    public DesignStage updateDesignStage(DesignStage designStage) {
+        return entityManager.merge(designStage);
     }
 
     public DesignStage getDesignStageById(int id) {
@@ -33,9 +48,7 @@ public class DesignStageDAO {
 
     }
 
-    public DesignStage updateDesignStage(DesignStage designStage) {
-        return entityManager.merge(designStage);
-    }
+    
 
     public List<DesignStage> findByDesignIdOrderById(int designId) {
         TypedQuery<DesignStage> ds = entityManager.createQuery("SELECT ds FROM DesignStage ds ORDER BY ds.designStageId WHERE ds.design.designId = :id ", DesignStage.class);

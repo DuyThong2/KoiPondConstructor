@@ -26,7 +26,7 @@ public class DesignStageDetail {
     private String description;
     
     @Column(name = "status")
-    private int status; //-- 1:Pending ; 2:Proccessing; 3: completed/ 4: Canceled
+    private int status; //-- 1:Pending ; 2:Proccessing; 3: Canceled 4: completed/
 
     @ManyToOne()
     @JoinColumn(name = "design_stage_id")

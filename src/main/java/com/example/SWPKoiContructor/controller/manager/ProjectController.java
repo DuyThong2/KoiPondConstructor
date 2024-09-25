@@ -49,6 +49,7 @@ public class ProjectController {
     }
 
 
+
     @GetMapping("/manager/project/create")
     public String createProjectPage(@RequestParam("id") int contractId, Model model) {
         Contract contract = contractService.getContractById(contractId);
@@ -61,10 +62,12 @@ public class ProjectController {
             return "redirect:/manager/contracts";
         }
 
+
     }
 
     @PostMapping("/manager/project/create")
     public String createProject(@ModelAttribute("project") Project project) {
+
         Contract contract = contractService.getContractById(project.getContract().getContractId());
         if (contract != null) {
             project.setContract(contract);
