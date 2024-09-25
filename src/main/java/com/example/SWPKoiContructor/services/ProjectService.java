@@ -26,18 +26,24 @@ public class ProjectService {
         this.constructionService = constructionService;
     }
 
-    public List<Project> getProjectList() {
-        return projectDAO.getProjectList();
+
+    public List<Project> getProjectList(int size){
+        return projectDAO.getProjectList(size);
+
     }
     public List<Project> getProjectListIsSharable(){
         return projectDAO.getProjectListIsSharable();
     }
 
-    public Project getProjectById(int id) {
-       
-            return projectDAO.getProjectById(id);
-        
-        
+
+    public List<Project> getPaginationProjectList(int page, int size, String sortBy, String sortType){
+        return projectDAO.getPaginationProjectList(page,size,sortBy,sortType);
+    }
+    public Project getProjectById(int id){
+        return projectDAO.getProjectById(id);
+    }
+    public long countProject(){
+        return projectDAO.countProject();
     }
 
     @Transactional
@@ -136,6 +142,13 @@ public class ProjectService {
             throw new RuntimeException("Project not found with id: " + projectId);
         }
     }
-    
+    public List<Project> getPaginationProjectListByStatusAndStage(int page, int size, String sortBy, String sortType, Integer statusFilter, Integer stageFilter) {
+        return projectDAO.getPaginationProjectListByStatusAndStage(page,size,sortBy,sortType,statusFilter,stageFilter);
+
+    }
+
+    public long countProjectFilter(Integer statusFilter, Integer stageFilter) {
+        return projectDAO.countProjectFilter(statusFilter,stageFilter);
+    }
 
 }
