@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConstructionService {
     private ConstructionDAO constructionDao;
+    
+    
 
     public ConstructionService(ConstructionDAO constructionDao) {
         this.constructionDao = constructionDao;
@@ -28,4 +30,7 @@ public class ConstructionService {
         return constructionDao.getConstructionById(id);
     }
     
+    public Construction updateConstruction(Construction construction){
+        return constructionDao.updateConstruction(construction);
+    }
 }

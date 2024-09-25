@@ -1,5 +1,6 @@
 package com.example.SWPKoiContructor.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,7 +26,7 @@ public class DesignStageDetail {
     private String description;
     
     @Column(name = "status")
-    private int status; //-- 1:Pending ; 2:Proccessing; 3: completed/ 4: Canceled
+    private int status; //-- 1:Pending ; 2:Proccessing; 3: Canceled 4: completed/
 
     @ManyToOne()
     @JoinColumn(name = "design_stage_id")
@@ -43,6 +44,13 @@ public class DesignStageDetail {
         this.status = status;
         this.designStage = designStage;
     }
+
+    public DesignStageDetail(String name, String description, int status) {
+        this.name = name;
+        this.description = description;
+        this.status = status;
+    }
+    
     
 
 

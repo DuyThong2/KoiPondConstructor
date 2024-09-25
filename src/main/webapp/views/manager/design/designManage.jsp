@@ -29,34 +29,7 @@
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
-                <nav class="col-md-2 d-none d-md-block sidebar">
-                    <div class="sidebar-sticky">
-                        <h4 class="text-center py-3">Admin Dashboard</h4>
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/dashboard">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/contracts">Contracts</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/design">Design</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/projects">Projects</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/terms">Terms</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/reports">Reports</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/settings">Settings</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                <%@include file="../navBar.jsp" %>
 
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
@@ -104,25 +77,24 @@
                         </tbody>
                     </table>
 
-                    <!-- Pagination Controls -->
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <!-- Previous Button -->
-                        <c:if test="${currentPage > 1}">
-                            <a href="?page=${currentPage - 1}" class="btn btn-primary">Previous</a>
+                        <c:if test="${currentPage > 0}">
+                            <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&lt;</a>
                         </c:if>
-                        <c:if test="${currentPage == 1}">
-                            <button class="btn btn-primary" disabled>Previous</button>
+                        <c:if test="${currentPage == 0}">
+                            <button class="btn btn-primary" disabled>&lt;</button>
                         </c:if>
 
-                        <!-- Page Indicator (Format: <1/99>) -->
-                        <span>Page <strong>${currentPage}</strong> of <strong>${totalPages}</strong></span>
+                        <!-- Page Indicator -->
+                        <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
 
                         <!-- Next Button -->
-                        <c:if test="${currentPage < totalPages}">
-                            <a href="?page=${currentPage + 1}" class="btn btn-primary">Next</a>
+                        <c:if test="${currentPage < totalPages - 1}">
+                            <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&gt;</a>
                         </c:if>
-                        <c:if test="${currentPage == totalPages}">
-                            <button class="btn btn-primary" disabled>Next</button>
+                        <c:if test="${currentPage == totalPages - 1}">
+                            <button class="btn btn-primary" disabled>&gt;</button>
                         </c:if>
                     </div>
                 </main>
