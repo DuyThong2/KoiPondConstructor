@@ -51,6 +51,15 @@ public class ConstructionStageDetail {
         this.constructionStage = constructionStage;
     }
 
+    public ConstructionStageDetail(String constructionStageDetailName, double constructionStageDetailPrice, String constructionStageDetailDescription, int constructionStageDetailStatus) {
+        this.constructionStageDetailName = constructionStageDetailName;
+        this.constructionStageDetailPrice = constructionStageDetailPrice;
+        this.constructionStageDetailDescription = constructionStageDetailDescription;
+        this.constructionStageDetailStatus = constructionStageDetailStatus;
+    }
+    
+    
+
     public ConstructionStageDetail() {
     }
 

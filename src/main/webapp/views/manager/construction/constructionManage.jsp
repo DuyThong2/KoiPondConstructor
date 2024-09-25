@@ -80,7 +80,7 @@
                                 <tr>
                                     <td>${list[0].constructionId}</td>
                                     <td>${list[0].constructionName}</td>
-                                    <td>${list[2].username}</td>
+                                    <td>${list[2].name}</td>
                                     <td>
                                         <c:choose>
                                             <c:when test="${list[0].constructionStatus == 1}">

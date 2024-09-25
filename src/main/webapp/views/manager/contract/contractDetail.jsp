@@ -243,7 +243,7 @@
                         <c:when test="${contract.contractStatus == 6 && empty contract.project}">
                             <div class="mt-4 text-center">
                                 <p>Status: <span class="badge badge-success">Accept by Customer</span></p>
-                                <form action="/manager/project/create" method="POST" class="d-inline">
+                                <form action="/manager/project/create" method="GET" class="d-inline">
                                     <input type="hidden" name="id" value="${contract.contractId}">
                                     <button type="submit" class="btn btn-primary">CREATE PROJECT</button>
                             </div>

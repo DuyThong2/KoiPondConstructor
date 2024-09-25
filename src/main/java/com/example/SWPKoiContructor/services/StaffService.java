@@ -35,5 +35,7 @@ public class StaffService {
     public Staff getStaffById(int id){
         return staffDAO.getStaffById(id);
     }
-    
+    public List<Staff> getTopStaffList(){
+        return staffDAO.getTopStaffList();
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.SWPKoiContructor.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -38,10 +39,10 @@ public class DesignStage {
     private Design design;
     
     @OneToMany(mappedBy = "designStage", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DesignStageDetail> designDetail;
+    private List<DesignStageDetail> designDetail = new ArrayList<>();
     
     @OneToMany(mappedBy = "designStage")
-    private List<BluePrint> bluePrint;
+    private List<BluePrint> bluePrint = new ArrayList<>();
     
     public DesignStage() {
     }
@@ -56,6 +57,15 @@ public class DesignStage {
         this.designDetail = designDetail;
         this.bluePrint = bluePrint;
     }
+
+    public DesignStage(String designStageName, int designStageStatus, double designStagePrice, String summaryFile) {
+        this.designStageName = designStageName;
+        this.designStageStatus = designStageStatus;
+        this.designStagePrice = designStagePrice;
+        this.summaryFile = summaryFile;
+    }
+    
+    
     
     
 
@@ -144,6 +154,23 @@ public class DesignStage {
     public void removeBlueprint(BluePrint bluePrint){
         this.bluePrint.remove(bluePrint);
         bluePrint.setDesignStage(null);
+    }
+    
+    public List<DesignStageDetail> createListOfDesignStageDetail(DesignStage designStage,Term term){
+        List<DesignStageDetail> list = new ArrayList<>();
+        DesignStageDetail planning = new DesignStageDetail("Planning","Planning for the "+designStage.getDesignStageName(), 2);
+        DesignStageDetail designing = new DesignStageDetail("Designing","Designing the "+designStage.getDesignStageName()+" layout", 1);
+        DesignStageDetail editing = new DesignStageDetail("Editing","Final editing for the "+designStage.getDesignStageName(), 1);
+        list.add(planning);
+        list.add(designing);
+        list.add(editing);
+        DesignStageDetail payment = new DesignStageDetail("Payment","Payment for the "+designStage.getDesignStageName(), 1);
+        if (term.isPayOnStartOfDesign()){
+            list.add(0,payment);
+        }else{
+            list.add(payment);
+        }
+        return list;
     }
     
     

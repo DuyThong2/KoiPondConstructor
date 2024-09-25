@@ -138,11 +138,11 @@
                                        <img src="${pageContext.request.contextPath}/images/avatar.png" alt="Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px;">
                                        <div class="user-info mb-4">
                                            <h5>Name</h5>
-                                           <p>${customer.username}</p>
+                                           <p>${customer.name}</p>
                                            <h5>Phone Number</h5>
-                                           <p>${customer.customerPhone}</p>
+                                           <p>${customer.phone}</p>
                                            <h5>Email</h5>
-                                           <p>${customer.customerEmail}</p>
+                                           <p>${customer.email}</p>
                                        </div>
                                        <a href="#" class="btn btn-danger w-100 mb-3">Design Status</a>
                                        <a href="#" class="btn btn-primary w-100">To Design</a>

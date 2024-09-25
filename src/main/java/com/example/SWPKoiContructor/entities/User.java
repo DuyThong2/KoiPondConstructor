@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,7 +44,7 @@ public class User {
     
     private boolean enabled;
     
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Authority authority;
 
     public User(String name, String email, String imgURL, String phone, String password, boolean enable) {
@@ -124,6 +125,10 @@ public class User {
         this.authority = authority;
     }
     
+    public void AddAuthorities(Authority authority){
+        this.authority = authority;
+        authority.setUser(this);
+    }
     
     
     
