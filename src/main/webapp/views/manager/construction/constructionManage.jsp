@@ -76,6 +76,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- Table for construction info -->
                             <c:forEach var="list" items="${CONSTRUCTIONLIST}">
                                 <tr>
                                     <td>${list[0].constructionId}</td>
@@ -98,7 +99,7 @@
                                         </c:choose>
                                     </td>
                                     <td>${list[1].projectId}</td>
-                                    <td><a href="/manager/construction/viewDetail${list[0].constructionId}" class="btn btn-info">Click Here</a></td>
+                                    <td><a href="/manager/construction/view/${list[0].constructionId}" class="btn btn-info">View</a></td>
 
                                 </tr>
                             </c:forEach>
