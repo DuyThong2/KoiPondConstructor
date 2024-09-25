@@ -25,6 +25,12 @@ public class Authority {
         this.authority = authority;
     }
 
+    public Authority(String authority) {
+        this.authority = authority;
+    }
+    
+    
+
     public Long getId() {
         return id;
     }
@@ -48,4 +54,6 @@ public class Authority {
     public void setAuthority(String authority) {
         this.authority = authority;
     }
+    
+    
 }

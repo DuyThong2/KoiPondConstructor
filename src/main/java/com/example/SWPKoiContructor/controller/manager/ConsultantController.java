@@ -7,10 +7,12 @@ package com.example.SWPKoiContructor.controller.manager;
 
 import com.example.SWPKoiContructor.entities.Consultant;
 import com.example.SWPKoiContructor.entities.Staff;
+import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.ConsultantService;
 import com.example.SWPKoiContructor.services.StaffService;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import java.util.List;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,9 +45,16 @@ public class ConsultantController {
         return "manager/consultant/consultantManage";
     }
     
+    @GetMapping("/manager/consultant/detail/{id}")
+    public String getConsultantById(@PathVariable("id")int consultantId, Model model){
+        Consultant consultant = consultantService.getConsultantById(consultantId);
+        model.addAttribute("consultant", consultant);
+        return "manager/consultant/consultantDetail";
+    }
+    
     @GetMapping("/manager/consultant/viewConsultantStaffList/{id}")
     public String getConsultantStaffList(@PathVariable("id")int id,Model model){
-        List<Staff> list = staffService.getStaffListByRole("Consultant");
+        List<Staff> list = staffService.getStaffListByRole("Consulting");
         model.addAttribute("consultantStaffList",list);
         model.addAttribute("consultant", consultantService.getConsultantById(id));
         return "manager/consultant/addConsultantStaff";
@@ -55,7 +64,7 @@ public class ConsultantController {
     public String updateConsultantStaff(@RequestParam("id")int id, @RequestParam("staffId")int staffId,Model model){
         Staff consultantStaff = staffService.getStaffById(staffId);
         Consultant consultant = consultantService.updateConsultantStaff(id, consultantStaff);
-        return "redirect:/manager/consultant/viewConsultantStaffList/" + id;
+        return "redirect:/manager/consultant/detail/" + id;
     }
     
     
@@ -63,10 +72,24 @@ public class ConsultantController {
     
     //CONSULTANT SITE
     @GetMapping("/consultant/viewConsultantList")
-    public String getConsultantListByStaffId(Model model){
-        List<Consultant> list = consultantService.getConsultantListByStaffId(3);
+    public String getConsultantListByStaffId(Model model, HttpSession session){      
+        User user = (User) session.getAttribute("user");
+        List<Consultant> list = consultantService.getConsultantListByStaffId(user.getId());
         model.addAttribute("consultantList", list);
         return "consultant/consultantManage";
+    }
+    
+    @GetMapping("/consultant/viewConsultantDetail/{id}")
+    public String getConsultantDetail(@PathVariable("id")int consultantId, Model model){
+        Consultant consultant = consultantService.getConsultantById(consultantId);
+        model.addAttribute("consultant", consultant);
+        return "consultant/consultantDetail";
+    }
+    
+    @GetMapping("/consultant/viewConsultantDetail/updateStatus")
+    public String updateConsultantStatus(@RequestParam("consultantId")int consultantId, @RequestParam("statusId")int statusId, Model model){
+        Consultant consultant = consultantService.updateConsultantStatus(consultantId, statusId);
+        return "redirect:/consultant/viewConsultantDetail/" + consultantId;
     }
     
 }

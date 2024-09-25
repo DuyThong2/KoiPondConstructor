@@ -33,6 +33,10 @@ public class QuoteService {
         return quoteDAO.getQuotesList();
     }
     
+    public List<Quotes> getQuoteListByStaffId(int staffId){
+        return quoteDAO.getQuotesListByStaffId(staffId);
+    }
+    
     @Transactional
     public Quotes createNewQuotes(Quotes quotes){
         return quoteDAO.createNewQuotes(quotes);
@@ -41,5 +45,10 @@ public class QuoteService {
     @Transactional
     public Quotes saveQuotes(Quotes quotes){
         return quoteDAO.saveQuote(quotes);
+    }
+    
+    @Transactional
+    public Quotes updateQuoteStatus(int quoteId, int quoteStatusId){
+        return quoteDAO.updateQuoteStatus(quoteId, quoteStatusId);
     }
 }

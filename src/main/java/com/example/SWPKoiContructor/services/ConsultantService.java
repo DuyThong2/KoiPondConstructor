@@ -50,5 +50,8 @@ public class ConsultantService {
         return consultantDAO.updateConsultantStaff(id, staff);
     }
     
-    
+    @Transactional
+    public Consultant updateConsultantStatus(int id, int status){
+        return consultantDAO.updateConsultantStatus(id, status);
+    }
 }

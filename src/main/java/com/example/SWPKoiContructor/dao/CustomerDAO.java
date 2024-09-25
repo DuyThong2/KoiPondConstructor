@@ -45,5 +45,17 @@ public class CustomerDAO {
             return null; // Return empty if no customer is found
         }
     }
+    
+    public void createCustomer(Customer customer){
+        entityManager.persist(customer);
+    }
+    
+    public boolean isCustomerExists(String email) {
+        TypedQuery<Long> query = entityManager.createQuery(
+                "SELECT COUNT(c) FROM Customer c WHERE c.email = :email", Long.class);
+        query.setParameter("email", email);
+        Long count = query.getSingleResult();
+        return count > 0;
+    }
 
 }

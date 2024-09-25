@@ -88,23 +88,26 @@
                                     <td>${consultant.predesign.preDesignName}</td>                                    
                                     <td>
                                         <c:choose>
-                                        <c:when test="${consultant.consultantStatus == 1}">
-                                            <span class="badge badge-warning badge-status">Pending</span>
-                                        </c:when>
-                                        <c:when test="${consultant.consultantStatus == 2}">
-                                            <span class="badge badge-secondary badge-status">Approved</span>
-                                        </c:when>
-                                        <c:when test="${consultant.consultantStatus == 3}">
-                                            <span class="badge badge-danger badge-status">Rejected</span>
-                                        </c:when>
-                                        <c:when test="${consultant.consultantStatus == 4}">
-                                            <span class="badge badge-success badge-status">Done</span>
-                                        </c:when>      
+                                            <c:when test="${consultant.consultantStatus == 1}">
+                                                <span class="badge badge-warning badge-status">Pending</span>
+                                            </c:when>
+                                            <c:when test="${consultant.consultantStatus == 2}">
+                                                <span class="badge badge-secondary badge-status">Assigned</span>
+                                            </c:when>
+                                            <c:when test="${consultant.consultantStatus == 3}">
+                                                <span class="badge badge-secondary badge-status">Processing</span>
+                                            </c:when>
+                                            <c:when test="${consultant.consultantStatus == 4}">
+                                                <span class="badge badge-success badge-status">Completed</span>
+                                            </c:when>    
+                                            <c:when test="${consultant.consultantStatus == 5}">
+                                                <span class="badge badge-danger badge-status">Cancel</span>
+                                            </c:when>
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-info">Edit Status</a>
-                                        <a href="/consultant/quote/createNewQuotes/${consultant.consultantId}" class="btn btn-primary">Create Quote</a>
+                                        <a href="/consultant/viewConsultantDetail/${consultant.consultantId}" class="btn btn-info">Detail</a>
+
                                     </td>
                                 </tr>
                             </c:forEach>

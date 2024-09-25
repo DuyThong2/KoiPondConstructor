@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/consultant/**").hasRole("CONSULTANT")
                 .antMatchers("/design/**").hasRole("DESIGNER")
                 .antMatchers("/constructor/**").hasRole("CONSTRUCTOR")
-                .antMatchers("/login", "/resources/**").permitAll()
+                .antMatchers("/login", "/resources/**","/","/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -39,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .logout()
-                .permitAll();
+                .permitAll()
+                .and().exceptionHandling().accessDeniedPage("/error/error-403");
     }
 
     @Bean

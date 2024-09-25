@@ -5,12 +5,9 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import com.example.SWPKoiContructor.entities.compositeKeys.ConstructionStaffId;
 import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -30,6 +27,8 @@ public class Staff extends User{
     @ManyToMany(mappedBy = "staff")
     private List<Design> design;
     
+    @OneToMany(mappedBy = "staff")
+    private List<ConstructionStaff> constructionStaffs;
     
     public Staff() {
     }
@@ -76,6 +75,32 @@ public class Staff extends User{
         this.design = design;
     }
 
+    public List<ConstructionStaff> getConstructionStaffs() {
+        return constructionStaffs;
+    }
+
+    public void setConstructionStaffs(List<ConstructionStaff> constructionStaffs) {
+        this.constructionStaffs = constructionStaffs;
+    }
+
     
+    public void addConstructionToStaff(Construction construction, int roleInProject) {
+        ConstructionStaff constructionStaff = new ConstructionStaff(new ConstructionStaffId(this.getId(), construction.getConstructionId()), this, construction, roleInProject);
+        this.constructionStaffs.add(constructionStaff);
+        construction.getConstructionStaffs().add(constructionStaff);
+    }
+
+    // Convenience method to remove a construction
+    public void removeConstructionFromStaff(Construction construction) {
+        ConstructionStaff constructionStaff = this.constructionStaffs.stream()
+            .filter(cs -> cs.getConstruction().equals(construction))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Construction not assigned to staff"));
+
+        this.constructionStaffs.remove(constructionStaff);
+        construction.getConstructionStaffs().remove(constructionStaff);
+        constructionStaff.setConstruction(null);
+        constructionStaff.setStaff(null);
+    }
     
 }
