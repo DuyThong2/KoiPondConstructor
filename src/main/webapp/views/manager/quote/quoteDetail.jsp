@@ -1,6 +1,6 @@
 <%-- 
     Document   : quoteDetail
-    Created on : Sep 24, 2024, 11:31:05 AM
+    Created on : Sep 25, 2024, 7:47:28 PM
     Author     : HP
 --%>
 
@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Contract Details</title>
+        <title>Quote Details</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
@@ -112,33 +112,27 @@
 
                     <!-- Approve/Reject buttons placed below the main table -->
                     <c:choose>
-                        <c:when test="${quotes.quotesStatus == 3}">
+                        <c:when test="${quotes.quotesStatus == 1}">
                             <div class="">
-                                <form action="/consultant/quote/updateQuote" method="post" class="d-inline">
+                                <form action="/manager/quote/detail/updateStatus" method="get" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
-                                    <button type="submit" class="btn btn-info">Edit Quotes</button>
+                                    <input type="hidden" name="statusId" value="2">
+                                    <button type="submit" class="btn btn-success">Approved</button>
+                                </form>
+                                <form action="/manager/quote/detail/updateStatus" method="get" class="d-inline">
+                                    <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
+                                    <input type="hidden" name="statusId" value="3">
+                                    <button type="submit" class="btn btn-danger">Rejected</button>
                                 </form>
                             </div>
-                        </c:when>
-                        <c:when test="${quotes.quotesStatus == 4}">
+                        </c:when> 
+                        <c:when test="${quotes.quotesStatus == 6}">
                             <div class="">
-                                <form action="/consultant/contract/create" method="get" class="d-inline">
+                                <form action="/manager/quote/detail/updateStatus" method="get" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
-                                    <button type="submit" class="btn btn-info">Create Contract</button>
-                                </form>
-                            </div>
-                        </c:when>
-                        <c:when test="${quotes.quotesStatus == 5}">
-                            <div class="">
-                                <form action="/consultant/quote/updateQuote" method="post" class="d-inline">
-                                    <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
-                                    <button type="submit" class="btn btn-info">Edit Quotes</button>
-                                </form>
-                                <form action="/consultant/quote/detail/updateStatus" method="get" class="d-inline">
-                                    <input type="hidden" name="quoteId" value="${quotes.quotesId}">
-                                    <input type="hidden" name="statusId" value="6">
-                                    <button type="submit" class="btn btn-danger">Deny Request</button>
-                                </form>
+                                    <input type="hidden" name="statusId" value="7">
+                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                </form>                               
                             </div>
                         </c:when>
                     </c:choose>
