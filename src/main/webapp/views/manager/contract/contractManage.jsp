@@ -3,139 +3,132 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Admin Dashboard</title>
-        <!-- Bootstrap CSS -->
+        <title>Contract Management</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-            /* Custom styles for the sidebar */
-            .sidebar {
-                height: 100vh;
-                background-color: #343a40;
-                color: white;
-            }
-            .sidebar a {
-                color: white;
-                display: block;
-                padding: 10px;
-                text-decoration: none;
-            }
-            .sidebar a:hover {
-                background-color: #495057;
-            }
-        </style>
     </head>
     <body>
 
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Sidebar -->
-                <nav class="col-md-2 d-none d-md-block sidebar">
-                    <div class="sidebar-sticky">
-                        <h4 class="text-center py-3">Admin Dashboard</h4>
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/dashboard">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/contracts">Contracts</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/projects">Projects</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/terms">Terms</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/reports">Reports</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/admin/settings">Settings</a>
-                            </li>
-                        </ul>
+        <div class="container">
+            <h2>Contract List</h2>
+
+            <!-- Sort Form -->
+            <form method="get" action="/manager/contract">
+                <div class="form-row align-items-center">
+                    <!-- Sort By -->
+                    <div class="col-auto">
+                        <label for="sortBy">Sort by:</label>
+                        <select name="sortBy" id="sortBy" class="form-control">
+                            <option value="dateCreate" ${sortBy == 'dateCreate' ? 'selected' : ''}>Date Created</option>
+                            <option value="totalPrice" ${sortBy == 'totalPrice' ? 'selected' : ''}>Total Price</option>
+                            
+                        </select>
                     </div>
-                </nav>
 
-                <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <h2 class="mb-4">Contract List</h2>
-                    <table class="table table-bordered table-hover">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Date Created</th>
-                                <th>File URL</th>
-                                <th>Total Price</th>
-                                <th>Price on Concept Design</th>
-                                <th>Price on Construction Design</th>
-                                <th>Price on Detail Design</th>
-                                <th>Price on Raw Construction</th>
-                                <th>Price on Complete Construction</th>
-                                <th>Contract Term</th>
-                                <th>Contract Status</th>
-                                <th>Contract Note</th>
-                                <th>View Detail</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="contract" items="${contracts}">
-                                <tr>
-                                    <td>${contract.dateCreate}</td>
-                                    <td><a href="/download/${contract.fileURL}">${contract.fileURL}</a></td>
-                                    <td>${contract.totalPrice}</td>
-                                    <td>${contract.priceOnConceptDesign}</td>
-                                    <td>${contract.priceOnConstructionDesign}</td>
-                                    <td>${contract.priceOnDetailDesign}</td>
-                                    <td>${contract.priceOnRawConstruction}</td>
-                                    <td>${contract.priceOnCompleteConstruction}</td>
-                                    <td>${contract.contractTerm}</td>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${contract.contractStatus == 1}">
-                                                <span class="badge badge-warning">Pending</span>
-                                            </c:when>
-                                            <c:when test="${contract.contractStatus == 2}">
-                                                <span class="badge badge-success">Approved</span>
-                                            </c:when>
-                                            <c:when test="${contract.contractStatus == 3}">
-                                                <span class="badge badge-danger">Rejected</span>
-                                            </c:when>
-                                        </c:choose>
-                                    </td>
-                                    <td>${contract.contractNote}</td>
-                                    <td><a href="/manager/contract/viewDetail/${contract.contractId}" class="btn btn-info">Click Here</a></td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
-                    </table>
-                    
-                    <!-- Pagination Controls -->
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <!-- Previous Button -->
-                        <c:if test="${currentPage > 1}">
-                            <a href="?page=${currentPage - 1}" class="btn btn-primary">Previous</a>
-                        </c:if>
-                        <c:if test="${currentPage == 1}">
-                            <button class="btn btn-primary" disabled>Previous</button>
-                        </c:if>
-
-                        <!-- Page Indicator (Format: <1/99>) -->
-                        <span>Page <strong>${currentPage}</strong> of <strong>${totalPages}</strong></span>
-
-                        <!-- Next Button -->
-                        <c:if test="${currentPage < totalPages}">
-                            <a href="?page=${currentPage + 1}" class="btn btn-primary">Next</a>
-                        </c:if>
-                        <c:if test="${currentPage == totalPages}">
-                            <button class="btn btn-primary" disabled>Next</button>
-                        </c:if>
+                    <!-- Sort Direction -->
+                    <div class="col-auto">
+                        <label for="sortDirection">Direction:</label>
+                        <select name="sortDirection" id="sortDirection" class="form-control">
+                            <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
+                            <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
+                        </select>
                     </div>
-                </main>
 
+                    <!-- Filter By Status -->
+                    <div class="col-auto">
+                        <label for="statusFilter">Status:</label>
+                        <select name="statusFilter" id="statusFilter" class="form-control">
+                            <option value="" ${statusFilter == null ? 'selected' : ''}>All</option>
+                            <option value="1" ${statusFilter == 1 ? 'selected' : ''}>Pending</option>
+                            <option value="2" ${statusFilter == 2 ? 'selected' : ''}>Approved</option>
+                            <option value="3" ${statusFilter == 3 ? 'selected' : ''}>Rejected (Customer)</option>
+                            <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Rejected (Manager)</option>
+                            <option value="5" ${statusFilter == 5 ? 'selected' : ''}>Canceled</option>
+                            <option value="6" ${statusFilter == 6 ? 'selected' : ''}>Accepted by customer</option>
+                        </select>
+                    </div>
+
+                    <input type="hidden" name="page" value="${currentPage}">
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary mt-2">Apply</button>
+                    </div>
+                </div>
+            </form>
+
+
+            <!-- Table for contracts -->
+            <table class="table table-bordered table-hover mt-3">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Date Created</th>
+                        <th>File URL</th>
+                        <th>Total Price</th>
+                        
+                        <th>Contract Term</th>
+                        <th>Contract Status</th>
+                        <th>Contract Note</th>
+                        <th>View Detail</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="contract" items="${contracts}">
+                        <tr>
+                            <td>${contract.dateCreate}</td>
+                            <td><a href="/download/${contract.fileURL}">${contract.fileURL}</a></td>
+                            <td>${contract.totalPrice}</td>
+                            
+                            <td>${contract.contractTerm}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${contract.contractStatus == 1}">
+                                        <span class="badge badge-warning badge-status">Pending</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 2}">
+                                        <span class="badge badge-success badge-status">Approved</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 3}">
+                                        <span class="badge badge-danger badge-status">Rejected (Customer)</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 4}">
+                                        <span class="badge badge-danger badge-status">Rejected (Manager)</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 5}">
+                                        <span class="badge badge-secondary badge-status">Canceled</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 6}">
+                                        <span class="badge badge-success badge-status">Accepted by customer</span>
+                                    </c:when>
+                                </c:choose>
+                            </td>
+                            <td>${contract.contractNote}</td>
+                            <td><a href="/manager/contract/viewDetail/${contract.contractId}" class="btn btn-info">View</a></td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+
+            <!-- Pagination Controls -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <!-- Previous Button -->
+                <c:if test="${currentPage > 0}">
+                    <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&lt;</a>
+                </c:if>
+                <c:if test="${currentPage == 0}">
+                    <button class="btn btn-primary" disabled>&lt;</button>
+                </c:if>
+
+                <!-- Page Indicator -->
+                <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
+
+                <!-- Next Button -->
+                <c:if test="${currentPage < totalPages - 1}">
+                    <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&gt;</a>
+                </c:if>
+                <c:if test="${currentPage == totalPages - 1}">
+                    <button class="btn btn-primary" disabled>&gt;</button>
+                </c:if>
             </div>
+
         </div>
 
-        <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </body>
 </html>

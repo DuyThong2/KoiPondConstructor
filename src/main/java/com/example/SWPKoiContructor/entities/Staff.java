@@ -5,131 +5,41 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import com.example.SWPKoiContructor.entities.compositeKeys.ConstructionStaffId;
 import java.util.List;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-/**
- *
- * @author HP
- */
+
 @Entity
-@Table(name = "Staff")
-public class Staff {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "staff_id")
-    private int staffId;
+@Table(name = "Staffs")
+public class Staff extends User{
     
-    @Column(name = "staff_email")
-    private String staffEmail;
-    
-    private String username;
-    
-    @Column(name = "staff_phone")
-    private String staffPhone;
-    
-    @Column(name = "staff_role")
-    private String staffRole;
-    
-    @Column(name = "password")
-    private String password;
-    
-    private boolean status;
-    
-    @Column(name = "user_type")
-    private String userType;
-    
+    private String department;
     @OneToMany(mappedBy = "staff")
     private List<Consultant> consultant;
     
     @OneToMany(mappedBy = "staff")
     private List<Quotes> quotes;
-
+    
+    @ManyToMany(mappedBy = "staff")
+    private List<Design> design;
+    
+    @OneToMany(mappedBy = "staff")
+    private List<ConstructionStaff> constructionStaffs;
+    
     public Staff() {
     }
 
-    public Staff(String staffEmail, String username, String staffPhone, String staffRole, String password, boolean status, String userType, List<Consultant> consultant, List<Quotes> quotes) {
-        this.staffEmail = staffEmail;
-        this.username = username;
-        this.staffPhone = staffPhone;
-        this.staffRole = staffRole;
-        this.password = password;
-        this.status = status;
-        this.userType = userType;
-        this.consultant = consultant;
-        this.quotes = quotes;
-    }
 
-    public int getStaffId() {
-        return staffId;
-    }
+    public Staff(String name, String email, String imgURL, String phone, String password, boolean enable,String department) {
+        super(name, email, imgURL, phone, password, enable);
+        this.department = department;
 
-    public void setStaffId(int staffId) {
-        this.staffId = staffId;
     }
-
-    public String getStaffEmail() {
-        return staffEmail;
-    }
-
-    public void setStaffEmail(String staffEmail) {
-        this.staffEmail = staffEmail;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getStaffPhone() {
-        return staffPhone;
-    }
-
-    public void setStaffPhone(String staffPhone) {
-        this.staffPhone = staffPhone;
-    }
-
-    public String getStaffRole() {
-        return staffRole;
-    }
-
-    public void setStaffRole(String staffRole) {
-        this.staffRole = staffRole;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
+    
     public List<Consultant> getConsultant() {
         return consultant;
     }
@@ -145,6 +55,52 @@ public class Staff {
     public void setQuotes(List<Quotes> quotes) {
         this.quotes = quotes;
     }
+
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
     
+    
+
+    public List<Design> getDesign() {
+        return design;
+    }
+
+    public void setDesign(List<Design> design) {
+        this.design = design;
+    }
+
+    public List<ConstructionStaff> getConstructionStaffs() {
+        return constructionStaffs;
+    }
+
+    public void setConstructionStaffs(List<ConstructionStaff> constructionStaffs) {
+        this.constructionStaffs = constructionStaffs;
+    }
+
+    
+    public void addConstructionToStaff(Construction construction, int roleInProject) {
+        ConstructionStaff constructionStaff = new ConstructionStaff(new ConstructionStaffId(this.getId(), construction.getConstructionId()), this, construction, roleInProject);
+        this.constructionStaffs.add(constructionStaff);
+        construction.getConstructionStaffs().add(constructionStaff);
+    }
+
+    // Convenience method to remove a construction
+    public void removeConstructionFromStaff(Construction construction) {
+        ConstructionStaff constructionStaff = this.constructionStaffs.stream()
+            .filter(cs -> cs.getConstruction().equals(construction))
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Construction not assigned to staff"));
+
+        this.constructionStaffs.remove(constructionStaff);
+        construction.getConstructionStaffs().remove(constructionStaff);
+        constructionStaff.setConstruction(null);
+        constructionStaff.setStaff(null);
+    }
     
 }

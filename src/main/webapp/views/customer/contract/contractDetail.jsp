@@ -2,147 +2,254 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Contract Details</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+    <head>
+        <title>Contract Details</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <style>
+            .section-header {
+                margin-bottom: 20px;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 5px;
+            }
+            .contract-section {
+                margin-bottom: 40px;
+            }
+            .project-section, .term-section {
+                background-color: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+            }
+            .btn-custom {
+                margin-top: 20px;
+                padding: 10px 20px;
+            }
+            .status-badge {
+                font-size: 1.2em;
+                padding: 10px 15px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container mt-5">
+            <div class="row">
+                <!-- Contract Details Section (70%) -->
+                <div class="col-md-8 contract-section">
+                    <h2 class="section-header text-primary">Contract Details</h2>
+                    <table class="table table-hover table-striped">
+                        <tr>
+                            <th>Contract ID</th>
+                            <td>${contract.contractId}</td>
+                        </tr>
+                        <tr>
+                            <th>Contract Document</th>
+                            <td>
+                                <form action="/download/${contract.fileURL}" method="get">
+                                    <button type="submit" class="btn btn-primary">Download Contract</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Date Created</th>
+                            <td>${contract.dateCreate}</td>
+                        </tr>
+                        <tr>
+                            <th>Contract Status</th>
+                            <td>
 
-<div class="container mt-5">
-    <h2 class="mb-4">Contract Details</h2>
+                                <c:choose>
+                                    <c:when test="${contract.contractStatus == 1}">
+                                        <span class="badge badge-warning badge-status">Pending</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 2}">
+                                        <span class="badge badge-success badge-status">Approved by company</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 3}">
+                                        <span class="badge badge-danger badge-status">Rejected (Customer)</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 4}">
+                                        <span class="badge badge-danger badge-status">Rejected (Manager)</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 5}">
+                                        <span class="badge badge-secondary badge-status">Canceled</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 6}">
+                                        <span class="badge badge-success badge-status">Accepted</span>
+                                    </c:when>
+                                </c:choose>
 
-    <table class="table table-bordered">
-        <tr>
-            <th>Contract ID</th>
-            <td>${contract.contractId}</td>
-        </tr>
-        <tr>
-            <th>Date Created</th>
-            <td>${contract.dateCreate}</td>
-        </tr>
-        <tr>
-            <th>File URL</th>
-            <td><a href="/download/${contract.fileURL}">contract download</a></td>
-        </tr>
-        <tr>
-            <th>Total Price</th>
-            <td>${contract.totalPrice}</td>
-        </tr>
-        <tr>
-            <th>Price on Concept Design</th>
-            <td>${contract.priceOnConceptDesign}</td>
-        </tr>
-        <tr>
-            <th>Price on Construction Design</th>
-            <td>${contract.priceOnConstructionDesign}</td>
-        </tr>
-        <tr>
-            <th>Price on Detail Design</th>
-            <td>${contract.priceOnDetailDesign}</td>
-        </tr>
-        <tr>
-            <th>Price on Raw Construction</th>
-            <td>${contract.priceOnRawConstruction}</td>
-        </tr>
-        <tr>
-            <th>Price on Complete Construction</th>
-            <td>${contract.priceOnCompleteConstruction}</td>
-        </tr>
-        <tr>
-            <th>Contract Term</th>
-            <td>${contract.contractTerm}</td>
-        </tr>
-        <tr>
-            <th>Contract Status</th>
-            <td>
-                <c:choose>
-                    <c:when test="${contract.contractStatus == 1}">
-                        <span class="badge badge-warning">Pending</span>
-                    </c:when>
-                    <c:when test="${contract.contractStatus == 2}">
-                        <span class="badge badge-success">Approved</span>
-                    </c:when>
-                    <c:when test="${contract.contractStatus == 3}">
-                        <span class="badge badge-danger">Rejected</span>
-                    </c:when>
-                </c:choose>
-            </td>
-        </tr>
-        <tr>
-            <th>Contract Note</th>
-            <td>${contract.contractNote}</td>
-        </tr>
-    </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Total Price</th>
+                            <td>${contract.totalPrice}</td>
+                        </tr>
+                        <tr>
+                            <th>Price on Concept Design</th>
+                            <td>${contract.priceOnConceptDesign}</td>
+                        </tr>
+                        <tr>
+                            <th>Price on Construction Design</th>
+                            <td>${contract.priceOnConstructionDesign}</td>
+                        </tr>
+                        <tr>
+                            <th>Price on Detail Design</th>
+                            <td>${contract.priceOnDetailDesign}</td>
+                        </tr>
+                        <tr>
+                            <th>Price on Raw Construction</th>
+                            <td>${contract.priceOnRawConstruction}</td>
+                        </tr>
+                        <tr>
+                            <th>Price on Complete Construction</th>
+                            <td>${contract.priceOnCompleteConstruction}</td>
+                        </tr>
+                        <!-- Replaced file URL with a button -->
 
-    <!-- Buttons for Edit or Cancel when the status is Rejected (status == 3) -->
-    <c:choose>
-        <c:when test="${contract.contractStatus == 3}">
-            <div class="mt-4">
-                <a href="/contract/edit/${contract.contractId}" class="btn btn-primary">Edit</a>
-                <a href="/contract/cancel/${contract.contractId}" class="btn btn-danger">Cancel</a>
+                        <!-- Contract Status moved back into the table -->
+
+                    </table>
+
+                    <!-- Approve/Reject buttons placed below the main table -->
+                    <c:choose>
+                        <c:when test="${contract.contractStatus == 2}">
+                            <div class="mt-4 text-center">
+                                <form action="/customer/contract/editStatus" method="POST" class="d-inline">
+                                    <input type="hidden" name="id" value="${contract.contractId}">
+                                    <input type="hidden" name="status" value="6">
+                                    <button type="submit" class="btn btn-success">Accept</button>
+                                </form>
+                                <form action="/customer/contract/editStatus" method="POST" class="d-inline">
+                                    <input type="hidden" name="id" value="${contract.contractId}">
+                                    <input type="hidden" name="status" value="3">
+                                    <button type="submit" class="btn btn-warning">Reject</button>
+                                </form>
+                                <form action="/customer/contract/editStatus" method="POST" class="d-inline">
+                                    <input type="hidden" name="id" value="${contract.contractId}">
+                                    <input type="hidden" name="status" value="5">
+                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                </form>
+                            </div>
+                        </c:when>
+                    </c:choose>
+                </div>
+
+                <!-- Term and Project Details Section (30%) -->
+                <div class="col-md-4">
+                    <!-- Associated Project Details -->
+                    <div class="project-section mb-4">
+                        <h4 class="section-header text-primary">Associated Project</h4>
+                        <c:if test="${not empty contract.project}">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Project ID</th>
+                                    <td>${contract.project.projectId}</td>
+                                </tr>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <td>${contract.project.projectName}</td>
+                                </tr>
+                                <tr>
+                                    <th>Customer Name</th>
+                                    <td>${contract.customer.username}</td>
+                                </tr>
+                                <tr>
+                                    <th>Project Description</th>
+                                    <td>${contract.project.description}</td>
+                                </tr>
+                            </table>
+                        </c:if>
+                        <c:if test="${empty contract.project}">
+                            <p class="text-muted">No project is associated with this contract.</p>
+                        </c:if>
+                    </div>
+
+                    <!-- Associated Term Details -->
+                    <div class="term-section mb-4">
+                        <h4 class="section-header text-primary">Associated Term</h4>
+                        <c:if test="${not empty contract.term}">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Term ID</th>
+                                        <td>${contract.term.termId}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Term Description</th>
+                                        <td>${contract.term.description}</td>
+                                    </tr>
+
+                                    <!-- Payment on Design Stages -->
+                                    <tr>
+                                        <th>Payment on Concept Design</th>
+                                        <td>${contract.term.percentOnDesign1}%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment on Detailed Design</th>
+                                        <td>${contract.term.percentOnDesign2}%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment on Construction Design</th>
+                                        <td>${contract.term.percentOnDesign3}%</td>
+                                    </tr>
+
+                                    <!-- Payment on Construction Stages -->
+                                    <tr>
+                                        <th>Payment on Rough Construction</th>
+                                        <td>${contract.term.percentOnConstruct1}%</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment on Final Construction</th>
+                                        <td>${contract.term.percentOnConstruct2}%</td>
+                                    </tr>
+
+                                    <!-- Conditional Message for Payment Timing -->
+                                    <tr>
+                                        <th>Payment Timing for Design</th>
+                                        <td>
+                                            <c:if test="${contract.term.payOnStartOfDesign}">
+                                                Pay at the start of the design stage.
+                                            </c:if>
+                                            <c:if test="${!contract.term.payOnStartOfDesign}">
+                                                Payment follows normal design stage completion.
+                                            </c:if>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Payment Timing for Construction</th>
+                                        <td>
+                                            <c:if test="${contract.term.payOnStartOfConstruction}">
+                                                Pay at the start of the construction stage.
+                                            </c:if>
+                                            <c:if test="${!contract.term.payOnStartOfConstruction}">
+                                                Payment follows normal construction stage completion.
+                                            </c:if>
+                                        </td>
+                                    </tr>
+
+                                    <!-- Conditional Message for Follow Contract -->
+                                    <tr>
+                                        <th>Payment Based on Contract</th>
+                                        <td>
+                                            <c:if test="${contract.term.followContract}">
+                                                Pay the amount stated in the contract at the end of each stage.
+                                            </c:if>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </c:if>
+                        <c:if test="${empty contract.term}">
+                            <p>No terms are associated with this contract.</p>
+                        </c:if>
+                    </div>
+                </div>
             </div>
-        </c:when>
-        <c:otherwise>
-            <!-- If not rejected, show the current status with no buttons -->
-            <p>Status: 
-                <c:choose>
-                    <c:when test="${contract.contractStatus == 1}">
-                        <span class="badge badge-warning">Pending</span>
-                    </c:when>
-                    <c:when test="${contract.contractStatus == 2}">
-                        <span class="badge badge-success">Approved</span>
-                    </c:when>
-                    <c:when test="${contract.contractStatus == 3}">
-                        <span class="badge badge-danger">Rejected</span>
-                    </c:when>
-                </c:choose>
-            </p>
-        </c:otherwise>
-    </c:choose>
+        </div>
 
-    <h3 class="mt-5">Associated Project Details</h3>
-    <c:if test="${not empty contract.project}">
-        <table class="table table-bordered">
-            <tr>
-                <th>Project ID</th>
-                <td>${contract.project.projectId}</td>
-            </tr>
-            <tr>
-                <th>Project Name</th>
-                <td>${contract.project.projectName}</td>
-            </tr>
-            <tr>
-                <th>Project Description</th>
-                <td>${contract.project.description}</td>
-            </tr>
-        </table>
-    </c:if>
-    <c:if test="${empty contract.project}">
-        <p>No project is associated with this contract.</p>
-    </c:if>
-
-    <h3 class="mt-5">Associated Term Details</h3>
-    <c:if test="${not empty contract.term}">
-        <table class="table table-bordered">
-            <tr>
-                <th>Term ID</th>
-                <td>${contract.term.termId}</td>
-            </tr>
-            <tr>
-                <th>Term Description</th>
-                <td>${contract.term.description}</td>
-            </tr>
-        </table>
-    </c:if>
-    <c:if test="${empty contract.term}">
-        <p>No terms are associated with this contract.</p>
-    </c:if>
-</div>
-
-<!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </body>
 </html>

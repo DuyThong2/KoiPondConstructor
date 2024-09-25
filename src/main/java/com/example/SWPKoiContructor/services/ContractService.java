@@ -8,6 +8,7 @@ package com.example.SWPKoiContructor.services;
 import com.example.SWPKoiContructor.dao.ContractDAO;
 import com.example.SWPKoiContructor.entities.Contract;
 import java.util.List;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +27,29 @@ public class ContractService {
     }
     
     
-    public List<Contract> getContractList(){
-        return contractDAO.getListContract();
+//    public List<Contract> getContractList(){
+//        return contractDAO.getListContract();
+//    }
+    
+    public List<Contract> getContractListBaseOnSortAndPaging(int page, int size, String sortBy, String sortDirection){
+        return contractDAO.getSortedAndPaginated(page, size, sortBy, sortDirection);
+    }
+    
+    public int countContracts(){
+        return contractDAO.getTotalContracts();
+    }
+    
+    public int countContracts(boolean isCustomer, int id){
+        return contractDAO.getTotalContracts(isCustomer,id);
+    }
+    
+    public List<Contract> getContractListOfCustomer(int id, int page, int size, String sortBy, String sortDirection){
+        List<Contract> list = contractDAO.getSortedAndPaginatedByCustomer(id,page, size,  sortBy, sortDirection);
+        return list;
+    }
+    
+    public List<Contract> getContractListOfConsultant(int id, int page, int size, String sortBy, String sortDirection){
+        return contractDAO.getSortedAndPaginatedByConsultant(id, page, size, sortBy, sortDirection);
     }
     
     public Contract getContractById(int id){
@@ -35,12 +57,16 @@ public class ContractService {
     }
     
     @Transactional
-    public void createContract(Contract contract){
-        contractDAO.createNewContract(contract);
+    public Contract createContract(Contract contract){
+        return contractDAO.createNewContract(contract);
     }
     
     @Transactional
     public Contract changeStatusContract(int status, int id){
         return contractDAO.updateContractStatus(status, id);
     }
+    
+    
+    
+    
 }

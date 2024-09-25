@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -58,9 +59,19 @@ public class Contract {
     @ManyToOne
     @JoinColumn(name = "term_id")
     private Term term;
+
+
     
     @OneToOne(mappedBy = "contract")
     private Project project;
+    
+    @OneToOne()
+    @JoinColumn(name = "quote_id")
+    private Quotes quote;
+    
+    @ManyToOne()
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     public Contract(Date dateCreate, String fileURL, double totalPrice, double priceOnConceptDesign, double priceOnConstructionDesign, double priceOnDetailDesign, double priceOnRawConstruction, double priceOnCompleteConstruction, String contractTerm, int contractStatus, String contractNote, Term term, Project project) {
         this.dateCreate = dateCreate;
@@ -196,6 +207,44 @@ public class Contract {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public Quotes getQuote() {
+        return quote;
+    }
+
+    public void setQuote(Quotes quote) {
+        this.quote = quote;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+    
+    
+    
+    public boolean isContractBelongToCustomer(Customer customer, Contract contract) {
+        // Check if the contract and customer are not null
+        if (contract == null || customer == null) {
+            return false;
+        }
+        
+        // Check if the contract's customer is the same as the given customer
+        return contract.getCustomer() != null && contract.getCustomer().equals(customer);
+    }
+    
+    public boolean isContractBelongToStaff(Staff staff, Contract contract) {
+        // Check if contract, quote, and staff are not null
+        if (contract == null || staff == null || contract.getQuote() == null) {
+            return false;
+        }
+
+        // Check if the quote's staff is the same as the given staff
+        return contract.getQuote().getStaff() != null && contract.getQuote().getStaff().equals(staff);
     }
     
     

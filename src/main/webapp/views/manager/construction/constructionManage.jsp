@@ -1,19 +1,9 @@
-<%-- 
-    Document   : projectManage
-    Created on : Sep 21, 2024, 2:33:13 PM
-    Author     : ASUS
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-
-
+<!DOCTYPE html>
 <html>
     <head>
-        <title>Admin Dashboard - Projects</title>
+        <title>Construction Management</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
@@ -53,6 +43,9 @@
                                 <a class="nav-link" href="/manager/design">Design</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link" href="/manager/construction">Construction</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link" href="/admin/projects">Projects</a>
                             </li>
                             <li class="nav-item">
@@ -70,61 +63,71 @@
 
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <h2 class="mb-4">Project List</h2>
+                    <h2 class="mb-4">Construction List</h2>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">
                             <tr>
-                                <th>Project Id</th>
-                                <th>Project Name</th>
-                                <th>Date Start</th>
+                                <th>Construction Id</th>
+                                <th>Construction Name</th>
+                                <th>Customer Name</th>
                                 <th>Status</th>
-                                <th>More</th>
+                                <th>Project Id</th>
+                                <th>View Detail</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <!-- Static data for example -->
-                            <c:forEach var="project" items="${projectList}">
+                            <c:forEach var="list" items="${CONSTRUCTIONLIST}">
                                 <tr>
-                                    <td>${project.projectId}</td>
-                                    <td>${project.projectName}</td>
-                                    <td>${project.dateStart}</td>
-
+                                    <td>${list[0].constructionId}</td>
+                                    <td>${list[0].constructionName}</td>
+                                    <td>${list[2].name}</td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${project.status == 1}">
+                                            <c:when test="${list[0].constructionStatus == 1}">
                                                 <span class="badge badge-secondary">Pending</span>
                                             </c:when>
-                                            <c:when test="${project.status == 2}">
-                                                <span class="badge badge-primary">In Progress</span>
+                                            <c:when test="${list[0].constructionStatus == 2}">
+                                                <span class="badge badge-primary">Processing</span>
                                             </c:when>
-                                            <c:when test="${project.status == 3}">
+                                            <c:when test="${list[0].constructionStatus == 3}">
                                                 <span class="badge badge-success">Completed</span>
                                             </c:when>
-                                            <c:when test="${project.status == 4}">
-                                                <span class="badge badge-warning">Cancelled</span>
+                                            <c:when test="${list[0].constructionStatus == 4}">
+                                                <span class="badge badge-warning">Canceled</span>
                                             </c:when>
                                         </c:choose>
                                     </td>
-                                    <td>
-                                        <a href="/manager/project/${project.projectId}" class="btn btn-info">Detail</a>
-                                        <a href="/manager/project/${project.projectId}" class="btn btn-warning">Edit Staff</a>
-                                    </td>
+                                    <td>${list[1].projectId}</td>
+                                    <td><a href="/manager/construction/viewDetail${list[0].constructionId}" class="btn btn-info">Click Here</a></td>
+
                                 </tr>
                             </c:forEach>
-
                         </tbody>
-                    </table>    
+                    </table>
 
                     <!-- Pagination Controls -->
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <!-- Previous Button -->
-                        <button class="btn btn-primary" disabled>Previous</button>
-                        <!-- Page Indicator (Static for this example) -->
-                        <span>Page <strong>1</strong> of <strong>1</strong></span>
+                        <c:if test="${currentPage > 1}">
+                            <a href="?page=${currentPage - 1}" class="btn btn-primary">Previous</a>
+                        </c:if>
+                        <c:if test="${currentPage == 1}">
+                            <button class="btn btn-primary" disabled>Previous</button>
+                        </c:if>
+
+                        <!-- Page Indicator (Format: <1/99>) -->
+                        <span>Page <strong>${currentPage}</strong> of <strong>${totalPages}</strong></span>
+
                         <!-- Next Button -->
-                        <button class="btn btn-primary" disabled>Next</button>
+                        <c:if test="${currentPage < totalPages}">
+                            <a href="?page=${currentPage + 1}" class="btn btn-primary">Next</a>
+                        </c:if>
+                        <c:if test="${currentPage == totalPages}">
+                            <button class="btn btn-primary" disabled>Next</button>
+                        </c:if>
                     </div>
                 </main>
+
             </div>
         </div>
 
