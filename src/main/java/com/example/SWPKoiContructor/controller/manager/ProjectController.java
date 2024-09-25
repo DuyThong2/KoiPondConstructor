@@ -48,6 +48,7 @@ public class ProjectController {
         return "manager/projects/projectDetail";
     }
 
+
     @GetMapping("/manager/project/create")
     public String createProjectPage(@RequestParam("id") int contractId, Model model) {
         Contract contract = contractService.getContractById(contractId);
@@ -78,4 +79,5 @@ public class ProjectController {
         }
 
     }
+
 }

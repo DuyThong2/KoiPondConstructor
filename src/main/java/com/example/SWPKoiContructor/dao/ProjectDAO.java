@@ -30,6 +30,10 @@ public class ProjectDAO {
         TypedQuery<Project> query = entityManager.createQuery("Select c from Project c order by c.status asc, c.dateStart desc", Project.class);
         return query.getResultList();
     }
+    public List<Project> getProjectListIsSharable(){
+        TypedQuery<Project> query = entityManager.createQuery("Select c from Project c where c.isSharedAble=1 order by c.dateEnd desc", Project.class);
+        return query.getResultList();
+    }
     public Project getProjectById(int id){
         try{
             return entityManager.find(Project.class,id);
@@ -69,4 +73,5 @@ public class ProjectDAO {
             return entityManager.merge(updateStatusProject);
         } return null;
     }
+
 }
