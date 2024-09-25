@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConstructionStageDetailService {
     private ConstructionStageDetailDAO constructionStageDetailDao;
+    
+    
 
     public ConstructionStageDetailService(ConstructionStageDetailDAO constructionStageDetailDao) {
         this.constructionStageDetailDao = constructionStageDetailDao;

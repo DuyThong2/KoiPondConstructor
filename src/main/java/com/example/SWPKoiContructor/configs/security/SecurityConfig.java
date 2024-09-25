@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/customer/**").hasRole("CUSTOMER") // Only customers can access /customer/*
                 .antMatchers("/manager/**").hasRole("MANAGER") // Only staff can access /staff/*
                 .antMatchers("/consultant/**").hasRole("CONSULTANT")
-                .antMatchers("/design/**").hasRole("DESIGNER")
+                .antMatchers("/designer/**").hasRole("DESIGNER")
                 .antMatchers("/constructor/**").hasRole("CONSTRUCTOR")
                 .antMatchers("/login", "/resources/**","/","/register").permitAll()
                 .anyRequest().authenticated()

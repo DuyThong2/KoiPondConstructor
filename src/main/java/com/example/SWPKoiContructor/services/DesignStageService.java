@@ -5,6 +5,7 @@ import com.example.SWPKoiContructor.dao.DesignStageDetailDAO;
 import com.example.SWPKoiContructor.entities.DesignStage;
 import com.example.SWPKoiContructor.entities.DesignStageDetail;
 import java.util.List;
+import org.springframework.context.annotation.Lazy;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,16 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class DesignStageService {
 
    
-    private DesignStageDAO designStageDao;
+    
 
     private DesignStageDAO designStageDAO;
     private DesignService designService;
-    private DesignStageDetailDAO designStageDetail;
+    private DesignStageDetailDAO designStageDetailDAO;
 
-    public DesignStageService(DesignStageDAO designStageDAO,DesignService designService,DesignStageDetailDAO designStageDetail) {
+    public DesignStageService(DesignStageDAO designStageDAO,@Lazy DesignService designService,DesignStageDetailDAO designStageDetail) {
         this.designStageDAO = designStageDAO;
         this.designService = designService;
-        this.designStageDetail = designStageDetail;
+        this.designStageDetailDAO = designStageDetail;
     }
 
     public List<DesignStage> getDesignStageListOfDesign(int id) {
@@ -35,7 +36,7 @@ public class DesignStageService {
         DesignStage designStage = designStageDAO.getDesignStageById(designStageId);
 
         if (designStage != null) {
-            List<DesignStageDetail> details = designStageDetail.getDesignStageDetailOfDesignStage(designStageId);
+            List<DesignStageDetail> details = designStageDetailDAO.getDesignStageDetailOfDesignStage(designStageId);
             boolean allCompleted = details.stream().allMatch(detail -> detail.getStatus() == 4); // All completed
             boolean anyProcessing = details.stream().anyMatch(detail -> detail.getStatus() == 2); // Any processing
 
@@ -62,21 +63,21 @@ public class DesignStageService {
 
         
     public DesignStage getDesignStageById(int id) {
-        return designStageDao.getDesignStageById(id);
+        return designStageDAO.getDesignStageById(id);
     }
     
     public List<DesignStage> getDesignStageByDesignId(int id) {
-        return designStageDao.getDesignStageListOfDesign(id);
+        return designStageDAO.getDesignStageListOfDesign(id);
     }
     
      
     public List<DesignStage> getDesignStageByDesignIdAndName(int designId, String stageName) {
-        return designStageDao.getDesignStageByDesignIdAndName(designId, stageName);
+        return designStageDAO.getDesignStageByDesignIdAndName(designId, stageName);
     }
     
     @Transactional
     public DesignStage updateDesignStage(DesignStage designStage) {
-        return designStageDao.updateDesignStage(designStage);
+        return designStageDAO.updateDesignStage(designStage);
     }
     
     private void allowNextDesignStage(int designId, int completedStageId) {

@@ -17,13 +17,10 @@ import java.util.List;
 public class ProjectService {
 
     private ProjectDAO projectDAO;
-    private DesignService designService;
-    private ConstructionService constructionService;
+    
 
-    public ProjectService(ProjectDAO projectDAO, DesignService designService, ConstructionService constructionService) {
+    public ProjectService(ProjectDAO projectDAO) {
         this.projectDAO = projectDAO;
-        this.designService = designService;
-        this.constructionService = constructionService;
     }
 
     public List<Project> getProjectList() {

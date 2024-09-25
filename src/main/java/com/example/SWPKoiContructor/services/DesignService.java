@@ -7,6 +7,7 @@ import com.example.SWPKoiContructor.entities.Design;
 import com.example.SWPKoiContructor.entities.DesignStage;
 import com.example.SWPKoiContructor.entities.Project;
 import java.util.List;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,17 +16,18 @@ public class DesignService {
 
     private DesignDAO designDao;
     private DesignStageDAO designStageDAO;
-    private DesignStageService designStageService;
     private ProjectService projectService;
     private ConstructionService constructionService;
 
-    public DesignService(DesignDAO designDao, DesignStageDAO designStageDAO, DesignStageService designStageService, ProjectService projectService, ConstructionService constructionService) {
+    public DesignService(DesignDAO designDao, DesignStageDAO designStageDAO,@Lazy DesignStageService designStageService, ProjectService projectService, ConstructionService constructionService) {
         this.designDao = designDao;
         this.designStageDAO = designStageDAO;
-        this.designStageService = designStageService;
+        
         this.projectService = projectService;
         this.constructionService = constructionService;
     }
+
+    
 
     public List<Object[]> getListDesignWithCustomerName() {
         return designDao.getListDesignWithCustomerName();

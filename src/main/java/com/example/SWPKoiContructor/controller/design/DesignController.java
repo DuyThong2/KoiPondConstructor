@@ -33,39 +33,18 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class DesignController {
 
-    @Autowired
+    
     private FileUtility fileUtility;
-
-    @Autowired
     private DesignService designService;
-
-    @Autowired
-    private StaffService staffService;
-
-    @Autowired
     private DesignStageService designStageService;
-
-    @Autowired
-    private DesignStageDetailService designStageDetailService;
-
-    @Autowired
     private BluePrintService bluePrintService;
-
-    @Autowired
-    private ProjectService projectService;
-
-    @Autowired
-    private CustomerService customerService;
     
     
-    public DesignController(DesignService designService, StaffService staffService, DesignStageService designStageService, DesignStageDetailService designStageDetailService, BluePrintService bluePrintService, ProjectService projectService, CustomerService customerService) {
+    
+    public DesignController(DesignService designService, DesignStageService designStageService, DesignStageDetailService designStageDetailService, BluePrintService bluePrintService) {
         this.designService = designService;
-        this.staffService = staffService;
         this.designStageService = designStageService;
-        this.designStageDetailService = designStageDetailService;
         this.bluePrintService = bluePrintService;
-        this.projectService = projectService;
-        this.customerService = customerService;
         fileUtility = new FileUtility();
     }
 
