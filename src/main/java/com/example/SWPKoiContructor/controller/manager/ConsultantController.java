@@ -79,4 +79,10 @@ public class ConsultantController {
         return "consultant/consultantDetail";
     }
     
+    @GetMapping("/consultant/viewConsultantDetail/updateStatus")
+    public String updateConsultantStatus(@RequestParam("consultantId")int consultantId, @RequestParam("statusId")int statusId, Model model){
+        Consultant consultant = consultantService.updateConsultantStatus(consultantId, statusId);
+        return "redirect:/consultant/viewConsultantDetail/" + consultantId;
+    }
+    
 }

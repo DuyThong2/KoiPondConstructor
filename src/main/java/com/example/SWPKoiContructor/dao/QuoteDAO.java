@@ -30,6 +30,12 @@ public class QuoteDAO {
         return tq.getResultList();
     }
     
+    public List<Quotes> getQuotesListByStaffId(int staffId){
+        TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q WHERE q.staff.id = :id", Quotes.class);
+        tq.setParameter("id", staffId);
+        return tq.getResultList();
+    }
+    
     public Quotes getQuoteById(int id){
         TypedQuery<Quotes> tq = entityManager.createQuery("select q from Quotes q where q.quotesId = :id", Quotes.class);
         tq.setParameter("id", id);
@@ -43,5 +49,11 @@ public class QuoteDAO {
     
     public Quotes saveQuote(Quotes quotes){
         return entityManager.merge(quotes);
+    }
+    
+    public Quotes updateQuoteStatus(int quoteId, int quoteStatus){
+        Quotes quotes = getQuoteById(quoteId);
+        quotes.setQuotesStatus(quoteStatus);
+        return quotes;
     }
 }

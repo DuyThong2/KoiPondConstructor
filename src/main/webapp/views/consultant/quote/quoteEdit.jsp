@@ -1,6 +1,6 @@
 <%-- 
-    Document   : quoteCreate
-    Created on : Sep 21, 2024, 9:26:56 PM
+    Document   : quoteEdit
+    Created on : Sep 25, 2024, 2:42:52 AM
     Author     : HP
 --%>
 
@@ -57,8 +57,9 @@
                     <h2 class="mb-4">Create Quote</h2>
 
                     <!-- Bind the form to the "contract" object -->
-                    <form:form action="/consultant/quote/saveNewQuotes" modelAttribute="newQuote" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="true">
-
+                    <form:form action="/consultant/quote/saveUpdateQuote" modelAttribute="newQuote" method="put" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                        <form:hidden path="quotesId" value="${newQuote.quotesId}"/>
+                        
                         <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
 
                         <form:hidden path="customer.id" value="${customer.id}" />
@@ -116,7 +117,7 @@
                             <button type="button" class="btn btn-warning" onclick="updateCostsBasedOnParcel()">Auto Adjust Costs</button>
                         </div>
 
-                        <button  type="submit" class="btn btn-primary">Create Contract</button>
+                        <button  type="submit" class="btn btn-primary">Edit Contract</button>
                     </form:form>
                 </div>       
             </div>
@@ -170,5 +171,3 @@
 
     </body>
 </html>
-
-

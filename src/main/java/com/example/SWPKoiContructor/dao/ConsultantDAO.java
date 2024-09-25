@@ -64,7 +64,7 @@ public class ConsultantDAO {
     }
     
     
-    
+    //update consultant status
     public Consultant updateConsultantStatus(int id, int status){
         Consultant consultant = getConsultantById(id);
         consultant.setConsultantStatus(status);

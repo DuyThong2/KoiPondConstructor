@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -41,13 +42,27 @@ public class QuoteController {
     }
 
     @GetMapping("consultant/quote")
-    public String getQuoteList(Model model) {
-        List<Quotes> list = quoteService.getQuoteList();
+    public String getQuoteListByStaffId(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        List<Quotes> list = quoteService.getQuoteListByStaffId(user.getId());
         model.addAttribute("quoteList", list);
         return "consultant/quote/quoteManage";
     }
+    
+    @GetMapping("consultant/quote/detail/{id}")
+    public String getQuoteDetailById(@PathVariable("id")int quoteId, Model model){
+        Quotes quotes = quoteService.getQuoteById(quoteId);
+        model.addAttribute("quotes", quotes);
+        return "/consultant/quote/quoteDetail";
+    }
+    
+    @GetMapping("consultant/quote/detail/updateStatus")
+    public String updateQuoteStatus(@RequestParam("quoteId")int quoteId, @RequestParam("statusId")int statusId, Model model){
+        Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
+        return "redirect:/consultant/quote/detail/" + quoteId;
+    }
 
-    @GetMapping("consultant/quote/createNewQuotes")
+    @PostMapping("consultant/quote/createNewQuotes")
     public String createNewQuote(@RequestParam("consultantId") int consultantId, Model model, HttpSession session) {
         Quotes newQuote = new Quotes();
         Consultant consultant = consultantService.getConsultantById(consultantId);
@@ -64,12 +79,31 @@ public class QuoteController {
         return "redirect:/consultant/viewConsultantList";
     }
 
-    @PostMapping("consultant/quote/createNewQuotes")
+    @PostMapping("consultant/quote/saveNewQuotes")
     public String saveQuote(@ModelAttribute("newQuote") Quotes newQuote) {
         newQuote.setQuotesStatus(1);
         newQuote.setQuotesDate(new Date());
         newQuote = quoteService.saveQuotes(newQuote);
         return "redirect:/consultant/quote";
+    }
+    
+    @PostMapping("consultant/quote/updateQuote")
+    public String updateQuoteById(@RequestParam("quoteId")int quoteId, Model model){
+        Quotes quotes = quoteService.getQuoteById(quoteId);
+        model.addAttribute("newQuote", quotes);
+        model.addAttribute("customer", quotes.getCustomer());
+        model.addAttribute("staff", quotes.getStaff());
+        model.addAttribute("consultant", quotes.getConsultant());
+        model.addAttribute("parcelList", parcelService.viewParcelList());
+        return "consultant/quote/quoteEdit";
+    }
+    
+    @PutMapping("consultant/quote/saveUpdateQuote")
+    public String saveUpdateQuoteById(@ModelAttribute("newQuote") Quotes newQuote) {
+        newQuote.setQuotesStatus(1);
+        newQuote.setQuotesDate(new Date());
+        newQuote = quoteService.saveQuotes(newQuote);
+        return "redirect:/consultant/quote/detail/" + newQuote.getQuotesId();
     }
 
 }

@@ -89,9 +89,32 @@
 
                     <!-- Approve/Reject buttons placed below the main table -->
                     <c:choose>
+                        <c:when test="${consultant.consultantStatus == 2}">
+                            <div class="">
+                                <form action="/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
+                                    <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
+                                    <input type="hidden" name="statusId" value="3">
+                                    <button type="submit" class="btn btn-secondary">Begin</button>
+                                </form>
+                            </div>
+                        </c:when>
+                        <c:when test="${consultant.consultantStatus == 3}">
+                            <div class="">
+                                <form action="/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
+                                    <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
+                                    <input type="hidden" name="statusId" value="4">
+                                    <button type="submit" class="btn btn-success">Completed</button>
+                                </form>
+                                <form action="/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
+                                    <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
+                                    <input type="hidden" name="statusId" value="5">
+                                    <button type="submit" class="btn btn-danger">Cancel</button>
+                                </form>
+                            </div>
+                        </c:when>
                         <c:when test="${consultant.consultantStatus == 4 && empty consultant.quotes}">
                             <div class="">
-                                <form action="/consultant/quote/createNewQuotes" method="get" class="d-inline">
+                                <form action="/consultant/quote/createNewQuotes" method="post" class="d-inline">
                                     <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
                                     <button type="submit" class="btn btn-success">Create New Quote</button>
                                 </form>
