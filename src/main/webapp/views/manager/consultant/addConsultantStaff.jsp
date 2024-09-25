@@ -81,31 +81,31 @@
                         <tbody>
                             <c:forEach var="staff" items="${consultantStaffList}">
 
-                                <tr class=${consultant.staff.staffId == staff.staffId?"current":""}>                                  
-                                    <td>${staff.staffId}</td>
+                                <tr class=${consultant.staff.id == staff.id?"current":""}>                                  
+                                    <td>${staff.id}</td>
                                     <td>${staff.name}</td>
-                                    <td>${staff.staffPhone}</td>
-                                    <td>${staff.staffEmail}</td>
+                                    <td>${staff.phone}</td>
+                                    <td>${staff.email}</td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${staff.status}">
+                                            <c:when test="${staff.enabled}">
                                                 <span class="badge badge-warning badge-status">Active</span>
                                             </c:when>
-                                            <c:when test="${staff.status}">
+                                            <c:when test="${staff.enabled}">
                                                 <span class="badge badge-secondary badge-status">Not Active</span>
                                             </c:when>                                          
                                         </c:choose>
                                     </td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${consultant.staff.staffId != staff.staffId}">
+                                            <c:when test="${consultant.staff.id != staff.id}">
                                                 <form action="/manager/consultant/viewConsultantStaffList/editConsultantStaff" method="POST" class="d-inline">
                                                     <input type="hidden" name="id" value="${consultant.consultantId}">
-                                                    <input type="hidden" name="staffId" value="${staff.staffId}">
+                                                    <input type="hidden" name="staffId" value="${staff.id}">
                                                     <button type="submit" class="btn btn-info">Update Staff</button>
                                                 </form>             
                                             </c:when>
-                                            <c:when test="${consultant.staff.staffId == staff.staffId}">
+                                            <c:when test="${consultant.staff.id == staff.id}">
                                                 <a class="btn btn-success" style="pointer-events: none;">Current Staff</a>
                                             </c:when>
                                         </c:choose>

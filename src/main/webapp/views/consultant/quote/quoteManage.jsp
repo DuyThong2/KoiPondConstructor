@@ -89,6 +89,8 @@
                                     <td>${quote.quotesConstructionCost}</td>
                                     <td>${quote.quotesTotalPrice}</td>
                                     <td>
+                                    <!--1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 
+                                        5.refused(customer), 6.refused(by staff), 7. cancel -->
                                         <c:choose>
                                             <c:when test="${quote.quotesStatus == 1}">
                                                 <span class="badge badge-warning badge-status">Pending</span>
@@ -97,25 +99,24 @@
                                                 <span class="badge badge-secondary badge-status">Approved</span>
                                             </c:when>
                                             <c:when test="${quote.quotesStatus == 3}">
-                                                <span class="badge badge-danger badge-status">Rejected</span>
+                                                <span class="badge badge-danger badge-status">Rejected By Manager</span>
                                             </c:when>
                                             <c:when test="${quote.quotesStatus == 4}">
-                                                <span class="badge badge-success badge-status">accepted</span>
+                                                <span class="badge badge-success badge-status">Accepted By Customer</span>
                                             </c:when>
                                             <c:when test="${quote.quotesStatus == 5}">
-                                                <span class="badge badge-success badge-status">refused</span>
+                                                <span class="badge badge-success badge-status">Refused By Customer</span>
                                             </c:when>
                                             <c:when test="${quote.quotesStatus == 6}">
-                                                <span class="badge badge-success badge-status">refused</span>
+                                                <span class="badge badge-success badge-status">Refuse By Staff</span>
                                             </c:when>
                                             <c:when test="${quote.quotesStatus == 7}">
                                                 <span class="badge badge-success badge-status">cancel</span>
                                             </c:when>
                                         </c:choose>
                                     </td>
-                                    <td>
-                                        <a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-info">Edit Status</a>                                      
-                                        <a href="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" class="btn btn-primary">Detail</a> 
+                                    <td>                                   
+                                        <a href="/consultant/quote/detail/${quote.quotesId}" class="btn btn-primary">Detail</a> 
                                     </td>
                                 </tr>
                             </c:forEach>
