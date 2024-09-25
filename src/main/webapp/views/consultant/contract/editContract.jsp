@@ -63,7 +63,8 @@
                     <!-- Bind the form to the "contract" object -->
                     <form:form action="${pageContext.request.contextPath}/consultant/contract/edit" modelAttribute="contract" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
-
+                        
+                        <form:hidden path="contractId" value="${contract.contractId}"/>
 
                         <form:hidden path="customer.customerId" value="${customer.customerId}" />
                         <div class="form-group">

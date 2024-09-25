@@ -19,63 +19,59 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
 /**
  *
  * @author Admin
  */
-
 @Entity
 @Table(name = "project")
 public class Project {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int projectId;
-    
+
     @Column(name = "project_name")
     private String projectName;
-    
+
     private String address;
-    
+
     private String style;
-    
+
     private String description;
-    
+
     @Temporal(TemporalType.DATE)
     @Column(name = "date_start")
     private Date dateStart;
-    
+
     @Temporal(TemporalType.DATE)
-    @Column(name="date_end")
+    @Column(name = "date_end")
     private Date dateEnd;
-    
-    @Column(name="project_status")
+
+    @Column(name = "project_status")
     private int status;
-    
+
     @Column(name = "img_url")
     private String imgURL;
-    
+
     @Lob
     @Column(name = "project_content")
     private String content;
-    
+
     private int stage;
-    
-    @Column(name="is_shareable", columnDefinition= "bit default 0")
+
+    @Column(name = "is_shareable", columnDefinition = "bit default 0")
     private boolean isSharedAble;
-    
 
     @OneToOne()
     @JoinColumn(name = "contract_id")
     private Contract contract;
-    
-    @OneToOne(mappedBy="project", cascade = CascadeType.ALL,orphanRemoval = true)
-    private Construction construction;
-    
-    @OneToOne(mappedBy="project", cascade = CascadeType.ALL,orphanRemoval = true)
-    private Design design;
 
+    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Construction construction;
+
+    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Design design;
 
     public Project(String projectName, String address, String style, String description, Date dateStart, Date dateEnd, int status, String imgURL, String content, int stage, boolean isSharedAble) {
         this.projectName = projectName;
@@ -190,7 +186,6 @@ public class Project {
         this.isSharedAble = isSharedAble;
     }
 
-
     public Contract getContract() {
         return contract;
     }
@@ -215,32 +210,34 @@ public class Project {
         this.design = design;
     }
 
-    
-    
-
-
-    public void addDesign(Design design){
+    public void addDesign(Design design) {
         this.design = design;
         design.setProject(this);
     }
-    
-    public void addConstruction(Construction construction){
+
+    public void addConstruction(Construction construction) {
         this.construction = construction;
         construction.setProject(this);
     }
-    
-    public void removeDesign(Design design){
+
+    public void removeDesign(Design design) {
         this.design = null;
         design.setProject(null);
     }
-    
-    public void removeConstruction(Construction construction){
+
+    public void removeConstruction(Construction construction) {
         this.construction = null;
         construction.setProject(null);
     }
-    
-    
-    
-    
-    
+
+    public boolean isProjectBelongToCustomer(Project project, Customer customer) {
+        // Assuming the Project has a reference to the customer
+        if (project.getContract() != null && project.getContract().getCustomer() != null) {
+            if (project.getContract().getCustomer().getId() == customer.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

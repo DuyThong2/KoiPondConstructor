@@ -229,11 +229,16 @@ public class ContractController {
     @GetMapping("/manager/contract/edit")
     public String updateContractByManager(@RequestParam("id") int contractId, Model model) {
         Contract contract = contractService.getContractById(contractId);
-        model.addAttribute("contract", contract);
+        if (contract != null){
+             model.addAttribute("contract", contract);
         model.addAttribute("quote", contract.getQuote());
         model.addAttribute("terms", termService.getAllTemplateTerm());
         model.addAttribute("customer", contract.getCustomer());
         return "manager/contract/editContract";
+        }else{
+            return "redirect:/manager/contract";
+        }
+       
     }
 
     @PutMapping("/manager/contract/edit")
@@ -241,7 +246,7 @@ public class ContractController {
             @RequestParam("file") MultipartFile file) {
         String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
         contract.setFileURL(fileURL);
-        contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
+        contract.setContractStatus(2);  // Assuming 1 is for 'Pending'
         contract.setDateCreate(new Date());
 
         // Save the contract entity

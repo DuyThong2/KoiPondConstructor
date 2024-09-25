@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import javax.persistence.FlushModeType;
+import javax.persistence.NoResultException;
 
 /**
  *
@@ -33,12 +35,19 @@ public class ProjectDAO {
         return query.getResultList();
     }
     public Project getProjectById(int id){
-        return entityManager.find(Project.class,id);
+        try{
+            return entityManager.find(Project.class,id);
+        }catch (NoResultException e){
+            return null;
+        }
+        
     }
 
     public Project createProject(Project project){
-      entityManager.persist(project);
-      return project;
+      entityManager.setFlushMode(FlushModeType.COMMIT);
+      Project result = entityManager.merge(project);
+      entityManager.setFlushMode(FlushModeType.AUTO);
+      return result;
     }
 
     public Project updateProject(Project project){

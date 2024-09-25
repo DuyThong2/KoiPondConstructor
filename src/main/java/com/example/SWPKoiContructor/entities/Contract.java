@@ -227,8 +227,25 @@ public class Contract {
     
     
     
+    public boolean isContractBelongToCustomer(Customer customer, Contract contract) {
+        // Check if the contract and customer are not null
+        if (contract == null || customer == null) {
+            return false;
+        }
+        
+        // Check if the contract's customer is the same as the given customer
+        return contract.getCustomer() != null && contract.getCustomer().equals(customer);
+    }
     
-    
+    public boolean isContractBelongToStaff(Staff staff, Contract contract) {
+        // Check if contract, quote, and staff are not null
+        if (contract == null || staff == null || contract.getQuote() == null) {
+            return false;
+        }
+
+        // Check if the quote's staff is the same as the given staff
+        return contract.getQuote().getStaff() != null && contract.getQuote().getStaff().equals(staff);
+    }
     
     
 
