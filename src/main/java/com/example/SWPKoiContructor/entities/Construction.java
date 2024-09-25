@@ -124,7 +124,7 @@ public class Construction {
         constructionStage.setConstruction(null);
     }
     
-    public List<ConstructionStage> createListOfDesignStage(Project project){
+    public List<ConstructionStage> createListOfConstructionStage(Project project){
         Term term = project.getContract().getTerm();
         Contract contract = project.getContract();
         ConstructionStage raw = null;
@@ -173,6 +173,20 @@ public class Construction {
         constructionStaff.setStaff(null); // Break bidirectional relationship
     }
 
+    public boolean isStaffAssignedToConstruction(Staff staff, Construction construction) {
+        if (staff == null || construction == null) {
+            return false;
+        }
+
+        // Iterate over the constructionStaffs list to see if the staff is assigned to the construction
+        for (ConstructionStaff constructionStaff : construction.getConstructionStaffs()) {
+            if (constructionStaff.getStaff().equals(staff)) {
+                return true;
+            }
+        }
+
+        return false; // Staff is not assigned to the construction
+    }
     
     
 

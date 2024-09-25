@@ -150,6 +150,21 @@ public class Design {
         return result;
     }
     
+     public boolean isStaffInDesignPhase(Staff staff, Design design) {
+        if (staff == null || design == null) {
+            return false; // Return false if either the staff or design is null
+        }
+
+        // Iterate over the staff list in the design and check if the staff is involved
+        for (Staff designStaff : design.getStaff()) {
+            if (designStaff.equals(staff)) {
+                return true; // Staff is part of the design
+            }
+        }
+
+        return false; // Staff is not part of the design
+    }
+    
     
     
 }

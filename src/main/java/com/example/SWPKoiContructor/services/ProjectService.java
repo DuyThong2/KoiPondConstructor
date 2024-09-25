@@ -87,7 +87,7 @@ public class ProjectService {
         construction.setConstructionStatus(1);
 
         construction.setConstructionName(project.getProjectName() + " construction");
-        List<ConstructionStage> listConstructionStage = construction.createListOfDesignStage(project);
+        List<ConstructionStage> listConstructionStage = construction.createListOfConstructionStage(project);
         listConstructionStage.forEach(constructionStage -> construction.addConstructionStage(constructionStage));
 
         ConstructionStage raw = listConstructionStage.get(0);
@@ -100,5 +100,7 @@ public class ProjectService {
         completeDetail.forEach(detail -> complete.addContructionDetailStage(detail));
         return construction;
     }
+    
+    
 
 }
