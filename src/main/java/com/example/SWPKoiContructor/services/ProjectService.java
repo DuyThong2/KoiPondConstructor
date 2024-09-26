@@ -110,8 +110,8 @@ public class ProjectService {
         return construction;
     }
     
-    @Transactional
-    public void propagateStatusToProject(int projectId) {
+    
+    protected void propagateStatusToProject(int projectId) {
         Project project = getProjectById(projectId);
         
         if (project != null) {
@@ -120,8 +120,8 @@ public class ProjectService {
 
             // Step 1: Update Project Status Based on Design and Construction
             if (design != null && design.getStatus() == 3 && (construction == null || construction.getConstructionStatus() == 3)) {
-                project.setStatus(3); // Completed (Both Design and Construction are completed)
-                project.setStage(5); // Finish
+                project.setStatus(2); // Completed (Both Design and Construction are completed)
+                project.setStage(4); // Finish
             } else if (construction != null && construction.getConstructionStatus() == 2) {
                 project.setStatus(2); // Processing
                 project.setStage(3); // Construction

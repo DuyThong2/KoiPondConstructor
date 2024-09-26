@@ -31,7 +31,7 @@ public class ConstructionStage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int constructionStageId;
 
-    @Column(name = "construction_name")
+    @Column(name = "construction_stage_name")
     private String constructionStageName;
 
     @Column(name = "construction_stage_price")

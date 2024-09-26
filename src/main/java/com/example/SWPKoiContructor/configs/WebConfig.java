@@ -22,6 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:" + System.getProperty("user.home") + "/Desktop/uploads/");
         
+        
          
     }
     

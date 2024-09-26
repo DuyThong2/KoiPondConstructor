@@ -67,10 +67,15 @@ public class ProjectController {
     @GetMapping("/manager/projects/{id}")
     public String ProjectDetail(@PathVariable("id") int id, Model model) {
         Project project = projectService.getProjectById(id);
-        Customer customer = project.getContract().getCustomer();
+        if (project != null){
+            Customer customer = project.getContract().getCustomer();
         model.addAttribute("customer", customer);
         model.addAttribute("project", project);
         return "manager/projects/projectDetail";
+        }else{
+            return "redirect:/manager/projects";
+        }
+        
     }
 
 
@@ -100,8 +105,8 @@ public class ProjectController {
             project.setDateStart(Utility.localDateToUtilDate(localDate));
             project.setStage(1);
             project.setIsSharedAble(false);
-            projectService.createProject(project);
-            return "redirect:/manager/projects/" + project.getProjectId();
+            Project newlyCreatedProject = projectService.createProject(project);
+            return "redirect:/manager/projects/" + newlyCreatedProject.getProjectId();
         } else {
             return "redirect:/manager/contracts";
         }
