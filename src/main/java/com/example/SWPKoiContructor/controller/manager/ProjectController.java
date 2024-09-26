@@ -37,7 +37,7 @@ public class ProjectController {
 
     public String ProjectList(Model model,
     @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "5") int size,
+    @RequestParam(defaultValue = "10") int size,
     @RequestParam(defaultValue = "status") String sortBy,
     @RequestParam(defaultValue = "asc") String sortType,
                               @RequestParam(required = false) Integer statusFilter,
@@ -64,8 +64,9 @@ public class ProjectController {
         return "manager/projects/projectManage";
     }
 
-    @GetMapping("/manager/projects/{id}")
-    public String ProjectDetail(@PathVariable("id") int id, Model model) {
+
+    @GetMapping("/manager/projects/details/{id}")
+    public String PrọectDetail(@PathVariable("id") int id, Model model){
         Project project = projectService.getProjectById(id);
         Customer customer = project.getContract().getCustomer();
         model.addAttribute("customer", customer);
@@ -108,7 +109,11 @@ public class ProjectController {
 
     }
 
-
-
+    @GetMapping("/manager/projects/assign/{id}")
+    public String assignStaffPage(@PathVariable int id,Model model) {
+        Project project = projectService.getProjectById(id);
+        model.addAttribute("project", project);
+        return "manager/projects/projectAssignStaff";
+    }
 
 }

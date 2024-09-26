@@ -179,12 +179,14 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="/manager/projects/${project.projectId}" class="btn btn-info">Detail</a>
-                                        <a href="/manager/projects/${project.projectId}" class="btn btn-warning">Edit Staff</a>
+                                        <a href="/manager/projects/details/${project.projectId}" class="btn btn-info">Detail</a>
+                                        <c:if test="${project.stage!=1 && project.stage!=5}">
+                                         <a href="/manager/projects/assign/${project.projectId}" class="btn btn-warning">Edit Staff</a>
+                                        </c:if>
                                     </td>
                                 </tr>
                             </c:forEach>
-                        </tbody>
+                        </tbody>    
                     </table>    
 
                     <!-- Pagination Controls -->

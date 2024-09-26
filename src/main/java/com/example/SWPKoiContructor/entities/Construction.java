@@ -8,6 +8,7 @@ package com.example.SWPKoiContructor.entities;
 import com.example.SWPKoiContructor.entities.compositeKeys.ConstructionStaffId;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,6 +19,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import javax.annotation.Generated;
+import javax.persistence.*;
 
 /**
  *
@@ -30,7 +34,7 @@ public class Construction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int constructionId;
-    
+
     @Column(name = "construction_name")
     private String constructionName;
     
@@ -41,24 +45,37 @@ public class Construction {
     @JoinColumn(name = "project_id")
     private Project project;
     
+
     @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConstructionStage> constructionStage = new ArrayList<>(); 
     
     @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL)
     private List<ConstructionStaff> constructionStaffs;
 
+
+    @ManyToMany
+    @JoinTable(
+            name="Construction_Staff",
+            joinColumns = @JoinColumn(name="construction_id"),
+            inverseJoinColumns = @JoinColumn(name="staff_id")
+    )
+    private List<Staff> staff;
     public Construction(int constructionId, String constructionName, int constructionStatus) {
         this.constructionId = constructionId;
         this.constructionName = constructionName;
         this.constructionStatus = constructionStatus;
     }
 
-    public Construction(String constructionName, int constructionStatus) {
+
+    public Construction(int constructionId, String constructionName, int constructionStatus, Project project, List<ConstructionStage> constructionStage, List<Staff> staff) {
+        this.constructionId = constructionId;
         this.constructionName = constructionName;
         this.constructionStatus = constructionStatus;
+        this.project = project;
+        this.constructionStage = constructionStage;
+        this.staff = staff;
     }
-    
-    
+
 
     public Construction() {
     }
@@ -77,6 +94,14 @@ public class Construction {
 
     public void setConstructionName(String constructionName) {
         this.constructionName = constructionName;
+    }
+
+    public List<Staff> getStaff() {
+        return staff;
+    }
+
+    public void setStaff(List<Staff> staff) {
+        this.staff = staff;
     }
 
     public int getConstructionStatus() {
@@ -187,10 +212,12 @@ public class Construction {
 
         return false; // Staff is not assigned to the construction
     }
-    
-    
 
-    
-    
-    
+    public Construction(int constructionId, String constructionName, int constructionStatus, Project project, List<ConstructionStage> constructionStage) {
+        this.constructionId = constructionId;
+        this.constructionName = constructionName;
+        this.constructionStatus = constructionStatus;
+        this.project = project;
+        this.constructionStage = constructionStage;
+    }
 }
