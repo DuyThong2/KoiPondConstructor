@@ -29,7 +29,7 @@ public class ConstructionStageDetailDAO {
     }
     
     public List<ConstructionStageDetail> getConstructionStageDetailByStageId(int id){
-        TypedQuery<ConstructionStageDetail> details = entityManager.createQuery("Select csd from ConstructionStageDetail csd order by csd.constructionStageDetailId where csd.constructionStage.constructionStageId = :id", ConstructionStageDetail.class);
+        TypedQuery<ConstructionStageDetail> details = entityManager.createQuery("Select csd from ConstructionStageDetail csd where csd.constructionStage.constructionStageId = :id order by csd.constructionStageDetailId ", ConstructionStageDetail.class);
         details.setParameter("id", id);
         return details.getResultList();
     }
