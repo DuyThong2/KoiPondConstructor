@@ -21,5 +21,9 @@ public class WebConfig implements WebMvcConfigurer {
         // Map /uploads/** to the uploads folder on your Desktop
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:" + System.getProperty("user.home") + "/Desktop/uploads/");
+        
+         
     }
+    
+    
 }

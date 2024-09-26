@@ -203,7 +203,7 @@
                         <!-- Page Indicator (Static for this example) -->
                         <span>Page <strong>${currentPage}</strong> of <strong>${totalPage}</strong></span>
                         <!-- Next Button -->
-                        <c:if test="${(currentPage)!=totalPage}">
+                        <c:if test="${currentPage!=totalPage}">
                             <form href="manager/projects/">
                                 <button class="btn btn-primary" type="submit">Previous</button>
                                 <input type="hidden" name="page" value="${currentPage+1}">
