@@ -46,7 +46,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             String redirectURL = "";   // Redirect to staff home
             switch (staff.getDepartment()){
                 case "Consulting": redirectURL="/consultant/contract"; break;
-                case "Design": redirectURL="/designer/task"; break;
+                case "Design": redirectURL="/designer/manage"; break;
                 case "Construction":redirectURL="/contructor/contract"; break;
                 default: redirectURL= "/manager/contract";
             }

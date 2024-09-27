@@ -17,7 +17,9 @@ public class DesignStageDetailDAO {
     }
 
     public List<DesignStageDetail> getDesignStageDetailOfDesignStage(int id) {
-        TypedQuery<DesignStageDetail> detail = entityManager.createQuery("SELECT dsd FROM DesignStageDetail dsd WHERE dsd.designStage.designStageId = :id ", DesignStageDetail.class);
+        TypedQuery<DesignStageDetail> detail = entityManager.createQuery(
+                "SELECT dsd FROM DesignStageDetail dsd WHERE dsd.designStage.designStageId = :id ",
+                DesignStageDetail.class);
         detail.setParameter("id", id);
         return detail.getResultList();
 
@@ -25,7 +27,8 @@ public class DesignStageDetailDAO {
 
     public DesignStageDetail getDesignStageDetailById(int designStageDetailId) {
         try {
-            TypedQuery<DesignStageDetail> detail = entityManager.createQuery("SELECT dsd FROM DesignStageDetail dsd WHERE dsd.id = :id ", DesignStageDetail.class);
+            TypedQuery<DesignStageDetail> detail = entityManager
+                    .createQuery("SELECT dsd FROM DesignStageDetail dsd WHERE dsd.id = :id ", DesignStageDetail.class);
             detail.setParameter("id", designStageDetailId);
             return detail.getSingleResult();
         } catch (NoResultException e) {

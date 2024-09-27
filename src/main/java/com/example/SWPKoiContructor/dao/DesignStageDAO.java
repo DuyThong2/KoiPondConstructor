@@ -51,7 +51,8 @@ public class DesignStageDAO {
     
 
     public List<DesignStage> findByDesignIdOrderById(int designId) {
-        TypedQuery<DesignStage> ds = entityManager.createQuery("SELECT ds FROM DesignStage ds ORDER BY ds.designStageId WHERE ds.design.designId = :id ", DesignStage.class);
+        TypedQuery<DesignStage> ds = entityManager.createQuery(
+                "SELECT ds FROM DesignStage ds WHERE ds.design.designId = :id  ORDER BY ds.designStageId", DesignStage.class);
         ds.setParameter("id", designId);
         return ds.getResultList();
     }

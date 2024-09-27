@@ -15,21 +15,21 @@
         <div class="container">
             <header>
                 <div class="nav">
-                    <a href="/designer/task" class="nav-link">My Projects</a>
+                    <a href="/designer/manage" class="nav-link">My Projects</a>
                     <input type="text" placeholder="Search..." id="search">
                     <a href="/logout" class="btn btn-logout">Logout</a>
                 </div>
             </header>
 
             <div class="table-responsive">
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped text-center">
                     <thead>
                         <tr>
                             <th>Project Id</th>
                             <th>Project Name</th>
                             <th>Customer</th>
                             <th>Status</th>
-                            <th>Action</th>
+                            <th class="action-column">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,23 +40,25 @@
                                 <td>${designs.project.contract.customer.name}</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${designs.status == 1}">
+                                        <c:when test="${designs.project.status == 1}">
                                             <span class="badge badge-secondary">Pending</span>
                                         </c:when>
-                                        <c:when test="${designs.status == 2}">
+                                        <c:when test="${designs.project.status == 2}">
                                             <span class="badge badge-primary">Processing</span>
                                         </c:when>
-                                        <c:when test="${designs.status == 3}">
+                                        <c:when test="${designs.project.status == 3}">
                                             <span class="badge badge-success">Completed</span>
                                         </c:when>
-                                        <c:when test="${designs.status == 4}">
+                                        <c:when test="${designs.project.status == 4}">
                                             <span class="badge badge-warning">Canceled</span>
                                         </c:when>
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="/designer/viewDetail/${designs.designId}" class="btn btn-info">Detail</a>
+                                    <a href="/designer/manage/viewDetail/${designs.designId}" class="btn btn-info">Detail</a>
+                                    <a href="/designer/design/${designs.designId}" class="btn btn-secondary">To Design</a>
                                 </td>
+
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -85,7 +87,7 @@
                 <button class="btn btn-primary" disabled>&gt;</button>
             </c:if>
         </div>
-            
+
         <script>
             // JavaScript for handling search
             document.getElementById('search').addEventListener('input', function () {

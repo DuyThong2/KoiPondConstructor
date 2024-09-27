@@ -5,7 +5,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Manage Blueprints</title>
+        <title>View Blueprints</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
             body {
@@ -113,7 +113,7 @@
                         </button>
                     </div>
                     <div class="col-md-11 text-muted text-center">
-                        <h2>Manage Blueprints for: ${designStage.designStageName}</h2>
+                        <h2>View Design Of Blueprints for: ${designStage.designStageName}</h2>
                     </div>
                 </div>
             </div>

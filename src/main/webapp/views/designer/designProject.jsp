@@ -90,7 +90,7 @@
             <!-- Header -->
             <header>
                 <div class="nav">
-                    <a href="/designer/task" class="nav-link">My Projects</a>
+                    <a href="/designer/manage" class="nav-link">My Projects</a>
                     <a href="/logout" class="btn btn-logout">Logout</a>
                 </div>
             </header>
@@ -109,8 +109,7 @@
                     <div class="info-item mb-4">
                         <p><strong>Email:</strong> ${customer.email}</p>
                     </div>
-                    <a href="#" class="btn btn-primary w-100 mb-4">Design Status</a>
-                    <a href="/designer/design/${desgin.designId}" class="btn btn-secondary w-100">To Design</a>
+                  
                 </div>
 
                 <!-- Project Information -->
