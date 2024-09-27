@@ -16,7 +16,7 @@ public class DesignStageDetailDAO {
         this.entityManager = entityManager;
     }
 
-    public List<DesignStageDetail> getDesignStageDetailOfDesignStage(int id) {
+    public List<DesignStageDetail> getDesignStageDetailOfDesignStageId(int id) {
         TypedQuery<DesignStageDetail> detail = entityManager.createQuery(
                 "SELECT dsd FROM DesignStageDetail dsd WHERE dsd.designStage.designStageId = :id ",
                 DesignStageDetail.class);

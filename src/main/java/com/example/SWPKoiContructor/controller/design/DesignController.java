@@ -177,7 +177,7 @@ public class DesignController {
     //update stage of design detail page
     @GetMapping("/updateStatus/designStage/{id}")
     public String listDesignStageDetails(@PathVariable int id, Model model, @RequestParam int designId) {
-        List<DesignStageDetail> details = designStageDetailService.getDesignStageDetailOfDesignStage(id);
+        List<DesignStageDetail> details = designStageDetailService.getDesignStageDetailOfDesignStageId(id);
         model.addAttribute("designId", designId);
         model.addAttribute("details", details);
         model.addAttribute("id", id);
@@ -185,7 +185,8 @@ public class DesignController {
     }
 
     @PostMapping("/designStageDetail/updateStatus")
-    public String updateStatus(@RequestParam int detailId, @RequestParam int newStatus, @RequestParam int designStageId, @RequestParam int designId,
+    public String updateStatus(@RequestParam int detailId, 
+            @RequestParam int newStatus, @RequestParam int designStageId, @RequestParam int designId,
             RedirectAttributes redirectAttributes) {
         try {
             designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);

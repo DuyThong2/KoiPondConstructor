@@ -17,8 +17,8 @@ public class DesignStageDetailService {
         this.designStageService = designStageService;
     }
 
-    public List<DesignStageDetail> getDesignStageDetailOfDesignStage(int id) {
-        return designStageDetailDao.getDesignStageDetailOfDesignStage(id);
+    public List<DesignStageDetail> getDesignStageDetailOfDesignStageId(int id) {
+        return designStageDetailDao.getDesignStageDetailOfDesignStageId(id);
     }
 
     @Transactional

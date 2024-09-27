@@ -125,11 +125,12 @@
                     <c:forEach var="blueprint" items="${blueprints}">
                         <div class="col-md-4">
                             <div class="card mb-4">
+                                <a href="/uploads/${blueprint.imgUrl}">
                                 <img class="card-img-top" src="/uploads/${blueprint.imgUrl}" alt="Blueprint Image">
+                                </a>
                                 <div class="card-body">
                                     <p><strong>Date Uploaded:</strong> ${blueprint.dateCreate}</p>
                                     <div class="d-flex justify-content-between">
-                                        <a href="/uploads/${blueprint.imgUrl}" class="btn btn-info">View Full Image</a>
                                         <a href="${pageContext.request.contextPath}/delete/${blueprint.bluePrintId}?designStageId=${designStage.designStageId}" class="btn btn-danger">Delete</a>
                                     </div>
                                 </div>

@@ -231,7 +231,7 @@
                             </c:when>
                         </c:choose>
                     </p>
-                    <p>Area (m²): ${quote.quotesArea}</p>
+                    <p><strong>Area (m²):</strong> ${quote.quotesArea}</p>
 
                     <h2 class="card-title mb-3 text-center">Stage Of Design</h2>
 

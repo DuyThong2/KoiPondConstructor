@@ -57,7 +57,7 @@ public class DesignService {
         if (design != null) {
             List<DesignStage> stages = designStageDAO.getDesignStageListOfDesign(designId);
             boolean allCompleted = stages.stream().allMatch(stage -> stage.getDesignStageStatus() == 4); // All completed
-            boolean anyProcessing = stages.stream().anyMatch(stage -> stage.getDesignStageStatus() == 2); // Any processing
+            boolean anyProcessing = stages.stream().anyMatch(stage -> stage.getDesignStageStatus() != 1); // Any processing
 
             if (allCompleted) {
                 design.setStatus(3); // Completed // set contruction to processing
