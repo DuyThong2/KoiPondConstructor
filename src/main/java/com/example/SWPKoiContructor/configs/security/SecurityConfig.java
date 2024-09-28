@@ -1,7 +1,10 @@
 package com.example.SWPKoiContructor.configs.security;
 
-
+import com.example.SWPKoiContructor.configs.security.CustomAuthenticationSuccessHandler;
+import com.example.SWPKoiContructor.configs.security.CustomOAuth2UserService;
+import com.example.SWPKoiContructor.configs.security.OAuth2SuccessHandler;
 import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,9 +18,14 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomAuthenticationSuccessHandler successHandler;
+//    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2SuccessHandler auth2SuccessHandler;
 
-    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler) {
+    @Autowired
+    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler, OAuth2SuccessHandler auth2SuccessHandler) {
         this.successHandler = successHandler;
+//        this.customOAuth2UserService = customOAuth2UserService;
+        this.auth2SuccessHandler = auth2SuccessHandler;
     }
 
     @Override
@@ -25,23 +33,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/customer/**").hasRole("CUSTOMER") // Only customers can access /customer/*
-                .antMatchers("/manager/**").hasRole("MANAGER") // Only staff can access /staff/*
+                .antMatchers("/manager/**").hasRole("MANAGER") // Only managers can access /manager/*
                 .antMatchers("/consultant/**").hasRole("CONSULTANT")
                 .antMatchers("/designer/**").hasRole("DESIGNER")
                 .antMatchers("/constructor/**").hasRole("CONSTRUCTOR")
-                .antMatchers("/resources/**", "/assets/**", "/", "/login", "/register").permitAll()
-
+                .antMatchers("/resources/**", "/assets/**", "/", "/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginPage("/login")
+                .formLogin() // Enable form login
+                .loginPage("/login") // Set custom login page
                 .loginProcessingUrl("/authenticateTheUser")
-                .successHandler(successHandler)
+                .failureUrl("/")  
+                .successHandler(successHandler)// Form action to handle authentication
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll()
-                .and().exceptionHandling().accessDeniedPage("/error/error-403");
+                .and()
+                .oauth2Login() // Enable OAuth2 login
+                .loginPage("/login") // Use the same login page for both form and OAuth login
+                .userInfoEndpoint()
+//                .userService(customOAuth2UserService) // Custom OAuth2 user service
+                .and()
+                .successHandler(auth2SuccessHandler) // Handle OAuth2 success
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/error/error-403");
     }
 
     @Bean
@@ -49,12 +66,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager();
         jdbcUserDetailsManager.setDataSource(dataSource);
 
-        // Updated to join by user_id (id) from 'users' table and return 'email'
+        // Query for user details (using email as the username)
         jdbcUserDetailsManager.setUsersByUsernameQuery(
                 "SELECT email, password, enabled FROM [Users] WHERE email = ? "
         );
 
-        // Updated to join by user_id
+        // Query for authorities (roles) associated with the user
         jdbcUserDetailsManager.setAuthoritiesByUsernameQuery(
                 "SELECT u.email, a.authority FROM [Users] u JOIN authorities a ON u.id = a.user_id WHERE u.email = ? "
         );
@@ -64,6 +81,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public static NoOpPasswordEncoder passwordEncoder() {
-        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();  // No password encoding for now
+        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();  // For simplicity, no password encoding
     }
 }

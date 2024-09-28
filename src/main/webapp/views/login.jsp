@@ -1,7 +1,3 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page session="true" %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
     <script>
-        // Function to show popup
         function showMessage(message) {
             if (message) {
                 alert(message);
@@ -20,17 +15,18 @@
 <body onload="showMessage('${message}')">
     <h2>Please Login</h2>
 
+    <!-- Login Form for Form-based Authentication -->
     <form action="/authenticateTheUser" method="post">
-        <input type="text" name="username" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
+        <input type="text" name="username" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
         <button type="submit">Login</button>
     </form>
 
-    <!-- Error Handling - No need to show this, handled by JavaScript popup -->
-    <!--
-    <c:if test="${not empty error}">
-        <p style="color:red;">Invalid email or password. Please try again.</p>
-    </c:if>
-    -->
+    <!-- Display error message if login fails -->
+   
+
+    <!-- Google OAuth 2.0 Login -->
+    <h2>Login with OAuth 2.0</h2>
+    <a href="/oauth2/authorization/google">Google</a>
 </body>
 </html>

@@ -34,7 +34,7 @@ public class ConstructionStageService {
         if (constructionStage != null) {
             List<ConstructionStageDetail> details = constructionStageDetailDAO.getConstructionStageDetailByStageId(constructionStageId);
             boolean allCompleted = details.stream().allMatch(detail -> detail.getConstructionStageDetailStatus() == 4); // All completed
-            boolean anyProcessing = details.stream().anyMatch(detail -> detail.getConstructionStageDetailStatus() == 2); // Any processing
+            boolean anyProcessing = details.stream().anyMatch(detail -> detail.getConstructionStageDetailStatus() != 1); // Any processing
 
             if (allCompleted) {
                 constructionStage.setConstructionStageStatus(4); // Approved

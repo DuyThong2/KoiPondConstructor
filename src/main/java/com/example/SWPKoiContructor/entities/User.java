@@ -129,6 +129,12 @@ public class User {
         this.authority = authority;
         authority.setUser(this);
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", name=" + name + ", email=" + email + ", imgURL=" + imgURL + ", phone=" + phone + ", password=" + password + ", enabled=" + enabled + '}';
+    }
+    
     
     
     

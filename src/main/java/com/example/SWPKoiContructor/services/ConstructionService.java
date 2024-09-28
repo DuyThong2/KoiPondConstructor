@@ -51,7 +51,7 @@ public class ConstructionService {
         if (construction != null) {
             List<ConstructionStage> stages = constructionStageDAO.findByConstructionIdOrderById(constructionId);
             boolean allCompleted = stages.stream().allMatch(stage -> stage.getConstructionStageStatus() == 4); // All stages completed
-            boolean anyProcessing = stages.stream().anyMatch(stage -> stage.getConstructionStageStatus() == 2); // Any stages processing
+            boolean anyProcessing = stages.stream().anyMatch(stage -> stage.getConstructionStageStatus() != 1); // Any stages processing
 
             if (allCompleted) {
                 construction.setConstructionStatus(3); // Completed
