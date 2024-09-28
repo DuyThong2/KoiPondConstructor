@@ -306,7 +306,7 @@
                                 </script>
 
                                 <c:if test="${stage.designStageStatus == 4}">
-                                    <p><strong>Summary File:</strong> <a href="${stage.summaryFile}">Download</a></p>
+                                    <p><strong>Summary File:</strong> <a href="/download/${stage.summaryFile}">Download</a></p>
                                 </c:if>
                             </div>
                         </div>

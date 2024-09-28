@@ -32,6 +32,7 @@
             }
 
             .card {
+                position: relative; /* Để chứa các phần tử có vị trí tuyệt đối */
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 border: none;
                 transition: all 0.3s ease;
@@ -100,6 +101,23 @@
                 object-fit: cover; /* Điều chỉnh ảnh để giữ nguyên tỷ lệ */
                 border-bottom: 1px solid #dee2e6;
             }
+
+            /* Định vị checkbox ở góc trên bên trái của mỗi card */
+            .form-check {
+                position: absolute;
+                top: -2px;
+                left: 1px;
+            }
+
+            .form-check-label {
+                display: none; /* Ẩn nhãn chữ */
+            }
+
+            .form-check-input {
+                width: 30px;
+                height: 30px;
+            }
+
         </style>
     </head>
     <body>
@@ -121,61 +139,62 @@
             <!-- Existing Blueprints Section -->
             <div class="existing-blueprints">
                 <h3>Existing Blueprints</h3>
-                <div class="row">
-                    <c:forEach var="blueprint" items="${blueprints}">
-                        <div class="col-md-4">
-                            <div class="card mb-4">
-                                <a href="/uploads/${blueprint.imgUrl}">
-                                <img class="card-img-top" src="/uploads/${blueprint.imgUrl}" alt="Blueprint Image">
-                                </a>
-                                <div class="card-body">
-                                    <p><strong>Date Uploaded:</strong> ${blueprint.dateCreate}</p>
-                                    <div class="d-flex justify-content-between">
-                                        <a href="${pageContext.request.contextPath}/delete/${blueprint.bluePrintId}?designStageId=${designStage.designStageId}" class="btn btn-danger">Delete</a>
+                <form id="feedbackForm" action="${pageContext.request.contextPath}/feedback/send/" method="post">
+                    <input type="hidden" name="designStageId" value="${designStage.designStageId}">
+                    <div class="row">
+                        <c:forEach var="blueprint" items="${blueprints}">
+                            <div class="col-md-4">
+                                <div class="card mb-4">
+                                    <a href="/uploads/${blueprint.imgUrl}">
+                                        <img class="card-img-top" src="/uploads/${blueprint.imgUrl}" alt="Blueprint Image">
+                                    </a>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="blueprintsId" value="${blueprint.bluePrintId}">
+                                    </div>
+                                    <div class="card-body">
+                                        <p><strong>Date Uploaded:</strong> ${blueprint.dateCreate}</p>
                                     </div>
                                 </div>
                             </div>
+                        </c:forEach>
+                    </div>
+
+                    <!-- Feedback Section -->
+                    <div class="feedback-section">
+                        <h3>Feedback</h3>
+                        <div class="form-group">
+                            <label for="feedback">Please provide your feedback:</label>
+                            <textarea class="form-control" id="feedback" name="feedback" rows="5" required></textarea>
                         </div>
-                    </c:forEach>
-                </div>
-            </div>
-
-            <!-- Upload New Blueprint Section -->
-            <div class="upload-section">
-                <h3>Upload New Blueprint</h3>
-                <form action="${pageContext.request.contextPath}/designer/blueprint/upload/" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="designStageId" value="${designStage.designStageId}">
-                    <div class="form-group">
-                        <label for="blueprintFile">Choose Blueprint Image</label>
-                        <input type="file" class="form-control-file" id="blueprintFile" name="file" required>
+                        <button type="submit" class="btn btn-primary">Send Feedback</button>
                     </div>
-                    <button type="submit" class="btn btn-primary">Upload</button>
+
+                    <!-- Thông báo -->
+                    <c:if test="${not empty successMessage}">
+                        <div class="alert alert-success mt-3">
+                            ${successMessage}
+                        </div>
+                    </c:if>
+
+                    <c:if test="${not empty errorMessage}">
+                        <div class="alert alert-danger mt-3">
+                            ${errorMessage}
+                        </div>
+                    </c:if>
+
                 </form>
             </div>
 
-            <!-- Update Summary File Section -->
-            <div class="upload-section">
-                <h3>Update Summary File</h3>
-                <form action="${pageContext.request.contextPath}/updateSummary/" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="designStageId" value="${designStage.designStageId}">
-                    <div class="form-group">
-                        <label for="summaryFile">Choose Summary File</label>
-                        <input type="file" class="form-control-file" id="summaryFile" name="file" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Update Summary File</button>
-                </form>
-            </div>
-        </div>
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
 
-        <script>
-            function goBack() {
-                window.history.back();
-            }
-        </script>
-        <!-- Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+            <!-- Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+            <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     </body>
 </html>

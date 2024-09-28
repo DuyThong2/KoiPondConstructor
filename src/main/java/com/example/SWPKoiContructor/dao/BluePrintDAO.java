@@ -36,4 +36,12 @@ public class BluePrintDAO {
             entityManager.remove(bluePrint);
         }
     }
+
+    public List<BluePrint> findByDesignStageIdWithComments(int designStageId) {
+        String hql = "SELECT DISTINCT b FROM BluePrint b LEFT JOIN FETCH b.comments WHERE b.designStage.designStageId = :designStageId";
+        return entityManager.createQuery(hql, BluePrint.class)
+                .setParameter("designStageId", designStageId)
+                .getResultList();
+    }
+
 }

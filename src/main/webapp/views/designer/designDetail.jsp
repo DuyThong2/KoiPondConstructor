@@ -182,7 +182,7 @@
                                 </p>
                                 <p><strong>Price:</strong> ${stage.designStagePrice}</p>
                                 <c:if test="${stage.designStageStatus == 4}">
-                                    <p><strong>Summary File:</strong> <a href="/download${stage.summaryFile}">Download</a></p>
+                                    <p><strong>Summary File:</strong> <a href="/download/${stage.summaryFile}">Download</a></p>
                                 </c:if>
                                 <a href="/updateStatus/designStage/${stage.designStageId}?designId=${designId}" class="btn btn-info">Update Status</a>
 

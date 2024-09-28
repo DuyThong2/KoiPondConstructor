@@ -122,7 +122,7 @@
             <div class="existing-blueprints">
                 <h3>Existing Blueprints</h3>
                 <div class="row">
-                    <c:forEach var="blueprint" items="${blueprints}">
+                    <c:forEach var="blueprint" items="${allBlueprints}">
                         <div class="col-md-4">
                             <div class="card mb-4">
                                 <img class="card-img-top" src="/uploads/${blueprint.imgUrl}" alt="Blueprint Image">
@@ -138,7 +138,26 @@
                     </c:forEach>
                 </div>
             </div>
-
+            <div class="feedback-blueprints">
+                <h3>Blueprints with Customer Feedback</h3>
+                <div class="row">
+                    <c:forEach var="blueprint" items="${feedbackBlueprints}">
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <img class="card-img-top" src="/uploads/${blueprint.imgUrl}" alt="Blueprint Image">
+                                <div class="card-body">
+                                    <p><strong>Date Uploaded:</strong> ${blueprint.dateCreate}</p>
+                                    <p><strong>Feedback:</strong> 
+                                        <c:forEach var="comment" items="${blueprint.comments}">
+                                        <div>- ${comment.commentContent}</div>
+                                    </c:forEach>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
             <!-- Upload New Blueprint Section -->
             <div class="upload-section">
                 <h3>Upload New Blueprint</h3>
