@@ -43,8 +43,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         // Check if the user is a staff member
         Staff staff = staffService.findStaffByEmail(email);
         if (staff != null) {
+
             session.setAttribute("user", staff);  // Store staff in session
             String redirectURL = getRedirectURLBasedOnRole(staff);
+
             response.sendRedirect(redirectURL);
             return;
         }

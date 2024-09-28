@@ -111,6 +111,22 @@ public class Comment {
     public void setDatePost(Calendar datePost) {
         this.datePost = datePost;
     }
+
+    public BluePrint getBluePrint() {
+        return bluePrint;
+    }
+
+    public void setBluePrint(BluePrint bluePrint) {
+        this.bluePrint = bluePrint;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
     
     
 

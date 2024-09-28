@@ -131,31 +131,26 @@
             <!-- Navigation -->
             <header>
                 <div class="nav">
-                    <a href="/designer/task" class="nav-link">My Projects</a>
+                    <a href="/designer/manage" class="nav-link">My Projects</a>
                     <a href="/logout" class="btn btn-logout">Logout</a>
                 </div>
             </header>
-
             <div class="row">
                 <!-- Left Column -->
                 <div class="left-column">
-                    <!-- Image at Scene -->
                     <div class="img-box">
-                        <p>img at scene</p>
+                        <img src="/uploads/${project.imgURL}" alt="Project Image">
                     </div>
-
                     <!-- Notes Section -->
                     <div class="notes-box">
                         <h4>Notes</h4>
                         <p>Add your notes here...</p>
                     </div>
                 </div>
-
                 <!-- Right Column -->
                 <div class="right-column">
                     <h2 class="card-title mb-3 text-center">Project Information</h2>
                     <br>
-
                     <!-- Stage Selection Buttons -->
                     <div class="stage-tabs" id="stage-buttons">
                         <button class="btn btn-outline-primary" data-stage="Conceptual Design" data-status="0">Conceptual Design</button>
@@ -187,8 +182,10 @@
                                 </p>
                                 <p><strong>Price:</strong> ${stage.designStagePrice}</p>
                                 <c:if test="${stage.designStageStatus == 4}">
-                                    <p><strong>Summary File:</strong> <a href="${stage.summaryFile}">Download</a></p>
+                                    <p><strong>Summary File:</strong> <a href="/download/${stage.summaryFile}">Download</a></p>
                                 </c:if>
+                                <a href="/updateStatus/designStage/${stage.designStageId}?designId=${designId}" class="btn btn-info">Update Status</a>
+
                             </div>
                         </div>
 
