@@ -15,8 +15,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <title>Forgot password</title>
+        
     </head>
     <body>
+        <h1>${message}</h1>
         <form action="/forgot-password" method="post">
             <label for="email">Enter your email address:</label>
             <input type="email" name="email" required>

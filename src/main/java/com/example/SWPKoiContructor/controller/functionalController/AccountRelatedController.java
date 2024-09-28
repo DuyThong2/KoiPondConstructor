@@ -107,7 +107,7 @@ public class AccountRelatedController {
         } else {
             model.addAttribute("message", "No user found with the provided email.");
         }
-        return "forgot_password";
+        return "forgot_password_form";
     }
 
     @GetMapping("/reset-password")

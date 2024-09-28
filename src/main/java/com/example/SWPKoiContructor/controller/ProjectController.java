@@ -103,6 +103,7 @@ public class ProjectController {
             project.setContract(contract);
             LocalDate localDate = LocalDate.now();
             project.setDateStart(Utility.localDateToUtilDate(localDate));
+            project.setStatus(1);
             project.setStage(1);
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);

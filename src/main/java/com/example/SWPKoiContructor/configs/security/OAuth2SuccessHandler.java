@@ -100,9 +100,10 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         }
 
         // If user not found, create a new customer and assign ROLE_CUSTOMER
-        if (customer == null && staff!= null) {
+        if (customer == null) {
             CustomerDTO customerDTO = new CustomerDTO();
             customerDTO.setEmail(email);
+            customerDTO.setPassword("$2a$12$F45V9kx4zG.6gT/KGf9X7eYq01sfqzmiDt1m6EMKQnJ7IXvI56i7W");
             customerDTO.setEnabled(true);
             customerService.registerCustomer(customerDTO);
             session.setAttribute("user", customerDTO.mapDTOToCustomer(customerDTO));
