@@ -1,4 +1,4 @@
-package com.example.SWPKoiContructor.controller.manager;
+package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Contract;
 import com.example.SWPKoiContructor.entities.Customer;

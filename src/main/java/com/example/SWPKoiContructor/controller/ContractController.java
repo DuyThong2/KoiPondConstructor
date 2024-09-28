@@ -130,6 +130,7 @@ public class ContractController {
             HttpSession session) {
         // Fetch paginated contracts using the service
         User user = (User) session.getAttribute("user");
+        System.out.println(user.getId());
         List<Contract> contracts = contractService.getContractListOfCustomer(user.getId(), page, size, sortBy, sortDirection);
 
         // Fetch the total number of contracts for pagination
@@ -149,8 +150,13 @@ public class ContractController {
     @GetMapping("/manager/contract/viewDetail/{id}")
     public String viewDetailContract(Model model, @PathVariable("id") int id) {
         Contract contract = contractService.getContractById(id);
-        model.addAttribute("contract", contract);
-        return "manager/contract/contractDetail";
+        if (contract != null){
+            model.addAttribute("contract", contract);
+            return "manager/contract/contractDetail";
+        }else{
+            return "redirect:/manager/contract";
+        }
+        
     }
 
     @GetMapping("/consultant/contract/viewDetail/{id}")
@@ -161,18 +167,25 @@ public class ContractController {
     }
 
     @GetMapping("/customer/contract/viewDetail/{id}")
-    public String viewDetailContractByCustomer(Model model, @PathVariable("id") int id) {
+    public String viewDetailContractByCustomer(Model model, @PathVariable("id") int id, HttpSession session) {
         Contract contract = contractService.getContractById(id);
-        model.addAttribute("contract", contract);
+        Customer customer = (Customer) session.getAttribute("user");
+        if(contract != null && contract.isContractBelongToCustomer(customer, contract)){
+            model.addAttribute("contract", contract);
 
         return "customer/contract/contractDetail";
+        }else{
+            return "redirect:/customer/contract";
+        }
+        
     }
 
-    @GetMapping("/consultant/contract/create")
-    public String createContract(Model model, @RequestParam("quoteId") int quoteId) {
+    @GetMapping("/consultant/contract/create/{quoteId}")
+    public String createContract(Model model, @PathVariable("quoteId") int quoteId,HttpSession session) {
         Contract contract = new Contract();
         Quotes quote = quotesService.getQuoteById(quoteId);
-        if (quote.getContract() == null) {
+        Staff staff = (Staff) session.getAttribute("user");
+        if (quote != null && quote.getContract() == null && quote.isQuoteBelongToStaff(quote, staff)) {
             model.addAttribute("quote", quote);
             model.addAttribute("customer", quote.getCustomer());
             List<Term> terms = termService.getAllTemplateTerm();  // Get all available terms for the dropdown

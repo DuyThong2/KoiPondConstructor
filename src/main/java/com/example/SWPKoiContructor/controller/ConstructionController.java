@@ -1,5 +1,5 @@
 
-package com.example.SWPKoiContructor.controller.construction;
+package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Construction;
 import com.example.SWPKoiContructor.services.ConstructionService;

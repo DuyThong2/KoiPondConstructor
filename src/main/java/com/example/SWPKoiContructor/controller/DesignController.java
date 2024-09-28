@@ -1,4 +1,4 @@
-package com.example.SWPKoiContructor.controller.design;
+package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.BluePrint;
 import com.example.SWPKoiContructor.entities.Contract;

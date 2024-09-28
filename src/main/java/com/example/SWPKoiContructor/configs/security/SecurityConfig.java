@@ -37,23 +37,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/consultant/**").hasRole("CONSULTANT")
                 .antMatchers("/designer/**").hasRole("DESIGNER")
                 .antMatchers("/constructor/**").hasRole("CONSTRUCTOR")
-                .antMatchers("/resources/**", "/assets/**", "/", "/register").permitAll()
+                .antMatchers("/resources/**", "/assets/**", "/", "/register","/forgot-password", "/reset-password").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin() // Enable form login
                 .loginPage("/login") // Set custom login page
                 .loginProcessingUrl("/authenticateTheUser")
-                .failureUrl("/")  
+                .failureUrl("/")
                 .successHandler(successHandler)// Form action to handle authentication
                 .permitAll()
                 .and()
                 .logout()
+                .logoutSuccessUrl("/login?logout=true") // Redirect after logout
+                .invalidateHttpSession(true) // Invalidate the session
+                .clearAuthentication(true) // Clear the authentication
                 .permitAll()
                 .and()
                 .oauth2Login() // Enable OAuth2 login
                 .loginPage("/login") // Use the same login page for both form and OAuth login
                 .userInfoEndpoint()
-//                .userService(customOAuth2UserService) // Custom OAuth2 user service
+                //                .userService(customOAuth2UserService) // Custom OAuth2 user service
                 .and()
                 .successHandler(auth2SuccessHandler) // Handle OAuth2 success
                 .and()

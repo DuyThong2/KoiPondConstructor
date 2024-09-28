@@ -1,6 +1,8 @@
 package com.example.SWPKoiContructor.controller.functionalController;
 
 import com.example.SWPKoiContructor.exception.AccountIsExistException;
+import com.example.SWPKoiContructor.exception.ResourceNotExistException;
+import com.example.SWPKoiContructor.exception.UserErrorSyntaxException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
@@ -50,4 +52,18 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", ex.getMessage());
         return "registerCustomer"; // Error page for 400
     }
+    
+    @ExceptionHandler(ResourceNotExistException.class)
+    public String handleResourceNotFound(ResourceNotExistException ex, Model model){
+         model.addAttribute("errorMessage", ex.getMessage());
+        return "error/error-404";
+    }
+    
+    @ExceptionHandler(UserErrorSyntaxException.class)
+    public String handleBadRequest(UserErrorSyntaxException ex, Model model) {
+        model.addAttribute("errorMessage", "Bad request");
+        return "error/error-400"; // Error page for 400
+    }
+    
+    
 }
