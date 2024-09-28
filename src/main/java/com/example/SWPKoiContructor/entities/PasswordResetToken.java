@@ -15,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="PasswordResetTokens")
+@Table(name="Password_Reset_Tokens")
 public class PasswordResetToken {
 
     @Id
@@ -30,7 +30,7 @@ public class PasswordResetToken {
     private User user;
 
     @Column(name = "expiry_date", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date expiryDate;
 
     // Getters and setters
