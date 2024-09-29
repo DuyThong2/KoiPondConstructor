@@ -40,15 +40,65 @@ public class QuoteController {
         this.consultantService = consultantService;
         this.parcelService = parcelService;
     }
-
-    //MANAGER SITE
-    @GetMapping("/manager/quote")
-    public String getQuoteList(Model model){
-        List<Quotes> quoteList = quoteService.getQuoteList();
+    
+    //CUSTOMER SITE
+    @GetMapping("/customer/quote")
+    public String getQuoteListToCusIdAndStatus(Model model, HttpSession session){
+        User user = (User) session.getAttribute("user");
+        List<Quotes> quoteList = quoteService.getQuoteListByCusIdAndStatus(user.getId());
         model.addAttribute("quoteList", quoteList);
-        return "manager/quote/quoteManage";
+        return "customer/quote/quoteManage";
     }
     
+    @PostMapping("/customer/quote/updateStatus")
+    public String customerUpdateQuoteStatus(@RequestParam("quoteId")int quoteId, @RequestParam("statusId")int statusId, Model model, HttpSession session){
+        Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
+        User user = (User) session.getAttribute("user");
+        List<Quotes> quoteList = quoteService.getQuoteListByCusIdAndStatus(user.getId());
+        model.addAttribute("quoteList", quoteList);
+        return "redirect:/customer/quote";
+    }
+    
+    
+    
+    //MANAGER SITE
+//    @GetMapping("/manager/quote")
+//    public String getQuoteList(Model model){
+//        List<Quotes> quoteList = quoteService.getQuoteList();
+//        model.addAttribute("quoteList", quoteList);
+//        return "manager/quote/quoteManage";
+//    }
+    
+    @GetMapping("/manager/quote")
+    public String getQuoteList(Model model,
+                               @RequestParam(defaultValue = "0")int page,
+                               @RequestParam(defaultValue = "8")int size,
+                               @RequestParam(defaultValue = "quotesDate")String sortBy,
+                               @RequestParam(defaultValue = "asc")String sortDirection,
+                               @RequestParam(required = false)Integer statusFilter){
+        List<Quotes> quoteList;
+        long totalQuote;
+        
+        if(statusFilter != null){
+            quoteList = quoteService.getQuoteListByOrderSortFilter(page, size, sortBy, sortDirection, statusFilter);
+            totalQuote = quoteService.countQuoteByStatus(statusFilter);
+        }
+        else{
+            quoteList = quoteService.getQuoteListByOrderSort(page, size, sortBy, sortDirection);
+            totalQuote = quoteService.countQuote();
+        }
+        int totalPages = (int) Math.ceil((double) totalQuote / size);
+        
+        model.addAttribute("quoteList", quoteList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("statusFilter", statusFilter);
+        
+        return "manager/quote/quoteManage";
+    }
+           
     @GetMapping("/manager/quote/detail/{id}")
     public String getQuoteById(@PathVariable("id")int quoteId, Model model){
         Quotes quotes = quoteService.getQuoteById(quoteId);
@@ -67,13 +117,45 @@ public class QuoteController {
     
     
     //CONSULTANT SITE
+//    @GetMapping("consultant/quote")
+//    public String getQuoteListByStaffId(Model model, HttpSession session) {
+//        User user = (User) session.getAttribute("user");
+//        List<Quotes> list = quoteService.getQuoteListByStaffId(user.getId());
+//        model.addAttribute("quoteList", list);
+//        return "consultant/quote/quoteManage";
+//    }
+    
     @GetMapping("consultant/quote")
-    public String getQuoteListByStaffId(Model model, HttpSession session) {
+    public String getQuoteListByStaffId(Model model, HttpSession session,
+                                        @RequestParam(defaultValue = "0")int page,
+                                        @RequestParam(defaultValue = "8")int size,
+                                        @RequestParam(defaultValue = "quotesDate")String sortBy,
+                                        @RequestParam(defaultValue = "asc")String sortDirection,
+                                        @RequestParam(required = false)Integer statusFilter){
         User user = (User) session.getAttribute("user");
-        List<Quotes> list = quoteService.getQuoteListByStaffId(user.getId());
-        model.addAttribute("quoteList", list);
+        List<Quotes> quoteList;
+        long totalQuote;
+        
+        if(statusFilter != null){
+            quoteList = quoteService.getQuoteListByOrderSortFilterStaffId(user.getId(), page, size, sortBy, sortDirection, statusFilter);
+            totalQuote = quoteService.countQuoteOfStaffByStatus(user.getId(), statusFilter);
+        }
+        else{
+            quoteList = quoteService.getQuoteListByOrderSortStaffId(user.getId(), page, size, sortBy, sortDirection);
+            totalQuote = quoteService.countQuoteOfStaffId(user.getId());
+        }
+        int totalPages = (int) Math.ceil((double) totalQuote / size);
+        
+        model.addAttribute("quoteList", quoteList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("statusFilter", statusFilter);
+        
         return "consultant/quote/quoteManage";
     }
+    
     
     @GetMapping("consultant/quote/detail/{id}")
     public String getQuoteDetailById(@PathVariable("id")int quoteId, Model model){
