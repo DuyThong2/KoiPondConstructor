@@ -29,9 +29,10 @@ public class ConstructionStage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "construction_stage_id")
     private int constructionStageId;
 
-    @Column(name = "construction_name")
+    @Column(name = "construction_stage_name")
     private String constructionStageName;
 
     @Column(name = "construction_stage_price")
@@ -47,7 +48,7 @@ public class ConstructionStage {
     @JoinColumn(name = "construction_id")
     private Construction construction;
 
-    @OneToMany(mappedBy = "constructionStage",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "constructionStage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ConstructionStageDetail> constructionStageDetail = new ArrayList<>();
 
     public ConstructionStage(int constructionStageId, String constructionStageName, double constructionStagePrice, String constructionStageDescription, int constructionStageStatus) {

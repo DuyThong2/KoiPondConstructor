@@ -29,6 +29,7 @@ public class Construction {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "construction_id")
     private int constructionId;
     
     @Column(name = "construction_name")

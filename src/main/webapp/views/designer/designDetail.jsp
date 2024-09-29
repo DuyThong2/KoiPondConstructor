@@ -184,7 +184,7 @@
                                 <c:if test="${stage.designStageStatus == 4}">
                                     <p><strong>Summary File:</strong> <a href="/download/${stage.summaryFile}">Download</a></p>
                                 </c:if>
-                                <a href="/updateStatus/designStage/${stage.designStageId}?designId=${designId}" class="btn btn-info">Update Status</a>
+                                <a href="/designer/updateStatus/designStage/${stage.designStageId}?designId=${designId}" class="btn btn-info">Update Status</a>
 
                             </div>
                         </div>
