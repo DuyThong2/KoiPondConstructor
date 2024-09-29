@@ -54,14 +54,23 @@ public class DesignDAO {
         return query.getResultList();
     }
 
-    // Hàm đếm tổng số bản ghi để tính tổng số trang
+    // Method for caculate the sum of the page
     public long countDesignsByStaff(int staffId) {
-        String jpql = "SELECT COUNT(d) FROM Design d JOIN d.staff s WHERE s.id = :staffId";
-        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        String countDesign = "SELECT COUNT(d) FROM Design d JOIN d.staff s WHERE s.id = :staffId";
+        TypedQuery<Long> query = entityManager.createQuery(countDesign, Long.class);
         query.setParameter("staffId", staffId);
         return query.getSingleResult();
     }
 
-   
+    public boolean isAssignedToDesign(int designId, int userId) {
+        String staffinDesign = 
+                "SELECT COUNT(ds) FROM Design d JOIN d.staff ds WHERE d.designId = :designId AND ds.id = :userId";
+        TypedQuery<Long> query = entityManager.createQuery(staffinDesign, Long.class);
+        query.setParameter("designId", designId);
+        query.setParameter("userId", userId);
+        Long count = query.getSingleResult();
+        
+        return  count >0;
+    }
 
 }

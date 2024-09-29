@@ -6,6 +6,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Design Project Details</title>
+        <!-- Sử dụng Bootstrap 4.3.1 từ CDN -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
             body {
@@ -14,17 +15,17 @@
                 padding-top: 80px;
             }
 
+            /* Sửa container để phù hợp hơn với Bootstrap grid */
             .container {
                 max-width: 95%;
                 margin: 20px auto;
-                padding: 0;
-                flex: 1;
             }
 
+            /* Cải tiến header với đổ bóng và độ trong suốt */
             .nav {
                 margin-bottom: 10px;
                 padding: 20px;
-                background-color: #343a40;
+                background-color: rgba(52, 58, 64, 0.9); /* Màu đen trong suốt */
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
@@ -36,18 +37,16 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
-            .nav a {
-                color: #ffffff;
-                margin-right: 15px;
-                text-decoration: none;
-                font-weight: bold;
+            /* Đổ bóng và thêm hiệu ứng hover cho các button */
+            .btn {
+                transition: all 0.3s ease;
             }
 
-            .nav a:hover {
-                text-decoration: underline;
+            .btn:hover {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             }
 
-            .nav .btn-logout {
+            .btn-logout {
                 background-color: #dc3545;
                 color: white;
                 padding: 8px 15px;
@@ -57,31 +56,23 @@
                 font-weight: bold;
             }
 
-            .nav .btn-logout:hover {
+            .btn-logout:hover {
                 background-color: #c82333;
             }
 
-            .row {
-                display: flex;
-                justify-content: space-between;
-            }
-
+            /* Cải thiện bố cục cột với Bootstrap */
             .left-column {
-                width: 33%;
-                margin: 15px;
-                padding: 20px;
                 background-color: #fff;
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 20px;
             }
 
             .right-column {
-                width: 62%;
-                padding: 20px;
-                margin: 15px;
                 background-color: #fff;
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 20px;
             }
 
             .img-box {
@@ -94,6 +85,7 @@
                 font-size: 1.2rem;
                 color: #6c757d;
                 margin-bottom: 20px;
+                border-radius: 8px;
             }
 
             .stage-tabs {
@@ -108,11 +100,11 @@
 
             .detail-name-bar {
                 display: flex;
-                justify-content: flex-start;
                 flex-wrap: wrap;
                 margin-top: 15px;
             }
 
+            /* Badge trạng thái */
             .badge-status {
                 font-size: 14px;
                 padding: 8px 15px;
@@ -120,9 +112,9 @@
                 margin-bottom: 10px;
                 border-radius: 15px;
                 text-transform: capitalize;
-                display: inline-block;
             }
 
+            /* Màu sắc cho badge */
             .badge-status.success {
                 background-color: #28a745;
                 color: white;
@@ -141,30 +133,20 @@
                 color: white;
             }
 
+            /* Thêm độ bóng nhẹ cho các thẻ card */
             .card {
                 margin-bottom: 20px;
+                border: none;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                transition: all 0.3s ease;
             }
 
-            .card-body h4 {
-                font-size: 1.5rem;
-                margin-bottom: 15px;
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             }
 
-            .card-body p {
-                font-size: 1rem;
-                margin-bottom: 5px;
-            }
-
-            .card-body .detail-name-bar span {
-                margin-bottom: 10px;
-            }
-            .payment-status {
-                font-size: 1rem;
-                color: #28a745;
-                margin-bottom: 10px;
-                font-weight: bold;
-            }
-            .project-description, .additional-info, .image-gallery {
+            .project-description, .additional-info {
                 margin-top: 20px;
                 padding: 15px;
                 background-color: #fff;
@@ -172,32 +154,45 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
+            /* Image gallery cải thiện */
             .image-gallery img {
                 width: 30%; /* Điều chỉnh kích thước ảnh nếu cần */
                 margin-right: 5px;
                 margin-bottom: 5px;
+                border-radius: 5px;
+                transition: transform 0.3s ease;
             }
 
+            .image-gallery img:hover {
+                transform: scale(1.05); /* Phóng to nhẹ khi hover */
+            }
+            .payment-status {
+                font-size: 1rem;
+                color: #28a745;
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
         </style>
     </head>
     <body>
         <div class="container mt-5">
             <!-- Navigation -->
             <header>
-                <!-- Navigation -->
+                <div class="nav">
+                    <div class="nav-links">
+                        <a href="#">Home</a>
+                        <a href="#">Projects</a>
+                        <a href="#">Team</a>
+                    </div>
+                    <button class="btn btn-logout">Logout</button>
+                </div>
             </header>
 
             <div class="row">
-                <!-- Left Column -->
-                <!-- Left Column -->
-                <div class="left-column">
-                    <!-- Image at Scene -->
+                <div class="col-md-4 left-column">
                     <div class="img-box">
-                        <img src="${project.imgURL}" alt="Project Image">
-                        <br>
-                        <p>img at scene</p>
+                        <img src="/uploads/${project.imgURL}" alt="Project Image">
                     </div>
-
                     <!-- Project Description -->
                     <div class="project-description">
                         <h4>Project Description</h4>
@@ -214,17 +209,11 @@
                                 | ${staff.name} |
                             </c:forEach>
                         </p>
-
                     </div>
-
-
                 </div>
-
-
                 <!-- Right Column -->
-                <div class="right-column">
+                <div class="col-md-8 right-column">
                     <h2 class="card-title mb-3 text-center">Information Of Design</h2>
-                    <br>
                     <p>Design's Name: ${design.designName}</p>
                     <p>Design Status: 
                         <c:choose>
@@ -242,7 +231,7 @@
                             </c:when>
                         </c:choose>
                     </p>
-                    <p>Area (m²): ${quote.quotesArea}</p>
+                    <p><strong>Area (m²):</strong> ${quote.quotesArea}</p>
 
                     <h2 class="card-title mb-3 text-center">Stage Of Design</h2>
 
@@ -257,8 +246,8 @@
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h4>
-                                    <a data-status="${stage.designStageStatus}" class="design-stage-link" 
-                                       href="${pageContext.request.contextPath}/designer/manage/blueprint/${stage.designStageId} ">
+                                    <a data-status="${stage.designStageStatus}" class="design-stage-link " 
+                                       href="${pageContext.request.contextPath}/customer/project/design/blueprint/${stage.designStageId}">
                                         ${stage.designStageName}
                                     </a>
                                 </h4>
@@ -289,33 +278,35 @@
                                               <c:if test="${detail.status == 4}">success</c:if> ">
                                             ${detail.name}
                                         </span>
-
                                     </c:forEach>
                                 </div>
-
 
                                 <p id="design-stage-price">
                                     <strong>Price:</strong> ${stage.designStagePrice}
                                 </p>
-                                <div class="payment-status" id="payment-status"></div>
+                                <!-- Add a unique ID for each payment-status -->
+                                <p id="payment-status-${stage.designStageId}" class="payment-status"></p>
                                 <%--Display if payment of status is complete --%>
                                 <script>
-                                    // Hiển thị thông báo "Complete Payment" nếu trạng thái thanh toán hoàn tất
+                                    // Check payment status for each stage
+                                    (function () {
+                                        var paymentStatusElement = document.getElementById('payment-status-${stage.designStageId}');
                                     <c:forEach var="detail" items="${stage.designDetail}">
                                         <c:choose>
                                             <c:when test="${detail.name == 'Payment' && detail.status == 4}">
-                                    document.getElementById('payment-status').innerHTML = 'Complete Payment';
+                                        paymentStatusElement.innerHTML = 'Complete Payment';
                                             </c:when>
                                         </c:choose>
                                     </c:forEach>
-                                    // Nếu không có thông báo thanh toán, ẩn phần này
-                                    if (document.getElementById('payment-status').innerHTML === '') {
-                                        document.getElementById('payment-status').style.display = 'none';
-                                    }
+                                        // If no payment status, hide the element
+                                        if (paymentStatusElement.innerHTML == '') {
+                                            paymentStatusElement.style.display = 'none';
+                                        }
+                                    })();
                                 </script>
 
                                 <c:if test="${stage.designStageStatus == 4}">
-                                    <p><strong>Summary File:</strong> <a href="${stage.summaryFile}">Download</a></p>
+                                    <p><strong>Summary File:</strong> <a href="/download/${stage.summaryFile}">Download</a></p>
                                 </c:if>
                             </div>
                         </div>
@@ -325,7 +316,6 @@
                         </script>
                     </c:forEach>
                 </div>
-
             </div>
         </div>
 
@@ -347,6 +337,8 @@
                 });
             });
         </script>
+
+        <!-- Script for design-stage link interaction -->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 // Lắng nghe sự kiện click cho các liên kết của design stage
@@ -363,9 +355,11 @@
                 });
             });
         </script>
+
         <!-- Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </body>
 </html>
+

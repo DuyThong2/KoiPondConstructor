@@ -36,9 +36,9 @@ public class DesignStageService {
         DesignStage designStage = designStageDAO.getDesignStageById(designStageId);
 
         if (designStage != null) {
-            List<DesignStageDetail> details = designStageDetailDAO.getDesignStageDetailOfDesignStage(designStageId);
+            List<DesignStageDetail> details = designStageDetailDAO.getDesignStageDetailOfDesignStageId(designStageId);
             boolean allCompleted = details.stream().allMatch(detail -> detail.getStatus() == 4); // All completed
-            boolean anyProcessing = details.stream().anyMatch(detail -> detail.getStatus() == 2); // Any processing
+            boolean anyProcessing = details.stream().anyMatch(detail -> detail.getStatus() != 1); // It will be change to processing when any status != pending
 
             if (allCompleted) {
                 designStage.setDesignStageStatus(4); // Approved

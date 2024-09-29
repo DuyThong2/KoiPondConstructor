@@ -90,7 +90,7 @@
             <!-- Header -->
             <header>
                 <div class="nav">
-                    <a href="/designer/task" class="nav-link">My Projects</a>
+                    <a href="/designer/manage" class="nav-link">My Projects</a>
                     <a href="/logout" class="btn btn-logout">Logout</a>
                 </div>
             </header>
@@ -109,52 +109,48 @@
                     <div class="info-item mb-4">
                         <p><strong>Email:</strong> ${customer.email}</p>
                     </div>
-                    <a href="#" class="btn btn-primary w-100 mb-4">Design Status</a>
-                    <a href="/designer/design/${desgin.designId}" class="btn btn-secondary w-100">To Design</a>
+
                 </div>
 
                 <!-- Project Information -->
                 <div class="info-box">
                     <h4>Project Information</h4>
-                        <div class="info-item">
-                            <p><strong>Project Name:</strong> ${project.projectName}</p>
-                        </div>
-                        <div class="info-item">
-                            <p><strong>Address:</strong> ${project.address}</p>
-                        </div>
-                        <div class="info-item">
-                            <p><strong>Design Aesthetic:</strong> ${project.style}</p>
-                        </div>
-                        <div class="info-item">
-                            <p><strong>Description:</strong> ${project.description}</p>
-                        </div>
-                        <div class="info-item">
-                            <p><strong>Start Date:</strong> ${project.dateStart}</p>
-                        </div>
-                        <div class="info-item">
-                            <p><strong>End Date:</strong>
-                                <c:choose>
-                                    <c:when test="${empty project.dateEnd}">Not yet</c:when>
-                                    <c:otherwise>${project.dateEnd}</c:otherwise>
-                                </c:choose>
-                            </p>
-                        </div>
-                        <div class="info-item">
-                            <p><strong>Project Status:</strong>
-                                <c:choose>
-                                    <c:when test="${project.status == 1}">Pending</c:when>
-                                    <c:when test="${project.status == 2}">Processing</c:when>
-                                    <c:when test="${project.status == 3}">Completed</c:when>
-                                    <c:when test="${project.status == 4}">Canceled</c:when>
-                                </c:choose>
-                            </p>
-                        </div>
-                        <div class="info-item">
-                            <p><strong>Description</strong> ${project.description}</p>
-                        </div>
-                        <div class="info-item">
-                            <p><a href="/download/${project.imgURL}" class="btn btn-link">Download Project Image</a></p>
-                        </div>
+                    <div class="info-item">
+                        <p><strong>Project Name:</strong> ${project.projectName}</p>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Address:</strong> ${project.address}</p>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Design Aesthetic:</strong> ${project.style}</p>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Area (m²):</strong> ${quote.quotesArea}</p>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Description:</strong> ${project.description}</p>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Start Date:</strong> ${project.dateStart}</p>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>End Date:</strong>
+                            <c:choose>
+                                <c:when test="${empty project.dateEnd}">Not yet</c:when>
+                                <c:otherwise>${project.dateEnd}</c:otherwise>
+                            </c:choose>
+                        </p>
+                    </div>
+                    <div class="info-item">
+                        <p><strong>Project Status:</strong>
+                            <c:choose>
+                                <c:when test="${project.status == 1}">Pending</c:when>
+                                <c:when test="${project.status == 2}">Processing</c:when>
+                                <c:when test="${project.status == 3}">Completed</c:when>
+                                <c:when test="${project.status == 4}">Canceled</c:when>
+                            </c:choose>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
