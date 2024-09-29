@@ -38,4 +38,8 @@ public class StaffService {
     public List<Staff> getTopStaffList(){
         return staffDAO.getTopStaffList();
     }
+    
+    public Staff findStaffByEmail(String email){
+        return staffDAO.findStaffByEmail(email);
+    }
 }

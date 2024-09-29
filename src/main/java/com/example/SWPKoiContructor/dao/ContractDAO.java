@@ -107,7 +107,7 @@ public class ContractDAO {
 
     public List<Contract> getSortedAndPaginatedByCustomer(int id, int page, int size, String sortBy, String sortDirection) {
         // Create the JPQL query with the correct alias
-        String jpql = "SELECT p FROM Contract p WHERE p.customer.id = :id AND (p.contractStatus != 1 AND p.contractStatus != 4) ORDER BY p." + sortBy + " " + sortDirection;
+        String jpql = "SELECT p FROM Contract p WHERE p.customer.id = :id AND (p.contractStatus != 1 OR p.contractStatus != 4) ORDER BY p." + sortBy + " " + sortDirection;
 
         // Create TypedQuery
         TypedQuery<Contract> query = entityManager.createQuery(jpql, Contract.class);
@@ -150,7 +150,7 @@ public class ContractDAO {
         // Construct the appropriate condition based on the isCustomer flag
         String append = isCustomer
                 ? "c.quote.staff.id = :id"
-                : "c.customer.id = :id AND (c.contractStatus != 1 AND c.contractStatus != 4)";
+                : "c.customer.id = :id AND (c.contractStatus != 1 OR c.contractStatus != 4)";
 
         // Construct the JPQL query
         String jpql = "SELECT COUNT(c) FROM Contract c WHERE " + append;

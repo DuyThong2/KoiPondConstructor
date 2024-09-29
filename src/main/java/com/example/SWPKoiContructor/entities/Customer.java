@@ -64,6 +64,13 @@ public class Customer extends User{
     public void setContracts(List<Contract> contracts) {
         this.contracts = contracts;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+    
+    
     
     public List<Comment> getComment() {
         return comment;

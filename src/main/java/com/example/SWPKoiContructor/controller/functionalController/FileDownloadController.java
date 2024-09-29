@@ -5,6 +5,8 @@
  */
 package com.example.SWPKoiContructor.controller.functionalController;
 
+import com.example.SWPKoiContructor.exception.ResourceNotExistException;
+import com.example.SWPKoiContructor.exception.UserErrorSyntaxException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,7 +40,7 @@ public class FileDownloadController {
 
             // Check if the file exists
             if (!resource.exists()) {
-                return ResponseEntity.notFound().build();
+                throw new ResourceNotExistException("File is corrupted or not exist");
             }
 
             // Return the file as a downloadable resource
@@ -48,7 +50,7 @@ public class FileDownloadController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            return ResponseEntity.badRequest().build();
+            throw new UserErrorSyntaxException("User changing the URL in a error way");
         }
     }
 }

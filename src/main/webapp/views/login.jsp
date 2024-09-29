@@ -1,36 +1,32 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ page session="true" %>
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <script>
-        // Function to show popup
-        function showMessage(message) {
-            if (message) {
-                alert(message);
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login Page</title>
+        <script>
+            function showMessage(message) {
+                if (message) {
+                    alert(message);
+                }
             }
-        }
-    </script>
-</head>
-<body onload="showMessage('${message}')">
-    <h2>Please Login</h2>
+        </script>
+    </head>
+    <body onload="showMessage('${message}')">
+        <h2>Please Login</h2>
 
-    <form action="/authenticateTheUser" method="post">
-        <input type="text" name="username" placeholder="Email">
-        <input type="password" name="password" placeholder="Password">
-        <button type="submit">Login</button>
-    </form>
+        <!-- Login Form for Form-based Authentication -->
+        <form action="/authenticateTheUser" method="post">
+            <input type="text" name="username" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
 
-    <!-- Error Handling - No need to show this, handled by JavaScript popup -->
-    <!--
-    <c:if test="${not empty error}">
-        <p style="color:red;">Invalid email or password. Please try again.</p>
-    </c:if>
-    -->
-</body>
+        <!-- Add a Forgot Password link -->
+        <a href="/forgot-password">Forgot your password?</a>
+
+        <!-- Google OAuth 2.0 Login -->
+        <h2>Login with OAuth 2.0</h2>
+        <a href="/oauth2/authorization/google">Google</a>
+    </body>
 </html>

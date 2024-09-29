@@ -125,7 +125,9 @@
                     <c:forEach var="blueprint" items="${allBlueprints}">
                         <div class="col-md-4">
                             <div class="card mb-4">
+
                                 <img class="card-img-top" src="/uploads/${blueprint.imgUrl}" alt="Blueprint Image">
+
                                 <div class="card-body">
                                     <p><strong>Date Uploaded:</strong> ${blueprint.dateCreate}</p>
                                     <div class="d-flex justify-content-between">

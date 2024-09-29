@@ -1,6 +1,8 @@
 package com.example.SWPKoiContructor.controller.functionalController;
 
 import com.example.SWPKoiContructor.exception.AccountIsExistException;
+import com.example.SWPKoiContructor.exception.ResourceNotExistException;
+import com.example.SWPKoiContructor.exception.UserErrorSyntaxException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.ui.Model;
@@ -16,6 +18,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(NoHandlerFoundException.class)
     public String handleNotFound(NoHandlerFoundException ex, Model model) {
+        System.out.println("match");
         model.addAttribute("errorMessage", "Page not found");
         return "error/error-404"; // Error page for 404
     }
@@ -28,14 +31,15 @@ public class GlobalExceptionHandler {
         return "error/error-403"; // Error page for 403
     }
 
-    // Handle 500 Internal Server Error
 
-    /*@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public String handleInternalError(Exception ex, Model model) {
-        model.addAttribute("errorMessage", "Internal server error");
-        return "error/error-500"; // Error page for 500
-    }*/
+
+//    // Handle 500 Internal Server Error
+//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//    @ExceptionHandler(Exception.class)
+//    public String handleInternalError(Exception ex, Model model) {
+//        model.addAttribute("errorMessage", "Internal server error");
+//        return "error/error-500"; // Error page for 500
+//    }
 
 
     // Handle 400 Bad Request
@@ -51,4 +55,18 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", ex.getMessage());
         return "registerCustomer"; // Error page for 400
     }
+    
+    @ExceptionHandler(ResourceNotExistException.class)
+    public String handleResourceNotFound(ResourceNotExistException ex, Model model){
+         model.addAttribute("errorMessage", ex.getMessage());
+        return "error/error-404";
+    }
+    
+    @ExceptionHandler(UserErrorSyntaxException.class)
+    public String handleBadRequest(UserErrorSyntaxException ex, Model model) {
+        model.addAttribute("errorMessage", "Bad request");
+        return "error/error-400"; // Error page for 400
+    }
+    
+    
 }
