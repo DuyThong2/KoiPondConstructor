@@ -60,7 +60,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             case "Consulting":
                 return "/consultant/contract";
             case "Design":
-                return "/designer/task";
+                return "/designer/manage";
             case "Construction":
                 return "/constructor/contract";
             default:

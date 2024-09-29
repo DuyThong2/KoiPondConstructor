@@ -150,38 +150,44 @@ public class ContractController {
     @GetMapping("/manager/contract/viewDetail/{id}")
     public String viewDetailContract(Model model, @PathVariable("id") int id) {
         Contract contract = contractService.getContractById(id);
-        if (contract != null){
+        if (contract != null) {
             model.addAttribute("contract", contract);
             return "manager/contract/contractDetail";
-        }else{
+        } else {
             return "redirect:/manager/contract";
         }
-        
+
     }
 
     @GetMapping("/consultant/contract/viewDetail/{id}")
-    public String viewDetailContractByConsultant(Model model, @PathVariable("id") int id) {
+    public String viewDetailContractByConsultant(Model model, @PathVariable("id") int id, HttpSession session) {
         Contract contract = contractService.getContractById(id);
-        model.addAttribute("contract", contract);
-        return "consultant/contract/contractDetail";
+        Staff staff = (Staff) session.getAttribute("user");
+        if (contract != null && contract.isContractBelongToStaff(staff, contract)) {
+            model.addAttribute("contract", contract);
+            return "consultant/contract/contractDetail";
+        } else {
+            return "redirect:/consultant/contract";
+        }
+
     }
 
     @GetMapping("/customer/contract/viewDetail/{id}")
     public String viewDetailContractByCustomer(Model model, @PathVariable("id") int id, HttpSession session) {
         Contract contract = contractService.getContractById(id);
         Customer customer = (Customer) session.getAttribute("user");
-        if(contract != null && contract.isContractBelongToCustomer(customer, contract)){
+        if (contract != null && contract.isContractBelongToCustomer(customer, contract)) {
             model.addAttribute("contract", contract);
 
-        return "customer/contract/contractDetail";
-        }else{
+            return "customer/contract/contractDetail";
+        } else {
             return "redirect:/customer/contract";
         }
-        
+
     }
 
-    @GetMapping("/consultant/contract/create/{quoteId}")
-    public String createContract(Model model, @PathVariable("quoteId") int quoteId,HttpSession session) {
+    @GetMapping("/consultant/contract/create")
+    public String createContract(Model model, @RequestParam("quoteId") int quoteId, HttpSession session) {
         Contract contract = new Contract();
         Quotes quote = quotesService.getQuoteById(quoteId);
         Staff staff = (Staff) session.getAttribute("user");
@@ -216,13 +222,19 @@ public class ContractController {
     }
 
     @GetMapping("/consultant/contract/edit")
-    public String updateContractByConsultant(@RequestParam("id") int contractId, Model model) {
+    public String updateContractByConsultant(@RequestParam("id") int contractId, Model model,HttpSession session) {
         Contract contract = contractService.getContractById(contractId);
-        model.addAttribute("contract", contract);
-        model.addAttribute("quote", contract.getQuote());
-        model.addAttribute("terms", termService.getAllTemplateTerm());
-        model.addAttribute("customer", contract.getCustomer());
-        return "consultant/contract/editContract";
+        Staff staff = (Staff) session.getAttribute("user");
+        if (contract != null && contract.isContractBelongToStaff(staff, contract)) {
+            model.addAttribute("contract", contract);
+            model.addAttribute("quote", contract.getQuote());
+            model.addAttribute("terms", termService.getAllTemplateTerm());
+            model.addAttribute("customer", contract.getCustomer());
+            return "consultant/contract/editContract";
+        } else {
+            return "redirect:/consultant/contract";
+        }
+
     }
 
     @PutMapping("/consultant/contract/edit")
@@ -242,16 +254,16 @@ public class ContractController {
     @GetMapping("/manager/contract/edit")
     public String updateContractByManager(@RequestParam("id") int contractId, Model model) {
         Contract contract = contractService.getContractById(contractId);
-        if (contract != null){
-             model.addAttribute("contract", contract);
-        model.addAttribute("quote", contract.getQuote());
-        model.addAttribute("terms", termService.getAllTemplateTerm());
-        model.addAttribute("customer", contract.getCustomer());
-        return "manager/contract/editContract";
-        }else{
+        if (contract != null) {
+            model.addAttribute("contract", contract);
+            model.addAttribute("quote", contract.getQuote());
+            model.addAttribute("terms", termService.getAllTemplateTerm());
+            model.addAttribute("customer", contract.getCustomer());
+            return "manager/contract/editContract";
+        } else {
             return "redirect:/manager/contract";
         }
-       
+
     }
 
     @PutMapping("/manager/contract/edit")

@@ -16,10 +16,9 @@ public class ConstructionStageDetailDAO {
         this.entityManager = entityManager;
     }
 
-    public ConstructionStageDetail getConstructionStageDetailByConstructionStageId(int id) {
+    public ConstructionStageDetail getConstructionStageDetailByConstructionStageDetailId(int id) {
         try {
-            TypedQuery<ConstructionStageDetail> detail = entityManager.createQuery("SELECT csd FROM ConstructionStageDetail csd "
-                    + "WHERE csd.constructionStage.constructionStageId = :id ", ConstructionStageDetail.class);
+            TypedQuery<ConstructionStageDetail> detail = entityManager.createQuery("SELECT csd FROM ConstructionStageDetail csd where csd.constructionStageDetailId = :id", ConstructionStageDetail.class);
             detail.setParameter("id", id);
             return detail.getSingleResult();
         } catch (NoResultException e) {

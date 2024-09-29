@@ -45,8 +45,8 @@ public class ConstructionStageDAO {
 
     public List<ConstructionStage> findByConstructionIdOrderById(int constructionId) {
         TypedQuery<ConstructionStage> list = entityManager.createQuery(
-                "SELECT cs FROM ConstructionStage cs ORDER BY cs.constructionStageId"
-                + "WHERE cs.construction.constructionId = :id", ConstructionStage.class);
+                "SELECT cs FROM ConstructionStage cs WHERE cs.construction.constructionId = :id ORDER BY cs.constructionStageId"
+                , ConstructionStage.class);
         list.setParameter("id", constructionId);
         return list.getResultList();
     }

@@ -128,7 +128,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             case "Consulting":
                 return "/consultant/contract";
             case "Design":
-                return "/designer/task";
+                return "/designer/manage";
             case "Construction":
                 return "/constructor/contract";
             default:

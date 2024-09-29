@@ -20,32 +20,42 @@ import org.springframework.stereotype.Service;
 @Service
 public class ConstructionService {
 
-    private ConstructionDAO constructionDao;
+    private ConstructionDAO constructionDAO;
     private ConstructionStageDAO constructionStageDAO;
     private ProjectService projectService;
 
-    public ConstructionService(ConstructionDAO constructionDao, ConstructionStageDAO constructionStageDAO, @Lazy ProjectService projectService) {
-        this.constructionDao = constructionDao;
+    public ConstructionService(ConstructionDAO constructionDAO, ConstructionStageDAO constructionStageDAO, @Lazy ProjectService projectService) {
+        this.constructionDAO = constructionDAO;
         this.constructionStageDAO = constructionStageDAO;
         this.projectService = projectService;
     }
 
     
 
-    public List<Object[]> getListConstructionByCustomerName() {
-        return constructionDao.getListConstructionByCustomerName();
+    public List<Construction> getListConstructionByCustomerName() {
+        return constructionDAO.getListConstructionByCustomerName();
     }
 
     public Construction getConstructionById(int id) {
-        return constructionDao.getConstructionById(id);
+        return constructionDAO.getConstructionById(id);
     }
 
     public Construction updateConstruction(Construction construction) {
-        return constructionDao.updateConstruction(construction);
+        return constructionDAO.updateConstruction(construction);
+    }
+    
+    public List<Construction> getSortedAndPaginatedByStaff(int staffId, int page, int size) {
+        return constructionDAO.getSortedAndPaginatedByStaff(staffId, page, size);
+    }
+
+    // Get total number of pages by staff
+    public int getTotalPagesByStaff(int staffId, int size) {
+        long totalRecords = constructionDAO.countConstructionsByStaff(staffId);
+        return (int) Math.ceil((double) totalRecords / size);
     }
 
     protected void propagateStatusToConstruction(int constructionId) {
-        Construction construction = constructionDao.getConstructionById(constructionId);
+        Construction construction = constructionDAO.getConstructionById(constructionId);
 
         // Check the status of all construction stages to determine Construction status
         if (construction != null) {
@@ -61,7 +71,7 @@ public class ConstructionService {
                 construction.setConstructionStatus(1); // Pending
             }
 
-            constructionDao.updateConstruction(construction);
+            constructionDAO.updateConstruction(construction);
 
             // Step 4: Propagate changes to the Project
             projectService.propagateStatusToProject(construction.getProject().getProjectId());
