@@ -8,6 +8,43 @@
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="<c:url value='/css/manager/designStyle.css'/>" rel="stylesheet">
+        <style>
+
+            .detail-name-bar {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-items: center; 
+                margin-top: 15px;
+            }
+            .badge-status {
+                font-size: 14px;
+                padding: 8px 15px;
+                margin-right: 10px;
+                margin-bottom: 10px;
+                border-radius: 15px;
+                text-transform: capitalize;
+            }
+
+            /* Màu sắc cho badge */
+            .badge-status.success {
+                background-color: #28a745;
+                color: white;
+            }
+            .badge-status.proccessing {
+                background-color: #0d6efd;
+                color: white;
+            }
+            .badge-status.pending {
+                background-color: #6c757d;
+                color: white;
+            }
+
+            .badge-status.canceled {
+                background-color: #ffc107;
+                color: white;
+            }
+        </style>
     </head>
     <body>
         <div class="container-fluid">
@@ -66,6 +103,17 @@
                             <td colspan="6">
                                 <div class="blueprint-details">
                                     <table class="table table-bordered">
+                                        <div class="detail-name-bar  ">
+                                            <c:forEach var="detail" items="${stage.designDetail}">
+                                                <span class="badge-status
+                                                      <c:if test="${detail.status == 1}">pending</c:if>
+                                                      <c:if test="${detail.status == 2}">proccessing</c:if>
+                                                      <c:if test="${detail.status == 3}">canceled</c:if>
+                                                      <c:if test="${detail.status == 4}">success</c:if> ">
+                                                    ${detail.name}
+                                                </span>
+                                            </c:forEach>
+                                        </div>
                                         <thead>
                                             <tr>
                                                 <th>Title</th>
@@ -90,7 +138,7 @@
                                                         </c:choose>
                                                     </td>
                                                     <td>
-                                                        <a href="${bluePrint.imgUrl}" class="btn btn-link">View Image</a>
+                                                        <a href="/uploads/${bluePrint.imgUrl}" class="btn btn-link">View Image</a>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -109,7 +157,7 @@
                 <ul class="list-group d-inline-block list-group-horizontal d-flex flex-wrap">
                     <c:forEach var="staff" items="${designDetails.staff}">
                         <li class="list-group-item mx-2 p-2">${staff.name}</li>
-                    </c:forEach>
+                        </c:forEach>
                 </ul>
             </div>
 

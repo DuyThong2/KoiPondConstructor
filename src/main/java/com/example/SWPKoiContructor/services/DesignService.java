@@ -94,7 +94,9 @@ public class DesignService {
         } else {
             throw new RuntimeException();
         }
-
     }
 
+     public boolean isAssignedToDesign(int designId, int userId) {
+        return  designDao.isAssignedToDesign(designId, userId);
+    }
 }

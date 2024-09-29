@@ -91,11 +91,8 @@ public class DesignController {
         }
 
         Design design = designService.getDesignById(id);
-
-        // Kiểm tra xem user hiện tại có thuộc danh sách staff của design không
-        boolean isAssignedToDesign = design.getStaff().stream().anyMatch(staff -> staff.getId() == user.getId());
-
-        if (!isAssignedToDesign) {
+        boolean isAssignedToDesign = designService.isAssignedToDesign(id, user.getId());
+        if (design == null || !isAssignedToDesign) {
             redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this project.");
             return "redirect:/error/error-403"; // Điều hướng đến trang lỗi
         }
@@ -121,10 +118,8 @@ public class DesignController {
 
         Design design = designService.getDesignById(id);
 
-        // Kiểm tra xem user hiện tại có thuộc danh sách staff của design không
-        boolean isAssignedToDesign = design.getStaff().stream().anyMatch(staff -> staff.getId() == user.getId());
-
-        if (!isAssignedToDesign) {
+        boolean isAssignedToDesign = designService.isAssignedToDesign(id, user.getId());
+        if (design == null || !isAssignedToDesign) {
             redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this project.");
             return "redirect:/error/error-403"; // Điều hướng đến trang lỗi
         }
@@ -139,6 +134,7 @@ public class DesignController {
     }
 
 //=========================Designer design Blue Prints=================================//
+    //View BluePrint, uploads image and update sumary file.
     @GetMapping("/designer/manage/blueprint/{designStageId}")
     public String manageBlueprint(@PathVariable("designStageId") int designStageId,
             Model model, HttpSession session, RedirectAttributes redirectAttributes) {
@@ -206,7 +202,7 @@ public class DesignController {
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
 
-    @GetMapping("/delete/{bluePrintId}")
+    @GetMapping("/designer/delete/{bluePrintId}")
     public String deleteBlueprint(
             @PathVariable("bluePrintId") int bluePrintId,
             @RequestParam("designStageId") int designStageId) {
@@ -220,7 +216,7 @@ public class DesignController {
 
 //===============================Update Status Design Detail=====================================//
     //update stage of design detail page
-    @GetMapping("/updateStatus/designStage/{id}")
+    @GetMapping("/designer/updateStatus/designStage/{id}")
     public String listDesignStageDetails(@PathVariable int id, Model model, @RequestParam int designId,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
@@ -228,16 +224,30 @@ public class DesignController {
             return "redirect:/login";
         }
 
+        // Lấy thông tin thiết kế
         Design design = designService.getDesignById(designId);
+        if (design == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Design not found.");
+            return "redirect:/error/error-403";
+        }
 
+        // Kiểm tra xem user có phải là một trong các nhân viên của thiết kế không
         boolean isAssignedToDesign = design.getStaff().stream()
                 .anyMatch(staff -> staff.getId() == user.getId());
 
+        // Nếu người dùng không được gán vào thiết kế này, chuyển hướng đến trang lỗi
         if (!isAssignedToDesign) {
             redirectAttributes.addFlashAttribute("error", "You do not have permission to access this design stage.");
             return "redirect:/error/error-403";
         }
+
+        // Lấy thông tin chi tiết giai đoạn thiết kế
         List<DesignStageDetail> details = designStageDetailService.getDesignStageDetailOfDesignStageId(id);
+        if (details == null || details.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Design stage details not found.");
+            return "redirect:/error/error-403";
+        }
+
         model.addAttribute("designId", designId);
         model.addAttribute("details", details);
         model.addAttribute("id", id);
@@ -260,7 +270,7 @@ public class DesignController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
-        return "redirect:/updateStatus/designStage/" + designStageId + "?designId=" + designId;
+        return "redirect:/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
     }
 //===============================End Update Status Design Detail=====================================//
 

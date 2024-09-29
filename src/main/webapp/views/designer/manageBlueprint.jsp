@@ -132,7 +132,7 @@
                                     <p><strong>Date Uploaded:</strong> ${blueprint.dateCreate}</p>
                                     <div class="d-flex justify-content-between">
                                         <a href="/uploads/${blueprint.imgUrl}" class="btn btn-info">View Full Image</a>
-                                        <a href="${pageContext.request.contextPath}/delete/${blueprint.bluePrintId}?designStageId=${designStage.designStageId}" class="btn btn-danger">Delete</a>
+                                        <a href="${pageContext.request.contextPath}/designer/delete/${blueprint.bluePrintId}?designStageId=${designStage.designStageId}" class="btn btn-danger">Delete</a>
                                     </div>
                                 </div>
                             </div>

@@ -80,60 +80,71 @@
         </style>
     </head>
     <body>
-       <div class="container mt-5">
-    <h2>Design Stage Details</h2>
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <c:forEach var="detail" items="${details}">
-            <form action="${pageContext.request.contextPath}/designStageDetail/updateStatus" method="post" onsubmit="return confirmStatusChange();">
-                <tr>
-                    <td>${detail.id}</td>
-                    <td>${detail.name}</td>
-                    <td>${detail.description}</td>
-                    <td>
-                        <select class="form-control text-center" name="newStatus" 
-                                <c:choose>
-                                    <c:when test="${detail.status == 3 || detail.status == 4}">
-                                        disabled
-                                    </c:when>
-                                    <c:otherwise>
-                                        required
-                                    </c:otherwise>
-                                </c:choose>>
-                            <c:if test="${detail.status != 2}">
-                                <option value="1" ${detail.status == 1 ? 'selected' : ''}>Pending</option>
-                            </c:if>
-                            <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
-                            <option value="3" ${detail.status == 3 ? 'selected' : ''}>Cancel</option>
-                            <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="hidden" name="designId" value="${designId}">
-                        <input type="hidden" name="detailId" value="${detail.id}">
-                        <input type="hidden" name="designStageId" value="${id}">
-                        <c:if test="${detail.status != 3 && detail.status != 4}">
-                            <button type="submit" class="btn btn-primary mt-2">Update</button>
-                        </c:if>
-                    </td>
-                </tr>
-            </form>
-            </c:forEach>
-        </tbody>
-    </table>
-    <div class="text-center mt-3">
-        <a href="${pageContext.request.contextPath}/designer/design/${designId}" class="btn btn-secondary">Back to Design</a>
-    </div>
-</div>
+        <div class="container mt-5">
+            <h2>Design Stage Details</h2>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="detail" items="${details}">
+                    <form action="${pageContext.request.contextPath}/designStageDetail/updateStatus" method="post" onsubmit="return confirmStatusChange();">
+                        <tr>
+                            <td>${detail.id}</td>
+                            <td>${detail.name}</td>
+                            <td>${detail.description}</td>
+                            <td>
+                                <select class="form-control text-center" name="newStatus" 
+                                        <c:choose>
+                                            <c:when test="${detail.status == 3 || detail.status == 4}">
+                                                disabled
+                                            </c:when>
+                                            <c:otherwise>
+                                                required
+                                            </c:otherwise>
+                                        </c:choose>>
+                                    <c:if test="${detail.status != 2}">
+                                        <option value="1" ${detail.status == 1 ? 'selected' : ''}>Pending</option>
+                                    </c:if>
+                                    <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
+                                    <option value="3" ${detail.status == 3 ? 'selected' : ''}>Cancel</option>
+                                    <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="hidden" name="designId" value="${designId}">
+                                <input type="hidden" name="detailId" value="${detail.id}">
+                                <input type="hidden" name="designStageId" value="${id}">
+                                <c:if test="${detail.status != 3 && detail.status != 4}">
+                                    <button type="submit" class="btn btn-primary mt-2">Update</button>
+                                </c:if>
+                            </td>
+                        </tr>
+                    </form>
+                </c:forEach>
+                </tbody>
+            </table>
+            <c:if test="${not empty success}">
+                <div class="alert alert-success mt-3" style="font-size: large">
+                    ${success}
+                </div>
+            </c:if>
+
+            <c:if test="${not empty error}">
+                <div class="alert alert-danger mt-3">
+                    ${error}
+                </div>
+            </c:if>
+            <div class="text-center mt-3">
+                <a href="${pageContext.request.contextPath}/designer/design/${designId}" class="btn btn-secondary">Back to Design</a>
+            </div>
+        </div>
 
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
