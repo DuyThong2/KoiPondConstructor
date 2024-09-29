@@ -5,7 +5,9 @@
  */
 package com.example.SWPKoiContructor.dao;
 
+import com.example.SWPKoiContructor.entities.Design;
 import com.example.SWPKoiContructor.entities.Project;
+import com.example.SWPKoiContructor.entities.Staff;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -144,5 +146,10 @@ public class ProjectDAO {
             }
         }else return null;
         return queryBuilder.toString();
+    }
+
+
+
+    public void assignStaffToProject(int staffId, int projectId, String role) {
     }
 }

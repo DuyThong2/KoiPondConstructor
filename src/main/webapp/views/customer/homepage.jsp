@@ -93,7 +93,7 @@
                         </div>
                         <div class="search__close">
                             <button type="button" class="search__close-btn search-close-btn">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <s   vg width="18" height="18" viewBox="0 0 18 18" fill="none">
                                     <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                           stroke-linejoin="round" />
                                     <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"

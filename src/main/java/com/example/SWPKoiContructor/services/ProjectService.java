@@ -1,13 +1,7 @@
 package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.ProjectDAO;
-import com.example.SWPKoiContructor.entities.Construction;
-import com.example.SWPKoiContructor.entities.ConstructionStage;
-import com.example.SWPKoiContructor.entities.ConstructionStageDetail;
-import com.example.SWPKoiContructor.entities.Design;
-import com.example.SWPKoiContructor.entities.DesignStage;
-import com.example.SWPKoiContructor.entities.Project;
-import com.example.SWPKoiContructor.entities.Term;
+import com.example.SWPKoiContructor.entities.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,29 +11,32 @@ import java.util.List;
 public class ProjectService {
 
     private ProjectDAO projectDAO;
-    
+
 
     public ProjectService(ProjectDAO projectDAO) {
         this.projectDAO = projectDAO;
     }
 
 
-    public List<Project> getProjectList(int size){
+    public List<Project> getProjectList(int size) {
         return projectDAO.getProjectList(size);
 
     }
-    public List<Project> getProjectListIsSharable(){
+
+    public List<Project> getProjectListIsSharable() {
         return projectDAO.getProjectListIsSharable();
     }
 
 
-    public List<Project> getPaginationProjectList(int page, int size, String sortBy, String sortType){
-        return projectDAO.getPaginationProjectList(page,size,sortBy,sortType);
+    public List<Project> getPaginationProjectList(int page, int size, String sortBy, String sortType) {
+        return projectDAO.getPaginationProjectList(page, size, sortBy, sortType);
     }
-    public Project getProjectById(int id){
+
+    public Project getProjectById(int id) {
         return projectDAO.getProjectById(id);
     }
-    public long countProject(){
+
+    public long countProject() {
         return projectDAO.countProject();
     }
 
@@ -109,11 +106,11 @@ public class ProjectService {
         completeDetail.forEach(detail -> complete.addContructionDetailStage(detail));
         return construction;
     }
-    
+
     @Transactional
     public void propagateStatusToProject(int projectId) {
         Project project = getProjectById(projectId);
-        
+
         if (project != null) {
             Design design = project.getDesign();
             Construction construction = project.getConstruction();
@@ -139,13 +136,16 @@ public class ProjectService {
             throw new RuntimeException("Project not found with id: " + projectId);
         }
     }
+
     public List<Project> getPaginationProjectListByStatusAndStage(int page, int size, String sortBy, String sortType, Integer statusFilter, Integer stageFilter) {
-        return projectDAO.getPaginationProjectListByStatusAndStage(page,size,sortBy,sortType,statusFilter,stageFilter);
+        return projectDAO.getPaginationProjectListByStatusAndStage(page, size, sortBy, sortType, statusFilter, stageFilter);
 
     }
 
     public long countProjectFilter(Integer statusFilter, Integer stageFilter) {
-        return projectDAO.countProjectFilter(statusFilter,stageFilter);
+        return projectDAO.countProjectFilter(statusFilter, stageFilter);
     }
+
+
 
 }
