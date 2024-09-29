@@ -11,11 +11,13 @@ import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.ConsultantService;
 import com.example.SWPKoiContructor.services.StaffService;
 import com.example.SWPKoiContructor.utils.FileUtility;
+import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,11 +39,33 @@ public class ConsultantController {
     }
 
     
-    //MANAGER SITE 
+    //MANAGER SITE   
     @GetMapping("/manager/consultant")
-    public String getConsultantList(Model model){
-        List<Consultant> list = consultantService.getConsultantList();
-        model.addAttribute("consultants",list);
+    public String getConsultantList(Model model,
+                                    @RequestParam(defaultValue = "0")int page,
+                                    @RequestParam(defaultValue = "8")int size,
+                                    @RequestParam(defaultValue = "consultantDateTime")String sortBy,
+                                    @RequestParam(defaultValue = "asc")String sortDirection,
+                                    @RequestParam(required = false)Integer statusFilter){
+        List<Consultant> consultants;
+        long totalConsultants;
+        
+        if(statusFilter != null){
+            consultants = consultantService.getConsultantListByOrderSortFilter(page, size, sortBy, sortDirection, statusFilter);
+            totalConsultants = consultantService.countConsultantByStatus(statusFilter);
+        }else{
+            consultants = consultantService.getConsultantListOrderByAndSort(page, size, sortBy, sortDirection);
+            totalConsultants = consultantService.countConsultant();
+        }
+        int totalPages = (int) Math.ceil((double) totalConsultants / size);
+        
+        model.addAttribute("consultants", consultants);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("statusFilter", statusFilter);
+        
         return "manager/consultant/consultantManage";
     }
     
@@ -71,11 +95,41 @@ public class ConsultantController {
     
     
     //CONSULTANT SITE
+//    @GetMapping("/consultant/viewConsultantList")
+//    public String getConsultantListByStaffId(Model model, HttpSession session){      
+//        User user = (User) session.getAttribute("user");
+//        List<Consultant> list = consultantService.getConsultantListByStaffId(user.getId());
+//        model.addAttribute("consultantList", list);
+//        return "consultant/consultantManage";
+//    }
+    
     @GetMapping("/consultant/viewConsultantList")
-    public String getConsultantListByStaffId(Model model, HttpSession session){      
+    public String getConsultantListByStaffId(Model model, HttpSession session,
+                                            @RequestParam(defaultValue = "0")int page,
+                                            @RequestParam(defaultValue = "8")int size,
+                                            @RequestParam(defaultValue = "consultantDateTime")String sortBy,
+                                            @RequestParam(defaultValue = "asc")String sortDirection,
+                                            @RequestParam(required = false)Integer statusFilter){
+        List<Consultant> consultants;
         User user = (User) session.getAttribute("user");
-        List<Consultant> list = consultantService.getConsultantListByStaffId(user.getId());
-        model.addAttribute("consultantList", list);
+        long totalConsultants;
+        
+        if(statusFilter != null){
+            consultants = consultantService.getConsultantListByStaffIdOrderSortFilter(user.getId(), page, size, sortBy, sortDirection, statusFilter);
+            totalConsultants = consultantService.countConsultantByStaffIdAndStatus(user.getId(), statusFilter);
+        }else{
+            consultants = consultantService.getConsultantListByStaffIdOrderSort(user.getId(), page, size, sortBy, sortDirection);
+            totalConsultants = consultantService.countConsultantByStaffId(user.getId());
+        }
+        int totalPages = (int) Math.ceil((double) totalConsultants / size);
+        
+        model.addAttribute("consultants", consultants);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("statusFilter", statusFilter);
+        
         return "consultant/consultantManage";
     }
     
@@ -90,6 +144,26 @@ public class ConsultantController {
     public String updateConsultantStatus(@RequestParam("consultantId")int consultantId, @RequestParam("statusId")int statusId, Model model){
         Consultant consultant = consultantService.updateConsultantStatus(consultantId, statusId);
         return "redirect:/consultant/viewConsultantDetail/" + consultantId;
+    }
+    
+    
+    
+    //CUSTOMER SITE
+    @GetMapping("/customer/consultant/create")
+    public String createNewConsultant(Model model, HttpSession session){
+        Consultant newConsultant = new Consultant();
+        model.addAttribute("newConsultant", newConsultant);
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("customer", user);       
+        return "customer/consultant/consultantCreate";
+    }
+    
+    @PostMapping("/customer/consultant/save")
+    public String saveConsultant(@ModelAttribute("newConsultant")Consultant newConsultant){
+        newConsultant.setConsultantDateTime(Calendar.getInstance());
+        newConsultant.setConsultantStatus(1);
+        newConsultant = consultantService.createConsultant(newConsultant);
+        return "redirect:/customer/consultant/create";
     }
     
 }

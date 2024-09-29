@@ -64,6 +64,46 @@
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <h2 class="mb-4">Consultant List</h2>
+                    <form method="get" action="/manager/consultant">
+                        <div class="form-row align-items-center">
+                            <!-- Sort By -->
+                            <div class="col-auto">
+                                <label for="sortBy">Sort by:</label>
+                                <select name="sortBy" id="sortBy" class="form-control">
+                                    <option value="consultantDateTime" ${sortBy == 'consultantDateTime' ? 'selected' : ''}>Date Created</option>                                    
+                                </select>
+                            </div>
+
+                            <!-- Sort Direction -->
+                            <div class="col-auto">
+                                <label for="sortDirection">Direction:</label>
+                                <select name="sortDirection" id="sortDirection" class="form-control">
+                                    <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
+                                    <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
+                                </select>
+                            </div>
+
+                            <!-- Filter By Status -->
+                            <div class="col-auto">
+                                <label for="statusFilter">Status:</label>
+                                <select name="statusFilter" id="statusFilter" class="form-control">
+                                    <option value="" ${statusFilter == null ? 'selected' : ''}>All</option>
+                                    <option value="1" ${statusFilter == 1 ? 'selected' : ''}>Pending</option>
+                                    <option value="2" ${statusFilter == 2 ? 'selected' : ''}>Assigned</option>
+                                    <option value="3" ${statusFilter == 3 ? 'selected' : ''}>Processing</option>
+                                    <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Completed</option>
+                                    <option value="5" ${statusFilter == 5 ? 'selected' : ''}>Canceled</option>                   
+                                </select>
+                            </div>
+
+                            <input type="hidden" name="page" value="${currentPage}">
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary mt-2">Apply</button>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <!-- Main Table -->
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">
                             <tr>
@@ -118,22 +158,22 @@
                     <!-- Pagination Controls -->
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <!-- Previous Button -->
-                        <c:if test="${currentPage > 1}">
-                            <a href="?page=${currentPage - 1}" class="btn btn-primary">Previous</a>
+                        <c:if test="${currentPage > 0}">
+                            <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&lt;</a>
                         </c:if>
-                        <c:if test="${currentPage == 1}">
-                            <button class="btn btn-primary" disabled>Previous</button>
+                        <c:if test="${currentPage == 0}">
+                            <button class="btn btn-primary" disabled>&lt;</button>
                         </c:if>
 
-                        <!-- Page Indicator (Format: <1/99>) -->
-                        <span>Page <strong>${currentPage}</strong> of <strong>${totalPages}</strong></span>
+                        <!-- Page Indicator -->
+                        <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
 
                         <!-- Next Button -->
-                        <c:if test="${currentPage < totalPages}">
-                            <a href="?page=${currentPage + 1}" class="btn btn-primary">Next</a>
+                        <c:if test="${currentPage < totalPages - 1}">
+                            <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&gt;</a>
                         </c:if>
-                        <c:if test="${currentPage == totalPages}">
-                            <button class="btn btn-primary" disabled>Next</button>
+                        <c:if test="${currentPage == totalPages - 1}">
+                            <button class="btn btn-primary" disabled>&gt;</button>
                         </c:if>
                     </div>
                 </main>
