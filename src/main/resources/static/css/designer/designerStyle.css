@@ -146,3 +146,16 @@ td {
     font-size: 16px;
     font-weight: bold;
 }
+.action-column {
+    width: 230px; 
+    text-align: center; /* Căn giữa nội dung trong cột */
+}
+
+.action-column .btn {
+    margin: 0 5px; /* Thêm khoảng cách giữa các nút */
+}
+
+/* Đảm bảo nội dung bên trong cột Action được căn giữa */
+.text-center {
+    text-align: center; /* Căn giữa văn bản trong div */
+}

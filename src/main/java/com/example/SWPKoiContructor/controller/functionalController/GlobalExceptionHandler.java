@@ -29,21 +29,21 @@ public class GlobalExceptionHandler {
     }
 
     // Handle 500 Internal Server Error
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public String handleInternalError(Exception ex, Model model) {
-        model.addAttribute("errorMessage", "Internal server error");
-        return "error/error-500"; // Error page for 500
-    }
+    // @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    // @ExceptionHandler(Exception.class)
+    // public String handleInternalError(Exception ex, Model model) {
+    // model.addAttribute("errorMessage", "Internal server error");
+    // return "error/error-500"; // Error page for 500
+    // }
 
     // Handle 400 Bad Request
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String handleBadRequest(IllegalArgumentException ex, Model model) {
-        model.addAttribute("errorMessage", "Bad request");
-        return "error/error-400"; // Error page for 400
-    }
-    
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public String handleBadRequest(IllegalArgumentException ex, Model model) {
+//        model.addAttribute("errorMessage", "Bad request");
+//        return "error/error-400"; // Error page for 400
+//    }
+
     @ExceptionHandler(AccountIsExistException.class)
     public String handleDuplicateEmail(AccountIsExistException ex, Model model) {
         model.addAttribute("errorMessage", ex.getMessage());

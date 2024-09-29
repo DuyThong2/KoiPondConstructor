@@ -92,6 +92,14 @@
                 font-weight: bold;
                 margin-bottom: 20px;
             }
+
+            /* CSS để đảm bảo ảnh có cùng kích thước */
+            .card-img-top {
+                height: 200px;
+                width: 100%;
+                object-fit: cover; /* Điều chỉnh ảnh để giữ nguyên tỷ lệ */
+                border-bottom: 1px solid #dee2e6;
+            }
         </style>
     </head>
     <body>
@@ -114,15 +122,15 @@
             <div class="existing-blueprints">
                 <h3>Existing Blueprints</h3>
                 <div class="row">
-                    <c:forEach var="blueprint" items="${blueprints}">
+                    <c:forEach var="blueprint" items="${allBlueprints}">
                         <div class="col-md-4">
                             <div class="card mb-4">
-                                <img class="card-img-top" src="${blueprint.imgUrl}" alt="Blueprint Image">
+                                <img class="card-img-top" src="/uploads/${blueprint.imgUrl}" alt="Blueprint Image">
                                 <div class="card-body">
                                     <p><strong>Date Uploaded:</strong> ${blueprint.dateCreate}</p>
                                     <div class="d-flex justify-content-between">
-                                        <a href="${blueprint.imgUrl}" class="btn btn-info">View Full Image</a>
-                                        <a href="${pageContext.request.contextPath}/delete/${blueprint.bluePrintId}?designStageId=${designStage.designStageId}" class="btn btn-danger">Delete</a>
+                                        <a href="/uploads/${blueprint.imgUrl}" class="btn btn-info">View Full Image</a>
+                                        <a href="${pageContext.request.contextPath}/designer/delete/${blueprint.bluePrintId}?designStageId=${designStage.designStageId}" class="btn btn-danger">Delete</a>
                                     </div>
                                 </div>
                             </div>
@@ -130,11 +138,30 @@
                     </c:forEach>
                 </div>
             </div>
-
+            <div class="feedback-blueprints">
+                <h3>Blueprints with Customer Feedback</h3>
+                <div class="row">
+                    <c:forEach var="blueprint" items="${feedbackBlueprints}">
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <img class="card-img-top" src="/uploads/${blueprint.imgUrl}" alt="Blueprint Image">
+                                <div class="card-body">
+                                    <p><strong>Date Uploaded:</strong> ${blueprint.dateCreate}</p>
+                                    <p><strong>Feedback:</strong> 
+                                        <c:forEach var="comment" items="${blueprint.comments}">
+                                        <div>- ${comment.commentContent}</div>
+                                    </c:forEach>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
             <!-- Upload New Blueprint Section -->
             <div class="upload-section">
                 <h3>Upload New Blueprint</h3>
-                <form action="${pageContext.request.contextPath}/designer/blueprint/upload" method="post" enctype="multipart/form-data">
+                <form action="${pageContext.request.contextPath}/designer/blueprint/upload/" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="designStageId" value="${designStage.designStageId}">
                     <div class="form-group">
                         <label for="blueprintFile">Choose Blueprint Image</label>
@@ -147,7 +174,7 @@
             <!-- Update Summary File Section -->
             <div class="upload-section">
                 <h3>Update Summary File</h3>
-                <form action="${pageContext.request.contextPath}/updateSummary" method="post" enctype="multipart/form-data">
+                <form action="${pageContext.request.contextPath}/updateSummary/" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="designStageId" value="${designStage.designStageId}">
                     <div class="form-group">
                         <label for="summaryFile">Choose Summary File</label>
@@ -157,7 +184,6 @@
                 </form>
             </div>
         </div>
-
 
         <script>
             function goBack() {

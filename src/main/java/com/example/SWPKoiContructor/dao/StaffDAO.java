@@ -54,7 +54,7 @@ public class StaffDAO {
     }
 
     public List<Staff> getTopStaffList(){
-        TypedQuery<String> typedQuery= entityManager.createQuery("Select distinct c.staffRole From Staff c",String.class);
+        TypedQuery<String> typedQuery= entityManager.createQuery("Select distinct c.department From Staff c",String.class);
         List<String> roleList= typedQuery.getResultList();
         List<Staff> listStaff = new ArrayList<>();
         roleList.forEach(role ->{
