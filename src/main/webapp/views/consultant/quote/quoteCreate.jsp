@@ -57,7 +57,7 @@
                     <h2 class="mb-4">Create Quote</h2>
 
                     <!-- Bind the form to the "contract" object -->
-                    <form:form action="/consultant/quote/saveNewQuotes" modelAttribute="newQuote" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                    <form:form action="/consultant/quote/saveNewQuotes" modelAttribute="newQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
 
                         <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
 

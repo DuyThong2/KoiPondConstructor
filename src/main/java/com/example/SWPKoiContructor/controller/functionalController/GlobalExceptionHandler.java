@@ -32,6 +32,7 @@ public class GlobalExceptionHandler {
     }
 
 
+
 //    // Handle 500 Internal Server Error
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 //    @ExceptionHandler(Exception.class)

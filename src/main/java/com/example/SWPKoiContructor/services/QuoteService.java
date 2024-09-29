@@ -37,6 +37,46 @@ public class QuoteService {
         return quoteDAO.getQuotesListByStaffId(staffId);
     }
     
+    public List<Quotes> getQuoteListByCusIdAndStatus(int cusId){
+        return quoteDAO.getQuotesListByCusIdAndStatus(cusId);
+    }
+    
+    //---------------------------------------  4 under: TEST SORT FILTER  -------------------------------------------------
+    public List<Quotes> getQuoteListByOrderSortFilter(int page, int size, String sortBy, String sortDirection, int status){
+        return quoteDAO.getQuotesList(page, size, sortBy, sortDirection, status);
+    }
+    
+    public List<Quotes> getQuoteListByOrderSort(int page, int size, String sortBy, String sortDirection){
+        return quoteDAO.getQuotesList(page, size, sortBy, sortDirection);
+    }
+    
+    public long countQuoteByStatus(int status){
+        return quoteDAO.countQuotesByStatus(status);
+    }
+    
+    public long countQuote(){
+        return quoteDAO.countQuotes();
+    }
+    
+    
+    //---------------------------------------  4 under: TEST SORT FILTER  -------------------------------------------------
+    public List<Quotes> getQuoteListByOrderSortFilterStaffId(int staffId, int page, int size, String sortBy, String sortDirection, int status){
+        return quoteDAO.getQuotesListByStaffId(staffId, page, size, sortBy, sortDirection, status);
+    }
+    
+    public List<Quotes> getQuoteListByOrderSortStaffId(int staffId, int page, int size, String sortBy, String sortDirection){
+        return quoteDAO.getQuotesListByStaffId(staffId, page, size, sortBy, sortDirection);
+    }
+    
+    public long countQuoteOfStaffByStatus(int staffId, int status){
+        return quoteDAO.countQuotesOfStaffByStatus(staffId, status);
+    }
+    
+    public long countQuoteOfStaffId(int staffId){
+        return quoteDAO.countQuotesOfStaff(staffId);
+    }
+    //-----------------------------------------------------------------------------------------------------------------------
+    
     @Transactional
     public Quotes createNewQuotes(Quotes quotes){
         return quoteDAO.createNewQuotes(quotes);

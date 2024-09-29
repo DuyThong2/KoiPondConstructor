@@ -26,10 +26,37 @@ public class ConsultantDAO {
         this.entityManager = entityManager;
     }
 
-    //default
-    public List<Consultant> getConsultantList() {
-        TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c ", Consultant.class);
+    public List<Consultant> getConsultantList(int page, int size, String sortBy, String sortDirection){
+        TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c ORDER BY c." + sortBy + " " + sortDirection, Consultant.class);
+        
+        tq.setFirstResult(size * page);
+        tq.setMaxResults(size);
+        
         return tq.getResultList();
+    }
+    
+    //test sort va filter
+    public List<Consultant> getConsultantList(int page, int size, String sortBy, String sortDirection, int status){
+        TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c WHERE c.consultantStatus = :status ORDER BY c." + sortBy + " " + sortDirection, Consultant.class);
+        
+        tq.setParameter("status", status);
+        tq.setFirstResult(size * page);
+        tq.setMaxResults(size);
+        
+        return tq.getResultList();
+    }
+    
+    //lay tong so luong theo status
+    public long countConsultantByStatus(int status){
+        TypedQuery<Long> tq = entityManager.createQuery("SELECT COUNT(c) FROM Consultant c WHERE c.consultantStatus = :status", Long.class);
+        tq.setParameter("status", status);
+        return tq.getSingleResult();
+    }
+    
+    //lay tong so luong
+    public long countConsultant(){
+        TypedQuery<Long> tq = entityManager.createQuery("SELECT COUNT(c) FROM Consultant c", Long.class);
+        return tq.getSingleResult();
     }
 
     //search by id
@@ -44,18 +71,42 @@ public class ConsultantDAO {
 
     }
 
-    //search theo name
-    public List<Consultant> getConsultantListByCusName(String name) {
-        TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c WHERE c.consultantCustomerName like :ConsultantCusName", Consultant.class);
-        tq.setParameter("ConsultantCusName", "%" + name + "%");
-        return tq.getResultList();
-    }
-
     //search theo staffId
     public List<Consultant> getConsultantListByStaffId(int staffId) {
         TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c WHERE c.staff.id = :staffId", Consultant.class);
         tq.setParameter("staffId", staffId);
         return tq.getResultList();
+    }
+    
+    //CONSULTANT GET LIST BY STAFF
+    public List<Consultant> getConsultantListByStaffId(int id, int page, int size, String sortBy, String sortDirection){
+        TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c WHERE c.staff.id = :id ORDER BY c." + sortBy + " " + sortDirection, Consultant.class);
+        tq.setParameter("id", id);
+        tq.setFirstResult(size * page);
+        tq.setMaxResults(size);
+        return tq.getResultList();
+    }
+    
+    public List<Consultant> getConsultantListByStaffId(int id, int page, int size, String sortBy, String sortDirection, int status){
+        TypedQuery<Consultant> tq = entityManager.createQuery("SELECT c FROM Consultant c WHERE c.staff.id = :id AND c.consultantStatus = :status ORDER BY c." + sortBy + " " + sortDirection, Consultant.class);
+        tq.setParameter("status", status);
+        tq.setParameter("id", id);
+        tq.setFirstResult(size * page);
+        tq.setMaxResults(size);
+        return tq.getResultList();
+    }
+    
+    public long countConsultantByStatusAndStaffId(int id, int status){
+        TypedQuery<Long> tq = entityManager.createQuery("SELECT COUNT(c) FROM Consultant c WHERE c.consultantStatus = :status AND c.staff.id = :id", Long.class);
+        tq.setParameter("id", id);
+        tq.setParameter("status", status);
+        return tq.getSingleResult();
+    }
+    
+    public long countConsultantByStaffId(int id){
+        TypedQuery<Long> tq = entityManager.createQuery("SELECT COUNT(c) FROM Consultant c WHERE c.staff.id = :id", Long.class);
+        tq.setParameter("id", id);       
+        return tq.getSingleResult();
     }
 
     //tao moi consultant
