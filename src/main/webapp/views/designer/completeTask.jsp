@@ -93,6 +93,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <c:set var="previousComplete" value="true" />
                     <c:forEach var="detail" items="${details}">
                     <form action="${pageContext.request.contextPath}/designStageDetail/updateStatus" method="post" onsubmit="return confirmStatusChange();">
                         <tr>
@@ -100,33 +101,66 @@
                             <td>${detail.name}</td>
                             <td>${detail.description}</td>
                             <td>
-                                <select class="form-control text-center" name="newStatus" 
-                                        <c:choose>
-                                            <c:when test="${detail.status == 3 || detail.status == 4}">
-                                                disabled
-                                            </c:when>
-                                            <c:otherwise>
-                                                required
-                                            </c:otherwise>
-                                        </c:choose>>
-                                    <c:if test="${detail.status != 2}">
-                                        <option value="1" ${detail.status == 1 ? 'selected' : ''}>Pending</option>
-                                    </c:if>
-                                    <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
-                                    <option value="3" ${detail.status == 3 ? 'selected' : ''}>Cancel</option>
-                                    <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
-                                </select>
+                                <!-- Logic to show select only if previous stage is complete and not completed or canceled -->
+                                <c:choose>
+                                    <c:when test="${previousComplete && detail.status != 4 && detail.status != 3}">
+                                        <select class="form-control text-center" name="newStatus" required>
+                                            <!-- Restricting Editing and Payment to Processing only -->
+                                            <c:if test="${detail.name == 'Payment' || detail.name == 'Editing'}">
+                                                <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
+                                            </c:if>
+                                            <c:if test="${detail.name != 'Payment' && detail.name != 'Editing'}">
+                                                <!-- Exclude Pending if already in Processing state -->
+                                                <c:choose>
+                                                    <c:when test="${detail.status == 2}">
+                                                        <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
+                                                        <option value="3" ${detail.status == 3 ? 'selected' : ''}>Cancel</option>
+                                                        <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="1" ${detail.status == 1 ? 'selected' : ''}>Pending</option>
+                                                        <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
+                                                        <option value="3" ${detail.status == 3 ? 'selected' : ''}>Cancel</option>
+                                                        <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:if>
+                                        </select>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <!-- Show current status as text if select is disabled -->
+                                        <span>
+                                            <c:choose>
+                                                <c:when test="${detail.status == 1}">Pending</c:when>
+                                                <c:when test="${detail.status == 2}">Processing</c:when>
+                                                <c:when test="${detail.status == 3}">Canceled</c:when>
+                                                <c:when test="${detail.status == 4}">Completed</c:when>
+                                            </c:choose>
+                                        </span>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                             <td>
                                 <input type="hidden" name="designId" value="${designId}">
                                 <input type="hidden" name="detailId" value="${detail.id}">
                                 <input type="hidden" name="designStageId" value="${id}">
-                                <c:if test="${detail.status != 3 && detail.status != 4}">
+                                <!-- Only show the update button if the select is enabled -->
+                                <c:if test="${previousComplete && detail.status != 4 && detail.status != 3}">
                                     <button type="submit" class="btn btn-primary mt-2">Update</button>
                                 </c:if>
                             </td>
                         </tr>
                     </form>
+
+                    <!-- Update the previousComplete flag based on current status -->
+                    <c:choose>
+                        <c:when test="${detail.status == 3 || detail.status == 4}">
+                            <c:set var="previousComplete" value="true" />
+                        </c:when>
+                        <c:otherwise>
+                            <c:set var="previousComplete" value="false" />
+                        </c:otherwise>
+                    </c:choose>
                 </c:forEach>
                 </tbody>
             </table>
@@ -152,12 +186,9 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
         <script>
-                        function confirmStatusChange() {
-                            return confirm("Are you sure you want to change the status?");
-                        }
+            function confirmStatusChange() {
+                return confirm("Are you sure you want to change the status?");
+            }
         </script>
     </body>
 </html>
-
-
-

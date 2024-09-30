@@ -61,7 +61,25 @@ public class DesignController {
         model.addAttribute("design", design);
         return "manager/design/designDetail";
     }
+        @PostMapping("/manager/completePayment/")
+    public String completePayment(@RequestParam(required = false) Integer detailId,
+            @RequestParam(required = false) Integer newStatus,
+            @RequestParam int designStageId,
+            @RequestParam int designId,
+            RedirectAttributes redirectAttributes) {
 
+        if (detailId == null || newStatus == null) {
+            redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
+             return "redirect:/manager/design/viewDetail/" + designId;
+        }
+        try {
+            designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
+            redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
+        }
+        return "redirect:/manager/design/viewDetail/" + designId;
+    }
 //=========================Designer Controller====================================//
     @GetMapping("/designer/manage")
     public String listContractsByDesigner(Model model,
@@ -300,6 +318,26 @@ public class DesignController {
         model.addAttribute("designStages", designStages);
 
         return "customer/design/processOfDesign";
+    }
+
+    @PostMapping("/customer/designStageDetail/updateStatus/")
+    public String approveDesign(@RequestParam(required = false) Integer detailId,
+            @RequestParam(required = false) Integer newStatus,
+            @RequestParam int designStageId,
+            @RequestParam int designId,
+            RedirectAttributes redirectAttributes) {
+
+        if (detailId == null || newStatus == null) {
+            redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
+             return "redirect:/customer/project/design/" + designId;
+        }
+        try {
+            designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
+            redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
+        }
+        return "redirect:/customer/project/design/" + designId;
     }
 
     @GetMapping("/customer/project/design/blueprint/{designStageId}")
