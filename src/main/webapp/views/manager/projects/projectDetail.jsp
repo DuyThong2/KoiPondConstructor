@@ -127,7 +127,6 @@
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <div id="top-bar" class="d-flex justify-content-between align-items-center p-3 bg-light">
                            <h3 class="ms-3">My Projects</h3>
-                           <a href="${pageContext.request.contextPath}/logout" class="btn btn-danger me-3">Logout</a>
                        </div>
 
                        <div class="container-fluid">
