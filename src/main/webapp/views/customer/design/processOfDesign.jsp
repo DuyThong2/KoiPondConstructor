@@ -281,6 +281,21 @@
                                     </c:forEach>
                                 </div>
 
+                                <c:forEach var="detail" items="${stage.designDetail}">
+                                    <c:if test="${detail.name == 'Editing' && detail.status == 2}">
+                                        <div style="float: right;">
+                                            <form action="${pageContext.request.contextPath}/customer/designStageDetail/updateStatus/"
+                                                  method="post" style="display:inline-block;" onsubmit="return confirmStatusChange();">
+                                                <input type="hidden" name="detailId" value="${detail.id}">
+                                                <input type="hidden" name="newStatus" value="4"> <!-- Status for 'Completed' -->
+                                                <input type="hidden" name="designStageId" value="${stage.designStageId}">
+                                                <input type="hidden" name="designId" value="${design.designId}">
+                                                <button type="submit" class="btn btn-success">Complete Editing</button>
+                                            </form>
+                                        </div>
+                                    </c:if>
+                                </c:forEach>
+
                                 <p id="design-stage-price">
                                     <strong>Price:</strong> ${stage.designStagePrice}
                                 </p>
@@ -354,6 +369,9 @@
                     });
                 });
             });
+            function confirmStatusChange() {
+                return confirm("Do you want to complete this phase design?");
+            }
         </script>
 
         <!-- Bootstrap JS -->
