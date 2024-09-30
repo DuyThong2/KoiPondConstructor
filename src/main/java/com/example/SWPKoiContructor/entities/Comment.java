@@ -111,6 +111,55 @@ public class Comment {
     public void setDatePost(Calendar datePost) {
         this.datePost = datePost;
     }
+
+    public BluePrint getBluePrint() {
+        return bluePrint;
+    }
+
+    public void setBluePrint(BluePrint bluePrint) {
+        this.bluePrint = bluePrint;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public ConstructionStageDetail getConstructionStageDetail() {
+        return constructionStageDetail;
+    }
+
+    public void setConstructionStageDetail(ConstructionStageDetail constructionStageDetail) {
+        this.constructionStageDetail = constructionStageDetail;
+    }
+
+    public Comment getParentComment() {
+        return parentComment;
+    }
+
+    public void setParentComment(Comment parentComment) {
+        this.parentComment = parentComment;
+    }
+
+    public List<Comment> getReplies() {
+        return replies;
+    }
+
+    public void setReplies(List<Comment> replies) {
+        this.replies = replies;
+    }
+    
     
     
 

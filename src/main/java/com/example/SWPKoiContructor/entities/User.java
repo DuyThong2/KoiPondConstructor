@@ -8,6 +8,7 @@ package com.example.SWPKoiContructor.entities;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,6 +47,9 @@ public class User {
     
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Authority authority;
+    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true, orphanRemoval = true,fetch = FetchType.LAZY)
+    private PasswordResetToken passwordResetToken;
 
     public User(String name, String email, String imgURL, String phone, String password, boolean enable) {
         this.name = name;
@@ -115,6 +119,16 @@ public class User {
         this.enabled = enabled;
     }
 
+    public PasswordResetToken getPasswordResetToken() {
+        return passwordResetToken;
+    }
+
+    public void setPasswordResetToken(PasswordResetToken passwordResetToken) {
+        this.passwordResetToken = passwordResetToken;
+    }
+    
+    
+
     
 
     public Authority getAuthority() {
@@ -129,6 +143,14 @@ public class User {
         this.authority = authority;
         authority.setUser(this);
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", name=" + name + ", email=" + email + ", imgURL=" + imgURL + ", phone=" + phone + ", password=" + password + ", enabled=" + enabled + '}';
+    }
+    
+    
+    
     
     
     

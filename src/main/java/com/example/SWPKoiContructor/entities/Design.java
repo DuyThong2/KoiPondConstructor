@@ -24,7 +24,7 @@ public class Design {
     private int designId;
     
     @Column(name = "design_name")
-    private String designName;
+        private String designName;
     
     @Column(name = "design_status")
     private int status;

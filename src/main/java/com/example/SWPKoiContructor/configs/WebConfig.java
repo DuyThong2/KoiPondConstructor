@@ -18,8 +18,15 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        
         // Map /uploads/** to the uploads folder on your Desktop
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:" + System.getProperty("user.home") + "/Desktop/uploads/");
+        
+        
+        
+         
     }
+    
+    
 }

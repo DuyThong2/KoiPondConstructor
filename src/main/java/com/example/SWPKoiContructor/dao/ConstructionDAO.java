@@ -1,4 +1,3 @@
-
 package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Construction;
@@ -17,10 +16,10 @@ public class ConstructionDAO {
         this.entityManager = entityManager;
     }
 
-    public List<Object[]> getListConstructionByCustomerName() {
-        TypedQuery<Object[]> query = entityManager.createQuery(
-                "SELECT c, p, cus FROM Construction c JOIN c.project p JOIN p.contract d JOIN d.customer cus ORDER BY c.constructionStatus ASC",
-                Object[].class);
+    public List<Construction> getListConstructionByCustomerName() {
+        TypedQuery<Construction> query = entityManager.createQuery(
+                "SELECT c FROM Construction c ORDER BY c.constructionStatus ASC",
+                Construction.class);
         return query.getResultList();
     }
 
@@ -38,5 +37,30 @@ public class ConstructionDAO {
 
     public Construction updateConstruction(Construction construction) {
         return entityManager.merge(construction);
+    }
+
+    // Fetch sorted and paginated constructions by staffId
+    public List<Construction> getSortedAndPaginatedByStaff(int staffId, int page, int size) {
+        String jpql = "SELECT c FROM Construction c "
+                + "JOIN c.constructionStaffs cs "
+                + "JOIN cs.staff s "
+                + "WHERE s.id = :staffId "
+                + "ORDER BY c.constructionStatus ASC";
+        TypedQuery<Construction> query = entityManager.createQuery(jpql, Construction.class);
+        query.setParameter("staffId", staffId);
+        query.setFirstResult(page * size); // Start at the correct row
+        query.setMaxResults(size); // Limit the number of results
+        return query.getResultList();
+    }
+
+    // Count the total number of constructions by staffId
+    public long countConstructionsByStaff(int staffId) {
+        String jpql = "SELECT COUNT(c) FROM Construction c "
+                + "JOIN c.constructionStaffs cs "
+                + "JOIN cs.staff s "
+                + "WHERE s.id = :staffId";
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        query.setParameter("staffId", staffId);
+        return query.getSingleResult();
     }
 }

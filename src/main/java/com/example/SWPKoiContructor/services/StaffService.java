@@ -44,6 +44,7 @@ public class StaffService {
     public List<Staff> getTopStaffList(){
         return staffDAO.getTopStaffList();
     }
+
     public List<Staff> getStaffByRoleAndProject(String role, int projectId) {
         // Assuming you have a method in the repository to find staff by role and project ID
         return staffDAO.findByRoleAndProjectId(role, projectId);
@@ -82,5 +83,10 @@ public class StaffService {
         } else {
             throw new IllegalArgumentException("Invalid role specified: " + role);
         }
+    }
+    
+    public Staff findStaffByEmail(String email){
+        return staffDAO.findStaffByEmail(email);
+
     }
 }

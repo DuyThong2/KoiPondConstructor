@@ -1,4 +1,4 @@
-package com.example.SWPKoiContructor.controller.manager;
+package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Contract;
 import com.example.SWPKoiContructor.entities.Customer;
@@ -68,10 +68,15 @@ public class ProjectController {
     @GetMapping("/manager/projects/details/{id}")
     public String PrọectDetail(@PathVariable("id") int id, Model model){
         Project project = projectService.getProjectById(id);
-        Customer customer = project.getContract().getCustomer();
+        if (project != null){
+            Customer customer = project.getContract().getCustomer();
         model.addAttribute("customer", customer);
         model.addAttribute("project", project);
         return "manager/projects/projectDetail";
+        }else{
+            return "redirect:/manager/projects";
+        }
+        
     }
     @GetMapping("/manager/project/create")
     public String createProjectPage(@RequestParam("id") int contractId, Model model) {
@@ -93,10 +98,11 @@ public class ProjectController {
             project.setContract(contract);
             LocalDate localDate = LocalDate.now();
             project.setDateStart(Utility.localDateToUtilDate(localDate));
+            project.setStatus(1);
             project.setStage(1);
             project.setIsSharedAble(false);
-            projectService.createProject(project);
-            return "redirect:/manager/projects/" + project.getProjectId();
+            Project newlyCreatedProject = projectService.createProject(project);
+            return "redirect:/manager/projects/" + newlyCreatedProject.getProjectId();
         } else {
             return "redirect:/manager/contracts";
         }

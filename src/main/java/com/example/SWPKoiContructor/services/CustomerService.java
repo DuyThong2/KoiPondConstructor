@@ -45,6 +45,10 @@ public class CustomerService {
         customer.AddAuthorities(authority);
         customerDAO.createCustomer(customer);
     }
+    
+    public Customer getCustomerByEmail(String email){
+        return customerDAO.getCustomerByEmail(email);
+    }
 
     
     

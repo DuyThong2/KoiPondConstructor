@@ -30,6 +30,9 @@ public class Customer extends User{
     
     @OneToMany(mappedBy="customer")
     private List<Contract> contracts;
+    
+    @OneToMany(mappedBy = "customer")
+    private List<Comment> comment;
 
     public Customer(String name, String email, String imgURL, String phone, String password, boolean enable) {
         super(name, email, imgURL, phone, password, enable);
@@ -61,9 +64,21 @@ public class Customer extends User{
     public void setContracts(List<Contract> contracts) {
         this.contracts = contracts;
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
     
+    
+    
+    public List<Comment> getComment() {
+        return comment;
+    }
+
+    public void setComment(List<Comment> comment) {
+        this.comment = comment;
+    }
     
 
-    
-    
 }

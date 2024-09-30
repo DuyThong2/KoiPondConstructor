@@ -556,8 +556,8 @@
                             </a>
                             <div class="our-professional__item__content d-flex align-items-center justify-content-center text-center">
                                 <div class="our-professional__item-text">
-                                    <h4 class="our-professional__item-title text-center rr-fw-bold  mb-0"><a href="team-details.html">${staff.username}</a></h4>
-                                    <span class="our-professional__item-subtitle text-center">${staff.staffRole}</span>
+                                    <h4 class="our-professional__item-title text-center rr-fw-bold  mb-0"><a href="team-details.html">${staff.name}</a></h4>
+                                    <span class="our-professional__item-subtitle text-center">${staff.department}</span>
                                 </div>
                             </div>
                             <div class="our-professional__item-to-plus">
