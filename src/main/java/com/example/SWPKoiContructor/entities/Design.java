@@ -157,7 +157,7 @@ public class Design {
 
         // Iterate over the staff list in the design and check if the staff is involved
         for (Staff designStaff : design.getStaff()) {
-            if (designStaff.equals(staff)) {
+            if (designStaff.getId() == staff.getId()) {
                 return true; // Staff is part of the design
             }
         }

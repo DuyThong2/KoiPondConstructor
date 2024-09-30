@@ -181,7 +181,7 @@ public class Construction {
 
         // Iterate over the constructionStaffs list to see if the staff is assigned to the construction
         for (ConstructionStaff constructionStaff : construction.getConstructionStaffs()) {
-            if (constructionStaff.getStaff().equals(staff)) {
+            if (constructionStaff.getStaff().getId()==staff.getId()) {
                 return true;
             }
         }
