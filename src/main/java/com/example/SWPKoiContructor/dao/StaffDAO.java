@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -93,4 +94,57 @@ public class StaffDAO {
 
     }
 
+    public List<Staff> findByRoleAndProjectId(String role, int projectId) {
+        TypedQuery<Staff> query = entityManager.createQuery(
+                "SELECT s FROM Staff s WHERE s.department = :role AND s.project.id = :projectId", Staff.class);
+        query.setParameter("role", role);
+        query.setParameter("projectId", projectId);
+        return query.getResultList();
+    }
+    public List<Staff> getAllStaff() {
+        String query = "SELECT s FROM Staff s WHERE LOWER(s.department) IN ('design', 'construction')";
+        TypedQuery<Staff> typedQuery = entityManager.createQuery(query, Staff.class);
+        return typedQuery.getResultList();
+    }
+
+    // Method to search staff by name and filter by "design" or "construction" department
+    public List<Staff> searchStaffByName(String name) {
+        String query = "SELECT s FROM Staff s WHERE LOWER(s.department) IN ('design', 'construction')";
+        if (name != null && !name.isEmpty()) {
+            query += " AND LOWER(s.name) LIKE :name";
+        }
+        TypedQuery<Staff> typedQuery = entityManager.createQuery(query, Staff.class);
+
+        if (name != null && !name.isEmpty()) {
+            typedQuery.setParameter("name", "%" + name.toLowerCase() + "%");
+        }
+
+        return typedQuery.getResultList();
+    }
+
+    public void assignStaffToConstruction(int staffId, int constructionId) {
+        try {
+            entityManager.createNativeQuery(
+                            "INSERT INTO Construction_Staff (staff_id, construction_id, role_in_project) VALUES (:staffId, :constructionId, :roleInProject)")
+                    .setParameter("staffId", staffId)
+                    .setParameter("constructionId", constructionId)
+                    .setParameter("roleInProject", 1) // Assigning the value 1 directly
+                    .executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to assign staff to construction: " + e.getMessage(), e);
+        }
+    }
+
+
+    public void assignStaffToDesign(int staffId, int designId) {
+        try {
+            entityManager.createNativeQuery(
+                            "INSERT INTO Staff_Design (staff_id, design_id) VALUES (:staffId, :designId)")
+                    .setParameter("staffId", staffId)
+                    .setParameter("designId", designId)
+                    .executeUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to assign staff to design: " + e.getMessage(), e);
+        }
+    }
 }
