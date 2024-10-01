@@ -9,6 +9,7 @@ import com.example.SWPKoiContructor.entities.Design;
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Staff;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -148,7 +149,11 @@ public class ProjectDAO {
         return queryBuilder.toString();
     }
 
+    public boolean updateProjectStage(Project project, int newStage){
 
+
+        return true;
+    }
 
     public void assignStaffToProject(int staffId, int projectId, String role) {
     }

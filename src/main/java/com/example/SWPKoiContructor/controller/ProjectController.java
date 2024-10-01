@@ -5,6 +5,7 @@ import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.services.ContractService;
+import com.example.SWPKoiContructor.services.DesignService;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.services.StaffService;
 import com.example.SWPKoiContructor.utils.FileUtility;
@@ -28,8 +29,9 @@ public class ProjectController {
     private ProjectService projectService;
     private ContractService contractService;
     private StaffService staffService;
+    private DesignService designService;
 
-    public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService,StaffService staffService) {
+    public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService,StaffService staffService, DesignService designService) {
         this.fileUtility = fileUtility;
         this.projectService = projectService;
         this.contractService = contractService;
@@ -148,11 +150,9 @@ public class ProjectController {
     }
     @PostMapping("/updateStage")
     @ResponseBody
-    public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId,@RequestParam("newStage") int newStage){
+    public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId){
         try{
-            Project project = projectService.getProjectById(projectId);
-            project.setStage(newStage);
-            projectService.updateProject(project);
+            projectService.updateProjectStage(projectId);
             return ResponseEntity.ok("Change stage successfully");
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating project stage");

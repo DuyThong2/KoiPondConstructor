@@ -1,5 +1,7 @@
 package com.example.SWPKoiContructor.services;
 
+import com.example.SWPKoiContructor.dao.ConstructionDAO;
+import com.example.SWPKoiContructor.dao.DesignDAO;
 import com.example.SWPKoiContructor.dao.ProjectDAO;
 import com.example.SWPKoiContructor.entities.*;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,8 @@ public class ProjectService {
 
     private ProjectDAO projectDAO;
 
+    private DesignDAO designDAO;
+    private ConstructionDAO constructionDAO;
 
     public ProjectService(ProjectDAO projectDAO) {
         this.projectDAO = projectDAO;
@@ -148,6 +152,41 @@ public class ProjectService {
         return projectDAO.countProjectFilter(statusFilter, stageFilter);
     }
 
-
-
+    @Transactional
+    public void updateProjectStage(int projectId){
+        Project project = getProjectById(projectId);
+        if(project!=null){
+            Design design = project.getDesign();
+            DesignStage startingDesignStage = design.getDesignStage().get(0);
+            DesignStageDetail stratingDesignStageDetail = startingDesignStage.getDesignDetail().get(0);
+            Construction construction = project.getConstruction();
+            ConstructionStage startingConstructionStage = construction.getConstructionStage().get(0);
+            ConstructionStageDetail startingConstructionStageDetail = startingConstructionStage.getConstructionStageDetail().get(0);
+            switch (project.getStage()){
+                case 1 :
+                    project.setStage(2);
+                    project.setStatus(2);
+                    design.setStatus(2);
+                    startingDesignStage.setDesignStageStatus(2);
+                    stratingDesignStageDetail.setStatus(2);
+                    break;
+                case 2:
+                    project.setStage(3);
+                    construction.setConstructionStatus(2);
+                    startingConstructionStage.setConstructionStageStatus(2);
+                    startingConstructionStageDetail.setConstructionStageDetailStatus(2);
+                    break;
+                case 3:
+                    project.setStage(4);
+                    break;
+                case 4:
+                    project.setStage(5);
+                    project.setStatus(3);
+                    break;
+                default:
+                    break;
+            }
+            projectDAO.updateProject(project);
+        }
+    }
 }
