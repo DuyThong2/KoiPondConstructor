@@ -191,7 +191,7 @@ public class ContractController {
         Contract contract = new Contract();
         Quotes quote = quotesService.getQuoteById(quoteId);
         Staff staff = (Staff) session.getAttribute("user");
-        if (quote != null && quote.getContract() == null && quote.isQuoteBelongToStaff(quote, staff)) {
+        if (quote != null && quote.getContract() == null && quote.isQuoteBelongToStaff(quote, staff) && quote.getQuotesStatus()==5) {
             model.addAttribute("quote", quote);
             model.addAttribute("customer", quote.getCustomer());
             List<Term> terms = termService.getAllTemplateTerm();  // Get all available terms for the dropdown

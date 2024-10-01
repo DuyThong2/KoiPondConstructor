@@ -28,5 +28,47 @@ public class TermService {
         return termDAO.getAllTemplateTerms();
     }
     
+    public Term getTermById(int id){
+        return termDAO.getTermById(id);
+    }
+    
+    public Term updateTerm(Term term){
+        return termDAO.updateTerm(term);
+        
+    }
+    
+    public Term createTerm(Term term){
+        return termDAO.createTerm(term);
+    }
+    
+    public List<Term> searchTermsByDescription(String description, int page, int size, String sortBy, String sortDirection) {
+        return termDAO.searchTermsByDescription(description, page, size, sortBy, sortDirection);
+    }
+
+    
+    public long countTermsByDescription(String description) {
+        return termDAO.countTermsByDescription(description);
+    }
+
+    
+    public List<Term> findTermsByStatus(Integer status, int page, int size, String sortBy, String sortDirection) {
+        return termDAO.findTermsByStatus(status, page, size, sortBy, sortDirection);
+    }
+
+    
+    public long countTermsByStatus(Integer status) {
+        return termDAO.countTermsByStatus(status);
+    }
+
+    
+    public List<Term> findAllTerms(int page, int size, String sortBy, String sortDirection) {
+        return termDAO.findAllTerms(page, size, sortBy, sortDirection);
+    }
+
+    
+    public long countAllTerms() {
+        return termDAO.countAllTerms();
+    }
+    
     
 }

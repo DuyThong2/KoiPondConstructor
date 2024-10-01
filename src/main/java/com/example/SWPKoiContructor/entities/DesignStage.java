@@ -158,7 +158,7 @@ public class DesignStage {
     
     public List<DesignStageDetail> createListOfDesignStageDetail(DesignStage designStage,Term term){
         List<DesignStageDetail> list = new ArrayList<>();
-        DesignStageDetail planning = new DesignStageDetail("Planning","Planning for the "+designStage.getDesignStageName(), 2);
+        DesignStageDetail planning = new DesignStageDetail("Planning","Planning for the "+designStage.getDesignStageName(), 1);
         DesignStageDetail designing = new DesignStageDetail("Designing","Designing the "+designStage.getDesignStageName()+" layout", 1);
         DesignStageDetail editing = new DesignStageDetail("Editing","Final editing for the "+designStage.getDesignStageName(), 1);
         list.add(planning);

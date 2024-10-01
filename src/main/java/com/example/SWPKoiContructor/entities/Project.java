@@ -9,11 +9,11 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -54,9 +54,8 @@ public class Project {
     @Column(name = "img_url")
     private String imgURL;
 
-    @Lob
-    @Column(name = "project_content")
-    private String content;
+    @OneToOne(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Content content;
 
     private int stage;
 
@@ -73,7 +72,7 @@ public class Project {
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Design design;
 
-    public Project(String projectName, String address, String style, String description, Date dateStart, Date dateEnd, int status, String imgURL, String content, int stage, boolean isSharedAble) {
+    public Project(String projectName, String address, String style, String description, Date dateStart, Date dateEnd, int status, String imgURL, int stage, boolean isSharedAble) {
         this.projectName = projectName;
         this.address = address;
         this.style = style;
@@ -82,7 +81,7 @@ public class Project {
         this.dateEnd = dateEnd;
         this.status = status;
         this.imgURL = imgURL;
-        this.content = content;
+        
         this.stage = stage;
         this.isSharedAble = isSharedAble;
     }
@@ -162,13 +161,16 @@ public class Project {
         this.imgURL = imgURL;
     }
 
-    public String getContent() {
+    public Content getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Content content) {
         this.content = content;
     }
+
+    
+   
 
     public int getStage() {
         return stage;
@@ -210,6 +212,7 @@ public class Project {
         this.design = design;
     }
 
+    
     public void addDesign(Design design) {
         this.design = design;
         design.setProject(this);

@@ -60,10 +60,14 @@ public class Term {
     @Column(name="follow_contract")
     private boolean followContract;
     
+    @Column(name="term_status")
+    private boolean termStatus;
+    
     @OneToMany(mappedBy = "term")
     private List<Contract> contract;
-    
-    public Term(double percentOnDesign1, double percentOnDesign2, double percentOnDesign3, double percentOnConstruct1, double percentOnConstruct2, boolean payOnStartOfDesign, boolean payOnStartOfConstruction, String description, boolean isTemplate, boolean followContract) {
+
+    public Term(int termId, double percentOnDesign1, double percentOnDesign2, double percentOnDesign3, double percentOnConstruct1, double percentOnConstruct2, boolean payOnStartOfDesign, boolean payOnStartOfConstruction, String description, boolean isTemplate, boolean followContract, boolean termStatus, List<Contract> contract) {
+        this.termId = termId;
         this.percentOnDesign1 = percentOnDesign1;
         this.percentOnDesign2 = percentOnDesign2;
         this.percentOnDesign3 = percentOnDesign3;
@@ -74,7 +78,11 @@ public class Term {
         this.description = description;
         this.isTemplate = isTemplate;
         this.followContract = followContract;
+        this.termStatus = termStatus;
+        this.contract = contract;
     }
+    
+    
 
     public Term() {
     }
@@ -175,6 +183,15 @@ public class Term {
         this.contract = contract;
     }
 
+    public boolean isTermStatus() {
+        return termStatus;
+    }
+
+    public void setTermStatus(boolean termStatus) {
+        this.termStatus = termStatus;
+    }
+
+    
     
     
     

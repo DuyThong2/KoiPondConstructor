@@ -18,27 +18,35 @@ public class Blog {
     private String name;
     @Column(name="blog_date_post")
     private Date datePost;
-    @Lob
-    @Column(name="blog_content",columnDefinition = "TEXT")
-    private String content;
+    
     @Column(name="blog_description",columnDefinition = "TEXT")
     private String description;
     @Column(name="blog_img_url")
     private String imgUrl;
+    
+    
+    @Column(name="blog_status")
+    private int status;
 
+    @OneToOne(mappedBy = "blog",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Content introContent;
+    
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="staff_id")
     private Staff staff;
 
-    public Blog(int id, String name, Date datePost, String content, String description, String imgUrl, Staff staff) {
+    public Blog(int id, String name, Date datePost, String description, String imgUrl, int status, Staff staff) {
         this.id = id;
         this.name = name;
         this.datePost = datePost;
-        this.content = content;
+        
         this.description = description;
         this.imgUrl = imgUrl;
+        this.status = status;
         this.staff = staff;
     }
+
+    
     public Blog(){
 
     }
@@ -66,13 +74,7 @@ public class Blog {
         this.datePost = datePost;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
+    
 
     public String getDescription() {
         return description;
@@ -97,4 +99,26 @@ public class Blog {
     public void setStaff(Staff staff) {
         this.staff = staff;
     }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public Content getContent() {
+        return introContent;
+    }
+
+    public void setContent(Content introContent) {
+        this.introContent = introContent;
+    }
+    
+    
+
+    
+    
+    
 }
