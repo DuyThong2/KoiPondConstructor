@@ -40,4 +40,8 @@ public class ConstructionStageDetailService {
         }
 
     }
+
+    public ConstructionStageDetail getPreviousStageDetail(int constructionStageId) {
+        return constructionStageDetailDao.getPreviousStageDetail(constructionStageId);
+    }
 }

@@ -37,7 +37,7 @@ public class BluePrint {
     private String description;
 
     @Column(name = "blue_print_status")
-    private boolean bluePrintStatus;
+    private int bluePrintStatus;
 
     @ManyToOne
     @JoinColumn(name = "design_stage_id")
@@ -50,7 +50,7 @@ public class BluePrint {
     }
 
     
-    public BluePrint(int BluePrintId, String title, String imgUrl, Date dateCreate, String description, boolean bluePrintStatus, DesignStage designStage) {
+    public BluePrint(int BluePrintId, String title, String imgUrl, Date dateCreate, String description, int bluePrintStatus, DesignStage designStage) {
         this.BluePrintId = BluePrintId;
         this.title = title;
         this.imgUrl = imgUrl;
@@ -100,13 +100,15 @@ public class BluePrint {
         this.description = description;
     }
 
-    public boolean isBluePrintStatus() {
+    public int getBluePrintStatus() {
         return bluePrintStatus;
     }
 
-    public void setBluePrintStatus(boolean bluePrintStatus) {
+    public void setBluePrintStatus(int bluePrintStatus) {
         this.bluePrintStatus = bluePrintStatus;
     }
+
+    
 
     public DesignStage getDesignStage() {
         return designStage;

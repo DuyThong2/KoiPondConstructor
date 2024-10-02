@@ -19,24 +19,26 @@ public class DesignService {
     private ProjectService projectService;
     private ConstructionService constructionService;
 
-    public DesignService(DesignDAO designDao, DesignStageDAO designStageDAO,@Lazy DesignStageService designStageService, ProjectService projectService, ConstructionService constructionService) {
+    public DesignService(DesignDAO designDao, DesignStageDAO designStageDAO, @Lazy DesignStageService designStageService, ProjectService projectService, ConstructionService constructionService) {
         this.designDao = designDao;
         this.designStageDAO = designStageDAO;
-        
+
         this.projectService = projectService;
         this.constructionService = constructionService;
     }
 
-    
+    public List<Design> getListDesignWithSortedAndPaginated(int page, int size) {
+        return designDao.getListDesignWithSortedAndPaginated(page, size);
+    }
 
-    public List<Object[]> getListDesignWithCustomerName() {
-        return designDao.getListDesignWithCustomerName();
+    public int getTotalOfAllDesigns(int size) {
+        long totalDesign = designDao.countAllDesigns();
+        return (int) Math.ceil((double) totalDesign / size);
     }
 
     public Design getDesignById(int id) {
         return designDao.getDesignById(id);
     }
-
 
     // Hàm lấy danh sách các thiết kế đã phân trang
     public List<Design> getSortedAndPaginatedByDesigner(int staffId, int page, int size) {
@@ -49,7 +51,6 @@ public class DesignService {
         return (int) Math.ceil((double) totalDesigns / size); // Tính tổng số trang
     }
 
-    
     protected void propagateStatusToDesign(int designId) {
         Design design = getDesignById(designId);
 
@@ -77,11 +78,6 @@ public class DesignService {
 
     }
 
-    
-    
-
-
-    
     private void allowConstructionToProceed(int projectId) {
         Project project = projectService.getProjectById(projectId);
 
@@ -96,7 +92,7 @@ public class DesignService {
         }
     }
 
-     public boolean isAssignedToDesign(int designId, int userId) {
-        return  designDao.isAssignedToDesign(designId, userId);
+    public boolean isAssignedToDesign(int designId, int userId) {
+        return designDao.isAssignedToDesign(designId, userId);
     }
 }

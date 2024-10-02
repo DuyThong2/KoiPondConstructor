@@ -22,9 +22,40 @@ public class ParcelDAO {
     public ParcelDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-            
+    
+    //--------------------------------------------------VIEW NORMAL PARCEL ----------------------------------------------------------------
     public List<Parcel> viewParcelList(){
         TypedQuery<Parcel> tq = entityManager.createQuery("SELECT p FROM Parcel p", Parcel.class);
         return tq.getResultList();
+    }
+    
+    //---------------------------------------------- VIEW PARCEL MANAGER HAVE SORT FILTER ----------------------------------------------------    
+    public List<Parcel> viewParcelListByOrderSort(int page, int size, String sortBy, String sortDirection){
+        TypedQuery<Parcel> tq = entityManager.createQuery("SELECT p FROM Parcel p ORDER BY " + sortBy + " " + sortDirection, Parcel.class);
+        tq.setFirstResult(size * page);
+        tq.setMaxResults(size);
+        return tq.getResultList();
+    }
+       
+    
+    public long countParcel(){
+        TypedQuery<Long> tq = entityManager.createQuery("SELECT Count(p) FROM Parcel p ", Long.class);
+        return tq.getSingleResult();
+    }
+    
+    //-------------------------------------------- OTHER ----------------------------------------------------------------------------
+    public Parcel getParcelById(int id){
+        TypedQuery<Parcel> tq = entityManager.createQuery("SELECT p FROM Parcel p WHERE p.packageId = :id ", Parcel.class);
+        tq.setParameter("id", id);
+        return tq.getSingleResult();
+    }
+    
+    public Parcel saveParcel(Parcel parcel){
+        Parcel newParcel = entityManager.merge(parcel);
+        return newParcel;
+    }
+    
+    public Parcel updateParcel(Parcel parcel){
+        return entityManager.merge(parcel);
     }
 }

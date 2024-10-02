@@ -382,45 +382,7 @@
             </header>
 
             <main>
-                <!-- FOLLOW THIS SECTION STRUCTURE TO LAYOUT MY WEBSITE -->
-                <!-- <section class="our-professional section-space">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section__title-wrapper text-center mb-60 mb-sm-40 mb-xs-35">
-                        <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separetor"></span>Our Professionals<span data-width="40px" class="right-separetor"></span></span>
-                        <h2 class="section__title title-animation text-capitalize rr-br-hidden-md" data-cursor="-opaque">Experienced & Professional Team</h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mb-minus-30">
-                <c:forEach var="staff" items="${staffList}">
-                    <div class="col-xl-3 col-md-6">
-                        <div class="our-professional__item mb-30">
-                            <a href="team-details.html" class="our-professional__item-media d-block" data-cursor-text="View">
-                                <img src="assets/imgs/our-professional/anhthien.jpg" alt="image not found" class="img-fluid">
-                            </a>
-                            <div class="our-professional__item__content d-flex align-items-center justify-content-center text-center">
-                                <div class="our-professional__item-text">
-                                    <h4 class="our-professional__item-title text-center rr-fw-bold  mb-0"><a href="team-details.html">${staff.name}</a></h4>
-                                    <span class="our-professional__item-subtitle text-center">${staff.department}</span>
-                                </div>
-                            </div>
-                            <div class="our-professional__item-to-plus">
-                                <button></button>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-    </section> -->
-                <!-- YOU STARTED FETCH THE STRUCTURE INSIDE HERE  -->
-
-                <!-- YOU STARTED FETCH THE STRUCTURE INSIDE HERE -->
-
-                <!-- YOU STARTED FETCH THE STRUCTURE INSIDE HERE -->
+             
                 <section id="services"
                     class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
                     <div class="container rr-shape-p-c_1">

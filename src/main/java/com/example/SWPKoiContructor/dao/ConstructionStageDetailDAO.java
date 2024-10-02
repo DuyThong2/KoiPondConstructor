@@ -36,4 +36,17 @@ public class ConstructionStageDetailDAO {
     public ConstructionStageDetail updateConstructionStageDetail(ConstructionStageDetail constructionStageDetail){
         return entityManager.merge(constructionStageDetail);
     }
+
+     public ConstructionStageDetail getPreviousStageDetail(int constructionStageId) {
+        String jpql = "SELECT d FROM ConstructionStageDetail d WHERE d.constructionStage.constructionStageId = :stageId ORDER BY d.constructionStageDetailId DESC";
+        TypedQuery<ConstructionStageDetail> query = entityManager.createQuery(jpql, ConstructionStageDetail.class);
+        query.setParameter("stageId", constructionStageId);
+        List<ConstructionStageDetail> details = query.getResultList();
+
+        // Return the second-to-last detail, which is the previous one
+        if (details.size() > 1) {
+            return details.get(1); // Second-to-last detail
+        }
+        return null;
+    }
 }

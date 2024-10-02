@@ -4,7 +4,17 @@ import com.example.SWPKoiContructor.dao.ConstructionDAO;
 import com.example.SWPKoiContructor.dao.ContractDAO;
 import com.example.SWPKoiContructor.dao.DesignDAO;
 import com.example.SWPKoiContructor.dao.ProjectDAO;
-import com.example.SWPKoiContructor.entities.*;
+
+
+import com.example.SWPKoiContructor.entities.Construction;
+import com.example.SWPKoiContructor.entities.ConstructionStage;
+import com.example.SWPKoiContructor.entities.ConstructionStageDetail;
+import com.example.SWPKoiContructor.entities.Design;
+import com.example.SWPKoiContructor.entities.DesignStage;
+import com.example.SWPKoiContructor.entities.DesignStageDetail;
+import com.example.SWPKoiContructor.entities.Project;
+import com.example.SWPKoiContructor.entities.Term;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +44,6 @@ public class ProjectService {
     public List<Project> getProjectListIsSharable() {
         return projectDAO.getProjectListIsSharable();
     }
-
 
     public List<Project> getPaginationProjectList(int page, int size, String sortBy, String sortType) {
         return projectDAO.getPaginationProjectList(page, size, sortBy, sortType);
@@ -115,8 +124,7 @@ public class ProjectService {
         return construction;
     }
 
-    
-    
+
     protected void propagateStatusToProject(int projectId) {
 
         Project project = getProjectById(projectId);
@@ -128,7 +136,7 @@ public class ProjectService {
             // Step 1: Update Project Status Based on Design and Construction
             if (design != null && design.getStatus() == 3 && (construction == null || construction.getConstructionStatus() == 3)) {
                 project.setStatus(2); // Completed (Both Design and Construction are completed)
-                project.setStage(4); // Finish
+                project.setStage(4); // Maintenace
             } else if (construction != null && construction.getConstructionStatus() == 2) {
                 project.setStatus(2); // Processing
                 project.setStage(3); // Construction
@@ -155,6 +163,7 @@ public class ProjectService {
     public long countProjectFilter(Integer statusFilter, Integer stageFilter) {
         return projectDAO.countProjectFilter(statusFilter, stageFilter);
     }
+
 
     @Transactional
     public void updateProjectStage(int projectId){
@@ -193,6 +202,16 @@ public class ProjectService {
             projectDAO.updateProject(project);
         }
     }
+
+    public long countProjectProcessing() {
+        return projectDAO.countProjectProcessing();
+    }
+
+    public long countProjectComplete() {
+        return projectDAO.countProjectComplete();
+
+    }
+
 
     public List<Project> getCustomerProjectsById(int customerId) {
         return projectDAO.getCustomerProjectsById(customerId);

@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -50,6 +52,12 @@ public class User {
     
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, optional = true, orphanRemoval = true,fetch = FetchType.LAZY)
     private PasswordResetToken passwordResetToken;
+    
+    @OneToMany(mappedBy = "fromUser")
+    private List<Feedback> feedbackSend;
+    
+    @OneToMany(mappedBy = "toUser")
+     private List<Feedback> feedbackReceive;
 
     public User(String name, String email, String imgURL, String phone, String password, boolean enable) {
         this.name = name;
@@ -143,6 +151,23 @@ public class User {
         this.authority = authority;
         authority.setUser(this);
     }
+
+    public List<Feedback> getFeedbackSend() {
+        return feedbackSend;
+    }
+
+    public void setFeedbackSend(List<Feedback> feedbackSend) {
+        this.feedbackSend = feedbackSend;
+    }
+
+    public List<Feedback> getFeedbackReceive() {
+        return feedbackReceive;
+    }
+
+    public void setFeedbackReceive(List<Feedback> feedbackReceive) {
+        this.feedbackReceive = feedbackReceive;
+    }
+    
 
     @Override
     public String toString() {

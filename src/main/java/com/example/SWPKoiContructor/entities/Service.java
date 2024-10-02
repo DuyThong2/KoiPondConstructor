@@ -6,11 +6,14 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -30,7 +33,8 @@ public class Service {
     
     private String serviceDescription;
     
-    private String serviceContent;
+    @OneToOne(mappedBy = "service", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Content content;
     
     private boolean serviceStatus;
     
@@ -40,10 +44,10 @@ public class Service {
     @OneToMany(mappedBy = "service")
     private List<ServicePrice> servicePrice;
 
-    public Service(String serviceName, String serviceDescription, String serviceContent, boolean serviceStatus) {
+    public Service(String serviceName, String serviceDescription,  boolean serviceStatus) {
         this.serviceName = serviceName;
         this.serviceDescription = serviceDescription;
-        this.serviceContent = serviceContent;
+       
         this.serviceStatus = serviceStatus;
     }
 
@@ -74,13 +78,23 @@ public class Service {
         this.serviceDescription = serviceDescription;
     }
 
-    public String getServiceContent() {
-        return serviceContent;
+    public Content getContent() {
+        return content;
     }
 
-    public void setServiceContent(String serviceContent) {
-        this.serviceContent = serviceContent;
+    public void setContent(Content content) {
+        this.content = content;
     }
+
+    public List<ServicePrice> getServicePrice() {
+        return servicePrice;
+    }
+
+    public void setServicePrice(List<ServicePrice> servicePrice) {
+        this.servicePrice = servicePrice;
+    }
+
+   
 
     public boolean isServiceStatus() {
         return serviceStatus;

@@ -245,6 +245,27 @@
                                               <c:if test="${detail.constructionStageDetailStatus == 4}">success</c:if>">
                                             ${detail.constructionStageDetailName}
                                         </span>
+
+                                        <!-- Check if this is the inspection stage (ensure case-sensitive check) -->
+                                        <c:if test="${detail.constructionStageDetailName.equals('Inspection') && detail.constructionStageDetailStatus == 2}">
+                                            <div class="d-flex justify-content-center mt-2">
+                                                <!-- Approve Button -->
+                                                <form action="${pageContext.request.contextPath}/customer/approveInspection" method="post" style="display:inline; margin-right: 10px;">
+                                                    <input type="hidden" name="detailId" value="${detail.constructionStageDetailId}" />
+                                                    <input type="hidden" name="constructionStageId" value="${stage.constructionStageId}" />
+                                                    <input type="hidden" name="constructionId" value="${construction.constructionId}" />
+                                                    <button type="submit" class="btn btn-success btn-md">Approve</button>
+                                                </form>
+
+                                                <!-- Reject Button -->
+                                                <form action="${pageContext.request.contextPath}/customer/rejectInspection" method="post" style="display:inline;">
+                                                    <input type="hidden" name="detailId" value="${detail.constructionStageDetailId}" />
+                                                    <input type="hidden" name="constructionStageId" value="${stage.constructionStageId}" />
+                                                    <input type="hidden" name="constructionId" value="${construction.constructionId}" />
+                                                    <button type="submit" class="btn btn-danger btn-md">Reject</button>
+                                                </form>
+                                            </div>
+                                        </c:if>
                                     </c:forEach>
                                 </div>
 
@@ -270,7 +291,7 @@
                                     })();
                                 </script>
 
-                                
+
                             </div>
                         </div>
 
