@@ -1,12 +1,14 @@
 package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.ConstructionDAO;
+import com.example.SWPKoiContructor.dao.ContractDAO;
 import com.example.SWPKoiContructor.dao.DesignDAO;
 import com.example.SWPKoiContructor.dao.ProjectDAO;
 import com.example.SWPKoiContructor.entities.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Service
@@ -16,6 +18,8 @@ public class ProjectService {
 
     private DesignDAO designDAO;
     private ConstructionDAO constructionDAO;
+
+    private ContractDAO contractDAO;
 
     public ProjectService(ProjectDAO projectDAO) {
         this.projectDAO = projectDAO;
@@ -189,4 +193,16 @@ public class ProjectService {
             projectDAO.updateProject(project);
         }
     }
+
+    public List<Project> getCustomerProjectsById(int customerId) {
+        return projectDAO.getCustomerProjectsById(customerId);
+    }
+    public List<Project> getActiveCustomerProjectsById(int customerId) {
+     return projectDAO.getActiveCustomerProjectsById(customerId);
+    }
+
+    public List<Project> getCompleteAndCancelCustomerProjectsById(int customerId) {
+        return projectDAO.getCompleteAndCancelCustomerProjectsById(customerId);
+    }
+
 }

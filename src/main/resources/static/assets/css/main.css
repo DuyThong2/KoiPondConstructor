@@ -14663,3 +14663,252 @@ body .ui-tooltip {
   padding: 75px; /* Optional: Add padding for spacing around the text */
   border-radius: 20px; /* Optional: Smooth the corners */
 }
+
+
+* {
+    text-decoration: none !important;
+}/* Enhanced Customer Profile Section */
+/* Enhanced Customer Profile Section */
+/* Enhanced Customer Profile Section */
+.customer-profile {
+  border: 1px solid var(--rr-text-body); /* Subtle border for separation */
+  border-radius: 10px; /* Rounded corners for a friendly UI */
+  transition: box-shadow 0.3s ease-in-out;
+  background-color: var(--rr-common-white); /* White background for contrast */
+}
+
+.customer-profile:hover {
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); /* Slight hover shadow for emphasis */
+}
+
+.profile-img {
+  border: 2px solid var(--rr-theme-primary); /* Use theme primary color for profile image border */
+}
+
+.edit-info-button {
+  background-color: var(--rr-theme-primary); /* Theme primary color for button background */
+  color: var(--rr-common-white); /* White text */
+  font-weight: bold;
+  border-radius: 20px; /* Rounded button */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.edit-info-button:hover {
+  background-color: #b51d41; /* Slightly darker shade for hover */
+  box-shadow: 0px 4px 10px rgba(223, 36, 83, 0.4); /* Shadow with theme primary color */
+}
+
+/* Project Progress Section */
+.project-progress {
+  border: 1px solid var(--rr-text-body); /* Light border for distinction */
+  border-radius: 10px;
+  background-color: var(--rr-body-primary); /* Subtle background color */
+}
+
+.project-stages {
+  font-weight: bold;
+  color: var(--rr-heading-primary); /* Heading primary color for text */
+}
+
+.project-stages .list-inline-item {
+  padding: 5px 15px;
+  border-radius: 15px; /* Rounded stages */
+  margin-right: 10px;
+  border: 1px solid var(--rr-theme-primary); /* Border for each stage with theme primary color */
+  color: var(--rr-theme-primary); /* Text color using theme primary color */
+}
+
+.project-stages .list-inline-item.active {
+  background-color: var(--rr-theme-primary); /* Highlighted active stage */
+  color: var(--rr-common-white); /* White text on active stage */
+}
+
+/* Current and Done Project Cards */
+.current-project-details, .done-project {
+  border: 1px solid var(--rr-text-body); /* Subtle border */
+  border-radius: 10px;
+  transition: box-shadow 0.3s ease-in-out;
+  background-color: var(--rr-common-white);
+}
+
+.current-project-details:hover, .done-project:hover {
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1); /* Stronger shadow on hover */
+}
+
+.project-title {
+  color: var(--rr-theme-primary); /* Theme primary color for titles */
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.project-subtitle {
+  color: var(--rr-text-body); /* Secondary text color for subtleties */
+}
+
+.project-img, .done-project-img {
+  border: 2px solid var(--rr-theme-primary); /* Theme primary color for image borders */
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.project-img:hover, .done-project-img:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/* View Details Button */
+.view-details-button {
+  background-color: var(--rr-theme-primary); /* Theme primary color for button background */
+  color: var(--rr-common-white); /* White text */
+  font-weight: bold;
+  border-radius: 20px;
+  border: none;
+  padding: 8px 20px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.view-details-button:hover {
+  background-color: #b51d41; /* Slightly darker shade of theme primary for hover */
+  box-shadow: 0px 4px 10px rgba(223, 36, 83, 0.4);
+}
+
+/* Done Projects Section */
+.done-projects-section {
+  margin-top: 40px; /* Spacing between current and done projects */
+}
+
+.done-project-title {
+  color: var(--rr-heading-primary); /* Heading primary color for done projects */
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.project-status {
+  color: var(--rr-text-body); /* Muted color for completion details */
+}
+
+/* Enhanced Layout for Consistency */
+.section-title {
+  font-family: var(--rr-ff-heading); /* Use heading font from the theme */
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--rr-heading-primary); /* Heading primary color for section titles */
+}
+
+.project-details-container {
+  padding: 20px; /* General padding for the container */
+}
+
+.customer-info-section {
+  margin-bottom: 20px; /* Spacing at the bottom of customer info */
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+  .edit-info-button, .view-details-button {
+      width: 100%; /* Full width buttons for smaller screens */
+  }
+
+  .project-details-container {
+      padding: 10px; /* Reduce padding for smaller screens */
+  }
+
+  .project-title, .done-project-title {
+      font-size: 1.1rem; /* Adjust title font size for better readability */
+  }
+}
+
+.project-stages-container {
+  width: 100%;
+  position: relative;
+  margin: 30px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.project-stages {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  list-style: none;
+  padding: 0;
+}
+
+.stage-item {
+  text-align: center;
+  position: relative;
+  flex: 1;
+}
+
+.stage-circle {
+  width: 50px;
+  height: 50px;
+  background-color: var(--rr-common-white);
+  border: 3px solid var(--rr-theme-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  transition: transform 0.3s ease-in-out;
+}
+
+.stage-circle i {
+  color: var(--rr-theme-primary);
+  font-size: 20px;
+}
+
+.stage-item.active .stage-circle {
+  background-color: var(--rr-theme-primary);
+  color: var(--rr-common-white);
+}
+
+.stage-item.active .stage-circle i {
+  color: var(--rr-common-white);
+}
+
+.stage-date {
+  color: var(--rr-text-body);
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.stage-item p {
+  margin-top: 10px;
+  font-weight: bold;
+  color: var(--rr-heading-primary);
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 768px) {
+  .project-stages {
+      width: 90%;
+  }
+}
+
+stage-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  width: 100%;
+  height: 3px;
+  background-color: var(--rr-theme-primary);
+  z-index: -1; /* Places the line beneath the circle */
+  transform: translateY(-50%);
+}
+.active-stage .stage-circle {
+  background-color: var(--rr-theme-primary); /* Black for the active stage */
+  color: var(--rr-common-white);
+}
+
+.success-stage .stage-circle {
+  background-color: #28a745; /* Success green */
+  color: var(--rr-common-white);
+}
+
+.white-stage .stage-circle {
+  background-color: var(--rr-common-white); /* White for future stages */
+  border: 3px solid var(--rr-theme-primary); /* Grey border */
+  color: var(--rr-theme-primary);
+}

@@ -156,5 +156,28 @@ public class ProjectDAO {
     }
 
     public void assignStaffToProject(int staffId, int projectId, String role) {
+
     }
+
+
+    public List<Project> getCustomerProjectsById(int customerId) {
+        String queryString = "SELECT p FROM Project p WHERE p.contract.customer.id = :customerId";
+        TypedQuery<Project> query = entityManager.createQuery(queryString, Project.class);
+        query.setParameter("customerId", customerId);
+        return query.getResultList();
+    }
+    public List<Project> getActiveCustomerProjectsById(int customerId) {
+        String queryString = "SELECT p FROM Project p WHERE p.contract.customer.id = :customerId AND p.status NOT IN (3, 4)";
+        TypedQuery<Project> query = entityManager.createQuery(queryString, Project.class);
+        query.setParameter("customerId", customerId);
+        return query.getResultList();
+    }
+
+    public List<Project> getCompleteAndCancelCustomerProjectsById(int customerId) {
+        String queryString = "SELECT p FROM Project p WHERE p.contract.customer.id = :customerId AND p.status IN (3, 4)";
+        TypedQuery<Project> query = entityManager.createQuery(queryString, Project.class);
+        query.setParameter("customerId", customerId);
+        return query.getResultList();
+    }
+
 }

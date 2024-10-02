@@ -17,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -262,6 +264,23 @@ public class ProjectController {
             model.addAttribute("errorMessage", "Unexpected error occurred while removing staff: " + e.getMessage());
             return "manager/projects/projectAssignStaff";
         }
+    }
+
+
+    @GetMapping("/customer/projects/")
+    public String customerAssignStaffPage(Model model, HttpSession session, RedirectAttributes redirectAttributes){
+        Customer customer = (Customer) session.getAttribute("user");
+        if (customer == null) {
+            // Nếu chưa đăng nhập, yêu cầu đăng nhập
+            redirectAttributes.addFlashAttribute("errorMessage", "Please login to submit feedback.");
+            return "redirect:/login";
+        }
+        List<Project> currentProjects = projectService.getActiveCustomerProjectsById(customer.getId());
+        List<Project> completeAndCancelProjects = projectService.getCompleteAndCancelCustomerProjectsById(customer.getId());
+        model.addAttribute("currentProjects",currentProjects);
+        model.addAttribute("doneProjects",completeAndCancelProjects);
+        model.addAttribute("Customer",customer);
+        return "customer/projects/projectDetail";
     }
 
 }
