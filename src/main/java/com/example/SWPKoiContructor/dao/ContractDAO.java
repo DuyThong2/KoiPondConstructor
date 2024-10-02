@@ -53,7 +53,7 @@ public class ContractDAO {
             queryStr.append(" AND c.contractStatus = :statusFilter");
         }
         if (searchName != null && !searchName.isEmpty()) {
-            queryStr.append(" AND c.contractName LIKE :searchName");
+            queryStr.append(" AND c.contractNote LIKE :searchName");
         }
         if (fromDate != null) {
             queryStr.append(" AND c.dateCreate >= :fromDate");
@@ -97,7 +97,7 @@ public class ContractDAO {
             queryStr.append(" AND c.contractStatus = :statusFilter");
         }
         if (searchName != null && !searchName.isEmpty()) {
-            queryStr.append(" AND c.contractName LIKE :searchName");
+            queryStr.append(" AND c.contractNote LIKE :searchName");
         }
         if (fromDate != null) {
             queryStr.append(" AND c.dateCreate >= :fromDate");

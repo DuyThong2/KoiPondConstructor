@@ -9,6 +9,7 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
             body {
+
                 font-family: 'Arial', sans-serif;
                 background-color: #f8f9fa;
                 padding-top: 60px;
@@ -27,12 +28,12 @@
     <body>
 
         <!-- Main Container -->
-        <div class="container">
+        <div class="container-fluid">
+             <div class="row">
             <!-- Header Section -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <a href="/manager/construction" class="btn btn-secondary">Back to All Constructions</a>
+                <%@include file="../navBar.jsp" %>
                 <h2>Manage Construction Stage Details</h2>
-            </div>
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
 
             <!-- Project Info Section -->
             <div class="project-info">
@@ -285,12 +286,18 @@
                     </c:forEach>
                 </ul>
             </div>
+                </main>
+             </div>
+        
         </div>
+            
+
 
         <!-- Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 
         <!-- Confirmation Script -->
         <script>
@@ -298,5 +305,6 @@
                 return confirm("Are you sure you want to change the status?");
             }
         </script>
+
     </body>
 </html>

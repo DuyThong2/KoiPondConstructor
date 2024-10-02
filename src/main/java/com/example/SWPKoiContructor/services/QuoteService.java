@@ -91,4 +91,8 @@ public class QuoteService {
     public Quotes updateQuoteStatus(int quoteId, int quoteStatusId){
         return quoteDAO.updateQuoteStatus(quoteId, quoteStatusId);
     }
+    
+     public long countQuotesPeding(){
+        return quoteDAO.countQuotesPeding();
+    }
 }

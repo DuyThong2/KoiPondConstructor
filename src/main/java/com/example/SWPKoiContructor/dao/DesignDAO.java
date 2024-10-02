@@ -17,11 +17,18 @@ public class DesignDAO {
         this.entityManager = entityManager;
     }
 
-    public List<Object[]> getListDesignWithCustomerName() {
-        TypedQuery<Object[]> query = entityManager.createQuery(
-                "SELECT d, cus FROM Design d JOIN d.project p JOIN p.contract c JOIN c.customer cus ORDER BY d.status ASC",
-                Object[].class);
+    public List<Design> getListDesignWithSortedAndPaginated(int page, int size) {
+        TypedQuery<Design> query = entityManager.createQuery(
+                "SELECT d FROM Design d ORDER BY d.status ASC", Design.class);
+        query.setFirstResult(size * page);
+        query.setMaxResults(size);
         return query.getResultList();
+    }
+    
+    public long countAllDesigns() {
+        String countAllDesign = "SELECT COUNT(d) FROM Design d";
+        TypedQuery<Long> query = entityManager.createQuery(countAllDesign, Long.class);
+        return query.getSingleResult();
     }
 
     public Design getDesignById(int id) {
@@ -63,14 +70,14 @@ public class DesignDAO {
     }
 
     public boolean isAssignedToDesign(int designId, int userId) {
-        String staffinDesign = 
-                "SELECT COUNT(ds) FROM Design d JOIN d.staff ds WHERE d.designId = :designId AND ds.id = :userId";
+        String staffinDesign
+                = "SELECT COUNT(ds) FROM Design d JOIN d.staff ds WHERE d.designId = :designId AND ds.id = :userId";
         TypedQuery<Long> query = entityManager.createQuery(staffinDesign, Long.class);
         query.setParameter("designId", designId);
         query.setParameter("userId", userId);
         Long count = query.getSingleResult();
-        
-        return  count >0;
+
+        return count > 0;
     }
 
 }

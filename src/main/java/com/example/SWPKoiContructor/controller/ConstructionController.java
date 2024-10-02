@@ -39,10 +39,16 @@ public class ConstructionController {
     }
 
     @GetMapping("/manager/construction")
-    public String getListConstructionByCusName(Model model) {
-        List<Construction> list = constructionService.getListConstructionByCustomerName();
+    public String getListConstructionByCusName(Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size) {
+        List<Construction> list = constructionService.getListConstructionByCustomerName(page, size);
+        int totalPages = constructionService.getTotalPage(size);
         model.addAttribute("constructionList", list);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
         return "manager/construction/constructionManage";
+        
     }
 
     @GetMapping("/manager/construction/viewDetail/{id}")

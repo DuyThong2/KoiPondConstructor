@@ -7,20 +7,12 @@
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
-            /* Custom styles for the sidebar */
-            .sidebar {
-                height: 100vh;
-                background-color: #343a40;
-                color: white;
-            }
-            .sidebar a {
-                color: white;
-                display: block;
-                padding: 10px;
-                text-decoration: none;
-            }
-            .sidebar a:hover {
-                background-color: #495057;
+            h2 {
+                font-weight: bold;
+                color: #007bff;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
             }
         </style>
     </head>
@@ -32,7 +24,7 @@
                 <%@include file="../navBar.jsp" %>
 
                 <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
                     <h2 class="mb-4">Construction List</h2>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">

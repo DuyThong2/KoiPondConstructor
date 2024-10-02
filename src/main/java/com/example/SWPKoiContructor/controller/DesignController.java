@@ -49,9 +49,15 @@ public class DesignController {
     }
 
     @GetMapping("/manager/design")
-    public String getListDesignWithCustomerName(Model model) {
-        List<Object[]> list = designService.getListDesignWithCustomerName();
+    public String getListDesignWithCustomerName(Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size) {
+        List<Design> list = designService.getListDesignWithSortedAndPaginated(page, size);
+        int totalPage = designService.getTotalOfAllDesigns(size);
+
         model.addAttribute("designList", list);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPage);
         return "manager/design/designManage";
     }
 
@@ -61,7 +67,8 @@ public class DesignController {
         model.addAttribute("design", design);
         return "manager/design/designDetail";
     }
-        @PostMapping("/manager/completePayment/")
+
+    @PostMapping("/manager/completePayment/")
     public String completePayment(@RequestParam(required = false) Integer detailId,
             @RequestParam(required = false) Integer newStatus,
             @RequestParam int designStageId,
@@ -70,7 +77,7 @@ public class DesignController {
 
         if (detailId == null || newStatus == null) {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
-             return "redirect:/manager/design/viewDetail/" + designId;
+            return "redirect:/manager/design/viewDetail/" + designId;
         }
         try {
             designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
@@ -81,11 +88,12 @@ public class DesignController {
         return "redirect:/manager/design/viewDetail/" + designId;
     }
 //=========================Designer Controller====================================//
+
     @GetMapping("/designer/manage")
     public String listContractsByDesigner(Model model,
             HttpSession session,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size) {
+            @RequestParam(defaultValue = "6") int size) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
@@ -196,6 +204,7 @@ public class DesignController {
 
         BluePrint blueprint = new BluePrint();
         blueprint.setDesignStage(designStage);
+        blueprint.setBluePrintStatus(1);
         blueprint.setImgUrl(uploadedFilePath);
         blueprint.setDateCreate(new Date());
 
@@ -329,7 +338,7 @@ public class DesignController {
 
         if (detailId == null || newStatus == null) {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
-             return "redirect:/customer/project/design/" + designId;
+            return "redirect:/customer/project/design/" + designId;
         }
         try {
             designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);

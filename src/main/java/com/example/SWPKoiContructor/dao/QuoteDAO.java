@@ -29,44 +29,44 @@ public class QuoteDAO {
         TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q", Quotes.class);
         return tq.getResultList();
     }
-    
+
     //----------------------------------------------  MANAGER SITE  -----------------------------------------------------------------
-    public List<Quotes> getQuotesList(int page, int size, String sortBy, String sortDirection){
+    public List<Quotes> getQuotesList(int page, int size, String sortBy, String sortDirection) {
         TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q ORDER BY q." + sortBy + " " + sortDirection, Quotes.class);
         tq.setFirstResult(size * page);
         tq.setMaxResults(size);
         return tq.getResultList();
     }
-    
-     public List<Quotes> getQuotesList(int page, int size, String sortBy, String sortDirection, int status){
+
+    public List<Quotes> getQuotesList(int page, int size, String sortBy, String sortDirection, int status) {
         TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q WHERE q.quotesStatus = :status ORDER BY q." + sortBy + " " + sortDirection, Quotes.class);
         tq.setParameter("status", status);
         tq.setFirstResult(size * page);
         tq.setMaxResults(size);
         return tq.getResultList();
     }
-     
-    public long countQuotesByStatus(int status){
+
+    public long countQuotesByStatus(int status) {
         TypedQuery<Long> tq = entityManager.createQuery("SELECT Count(q) FROM Quotes q WHERE q.quotesStatus = :status", Long.class);
         tq.setParameter("status", status);
         return tq.getSingleResult();
     }
-    
-    public long countQuotes(){
+
+    public long countQuotes() {
         TypedQuery<Long> tq = entityManager.createQuery("SELECT Count(q) FROM Quotes q", Long.class);
         return tq.getSingleResult();
     }
-    
+
     //----------------------------------------------  CONSULTANT SITE  -----------------------------------------------------------------
-    public List<Quotes> getQuotesListByStaffId(int staffId, int page, int size, String sortBy, String sortDirection){
+    public List<Quotes> getQuotesListByStaffId(int staffId, int page, int size, String sortBy, String sortDirection) {
         TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q WHERE q.staff.id = :staffId ORDER BY q." + sortBy + " " + sortDirection, Quotes.class);
         tq.setParameter("staffId", staffId);
         tq.setFirstResult(size * page);
         tq.setMaxResults(size);
         return tq.getResultList();
     }
-    
-     public List<Quotes> getQuotesListByStaffId(int staffId, int page, int size, String sortBy, String sortDirection, int status){
+
+    public List<Quotes> getQuotesListByStaffId(int staffId, int page, int size, String sortBy, String sortDirection, int status) {
         TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q WHERE q.quotesStatus = :status AND q.staff.id = :staffId ORDER BY q." + sortBy + " " + sortDirection, Quotes.class);
         tq.setParameter("staffId", staffId);
         tq.setParameter("status", status);
@@ -74,35 +74,32 @@ public class QuoteDAO {
         tq.setMaxResults(size);
         return tq.getResultList();
     }
-     
-    public long countQuotesOfStaffByStatus(int staffId, int status){
+
+    public long countQuotesOfStaffByStatus(int staffId, int status) {
         TypedQuery<Long> tq = entityManager.createQuery("SELECT Count(q) FROM Quotes q WHERE q.quotesStatus = :status AND q.staff.id = :staffId", Long.class);
         tq.setParameter("staffId", staffId);
         tq.setParameter("status", status);
         return tq.getSingleResult();
     }
-    
-    public long countQuotesOfStaff(int staffId){
+
+    public long countQuotesOfStaff(int staffId) {
         TypedQuery<Long> tq = entityManager.createQuery("SELECT Count(q) FROM Quotes q WHERE q.staff.id = :staffId", Long.class);
         tq.setParameter("staffId", staffId);
         return tq.getSingleResult();
     }
 
-    
     //-------------------------------------------------------  OTHER  --------------------------------------------------------------
-    
-    public List<Quotes> getQuotesListByStaffId(int staffId){
+    public List<Quotes> getQuotesListByStaffId(int staffId) {
         TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q WHERE q.staff.id = :id", Quotes.class);
         tq.setParameter("id", staffId);
         return tq.getResultList();
     }
-    
-    public List<Quotes> getQuotesListByCusIdAndStatus(int cusId){
+
+    public List<Quotes> getQuotesListByCusIdAndStatus(int cusId) {
         TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q WHERE q.customer.id = :id and q.quotesStatus >= 2 AND q.quotesStatus != 3", Quotes.class);
         tq.setParameter("id", cusId);
         return tq.getResultList();
     }
-    
 
     public Quotes getQuoteById(int id) {
         try {
@@ -123,10 +120,16 @@ public class QuoteDAO {
     public Quotes saveQuote(Quotes quotes) {
         return entityManager.merge(quotes);
     }
-    
-    public Quotes updateQuoteStatus(int quoteId, int quoteStatus){
+
+    public Quotes updateQuoteStatus(int quoteId, int quoteStatus) {
         Quotes quotes = getQuoteById(quoteId);
         quotes.setQuotesStatus(quoteStatus);
         return quotes;
+    }
+
+    public long countQuotesPeding() {
+        TypedQuery<Long> tq = entityManager.createQuery(
+                "SELECT Count(q) FROM Quotes q WHERE q.quotesStatus = 1", Long.class);
+        return tq.getSingleResult();
     }
 }
