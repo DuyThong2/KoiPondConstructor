@@ -16,62 +16,27 @@
         <title>Admin Dashboard - Projects</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-            /* Custom styles for the sidebar */
-            .sidebar {
-                height: 100vh;
-                background-color: #343a40;
-                color: white;
-            }
-            .sidebar a {
-                color: white;
-                display: block;
-                padding: 10px;
-                text-decoration: none;
-            }
-            .sidebar a:hover {
-                background-color: #495057;
-            }
-        </style>
     </head>
+    <style>
+        h2 {
+            font-weight: bold;
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
     <body>
 
-       
+
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
-                <nav class="col-md-2 d-none d-md-block sidebar">
-                    <div class="sidebar-sticky">
-                        <h4 class="text-center py-3">Admin Dashboard</h4>
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/dashboard">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/contracts">Contracts</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/design">Design</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/projects">Projects</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/terms">Terms</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/reports">Reports</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/settings">Settings</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                <%@include file="../navBar.jsp" %>
 
                 <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
+
                     <h2 class="mb-4">Project List</h2>
                     <form method="get" action="/manager/projects">
                         <div class="form-row align-items-center">
@@ -84,7 +49,7 @@
                                     <option value="projectName" ${sortBy == 'projectName' ? 'selected' : ''}>Project Name</option>
                                 </select>
                             </div>
-            
+
                             <!-- Sort Direction -->
                             <div class="col-auto">
                                 <label for="sortType">Type:</label>
@@ -93,7 +58,7 @@
                                     <option value="desc" ${sortType == 'desc' ? 'selected' : ''}>Descending</option>
                                 </select>
                             </div>
-            
+
                             <!-- Filter By Status -->
                             <div class="col-auto">
                                 <label for="statusFilter">Status:</label>
@@ -116,7 +81,7 @@
                                     <option value="5" ${stageFilter == 5 ? 'selected' : ''}>Finish</option>
                                 </select>
                             </div>
-            
+
                             <input type="hidden" name="page" value="${currentPage}">
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-primary mt-2">Apply</button>
@@ -131,7 +96,7 @@
                                 <th>Customer Name</th>
                                 <th>Date Start</th>
                                 <th>Status</th>
-                                 <th>Stage</th>
+                                <th>Stage</th>
                                 <th>More</th>
                             </tr>
                         </thead>
@@ -199,7 +164,7 @@
                                 <input type="hidden" name="sortType" value="${sortType}">
                             </form>
                         </c:if>
-                        
+
                         <!-- Page Indicator (Static for this example) -->
                         <span>Page <strong>${currentPage}</strong> of <strong>${totalPage}</strong></span>
                         <!-- Next Button -->

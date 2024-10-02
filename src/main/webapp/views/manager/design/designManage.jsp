@@ -7,20 +7,19 @@
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
-            /* Custom styles for the sidebar */
-            .sidebar {
-                height: 100vh;
-                background-color: #343a40;
-                color: white;
+            h2 {
+                font-weight: bold;
+                color: #007bff;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
             }
-            .sidebar a {
-                color: white;
-                display: block;
-                padding: 10px;
-                text-decoration: none;
-            }
-            .sidebar a:hover {
-                background-color: #495057;
+            .filter-card {
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
             }
         </style>
     </head>
@@ -32,8 +31,10 @@
                 <%@include file="../navBar.jsp" %>
 
                 <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
                     <h2 class="mb-4">Design List</h2>
+
+
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">
                             <tr>
@@ -45,42 +46,37 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <c:forEach var="designList" items="${designList}">
+                            <c:forEach var="designs" items="${designList}">
                                 <tr>
-                                    <%--  
-                                    <td><a href="/download/${contract.fileURL}">${contract.fileURL}</a></td>
-                                    --%>
-                                    <td>${designList[0].designId}</td>
-                                    <td>${designList[0].designName}</td>
-                                    <td>${designList[1].name}</td>
+                                    <td>${designs.designId}</td>
+                                    <td>${designs.designName}</td>
+                                    <td>${designs.project.contract.customer.name}</td>
                                     <td>
                                         <c:choose>
-                                            <c:when test="${designList[0].status == 1}">
+                                            <c:when test="${designs.status == 1}">
                                                 <span class="badge badge-secondary">Pending</span>
                                             </c:when>
-                                            <c:when test="${designList[0].status == 2}">
+                                            <c:when test="${designs.status == 2}">
                                                 <span class="badge badge-primary">Processing</span>
                                             </c:when>
-                                            <c:when test="${designList[0].status == 3}">
+                                            <c:when test="${designs.status == 3}">
                                                 <span class="badge badge-success">Completed</span>
                                             </c:when>
-                                            <c:when test="${designList[0].status == 4}">
+                                            <c:when test="${designs.status == 4}">
                                                 <span class="badge badge-warning">Canceled</span>
                                             </c:when>
                                         </c:choose>
                                     </td>
-
-                                    <td><a href="/manager/design/viewDetail/${designList[0].designId}" class="btn btn-info">Click Here</a></td>
-
+                                    <td><a href="/manager/design/viewDetail/${designs.designId}" class="btn btn-info">View Details</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
 
-                    <div class="d-flex justify-content-between align-items-center mt-4">
+              <div class="d-flex justify-content-between align-items-center mt-4">
                         <!-- Previous Button -->
                         <c:if test="${currentPage > 0}">
-                            <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&lt;</a>
+                            <a href="?page=${currentPage - 1}" class="btn btn-primary">&lt;</a>
                         </c:if>
                         <c:if test="${currentPage == 0}">
                             <button class="btn btn-primary" disabled>&lt;</button>
@@ -91,17 +87,16 @@
 
                         <!-- Next Button -->
                         <c:if test="${currentPage < totalPages - 1}">
-                            <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&gt;</a>
+                            <a href="?page=${currentPage + 1}" class="btn btn-primary">&gt;</a>
                         </c:if>
                         <c:if test="${currentPage == totalPages - 1}">
                             <button class="btn btn-primary" disabled>&gt;</button>
                         </c:if>
                     </div>
                 </main>
-
             </div>
         </div>
-
+        <br>
         <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

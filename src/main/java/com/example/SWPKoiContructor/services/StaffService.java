@@ -42,4 +42,7 @@ public class StaffService {
     public Staff findStaffByEmail(String email){
         return staffDAO.findStaffByEmail(email);
     }
+    public long countStaff(){
+        return staffDAO.countStaff();
+    }
 }

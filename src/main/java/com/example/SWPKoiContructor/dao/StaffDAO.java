@@ -90,7 +90,10 @@ public class StaffDAO {
         } catch (NoResultException e) {
             return null; // Return empty if no customer is found
         }
-
+    }
+    public long countStaff(){
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(s) FROM Staff s where s.enabled = true",Long.class);
+        return query.getSingleResult();
     }
 
 }
