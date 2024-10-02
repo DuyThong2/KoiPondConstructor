@@ -27,7 +27,6 @@ public class ProjectService {
         return projectDAO.getProjectListIsSharable();
     }
 
-
     public List<Project> getPaginationProjectList(int page, int size, String sortBy, String sortType) {
         return projectDAO.getPaginationProjectList(page, size, sortBy, sortType);
     }
@@ -107,8 +106,7 @@ public class ProjectService {
         return construction;
     }
 
-    
-    
+
     protected void propagateStatusToProject(int projectId) {
 
         Project project = getProjectById(projectId);
@@ -146,6 +144,15 @@ public class ProjectService {
 
     public long countProjectFilter(Integer statusFilter, Integer stageFilter) {
         return projectDAO.countProjectFilter(statusFilter, stageFilter);
+    }
+
+    public long countProjectProcessing() {
+        return projectDAO.countProjectProcessing();
+    }
+
+    public long countProjectComplete() {
+        return projectDAO.countProjectComplete();
+
     }
 
 

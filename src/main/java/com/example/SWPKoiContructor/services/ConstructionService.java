@@ -30,10 +30,13 @@ public class ConstructionService {
         this.projectService = projectService;
     }
 
-    
+    public List<Construction> getListConstructionByCustomerName(int page, int size) {
+        return constructionDAO.getListConstructionWithCustomerName(page, size);
+    }
 
-    public List<Construction> getListConstructionByCustomerName() {
-        return constructionDAO.getListConstructionByCustomerName();
+    public int getTotalPage(int size) {
+        long totalRecords = constructionDAO.countAllConstructions();
+        return (int) Math.ceil((double) totalRecords / size);
     }
 
     public Construction getConstructionById(int id) {
@@ -43,7 +46,7 @@ public class ConstructionService {
     public Construction updateConstruction(Construction construction) {
         return constructionDAO.updateConstruction(construction);
     }
-    
+
     public List<Construction> getSortedAndPaginatedByStaff(int staffId, int page, int size) {
         return constructionDAO.getSortedAndPaginatedByStaff(staffId, page, size);
     }
@@ -75,7 +78,7 @@ public class ConstructionService {
 
             // Step 4: Propagate changes to the Project
             projectService.propagateStatusToProject(construction.getProject().getProjectId());
-        }else{
+        } else {
             throw new RuntimeException();
         }
 
