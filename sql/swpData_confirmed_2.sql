@@ -82,7 +82,7 @@ CREATE TABLE Blog (
     blog_description NVARCHAR(255),
     blog_img_url NVARCHAR(255),
     staff_id INT,
-	blog_status int,
+	blog_status int, -- 1 not ready 2. ready 3.disable
     FOREIGN KEY (staff_id) REFERENCES Staffs(id)
 );
 
@@ -349,8 +349,19 @@ create table Intro_Content(
 	id int identity(1,1) primary key,
 	content text,
 	create_date dateTime,
-	lastUpdatedDate dateTime,
+	last_updated_date dateTime,
 	project_id int foreign key references Project(project_id),
 	blog_id int foreign key references Blog(blog_id),
 	service_id int foreign key references [Service](service_id)
+)
+
+
+CREATE TABLE Feedback (
+	feedback_id INT IDENTITY(1,1) PRIMARY KEY,
+	feedback_content NVARCHAR(255),
+	from_user INT NOT NULL,
+	to_user INT NOT NULL,
+	feedback_date DATE,
+	FOREIGN KEY (from_user) REFERENCES users(id),
+	FOREIGN KEY (to_user) REFERENCES users(id)
 )

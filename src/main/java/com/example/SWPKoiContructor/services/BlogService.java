@@ -2,9 +2,11 @@ package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.BlogDAO;
 import com.example.SWPKoiContructor.entities.Blog;
+import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BlogService {
@@ -31,18 +33,32 @@ public class BlogService {
         return blogDAO.getBlogById(id);
     }
 
-    // Create a new blog
+    @Transactional
     public Blog createBlog(Blog blog) {
         return blogDAO.createBlog(blog);
     }
 
-    // Update an existing blog
+    @Transactional
     public Blog updateBlog(Blog blog) {
         return blogDAO.updateBlog(blog);
     }
 
-    // Delete a blog by its ID
+    @Transactional
     public void deleteBlog(int id) {
         blogDAO.deleteBlog(id);
+    }
+    
+    
+    
+    public List<Blog> getBlogsByCriteria(String name, Integer status, Date dateFrom, Date dateTo, int page, int size) {
+        return blogDAO.searchByCriteria(name, status, dateFrom, dateTo, page, size);
+    }
+
+    public long countBlogsByCriteria(String name, Integer status, Date dateFrom, Date dateTo) {
+        return blogDAO.countByCriteria(name, status, dateFrom, dateTo);
+    }
+
+    public Blog getBlogWithContentById(int id) {
+        return blogDAO.getBlogWithContentById(id);
     }
 }

@@ -973,7 +973,7 @@ VALUES
 
 
 -- Insert into Intro_Content table with service-based content
-INSERT INTO Intro_Content (content, create_date, lastUpdatedDate, project_id, blog_id, service_id) 
+INSERT INTO Intro_Content (content, create_date, last_updated_date, project_id, blog_id, service_id) 
 VALUES
 ('Quick removal of debris and minor cleaning tasks.', '2024-01-15', '2024-01-20', NULL, NULL, 1),
 ('Includes debris removal, water treatment, and light cleaning every 2-3 months.', '2024-02-01', '2024-02-05', NULL, NULL, 2),
@@ -990,7 +990,7 @@ VALUES
 
 
 -- Insert the project content into the Intro_Content table
-INSERT INTO Intro_Content (content, create_date, lastUpdatedDate, project_id, blog_id, service_id)
+INSERT INTO Intro_Content (content, create_date, last_updated_date, project_id, blog_id, service_id)
 VALUES
 ('Planning and designing a modern koi pond.', '2024-01-10', '2024-01-15', 1, NULL, NULL),
 ('Design and installation of a raised koi pond.', '2024-02-01', '2024-02-05', 2, NULL, NULL),
@@ -1004,7 +1004,7 @@ VALUES
 
 
 -- Insert into Intro_Content table with blog-based content
-INSERT INTO Intro_Content (content, create_date, lastUpdatedDate, project_id, blog_id, service_id) 
+INSERT INTO Intro_Content (content, create_date, last_updated_date, project_id, blog_id, service_id) 
 VALUES
 ('In this blog, we explore the key design elements to consider when planning your Koi pond...', '2024-09-01', '2024-09-05', NULL, 1, NULL),
 ('Learn the best practices for maintaining your Koi pond to ensure your fish thrive...', '2024-09-10', '2024-09-12', NULL, 2, NULL),

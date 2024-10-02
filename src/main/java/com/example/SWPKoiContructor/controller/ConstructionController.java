@@ -247,5 +247,59 @@ public class ConstructionController {
 
         return "customer/construction/processOfConstruction";
     }
+    
+    
+
+    // Method to approve the inspection stage
+    @PostMapping("/customer/approveInspection")
+    public String approveInspection(
+            @RequestParam("detailId") int constructionStageDetailId,
+            @RequestParam("constructionStageId") int constructionStageId,
+            @RequestParam("constructionId") int constructionId,
+            RedirectAttributes redirectAttributes) {
+        
+        try {
+            // Approve the inspection stage
+            constructionStageDetailService.updateConstructionStageDetailStatus(constructionStageDetailId, 4); // Assuming 4 is 'approved' status
+            redirectAttributes.addFlashAttribute("success", "Inspection approved successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Failed to approve inspection: " + e.getMessage());
+        }
+
+        // Redirect back to the construction stage details page
+        return "redirect:/customer/project/construction/"+ constructionId;
+    }
+    
+        // Method to reject the inspection stage
+    @PostMapping("/customer/rejectInspection")
+    public String rejectInspection(
+            @RequestParam("detailId") int constructionStageDetailId,
+            @RequestParam("constructionStageId") int constructionStageId,
+            @RequestParam("constructionId") int constructionId,
+            RedirectAttributes redirectAttributes) {
+        
+        try {
+            // Reject the inspection stage
+            constructionStageDetailService.updateConstructionStageDetailStatus(constructionStageDetailId, 3); // Assuming 3 is 'rejected' status
+
+            // Optionally reset the previous stage detail to 'processing' status
+            ConstructionStageDetail previousDetail = constructionStageDetailService.getPreviousStageDetail(constructionStageId);
+            if (previousDetail != null) {
+                constructionStageDetailService.updateConstructionStageDetailStatus(previousDetail.getConstructionStageDetailId(), 2); // Assuming 2 is 'processing' status
+            }
+
+            redirectAttributes.addFlashAttribute("success", "Inspection rejected and previous stage reset to processing.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", "Failed to reject inspection: " + e.getMessage());
+        }
+
+        // Redirect back to the construction stage details page
+        return "redirect:/customer/project/construction/"+ constructionId;
+    }
 
 }
+
+
+

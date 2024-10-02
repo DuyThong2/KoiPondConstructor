@@ -116,6 +116,17 @@ public class Blog {
         this.introContent = introContent;
     }
     
+    public void addContent(Content content){
+        this.introContent = content;
+        content.setBlog(this);
+    }
+    
+    
+    public void addAuthor(Staff staff){
+        this.staff = staff;
+        staff.getBlogs().add(this);
+    }
+    
     
 
     

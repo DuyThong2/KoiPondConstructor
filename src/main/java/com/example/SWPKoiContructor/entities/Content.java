@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -32,6 +35,14 @@ public class Content {
     @Column(name="content")
     private String content;
     
+     @Column(name = "create_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+
+    @Column(name = "last_updated_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastUpdatedDate;
+    
     
     @OneToOne
     @JoinColumn(name="service_id")
@@ -48,12 +59,21 @@ public class Content {
     public Content() {
     }
 
-    public Content(int id, String content, Project project, Blog blog) {
-        this.id = id;
+    public Content(String content, Date createDate, Date lastUpdatedDate) {
         this.content = content;
-        this.project = project;
-        this.blog = blog;
+        this.createDate = createDate;
+        this.lastUpdatedDate = lastUpdatedDate;
     }
+
+    public Content(String content) {
+        this.content = content;
+        createDate = new Date();
+        lastUpdatedDate= createDate;
+    }
+
+    
+
+    
 
     public int getId() {
         return id;
@@ -94,6 +114,23 @@ public class Content {
     public void setService(Service service) {
         this.service = service;
     }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
+
+    public void setLastUpdatedDate(Date lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
+    }
+    
     
     
     
