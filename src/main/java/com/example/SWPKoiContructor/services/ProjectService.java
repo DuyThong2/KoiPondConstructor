@@ -1,13 +1,7 @@
 package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.ProjectDAO;
-import com.example.SWPKoiContructor.entities.Construction;
-import com.example.SWPKoiContructor.entities.ConstructionStage;
-import com.example.SWPKoiContructor.entities.ConstructionStageDetail;
-import com.example.SWPKoiContructor.entities.Design;
-import com.example.SWPKoiContructor.entities.DesignStage;
-import com.example.SWPKoiContructor.entities.Project;
-import com.example.SWPKoiContructor.entities.Term;
+import com.example.SWPKoiContructor.entities.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,9 +12,11 @@ public class ProjectService {
 
     private ProjectDAO projectDAO;
 
+
     public ProjectService(ProjectDAO projectDAO) {
         this.projectDAO = projectDAO;
     }
+
 
     public List<Project> getProjectList(int size) {
         return projectDAO.getProjectList(size);
@@ -110,7 +106,9 @@ public class ProjectService {
         return construction;
     }
 
+
     protected void propagateStatusToProject(int projectId) {
+
         Project project = getProjectById(projectId);
 
         if (project != null) {
@@ -154,6 +152,9 @@ public class ProjectService {
 
     public long countProjectComplete() {
         return projectDAO.countProjectComplete();
+
     }
+
+
 
 }

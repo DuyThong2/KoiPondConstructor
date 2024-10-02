@@ -5,7 +5,9 @@
  */
 package com.example.SWPKoiContructor.dao;
 
+import com.example.SWPKoiContructor.entities.Design;
 import com.example.SWPKoiContructor.entities.Project;
+import com.example.SWPKoiContructor.entities.Staff;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -162,5 +164,6 @@ public class ProjectDAO {
     public long countProjectComplete() {
         TypedQuery<Long> query = entityManager.createQuery("Select Count(c) from Project c where c.status = 3", Long.class);
         return query.getSingleResult();
+
     }
 }
