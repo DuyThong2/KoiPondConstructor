@@ -11,7 +11,7 @@
         <div class="container">
             <h2>Contract List</h2>
 
-            <!-- Sort Form -->
+            <!-- Sort and Search Form -->
             <form method="get" action="/manager/contract">
                 <div class="form-row align-items-center">
                     <!-- Sort By -->
@@ -20,7 +20,6 @@
                         <select name="sortBy" id="sortBy" class="form-control">
                             <option value="dateCreate" ${sortBy == 'dateCreate' ? 'selected' : ''}>Date Created</option>
                             <option value="totalPrice" ${sortBy == 'totalPrice' ? 'selected' : ''}>Total Price</option>
-                            
                         </select>
                     </div>
 
@@ -47,13 +46,29 @@
                         </select>
                     </div>
 
+                    <!-- Search by Name -->
+                    <div class="col-auto">
+                        <label for="searchName">Contract Name:</label>
+                        <input type="text" name="searchName" id="searchName" class="form-control" value="${searchName}">
+                    </div>
+
+                    <!-- Date Range Filter -->
+                    <div class="col-auto">
+                        <label for="fromDate">From Date:</label>
+                        <input type="date" name="fromDate" id="fromDate" class="form-control" value="${fromDate}">
+                    </div>
+
+                    <div class="col-auto">
+                        <label for="toDate">To Date:</label>
+                        <input type="date" name="toDate" id="toDate" class="form-control" value="${toDate}">
+                    </div>
+
                     <input type="hidden" name="page" value="${currentPage}">
                     <div class="col-auto">
                         <button type="submit" class="btn btn-primary mt-2">Apply</button>
                     </div>
                 </div>
             </form>
-
 
             <!-- Table for contracts -->
             <table class="table table-bordered table-hover mt-3">
@@ -62,7 +77,6 @@
                         <th>Date Created</th>
                         <th>File URL</th>
                         <th>Total Price</th>
-                        
                         <th>Contract Term</th>
                         <th>Contract Status</th>
                         <th>Contract Note</th>
@@ -75,7 +89,6 @@
                             <td>${contract.dateCreate}</td>
                             <td><a href="/download/${contract.fileURL}">${contract.fileURL}</a></td>
                             <td>${contract.totalPrice}</td>
-                            
                             <td>${contract.contractTerm}</td>
                             <td>
                                 <c:choose>
@@ -110,7 +123,7 @@
             <div class="d-flex justify-content-between align-items-center mt-4">
                 <!-- Previous Button -->
                 <c:if test="${currentPage > 0}">
-                    <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&lt;</a>
+                    <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&lt;</a>
                 </c:if>
                 <c:if test="${currentPage == 0}">
                     <button class="btn btn-primary" disabled>&lt;</button>
@@ -121,14 +134,12 @@
 
                 <!-- Next Button -->
                 <c:if test="${currentPage < totalPages - 1}">
-                    <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}" class="btn btn-primary">&gt;</a>
+                    <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&gt;</a>
                 </c:if>
                 <c:if test="${currentPage == totalPages - 1}">
                     <button class="btn btn-primary" disabled>&gt;</button>
                 </c:if>
             </div>
-
         </div>
-
     </body>
 </html>

@@ -217,13 +217,40 @@
                 }
 
                 // Prevent form submission if the total price does not match the total quote price
-                document.querySelector('form').addEventListener('submit', function(event) {
+                document.querySelector('form').addEventListener('submit', function (event) {
                     const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
                     if (totalPrice !== totalQuotePrice) {
                         event.preventDefault();
                         alert('The total price must match the total quote price.');
                     }
+
+                    // Add the negative value check
+                    if (!validateFields()) {
+                        event.preventDefault();  // Prevent form submission if there are invalid fields
+                    }
                 });
+
+                // Function to prevent negative values in input fields
+                function validateFields() {
+                    let fields = ['conceptDesign', 'detailDesign', 'constructionDesign', 'rawConstruction', 'completeConstruction', 'totalDesignCost', 'totalConstructionCost', 'totalPrice'];
+
+                    let isValid = true;  // Assume valid unless we find an invalid field
+
+                    fields.forEach(function (fieldId) {
+                        let field = document.getElementById(fieldId);
+                        let value = parseFloat(field.value);
+
+                        if (value < 0) {
+                            isValid = false;
+                            field.classList.add('is-invalid');  // Mark the field as invalid
+                            alert('Value for ' + fieldId + ' cannot be less than 0.');
+                        } else {
+                            field.classList.remove('is-invalid');  // Remove the invalid class if value is valid
+                        }
+                    });
+
+                    return isValid;
+                }
             </script>
 
         </div>

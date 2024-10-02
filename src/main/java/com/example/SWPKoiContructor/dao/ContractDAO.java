@@ -6,6 +6,8 @@
 package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Contract;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -40,33 +42,90 @@ public class ContractDAO {
         }
     }
 
-//    public List<Contract> getContractListOfCustomer(int customerId,int page, int size, String sortBy, String sortDirection) {
-//        // Correct the JPQL query to filter contracts by customer ID
-//        String jpql = "SELECT p FROM Contract p ORDER BY p." + sortBy + " " + sortDirection;
-//
-//        // Tạo TypedQuery
-//        TypedQuery<Contract> query = entityManager.createQuery(jpql, Contract.class);
-//
-//        // Thiết lập phân trang
-//        query.setFirstResult(page * size);
-//        query.setMaxResults(size);
-//
-//        // Trả về danh sách sản phẩm
-//        return query.getResultList();
-//    }
-//
-//    public List<Contract> getContractListOfConsultant(int consultantId) {
-//        TypedQuery<Contract> tq = entityManager.createQuery(
-//                "SELECT c FROM Contract c WHERE c.quote.staff.staffId = :id",
-//                Contract.class
-//        );
-//
-//        // Set the customerId parameter
-//        tq.setParameter("id", consultantId);
-//
-//        // Return the result list
-//        return tq.getResultList();
-//    }
+    
+
+    public List<Contract> getFilteredContracts(int page, int size, String sortBy, String sortDirection,
+            Integer statusFilter, String searchName, LocalDate fromDate, LocalDate toDate) {
+        StringBuilder queryStr = new StringBuilder("SELECT c FROM Contract c WHERE 1=1");
+
+        // Dynamic query construction
+        if (statusFilter != null) {
+            queryStr.append(" AND c.contractStatus = :statusFilter");
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            queryStr.append(" AND c.contractName LIKE :searchName");
+        }
+        if (fromDate != null) {
+            queryStr.append(" AND c.dateCreate >= :fromDate");
+        }
+        if (toDate != null) {
+            queryStr.append(" AND c.dateCreate <= :toDate");
+        }
+
+        // Sorting
+        queryStr.append(" ORDER BY c.").append(sortBy).append(" ").append(sortDirection);
+
+        // Creating the query
+        TypedQuery<Contract> query = entityManager.createQuery(queryStr.toString(), Contract.class);
+
+        // Setting parameters dynamically
+        if (statusFilter != null) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
+        if (fromDate != null) {
+            query.setParameter("fromDate", Date.valueOf(fromDate));  // Convert LocalDate to java.sql.Date
+        }
+        if (toDate != null) {
+            query.setParameter("toDate", Date.valueOf(toDate));  // Convert LocalDate to java.sql.Date
+        }
+
+        // Pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getResultList();
+    }
+
+    public long countFilteredContracts(Integer statusFilter, String searchName, LocalDate fromDate, LocalDate toDate) {
+        StringBuilder queryStr = new StringBuilder("SELECT COUNT(c) FROM Contract c WHERE 1=1");
+
+        // Dynamic query construction
+        if (statusFilter != null) {
+            queryStr.append(" AND c.contractStatus = :statusFilter");
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            queryStr.append(" AND c.contractName LIKE :searchName");
+        }
+        if (fromDate != null) {
+            queryStr.append(" AND c.dateCreate >= :fromDate");
+        }
+        if (toDate != null) {
+            queryStr.append(" AND c.dateCreate <= :toDate");
+        }
+
+        // Creating the query
+        TypedQuery<Long> query = entityManager.createQuery(queryStr.toString(), Long.class);
+
+        // Setting parameters dynamically
+        if (statusFilter != null) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
+        if (fromDate != null) {
+            query.setParameter("fromDate", Date.valueOf(fromDate));  // Convert LocalDate to java.sql.Date
+        }
+        if (toDate != null) {
+            query.setParameter("toDate", Date.valueOf(toDate));  // Convert LocalDate to java.sql.Date
+        }
+
+        return query.getSingleResult();
+    }
+
     public Contract createNewContract(Contract contract) {
 
         Contract contractCreated = entityManager.merge(contract);

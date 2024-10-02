@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/designer/**").hasRole("DESIGNER")
                 .antMatchers("/constructor/**").hasRole("CONSTRUCTOR")
                 .antMatchers("/staff/**").hasAnyRole("MANAGER","CONSULTANT","DESIGNER","CONSTRUCTOR")
-                .antMatchers("/resources/**", "/assets/**", "/", "/register","/forgot-password", "/reset-password").permitAll()
+                .antMatchers("/resources/**", "/assets/**", "/", "/register","/forgot-password", "/reset-password","/home/**","/css/**","/js/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin() // Enable form login

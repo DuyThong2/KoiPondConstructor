@@ -224,6 +224,35 @@
 
                     document.getElementById('totalPrice').value = totalPrice.toFixed(2);
                 }
+                function validateFields() {
+                    let fields = ['conceptDesign', 'detailDesign', 'constructionDesign', 'rawConstruction', 'completeConstruction', 'totalDesignCost', 'totalConstructionCost', 'totalPrice'];
+
+                    let isValid = true; // Assume valid unless we find an invalid field
+
+                    fields.forEach(function (fieldId) {
+                        let field = document.getElementById(fieldId);
+                        let value = parseFloat(field.value);
+
+                        if (value < 0) {
+                            isValid = false;
+                            field.classList.add('is-invalid');
+                            alert('Value for ' + fieldId + ' cannot be less than 0.');
+                        } else {
+                            field.classList.remove('is-invalid');
+                        }
+                    });
+
+                    return isValid;
+                }
+
+                // Listen for form submission and validate
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelector('form').addEventListener('submit', function (event) {
+                        if (!validateFields()) {
+                            event.preventDefault(); // Prevent form submission if validation fails
+                        }
+                    });
+                });
             </script>
 
         </div>

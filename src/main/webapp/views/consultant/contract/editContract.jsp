@@ -63,7 +63,7 @@
                     <!-- Bind the form to the "contract" object -->
                     <form:form action="${pageContext.request.contextPath}/consultant/contract/edit" modelAttribute="contract" method="put" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
-                        
+
                         <form:hidden path="contractId" value="${contract.contractId}"/>
                         <form:hidden path="customer.id" value="${customer.id}" />
 
@@ -223,12 +223,41 @@
                 }
 
                 // Prevent form submission if the total price does not match the total quote price
-                document.querySelector('form').addEventListener('submit', function(event) {
+                document.querySelector('form').addEventListener('submit', function (event) {
                     const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
                     if (totalPrice !== totalQuotePrice) {
                         event.preventDefault();
                         alert('The total price must match the total quote price.');
                     }
+                });
+                function validateFields() {
+                    let fields = ['conceptDesign', 'detailDesign', 'constructionDesign', 'rawConstruction', 'completeConstruction', 'totalDesignCost', 'totalConstructionCost', 'totalPrice'];
+
+                    let isValid = true; // Assume valid unless we find an invalid field
+
+                    fields.forEach(function (fieldId) {
+                        let field = document.getElementById(fieldId);
+                        let value = parseFloat(field.value);
+
+                        if (value < 0) {
+                            isValid = false;
+                            field.classList.add('is-invalid');
+                            alert('Value for ' + fieldId + ' cannot be less than 0.');
+                        } else {
+                            field.classList.remove('is-invalid');
+                        }
+                    });
+
+                    return isValid;
+                }
+
+                // Listen for form submission and validate
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelector('form').addEventListener('submit', function (event) {
+                        if (!validateFields()) {
+                            event.preventDefault(); // Prevent form submission if validation fails
+                        }
+                    });
                 });
             </script>
 
