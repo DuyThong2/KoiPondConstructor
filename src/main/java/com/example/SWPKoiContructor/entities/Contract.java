@@ -234,7 +234,7 @@ public class Contract {
         }
         
         // Check if the contract's customer is the same as the given customer
-        return contract.getCustomer() != null && contract.getCustomer().equals(customer);
+        return contract.getCustomer() != null && contract.getCustomer().getId() == customer.getId();
     }
     
     public boolean isContractBelongToStaff(Staff staff, Contract contract) {
@@ -244,7 +244,7 @@ public class Contract {
         }
 
         // Check if the quote's staff is the same as the given staff
-        return contract.getQuote().getStaff() != null && contract.getQuote().getStaff().equals(staff);
+        return contract.getQuote().getStaff() != null && contract.getQuote().getStaff().getId() == staff.getId();
     }
     
     

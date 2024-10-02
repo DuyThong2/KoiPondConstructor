@@ -46,7 +46,12 @@ public class HomepageController {
         model.addAttribute("blogList", blogList);
         model.addAttribute("projectList", projectList);
         model.addAttribute("staffList", staffList);
-        return "customer/homepage";
+        return "customer/mainPage/homepage";
+    }
+    
+    @GetMapping("/home/services")
+    public String servicesShow(Model model){
+        return "customer/mainPage/services";
     }
 
     

@@ -181,7 +181,7 @@
                                 </p>
                                 <p><strong>Price:</strong> ${stage.constructionStagePrice}</p>
                                 
-                                <a href="/updateStatus/constructionStage/${stage.constructionStageId}?constructionId=${constructionId}" class="btn btn-info">Update Status</a>
+                                <a href="/staff/updateStatus/constructionStage/${stage.constructionStageId}?constructionId=${constructionId}" class="btn btn-info">Update Status</a>
 
                             </div>
                         </div>

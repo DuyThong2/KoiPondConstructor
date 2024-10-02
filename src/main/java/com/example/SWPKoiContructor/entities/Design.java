@@ -138,9 +138,9 @@ public class Design {
             
         }else{
             double contractCost = contract.getTotalPrice();
-            conceptDesign = new DesignStage("concept design",1,contractCost*term.getPercentOnDesign1(), null);
-            detailDesign = new DesignStage("detail design",1,contractCost*term.getPercentOnDesign2(), null);
-            constructionDesign = new DesignStage("construction design",1,contractCost*term.getPercentOnDesign3(), null);
+            conceptDesign = new DesignStage("concept design",1,contractCost*term.getPercentOnDesign1()/100, null);
+            detailDesign = new DesignStage("detail design",1,contractCost*term.getPercentOnDesign2()/100, null);
+            constructionDesign = new DesignStage("construction design",1,contractCost*term.getPercentOnDesign3()/100, null);
         }
         
         List<DesignStage> result = new ArrayList<>();
@@ -157,7 +157,7 @@ public class Design {
 
         // Iterate over the staff list in the design and check if the staff is involved
         for (Staff designStaff : design.getStaff()) {
-            if (designStaff.equals(staff)) {
+            if (designStaff.getId() == staff.getId()) {
                 return true; // Staff is part of the design
             }
         }

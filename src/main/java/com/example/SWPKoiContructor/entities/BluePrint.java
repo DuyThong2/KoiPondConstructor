@@ -108,6 +108,8 @@ public class BluePrint {
         this.bluePrintStatus = bluePrintStatus;
     }
 
+    
+
     public DesignStage getDesignStage() {
         return designStage;
     }

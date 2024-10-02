@@ -160,105 +160,105 @@
                     <!-- Right Column for Contract Creation Form -->
                     <div class="col-md-8 right-col">
                         <div class="form-section">
-                        <h2 class="mb-4">Create Contract</h2>
+                            <h2 class="mb-4">Create Contract</h2>
 
-                        <!-- Bind the form to the "contract" object -->
-                        <form:form action="${pageContext.request.contextPath}/manager/contract/edit" modelAttribute="contract" method="PUT" enctype="multipart/form-data" class="needs-validation" novalidate="true">
-                            <form:hidden path="contractId" value="${contract.contractId}"/>
+                            <!-- Bind the form to the "contract" object -->
+                            <form:form action="${pageContext.request.contextPath}/manager/contract/edit" modelAttribute="contract" method="PUT" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                                <form:hidden path="contractId" value="${contract.contractId}"/>
 
-                            <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
-
-
-                            <form:hidden path="customer.id" value="${customer.id}" />
+                                <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
 
 
-                            <!-- Total Price (Read-Only, auto-calculated) -->
-                            <div class="form-group">
-                                <label for="totalPrice">Total Price:</label>
-                                <form:input path="totalPrice" id="totalPrice" step="0.01" value="${contract.totalPrice}" class="form-control" readonly="readonly"/>
-                            </div>
+                                <form:hidden path="customer.id" value="${customer.id}" />
 
-                            <!-- Design Costs -->
-                            <h4>Design Phases</h4>
 
-                            <!-- Conceptual Design -->
-                            <div class="form-group">
-                                <label for="priceOnConceptDesign">Conceptual Design:</label>
-                                <form:input type="number" path="priceOnConceptDesign" value="${contract.priceOnConceptDesign}" id="conceptDesign" step="0.01" class="form-control"/>
-                            </div>
+                                <!-- Total Price (Read-Only, auto-calculated) -->
+                                <div class="form-group">
+                                    <label for="totalPrice">Total Price:</label>
+                                    <form:input path="totalPrice" id="totalPrice" step="0.01" value="${contract.totalPrice}" class="form-control" readonly="readonly"/>
+                                </div>
 
-                            <!-- Detailed Design -->
-                            <div class="form-group">
-                                <label for="priceOnDetailDesign">Detailed Design:</label>
-                                <form:input type="number" path="priceOnDetailDesign" value="${contract.priceOnDetailDesign}" id="detailDesign" step="0.01" class="form-control"/>
-                            </div>
+                                <!-- Design Costs -->
+                                <h4>Design Phases</h4>
 
-                            <!-- Construction Design -->
-                            <div class="form-group">
-                                <label for="priceOnConstructionDesign">Construction Design:</label>
-                                <form:input type="number" path="priceOnConstructionDesign" value="${contract.priceOnConstructionDesign}" id="constructionDesign" step="0.01" class="form-control"/>
-                            </div>
+                                <!-- Conceptual Design -->
+                                <div class="form-group">
+                                    <label for="priceOnConceptDesign">Conceptual Design:</label>
+                                    <form:input type="number" path="priceOnConceptDesign" value="${contract.priceOnConceptDesign}" id="conceptDesign" step="0.01" class="form-control"/>
+                                </div>
 
-                            <!-- Total Design Cost (Used for calculation only) -->
-                            <div class="form-group">
-                                <label for="totalDesignCost">Total Design Cost:</label>
-                                <input type="number" id="totalDesignCost" step="0.01"  class="form-control" readonly="readonly"/>
-                            </div>
+                                <!-- Detailed Design -->
+                                <div class="form-group">
+                                    <label for="priceOnDetailDesign">Detailed Design:</label>
+                                    <form:input type="number" path="priceOnDetailDesign" value="${contract.priceOnDetailDesign}" id="detailDesign" step="0.01" class="form-control"/>
+                                </div>
 
-                            <!-- Construction Costs -->
-                            <h4>Construction Phases</h4>
+                                <!-- Construction Design -->
+                                <div class="form-group">
+                                    <label for="priceOnConstructionDesign">Construction Design:</label>
+                                    <form:input type="number" path="priceOnConstructionDesign" value="${contract.priceOnConstructionDesign}" id="constructionDesign" step="0.01" class="form-control"/>
+                                </div>
 
-                            <!-- Raw Construction -->
-                            <div class="form-group">
-                                <label for="priceOnRawConstruction">Raw Construction:</label>
-                                <form:input type="number" path="priceOnRawConstruction" value="${contract.priceOnRawConstruction}" id="rawConstruction" step="0.01" class="form-control"/>
-                            </div>
+                                <!-- Total Design Cost (Used for calculation only) -->
+                                <div class="form-group">
+                                    <label for="totalDesignCost">Total Design Cost:</label>
+                                    <input type="number" id="totalDesignCost" step="0.01"  class="form-control" readonly="readonly"/>
+                                </div>
 
-                            <!-- Complete Construction -->
-                            <div class="form-group">
-                                <label for="priceOnCompleteConstruction">Complete Construction:</label>
-                                <form:input type="number" path="priceOnCompleteConstruction" value="${contract.priceOnCompleteConstruction}" id="completeConstruction" step="0.01" class="form-control"/>
-                            </div>
+                                <!-- Construction Costs -->
+                                <h4>Construction Phases</h4>
 
-                            <!-- Total Construction Cost (Used for calculation only) -->
-                            <div class="form-group">
-                                <label for="totalConstructionCost">Total Construction Cost:</label>
-                                <input type="number" id="totalConstructionCost" step="0.01" class="form-control" readonly="readonly"/>
-                            </div>
+                                <!-- Raw Construction -->
+                                <div class="form-group">
+                                    <label for="priceOnRawConstruction">Raw Construction:</label>
+                                    <form:input type="number" path="priceOnRawConstruction" value="${contract.priceOnRawConstruction}" id="rawConstruction" step="0.01" class="form-control"/>
+                                </div>
 
-                            <!-- Term Selection Dropdown -->
-                            <div class="form-group">
-                                <label for="term">Select Term:</label>
-                                <form:select path="term.termId" id="term" class="form-control">
-                                    <form:options items="${terms}" itemValue="termId" itemLabel="description"/>
-                                </form:select>
-                            </div>
+                                <!-- Complete Construction -->
+                                <div class="form-group">
+                                    <label for="priceOnCompleteConstruction">Complete Construction:</label>
+                                    <form:input type="number" path="priceOnCompleteConstruction" value="${contract.priceOnCompleteConstruction}" id="completeConstruction" step="0.01" class="form-control"/>
+                                </div>
 
-                            <!-- Button to Adjust Costs -->
-                            <div class="form-group">
-                                <button type="button" class="btn btn-warning" onclick="autoAdjust()">Auto Adjust Costs</button>
-                            </div>
+                                <!-- Total Construction Cost (Used for calculation only) -->
+                                <div class="form-group">
+                                    <label for="totalConstructionCost">Total Construction Cost:</label>
+                                    <input type="number" id="totalConstructionCost" step="0.01" class="form-control" readonly="readonly"/>
+                                </div>
 
-                            <!-- Contract Note -->
-                            <div class="form-group">
-                                <label for="contractNote">Contract Note:</label>
-                                <form:textarea path="contractNote" value = "${contract.contractNote}" id="contractNote" class="form-control"/>
-                            </div>
+                                <!-- Term Selection Dropdown -->
+                                <div class="form-group">
+                                    <label for="term">Select Term:</label>
+                                    <form:select path="term.termId" id="term" class="form-control">
+                                        <form:options items="${terms}" itemValue="termId" itemLabel="description"/>
+                                    </form:select>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="contractNote">Contract Term:</label>
-                                <form:textarea path="contractTerm" value = "${contract.contractTerm}" id="contractNote" class="form-control"/>
-                            </div>
+                                <!-- Button to Adjust Costs -->
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-warning" onclick="autoAdjust()">Auto Adjust Costs</button>
+                                </div>
 
-                            <!-- File Input (for file upload) -->
-                            <div class="form-group">
-                                <label for="file">Choose file:</label>
-                                <input type="file" id="file" name="file" class="form-control-file" required/>
-                            </div>
+                                <!-- Contract Note -->
+                                <div class="form-group">
+                                    <label for="contractNote">Contract Note:</label>
+                                    <form:textarea path="contractNote" value = "${contract.contractNote}" id="contractNote" class="form-control"/>
+                                </div>
 
-                            <button type="submit" class="btn btn-primary">Create Contract</button>
-                        </form:form>
-                    </div>
+                                <div class="form-group">
+                                    <label for="contractNote">Contract Term:</label>
+                                    <form:textarea path="contractTerm" value = "${contract.contractTerm}" id="contractNote" class="form-control"/>
+                                </div>
+
+                                <!-- File Input (for file upload) -->
+                                <div class="form-group">
+                                    <label for="file">Choose file:</label>
+                                    <input type="file" id="file" name="file" class="form-control-file" required/>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">Create Contract</button>
+                            </form:form>
+                        </div>
                     </div>
 
                     <!-- JavaScript for Auto Adjustment -->
@@ -326,9 +326,39 @@
 
                             document.getElementById('totalPrice').value = totalPrice.toFixed(2);
                         }
+                        function validateFields() {
+                            let fields = ['conceptDesign', 'detailDesign', 'constructionDesign', 'rawConstruction', 'completeConstruction', 'totalDesignCost', 'totalConstructionCost', 'totalPrice'];
+
+                            let isValid = true; // Assume valid unless we find an invalid field
+
+                            fields.forEach(function (fieldId) {
+                                let field = document.getElementById(fieldId);
+                                let value = parseFloat(field.value);
+
+                                if (value < 0) {
+                                    isValid = false;
+                                    field.classList.add('is-invalid');
+                                    alert('Value for ' + fieldId + ' cannot be less than 0.');
+                                } else {
+                                    field.classList.remove('is-invalid');
+                                }
+                            });
+
+                            return isValid;
+                        }
+
+                        // Listen for form submission and validate
+                        document.addEventListener('DOMContentLoaded', function () {
+                            document.querySelector('form').addEventListener('submit', function (event) {
+                                if (!validateFields()) {
+                                    event.preventDefault(); // Prevent form submission if validation fails
+                                }
+                            });
+                        });
                     </script>
                 </main>
             </div>
+            
         </div>
 
         <!-- Bootstrap JS and dependencies -->

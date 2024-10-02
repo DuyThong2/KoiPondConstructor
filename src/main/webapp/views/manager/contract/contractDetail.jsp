@@ -313,11 +313,19 @@
                                     <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
                                 </form>
                             </div>
-                            </c:when>
-                        </c:choose>
-                    </div>
-                    <br>
-                </main>
+
+                        </c:when>
+                        <c:when test="${not empty contract.project}">
+                            <div class="mt-4 text-center">
+                                <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
+                                <form action="/manager/projects/details/${contract.contractId}" method="GET" class="d-inline">
+                                    <button type="submit" class="btn btn-success">VIEW PROJECT</button>
+                                </form>
+                            </div>
+                        </c:when>
+                    </c:choose>
+                </div>
+
             </div>
         </div>
         <!-- Bootstrap JS and dependencies -->

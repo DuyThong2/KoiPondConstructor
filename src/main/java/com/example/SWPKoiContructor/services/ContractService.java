@@ -7,8 +7,8 @@ package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.ContractDAO;
 import com.example.SWPKoiContructor.entities.Contract;
+import java.time.LocalDate;
 import java.util.List;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +64,17 @@ public class ContractService {
     @Transactional
     public Contract changeStatusContract(int status, int id){
         return contractDAO.updateContractStatus(status, id);
+    }
+    
+    
+
+    public List<Contract> getFilteredContracts(int page, int size, String sortBy, String sortDirection,
+                                               Integer statusFilter, String searchName, LocalDate fromDate, LocalDate toDate) {
+        return contractDAO.getFilteredContracts(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
+    }
+
+    public long countFilteredContracts(Integer statusFilter, String searchName, LocalDate fromDate, LocalDate toDate) {
+        return contractDAO.countFilteredContracts(statusFilter, searchName, fromDate, toDate);
     }
     
     

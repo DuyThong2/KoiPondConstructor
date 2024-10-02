@@ -18,12 +18,11 @@ import com.example.SWPKoiContructor.services.CustomerService;
 import com.example.SWPKoiContructor.services.QuoteService;
 import com.example.SWPKoiContructor.services.StaffService;
 import com.example.SWPKoiContructor.utils.FileUtility;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -60,37 +59,45 @@ public class ContractController {
         fileUtility = new FileUtility();
     }
 
-    @GetMapping("/manager/contract")
-    public String listContracts(Model model,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size,
-            @RequestParam(defaultValue = "dateCreate") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDirection,
-            @RequestParam(required = false) Integer statusFilter) {
-        List<Contract> contracts;
-        long totalContracts;
+   @GetMapping("/manager/contract")
+public String listContracts(Model model,
+        @RequestParam(defaultValue = "0") int page,
+        @RequestParam(defaultValue = "8") int size,
+        @RequestParam(defaultValue = "dateCreate") String sortBy,
+        @RequestParam(defaultValue = "asc") String sortDirection,
+        @RequestParam(required = false) Integer statusFilter,
+        @RequestParam(required = false) String searchName,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+    
+    List<Contract> contracts;
+    long totalContracts;
 
-        // Check if status filter is applied
-        if (statusFilter != null) {
-            contracts = contractDAO.getContractListByStatusAndPaging(page, size, sortBy, sortDirection, statusFilter);
-            totalContracts = contractDAO.countContractsByStatus(statusFilter);
-        } else {
-            contracts = contractService.getContractListBaseOnSortAndPaging(page, size, sortBy, sortDirection);
-            totalContracts = contractService.countContracts();
-        }
-
-        int totalPages = (int) Math.ceil((double) totalContracts / size);
-
-        // Add attributes to the model for JSP rendering
-        model.addAttribute("contracts", contracts);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("sortBy", sortBy);
-        model.addAttribute("sortDirection", sortDirection);
-        model.addAttribute("statusFilter", statusFilter);  // Add status filter to model to keep track of the current filter
-
-        return "manager/contract/contractManage";  // JSP page to display the contract list
+    // Apply filtering based on the name, date range, and status
+    if (statusFilter != null || searchName != null || fromDate != null || toDate != null) {
+        contracts = contractService.getFilteredContracts(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
+        totalContracts = contractService.countFilteredContracts(statusFilter, searchName, fromDate, toDate);
+    } else {
+        contracts = contractService.getContractListBaseOnSortAndPaging(page, size, sortBy, sortDirection);
+        totalContracts = contractService.countContracts();
     }
+
+    int totalPages = (int) Math.ceil((double) totalContracts / size);
+
+    // Add attributes to the model for JSP rendering
+    model.addAttribute("contracts", contracts);
+    model.addAttribute("currentPage", page);
+    model.addAttribute("totalPages", totalPages);
+    model.addAttribute("sortBy", sortBy);
+    model.addAttribute("sortDirection", sortDirection);
+    model.addAttribute("statusFilter", statusFilter);
+    model.addAttribute("searchName", searchName);  // Add searchName to model
+    model.addAttribute("fromDate", fromDate);  // Add fromDate to model
+    model.addAttribute("toDate", toDate);  // Add toDate to model
+
+    return "manager/contract/contractManage";  // JSP page to display the contract list
+}
+
 
     @GetMapping("/consultant/contract")
     public String listContractsByConsultant(Model model,
@@ -191,7 +198,9 @@ public class ContractController {
         Contract contract = new Contract();
         Quotes quote = quotesService.getQuoteById(quoteId);
         Staff staff = (Staff) session.getAttribute("user");
-        if (quote != null && quote.getContract() == null && quote.isQuoteBelongToStaff(quote, staff)) {
+        if (quote != null && quote.getContract() == null && quote.isQuoteBelongToStaff(quote, staff) 
+//                && quote.getQuotesStatus()==5
+                ) {
             model.addAttribute("quote", quote);
             model.addAttribute("customer", quote.getCustomer());
             List<Term> terms = termService.getAllTemplateTerm();  // Get all available terms for the dropdown

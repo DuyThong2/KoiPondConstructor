@@ -165,9 +165,9 @@ public class Construction {
             
         }else{
             double contractCost = contract.getTotalPrice();
-            raw = new ConstructionStage("Raw Construction",term.getPercentOnConstruct1()*contractCost,
+            raw = new ConstructionStage("Raw Construction",term.getPercentOnConstruct1()*contractCost/100,
                     "Complete raw construction phase: site preparation, excavation, liner install, etc.",1);
-            complete = new ConstructionStage("Complete Construction",term.getPercentOnConstruct2()*contractCost ,
+            complete = new ConstructionStage("Complete Construction",term.getPercentOnConstruct2()*contractCost/100 ,
                     "Complete finishing phase: decoration, testing, inspection, etc.",1);
            
         }
@@ -206,7 +206,7 @@ public class Construction {
 
         // Iterate over the constructionStaffs list to see if the staff is assigned to the construction
         for (ConstructionStaff constructionStaff : construction.getConstructionStaffs()) {
-            if (constructionStaff.getStaff().equals(staff)) {
+            if (constructionStaff.getStaff().getId()==staff.getId()) {
                 return true;
             }
         }
