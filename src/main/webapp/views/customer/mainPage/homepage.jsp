@@ -1,30 +1,29 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html class="no-js" lang="zxx">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Ribuild - Construction Company HTML5 Template</title>
+    <title>HappiKoi</title>
     <meta name="description" content="Ribuild - Construction Company HTML5 Template">
     <meta name="author" content="ahmmedsabbirbd">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico in the root directory -->
-    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/favicon.svg">
-    <!-- CSS here -->
-    <link rel="stylesheet" href="/assets/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/vendor/animate.min.css">
-    <link rel="stylesheet" href="/assets/css/plugins/swiper.min.css">
-    <link rel="stylesheet" href="/assets/css/vendor/magnific-popup.css">
-    <link rel="stylesheet" href="/assets/css/vendor/fontawesome-pro.css">
-    <link rel="stylesheet" href="/assets/css/vendor/spacing.css">
-    <link rel="stylesheet" href="/assets/css/plugins/odometer-theme-default.css">
-    <link rel="stylesheet" href="/assets/css/plugins/carouselTicker.css">
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <style>
 
-    </style>
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/favicon.svg">
+    <!-- CSS here -->   
+    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/animate.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/swiper.min.css">
+    <link rel="stylesheet" href="assets/css/vendor/magnific-popup.css">
+    <link rel="stylesheet" href="assets/css/vendor/fontawesome-pro.css">
+    <link rel="stylesheet" href="assets/css/vendor/spacing.css">
+    <link rel="stylesheet" href="assets/css/plugins/odometer-theme-default.css">
+    <link rel="stylesheet" href="assets/css/plugins/carouselTicker.css">
+    <link rel="stylesheet" href="<c:url value='/assets/css/main.css'/>">
+
 </head>
 
 <body class="body-1">
@@ -244,11 +243,12 @@
                             <nav id="mobile-menu">
                                 <ul>
                                     <li><a href="#banner">Home</a></li> 
-                                    <li><a href="#mission">Mission</a></li>
+                                    <li><a href="#mision">Best Design</a></li>
                                     <li><a href="#services">Services</a></li>
-                                    <li><a href="#portfolio">Portfolio</a></li>
+                                    <li><a href="#portfolio">Blog</a></li>
                                     <li><a href="#pricing">Pricing</a></li>
-                                    <li><a href="#blog">Blog</a></li>
+                                    
+                                    <li><a href="customer/projects/">Your Project</a></li>
                                 </ul>
                             </nav>
                         </div>

@@ -9,6 +9,7 @@ import com.example.SWPKoiContructor.entities.Design;
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Staff;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -156,14 +157,40 @@ public class ProjectDAO {
         return queryBuilder.toString();
     }
 
+
     public long countProjectProcessing() {
         TypedQuery<Long> query = entityManager.createQuery("Select Count(c) from Project c where c.status = 2", Long.class);
         return query.getSingleResult();
     }
+
 
     public long countProjectComplete() {
         TypedQuery<Long> query = entityManager.createQuery("Select Count(c) from Project c where c.status = 3", Long.class);
         return query.getSingleResult();
 
     }
+
+    
+
+
+    public List<Project> getCustomerProjectsById(int customerId) {
+        String queryString = "SELECT p FROM Project p WHERE p.contract.customer.id = :customerId";
+        TypedQuery<Project> query = entityManager.createQuery(queryString, Project.class);
+        query.setParameter("customerId", customerId);
+        return query.getResultList();
+    }
+    public List<Project> getActiveCustomerProjectsById(int customerId) {
+        String queryString = "SELECT p FROM Project p WHERE p.contract.customer.id = :customerId AND p.status NOT IN (3, 4)";
+        TypedQuery<Project> query = entityManager.createQuery(queryString, Project.class);
+        query.setParameter("customerId", customerId);
+        return query.getResultList();
+    }
+
+    public List<Project> getCompleteAndCancelCustomerProjectsById(int customerId) {
+        String queryString = "SELECT p FROM Project p WHERE p.contract.customer.id = :customerId AND p.status IN (3, 4)";
+        TypedQuery<Project> query = entityManager.createQuery(queryString, Project.class);
+        query.setParameter("customerId", customerId);
+        return query.getResultList();
+    }
+
 }

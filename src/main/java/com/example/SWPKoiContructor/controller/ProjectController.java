@@ -5,6 +5,7 @@ import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.services.ContractService;
+import com.example.SWPKoiContructor.services.DesignService;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.services.StaffService;
 import com.example.SWPKoiContructor.utils.FileUtility;
@@ -16,7 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +31,9 @@ public class ProjectController {
     private ProjectService projectService;
     private ContractService contractService;
     private StaffService staffService;
+    private DesignService designService;
 
-    public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService,StaffService staffService) {
+    public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService,StaffService staffService, DesignService designService) {
         this.fileUtility = fileUtility;
         this.projectService = projectService;
         this.contractService = contractService;
@@ -148,11 +152,9 @@ public class ProjectController {
     }
     @PostMapping("/updateStage")
     @ResponseBody
-    public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId,@RequestParam("newStage") int newStage){
+    public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId){
         try{
-            Project project = projectService.getProjectById(projectId);
-            project.setStage(newStage);
-            projectService.updateProject(project);
+            projectService.updateProjectStage(projectId);
             return ResponseEntity.ok("Change stage successfully");
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating project stage");
@@ -266,5 +268,22 @@ public class ProjectController {
     
     
     
+
+
+    @GetMapping("/customer/projects/")
+    public String customerAssignStaffPage(Model model, HttpSession session, RedirectAttributes redirectAttributes){
+        Customer customer = (Customer) session.getAttribute("user");
+        if (customer == null) {
+            // Nếu chưa đăng nhập, yêu cầu đăng nhập
+            redirectAttributes.addFlashAttribute("errorMessage", "Please login to submit feedback.");
+            return "redirect:/login";
+        }
+        List<Project> currentProjects = projectService.getActiveCustomerProjectsById(customer.getId());
+        List<Project> completeAndCancelProjects = projectService.getCompleteAndCancelCustomerProjectsById(customer.getId());
+        model.addAttribute("currentProjects",currentProjects);
+        model.addAttribute("doneProjects",completeAndCancelProjects);
+        model.addAttribute("Customer",customer);
+        return "customer/projects/projectDetail";
+    }
 
 }
