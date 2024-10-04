@@ -11,6 +11,7 @@
     <meta name="author" content="ahmmedsabbirbd">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico in the root directory -->
+<<<<<<< HEAD:src/main/webapp/views/customer/homepage.jsp
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/favicon.svg">
     <!-- CSS here -->   
     <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
@@ -22,6 +23,22 @@
     <link rel="stylesheet" href="assets/css/plugins/odometer-theme-default.css">
     <link rel="stylesheet" href="assets/css/plugins/carouselTicker.css">
     <link rel="stylesheet" href="<c:url value='/assets/css/main.css'/>">
+=======
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/favicon.svg">
+    <!-- CSS here -->
+    <link rel="stylesheet" href="/assets/css/vendor/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/vendor/animate.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/swiper.min.css">
+    <link rel="stylesheet" href="/assets/css/vendor/magnific-popup.css">
+    <link rel="stylesheet" href="/assets/css/vendor/fontawesome-pro.css">
+    <link rel="stylesheet" href="/assets/css/vendor/spacing.css">
+    <link rel="stylesheet" href="/assets/css/plugins/odometer-theme-default.css">
+    <link rel="stylesheet" href="/assets/css/plugins/carouselTicker.css">
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <style>
+
+    </style>
+>>>>>>> 9541cb619fb971e6b529e9ac780d0e478fe4c088:src/main/webapp/views/customer/mainPage/homepage.jsp
 </head>
 
 <body class="body-1">
@@ -85,7 +102,7 @@
                     <div class="search__top d-flex justify-content-between align-items-center">
                         <div class="search__logo">
                             <a href="index.html">
-                                <img src="assets/imgs/logo/logo-white.svg" alt="img">
+                                <img src="/assets/imgs/logo/logo-white.svg" alt="img">
                             </a>
                         </div>
                         <div class="search__close">
@@ -132,7 +149,7 @@
                 <div class="offcanvas__top d-flex justify-content-between align-items-center">
                     <div class="offcanvas__logo">
                         <a href="index.html">
-                            <img src="assets/imgs/logo/logo-white.svg" alt="logo not found">
+                            <img src="/assets/imgs/logo/logo-white.svg" alt="logo not found">
                         </a>
                     </div>
                     <div class="offcanvas__close">
@@ -231,7 +248,7 @@
                     <div class="header__logo">
                         <a href="index.html">
                             <div class="logo">
-                                <img class="img-fluid" src="/assets/imgs/logo/final_resized_colored_logo_image.png" alt="logo not found">
+                                <img class="img-fluid" src="//assets/imgs/logo/final_resized_colored_logo_image.png" alt="logo not found">
                             </div>
                         </a>
                     </div>
@@ -384,7 +401,7 @@
                     <div class="col-xl-4 col-md-6">
                         <div class="team__item mb-30">
                             <a href="team-details.html" class="team__item-media d-block" data-cursor-text="View">
-                                <img src="assets/imgs/mylogo/koi-background.jpg" alt="image not found" class="img-fluid">
+                                <img src="/assets/imgs/mylogo/koi-background.jpg" alt="image not found" class="img-fluid">
                             </a>
     
                             <div class="team__item-text d-flex align-items-center justify-content-between">
@@ -469,7 +486,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="what-we-do-3__media pr-15 rr-pr-none-xl rr-mb-60-md">
-                        <img src="assets/imgs/what-we-do-3/what-we-do.jpg" alt="" class="img-fluid">
+                        <img src="/assets/imgs/what-we-do-3/what-we-do.jpg" alt="" class="img-fluid">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -550,7 +567,7 @@
                     <div class="col-xl-3 col-md-6">
                         <div class="our-professional__item mb-30">
                             <a href="team-details.html" class="our-professional__item-media d-block" data-cursor-text="View">
-                                <img src="assets/imgs/our-professional/anhthien.jpg" alt="image not found" class="img-fluid">
+                                <img src="/assets/imgs/our-professional/anhthien.jpg" alt="image not found" class="img-fluid">
                             </a>
                             <div class="our-professional__item__content d-flex align-items-center justify-content-center text-center">
                                 <div class="our-professional__item-text">
@@ -581,14 +598,14 @@
 
                         <div class="support__list mb-minus-30">
                             <div class="support__list-item d-flex mb-30">
-                                <div class="icon"><img src="assets/imgs/support/angle-right.svg" alt=""></div>
+                                <div class="icon"><img src="/assets/imgs/support/angle-right.svg" alt=""></div>
                                 <div class="text">
                                     <p class="mb-0 rr-br-hidden-xl text-start">Vivamus eget tristique purus. Mauris rhoncus sem non lorem aliquet varius.
                                         <br> Aliquam non odio et arcu ullamcorper efficitur.</p>
                                 </div>
                             </div>
                             <div class="support__list-item d-flex mb-30">
-                                <div class="icon"><img src="assets/imgs/support/angle-right.svg" alt=""></div>
+                                <div class="icon"><img src="/assets/imgs/support/angle-right.svg" alt=""></div>
                                 <div class="text">
                                     <p class="mb-0 rr-br-hidden-xl text-start">Suspendisse facilisis dolor id turpis varius malesuada. Morbi egestas libero
                                         <br> ac consectetur interdum uisque.</p>
@@ -736,11 +753,11 @@
     <section id="pricing" class="pricing section-space section-bg-1 overflow-hidden">
         <div class="container rr-shape-p-c_1">
             <div class="why-choose-us__shape d-none d-lg-block">
-                <div class="pricing__shape-1 rr-shape-p-s_1 rr-upDown"><img src="assets/imgs/pricing/shape-1.png" alt="image not found"></div>
-                <div class="pricing__shape-2 rr-shape-p-s_1 rr-downUp"><img src="assets/imgs/pricing/shape-2.png" alt="image not found"></div>
-                <div class="pricing__shape-3 rr-shape-p-s_1 rr-upDown"><img src="assets/imgs/pricing/shape-3.png" alt="image not found"></div>
-                <div class="pricing__shape-4 rr-shape-p-s_1 rr-upDown"><img src="assets/imgs/pricing/shape-4.png" alt="image not found"></div>
-                <div class="pricing__shape-5 rr-shape-p-s_1 rr-downUp"><img src="assets/imgs/pricing/shape-5.png" alt="image not found"></div>
+                <div class="pricing__shape-1 rr-shape-p-s_1 rr-upDown"><img src="/assets/imgs/pricing/shape-1.png" alt="image not found"></div>
+                <div class="pricing__shape-2 rr-shape-p-s_1 rr-downUp"><img src="/assets/imgs/pricing/shape-2.png" alt="image not found"></div>
+                <div class="pricing__shape-3 rr-shape-p-s_1 rr-upDown"><img src="/assets/imgs/pricing/shape-3.png" alt="image not found"></div>
+                <div class="pricing__shape-4 rr-shape-p-s_1 rr-upDown"><img src="/assets/imgs/pricing/shape-4.png" alt="image not found"></div>
+                <div class="pricing__shape-5 rr-shape-p-s_1 rr-downUp"><img src="/assets/imgs/pricing/shape-5.png" alt="image not found"></div>
             </div>
             <div class="row mb-60 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
                 <div class="col-xl-6">
@@ -753,7 +770,7 @@
                 <div class="col-xl-6">
                     <div class="d-flex justify-content-xl-end mt-xs-25 mt-sm-25 mt-md-25 mt-lg-25 justify-content-center">
                         <div class="pricing__toggler_button mb-40 d-flex justify-content-center wow fadeIn animated" data-wow-delay=".5s">
-                            <div class="pricing__shape-arrow-down rr-shape-p-s_1 rr-downUp"><img src="assets/imgs/pricing/arrow-down.png" alt="image not found"></div>
+                            <div class="pricing__shape-arrow-down rr-shape-p-s_1 rr-downUp"><img src="/assets/imgs/pricing/arrow-down.png" alt="image not found"></div>
                             <button class="toggler active" id="monthly-btn">Monthly</button>
                             <div class="toggle">
                                 <input type="checkbox" id="switcher" class="check">
@@ -767,8 +784,8 @@
 
             <div class="row mb-minus-30">
                 <div class="col-xl-4 col-md-6">
-                    <div class="pricing__card overflow-hidden mb-30 wow clip-t-b" data-background="assets/imgs/pricing/bottom-shape.png">
-                        <div class="pricing__card-image mb-40"><img src="assets/imgs/pricing/home.png" alt=""></div>
+                    <div class="pricing__card overflow-hidden mb-30 wow clip-t-b" data-background="/assets/imgs/pricing/bottom-shape.png">
+                        <div class="pricing__card-image mb-40"><img src="/assets/imgs/pricing/home.png" alt=""></div>
                         <h4 class="pricing__card-title rr-fw-sbold"><span>Basic</span></h4>
                         <div class="pricing__card-price mb-30 pb-30">
                             <h2 data-yearly='<span class="price">$199.<span>00</span></span>
@@ -827,8 +844,8 @@
                     </div>
                 </div>
                 <div class="col-xl-4 col-md-6">
-                    <div class="pricing__card pricing__card-standard overflow-hidden mb-30 wow clip-t-b" data-background="assets/imgs/pricing/bottom-shape__white.png">
-                        <div class="pricing__card-image mb-40"><img src="assets/imgs/pricing/home.png" alt=""></div>
+                    <div class="pricing__card pricing__card-standard overflow-hidden mb-30 wow clip-t-b" data-background="/assets/imgs/pricing/bottom-shape__white.png">
+                        <div class="pricing__card-image mb-40"><img src="/assets/imgs/pricing/home.png" alt=""></div>
                         <h4 class="pricing__card-title rr-fw-sbold"><span>Premium</span></h4>
                         <div class="pricing__card-price mb-30 pb-30">
                             <h2 data-yearly='<span class="price">$215.<span>00</span></span>
@@ -887,8 +904,8 @@
                     </div>
                 </div>
                 <div class="col-xl-4 col-md-6">
-                    <div class="pricing__card overflow-hidden mb-30 wow clip-t-b" data-background="assets/imgs/pricing/bottom-shape.png">
-                        <div class="pricing__card-image mb-40"><img src="assets/imgs/pricing/home.png" alt=""></div>
+                    <div class="pricing__card overflow-hidden mb-30 wow clip-t-b" data-background="/assets/imgs/pricing/bottom-shape.png">
+                        <div class="pricing__card-image mb-40"><img src="/assets/imgs/pricing/home.png" alt=""></div>
                         <h4 class="pricing__card-title rr-fw-sbold"><span>Premium</span></h4>
                         <div class="pricing__card-price mb-30 pb-30">
                             <h2 data-yearly='<span class="price">$299.<span>00</span></span>
@@ -969,7 +986,7 @@
                 <div class="col-xl-4 col-lg-6"></div>
                     <div class="blog__item has-box-shadow mb-30">
                         <a href="blog-details.html" data-cursor-text="View" class="blog__item-media d-block">
-                            <img src="assets/imgs/blog/blog-1.jpg" alt="image not found" class="img-fluid">
+                            <img src="/assets/imgs/blog/blog-1.jpg" alt="image not found" class="img-fluid">
                         </a>
                         <div class="blog__item-text">
                             <div class="blog__item-meta mb-10">
@@ -1015,15 +1032,15 @@
 <footer></footer>
     <section class="footer-2__area-common footer-bg-1 overflow-hidden">
         <div class="container rr-shape-p-c_1">
-            <div class="footer-2__shape-1 rr-shape-p-s_1 leftRight"><img src="assets/imgs/footer-2/shape-1.png" alt="image not found"></div>
-            <div class="footer-2__shape-2 rr-shape-p-s_1 upDown"><img src="assets/imgs/footer-2/shape-2.png" alt="image not found"></div>
+            <div class="footer-2__shape-1 rr-shape-p-s_1 leftRight"><img src="/assets/imgs/footer-2/shape-1.png" alt="image not found"></div>
+            <div class="footer-2__shape-2 rr-shape-p-s_1 upDown"><img src="/assets/imgs/footer-2/shape-2.png" alt="image not found"></div>
             <div class="footer-2__main-wrapper">
                 <div class="row mb-minus-50">
                     <div class="col-lg-4 col-6">
                         <div class="footer-2__widget footer-2__widget-item-1">
                             <div class="footer-2__logo mb-35">
                                 <a href="index.html">
-                                    <img class="img-fluid" src="assets/imgs/logo/logo-white.svg" alt="logo not found">
+                                    <img class="img-fluid" src="/assets/imgs/logo/logo-white.svg" alt="logo not found">
                                 </a>
                             </div>
 
@@ -1090,33 +1107,33 @@
                             <div class="footer-2__widget-gallery">
                                 <div class="row g-10">
                                     <div class="col-4">
-                                        <a href="assets/imgs/gallery__item/gallery__item-popup-1.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="assets/imgs/gallery__item/gallery__item-1.jpg" alt="">
+                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-1.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="/assets/imgs/gallery__item/gallery__item-1.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="assets/imgs/gallery__item/gallery__item-popup-2.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="assets/imgs/gallery__item/gallery__item-2.jpg" alt="">
+                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-2.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="/assets/imgs/gallery__item/gallery__item-2.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="assets/imgs/gallery__item/gallery__item-popup-3.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="assets/imgs/gallery__item/gallery__item-3.jpg" alt="">
+                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-3.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="/assets/imgs/gallery__item/gallery__item-3.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="assets/imgs/gallery__item/gallery__item-popup-4.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="assets/imgs/gallery__item/gallery__item-4.jpg" alt="">
+                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-4.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="/assets/imgs/gallery__item/gallery__item-4.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="assets/imgs/gallery__item/gallery__item-popup-5.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="assets/imgs/gallery__item/gallery__item-5.jpg" alt="">
+                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-5.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="/assets/imgs/gallery__item/gallery__item-5.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="assets/imgs/gallery__item/gallery__item-popup-6.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="assets/imgs/gallery__item/gallery__item-6.jpg" alt="">
+                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-6.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="/assets/imgs/gallery__item/gallery__item-6.jpg" alt="">
                                         </a>
                                     </div>
                                 </div>
@@ -1185,33 +1202,33 @@
 <!-- Footer area end -->
 
 <!-- JS here -->
-<script src="assets/js/vendor/jquery-3.7.1.min.js"></script>
-<script src="assets/js/plugins/waypoints.min.js"></script>
-<script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
-<script src="assets/js/plugins/meanmenu.min.js"></script>
-<script src="assets/js/plugins/odometer.min.js"></script>
-<script src="assets/js/plugins/swiper.min.js"></script>
-<script src="assets/js/plugins/wow.js"></script>
-<script src="assets/js/vendor/magnific-popup.min.js"></script>
-<script src="assets/js/vendor/type.js"></script>
-<script src="assets/js/plugins/nice-select.min.js"></script>
-<script src="assets/js/vendor/jquery-ui.min.js"></script>
-<script src="assets/js/vendor/jquery.appear.js"></script>
-<script src="assets/js/plugins/parallax.min.js"></script>
-<script src="assets/js/plugins/parallax-scroll.js"></script>
-<script src="assets/js/plugins/isotope.pkgd.min.js"></script>
-<script src="assets/js/plugins/imagesloaded.pkgd.min.js"></script>
-<script src="assets/js/plugins/gsap.min.js"></script>
-<script src="assets/js/plugins/ScrollTrigger.min.js"></script>
-<script src="assets/js/plugins/SplitText.js"></script>
-<script src="assets/js/plugins/tween-max.min.js"></script>
-<script src="assets/js/plugins/draggable.min.js"></script>
-<script src="assets/js/plugins/jquery.carouselTicker.js"></script>
-<script src="assets/js/vendor/ajax-form.js"></script>
-<script src="assets/js/plugins/TextPlugin.min.js"></script>
-<script src="assets/js/main.js"></script>
-<script src="assets/js/plugins/magiccursor.js"></script>
-<script src="assets/js/image-reveal-hover.js"></script> 
+<script src="/assets/js/vendor/jquery-3.7.1.min.js"></script>
+<script src="/assets/js/plugins/waypoints.min.js"></script>
+<script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
+<script src="/assets/js/plugins/meanmenu.min.js"></script>
+<script src="/assets/js/plugins/odometer.min.js"></script>
+<script src="/assets/js/plugins/swiper.min.js"></script>
+<script src="/assets/js/plugins/wow.js"></script>
+<script src="/assets/js/vendor/magnific-popup.min.js"></script>
+<script src="/assets/js/vendor/type.js"></script>
+<script src="/assets/js/plugins/nice-select.min.js"></script>
+<script src="/assets/js/vendor/jquery-ui.min.js"></script>
+<script src="/assets/js/vendor/jquery.appear.js"></script>
+<script src="/assets/js/plugins/parallax.min.js"></script>
+<script src="/assets/js/plugins/parallax-scroll.js"></script>
+<script src="/assets/js/plugins/isotope.pkgd.min.js"></script>
+<script src="/assets/js/plugins/imagesloaded.pkgd.min.js"></script>
+<script src="/assets/js/plugins/gsap.min.js"></script>
+<script src="/assets/js/plugins/ScrollTrigger.min.js"></script>
+<script src="/assets/js/plugins/SplitText.js"></script>
+<script src="/assets/js/plugins/tween-max.min.js"></script>
+<script src="/assets/js/plugins/draggable.min.js"></script>
+<script src="/assets/js/plugins/jquery.carouselTicker.js"></script>
+<script src="/assets/js/vendor/ajax-form.js"></script>
+<script src="/assets/js/plugins/TextPlugin.min.js"></script>
+<script src="/assets/js/main.js"></script>
+<script src="/assets/js/plugins/magiccursor.js"></script>
+<script src="/assets/js/image-reveal-hover.js"></script> 
 </body>
 
 </html>

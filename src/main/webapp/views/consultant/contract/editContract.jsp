@@ -63,15 +63,9 @@
                     <!-- Bind the form to the "contract" object -->
                     <form:form action="${pageContext.request.contextPath}/consultant/contract/edit" modelAttribute="contract" method="put" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
-                        
+
                         <form:hidden path="contractId" value="${contract.contractId}"/>
-
                         <form:hidden path="customer.id" value="${customer.id}" />
-                        <div class="form-group">
-                            <label for="totalPrice">Total Price:</label>
-                            <form:input type="hidden" path="contractId" id="totalPrice" step="0.01" class="form-control" readonly="readonly"/>
-                        </div>
-
 
                         <!-- Total Price (Read-Only, auto-calculated) -->
                         <div class="form-group">
@@ -85,19 +79,19 @@
                         <!-- Conceptual Design -->
                         <div class="form-group">
                             <label for="priceOnConceptDesign">Conceptual Design:</label>
-                            <form:input type="number" path="priceOnConceptDesign" id="conceptDesign" step="0.01" class="form-control"/>
+                            <form:input type="number" path="priceOnConceptDesign" id="conceptDesign" step="0.01" min="0" max="${quote.quotesDesignCost}" class="form-control"/>
                         </div>
 
                         <!-- Detailed Design -->
                         <div class="form-group">
                             <label for="priceOnDetailDesign">Detailed Design:</label>
-                            <form:input type="number" path="priceOnDetailDesign" id="detailDesign" step="0.01" class="form-control"/>
+                            <form:input type="number" path="priceOnDetailDesign" id="detailDesign" step="0.01" min="0" max="${quote.quotesDesignCost}" class="form-control"/>
                         </div>
 
                         <!-- Construction Design -->
                         <div class="form-group">
                             <label for="priceOnConstructionDesign">Construction Design:</label>
-                            <form:input type="number" path="priceOnConstructionDesign" id="constructionDesign" step="0.01" class="form-control"/>
+                            <form:input type="number" path="priceOnConstructionDesign" id="constructionDesign" step="0.01" min="0" max="${quote.quotesDesignCost}" class="form-control"/>
                         </div>
 
                         <!-- Total Design Cost (Used for calculation only) -->
@@ -112,13 +106,13 @@
                         <!-- Raw Construction -->
                         <div class="form-group">
                             <label for="priceOnRawConstruction">Raw Construction:</label>
-                            <form:input type="number" path="priceOnRawConstruction" id="rawConstruction" step="0.01" class="form-control"/>
+                            <form:input type="number" path="priceOnRawConstruction" id="rawConstruction" step="0.01" min="0" max="${quote.quotesConstructionCost}" class="form-control"/>
                         </div>
 
                         <!-- Complete Construction -->
                         <div class="form-group">
                             <label for="priceOnCompleteConstruction">Complete Construction:</label>
-                            <form:input type="number" path="priceOnCompleteConstruction" id="completeConstruction" step="0.01" class="form-control"/>
+                            <form:input type="number" path="priceOnCompleteConstruction" id="completeConstruction" step="0.01" min="0" max="${quote.quotesConstructionCost}" class="form-control"/>
                         </div>
 
                         <!-- Total Construction Cost (Used for calculation only) -->
@@ -147,7 +141,7 @@
                         </div>
                         <div class="form-group">
                             <label for="contractNote">Contract Term:</label>
-                            <form:textarea path="contractTerm" value = "${contract.contractTerm}" id="contractNote" class="form-control"/>
+                            <form:textarea path="contractTerm" value = "${contract.contractTerm}" id="contractTerm" class="form-control"/>
                         </div>
 
                         <!-- File Input (for file upload) -->
@@ -161,10 +155,11 @@
                 </div>
             </div>
 
-            <!-- JavaScript for Auto Adjustment -->
+            <!-- JavaScript for Auto Adjustment and Validation -->
             <script>
                 const maxDesignCost = ${quote.quotesDesignCost};  // Design cost from the Quote
                 const maxConstructionCost = ${quote.quotesConstructionCost};  // Construction cost from the Quote
+                const totalQuotePrice = ${quote.quotesTotalPrice};  // Total price from the Quote
 
                 function autoAdjust() {
                     adjustDesignCosts();
@@ -226,6 +221,44 @@
 
                     document.getElementById('totalPrice').value = totalPrice.toFixed(2);
                 }
+
+                // Prevent form submission if the total price does not match the total quote price
+                document.querySelector('form').addEventListener('submit', function (event) {
+                    const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
+                    if (totalPrice !== totalQuotePrice) {
+                        event.preventDefault();
+                        alert('The total price must match the total quote price.');
+                    }
+                });
+                function validateFields() {
+                    let fields = ['conceptDesign', 'detailDesign', 'constructionDesign', 'rawConstruction', 'completeConstruction', 'totalDesignCost', 'totalConstructionCost', 'totalPrice'];
+
+                    let isValid = true; // Assume valid unless we find an invalid field
+
+                    fields.forEach(function (fieldId) {
+                        let field = document.getElementById(fieldId);
+                        let value = parseFloat(field.value);
+
+                        if (value < 0) {
+                            isValid = false;
+                            field.classList.add('is-invalid');
+                            alert('Value for ' + fieldId + ' cannot be less than 0.');
+                        } else {
+                            field.classList.remove('is-invalid');
+                        }
+                    });
+
+                    return isValid;
+                }
+
+                // Listen for form submission and validate
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.querySelector('form').addEventListener('submit', function (event) {
+                        if (!validateFields()) {
+                            event.preventDefault(); // Prevent form submission if validation fails
+                        }
+                    });
+                });
             </script>
 
         </div>

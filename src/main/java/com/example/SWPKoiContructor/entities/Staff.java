@@ -30,6 +30,9 @@ public class Staff extends User{
     @OneToMany(mappedBy = "staff")
     private List<ConstructionStaff> constructionStaffs;
     
+    @OneToMany(mappedBy ="staff")
+    private List<Blog> blogs;
+    
     public Staff() {
     }
 
@@ -64,6 +67,15 @@ public class Staff extends User{
     public void setDepartment(String department) {
         this.department = department;
     }
+
+    public List<Blog> getBlogs() {
+        return blogs;
+    }
+
+    public void setBlogs(List<Blog> blogs) {
+        this.blogs = blogs;
+    }
+    
     
     
 

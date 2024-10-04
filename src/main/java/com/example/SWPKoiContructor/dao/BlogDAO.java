@@ -1,6 +1,7 @@
 package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Blog;
+import java.sql.Date;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -48,8 +49,91 @@ public class BlogDAO {
     // Delete a blog by its ID
     public void deleteBlog(int id) {
         Blog deleteBlog = this.getBlogById(id);
-        if (deleteBlog != null)
+        if (deleteBlog != null) {
             entityManager.remove(deleteBlog);
+        }
+    }
+
+    public Blog getBlogWithContentById(int id) {
+        TypedQuery<Blog> query = entityManager.createQuery(
+                "SELECT b FROM Blog b LEFT JOIN FETCH b.introContent WHERE b.id = :id", Blog.class);
+        query.setParameter("id", id);
+        return query.getSingleResult();
+    }
+
+    public List<Blog> searchByCriteria(String name, Integer status, Date dateFrom, Date dateTo, int page, int size) {
+        StringBuilder queryBuilder = new StringBuilder("SELECT b FROM Blog b WHERE 1=1 ");
+
+        // Add dynamic filters
+        if (name != null && !name.isEmpty()) {
+            queryBuilder.append("AND b.name LIKE :name ");
+        }
+        if (status != null) {
+            queryBuilder.append("AND b.status = :status ");
+        }
+        if (dateFrom != null) {
+            queryBuilder.append("AND b.datePost >= :dateFrom ");
+        }
+        if (dateTo != null) {
+            queryBuilder.append("AND b.datePost <= :dateTo ");
+        }
+
+        TypedQuery<Blog> query = entityManager.createQuery(queryBuilder.toString(), Blog.class);
+
+        // Set query parameters
+        if (name != null && !name.isEmpty()) {
+            query.setParameter("name", "%" + name + "%");
+        }
+        if (status != null) {
+            query.setParameter("status", status);
+        }
+        if (dateFrom != null) {
+            query.setParameter("dateFrom", dateFrom);
+        }
+        if (dateTo != null) {
+            query.setParameter("dateTo", dateTo);
+        }
+
+        // Set pagination parameters
+        query.setFirstResult((page - 1) * size); // Skips previous pages' results
+        query.setMaxResults(size);               // Limits results per page
+
+        return query.getResultList();
+    }
+
+    public long countByCriteria(String name, Integer status, Date dateFrom, Date dateTo) {
+        StringBuilder queryBuilder = new StringBuilder("SELECT COUNT(b) FROM Blog b WHERE 1=1 ");
+
+        // Add dynamic filters
+        if (name != null && !name.isEmpty()) {
+            queryBuilder.append("AND b.name LIKE :name ");
+        }
+        if (status != null) {
+            queryBuilder.append("AND b.status = :status ");
+        }
+        if (dateFrom != null) {
+            queryBuilder.append("AND b.datePost >= :dateFrom ");
+        }
+        if (dateTo != null) {
+            queryBuilder.append("AND b.datePost <= :dateTo ");
+        }
+
+        TypedQuery<Long> query = entityManager.createQuery(queryBuilder.toString(), Long.class);
+
+        // Set query parameters
+        if (name != null && !name.isEmpty()) {
+            query.setParameter("name", "%" + name + "%");
+        }
+        if (status != null) {
+            query.setParameter("status", status);
+        }
+        if (dateFrom != null) {
+            query.setParameter("dateFrom", dateFrom);
+        }
+        if (dateTo != null) {
+            query.setParameter("dateTo", dateTo);
+        }
+
+        return query.getSingleResult();
     }
 }
-

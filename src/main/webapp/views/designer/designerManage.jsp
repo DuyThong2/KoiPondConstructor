@@ -64,20 +64,18 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <!-- Pagination Controls -->
-        <div class="pagination-controls d-flex justify-content-center mt-4">
+               <!-- Pagination Controls -->
+        <div class="d-flex justify-content-between align-items-center mt-4">
             <!-- Previous Button -->
             <c:if test="${currentPage > 0}">
-                <a href="?page=${currentPage - 1}" class="btn btn-primary">&lt</a>
+                <a href="?page=${currentPage - 1}" class="btn btn-primary">&lt;</a>
             </c:if>
             <c:if test="${currentPage == 0}">
                 <button class="btn btn-primary" disabled>&lt;</button>
             </c:if>
 
             <!-- Page Indicator -->
-            <span class="mx-3">Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
+            <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
 
             <!-- Next Button -->
             <c:if test="${currentPage < totalPages - 1}">
@@ -87,7 +85,9 @@
                 <button class="btn btn-primary" disabled>&gt;</button>
             </c:if>
         </div>
+        </div>
 
+     
         <script>
             // JavaScript for handling search
             document.getElementById('search').addEventListener('input', function () {

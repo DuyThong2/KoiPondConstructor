@@ -6,12 +6,15 @@
 package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Consultant;
+import com.example.SWPKoiContructor.entities.Feedback;
 import com.example.SWPKoiContructor.entities.Parcel;
 import com.example.SWPKoiContructor.entities.Quotes;
 import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.ConsultantService;
+import com.example.SWPKoiContructor.services.FeedbackService;
 import com.example.SWPKoiContructor.services.ParcelService;
 import com.example.SWPKoiContructor.services.QuoteService;
+import com.example.SWPKoiContructor.services.UserService;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -34,14 +37,18 @@ public class QuoteController {
     private QuoteService quoteService;
     private ConsultantService consultantService;
     private ParcelService parcelService;
+    private UserService userService;
+    private FeedbackService feedbackService;
 
-    public QuoteController(QuoteService quoteService, ConsultantService consultantService, ParcelService parcelService) {
+    public QuoteController(QuoteService quoteService, ConsultantService consultantService, ParcelService parcelService, UserService userService, FeedbackService feedbackService) {
         this.quoteService = quoteService;
         this.consultantService = consultantService;
         this.parcelService = parcelService;
+        this.userService = userService;
+        this.feedbackService = feedbackService;
     }
-    
-    //CUSTOMER SITE
+     
+    //-------------------------------------  CUSTOMER SITE  ---------------------------------------------
     @GetMapping("/customer/quote")
     public String getQuoteListToCusIdAndStatus(Model model, HttpSession session){
         User user = (User) session.getAttribute("user");
@@ -52,23 +59,28 @@ public class QuoteController {
     
     @PostMapping("/customer/quote/updateStatus")
     public String customerUpdateQuoteStatus(@RequestParam("quoteId")int quoteId, @RequestParam("statusId")int statusId, Model model, HttpSession session){
-        Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
-        User user = (User) session.getAttribute("user");
-        List<Quotes> quoteList = quoteService.getQuoteListByCusIdAndStatus(user.getId());
-        model.addAttribute("quoteList", quoteList);
+        Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);        
+        return "redirect:/customer/quote";
+    }
+    
+    @PostMapping("/customer/quote/updateStatusAndFeedback")
+    public String customerUpdateQuoteStatusAndFeedback(@RequestParam("quoteId")int quoteId, 
+                                                       @RequestParam("statusId")int statusId,
+                                                       @RequestParam("declineReason")String feedbackContent,
+                                                       @RequestParam("toUserId")int toUserId,
+                                                       Model model, HttpSession session){
+        Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);        
+        User fromUser = (User) session.getAttribute("user");
+        User toUser = userService.getUserById(toUserId);
+        Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser);
+        newFeedback = feedbackService.saveFeedback(newFeedback);
         return "redirect:/customer/quote";
     }
     
     
     
-    //MANAGER SITE
-//    @GetMapping("/manager/quote")
-//    public String getQuoteList(Model model){
-//        List<Quotes> quoteList = quoteService.getQuoteList();
-//        model.addAttribute("quoteList", quoteList);
-//        return "manager/quote/quoteManage";
-//    }
-    
+    //--------------------------------  MANAGER SITE -------------------------------------------
+ 
     @GetMapping("/manager/quote")
     public String getQuoteList(Model model,
                                @RequestParam(defaultValue = "0")int page,
@@ -116,15 +128,8 @@ public class QuoteController {
     
     
     
-    //CONSULTANT SITE
-//    @GetMapping("consultant/quote")
-//    public String getQuoteListByStaffId(Model model, HttpSession session) {
-//        User user = (User) session.getAttribute("user");
-//        List<Quotes> list = quoteService.getQuoteListByStaffId(user.getId());
-//        model.addAttribute("quoteList", list);
-//        return "consultant/quote/quoteManage";
-//    }
-    
+    //----------------------------  CONSULTANT SITE  ----------------------------------------
+   
     @GetMapping("consultant/quote")
     public String getQuoteListByStaffId(Model model, HttpSession session,
                                         @RequestParam(defaultValue = "0")int page,

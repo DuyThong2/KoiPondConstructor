@@ -77,75 +77,111 @@
                 border: none;
                 box-shadow: 0 0 10px rgba(0,0,0,0.1);
             }
+            .status-label {
+                font-weight: bold;
+            }
         </style>
     </head>
     <body>
-       <div class="container mt-5">
-    <h2>Construction Stage Details</h2>
-    <h1> ${error} ${success} </h1>
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-        
-            <c:forEach var="detail" items="${details}">
-            <form action="${pageContext.request.contextPath}/constructionStageDetail/updateStatus" method="post" onsubmit="return confirmStatusChange();">
-                <tr>
-                    <td>${detail.constructionStageDetailId}</td>
-                    <td>${detail.constructionStageDetailName}</td>
-                    <td>${detail.constructionStageDetailDescription}</td>
-                    <td>
-                        <select class="form-control text-center" name="newStatus" 
-                                <c:choose>
-                                    <c:when test="${detail.constructionStageDetailStatus == 3 || detail.constructionStageDetailStatus == 4}">
-                                        disabled
-                                    </c:when>
-                                    <c:otherwise>
-                                        required
-                                    </c:otherwise>
-                                </c:choose>>
-                            <c:if test="${detail.constructionStageDetailStatus != 2}">
-                                <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
-                            </c:if>
-                            <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                            <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
-                            <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
-                        </select>
-                    </td>
-                    <td>
+        <div class="container mt-5">
+            <h2>Construction Stage Details</h2>
+            <h1> ${error} ${success} </h1>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:set var="canUpdateNext" value="true"/> <!-- Initialize canUpdateNext to true -->
+
+                    <c:forEach var="detail" items="${details}" varStatus="status">
+                    <form action="${pageContext.request.contextPath}/constructionStageDetail/updateStatus" method="post" onsubmit="return confirmStatusChange();">
                         <input type="hidden" name="constructionId" value="${constructionId}">
                         <input type="hidden" name="detailId" value="${detail.constructionStageDetailId}">
                         <input type="hidden" name="constructionStageId" value="${id}">
-                        <c:if test="${detail.constructionStageDetailStatus != 3 && detail.constructionStageDetailStatus != 4}">
-                            <button type="submit" class="btn btn-primary mt-2">Update</button>
-                        </c:if>
-                    </td>
-                </tr>
-            </form>
-            </c:forEach>
-        </tbody>
-    </table>
-    <div class="text-center mt-3">
-        <a href="${pageContext.request.contextPath}/constructor/construction/${constructionId}" class="btn btn-secondary">Back to Construction</a>
-    </div>
-</div>
+                        <tr>
+                            <td>${detail.constructionStageDetailId}</td>
+                            <td>${detail.constructionStageDetailName}</td>
+                            <td>${detail.constructionStageDetailDescription}</td>
 
+                            <td>
+                                <!-- Check if previous detail is completed (if it's not the first detail) -->
+                                <c:set var="previousCompleted" value="true"/> <!-- Default to true if it's the first detail -->
+                                <c:if test="${!status.first}"> <!-- Only check previous detail if not the first -->
+                                    <c:if test="${details[status.index - 1].constructionStageDetailStatus != 4}">
+                                        <c:set var="previousCompleted" value="false"/> <!-- Previous detail is not completed -->
+                                    </c:if>
+                                </c:if>
+
+                                <!-- Display status label if it's Payment, Inspection, or already completed/canceled, or if the previous detail is not completed -->
+                                <c:choose>
+                                    <c:when test="${detail.constructionStageDetailName == 'Payment' || detail.constructionStageDetailStatus == 4  || !previousCompleted}">
+                                        <span class="status-label">
+                                            <c:choose>
+                                                <c:when test="${detail.constructionStageDetailStatus == 1}">Pending</c:when>
+                                                <c:when test="${detail.constructionStageDetailStatus == 2}">Processing</c:when>
+                                                <c:when test="${detail.constructionStageDetailStatus == 3}">Canceled</c:when>
+                                                <c:when test="${detail.constructionStageDetailStatus == 4}">Completed</c:when>
+                                            </c:choose>
+                                        </span>
+                                    </c:when>
+
+                                    <c:when test="${detail.constructionStageDetailName == 'Inspection' && previousCompleted && detail.constructionStageDetailStatus != 4}">
+                                        <select class="form-control text-center" name="newStatus" required>
+                                            <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
+                                        </select>
+
+                                    </c:when>
+
+
+                                    <c:otherwise>
+                                        <select class="form-control text-center" name="newStatus" required>
+                                            <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
+                                            <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
+                                            <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
+                                            <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
+                                        </select>
+                                    </c:otherwise>
+                                </c:choose>
+                                
+                            </td>
+
+                            <td>
+                                <!-- Disable the button if Payment, Inspection, or the previous detail is incomplete -->
+                                <c:if test="${canUpdateNext && detail.constructionStageDetailName != 'Payment' && previousCompleted && detail.constructionStageDetailStatus != 4}">
+                                    <button type="submit" class="btn btn-primary mt-2">Update</button>
+                                </c:if>
+                            </td>
+                        </tr>
+
+                        <!-- Update canUpdateNext to false if this stage is not completed or canceled -->
+                        <c:if test="${detail.constructionStageDetailStatus != 4 && detail.constructionStageDetailStatus != 3}">
+                            <c:set var="canUpdateNext" value="false"/>
+                        </c:if>
+                    </form>
+                </c:forEach>
+                </tbody>
+
+            </table>
+
+            <div class="text-center mt-3">
+                <a href="${pageContext.request.contextPath}/constructor/construction/${constructionId}" class="btn btn-secondary">Back to Construction</a>
+            </div>
+        </div>
 
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
         <script>
-            function confirmStatusChange() {
-                return confirm("Are you sure you want to change the status?");
-            }
+                        function confirmStatusChange() {
+                            return confirm("Are you sure you want to change the status?");
+                        }
         </script>
     </body>
 </html>

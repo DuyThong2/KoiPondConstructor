@@ -16,13 +16,20 @@ public class ConstructionDAO {
         this.entityManager = entityManager;
     }
 
-    public List<Construction> getListConstructionByCustomerName() {
+    public List<Construction> getListConstructionWithCustomerName(int page, int size) {
         TypedQuery<Construction> query = entityManager.createQuery(
-                "SELECT c FROM Construction c ORDER BY c.constructionStatus ASC",
-                Construction.class);
+                "SELECT c FROM Construction c ORDER BY c.constructionStatus ASC",Construction.class);
+        query.setFirstResult(size * page);
+        query.setMaxResults(size);
         return query.getResultList();
     }
-
+    
+        public long countAllConstructions() {
+        String jpql = "SELECT COUNT(c) FROM Construction c JOIN c.constructionStaffs cs ";
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        return query.getSingleResult();
+    }
+    
     public Construction getConstructionById(int id) {
         try {
             TypedQuery<Construction> construct = entityManager.createQuery(

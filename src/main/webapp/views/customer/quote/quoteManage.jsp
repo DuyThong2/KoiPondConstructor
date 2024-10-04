@@ -85,16 +85,11 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${quote.quotesStatus == 2}"> 
-                                                <form action="/customer/quote/updateStatus" method="post" class="d-inline">
-                                                    <input type="hidden" name="quoteId" value="${quote.quotesId}">
-                                                    <input type="hidden" name="statusId" value="4">
-                                                    <button type="submit" class="btn btn-success">Accept</button>
-                                                </form>
-                                                <form action="/customer/quote/updateStatus" method="post" class="d-inline">
-                                                    <input type="hidden" name="quoteId" value="${quote.quotesId}">
-                                                    <input type="hidden" name="statusId" value="5">
-                                                    <button type="submit" class="btn btn-danger">Deny</button>
-                                                </form>
+                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
+                                                        onclick="document.getElementById('acceptForm').quoteId.value = '${quote.quotesId}';">Accept</button>
+                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                                        onclick="document.getElementById('declineForm').quoteId.value = '${quote.quotesId}';
+                                                                 document.getElementById('declineForm').toUserId.value = '${quote.staff.id}';">Decline</button>
                                             </c:when>
                                         </c:choose>
                                     </td>
@@ -126,6 +121,60 @@
                     </div>
                 </main>
 
+            </div>
+        </div>
+
+        <!-- Decline Modal -->
+        <div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="declineForm" action="/customer/quote/updateStatusAndFeedback" method="post">
+                            <input type="hidden" name="quoteId" value="">
+                            <input type="hidden" name="statusId" value="5">
+                            <input type="hidden" name="toUserId" value="">
+                            <div class="form-group">
+                                <label for="declineReason">Please provide a reason for declining this quote:</label>
+                                <textarea class="form-control" id="declineReason" name="declineReason" rows="4" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason & Decline</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Accept Modal -->
+        <div class="modal fade" id="acceptModal" tabindex="-1" role="dialog" aria-labelledby="acceptModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="acceptModalLabel">Confirm Acceptance</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to accept this quote?
+                        <form id="acceptForm" action="/customer/quote/updateStatus" method="post">
+                            <input type="hidden" name="quoteId" value="">
+                            <input type="hidden" name="statusId" value="4">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" form="acceptForm" class="btn btn-success">Yes, Accept</button>
+                    </div>
+                </div>
             </div>
         </div>
 
