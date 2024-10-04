@@ -1,11 +1,8 @@
-<%-- 
-    Document   : forgot_password
-    Created on : Sep 28, 2024, 1:14:17 PM
-    Author     : Admin
---%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
 
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -14,16 +11,23 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="stylesheet" href="<c:url value='/css/login.css'/>"> <!-- boxicons -->
+
         <title>Forgot password</title>
         
     </head>
     <body>
-        <h1>${message}</h1>
-        <form action="/forgot-password" method="post">
-            <label for="email">Enter your email address:</label>
-            <input type="email" name="email" required>
-            <button type="submit">Send Reset Link</button>
-        </form>
+       <form action="/forgot-password" method="post" class="wrapper">
+           <h1>Forgot Password</h1>
+
+           <div class="input-box">
+               <input type="email" name="email" placeholder="Enter your email address" required class="input-field">
+               <i class='bx bxs-envelope'></i>
+           </div>
+
+           <button type="submit" class="btn">Send Reset Link</button>
+       </form>
+
     </body>
 </html>
 

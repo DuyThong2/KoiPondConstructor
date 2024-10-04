@@ -276,7 +276,7 @@
     
                                 <div class="team__item-text__left">
                                     <h4 class="team__item-title rr-fw-bold color-white mb-0"><a href="team-details.html">${project.projectName}</a></h4>
-                                    <span class="team__item-subtitle color-white">${project.content}</span>
+                                    <span class="team__item-subtitle color-white">${project.description}</span>
                                 </div>
                             </div>
                         </div>
