@@ -165,5 +165,22 @@ public class ConsultantController {
         newConsultant = consultantService.createConsultant(newConsultant);
         return "redirect:/customer/consultant/create";
     }
+    @PostMapping("/save")
+    public String saveConsultantInWeb(@RequestParam("name")String name,
+                                      @RequestParam("phone")String phone,
+                                      @RequestParam("email")String email,
+                                      @RequestParam("content")String content,
+                                      @RequestParam("type")String type){
+        Consultant newConsultant = new Consultant();
+        newConsultant.setConsultantCustomerName(name);
+        newConsultant.setConsultantPhone(phone);
+        newConsultant.setConsultant_email(email);
+        newConsultant.setConsultantContent(content);
+        newConsultant.setConsultantType(type);
+        newConsultant.setConsultantDateTime(Calendar.getInstance());
+        newConsultant.setConsultantStatus(1);
+        newConsultant = consultantService.createConsultant(newConsultant);
+        return "redirect:/";
+    }
     
 }

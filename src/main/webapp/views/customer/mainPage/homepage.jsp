@@ -197,7 +197,7 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <div class="banner-3__from">
+                    <form class="banner-3__from" action="save" method="POST">
                         <h4>Need Construction Help?</h4>
                         <p>We are always here to help you at any time, </p>
                         <div class="row">
@@ -211,21 +211,24 @@
                                     <input name="email" id="email" type="email" placeholder="Email Address">
                                 </div>
                             </div>
-
+                            <div class="col-12">
+                                <div class="banner-3__form-input">
+                                    <input name="phone" id="phone" type="text" placeholder="Phone number">
+                                </div>
+                            </div>
+                        
                             <div class="col-12">
                                 <div class="banner-3__form-input-select d-flex flex-column">
-                                    <select name="subject" id="subject" style="display: none;">
-                                        <option value="">Categories</option>
-                                        <option value="order">Categories-2</option>
-                                        <option value="objection">Categories-3</option>
+                                    <select name="type" id="subject" style="display: none;">
+                                        <option value="">Type 1- Construction</option>
+                                        <option value="order">Type 2 - Maintenance</option>
                                     </select>
                                 </div>
                             </div>
-
                             <div class="col-12">
                                 <div class="banner-3__form-input">
                                     <div class="validation__wrapper-up position-relative">
-                                        <textarea name="textarea" id="textarea" placeholder="Message"></textarea>
+                                        <textarea name="content" id="textarea" placeholder="Message"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -238,7 +241,7 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
