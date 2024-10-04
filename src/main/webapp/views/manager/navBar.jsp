@@ -157,7 +157,10 @@
                         <a class="nav-link" href="#"><i class="bi bi-file-earmark-text"></i> Terms</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-bar-chart-line"></i> Reports</a>
+                        <a class="nav-link" href="/manager/services"><i class="bi bi-bar-chart-line"></i> Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manager/serviceDetails"><i class="bi bi-bar-chart-line"></i> Services Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="bi bi-gear"></i> Settings</a>
