@@ -4,8 +4,12 @@
 <html>
     <head>
         <title>Contract Management</title>
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+                    <%@include file="../cssTemplate.jsp"%>
+
     </head>
+    <%@include file="../homePageNavbar.jsp"%>
+        <%@include file="../spacing.jsp"%>
+
     <body>
 
         <div class="container">
@@ -111,4 +115,7 @@
         </div>
 
     </body>
+    <%@include file="../spacing.jsp"%>
+    <%@include file="../footer.jsp"%>
+    <%@include file="../scriptTemplate.jsp"%>
 </html>

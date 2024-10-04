@@ -38,8 +38,7 @@ public class HomepageController {
 
     @GetMapping("")
     public String HomePageShow(Model model, HttpSession session) {
-        Customer customer = (Customer)session.getAttribute("user");
-
+        
         List<Project> projectList = projectService.getProjectListIsSharable();
         List<Staff> staffList = staffService.getTopStaffList();
         List<Blog> allBlogs = blogService.getAllBlogs();

@@ -8,6 +8,8 @@
         <title>Design Project Details</title>
         <!-- Sử dụng Bootstrap 4.3.1 từ CDN -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+                <%@include file="../cssTemplate.jsp"%>
+
         <style>
             body {
                 font-family: 'Arial', sans-serif;
@@ -174,19 +176,11 @@
             }
         </style>
     </head>
+<%@include file="../homePageNavbar.jsp"%>
     <body>
         <div class="container mt-5">
             <!-- Navigation -->
-            <header>
-                <div class="nav">
-                    <div class="nav-links">
-                        <a href="#">Home</a>
-                        <a href="#">Projects</a>
-                        <a href="#">Team</a>
-                    </div>
-                    <button class="btn btn-logout">Logout</button>
-                </div>
-            </header>
+
 
             <div class="row">
                 <div class="col-md-4 left-column">
@@ -334,6 +328,8 @@
             </div>
         </div>
 
+    <%@include file="../footer.jsp"%>
+                <%@include file="../scriptTemplate.jsp"%>
         <!-- Script to dynamically change button color based on stage status -->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -379,5 +375,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </body>
+
+
 </html>
 

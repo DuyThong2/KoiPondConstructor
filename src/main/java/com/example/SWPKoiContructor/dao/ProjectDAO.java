@@ -163,10 +163,10 @@ public class ProjectDAO {
         return query.getSingleResult();
     }
 
+
     public long countProjectComplete() {
         TypedQuery<Long> query = entityManager.createQuery("Select Count(c) from Project c where c.status = 3", Long.class);
         return query.getSingleResult();
-
 
     }
 

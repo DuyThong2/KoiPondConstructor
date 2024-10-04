@@ -10,6 +10,8 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
     </head>
+    <%@include file="../homePageNavbar.jsp"%>
+
     <body>
 
         <div class="container">
@@ -96,4 +98,6 @@
         </script>
 
     </body>
+    <%@include file="../footer.jsp"%>
+
 </html>

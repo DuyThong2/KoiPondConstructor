@@ -102,6 +102,8 @@
             }
         </style>
     </head>
+    <%@include file="../homePageNavbar.jsp"%>
+
     <body>
         <div class="container-fluid mt-3">
             <!-- Page Header with Back Button -->
@@ -198,4 +200,6 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     </body>
+    <%@include file="../footer.jsp"%>
+
 </html>

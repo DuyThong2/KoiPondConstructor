@@ -12,6 +12,8 @@
         <title>Create Consultant</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <%@include file="../cssTemplate.jsp"%>
+
         <style>
             .quote-info {
                 background-color: #f8f9fa;
@@ -32,6 +34,8 @@
             }
         </style>
     </head>
+    <%@include file="../homePageNavbar.jsp"%>
+
     <body>
 
         <div class="container mt-5">
@@ -92,4 +96,7 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     </body>
+    <%@include file="../footer.jsp"%>
+    <%@include file="../scriptTemplate.jsp"%>
+
 </html>

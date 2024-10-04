@@ -7,6 +7,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>View Blueprints</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <%@include file="../cssTemplate.jsp"%>
+
         <style>
             body {
                 background-color: #f4f4f9;
@@ -120,6 +122,8 @@
 
         </style>
     </head>
+    <%@include file="../homePageNavbar.jsp"%>
+
     <body>
         <div class="container-fluid mt-3">
             <!-- Page Header with Back Button -->
@@ -197,4 +201,8 @@
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
             <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     </body>
+    <%@include file="../footer.jsp"%>
+    <%@include file="../scriptTemplate.jsp"%>
+
+
 </html>
