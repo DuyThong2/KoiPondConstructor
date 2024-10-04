@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.User;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -47,5 +48,15 @@ public class UserDAO {
             return null;
         }
 
+    }
+    
+    public List<User> getUserListByRole(String role){
+        try{
+            TypedQuery<User> tq = entityManager.createQuery("SELECT u FROM User u WHERE u.authority.authority like :role", User.class);
+            tq.setParameter("role","%" + role + "%");
+            return tq.getResultList();
+        }catch (NoResultException e){
+            return null;
+        }
     }
 }

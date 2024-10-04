@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -72,6 +74,9 @@ public class Contract {
     @ManyToOne()
     @JoinColumn(name = "customer_id")
     private Customer customer;
+    
+    @OneToMany(mappedBy = "contract")
+    private List<Feedback> feedback;
 
     public Contract(Date dateCreate, String fileURL, double totalPrice, double priceOnConceptDesign, double priceOnConstructionDesign, double priceOnDetailDesign, double priceOnRawConstruction, double priceOnCompleteConstruction, String contractTerm, int contractStatus, String contractNote, Term term, Project project) {
         this.dateCreate = dateCreate;
@@ -223,6 +228,14 @@ public class Contract {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public List<Feedback> getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(List<Feedback> feedback) {
+        this.feedback = feedback;
     }
     
     

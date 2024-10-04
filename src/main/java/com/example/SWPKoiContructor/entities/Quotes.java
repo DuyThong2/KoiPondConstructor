@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -75,6 +77,10 @@ public class Quotes {
 
     @OneToOne(mappedBy = "quote", cascade = CascadeType.ALL)
     private Contract contract;
+    
+    @OneToMany(mappedBy = "quotes")
+    private List<Feedback> feedback;
+    
 
     public Quotes(String quotesName, String quotesContent, double quotesTotalPrice, double quotesArea, Date quotesDate, int quotesStatus, double quotesDesignCost, double quotesConstructionCost, Customer customer, Consultant consultant, Parcel pakage, Staff staff) {
         this.quotesName = quotesName;
@@ -214,6 +220,15 @@ public class Quotes {
         this.contract = contract;
     }
 
+    public List<Feedback> getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(List<Feedback> feedback) {
+        this.feedback = feedback;
+    }
+
+    
     @Override
     public String toString() {
         return "Quotes{" + "quotesId=" + quotesId + ", quotesName=" + quotesName + ", quotesContent=" + quotesContent + ", quotesTotalPrice=" + quotesTotalPrice + ", quotesArea=" + quotesArea + ", quotesDate=" + quotesDate + ", quotesStatus=" + quotesStatus + ", quotesDesignCost=" + quotesDesignCost + ", quotesConstructionCost=" + quotesConstructionCost + '}';

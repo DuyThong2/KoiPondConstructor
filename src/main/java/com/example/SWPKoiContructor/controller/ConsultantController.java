@@ -5,11 +5,15 @@
  */
 package com.example.SWPKoiContructor.controller;
 
+import com.example.SWPKoiContructor.dao.CustomerDAO;
 import com.example.SWPKoiContructor.entities.Consultant;
+import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.ConsultantService;
+import com.example.SWPKoiContructor.services.CustomerService;
 import com.example.SWPKoiContructor.services.StaffService;
+import com.example.SWPKoiContructor.services.UserService;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import java.util.Calendar;
 import java.util.List;
@@ -32,13 +36,16 @@ public class ConsultantController {
     
     private ConsultantService consultantService;
     private StaffService staffService;
+    private CustomerService customerService;
+    
 
-    public ConsultantController(ConsultantService consultantService, StaffService staffService) {
+    public ConsultantController(ConsultantService consultantService, StaffService staffService, CustomerService customerService) {
         this.consultantService = consultantService;
         this.staffService = staffService;
+        this.customerService = customerService;
     }
 
-    
+        
     //MANAGER SITE   
     @GetMapping("/manager/consultant")
     public String getConsultantList(Model model,
@@ -164,6 +171,34 @@ public class ConsultantController {
         newConsultant.setConsultantStatus(1);
         newConsultant = consultantService.createConsultant(newConsultant);
         return "redirect:/customer/consultant/create";
+    }
+    
+    @PostMapping("/save")
+    public String saveConsultantInWeb(@RequestParam("Name")String name,
+                                      @RequestParam("Phone")String phone,
+                                      @RequestParam("Email")String email,
+                                      @RequestParam("content")String content,
+                                      @RequestParam("type")String type,
+                                      @RequestParam(name = "preDesign", required = false )Integer preDesignId,
+                                      HttpSession session){
+        Consultant newConsultant = new Consultant();
+        newConsultant.setConsultantCustomerName(name);
+        newConsultant.setConsultantPhone(phone);
+        newConsultant.setConsultant_email(email);
+        newConsultant.setConsultantContent(content);
+        newConsultant.setConsultantType(type);
+        newConsultant.setConsultantDateTime(Calendar.getInstance());
+        newConsultant.setConsultantStatus(1);
+        User user = (User) session.getAttribute("user");       
+        if(user != null){
+            Customer cus = customerService.getCustomerById(user.getId());
+            newConsultant.setCustomer(cus);
+        }
+        if(preDesignId != null){
+            
+        }
+        newConsultant = consultantService.createConsultant(newConsultant);
+        return "";
     }
     
 }

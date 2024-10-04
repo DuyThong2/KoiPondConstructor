@@ -361,7 +361,13 @@ CREATE TABLE Feedback (
 	feedback_content NVARCHAR(255),
 	from_user INT NOT NULL,
 	to_user INT NOT NULL,
+	consultant_id INT,
+	quotes_id INT,
+	contract_id INT,
 	feedback_date DATE,
-	FOREIGN KEY (from_user) REFERENCES users(id),
-	FOREIGN KEY (to_user) REFERENCES users(id)
+	FOREIGN KEY (from_user) REFERENCES Users(id),
+	FOREIGN KEY (to_user) REFERENCES Users(id),
+	FOREIGN KEY (consultant_id) REFERENCES Consultant(consultant_id),
+	FOREIGN KEY (quotes_id) REFERENCES Quotes(quotes_id),
+	FOREIGN KEY (contract_id) REFERENCES contract(Contract_id),
 )
