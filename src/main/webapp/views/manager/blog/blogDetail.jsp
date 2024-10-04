@@ -93,7 +93,7 @@
         <!-- Blog Card -->
         <div class="card blog-card">
             <!-- Blog Image -->
-            <img src="${blog.imgUrl}" class="blog-image" alt="Blog Image">
+            <img src="/uploads/${blog.imgUrl}" class="blog-image" alt="Blog Image">
 
             <!-- Blog Content -->
             <div class="card-body blog-content">
@@ -125,12 +125,12 @@
                 <!-- Blog Content Section -->
                 <h4>Full Content</h4>
                 <div class="blog-body">
-                    <p>${blog.content.content}</p>
+                    <p>${blog.introContent.content}</p>
                 </div>
 
                 <!-- Author Section -->
                 <div class="author-section mt-4">
-                    <img src="${blog.staff.profileImageUrl}" class="author-avatar" alt="Author Avatar">
+                    <img src="${blog.staff.imgURL}" class="author-avatar" alt="Author Avatar">
                     <div>
                         <p class="author-name">Written by: ${blog.staff.name}</p>
                         <p class="author-email">Email: ${blog.staff.email}</p>
@@ -142,7 +142,7 @@
 
         <!-- Footer Section with Back Button -->
         <div class="blog-footer">
-            <a href="/blog/list" class="btn btn-outline-primary">Back to Blog List</a>
+            <a href="/staff/blogs" class="btn btn-outline-primary">Back to Blog List</a>
         </div>
     </div>
 

@@ -95,7 +95,7 @@ public class BlogDAO {
         }
 
         // Set pagination parameters
-        query.setFirstResult((page - 1) * size); // Skips previous pages' results
+        query.setFirstResult(page  * size); // Skips previous pages' results
         query.setMaxResults(size);               // Limits results per page
 
         return query.getResultList();
