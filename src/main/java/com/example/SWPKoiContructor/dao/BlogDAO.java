@@ -1,7 +1,7 @@
 package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Blog;
-import java.sql.Date;
+import java.util.Date;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;

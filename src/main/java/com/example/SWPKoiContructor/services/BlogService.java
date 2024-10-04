@@ -2,7 +2,7 @@ package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.BlogDAO;
 import com.example.SWPKoiContructor.entities.Blog;
-import java.sql.Date;
+import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
