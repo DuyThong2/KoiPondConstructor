@@ -39,6 +39,18 @@ public class FeedbackService {
         return feedbackDAO.getFeedbackForCancel(quotesId);
     }
     
+    public Feedback getLatestContractFeedbackFromManager(int contractId, int toUserId){
+        return feedbackDAO.getLatestContractFeedbackFromManager(contractId, toUserId);
+    }
+    
+    public Feedback getManagerSelfFeedback(int contractId){
+        return feedbackDAO.getManagerSelfFeedback(contractId);
+    }
+    
+    public Feedback getLatestContractFeedback(int contractId, int fromUser, int toUser){
+        return feedbackDAO.getLatestContractFeedback(contractId, fromUser, toUser);
+    }
+    
     @Transactional
     public Feedback saveFeedback(Feedback feedback){
         return feedbackDAO.saveFeedback(feedback);

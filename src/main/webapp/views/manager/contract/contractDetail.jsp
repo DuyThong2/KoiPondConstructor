@@ -280,19 +280,29 @@
                                     <input type="hidden" name="status" value="2">
                                     <button type="submit" class="btn btn-success"><i class="fas fa-check icon-btn"></i> Approve</button>
                                 </form>
-                                <form action="/manager/contract/editStatus" method="POST" class="d-inline">
-                                    <input type="hidden" name="id" value="${contract.contractId}">
-                                    <input type="hidden" name="status" value="4">
-                                    <button type="submit" class="btn btn-warning"><i class="fas fa-times icon-btn"></i> Reject</button>
-                                </form>
+                                <!--                            <form action="/manager/contract/editStatus" method="POST" class="d-inline">
+                                                                    <input type="hidden" name="id" value="$/{contract.quote.staff.id}">
+                                                                    <input type="hidden" name="status" value="4">
+                                                                    <button type="submit" class="btn btn-warning"><i class="fas fa-times icon-btn"></i> Reject</button>
+                                                                </form>-->
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                        onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
+                                                document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
+                                                document.getElementById('declineForm').status.value = '4';"><i class="fas fa-times icon-btn"></i>
+                                    Reject
+                                </button>
                                 <form action="/manager/contract/editStatus" method="POST" class="d-inline">
                                     <input type="hidden" name="id" value="${contract.contractId}">
                                     <input type="hidden" name="status" value="5">
                                     <button type="submit" class="btn btn-danger"><i class="fas fa-ban icon-btn"></i> Cancel</button>
                                 </form>
                             </c:when>
+
                             <c:when test="${contract.contractStatus == 3}">
-                                <div class="mt-4 text-center">
+                                <div class="mt-4 text-center">                               
+                                    <div class="alert alert-danger text-center" role="alert">
+                                        <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                    </div>
                                     <p>Status: <span class="badge badge-danger">Refused by Customer</span></p>
                                     <form action="/manager/contract/edit" method="GET" class="d-inline">
                                         <input type="hidden" name="id" value="${contract.contractId}">
@@ -305,29 +315,68 @@
                                     </form>
                                 </div>
                             </c:when>
-                            <c:when test="${contract.contractStatus == 6 && empty contract.project}">
-                            <div class="mt-4 text-center">
-                                <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
-                                <form action="/manager/project/create" method="GET" class="d-inline">
-                                    <input type="hidden" name="id" value="${contract.contractId}">
-                                    <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
-                                </form>
-                            </div>
 
-                        </c:when>
-                        <c:when test="${not empty contract.project}">
-                            <div class="mt-4 text-center">
-                                <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
-                                <form action="/manager/projects/details/${contract.contractId}" method="GET" class="d-inline">
-                                    <button type="submit" class="btn btn-success">VIEW PROJECT</button>
-                                </form>
-                            </div>
-                        </c:when>
-                    </c:choose>
-                </div>
+                            <c:when test="${contract.contractStatus == 4}">
+                                <div class="text-center">
+                                    <div class="alert alert-danger text-center" role="alert">
+                                        <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                    </div>                               
+                                </div>
+                            </c:when>
+
+                            <c:when test="${contract.contractStatus == 6 && empty contract.project}">
+                                <div class="mt-4 text-center">
+                                    <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
+                                    <form action="/manager/project/create" method="GET" class="d-inline">
+                                        <input type="hidden" name="id" value="${contract.contractId}">
+                                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
+                                    </form>
+                                </div>
+
+                            </c:when>
+                            <c:when test="${not empty contract.project}">
+                                <div class="mt-4 text-center">
+                                    <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
+                                    <form action="/manager/projects/details/${contract.contractId}" method="GET" class="d-inline">
+                                        <button type="submit" class="btn btn-success">VIEW PROJECT</button>
+                                    </form>
+                                </div>
+                            </c:when>
+                        </c:choose>
+                    </div>
 
             </div>
         </div>
+
+        <!-- Decline Modal -->
+        <div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="declineForm" action="/manager/contract/editStatusAndFeedback" method="post">
+                            <input type="hidden" name="id" value="">
+                            <input type="hidden" name="status" value="">
+                            <input type="hidden" name="toUserId" value="">
+                            <div class="form-group">
+                                <label for="declineReason">Please provide a reason for declining this quote:</label>
+                                <textarea class="form-control" id="declineReason" name="declineReason" rows="4" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason & Decline</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

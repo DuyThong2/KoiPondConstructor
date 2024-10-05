@@ -34,7 +34,8 @@ public class FeedbackDAO {
     public Feedback saveFeedback(Feedback feedback) {
         return entityManager.merge(feedback);
     }
-
+    
+    //---------------------------------  QUOTES  --------------------------------------
     public Feedback getLatestFeedback(int quotesId, int from_user, int to_user) {
         try{
             TypedQuery<Feedback> tq = entityManager.createQuery("SELECT f FROM Feedback f WHERE f.quotes.quotesId = :quotesId AND f.fromUser.id = :fromUser AND f.toUser.id = :toUser ORDER BY f.feedbackId DESC", Feedback.class);
@@ -64,6 +65,43 @@ public class FeedbackDAO {
         try{
             TypedQuery<Feedback> tq = entityManager.createQuery("SELECT f FROM Feedback f WHERE f.quotes.quotesId = :quotesId AND f.toUser.authority.authority LIKE '%MANAGER%' ORDER BY f.feedbackId DESC", Feedback.class);
             tq.setParameter("quotesId", quotesId);
+            tq.setMaxResults(1);
+            return tq.getSingleResult();
+        }catch (NoResultException e) {
+            return null;
+        }
+    }
+    
+    //-------------------------------------- CONTRACT  -------------------------------
+    public Feedback getLatestContractFeedback(int contractId, int from_user, int to_user) {
+        try{
+            TypedQuery<Feedback> tq = entityManager.createQuery("SELECT f FROM Feedback f WHERE f.contract.contractId = :contractId AND f.fromUser.id = :fromUser AND f.toUser.id = :toUser ORDER BY f.feedbackId DESC", Feedback.class);
+            tq.setParameter("contractId", contractId);
+            tq.setParameter("fromUser", from_user);
+            tq.setParameter("toUser", to_user);
+            tq.setMaxResults(1);
+            return tq.getSingleResult();
+        }catch (NoResultException e) {
+            return null;
+        }
+    }
+    
+    public Feedback getLatestContractFeedbackFromManager(int contractId, int to_user) {
+        try{
+            TypedQuery<Feedback> tq = entityManager.createQuery("SELECT f FROM Feedback f WHERE f.contract.contractId = :contractId AND f.fromUser.authority.authority LIKE '%MANAGER%' AND f.toUser.id = :toUser ORDER BY f.feedbackId DESC", Feedback.class);
+            tq.setParameter("contractId", contractId);
+            tq.setParameter("toUser", to_user);
+            tq.setMaxResults(1);
+            return tq.getSingleResult();
+        }catch (NoResultException e) {
+            return null;
+        }
+    }
+    
+    public Feedback getManagerSelfFeedback(int contractId){
+        try{
+            TypedQuery<Feedback> tq = entityManager.createQuery("SELECT f FROM Feedback f WHERE f.contract.contractId = :contractId AND f.fromUser.authority.authority LIKE '%MANAGER%' ORDER BY f.feedbackId DESC", Feedback.class);
+            tq.setParameter("contractId", contractId);
             tq.setMaxResults(1);
             return tq.getSingleResult();
         }catch (NoResultException e) {

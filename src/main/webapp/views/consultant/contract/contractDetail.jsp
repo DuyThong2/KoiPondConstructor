@@ -249,8 +249,18 @@
             <div class="row">
                 <div class="col-md-12">
                     <c:choose>
+                        <c:when test="${contract.contractStatus == 3}">
+                            <div class="text-center">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                </div>                                
+                            </div>
+                        </c:when>
                         <c:when test="${contract.contractStatus == 4}">
                             <div class="text-center">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                </div>
                                 <form action="/consultant/contract/edit" method="PUT">
                                     <input type="hidden" name="id" value="${contract.contractId}">
                                     <button type="submit" class="btn btn-success btn-custom">
