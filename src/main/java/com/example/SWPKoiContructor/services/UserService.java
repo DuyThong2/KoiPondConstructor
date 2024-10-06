@@ -9,10 +9,8 @@ import com.example.SWPKoiContructor.dao.PasswordResetTokenDAO;
 import com.example.SWPKoiContructor.dao.UserDAO;
 import com.example.SWPKoiContructor.entities.PasswordResetToken;
 import com.example.SWPKoiContructor.entities.User;
-import com.example.SWPKoiContructor.services.functionalService.EmailService;
 import java.util.Date;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,11 +21,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserService {
 
-    @Autowired
     private PasswordResetTokenDAO tokenDAO;
-
-    @Autowired
     private UserDAO userDAO;
+    private PasswordEncoder passwordEncoder;
+
+    public UserService(PasswordResetTokenDAO tokenDAO, UserDAO userDAO, PasswordEncoder passwordEncoder) {
+        this.tokenDAO = tokenDAO;
+        this.userDAO = userDAO;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     // Generate password reset token
     @Transactional
@@ -57,15 +59,16 @@ public class UserService {
     // Reset user password
     @Transactional
     public void updatePassword(User user, String newPassword) {
-        user.setPassword(newPassword);
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.setPassword(encodedPassword);
         userDAO.saveUser(user);
     }
 
     public User findUserByEmail(String email) {
         return userDAO.findUserByEmail(email);
     }
-    
-    public User getUserById(int userId){
+
+    public User getUserById(int userId) {
         return userDAO.getUserById(userId);
     }
 }

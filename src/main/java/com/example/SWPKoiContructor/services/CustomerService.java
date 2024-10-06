@@ -10,7 +10,8 @@ import com.example.SWPKoiContructor.dto.CustomerDTO;
 import com.example.SWPKoiContructor.entities.Authority;
 import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.exception.AccountIsExistException;
-import javax.persistence.TypedQuery;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +24,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerService {
     
     private CustomerDAO customerDAO;
+    private PasswordEncoder passwordEncoder;
 
-    public CustomerService(CustomerDAO customerDAO) {
+    public CustomerService(CustomerDAO customerDAO,@Lazy PasswordEncoder passwordEncoder) {
         this.customerDAO = customerDAO;
+        this.passwordEncoder = passwordEncoder;
     }
     
     public Customer getCustomerById(int id){
@@ -41,6 +44,8 @@ public class CustomerService {
 
         // Map DTO to entity and save
         Customer customer = customerDTO.mapDTOToCustomer(customerDTO);
+        String encodedPassword = passwordEncoder.encode(customerDTO.getPassword());
+        customer.setPassword(encodedPassword); 
         Authority authority = new Authority("ROLE_CUSTOMER");
         customer.AddAuthorities(authority);
         customerDAO.createCustomer(customer);

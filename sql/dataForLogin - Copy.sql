@@ -35,6 +35,7 @@ INSERT INTO Users (email, img_url, name, phone, password, enabled) VALUES
 ('constructor7@example.com', 'user/user34.jpg', 'Constructor 7', '123-456-7834', '12345', 1),
 ('manager7@example.com', 'user/user35.jpg', 'Manager 7', '123-456-7835', '12345', 1);
 
+  update Users set password = '$2a$12$LSuFlC/5tfjvSWamOexHguI4mt7RjFbgcGU2widUBB7yGRqwrqI22' --12345
 
 INSERT INTO authorities (user_id, authority) VALUES
 (1, 'ROLE_CUSTOMER'),
