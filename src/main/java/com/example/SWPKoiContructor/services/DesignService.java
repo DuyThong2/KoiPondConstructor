@@ -3,6 +3,7 @@ package com.example.SWPKoiContructor.services;
 import com.example.SWPKoiContructor.dao.DesignDAO;
 import com.example.SWPKoiContructor.dao.DesignStageDAO;
 import com.example.SWPKoiContructor.entities.Construction;
+import com.example.SWPKoiContructor.entities.ConstructionStage;
 import com.example.SWPKoiContructor.entities.Design;
 import com.example.SWPKoiContructor.entities.DesignStage;
 import com.example.SWPKoiContructor.entities.Project;
@@ -85,6 +86,11 @@ public class DesignService {
             Construction construction = project.getConstruction();
             if (construction != null && construction.getConstructionStatus() == 1) { // Pending
                 construction.setConstructionStatus(2); // Set construction to Processing
+                ConstructionStage startingConstructionStage = construction.getConstructionStage().get(0);
+                System.out.println(startingConstructionStage);
+                startingConstructionStage.setConstructionStageStatus(2);
+                System.out.println(startingConstructionStage);
+                
                 constructionService.updateConstruction(construction);
             }
         } else {
