@@ -30,6 +30,20 @@
             .sidebar a:hover {
                 background-color: #495057;
             }
+            .filter-card {
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+            }
+            h2 {
+                font-weight: bold;
+                color: #007bff;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
         </style>
     </head>
 
@@ -38,94 +52,68 @@
 
         <div class="container-fluid">
             <div class="row">
-                <!-- Sidebar -->
-                <nav class="col-md-2 d-none d-md-block sidebar">
-                    <div class="sidebar-sticky">
-                        <h4 class="text-center py-3">Admin Dashboard</h4>
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/dashboard">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/contracts">Contracts</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/design">Design</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/projects">Projects</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/terms">Terms</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/reports">Reports</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/manager/settings">Settings</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                <%@include file="../navBar.jsp" %>
 
                 <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 mt-4">
 
                     <h2 class="mb-4">Project List</h2>
-                    <form method="get" action="/manager/projects">
-                        <div class="form-row align-items-center">
-                            <!-- Sort By -->
-                            <div class="col-auto">
-                                <label for="sortBy">Sort by:</label>
-                                <select name="sortBy" id="sortBy" class="form-control">
-                                    <option value="status" ${sortBy=='status' ? 'selected' : '' }>Status
-                                    </option>
-                                    <option value="dateStart" ${sortBy=='dateStart' ? 'selected' : '' }>Date
-                                        Start</option>
-                                    <option value="projectName" ${sortBy=='projectName' ? 'selected' : '' }>
-                                        Project Name</option>
-                                </select>
-                            </div>
+                    <div class="filter-card">
+                        <form method="get" action="/manager/projects">
+                            <div class="form-row align-items-center">
+                                <!-- Sort By -->
+                                <div class="col-auto">
+                                    <label for="sortBy">Sort by:</label>
+                                    <select name="sortBy" id="sortBy" class="form-control">
+                                        <option value="status" ${sortBy=='status' ? 'selected' : '' }>Status
+                                        </option>
+                                        <option value="dateStart" ${sortBy=='dateStart' ? 'selected' : '' }>Date
+                                            Start</option>
+                                        <option value="projectName" ${sortBy=='projectName' ? 'selected' : '' }>
+                                            Project Name</option>
+                                    </select>
+                                </div>
 
-                            <!-- Sort Direction -->
-                            <div class="col-auto">
-                                <label for="sortType">Type:</label>
-                                <select name="sortType" id="sortType" class="form-control">
-                                    <option value="asc" ${sortType=='asc' ? 'selected' : '' }>Ascending</option>
-                                    <option value="desc" ${sortType=='desc' ? 'selected' : '' }>Descending
-                                    </option>
-                                </select>
-                            </div>
+                                <!-- Sort Direction -->
+                                <div class="col-auto">
+                                    <label for="sortType">Type:</label>
+                                    <select name="sortType" id="sortType" class="form-control">
+                                        <option value="asc" ${sortType=='asc' ? 'selected' : '' }>Ascending</option>
+                                        <option value="desc" ${sortType=='desc' ? 'selected' : '' }>Descending
+                                        </option>
+                                    </select>
+                                </div>
 
-                            <!-- Filter By Status -->
-                            <div class="col-auto">
-                                <label for="statusFilter">Status:</label>
-                                <select name="statusFilter" id="statusFilter" class="form-control">
-                                    <option value="" ${statusFilter==null ? 'selected' : '' }>All</option>
-                                    <option value="1" ${statusFilter==1 ? 'selected' : '' }>Pending</option>
-                                    <option value="2" ${statusFilter==2 ? 'selected' : '' }>Processing</option>
-                                    <option value="3" ${statusFilter==3 ? 'selected' : '' }>Accepted</option>
-                                    <option value="4" ${statusFilter==4 ? 'selected' : '' }>Cancel</option>
-                                </select>
-                            </div>
-                            <div class="col-auto">
-                                <label for="stageFilter">Stage:</label>
-                                <select name="stageFilter" id="stageFilterr" class="form-control">
-                                    <option value="" ${stageFilter==null ? 'selected' : '' }>All</option>
-                                    <option value="1" ${stageFilter==1 ? 'selected' : '' }>Planing</option>
-                                    <option value="2" ${stageFilter==2 ? 'selected' : '' }>Design</option>
-                                    <option value="3" ${stageFilter==3 ? 'selected' : '' }>Construction</option>
-                                    <option value="4" ${stageFilter==4 ? 'selected' : '' }>Maintenance</option>
-                                    <option value="5" ${stageFilter==5 ? 'selected' : '' }>Finish</option>
-                                </select>
-                            </div>
+                                <!-- Filter By Status -->
+                                <div class="col-auto">
+                                    <label for="statusFilter">Status:</label>
+                                    <select name="statusFilter" id="statusFilter" class="form-control">
+                                        <option value="" ${statusFilter==null ? 'selected' : '' }>All</option>
+                                        <option value="1" ${statusFilter==1 ? 'selected' : '' }>Pending</option>
+                                        <option value="2" ${statusFilter==2 ? 'selected' : '' }>Processing</option>
+                                        <option value="3" ${statusFilter==3 ? 'selected' : '' }>Accepted</option>
+                                        <option value="4" ${statusFilter==4 ? 'selected' : '' }>Cancel</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <label for="stageFilter">Stage:</label>
+                                    <select name="stageFilter" id="stageFilterr" class="form-control">
+                                        <option value="" ${stageFilter==null ? 'selected' : '' }>All</option>
+                                        <option value="1" ${stageFilter==1 ? 'selected' : '' }>Planing</option>
+                                        <option value="2" ${stageFilter==2 ? 'selected' : '' }>Design</option>
+                                        <option value="3" ${stageFilter==3 ? 'selected' : '' }>Construction</option>
+                                        <option value="4" ${stageFilter==4 ? 'selected' : '' }>Maintenance</option>
+                                        <option value="5" ${stageFilter==5 ? 'selected' : '' }>Finish</option>
+                                    </select>
+                                </div>
 
-                            <input type="hidden" name="page" value="${currentPage}">
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-primary mt-2">Apply</button>
+                                <input type="hidden" name="page" value="${currentPage}">
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary" style="margin-top: 2rem">Apply</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">
                             <tr>
@@ -252,7 +240,7 @@
                                                     </td>
                                                     <td colspan="4">
                                                         <button class="btn btn-info"
-                                                                onclick="window.location.href = '/manager/design/details/${project.design.designId}'">Design
+                                                                onclick="window.location.href = '/manager/design/viewDetail/${project.design.designId}'">Design
                                                             Details</button>
                                                         <a href="/manager/design/assign/${project.design.designId}"
                                                            class="btn btn-warning">Assign Staff</a>
@@ -315,7 +303,7 @@
                                                     </td>
                                                     <td colspan="4">
                                                         <button class="btn btn-info"
-                                                                onclick="window.location.href = '/manager/construction/details/${project.construction.constructionId}'">Construction
+                                                                onclick="window.location.href = '/manager/construction/viewDetail/${project.construction.constructionId}'">Construction
                                                             Details</button>
                                                         <a href="/manager/construction/assign/${project.construction.constructionId}"
                                                            class="btn btn-warning">Assign Staff</a>

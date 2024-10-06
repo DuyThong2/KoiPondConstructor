@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  *
  * @author Admin
@@ -22,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CustomerService {
-    
+
     private CustomerDAO customerDAO;
     private PasswordEncoder passwordEncoder;
 
@@ -30,11 +32,16 @@ public class CustomerService {
         this.customerDAO = customerDAO;
         this.passwordEncoder = passwordEncoder;
     }
-    
+
     public Customer getCustomerById(int id){
         return customerDAO.getCustomerById(id);
     }
-    
+
+    @Transactional
+    public Customer updateCustomer(Customer customer) {
+        return customerDAO.updateCustomer(customer);
+    }
+
     @Transactional
     public void registerCustomer(CustomerDTO customerDTO) {
         // Check if a customer with this email already exists
@@ -50,12 +57,16 @@ public class CustomerService {
         customer.AddAuthorities(authority);
         customerDAO.createCustomer(customer);
     }
-    
+
     public Customer getCustomerByEmail(String email){
         return customerDAO.getCustomerByEmail(email);
     }
 
-    
-    
-    
+    public List<Customer> getFilterListOfCustomer(String name, String email, Boolean status, int page, int size){
+        return customerDAO.getFilterListOfCustomer(name, email, status, page, size);
+    }
+
+    public long countFilterCustomer(String name, String email, Boolean status) {
+        return customerDAO.countFilterCustomer(name, email, status);
+    }
 }

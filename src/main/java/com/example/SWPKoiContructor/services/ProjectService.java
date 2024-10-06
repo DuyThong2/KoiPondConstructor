@@ -211,9 +211,11 @@ public class ProjectService {
 
     public long countProjectComplete() {
         return projectDAO.countProjectComplete();
-
     }
 
+    public long countCustomerProjectsById(int customerId) {
+        return projectDAO.countCustomerProjectsById(customerId);
+    }
 
     public List<Project> getCustomerProjectsById(int customerId) {
         return projectDAO.getCustomerProjectsById(customerId);

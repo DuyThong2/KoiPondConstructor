@@ -33,6 +33,9 @@ public class Customer extends User{
     
     @OneToMany(mappedBy = "customer")
     private List<Comment> comment;
+    
+    @OneToMany(mappedBy = "customer")
+    private List<LoyaltyPoint> point;
 
     public Customer(String name, String email, String imgURL, String phone, String password, boolean enable) {
         super(name, email, imgURL, phone, password, enable);
@@ -79,6 +82,14 @@ public class Customer extends User{
     public void setComment(List<Comment> comment) {
         this.comment = comment;
     }
-    
 
+    public List<LoyaltyPoint> getPoint() {
+        return point;
+    }
+
+    public void setPoint(List<LoyaltyPoint> point) {
+        this.point = point;
+    }
+    
+    
 }
