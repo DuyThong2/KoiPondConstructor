@@ -32,16 +32,23 @@
             .current{
                 background-color: #ECECEC;
             }
+            h2 {
+                font-weight: bold;
+                color: #343a40;
+                border-bottom: 2px solid #343a40;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
         </style>
     </head>
     <body>
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar -->
-               <%@include file="../navBar.jsp" %>
+                <%@include file="../navBar.jsp" %>
 
                 <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 mt-4">
                     <h2 class="mb-4">Consultant Staff List</h2>
                     <table class="table table-bordered table-hover">
                         <thead class="thead-dark">

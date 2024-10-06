@@ -70,4 +70,15 @@ public class ConstructionDAO {
         query.setParameter("staffId", staffId);
         return query.getSingleResult();
     }
+
+    public List<Construction> getconstructionByStaffId(int staffId) {
+        String jpql = "SELECT c FROM Construction c "
+                + "JOIN c.constructionStaffs cs "
+                + "JOIN cs.staff s "
+                + "WHERE s.id = :staffId "
+                + "ORDER BY c.constructionStatus ASC";
+        TypedQuery<Construction> query = entityManager.createQuery(jpql, Construction.class);
+        query.setParameter("staffId", staffId);
+        return query.getResultList();
+    }
 }

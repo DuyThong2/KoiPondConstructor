@@ -3,6 +3,7 @@ package com.example.SWPKoiContructor.services;
 import com.example.SWPKoiContructor.dao.DesignDAO;
 import com.example.SWPKoiContructor.dao.DesignStageDAO;
 import com.example.SWPKoiContructor.entities.Construction;
+import com.example.SWPKoiContructor.entities.ConstructionStage;
 import com.example.SWPKoiContructor.entities.Design;
 import com.example.SWPKoiContructor.entities.DesignStage;
 import com.example.SWPKoiContructor.entities.Project;
@@ -10,6 +11,8 @@ import java.util.List;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.TypedQuery;
 
 @Service
 public class DesignService {
@@ -85,6 +88,11 @@ public class DesignService {
             Construction construction = project.getConstruction();
             if (construction != null && construction.getConstructionStatus() == 1) { // Pending
                 construction.setConstructionStatus(2); // Set construction to Processing
+                ConstructionStage startingConstructionStage = construction.getConstructionStage().get(0);
+                System.out.println(startingConstructionStage);
+                startingConstructionStage.setConstructionStageStatus(2);
+                System.out.println(startingConstructionStage);
+                
                 constructionService.updateConstruction(construction);
             }
         } else {
@@ -94,5 +102,9 @@ public class DesignService {
 
     public boolean isAssignedToDesign(int designId, int userId) {
         return designDao.isAssignedToDesign(designId, userId);
+    }
+
+    public List<Design> getProjectsByStaffId(int staffId) {
+        return designDao.getProjectsByStaffId(staffId);
     }
 }

@@ -6,7 +6,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Construction Project Details</title>
-        <!-- Sử dụng Bootstrap 4.3.1 từ CDN -->
+        <!-- Use Bootstrap 4.3.1 from CDN -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
             body {
@@ -141,6 +141,64 @@
                 font-weight: bold;
             }
         </style>
+
+        <script>
+            function createPayPalButton(detailId, constructionStageId, constructionId, amount, targetId) {
+                const target = document.getElementById(targetId);
+                if (!target) {
+                    console.error('Target not found:', targetId);
+                    return;
+                }
+
+                const form = document.createElement('form');
+                form.action = '/paypal/pay/construction';
+                form.method = 'post';
+
+                form.innerHTML = `
+                        <input type="hidden" name="detailId" value="` + detailId + `" />
+                        <input type="hidden" name="constructionStageId" value="` + constructionStageId + `" />
+                        <input type="hidden" name="constructionId" value="` + constructionId + `" />
+                        <input type="hidden" name="amount" value="` + amount + `" />
+                        <button type="submit" class="btn btn-primary btn-md">Pay with PayPal</button>
+                    `;
+
+                target.appendChild(form);
+            }
+
+            // Function to create Approve and Reject buttons and insert them into the correct target location
+            function createApproveRejectButtons(detailId, constructionStageId, constructionId, targetId) {
+                const target = document.getElementById(targetId);
+                if (!target) {
+                    console.error('Target not found:', targetId);
+                    return;
+                }
+
+                const approveForm = document.createElement('form');
+                approveForm.action = '/customer/approveInspection';
+                approveForm.method = 'post';
+                approveForm.style = 'display:inline; margin-right: 10px;';
+                approveForm.innerHTML = `
+                        <input type="hidden" name="detailId" value="` + detailId + `" />
+                        <input type="hidden" name="constructionStageId" value="` + constructionStageId + `" />
+                        <input type="hidden" name="constructionId" value="` + constructionId + `" />
+                        <button type="submit" class="btn btn-success btn-md">Approve</button>
+                    `;
+
+                const rejectForm = document.createElement('form');
+                rejectForm.action = '/customer/rejectInspection';
+                rejectForm.method = 'post';
+                rejectForm.style = 'display:inline;';
+                rejectForm.innerHTML = `
+                        <input type="hidden" name="detailId" value="` + detailId + `" />
+                        <input type="hidden" name="constructionStageId" value="` + constructionStageId + `" />
+                        <input type="hidden" name="constructionId" value="` + constructionId + `" />
+                        <button type="submit" class="btn btn-danger btn-md">Reject</button>
+                    `;
+
+                target.appendChild(approveForm);
+                target.appendChild(rejectForm);
+            }
+        </script>
     </head>
     <body>
         <div class="container mt-5">
@@ -246,25 +304,21 @@
                                             ${detail.constructionStageDetailName}
                                         </span>
 
-                                        <!-- Check if this is the inspection stage (ensure case-sensitive check) -->
-                                        <c:if test="${detail.constructionStageDetailName.equals('Inspection') && detail.constructionStageDetailStatus == 2}">
-                                            <div class="d-flex justify-content-center mt-2">
-                                                <!-- Approve Button -->
-                                                <form action="${pageContext.request.contextPath}/customer/approveInspection" method="post" style="display:inline; margin-right: 10px;">
-                                                    <input type="hidden" name="detailId" value="${detail.constructionStageDetailId}" />
-                                                    <input type="hidden" name="constructionStageId" value="${stage.constructionStageId}" />
-                                                    <input type="hidden" name="constructionId" value="${construction.constructionId}" />
-                                                    <button type="submit" class="btn btn-success btn-md">Approve</button>
-                                                </form>
+                                        <!-- If the current stage detail is Payment and it's in processing or pending state -->
+                                        <c:if test="${detail.constructionStageDetailName.equals('Payment') && detail.constructionStageDetailStatus == 2}">
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    createPayPalButton(${detail.constructionStageDetailId}, ${stage.constructionStageId}, ${construction.constructionId}, ${stage.constructionStagePrice}, "button-placement-${stage.constructionStageId}");
+                                                });
+                                            </script>
+                                        </c:if>
 
-                                                <!-- Reject Button -->
-                                                <form action="${pageContext.request.contextPath}/customer/rejectInspection" method="post" style="display:inline;">
-                                                    <input type="hidden" name="detailId" value="${detail.constructionStageDetailId}" />
-                                                    <input type="hidden" name="constructionStageId" value="${stage.constructionStageId}" />
-                                                    <input type="hidden" name="constructionId" value="${construction.constructionId}" />
-                                                    <button type="submit" class="btn btn-danger btn-md">Reject</button>
-                                                </form>
-                                            </div>
+                                        <c:if test="${detail.constructionStageDetailName.equals('Inspection') && detail.constructionStageDetailStatus == 2}">
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    createApproveRejectButtons(${detail.constructionStageDetailId}, ${stage.constructionStageId}, ${construction.constructionId}, "button-placement-${stage.constructionStageId}");
+                                                });
+                                            </script>
                                         </c:if>
                                     </c:forEach>
                                 </div>
@@ -290,7 +344,10 @@
                                         }
                                     })();
                                 </script>
-
+                                <!-- Unique button placement for this stage -->
+                                <div id="button-placement-${stage.constructionStageId}">
+                                    <!-- Buttons will be inserted here dynamically -->
+                                </div>
 
                             </div>
                         </div>
@@ -334,6 +391,8 @@
                 });
             });
         </script>
+
+
 
         <!-- Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

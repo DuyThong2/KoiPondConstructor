@@ -14,6 +14,10 @@ import com.example.SWPKoiContructor.entities.DesignStage;
 import com.example.SWPKoiContructor.entities.DesignStageDetail;
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Term;
+import com.example.SWPKoiContructor.utils.Utility;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,11 +29,7 @@ import java.util.List;
 public class ProjectService {
 
     private ProjectDAO projectDAO;
-
-    private DesignDAO designDAO;
-    private ConstructionDAO constructionDAO;
-
-    private ContractDAO contractDAO;
+    
 
     public ProjectService(ProjectDAO projectDAO) {
         this.projectDAO = projectDAO;
@@ -137,6 +137,8 @@ public class ProjectService {
             if (design != null && design.getStatus() == 3 && (construction == null || construction.getConstructionStatus() == 3)) {
                 project.setStatus(2); // Completed (Both Design and Construction are completed)
                 project.setStage(4); // Maintenace
+                LocalDate localDate = LocalDate.now();
+                project.setDateEnd(Utility.localDateToUtilDate(localDate));
             } else if (construction != null && construction.getConstructionStatus() == 2) {
                 project.setStatus(2); // Processing
                 project.setStage(3); // Construction
@@ -209,9 +211,11 @@ public class ProjectService {
 
     public long countProjectComplete() {
         return projectDAO.countProjectComplete();
-
     }
 
+    public long countCustomerProjectsById(int customerId) {
+        return projectDAO.countCustomerProjectsById(customerId);
+    }
 
     public List<Project> getCustomerProjectsById(int customerId) {
         return projectDAO.getCustomerProjectsById(customerId);
