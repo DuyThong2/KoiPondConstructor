@@ -8,6 +8,7 @@ package com.example.SWPKoiContructor.controller;
 import com.example.SWPKoiContructor.dao.ContractDAO;
 import com.example.SWPKoiContructor.entities.Contract;
 import com.example.SWPKoiContructor.entities.Customer;
+import com.example.SWPKoiContructor.entities.Feedback;
 import com.example.SWPKoiContructor.entities.Quotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.Term;
@@ -15,8 +16,10 @@ import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.TermService;
 import com.example.SWPKoiContructor.services.ContractService;
 import com.example.SWPKoiContructor.services.CustomerService;
+import com.example.SWPKoiContructor.services.FeedbackService;
 import com.example.SWPKoiContructor.services.QuoteService;
 import com.example.SWPKoiContructor.services.StaffService;
+import com.example.SWPKoiContructor.services.UserService;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import java.time.LocalDate;
 import java.util.Date;
@@ -47,57 +50,60 @@ public class ContractController {
     private StaffService staffService;
     private QuoteService quotesService;
     private ContractDAO contractDAO;
+    private UserService userService;
+    private FeedbackService feedbackService;
 
     public ContractController(ContractService contractService, TermService termService, CustomerService customerService,
-            StaffService staffService, QuoteService quotesService, ContractDAO contractDAO) {
+            StaffService staffService, QuoteService quotesService, ContractDAO contractDAO, UserService userService, FeedbackService feedbackService) {
         this.contractService = contractService;
         this.termService = termService;
         this.customerService = customerService;
         this.staffService = staffService;
         this.quotesService = quotesService;
         this.contractDAO = contractDAO;
+        this.userService = userService;
+        this.feedbackService = feedbackService;
         fileUtility = new FileUtility();
     }
 
-   @GetMapping("/manager/contract")
-public String listContracts(Model model,
-        @RequestParam(defaultValue = "0") int page,
-        @RequestParam(defaultValue = "8") int size,
-        @RequestParam(defaultValue = "dateCreate") String sortBy,
-        @RequestParam(defaultValue = "asc") String sortDirection,
-        @RequestParam(required = false) Integer statusFilter,
-        @RequestParam(required = false) String searchName,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
-        @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
-    
-    List<Contract> contracts;
-    long totalContracts;
+    @GetMapping("/manager/contract")
+    public String listContracts(Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(defaultValue = "dateCreate") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam(required = false) Integer statusFilter,
+            @RequestParam(required = false) String searchName,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
 
-    // Apply filtering based on the name, date range, and status
-    if (statusFilter != null || searchName != null || fromDate != null || toDate != null) {
-        contracts = contractService.getFilteredContracts(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
-        totalContracts = contractService.countFilteredContracts(statusFilter, searchName, fromDate, toDate);
-    } else {
-        contracts = contractService.getContractListBaseOnSortAndPaging(page, size, sortBy, sortDirection);
-        totalContracts = contractService.countContracts();
+        List<Contract> contracts;
+        long totalContracts;
+
+        // Apply filtering based on the name, date range, and status
+        if (statusFilter != null || searchName != null || fromDate != null || toDate != null) {
+            contracts = contractService.getFilteredContracts(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
+            totalContracts = contractService.countFilteredContracts(statusFilter, searchName, fromDate, toDate);
+        } else {
+            contracts = contractService.getContractListBaseOnSortAndPaging(page, size, sortBy, sortDirection);
+            totalContracts = contractService.countContracts();
+        }
+
+        int totalPages = (int) Math.ceil((double) totalContracts / size);
+
+        // Add attributes to the model for JSP rendering
+        model.addAttribute("contracts", contracts);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);  // Add searchName to model
+        model.addAttribute("fromDate", fromDate);  // Add fromDate to model
+        model.addAttribute("toDate", toDate);  // Add toDate to model
+
+        return "manager/contract/contractManage";  // JSP page to display the contract list
     }
-
-    int totalPages = (int) Math.ceil((double) totalContracts / size);
-
-    // Add attributes to the model for JSP rendering
-    model.addAttribute("contracts", contracts);
-    model.addAttribute("currentPage", page);
-    model.addAttribute("totalPages", totalPages);
-    model.addAttribute("sortBy", sortBy);
-    model.addAttribute("sortDirection", sortDirection);
-    model.addAttribute("statusFilter", statusFilter);
-    model.addAttribute("searchName", searchName);  // Add searchName to model
-    model.addAttribute("fromDate", fromDate);  // Add fromDate to model
-    model.addAttribute("toDate", toDate);  // Add toDate to model
-
-    return "manager/contract/contractManage";  // JSP page to display the contract list
-}
-
 
     @GetMapping("/consultant/contract")
     public String listContractsByConsultant(Model model,
@@ -155,10 +161,22 @@ public String listContracts(Model model,
     }
 
     @GetMapping("/manager/contract/viewDetail/{id}")
-    public String viewDetailContract(Model model, @PathVariable("id") int id) {
+    public String viewDetailContract(Model model, @PathVariable("id") int id, HttpSession session) {
         Contract contract = contractService.getContractById(id);
         if (contract != null) {
             model.addAttribute("contract", contract);
+            if (contract.getContractStatus() == 3) {
+                User toUser = contract.getQuote().getStaff();
+                User fromUser = contract.getCustomer();
+                Feedback fb = feedbackService.getLatestContractFeedback(id, fromUser.getId(), toUser.getId());
+                model.addAttribute("feedback", fb);
+            }
+            if (contract.getContractStatus() == 4) {
+                User toUser = contract.getQuote().getStaff();
+                User fromUser = (User) session.getAttribute("user");
+                Feedback fb = feedbackService.getManagerSelfFeedback(id);
+                model.addAttribute("feedback", fb);
+            }
             return "manager/contract/contractDetail";
         } else {
             return "redirect:/manager/contract";
@@ -172,6 +190,17 @@ public String listContracts(Model model,
         Staff staff = (Staff) session.getAttribute("user");
         if (contract != null && contract.isContractBelongToStaff(staff, contract)) {
             model.addAttribute("contract", contract);
+            if (contract.getContractStatus() == 3) {
+                User toUser = (User) session.getAttribute("user");
+                User fromUser = contract.getCustomer();
+                Feedback fb = feedbackService.getLatestContractFeedback(id, fromUser.getId(), toUser.getId());
+                model.addAttribute("feedback", fb);
+            }
+            if (contract.getContractStatus() == 4) {
+                User toUser = (User) session.getAttribute("user");
+                Feedback fb = feedbackService.getLatestContractFeedbackFromManager(id, toUser.getId());
+                model.addAttribute("feedback", fb);
+            }
             return "consultant/contract/contractDetail";
         } else {
             return "redirect:/consultant/contract";
@@ -185,7 +214,12 @@ public String listContracts(Model model,
         Customer customer = (Customer) session.getAttribute("user");
         if (contract != null && contract.isContractBelongToCustomer(customer, contract)) {
             model.addAttribute("contract", contract);
-
+            if (contract.getContractStatus() == 3) {
+                User toUser = contract.getQuote().getStaff();
+                User fromUser = (User) session.getAttribute("user");
+                Feedback fb = feedbackService.getLatestContractFeedback(id, fromUser.getId(), toUser.getId());
+                model.addAttribute("feedback", fb);
+            }
             return "customer/contract/contractDetail";
         } else {
             return "redirect:/customer/contract";
@@ -198,8 +232,7 @@ public String listContracts(Model model,
         Contract contract = new Contract();
         Quotes quote = quotesService.getQuoteById(quoteId);
         Staff staff = (Staff) session.getAttribute("user");
-        if (quote != null && quote.getContract() == null && quote.isQuoteBelongToStaff(quote, staff) 
-//                && quote.getQuotesStatus()==5
+        if (quote != null && quote.getContract() == null && quote.isQuoteBelongToStaff(quote, staff) //                && quote.getQuotesStatus()==5
                 ) {
             model.addAttribute("quote", quote);
             model.addAttribute("customer", quote.getCustomer());
@@ -231,7 +264,7 @@ public String listContracts(Model model,
     }
 
     @GetMapping("/consultant/contract/edit")
-    public String updateContractByConsultant(@RequestParam("id") int contractId, Model model,HttpSession session) {
+    public String updateContractByConsultant(@RequestParam("id") int contractId, Model model, HttpSession session) {
         Contract contract = contractService.getContractById(contractId);
         Staff staff = (Staff) session.getAttribute("user");
         if (contract != null && contract.isContractBelongToStaff(staff, contract)) {
@@ -295,10 +328,40 @@ public String listContracts(Model model,
         return "redirect:/customer/contract/viewDetail/" + contractId;
 
     }
+    
+    @PostMapping("/customer/contract/editStatusAndFeedback")
+    public String editStatusFeedbackByCustomer(@RequestParam("id") int contractId, 
+                                               @RequestParam("status") int status,
+                                               @RequestParam("declineReason") String feedbackContent,
+                                               @RequestParam("toUserId") int toUserId,
+                                               HttpSession session) {
+        Contract contract = contractService.changeStatusContract(status, contractId);
+        User fromUser = (User) session.getAttribute("user");
+        User toUser = userService.getUserById(toUserId);
+        Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, contract);
+        newFeedback = feedbackService.saveFeedback(newFeedback);
+        return "redirect:/customer/contract/viewDetail/" + contractId;
+
+    }
 
     @PostMapping("/manager/contract/editStatus")
     public String editStatusByManager(@RequestParam("id") int contractId, @RequestParam("status") int status) {
         Contract contract = contractService.changeStatusContract(status, contractId);
+        return "redirect:/manager/contract/viewDetail/" + contractId;
+
+    }
+
+    @PostMapping("/manager/contract/editStatusAndFeedback")
+    public String editStatusFeedbackByManager(@RequestParam("id") int contractId,
+            @RequestParam("status") int status,
+            @RequestParam("declineReason") String feedbackContent,
+            @RequestParam("toUserId") int toUserId,
+            HttpSession session) {
+        Contract contract = contractService.changeStatusContract(status, contractId);
+        User fromUser = (User) session.getAttribute("user");
+        User toUser = userService.getUserById(toUserId);
+        Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, contract);
+        newFeedback = feedbackService.saveFeedback(newFeedback);
         return "redirect:/manager/contract/viewDetail/" + contractId;
 
     }

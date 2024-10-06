@@ -105,15 +105,26 @@
                         </tr>
                         <tr>
                             <th>Quotes Construction Cost</th>
-                            <td>${quotes.quotesDesignCost}</td>
+                            <td>${quotes.quotesConstructionCost}</td>
                         </tr>                        
                         <!-- Contract Status moved back into the table -->
                     </table>
 
                     <!-- Approve/Reject buttons placed below the main table -->
                     <c:choose>
+                        <c:when test="${quotes.quotesStatus == 1}">
+                            <div class="">
+                                <form action="/consultant/quote/updateQuote" method="post" class="d-inline">
+                                    <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
+                                    <button type="submit" class="btn btn-info">Edit Quotes</button>
+                                </form>
+                            </div>
+                        </c:when>
                         <c:when test="${quotes.quotesStatus == 3}">
                             <div class="">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                </div>
                                 <form action="/consultant/quote/updateQuote" method="post" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                                     <button type="submit" class="btn btn-info">Edit Quotes</button>
@@ -130,15 +141,22 @@
                         </c:when>
                         <c:when test="${quotes.quotesStatus == 5}">
                             <div class="">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                </div>
                                 <form action="/consultant/quote/updateQuote" method="post" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                                     <button type="submit" class="btn btn-info">Edit Quotes</button>
-                                </form>
-                                <form action="/consultant/quote/detail/updateStatus" method="get" class="d-inline">
-                                    <input type="hidden" name="quoteId" value="${quotes.quotesId}">
-                                    <input type="hidden" name="statusId" value="6">
-                                    <button type="submit" class="btn btn-danger">Deny Request</button>
-                                </form>
+                                </form>                                
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                                    onclick="document.getElementById('declineForm').quoteId.value = '${quotes.quotesId}';">Rejected</button>
+                            </div>
+                        </c:when>
+                        <c:when test="${quotes.quotesStatus == 6}">
+                            <div class="">
+                                <div class="alert alert-danger" role="alert">
+                                    <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                </div>                                
                             </div>
                         </c:when>
                     </c:choose>
@@ -208,6 +226,34 @@
                         <c:if test="${empty quotes.contract}">
                             <p>No Contract are associated with this Consultant.</p>
                         </c:if>
+                    </div>
+                </div>
+            </div>
+        </div>
+                            
+        <!-- Decline Modal -->
+        <div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="declineForm" action="/consultant/quote/detail/updateStatusAndFeedback" method="post">
+                            <input type="hidden" name="quoteId" value="">
+                            <input type="hidden" name="statusId" value="6">
+                            <div class="form-group">
+                                <label for="declineReason">Please provide a reason for declining this quote:</label>
+                                <textarea class="form-control" id="declineReason" name="declineReason" rows="4" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason & Decline</button>
                     </div>
                 </div>
             </div>

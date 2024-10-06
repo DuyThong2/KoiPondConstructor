@@ -108,25 +108,50 @@
                                 <c:choose>
                                     <c:when test="${quotes.quotesStatus == 1}">
                                         <div class="">
-                                            <form action="/manager/quote/detail/updateStatus" method="get" class="d-inline">
+                                            <form action="/manager/quote/detail/updateStatus" method="post" class="d-inline">
                                                 <input type="hidden" name="quoteId" value="${quotes.quotesId}">
                                                 <input type="hidden" name="statusId" value="2">
                                                 <button type="submit" class="btn btn-success">Approved</button>
                                             </form>
-                                            <form action="/manager/quote/detail/updateStatus" method="get" class="d-inline">
-                                                <input type="hidden" name="quoteId" value="${quotes.quotesId}">
-                                                <input type="hidden" name="statusId" value="3">
-                                                <button type="submit" class="btn btn-danger">Rejected</button>
-                                            </form>
+
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                                    onclick="document.getElementById('declineForm').quoteId.value = '${quotes.quotesId}';
+                                                            document.getElementById('declineForm').toUserId.value = '${quotes.staff.id}';
+                                                            document.getElementById('declineForm').statusId.value = '3';">Rejected
+                                            </button>
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${quotes.quotesStatus == 3}">
+                                        <div class="">
+                                            <div class="alert alert-danger" role="alert">
+                                                <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                            </div>
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${quotes.quotesStatus == 5}">
+                                        <div class="">
+                                            <div class="alert alert-danger" role="alert">
+                                                <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                            </div>
                                         </div>
                                     </c:when>
                                     <c:when test="${quotes.quotesStatus == 6}">
                                         <div class="">
-                                            <form action="/manager/quote/detail/updateStatus" method="get" class="d-inline">
+                                            <div class="alert alert-danger" role="alert">
+                                                <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                            </div>
+                                            <!--Nút Cancel báo giá-->
+                                            <form action="/manager/quote/detail/updateStatus" method="post" class="d-inline">
                                                 <input type="hidden" name="quoteId" value="${quotes.quotesId}">
                                                 <input type="hidden" name="statusId" value="7">
                                                 <button type="submit" class="btn btn-danger">Cancel</button>
-                                            </form>                               
+                                            </form>
+                                            <!--Nút Tiếp tục báo giá-->
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                                    onclick="document.getElementById('declineForm').quoteId.value = '${quotes.quotesId}';
+                                                            document.getElementById('declineForm').toUserId.value = '${quotes.staff.id}';
+                                                            document.getElementById('declineForm').statusId.value = '3';">Continue Customer Request
+                                            </button>
                                         </div>
                                     </c:when>
                                 </c:choose>
@@ -198,6 +223,35 @@
                         </div>
                     </div>
                 </main>
+            </div>
+        </div>
+
+        <!-- Decline Modal -->
+        <div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="declineForm" action="/manager/quote/detail/updateStatusAndFeedback" method="post">
+                            <input type="hidden" name="quoteId" value="">
+                            <input type="hidden" name="statusId" value="">
+                            <input type="hidden" name="toUserId" value="">
+                            <div class="form-group">
+                                <label for="declineReason">Please provide a reason for declining this quote:</label>
+                                <textarea class="form-control" id="declineReason" name="declineReason" rows="4" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason & Decline</button>
+                    </div>
+                </div>
             </div>
         </div>
 
