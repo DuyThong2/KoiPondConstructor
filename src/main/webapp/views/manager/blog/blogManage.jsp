@@ -9,21 +9,85 @@
         <link rel="stylesheet" href="/assets/css/vendor/bootstrap.min.css">
         <style>
             /* Custom Styling for better layout */
+            body {
+                background-color: #f8f9fa;
+                font-family: 'Arial', sans-serif;
+            }
             .card {
-                min-height: 400px; /* Ensuring all cards have equal height */
+                min-height: 450px; /* Ensuring all cards have equal height */
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s ease-in-out;
+            }
+            .card:hover {
+                transform: scale(1.02);
             }
             .card img {
-                height: 150px;
+                height: 200px;
                 object-fit: cover;
+                border-bottom: 2px solid #ddd;
             }
             .form-row {
                 margin-bottom: 20px;
+            }
+            /* Align search form elements in one row */
+            form.d-flex.flex-wrap {
+                align-items: flex-end;
+            }
+            .form-group {
+                margin-right: 15px;
+            }
+            /* Adjust button width and alignment */
+            .btn.btn-success {
+                width: 200px;
+            }
+            /* Adjust pagination for better responsiveness */
+            .pagination {
+                justify-content: center;
+            }
+            .navbar {
+                background-color: #007bff;
+                padding: 10px 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            .navbar-brand {
+                color: white;
+                font-weight: bold;
+            }
+            .pagination .page-item .page-link {
+                color: #007bff;
+            }
+            .pagination .page-item.active .page-link {
+                background-color: #007bff;
+                border-color: #007bff;
+                color: white;
+            }
+            .btn-info {
+                background-color: #17a2b8;
+                border-color: #17a2b8;
+                color: white;
+            }
+            .btn-info:hover {
+                background-color: #138496;
+                border-color: #138496;
+            }
+            h1 {
+                color: #343a40;
+                margin-bottom: 30px;
+                font-weight: bold;
+                border-bottom: 3px solid #343a40;
             }
         </style>
     </head>
     <body>
 
-        <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+            <%@include file="../navBar.jsp" %>
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
             <h1 class="my-4">Blog Management</h1>
 
             <!-- Button to Create New Blog -->
@@ -130,6 +194,8 @@
                     </c:if>
                 </ul>
             </nav>
+            </main>
+            </div>
         </div>
 
         <!-- JS and Bootstrap scripts -->

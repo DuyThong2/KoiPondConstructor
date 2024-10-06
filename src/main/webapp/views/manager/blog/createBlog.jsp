@@ -25,6 +25,7 @@
                 color: #007bff;
                 margin-bottom: 30px;
                 font-weight: bold;
+                border-bottom: 2px solid #007bff;
             }
             label {
                 font-weight: bold;
@@ -57,7 +58,12 @@
         </style>
     </head>
     <body>
-        <div class="container">
+        <div class="container-fluid">
+            <div class="row">
+                <%@include file="../navBar.jsp" %>
+
+                <!-- Main content -->
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
             <h1>Create New Blog</h1>
 
             <form:form method="post" enctype="multipart/form-data" modelAttribute="blog" action="/staff/blog/new">
@@ -97,6 +103,8 @@
                     <button type="submit" class="btn btn-primary">Create Blog</button>
                 </div>
             </form:form>
+                </main>
+            </div>
         </div>
 
         <!-- CKEditor Integration -->

@@ -10,8 +10,12 @@ import com.example.SWPKoiContructor.dao.ConstructionStageDAO;
 import com.example.SWPKoiContructor.entities.Construction;
 import com.example.SWPKoiContructor.entities.ConstructionStage;
 import java.util.List;
+
+import com.example.SWPKoiContructor.entities.Project;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -82,5 +86,8 @@ public class ConstructionService {
             throw new RuntimeException();
         }
 
+    }
+    public List<Construction> getConstructionByStaffId(int staffId) {
+        return constructionDAO.getconstructionByStaffId(staffId);
     }
 }

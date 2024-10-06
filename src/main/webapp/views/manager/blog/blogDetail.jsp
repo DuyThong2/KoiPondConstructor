@@ -13,8 +13,8 @@
         }
         .blog-header {
             text-align: center;
-            margin-top: 30px;
             margin-bottom: 20px;
+            border-bottom: 2px solid #212529;
         }
         .blog-card {
             margin-top: 20px;
@@ -82,8 +82,12 @@
 <body>
 
     <!-- Blog Detail Container -->
-    <div class="container mt-5">
-        
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <%@include file="../navBar.jsp" %>
+
+            <!-- Main content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
         <!-- Blog Header -->
         <div class="blog-header">
             <h1>Blog Detail</h1>
@@ -139,13 +143,13 @@
 
             </div>
         </div>
-
+            </main>
         <!-- Footer Section with Back Button -->
         <div class="blog-footer">
             <a href="/staff/blogs" class="btn btn-outline-primary">Back to Blog List</a>
         </div>
     </div>
-
+    </div>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

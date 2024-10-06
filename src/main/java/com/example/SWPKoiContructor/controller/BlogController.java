@@ -71,6 +71,8 @@ public class BlogController {
     public String viewDetailBlog(@PathVariable("id") int id, Model model, HttpSession session) {
         Blog blog = blogService.getBlogWithContentById(id);
         Staff staff = (Staff) session.getAttribute("user");
+        if (staff == null)
+            return "redirect:/login";
         if (blog != null && (blog.isBlogBelongToAuthor(staff) || "Management".equalsIgnoreCase(staff.getDepartment()))) {
             model.addAttribute("blog", blog);
             return "/manager/blog/blogDetail";
