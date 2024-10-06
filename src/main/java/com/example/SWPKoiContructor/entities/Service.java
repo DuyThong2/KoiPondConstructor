@@ -6,15 +6,7 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  *
@@ -40,8 +32,9 @@ public class Service {
     
     @OneToMany(mappedBy="service")
     private List<ServiceDetail>  serviceDetails;
-    
-    @OneToMany(mappedBy = "service")
+
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("servicePriceStatus DESC, dateApply DESC")
     private List<ServicePrice> servicePrice;
 
     public Service(String serviceName, String serviceDescription,  boolean serviceStatus) {

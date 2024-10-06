@@ -80,8 +80,13 @@ public class ServicePrice {
     public void setServicePriceStatus(boolean servicePriceStatus) {
         this.servicePriceStatus = servicePriceStatus;
     }
-    
-    
-    
-    
+
+
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
 }

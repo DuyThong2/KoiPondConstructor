@@ -1,11 +1,14 @@
 package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.ServiceDetail;
+import com.example.SWPKoiContructor.entities.ServicePrice;
 import com.example.SWPKoiContructor.services.ServiceDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -22,7 +25,7 @@ public class ServiceDetailAdminController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortType,
+            @RequestParam(defaultValue = "desc") String sortType,
             @RequestParam(required = false) Integer statusFilter) {
 
         List<ServiceDetail> list;
@@ -49,4 +52,5 @@ public class ServiceDetailAdminController {
 
         return "manager/service/serviceCustomerManage"; // Path to your JSP page for service details list
     }
+
 }

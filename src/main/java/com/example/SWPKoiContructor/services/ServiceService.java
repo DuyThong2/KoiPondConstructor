@@ -2,9 +2,9 @@ package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.ServiceDAO;
 import com.example.SWPKoiContructor.entities.Service;
+import com.example.SWPKoiContructor.entities.ServicePrice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -35,8 +35,8 @@ public class ServiceService {
 
     // Create a new service
     @Transactional
-    public Service createService(Service service) {
-        return serviceDAO.createService(service);
+    public void createService(Service service) {
+         serviceDAO.createService(service);
     }
 
     // Update an existing service
@@ -61,4 +61,25 @@ public class ServiceService {
     public void deleteService(int serviceId) {
         serviceDAO.deleteService(serviceId);
     }
+    @Transactional
+    public void simpleTestTransaction() {
+        Service testService = new Service();
+        testService.setServiceName("Test Service");
+        testService.setServiceDescription("This is a test service");
+        serviceDAO.createService(testService);
+    }
+
+    public List<Service> getPaginationServiceListByStatus(int page, int size, String sortBy, String sortType, Boolean statusFilter) {
+        return serviceDAO.getPaginationServiceListByStatus(page, size, sortBy, sortType, statusFilter);
+    }
+
+    public long countServiceFilter(Boolean statusFilter) {
+        return serviceDAO.countServiceFilter(statusFilter);
+    }
+
+    public List<Service> getPaginationServiceList(int page, int size, String sortBy, String sortType) {
+        return serviceDAO.getPaginationServiceList(page, size, sortBy, sortType);
+    }
+
+
 }

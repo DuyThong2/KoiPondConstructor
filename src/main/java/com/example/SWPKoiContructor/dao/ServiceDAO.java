@@ -8,10 +8,7 @@ package com.example.SWPKoiContructor.dao;
 import com.example.SWPKoiContructor.entities.Service;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.FlushModeType;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -20,7 +17,7 @@ import java.util.List;
  */
 @Repository
 public class ServiceDAO {
-
+    @PersistenceContext
     private EntityManager entityManager;
 
     public ServiceDAO(EntityManager entityManager) {
@@ -58,11 +55,9 @@ public class ServiceDAO {
     }
 
     // Create a new service
-    public Service createService(Service service) {
-        entityManager.setFlushMode(FlushModeType.COMMIT);
-        Service result = entityManager.merge(service);
-        entityManager.setFlushMode(FlushModeType.AUTO);
-        return result;
+    public void createService(Service service) {
+         entityManager.persist(service);
+
     }
 
     // Update an existing service
