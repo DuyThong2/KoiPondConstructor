@@ -10,7 +10,12 @@ import com.example.SWPKoiContructor.dao.UserDAO;
 import com.example.SWPKoiContructor.entities.PasswordResetToken;
 import com.example.SWPKoiContructor.entities.User;
 import java.util.Date;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,5 +75,9 @@ public class UserService {
 
     public User getUserById(int userId) {
         return userDAO.getUserById(userId);
+    }
+    
+    public List<User> getUserListByRole(String role){
+        return userDAO.getUserListByRole(role);
     }
 }

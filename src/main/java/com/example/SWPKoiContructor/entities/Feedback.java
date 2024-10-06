@@ -43,6 +43,18 @@ public class Feedback {
     @ManyToOne
     @JoinColumn(name = "to_user")
     private User toUser;
+    
+    @ManyToOne
+    @JoinColumn(name = "consultant_id")
+    private Consultant consultant;
+    
+    @ManyToOne
+    @JoinColumn(name = "quotes_id")
+    private Quotes quotes;
+    
+    @ManyToOne
+    @JoinColumn(name = "contract_id")
+    private Contract contract;
 
     public Feedback() {
     }
@@ -56,15 +68,30 @@ public class Feedback {
         this.toUser = toUser;
     }
 
-    public Feedback(String feedbackContent, Date feedbackDate, User fromUser, User toUser) {
+    public Feedback(String feedbackContent, Date feedbackDate, User fromUser, User toUser, Consultant consultant) {
         this.feedbackContent = feedbackContent;
         this.feedbackDate = feedbackDate;
         this.fromUser = fromUser;
         this.toUser = toUser;
+        this.consultant = consultant;
     }
-    
-    
 
+    public Feedback(String feedbackContent, Date feedbackDate, User fromUser, User toUser, Quotes quotes) {
+        this.feedbackContent = feedbackContent;
+        this.feedbackDate = feedbackDate;
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.quotes = quotes;
+    }
+
+    public Feedback(String feedbackContent, Date feedbackDate, User fromUser, User toUser, Contract contract) {
+        this.feedbackContent = feedbackContent;
+        this.feedbackDate = feedbackDate;
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.contract = contract;
+    }
+          
     public int getFeedbackId() {
         return feedbackId;
     }
@@ -103,6 +130,30 @@ public class Feedback {
 
     public void setToUser(User toUser) {
         this.toUser = toUser;
+    }
+
+    public Consultant getConsultant() {
+        return consultant;
+    }
+
+    public void setConsultant(Consultant consultant) {
+        this.consultant = consultant;
+    }
+
+    public Quotes getQuotes() {
+        return quotes;
+    }
+
+    public void setQuotes(Quotes quotes) {
+        this.quotes = quotes;
+    }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
     
     

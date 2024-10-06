@@ -252,11 +252,17 @@
                                     <input type="hidden" name="status" value="6">
                                     <button type="submit" class="btn btn-success">Accept</button>
                                 </form>
-                                <form action="/customer/contract/editStatus" method="POST" class="d-inline">
-                                    <input type="hidden" name="id" value="${contract.contractId}">
+<!--                            <form action="/customer/contract/editStatus" method="POST" class="d-inline">
+                                    <input type="hidden" name="id" value="$/{contract.contractId}">
                                     <input type="hidden" name="status" value="3">
                                     <button type="submit" class="btn btn-warning">Reject</button>
-                                </form>
+                                </form>-->
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                        onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
+                                                 document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
+                                                 document.getElementById('declineForm').status.value = '3';"><i class="fas fa-times icon-btn"></i>
+                                                Reject
+                                </button>
                                 <form action="/customer/contract/editStatus" method="POST" class="d-inline">
                                     <input type="hidden" name="id" value="${contract.contractId}">
                                     <input type="hidden" name="status" value="5">
@@ -264,11 +270,47 @@
                                 </form>
                             </div>
                         </c:when>
+                        <c:when test="${contract.contractStatus == 3}">
+                            <div class="mt-4 text-center">
+                                <div class="alert alert-danger text-center" role="alert">
+                                    <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                </div>
+                            </div>
+                        </c:when>
                     </c:choose>
                 </div>
             </div>
         </div>
 
+        <!-- Decline Modal -->
+        <div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="declineForm" action="/customer/contract/editStatusAndFeedback" method="post">
+                            <input type="hidden" name="id" value="">
+                            <input type="hidden" name="status" value="">
+                            <input type="hidden" name="toUserId" value="">
+                            <div class="form-group">
+                                <label for="declineReason">Please provide a reason for declining this quote:</label>
+                                <textarea class="form-control" id="declineReason" name="declineReason" rows="4" required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason & Decline</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
