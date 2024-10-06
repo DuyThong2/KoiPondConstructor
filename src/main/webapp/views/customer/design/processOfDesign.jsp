@@ -282,8 +282,21 @@
                                 </div>
 
                                 <c:forEach var="detail" items="${stage.designDetail}">
-                                    <c:if test="${detail.name == 'Editing' && detail.status == 2}">
+                                    <c:if test="${detail.name == 'Payment' && detail.status == 2}">
                                         <div style="float: right;">
+                                            <!-- PayPal Payment Button -->
+                                            <form action="${pageContext.request.contextPath}/paypal/pay/design" method="post" style="display:inline-block;">
+                                                <input type="hidden" name="detailId" value="${detail.id}" />
+                                                <input type="hidden" name="designId" value="${design.designId}" />
+                                                <input type="hidden" name="amount" value="${stage.designStagePrice}" />
+                                                <button type="submit" class="btn btn-primary">Pay with PayPal</button>
+                                            </form>
+                                        </div>
+                                    </c:if>
+
+                                    <!-- Existing "Complete Editing" Button -->
+                                    <c:if test="${detail.name == 'Editing' && detail.status == 2}">
+                                        <div style="float: right; margin-right: 10px;">
                                             <form action="${pageContext.request.contextPath}/customer/designStageDetail/updateStatus/"
                                                   method="post" style="display:inline-block;" onsubmit="return confirmStatusChange();">
                                                 <input type="hidden" name="detailId" value="${detail.id}">

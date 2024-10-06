@@ -106,7 +106,7 @@ public class ProjectController {
             project.setStage(1);
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);
-            return "redirect:/manager/projects/" + newlyCreatedProject.getProjectId();
+            return "redirect:/manager/projects/details/" + newlyCreatedProject.getProjectId();
         } else {
             return "redirect:/manager/contracts";
         }

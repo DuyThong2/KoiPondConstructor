@@ -9,9 +9,10 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
             body {
+
                 font-family: 'Arial', sans-serif;
                 background-color: #f8f9fa;
-                
+                padding-top: 60px;
             }
             .container {
                 max-width: 90%;
@@ -20,13 +21,6 @@
                 padding: 30px;
                 border-radius: 10px;
                 box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            }
-                 h2 {
-                font-weight: bold;
-                color: #007bff;
-                border-bottom: 2px solid #007bff;
-                padding-bottom: 10px;
-                margin-bottom: 20px;
             }
             /* Other styling omitted for brevity */
         </style>
@@ -38,9 +32,9 @@
             <div class="row">
                 <!-- Header Section -->
                 <%@include file="../navBar.jsp" %>
-
+                <h2>Manage Construction Stage Details</h2>
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
-                    <h2>Manage Construction Stage Details</h2>
+
                     <!-- Project Info Section -->
                     <div class="project-info">
                         <h4>Project Information</h4>
@@ -56,6 +50,8 @@
                         <p><strong>Project Description:</strong> ${project.description}</p>
                     </div>
 
+                    <!-- Raw Construction Stage Table -->
+                    <!-- Raw Construction Stage Table -->
                     <!-- Raw Construction Stage Table -->
                     <h4 class="text-center">Raw Construction</h4>
                     <table class="table table-hover table-bordered">
@@ -92,7 +88,7 @@
                                     </td>
                                     <td>${rawStage.constructionStageDetail[0].constructionStageDetailDescription}</td>
                                     <td>
-                                        <!-- Iterate over details to find payment action -->
+                                        <!-- Show the form for all stages but disable it if the stage is not in 'Processing' or payment is already 'Completed' -->
                                         <c:forEach var="detail" items="${rawStage.constructionStageDetail}">
                                             <c:if test="${detail.constructionStageDetailName == 'Payment'}">
                                                 <form action="${pageContext.request.contextPath}/constructionStageDetail/updateStatus" method="post" onsubmit="return confirmStatusChange();">
@@ -100,43 +96,19 @@
                                                     <input type="hidden" name="constructionId" value="${construction.constructionId}">
                                                     <input type="hidden" name="constructionStageId" value="${rawStage.constructionStageId}">
 
-                                                    <!-- Check if Payment is the first or last stage -->
-                                                    <c:choose>
-                                                        <c:when test="${rawStage.constructionStageDetail[0].constructionStageDetailName == 'Payment'}">
-                                                            <!-- Allow action if first stage -->
-                                                            <div class="action-buttons mt-2">
-                                                                <select class="form-control text-center" name="newStatus" required
-                                                                        ${detail.constructionStageDetailStatus == 3 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
-                                                                    <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
-                                                                    <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                                                                    <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
-                                                                    <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
-                                                                </select>
-                                                                <button type="submit" class="btn btn-primary ml-2"
-                                                                        ${detail.constructionStageDetailStatus == 3 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
-                                                                    Update Payment Status
-                                                                </button>
-                                                            </div>
-                                                        </c:when>
-
-
-                                                        <c:otherwise>
-                                                            <!-- Disable action if previous stages are not completed -->
-                                                            <div class="action-buttons mt-2">
-                                                                <select class="form-control text-center" name="newStatus" required
-                                                                        ${!isPreviousStagesCompleted || detail.constructionStageDetailStatus == 3 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
-                                                                    <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
-                                                                    <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                                                                    <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
-                                                                    <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
-                                                                </select>
-                                                                <button type="submit" class="btn btn-primary ml-2"
-                                                                        ${!isPreviousStagesCompleted || detail.constructionStageDetailStatus == 3 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
-                                                                    Update Payment Status
-                                                                </button>
-                                                            </div>
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                    <div class="action-buttons mt-2">
+                                                        <select class="form-control text-center" name="newStatus" required
+                                                                ${rawStage.constructionStageStatus != 2 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
+                                                            <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
+                                                            <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
+                                                            <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
+                                                            <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
+                                                        </select>
+                                                        <button type="submit" class="btn btn-primary ml-2"
+                                                                ${rawStage.constructionStageStatus != 2 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
+                                                            Update Payment Status
+                                                        </button>
+                                                    </div>
                                                 </form>
                                             </c:if>
                                         </c:forEach>
@@ -206,50 +178,27 @@
                                     </td>
                                     <td>${completeStage.constructionStageDetail[0].constructionStageDetailDescription}</td>
                                     <td>
-                                        <!-- Iterate over details to find payment action -->
+                                        <!-- Show the form for all stages but disable it if the stage is not in 'Processing' or payment is already 'Completed' -->
                                         <c:forEach var="detail" items="${completeStage.constructionStageDetail}">
                                             <c:if test="${detail.constructionStageDetailName == 'Payment'}">
-                                                <form action="${pageContext.request.contextPath}/constructionStageDetail/updateStatus" method="post">
+                                                <form action="${pageContext.request.contextPath}/constructionStageDetail/updateStatus" method="post" onsubmit="return confirmStatusChange();">
                                                     <input type="hidden" name="detailId" value="${detail.constructionStageDetailId}">
                                                     <input type="hidden" name="constructionId" value="${construction.constructionId}">
                                                     <input type="hidden" name="constructionStageId" value="${completeStage.constructionStageId}">
 
-                                                    <!-- Check if Payment is the first or last stage -->
-                                                    <c:choose>
-                                                        <c:when test="${completeStage.constructionStageDetail[0].constructionStageDetailName == 'Payment'}">
-                                                            <!-- Allow action if first stage -->
-                                                            <div class="action-buttons mt-2">
-                                                                <select class="form-control text-center" name="newStatus" required
-                                                                        ${detail.constructionStageDetailStatus == 3 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
-                                                                    <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
-                                                                    <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                                                                    <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
-                                                                    <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
-                                                                </select>
-                                                                <button type="submit" class="btn btn-primary ml-2"
-                                                                        ${detail.constructionStageDetailStatus == 3 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
-                                                                    Update Payment Status
-                                                                </button>
-                                                            </div>
-                                                        </c:when>
-
-                                                        <c:otherwise>
-                                                            <!-- Disable action if previous stages are not completed -->
-                                                            <div class="action-buttons mt-2">
-                                                                <select class="form-control text-center" name="newStatus" required
-                                                                        ${!isPreviousStagesCompleted || detail.constructionStageDetailStatus == 3 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
-                                                                    <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
-                                                                    <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                                                                    <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
-                                                                    <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
-                                                                </select>
-                                                                <button type="submit" class="btn btn-primary ml-2"
-                                                                        ${!isPreviousStagesCompleted || detail.constructionStageDetailStatus == 3 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
-                                                                    Update Payment Status
-                                                                </button>
-                                                            </div>
-                                                        </c:otherwise>
-                                                    </c:choose>
+                                                    <div class="action-buttons mt-2">
+                                                        <select class="form-control text-center" name="newStatus" required
+                                                                ${completeStage.constructionStageStatus != 2 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
+                                                            <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
+                                                            <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
+                                                            <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
+                                                            <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
+                                                        </select>
+                                                        <button type="submit" class="btn btn-primary ml-2"
+                                                                ${completeStage.constructionStageStatus != 2 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
+                                                            Update Payment Status
+                                                        </button>
+                                                    </div>
                                                 </form>
                                             </c:if>
                                         </c:forEach>
@@ -283,6 +232,7 @@
                         </tbody>
                     </table>
 
+
                     <!-- Assigned Staff Section -->
                     <div class="staff-info mt-5">
                         <h4>Assigned Construction Staff</h4>
@@ -294,6 +244,7 @@
                     </div>
                 </main>
             </div>
+
         </div>
 
 
@@ -306,9 +257,9 @@
 
         <!-- Confirmation Script -->
         <script>
-                                            function confirmStatusChange() {
-                                                return confirm("Are you sure you want to change the status?");
-                                            }
+                                                    function confirmStatusChange() {
+                                                        return confirm("Are you sure you want to change the status?");
+                                                    }
         </script>
 
     </body>
