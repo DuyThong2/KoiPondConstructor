@@ -108,13 +108,15 @@ public class Blog {
         this.status = status;
     }
 
-    public Content getContent() {
+    public Content getIntroContent() {
         return introContent;
     }
 
-    public void setContent(Content introContent) {
+    public void setIntroContent(Content introContent) {
         this.introContent = introContent;
     }
+
+    
     
     public void addContent(Content content){
         this.introContent = content;
@@ -122,9 +124,15 @@ public class Blog {
     }
     
     
+    
+    
     public void addAuthor(Staff staff){
         this.staff = staff;
         staff.getBlogs().add(this);
+    }
+    
+    public boolean isBlogBelongToAuthor(Staff staff){
+        return staff != null && this.staff.getId() == staff.getId();
     }
     
     

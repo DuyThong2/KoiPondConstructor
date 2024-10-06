@@ -58,7 +58,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
     private String getRedirectURLBasedOnRole(Staff staff) {
         switch (staff.getDepartment()) {
             case "Consulting":
-                return "/consultant/contract";
+                return "/constructor/manage";
             case "Design":
                 return "/designer/manage";
             case "Construction":

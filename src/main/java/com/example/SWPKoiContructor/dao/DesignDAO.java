@@ -79,5 +79,10 @@ public class DesignDAO {
 
         return count > 0;
     }
-
+    public List<Design> getProjectsByStaffId(int staffId) {
+        String queryString = "SELECT d FROM Design d JOIN d.staff s WHERE s.id = :staffId";
+        TypedQuery<Design> query = entityManager.createQuery(queryString, Design.class);
+        query.setParameter("staffId", staffId);
+        return query.getResultList();
+    }
 }

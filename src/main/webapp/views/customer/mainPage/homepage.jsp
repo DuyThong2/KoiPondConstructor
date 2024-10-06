@@ -231,9 +231,9 @@
             <div class="mega__menu-wrapper p-relative">
                 <div class="header__main">
                     <div class="header__logo">
-                        <a href="index.html">
+                        <a href="">
                             <div class="logo">
-                                <img class="img-fluid" src="//assets/imgs/logo/final_resized_colored_logo_image.png" alt="logo not found">
+                                <img class="img-fluid" src="/assets/imgs/logo/final_resized_colored_logo_image.png" alt="logo not found">
                             </div>
                         </a>
                     </div>

@@ -7,6 +7,7 @@ package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.ProjectDAO;
 import com.example.SWPKoiContructor.dao.StaffDAO;
+import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Staff;
 import java.util.List;
@@ -91,5 +92,21 @@ public class StaffService {
     }
     public long countStaff(){
         return staffDAO.countStaff();
+    }
+
+    public List<Staff> getFilterListOfStaff(String name, String email, String department, Boolean status, int page, int size){
+        return staffDAO.getFilterListOfStaff(name, email, department,status, page, size);
+    }
+
+    public long countFilterStaff(String name, String email, String department, Boolean status) {
+        return staffDAO.countFilterStaff(name, email, department,status);
+    }
+    @Transactional
+    public void createStaff(Staff staff) {
+        staffDAO.createStaff(staff);
+    }
+    @Transactional
+    public Staff updateStaff(Staff staff) {
+        return staffDAO.updateStaff(staff);
     }
 }

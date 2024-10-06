@@ -171,7 +171,6 @@ public class DesignController {
         }
 
         DesignStage designStage = designStageService.getDesignStageById(designStageId);
-
         boolean isAssignedToDesign = designStage.getDesign().getStaff().stream().anyMatch(
                 staff -> staff.getId() == user.getId());
 
@@ -180,11 +179,9 @@ public class DesignController {
             return "redirect:/error/error-403";
         }
 
-        // Lấy danh sách tất cả các blueprint
         List<BluePrint> allBlueprints = bluePrintService.findByDesignStageId(designStageId);
         model.addAttribute("allBlueprints", allBlueprints);
 
-        // Lấy danh sách các blueprint mà customer đã feedback
         List<BluePrint> feedbackBlueprints = bluePrintService.findByDesignStageIdWithComments(designStageId);
         model.addAttribute("feedbackBlueprints", feedbackBlueprints);
 

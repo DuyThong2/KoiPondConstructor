@@ -13,8 +13,8 @@
         }
         .blog-header {
             text-align: center;
-            margin-top: 30px;
             margin-bottom: 20px;
+            border-bottom: 2px solid #212529;
         }
         .blog-card {
             margin-top: 20px;
@@ -82,8 +82,12 @@
 <body>
 
     <!-- Blog Detail Container -->
-    <div class="container mt-5">
-        
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <%@include file="../navBar.jsp" %>
+
+            <!-- Main content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
         <!-- Blog Header -->
         <div class="blog-header">
             <h1>Blog Detail</h1>
@@ -93,7 +97,7 @@
         <!-- Blog Card -->
         <div class="card blog-card">
             <!-- Blog Image -->
-            <img src="${blog.imgUrl}" class="blog-image" alt="Blog Image">
+            <img src="/uploads/${blog.imgUrl}" class="blog-image" alt="Blog Image">
 
             <!-- Blog Content -->
             <div class="card-body blog-content">
@@ -125,12 +129,12 @@
                 <!-- Blog Content Section -->
                 <h4>Full Content</h4>
                 <div class="blog-body">
-                    <p>${blog.content.content}</p>
+                    <p>${blog.introContent.content}</p>
                 </div>
 
                 <!-- Author Section -->
                 <div class="author-section mt-4">
-                    <img src="${blog.staff.profileImageUrl}" class="author-avatar" alt="Author Avatar">
+                    <img src="${blog.staff.imgURL}" class="author-avatar" alt="Author Avatar">
                     <div>
                         <p class="author-name">Written by: ${blog.staff.name}</p>
                         <p class="author-email">Email: ${blog.staff.email}</p>
@@ -139,13 +143,13 @@
 
             </div>
         </div>
-
+            </main>
         <!-- Footer Section with Back Button -->
         <div class="blog-footer">
-            <a href="/blog/list" class="btn btn-outline-primary">Back to Blog List</a>
+            <a href="/staff/blogs" class="btn btn-outline-primary">Back to Blog List</a>
         </div>
     </div>
-
+    </div>
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>

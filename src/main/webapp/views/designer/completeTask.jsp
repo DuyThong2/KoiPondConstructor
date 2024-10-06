@@ -114,13 +114,11 @@
                                                 <c:choose>
                                                     <c:when test="${detail.status == 2}">
                                                         <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
-                                                        <option value="3" ${detail.status == 3 ? 'selected' : ''}>Cancel</option>
                                                         <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
                                                     </c:when>
                                                     <c:otherwise>
                                                         <option value="1" ${detail.status == 1 ? 'selected' : ''}>Pending</option>
                                                         <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
-                                                        <option value="3" ${detail.status == 3 ? 'selected' : ''}>Cancel</option>
                                                         <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
                                                     </c:otherwise>
                                                 </c:choose>
