@@ -13,6 +13,8 @@
         <title>Contract Details</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <%@include file="../cssTemplate.jsp"%>
+
         <style>
             /* Custom styles for the sidebar */
             .sidebar {
@@ -31,9 +33,13 @@
             }
         </style>
     </head>
+            <%@include file="../homePageNavbar.jsp"%>
+
     <body>
         <div class="container-fluid">
-            <div class="row">               
+
+            <div class="row">
+
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <h2 class="mb-4">Quote List</h2>
@@ -184,6 +190,11 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     </body>
+                    <%@include file="../spacing.jsp"%>
+
+    <%@include file="../footer.jsp"%>
+    <%@include file="../scriptTemplate.jsp"%>
+
 </html>
 
 

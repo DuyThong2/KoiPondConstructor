@@ -10,6 +10,8 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <!-- FontAwesome Icons -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+            <%@include file="../cssTemplate.jsp"%>
+
         <style>
             .section-header {
                 margin-bottom: 20px;
@@ -52,6 +54,8 @@
             }
         </style>
     </head>
+    <%@include file="../homePageNavbar.jsp"%>
+
     <body>
         <div class="container mt-5">
             <div class="row">
@@ -316,4 +320,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
+    <%@include file="../footer.jsp"%>
+    <%@include file="../scriptTemplate.jsp"%>
+
 </html>

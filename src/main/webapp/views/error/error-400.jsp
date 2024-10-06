@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Bad Request</title>
 </head>
+<%@include file="../homePageNavbar.jsp"%>
 <body>
     <h1>400 - Bad Request</h1>
     <p>The request could not be understood by the server due to malformed syntax.</p>

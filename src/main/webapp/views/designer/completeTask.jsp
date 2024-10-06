@@ -79,6 +79,8 @@
             }
         </style>
     </head>
+    <%@include file="../homePageNavbar.jsp"%>
+
     <body>
         <div class="container mt-5">
             <h2>Design Stage Details</h2>
@@ -189,4 +191,6 @@
             }
         </script>
     </body>
+    <%@include file="../footer.jsp"%>
+
 </html>

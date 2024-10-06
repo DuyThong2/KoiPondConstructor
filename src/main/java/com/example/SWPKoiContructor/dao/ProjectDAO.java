@@ -168,12 +168,14 @@ public class ProjectDAO {
 
     }
 
+
     public long countCustomerProjectsById(int customerId) {
         String queryString = "SELECT count(p.id) FROM Project p WHERE p.contract.customer.id = :customerId";
         TypedQuery<Long> query = entityManager.createQuery(queryString, Long.class);
         query.setParameter("customerId", customerId);
         return query.getSingleResult();
     }
+
 
     public List<Project> getCustomerProjectsById(int customerId) {
         String queryString = "SELECT p FROM Project p WHERE p.contract.customer.id = :customerId";

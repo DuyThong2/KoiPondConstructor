@@ -31,6 +31,8 @@
         <link rel="stylesheet" href="css/style.css" class="main-style">
     </head>
     <!--Body Start-->
+    <%@include file="../homePageNavbar.jsp"%>
+
     <body data-res-from="1025">
         <div id="page">
             <!--Page Loader-->
@@ -724,7 +726,7 @@
                                     <ul class="footer-bottom-items pull-left">
                                         <li class="nav-item">
                                             <div class="nav-item-inner">
-                                                Copyrights  © 2023 <a href="https://zozothemes.com/html/metal/index.html">Metal</a>. Designed by <a href="https://zozothemes.com/">Zozothemes</a>
+                                                Copyrights  ï¿½ 2023 <a href="https://zozothemes.com/html/metal/index.html">Metal</a>. Designed by <a href="https://zozothemes.com/">Zozothemes</a>
                                             </div>
                                         </li>
                                     </ul>
@@ -765,6 +767,7 @@
                 <a title="p-green" class="switcher p-green-bg"></a>
             </div>
         </div><!-- End Color Switcher -->
+    <%@include file="../footer.jsp"%>
 
         <!-- jQuery Lib -->
         <script src="js/jquery.min.js"></script>
@@ -794,6 +797,7 @@
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBtkY02zM_XV3XtSzJbNwJdiA2iuNmP_bI"></script>
         <script src="js/color-panel.js"></script>	
     </body>
+
     <!-- Body End -->
     <!-- Body End -->
 </html>

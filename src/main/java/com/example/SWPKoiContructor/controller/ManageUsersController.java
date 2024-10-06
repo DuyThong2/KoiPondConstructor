@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 public class ManageUsersController {
@@ -20,8 +21,10 @@ public class ManageUsersController {
     private DesignService designService;
     private ConstructionService constructionService;
     private ConsultantService consultantService;
+    private PasswordEncoder passwordEncoder;
 
-    public ManageUsersController(CustomerService customerService, StaffService staffService, ProjectService projectService, LoyaltyPointService loyaltyPointService, DesignService designService, ConstructionService constructionService, ConsultantService consultantService) {
+    public ManageUsersController(CustomerService customerService, StaffService staffService, ProjectService projectService, LoyaltyPointService loyaltyPointService, DesignService designService,
+            ConstructionService constructionService, ConsultantService consultantService, PasswordEncoder passwordEncoder) {
         this.customerService = customerService;
         this.staffService = staffService;
         this.projectService = projectService;
@@ -29,6 +32,7 @@ public class ManageUsersController {
         this.designService = designService;
         this.constructionService = constructionService;
         this.consultantService = consultantService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/manager/manageCustomer")
@@ -111,6 +115,7 @@ public class ManageUsersController {
 
         staff.setEmail(fullEmail);
         staff.setEnabled(true);
+        staff.setPassword(passwordEncoder.encode(staff.getPassword()));
 
         String authority = staff.getDepartment();
         if (authority.equalsIgnoreCase("Design")) {

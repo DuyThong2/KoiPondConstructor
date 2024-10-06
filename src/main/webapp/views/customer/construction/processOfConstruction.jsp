@@ -8,6 +8,8 @@
         <title>Construction Project Details</title>
         <!-- Use Bootstrap 4.3.1 from CDN -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+            <%@include file="../cssTemplate.jsp"%>
+
         <style>
             body {
                 font-family: 'Arial', sans-serif;
@@ -141,7 +143,6 @@
                 font-weight: bold;
             }
         </style>
-
         <script>
             function createPayPalButton(detailId, constructionStageId, constructionId, amount, targetId) {
                 const target = document.getElementById(targetId);
@@ -199,20 +200,15 @@
                 target.appendChild(rejectForm);
             }
         </script>
+
     </head>
+    
+    <%@include file="../homePageNavbar.jsp"%>
+
     <body>
-        <div class="container mt-5">
+        <div class="container ">
             <!-- Navigation -->
-            <header>
-                <div class="nav">
-                    <div class="nav-links">
-                        <a href="#">Home</a>
-                        <a href="#">Constructions</a>
-                        <a href="#">Team</a>
-                    </div>
-                    <button class="btn btn-logout">Logout</button>
-                </div>
-            </header>
+
 
             <div class="row">
                 <div class="col-md-4 left-column">
@@ -399,4 +395,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </body>
+    <%@include file="../footer.jsp"%>
+    <%@include file="../scriptTemplate.jsp"%>
 </html>

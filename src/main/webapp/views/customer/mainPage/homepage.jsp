@@ -14,15 +14,7 @@
 
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/favicon.svg">
     <!-- CSS here -->   
-    <link rel="stylesheet" href="assets/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/vendor/animate.min.css">
-    <link rel="stylesheet" href="assets/css/plugins/swiper.min.css">
-    <link rel="stylesheet" href="assets/css/vendor/magnific-popup.css">
-    <link rel="stylesheet" href="assets/css/vendor/fontawesome-pro.css">
-    <link rel="stylesheet" href="assets/css/vendor/spacing.css">
-    <link rel="stylesheet" href="assets/css/plugins/odometer-theme-default.css">
-    <link rel="stylesheet" href="assets/css/plugins/carouselTicker.css">
-    <link rel="stylesheet" href="<c:url value='/assets/css/main.css'/>">
+      <%@include file="../cssTemplate.jsp"%>
 
 </head>
 
@@ -181,117 +173,7 @@
 <!-- Offcanvas area start -->
 
 <!-- Header area start -->
-<header>
-    <div id="header-sticky" class="header__area header-3">
-        <div class="header__top d-none d-xl-block color-pink" style="background-color:rgba(rgba(255, 27, 80, 0.847), green, blue, alpha)">
-            <div class="container">
-                <div class="row g-24">
-                    <div class="col-xl-5">
-                        <ul class="header__top-menu d-flex ">
-                            <li>
-                                <a href="https://maps.app.goo.gl/V5BeTXNv6WAniBN58">
-                                    <span>
-                                        <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14.7143 7.54545C14.7143 12.6364 7.85714 17 7.85714 17C7.85714 17 1 12.6364 1 7.54545C1 5.80949 1.72245 4.14463 3.00841 2.91712C4.29437 1.68961 6.03852 1 7.85714 1C9.67577 1 11.4199 1.68961 12.7059 2.91712C13.9918 4.14463 14.7143 5.80949 14.7143 7.54545Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M7.857 9.72741C9.11937 9.72741 10.1427 8.75057 10.1427 7.54559C10.1427 6.3406 9.11937 5.36377 7.857 5.36377C6.59464 5.36377 5.57129 6.3406 5.57129 7.54559C5.57129 8.75057 6.59464 9.72741 7.857 9.72741Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </span> 
-                                    Lô E2a-7, D1 Street, Đ. D1 - FPT UNIVERSITY
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="col-xl-7">
-                        <div class="header__top-wrapper d-flex justify-content-end">
-
-                            <div class="header__top-email">
-                                <a href="mailto:Info@ribuild.com">
-                                    <svg width="19" height="16" viewBox="0 0 19 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M2.7 1H16.3C17.235 1 18 1.7875 18 2.75V13.25C18 14.2125 17.235 15 16.3 15H2.7C1.765 15 1 14.2125 1 13.25V2.75C1 1.7875 1.765 1 2.7 1Z" stroke="#F44E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        <path d="M18 2.75L9.5 8.875L1 2.75" stroke="#F44E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                        
-                                    happikoi@contructioninc.com
-                                </a>
-                            </div>
-                            <ul class="header__top-socail d-flex ">
-                                <li class="title">Visit Us:</li>
-                                <li><a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a></li>
-                                <li><a href="https://twitter.com/"><i class="fab fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                                <li><a href="#"><i class="fa-brands fa-linkedin"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                  
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="mega__menu-wrapper p-relative">
-                <div class="header__main">
-                    <div class="header__logo">
-                        <a href="">
-                            <div class="logo">
-                                <img class="img-fluid" src="/assets/imgs/logo/final_resized_colored_logo_image.png" alt="logo not found">
-                            </div>
-                        </a>
-                    </div>
-
-                    <div class="mean__menu-wrapper d-none d-lg-block">
-                        <div class="main-menu main-menu-3 onepagenav">
-                            <nav id="mobile-menu">
-                                <ul>
-                                    <li><a href="#banner">Home</a></li> 
-                                    <li><a href="#mision">Best Design</a></li>
-                                    <li><a href="#services">Services</a></li>
-                                    <li><a href="#portfolio">Blog</a></li>
-                                    <li><a href="#pricing">Pricing</a></li>
-                                    
-                                    <li><a href="customer/projects/">Your Project</a></li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-
-                    <div class="header__right">
-                        <div class="header__action d-flex align-items-center">
-                            <div class="header__btn-wrap align-items-center d-inline-flex">
-                                <div class="rr-header-icon-search d-none d-sm-flex">
-                                    <button class="search-open-btn">
-                                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.88966 18.7793C14.7993 18.7793 18.7793 14.7993 18.7793 9.88966C18.7793 4.98004 14.7993 1 9.88966 1C4.98004 1 1 4.98004 1 9.88966C1 14.7993 4.98004 18.7793 9.88966 18.7793Z" stroke="#767676" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M21.0017 20.9978L16.168 16.1641" stroke="#767676" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>                                            
-                                    </button>
-                                </div>
-
-                                <div class="rr-header-contact-btn d-flex align-items-space-between d-none d-md-flex">
-                                   
-                                    <a href="index.html" class="rr-btn__header">
-                                        <span class="btn-wrap">
-                                            <span class="text-one turn-off-animation-button ">Login </span>
-                                        </span>
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="header__hamburger ml-30 d-xl-none">
-                                <div class="sidebar__toggle">
-                                    <a class="bar-icon" href="javascript:void(0)">
-                                        <span></span>
-                                        <span></span>
-                                        <span></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</header>
+<%@include file="../homePageNavbar.jsp" %>
 <!-- Header area end -->
 
 <main>
@@ -315,7 +197,7 @@
                 </div>
 
                 <div class="col-lg-6">
-                    <div class="banner-3__from">
+                    <form class="banner-3__from" action="save" method="POST">
                         <h4>Need Construction Help?</h4>
                         <p>We are always here to help you at any time, </p>
                         <div class="row">
@@ -329,21 +211,24 @@
                                     <input name="email" id="email" type="email" placeholder="Email Address">
                                 </div>
                             </div>
-
+                            <div class="col-12">
+                                <div class="banner-3__form-input">
+                                    <input name="phone" id="phone" type="text" placeholder="Phone number">
+                                </div>
+                            </div>
+                        
                             <div class="col-12">
                                 <div class="banner-3__form-input-select d-flex flex-column">
-                                    <select name="subject" id="subject" style="display: none;">
-                                        <option value="">Categories</option>
-                                        <option value="order">Categories-2</option>
-                                        <option value="objection">Categories-3</option>
+                                    <select name="type" id="subject" style="display: none;">
+                                        <option value="">Type 1- Construction</option>
+                                        <option value="order">Type 2 - Maintenance</option>
                                     </select>
                                 </div>
                             </div>
-
                             <div class="col-12">
                                 <div class="banner-3__form-input">
                                     <div class="validation__wrapper-up position-relative">
-                                        <textarea name="textarea" id="textarea" placeholder="Message"></textarea>
+                                        <textarea name="content" id="textarea" placeholder="Message"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -356,7 +241,7 @@
                                 </button>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -394,7 +279,7 @@
     
                                 <div class="team__item-text__left">
                                     <h4 class="team__item-title rr-fw-bold color-white mb-0"><a href="team-details.html">${project.projectName}</a></h4>
-                                    <span class="team__item-subtitle color-white">${project.content}</span>
+                                    <span class="team__item-subtitle color-white">${project.description}</span>
                                 </div>
                             </div>
                         </div>
@@ -840,7 +725,6 @@
                                 <span class="month-year">PER MONTH</span>
                             </h2>
                         </div>
-
                         <div class="pricing__card-body mb-40">
                             <ul>
                                 <li>
@@ -1014,206 +898,13 @@
 
 </main>
 <!-- Footer area start -->
-<footer></footer>
-    <section class="footer-2__area-common footer-bg-1 overflow-hidden">
-        <div class="container rr-shape-p-c_1">
-            <div class="footer-2__shape-1 rr-shape-p-s_1 leftRight"><img src="/assets/imgs/footer-2/shape-1.png" alt="image not found"></div>
-            <div class="footer-2__shape-2 rr-shape-p-s_1 upDown"><img src="/assets/imgs/footer-2/shape-2.png" alt="image not found"></div>
-            <div class="footer-2__main-wrapper">
-                <div class="row mb-minus-50">
-                    <div class="col-lg-4 col-6">
-                        <div class="footer-2__widget footer-2__widget-item-1">
-                            <div class="footer-2__logo mb-35">
-                                <a href="index.html">
-                                    <img class="img-fluid" src="/assets/imgs/logo/logo-white.svg" alt="logo not found">
-                                </a>
-                            </div>
 
-                            <div class="footer-2__content mb-25 mb-xs-20">
-                                <p class="mb-0">Officia deserunt mollitia animi, id est laborum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est</p>
-                            </div>
-
-                            <div class="footer-2__working">
-                                <div class="footer-2__widget-title mb-14">
-                                    <h4>Working Hours</h4>
-                                </div>
-                                <ul class="footer-2__working-list">
-                                    <li>Saturday: 09.00AM – 05.00PM</li>
-                                    <li>Thursday: 09.00AM – 05.00PM</li>
-                                    <li>Friday: Close</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-2 col-6">
-                        <div class="footer-2__widget footer-2__widget-item-2">
-                            <div class="footer-2__widget-title">
-                                <h4>Quick Links</h4>
-                            </div>
-                            <div class="footer-2__link">
-                                <ul>
-                                    <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="team.html">Our Team</a></li>
-                                    <li><a href="team-details.html">Testimonials</a></li>
-                                    <li><a href="blog.html">Blog Grid</a></li>
-                                    <li><a href="project.html">Projects</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-6">
-                        <div class="footer-2__widget footer-2__widget-item-3">
-                            <div class="footer-2__widget-title">
-                                <h4>Our Service</h4>
-                            </div>
-
-                            <div class="footer-2__link">
-                                <ul>
-                                    <li><a href="service-details.html">General Construction</a></li>
-                                    <li><a href="service-details.html">Property Maintenance</a></li>
-                                    <li><a href="service-details.html">Project Managment</a></li>
-                                    <li><a href="service-details.html">Virtual Design & Build</a></li>
-                                    <li><a href="service-details.html">Preconstruction</a></li>
-                                    <li><a href="service-details.html">Terms of use</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-3 col-6">
-                        <div class="footer-2__widget footer-2__widget-item-4">
-                            <div class="footer-2__widget-title">
-                                <h4>Our Gallery</h4>
-                            </div>
-
-                            <div class="footer-2__widget-gallery">
-                                <div class="row g-10">
-                                    <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-1.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-1.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-2.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-2.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-3.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-3.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-4.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-4.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-5.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-5.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-6.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-6.jpg" alt="">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="footer-2__border"></div>
-        </div>
-
-        <div class="footer-2__bottom-wrapper">
-            <div class="container">
-                <div class="row align-items-center">
-                    <div class="col-xl-4">
-                        <div class="footer-2__copyright text-xl-start text-center">
-                            <p class="mb-0">© Copyright <a href="index.html">Ribuild</a> 2024 . All right reserved.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-4">
-                        <div class="footer-2__social justify-content-center">
-                            <a href="https://www.facebook.com/">
-                                <svg width="10" height="18" viewBox="0 0 10 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9 1H6.81818C5.85376 1 4.92884 1.42143 4.24688 2.17157C3.56493 2.92172 3.18182 3.93913 3.18182 5V7.4H1V10.6H3.18182V17H6.09091V10.6H8.27273L9 7.4H6.09091V5C6.09091 4.78783 6.16753 4.58434 6.30392 4.43431C6.44031 4.28429 6.6253 4.2 6.81818 4.2H9V1Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                            <a href="https://x.com/">
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M9.11264 7.06225L15.0379 15.5H15.0341L14.4746 14.7169L9.1919 7.32307L9.19189 7.32306L8.55899 6.43729L8.55898 6.43727L4.49503 0.749074L4.34547 0.539738H4.0882H1.92015H0.989979L0.962074 0.5H4.50452L8.48597 6.1699L8.85112 6.6899L8.85114 6.68987L9.11264 7.06225ZM11.4929 15.2982L11.637 15.5H11.4955L7.2824 9.50047L6.91725 8.98049L6.49771 9.45768L1.18538 15.5H1.1054L6.62206 9.22562L6.88187 8.93013L6.65575 8.60813L3.37261 3.93275L6.54913 8.37872L6.54914 8.37873L7.08887 9.13411V9.13445L7.18204 9.26486L11.4929 15.2982ZM14.3732 0.5L9.296 6.27491H9.21598L9.27067 6.2127L14.2932 0.5H14.3732Z" stroke="white"/>
-                                </svg>
-                            </a>
-                            <a href="https://www.linkedin.com/">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M13 1H5C2.79086 1 1 2.79086 1 5V13C1 15.2091 2.79086 17 5 17H13C15.2091 17 17 15.2091 17 13V5C17 2.79086 15.2091 1 13 1Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M12.1999 8.49575C12.2986 9.16155 12.1849 9.84153 11.8749 10.439C11.5649 11.0364 11.0744 11.5209 10.4732 11.8235C9.87195 12.1261 9.19062 12.2314 8.52609 12.1245C7.86156 12.0176 7.24767 11.7038 6.77173 11.2279C6.2958 10.7519 5.98205 10.1381 5.87512 9.47352C5.76819 8.80899 5.87352 8.12767 6.17612 7.52645C6.47873 6.92524 6.96321 6.43475 7.56065 6.12475C8.15809 5.81475 8.83807 5.70102 9.50386 5.79975C10.183 5.90046 10.8117 6.21692 11.2972 6.7024C11.7827 7.18787 12.0992 7.81661 12.1999 8.49575Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M13.3999 4.6001H13.4079" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                            <a href="https://www.instagram.com/">
-                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.1999 6.05273C13.4729 6.05273 14.6938 6.58506 15.594 7.53262C16.4942 8.48017 16.9999 9.76532 16.9999 11.1054V17.0001H13.7999V11.1054C13.7999 10.6587 13.6313 10.2303 13.3313 9.91445C13.0312 9.5986 12.6242 9.42116 12.1999 9.42116C11.7756 9.42116 11.3686 9.5986 11.0685 9.91445C10.7685 10.2303 10.5999 10.6587 10.5999 11.1054V17.0001H7.3999V11.1054C7.3999 9.76532 7.90562 8.48017 8.80579 7.53262C9.70596 6.58506 10.9269 6.05273 12.1999 6.05273Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M4.2 6.89502H1V17.0003H4.2V6.89502Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M2.6 4.36842C3.48366 4.36842 4.2 3.61437 4.2 2.68421C4.2 1.75405 3.48366 1 2.6 1C1.71634 1 1 1.75405 1 2.68421C1 3.61437 1.71634 4.36842 2.6 4.36842Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-4">
-                        <div class="footer-2__copyright-menu">
-                            <ul>
-                                <li><a href="about-us.html">Privacy Policy</a></li>
-                                <li><a href="contact.html">Terms & Conditions</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</footer>
+<%@include file="../footer.jsp" %>
 <!-- Footer area end -->
 
 <!-- JS here -->
-<script src="/assets/js/vendor/jquery-3.7.1.min.js"></script>
-<script src="/assets/js/plugins/waypoints.min.js"></script>
-<script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
-<script src="/assets/js/plugins/meanmenu.min.js"></script>
-<script src="/assets/js/plugins/odometer.min.js"></script>
-<script src="/assets/js/plugins/swiper.min.js"></script>
-<script src="/assets/js/plugins/wow.js"></script>
-<script src="/assets/js/vendor/magnific-popup.min.js"></script>
-<script src="/assets/js/vendor/type.js"></script>
-<script src="/assets/js/plugins/nice-select.min.js"></script>
-<script src="/assets/js/vendor/jquery-ui.min.js"></script>
-<script src="/assets/js/vendor/jquery.appear.js"></script>
-<script src="/assets/js/plugins/parallax.min.js"></script>
-<script src="/assets/js/plugins/parallax-scroll.js"></script>
-<script src="/assets/js/plugins/isotope.pkgd.min.js"></script>
-<script src="/assets/js/plugins/imagesloaded.pkgd.min.js"></script>
-<script src="/assets/js/plugins/gsap.min.js"></script>
-<script src="/assets/js/plugins/ScrollTrigger.min.js"></script>
-<script src="/assets/js/plugins/SplitText.js"></script>
-<script src="/assets/js/plugins/tween-max.min.js"></script>
-<script src="/assets/js/plugins/draggable.min.js"></script>
-<script src="/assets/js/plugins/jquery.carouselTicker.js"></script>
-<script src="/assets/js/vendor/ajax-form.js"></script>
-<script src="/assets/js/plugins/TextPlugin.min.js"></script>
-<script src="/assets/js/main.js"></script>
-<script src="/assets/js/plugins/magiccursor.js"></script>
-<script src="/assets/js/image-reveal-hover.js"></script> 
+    <%@include file="../scriptTemplate.jsp"%>
+
 </body>
 
 </html>

@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.example.SWPKoiContructor.entities;
 
 import java.util.Date;
-import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,52 +16,56 @@ import javax.persistence.TemporalType;
  *
  * @author Admin
  */
-
-
 @Entity
 @Table(name = "Service_Detail")
 public class ServiceDetail {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="service_detail_id")
+    @Column(name = "service_detail_id")
     private int id;
-    
-    @Column(name="service_detail_price")
-    private double price;
-    
+
+    @Column(name = "service_detail_price")
+    private Double price; // Changed to wrapper class to handle null values
+
     @Temporal(TemporalType.DATE)
     private Date dateRegister;
-    
-    private int rating;
-    
-    private int serviceDetailStatus;
-    
+
+    private Integer rating; // Changed to wrapper class to handle null values
+
+    @Column(name = "service_detail_status") // Keeping only one field to avoid duplicate mappings
+    private Integer serviceDetailStatus; // Changed to wrapper class to handle null values
+
     private String feedback;
-    
+
     @ManyToOne
-    @JoinColumn(name="service_id")
+    @JoinColumn(name = "service_id")
     private Service service;
-    
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    
+
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    public ServiceDetail(double price, Date dateRegister, int rating, int serviceDetailStatus, String feedback) {
+    public ServiceDetail(int id, Double price, Date dateRegister, Integer rating, Integer serviceDetailStatus, String feedback, Service service, Customer customer, Staff staff) {
+        this.id = id;
         this.price = price;
         this.dateRegister = dateRegister;
         this.rating = rating;
         this.serviceDetailStatus = serviceDetailStatus;
         this.feedback = feedback;
+        this.service = service;
+        this.customer = customer;
+        this.staff = staff;
     }
 
     public ServiceDetail() {
     }
 
+    // Getters and setters
     public int getId() {
         return id;
     }
@@ -76,11 +74,11 @@ public class ServiceDetail {
         this.id = id;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -92,19 +90,19 @@ public class ServiceDetail {
         this.dateRegister = dateRegister;
     }
 
-    public int getRating() {
+    public Integer getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Integer rating) {
         this.rating = rating;
     }
 
-    public int getServiceDetailStatus() {
+    public Integer getServiceDetailStatus() {
         return serviceDetailStatus;
     }
 
-    public void setServiceDetailStatus(int serviceDetailStatus) {
+    public void setServiceDetailStatus(Integer serviceDetailStatus) {
         this.serviceDetailStatus = serviceDetailStatus;
     }
 
@@ -123,7 +121,20 @@ public class ServiceDetail {
     public void setService(Service service) {
         this.service = service;
     }
-    
-    
-    
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
+    }
 }

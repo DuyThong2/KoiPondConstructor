@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
     </head>
+    <%@include file="../homePageNavbar.jsp"%>
+
     <body>
 
         <div class="container">
@@ -180,4 +182,6 @@
         </div>
 
     </body>
+    <%@include file="../footer.jsp"%>
+
 </html>
