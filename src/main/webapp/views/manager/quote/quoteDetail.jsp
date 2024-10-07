@@ -237,7 +237,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="declineForm" action="/manager/quote/detail/updateStatusAndFeedback" method="post">
+                        <form id="declineForm" action="/manager/quote/detail/updateStatusAndFeedback" method="POST">
                             <input type="hidden" name="quoteId" value="">
                             <input type="hidden" name="statusId" value="">
                             <input type="hidden" name="toUserId" value="">

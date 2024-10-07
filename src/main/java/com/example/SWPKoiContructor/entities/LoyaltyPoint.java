@@ -19,6 +19,11 @@ public class LoyaltyPoint {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    public LoyaltyPoint() {
+    }
+    
+    
+
     public LoyaltyPoint(int id, Calendar dateApply, int amount, Customer customer) {
         this.id = id;
         this.dateApply = dateApply;

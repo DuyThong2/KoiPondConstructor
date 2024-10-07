@@ -1,5 +1,6 @@
 package com.example.SWPKoiContructor.configs.security;
 
+import com.example.SWPKoiContructor.configs.filter.SessionTimeoutFilter;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -31,7 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.addFilterBefore(new SessionTimeoutFilter(), UsernamePasswordAuthenticationFilter.class) 
+                .
+                csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/customer/**").hasRole("CUSTOMER") // Only customers can access /customer/*
                 .antMatchers("/manager/**").hasRole("MANAGER") // Only managers can access /manager/*
@@ -45,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin() // Enable form login
                 .loginPage("/login") // Set custom login page
                 .loginProcessingUrl("/authenticateTheUser")
-                .failureUrl("/")
+                .failureUrl("/loginFail")
                 .successHandler(successHandler)// Form action to handle authentication
                 .permitAll()
                 .and()
