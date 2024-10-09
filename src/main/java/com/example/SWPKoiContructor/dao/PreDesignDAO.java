@@ -23,21 +23,77 @@ public class PreDesignDAO {
     public PreDesignDAO(EntityManager entityManager) {
        this.entityManager = entityManager;
    }
+    
+    public List<PreDesign> getFilteredPreDesign(int page, int size, String sortBy, String sortDirection, Boolean statusFilter, String searchName){
+        StringBuilder queryStr = new StringBuilder("SELECT p FROM PreDesign p WHERE 1=1");
+        // Dynamic query construction
+        if (statusFilter != null) {
+            queryStr.append(" AND p.preDesignStatus = :statusFilter");
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            queryStr.append(" AND p.preDesignName LIKE :searchName");
+        }        
+        // Sorting
+        queryStr.append(" ORDER BY p.").append(sortBy).append(" ").append(sortDirection);
+        // Creating the query
+        TypedQuery<PreDesign> query = entityManager.createQuery(queryStr.toString(), PreDesign.class);
+        // Setting parameters dynamically
+        if (statusFilter != null) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }        
+        // Pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getResultList();
+    }
+    
+    public long countFilteredPreDesign(Boolean statusFilter, String searchName) {
+        StringBuilder queryStr = new StringBuilder("SELECT COUNT(p) FROM PreDesign p WHERE 1=1");
+        // Dynamic query construction
+        if (statusFilter != null) {
+            queryStr.append(" AND p.preDesignStatus = :statusFilter");
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            queryStr.append(" AND p.preDesignName LIKE :searchName");
+        }        
+        // Creating the query
+        TypedQuery<Long> query = entityManager.createQuery(queryStr.toString(), Long.class);
+        // Setting parameters dynamically
+        if (statusFilter != null) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
+        return query.getSingleResult();
+    }
+    
+    public List<PreDesign> getPreDesignList(int page, int size, String sortBy, String sortDirection){
+        String query = "SELECT p FROM PreDesign p ORDER BY p." + sortBy + " " + sortDirection;
+        TypedQuery<PreDesign> tq = entityManager.createQuery(query, PreDesign.class);
+        tq.setFirstResult(page * size);
+        tq.setMaxResults(size);
+        return tq.getResultList();
+    }
    
-    public List<PreDesign> getListPreDesign(){
-       TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT d FROM Pre_Design d", PreDesign.class);
-       return tq.getResultList();
-   }
-   
-    public List<PreDesign> getListPreDesignByName(String name){
-       TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT d FROM Pre_Design d WHERE d.pre_design_name like :name", PreDesign.class);
-       tq.setParameter("name", "%"+name+"%");
-       return tq.getResultList();
-   }
+    public long countPreDesignList(){
+         TypedQuery<Long> tq = entityManager.createQuery("SELECT COUNT(p) FROM PreDesign p", Long.class);
+         return tq.getSingleResult();
+    }
+    
+    public PreDesign getPreDesignById(int preDesignId){
+        TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p WHERE p.preDesignId = :id", PreDesign.class);
+        tq.setParameter("id", preDesignId);
+        return tq.getSingleResult();
+    }
    
     public PreDesign createNewPreDesign(PreDesign preDesign){
-        PreDesign createPreDesign = entityManager.merge(preDesign);
-        return createPreDesign;
+        entityManager.persist(preDesign);
+        return preDesign;
     }
     
     public PreDesign updatePreDesign(PreDesign preDesign){

@@ -108,12 +108,7 @@
         </style>
     </head>
     <body>
-
-        <!-- Notification Bell -->
-        <button class="notification-bell">
-            <i class="bi bi-bell"></i>
-        </button>
-
+       
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="admin-info">
