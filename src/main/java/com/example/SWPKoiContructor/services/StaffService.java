@@ -92,4 +92,9 @@ public class StaffService {
     public long countStaff(){
         return staffDAO.countStaff();
     }
+
+
+    public List<Staff> searchConstructionStaffByName(String trim) {
+        return staffDAO.searchConstructionStaffByName(trim);
+    }
 }

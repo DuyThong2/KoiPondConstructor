@@ -150,4 +150,19 @@ public class StaffDAO {
             throw new RuntimeException("Failed to assign staff to design: " + e.getMessage(), e);
         }
     }
+
+
+    public List<Staff> searchConstructionStaffByName(String name) {
+        String query = "SELECT s FROM Staff s WHERE LOWER(s.department) IN ('construction')";
+        if (name != null && !name.isEmpty()) {
+            query += " AND LOWER(s.name) LIKE :name";
+        }
+        TypedQuery<Staff> typedQuery = entityManager.createQuery(query, Staff.class);
+
+        if (name != null && !name.isEmpty()) {
+            typedQuery.setParameter("name", "%" + name.toLowerCase() + "%");
+        }
+
+        return typedQuery.getResultList();
+    }
 }

@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import java.util.Base64;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -60,20 +61,17 @@ public class Content {
     }
 
     public Content(String content, Date createDate, Date lastUpdatedDate) {
-        this.content = content;
+        this.content = encodeBase64(content);
         this.createDate = createDate;
         this.lastUpdatedDate = lastUpdatedDate;
     }
 
     public Content(String content) {
-        this.content = content;
+        this.content = encodeBase64(content);
         createDate = new Date();
         lastUpdatedDate= createDate;
     }
 
-    
-
-    
 
     public int getId() {
         return id;
@@ -88,7 +86,7 @@ public class Content {
     }
 
     public void setContent(String content) {
-        this.content = content;
+        this.content = encodeBase64(content);
     }
 
     public Project getProject() {
@@ -132,7 +130,12 @@ public class Content {
     }
     
     
-    
-    
+    private String encodeBase64(String content){
+        return Base64.getEncoder().encodeToString(content.getBytes());
+    }
+
+    private String decodeBase64(String base64Content){
+        return new String(Base64.getDecoder().decode(base64Content));
+    }
     
 }

@@ -215,7 +215,7 @@
                                                             onclick="window.location.href = '/manager/staff/view/${service.staff.id}'">
                                                             Staff Details
                                                         </button>
-                                                        <a href="/manager/service/editStaff/${service.id}"
+                                                        <a href="/manager/serviceDetails/assign/${service.id}"
                                                             class="btn btn-warning">Edit Staff</a>
                                                     </td>
                                                 </tr>
@@ -223,7 +223,7 @@
                                             <c:if test="${empty service.staff}">
                                                 <tr>
                                                     <td colspan="5" class="text-center">
-                                                        <a href="/manager/service/assignStaff/${service.id}"
+                                                        <a href="/manager/serviceDetails/assign/${service.id}"
                                                             class="btn btn-primary">Assign Staff</a>
                                                     </td>
                                                 </tr>
@@ -283,7 +283,7 @@
             var detailsRow = document.getElementById("details-" + serviceId);
 
             if (currentDetailsRow === detailsRow && detailsRow.style.display === "table-row") {
-                detailsRow.style.display = "none";
+                detailsRow.style.display = "none";i
                 currentDetailsRow = null;
             } else {
                 if (currentDetailsRow !== null) {
