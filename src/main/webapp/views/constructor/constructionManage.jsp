@@ -8,6 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Construction Manage</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
     </head>
     <body>
@@ -15,9 +16,36 @@
         <div class="container">
             <header>
                 <div class="nav">
-                    <a href="/constructor/manage" class="nav-link">My Projects</a>
+                    <a href="/constructor/manage" class="nav-link">
+                        <i class="fas fa-project-diagram"></i> My Projects
+                    </a>
+
                     <input type="text" placeholder="Search..." id="search">
-                    <a href="/logout" class="btn btn-logout">Logout</a>
+
+                    <div class="nav-item-group">
+
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge badge-danger">3</span>
+                        </a>
+
+                        <div class="dropdown">
+                            <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="/assets/imgs/logo/final_resized_colored_logo_image.png" alt="User Avatar" class="rounded-circle" width="40">
+                                <span class="ml-2 user-name">${sessionScope.user.name}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="/profile">Profile</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/help">Help</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="/logout" class="dropdown-item btn-logout">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </header>
 
@@ -30,7 +58,7 @@
                             <th>Project Name</th>
                             <th>Customer</th>
                             <th>Status</th>
-                            <th class="action-column">Action</th>
+                            <th class="action-column" style="width: 250px">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,6 +123,10 @@
                 // Handle search functionality
             });
         </script>
+        <!-- jQuery -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     </body>
 </html>

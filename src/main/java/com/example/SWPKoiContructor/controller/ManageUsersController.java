@@ -104,7 +104,7 @@ public class ManageUsersController {
 
     @PostMapping("/manager/manageStaff/add")
     public String addStaff(@ModelAttribute Staff staff, RedirectAttributes redirectAttributes) {
-        String fullEmail = staff.getEmail() + "@example.com";
+        String fullEmail = staff.getEmail() + "@gmail.com";
 
         // Check if email already exists
         if (staffService.findStaffByEmail(fullEmail) != null) {
@@ -147,10 +147,6 @@ public class ManageUsersController {
         User user = (User) session.getAttribute("user");
         if (user == null)
             return "redirect:/login";
-
-        Staff staffManager = staffService.getStaffById(user.getId());
-        if(!staffManager.getDepartment().equals("Management"))
-            return "redirect:/error/error-403";
 
         Customer customer = customerService.getCustomerById(userId);
         if (customer != null) {

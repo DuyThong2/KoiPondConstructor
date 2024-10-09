@@ -126,13 +126,13 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
     private String getRedirectURLBasedOnRole(Staff staff) {
         switch (staff.getDepartment()) {
             case "Consulting":
-                return "/consultant/contract";
+                return "/consultant/viewConsultantList";
             case "Design":
                 return "/designer/manage";
             case "Construction":
-                return "/constructor/contract";
+                return "/constructor/manage";
             default:
-                return "/manager/contract";
+                return "/manager/dashboard";
         }
     }
 

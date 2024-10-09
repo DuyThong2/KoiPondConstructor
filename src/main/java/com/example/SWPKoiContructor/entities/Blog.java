@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="Blog")
@@ -34,6 +35,9 @@ public class Blog {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="staff_id")
     private Staff staff;
+
+    @OneToMany(mappedBy = "blog")
+    private List<Comment> comments;
 
     public Blog(int id, String name, Date datePost, String description, String imgUrl, int status, Staff staff) {
         this.id = id;
@@ -116,8 +120,14 @@ public class Blog {
         this.introContent = introContent;
     }
 
-    
-    
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
     public void addContent(Content content){
         this.introContent = content;
         content.setBlog(this);

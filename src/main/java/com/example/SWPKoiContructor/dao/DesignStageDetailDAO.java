@@ -34,7 +34,6 @@ public class DesignStageDetailDAO {
         } catch (NoResultException e) {
             return null;
         }
-
     }
 
     public DesignStageDetail updateDesignStageDetail(DesignStageDetail designStageDetail) {
