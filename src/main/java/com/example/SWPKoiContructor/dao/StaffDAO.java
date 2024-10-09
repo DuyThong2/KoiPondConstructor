@@ -152,6 +152,22 @@ public class StaffDAO {
         }
     }
 
+
+
+    public List<Staff> searchConstructionStaffByName(String name) {
+        String query = "SELECT s FROM Staff s WHERE LOWER(s.department) IN ('construction')";
+        if (name != null && !name.isEmpty()) {
+            query += " AND LOWER(s.name) LIKE :name";
+        }
+        TypedQuery<Staff> typedQuery = entityManager.createQuery(query, Staff.class);
+
+        if (name != null && !name.isEmpty()) {
+            typedQuery.setParameter("name", "%" + name.toLowerCase() + "%");
+        }
+
+        return typedQuery.getResultList();
+    }
+
     public List<Staff> getFilterListOfStaff(String name, String email, String department, Boolean status, int page, int size) {
         StringBuilder queryBuilder = new StringBuilder("SELECT s FROM Staff s WHERE 1 = 1");
         if (name != null && !name.isEmpty()) {
@@ -221,5 +237,6 @@ public class StaffDAO {
         }
         return query.getSingleResult();
     }
+
 
 }

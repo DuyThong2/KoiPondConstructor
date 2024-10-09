@@ -197,6 +197,7 @@ public class ProjectService {
                 case 4:
                     project.setStage(5);
                     project.setStatus(3);
+                    
                     break;
                 default:
                     break;

@@ -94,6 +94,11 @@ public class StaffService {
         return staffDAO.countStaff();
     }
 
+
+
+    public List<Staff> searchConstructionStaffByName(String trim) {
+        return staffDAO.searchConstructionStaffByName(trim);
+    }
     public List<Staff> getFilterListOfStaff(String name, String email, String department, Boolean status, int page, int size){
         return staffDAO.getFilterListOfStaff(name, email, department,status, page, size);
     }
@@ -108,5 +113,6 @@ public class StaffService {
     @Transactional
     public Staff updateStaff(Staff staff) {
         return staffDAO.updateStaff(staff);
+
     }
 }
