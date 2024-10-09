@@ -56,6 +56,10 @@ public class Content {
     @OneToOne
     @JoinColumn(name="blog_id")
     private Blog blog;
+    
+    @OneToOne
+    @JoinColumn(name = "pre_design_id")
+    private PreDesign preDesign;
 
     public Content() {
     }
@@ -127,6 +131,14 @@ public class Content {
 
     public void setLastUpdatedDate(Date lastUpdatedDate) {
         this.lastUpdatedDate = lastUpdatedDate;
+    }
+
+    public PreDesign getPreDesign() {
+        return preDesign;
+    }
+
+    public void setPreDesign(PreDesign preDesign) {
+        this.preDesign = preDesign;
     }
     
     

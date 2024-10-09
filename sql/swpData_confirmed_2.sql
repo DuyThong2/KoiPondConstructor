@@ -352,7 +352,8 @@ create table Intro_Content(
 	last_updated_date dateTime,
 	project_id int foreign key references Project(project_id),
 	blog_id int foreign key references Blog(blog_id),
-	service_id int foreign key references [Service](service_id)
+	service_id int foreign key references [Service](service_id),
+	pre_design_id int foreign key references Pre_Design(pre_design_id)
 )
 
 

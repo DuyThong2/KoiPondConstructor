@@ -6,12 +6,15 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -36,9 +39,15 @@ public class PreDesign {
     @Column(name = "pre_design_description")
     private String preDesignDescription;
     
+    @Column(name = "pre_design_status")
+    private boolean preDesignStatus;
+    
     @OneToMany(mappedBy = "predesign")
     private List<Consultant> consultant;
 
+    @OneToOne(mappedBy = "preDesign",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Content content;
+    
     public PreDesign() {
     }
 
@@ -82,6 +91,15 @@ public class PreDesign {
         this.preDesignDescription = preDesignDescription;
     }
 
+    public boolean isPreDesignStatus() {
+        return preDesignStatus;
+    }
+
+    public void setPreDesignStatus(boolean preDesignStatus) {
+        this.preDesignStatus = preDesignStatus;
+    }
+
+    
     public List<Consultant> getConsultant() {
         return consultant;
     }
@@ -90,7 +108,18 @@ public class PreDesign {
         this.consultant = consultant;
     }
 
-    
+    public Content getContent() {
+        return content;
+    }
+
+    public void setContent(Content content) {
+        this.content = content;
+    }
+
+    public void addContent(Content content){
+        this.content = content;
+        content.setPreDesign(this);
+    }
     
     
 }
