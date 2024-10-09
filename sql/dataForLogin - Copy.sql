@@ -363,7 +363,7 @@ VALUES
 ('Tropical Koi Pond', '789 Beachside Blvd, Seaview', 'Tropical', 'Tropical-themed koi pond with vibrant plants.', 
  '2024-11-05', '2024-12-15', 3, 'projects/tropical_koi_pond.jpg', 5, 1, 3), -- Contract 3
 ('Zen Garden Koi Pond', '123 Zen Ln, Hillside', 'Zen', 'A minimalist zen garden koi pond with peaceful elements.', 
- '2024-11-07', '2024-12-20', 3, 'projects/zen_garden_koi_pond.jpg', 2, 1, 4), -- Contract 4
+ '2024-11-07', '2024-12-20', 3, 'projects/zen_garden_koi_pond.jpg', 5, 1, 4), -- Contract 4
 ('Compact Koi Pond', '456 City Rd, Downtown', 'Compact', 'Small koi pond with integrated lighting.', 
  '2024-11-09', '2024-12-25', 2, 'projects/compact_koi_pond.jpg', 2, 0, 5), -- Contract 5
 ('Luxury Modern Koi Pond', '789 Sunset Blvd, Westside', 'Luxury', 'A luxury koi pond with high-end water features.', 

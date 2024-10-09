@@ -125,7 +125,6 @@
                                             <c:choose>
                                                 <c:when test="${detail.constructionStageDetailStatus == 1}">Pending</c:when>
                                                 <c:when test="${detail.constructionStageDetailStatus == 2}">Processing</c:when>
-                                                <c:when test="${detail.constructionStageDetailStatus == 3}">Canceled</c:when>
                                                 <c:when test="${detail.constructionStageDetailStatus == 4}">Completed</c:when>
                                             </c:choose>
                                         </span>
@@ -143,7 +142,6 @@
                                         <select class="form-control text-center" name="newStatus" required>
                                             <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
                                             <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                                            <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
                                             <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
                                         </select>
                                     </c:otherwise>

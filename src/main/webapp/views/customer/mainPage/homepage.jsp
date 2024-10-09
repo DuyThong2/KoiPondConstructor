@@ -13,6 +13,7 @@
     <!-- Place favicon.ico in the root directory -->
 
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/favicon.svg">
+    
     <!-- CSS here -->   
       <%@include file="../cssTemplate.jsp"%>
 

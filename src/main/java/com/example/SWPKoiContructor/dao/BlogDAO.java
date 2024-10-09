@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import javax.persistence.NoResultException;
 
 @Repository
 public class BlogDAO {
@@ -32,7 +33,12 @@ public class BlogDAO {
 
     // Retrieve a specific blog by its ID
     public Blog getBlogById(int id) {
-        return entityManager.find(Blog.class, id);
+        try {
+            return entityManager.find(Blog.class, id);
+        } catch (NoResultException e) {
+            return null;
+        }
+
     }
 
     // Create a new blog
@@ -55,10 +61,15 @@ public class BlogDAO {
     }
 
     public Blog getBlogWithContentById(int id) {
-        TypedQuery<Blog> query = entityManager.createQuery(
-                "SELECT b FROM Blog b LEFT JOIN FETCH b.introContent WHERE b.id = :id", Blog.class);
-        query.setParameter("id", id);
-        return query.getSingleResult();
+        try {
+            TypedQuery<Blog> query = entityManager.createQuery(
+                    "SELECT b FROM Blog b LEFT JOIN FETCH b.introContent WHERE b.id = :id", Blog.class);
+            query.setParameter("id", id);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+
     }
 
     public List<Blog> searchByCriteria(String name, Integer status, Date dateFrom, Date dateTo, int page, int size) {
@@ -77,6 +88,7 @@ public class BlogDAO {
         if (dateTo != null) {
             queryBuilder.append("AND b.datePost <= :dateTo ");
         }
+        queryBuilder.append("order by b.datePost desc ");
 
         TypedQuery<Blog> query = entityManager.createQuery(queryBuilder.toString(), Blog.class);
 
@@ -95,7 +107,7 @@ public class BlogDAO {
         }
 
         // Set pagination parameters
-        query.setFirstResult(page  * size); // Skips previous pages' results
+        query.setFirstResult(page * size); // Skips previous pages' results
         query.setMaxResults(size);               // Limits results per page
 
         return query.getResultList();

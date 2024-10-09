@@ -2,7 +2,6 @@ package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.ProjectDAO;
 
-
 import com.example.SWPKoiContructor.entities.Construction;
 import com.example.SWPKoiContructor.entities.ConstructionStage;
 import com.example.SWPKoiContructor.entities.ConstructionStageDetail;
@@ -12,12 +11,16 @@ import com.example.SWPKoiContructor.entities.DesignStageDetail;
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Term;
 import com.example.SWPKoiContructor.utils.Utility;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import javax.persistence.Tuple;
 import org.springframework.context.annotation.Lazy;
 
 @Service
@@ -25,13 +28,11 @@ public class ProjectService {
 
     private ProjectDAO projectDAO;
     private LoyaltyPointService loyaltyPointService;
-    
 
-    public ProjectService(ProjectDAO projectDAO,@Lazy LoyaltyPointService loyaltyPointService) {
+    public ProjectService(ProjectDAO projectDAO, @Lazy LoyaltyPointService loyaltyPointService) {
         this.projectDAO = projectDAO;
         this.loyaltyPointService = loyaltyPointService;
     }
-
 
     public List<Project> getProjectList(int size) {
         return projectDAO.getProjectList(size);
@@ -121,7 +122,6 @@ public class ProjectService {
         return construction;
     }
 
-
     protected void propagateStatusToProject(int projectId) {
 
         Project project = getProjectById(projectId);
@@ -134,7 +134,7 @@ public class ProjectService {
             if (design != null && design.getStatus() == 3 && (construction == null || construction.getConstructionStatus() == 3)) {
                 project.setStatus(2); // Completed (Both Design and Construction are completed)
                 project.setStage(4); // Maintenace
-                
+
                 //gain royality point after completing project 
                 loyaltyPointService.gainLoyaltyPoints(project.getContract().getCustomer(), project.getContract().getTotalPrice());
                 LocalDate localDate = LocalDate.now();
@@ -166,19 +166,18 @@ public class ProjectService {
         return projectDAO.countProjectFilter(statusFilter, stageFilter);
     }
 
-
     @Transactional
-    public void updateProjectStage(int projectId){
+    public void updateProjectStage(int projectId) {
         Project project = getProjectById(projectId);
-        if(project!=null){
+        if (project != null) {
             Design design = project.getDesign();
             DesignStage startingDesignStage = design.getDesignStage().get(0);
             DesignStageDetail stratingDesignStageDetail = startingDesignStage.getDesignDetail().get(0);
             Construction construction = project.getConstruction();
             ConstructionStage startingConstructionStage = construction.getConstructionStage().get(0);
             ConstructionStageDetail startingConstructionStageDetail = startingConstructionStage.getConstructionStageDetail().get(0);
-            switch (project.getStage()){
-                case 1 :
+            switch (project.getStage()) {
+                case 1:
                     project.setStage(2);
                     project.setStatus(2);
                     design.setStatus(2);
@@ -193,6 +192,7 @@ public class ProjectService {
                     break;
                 case 3:
                     project.setStage(4);
+                    loyaltyPointService.gainLoyaltyPoints(project.getContract().getCustomer(), project.getContract().getTotalPrice());
                     break;
                 case 4:
                     project.setStage(5);
@@ -220,12 +220,38 @@ public class ProjectService {
     public List<Project> getCustomerProjectsById(int customerId) {
         return projectDAO.getCustomerProjectsById(customerId);
     }
+
     public List<Project> getActiveCustomerProjectsById(int customerId) {
-     return projectDAO.getActiveCustomerProjectsById(customerId);
+        return projectDAO.getActiveCustomerProjectsById(customerId);
     }
 
     public List<Project> getCompleteAndCancelCustomerProjectsById(int customerId) {
         return projectDAO.getCompleteAndCancelCustomerProjectsById(customerId);
     }
+    
+    public List<Project> getShareableProject(int page, int size){
+        return projectDAO.findPaginatedProjectsForShowing(page, size);
+    }
+    
+    public Project getProjectWithContent(int id){
+        return projectDAO.getProjectWithContentById(id);
+    }
 
+    //USE FOR DASHBOARD ONLY
+    public Map<Integer, BigDecimal> getTotalEarningsForCompletedProjectsPerMonth(int year) {
+        List<Tuple> results = projectDAO.getTotalEarningsForCompletedProjectsPerMonth(year);
+        Map<Integer, BigDecimal> earningsPerMonth = new HashMap<>();
+        
+        // Populate the map with month and total earnings
+        for (Tuple tuple : results) {
+            Integer month = tuple.get("month", Integer.class);
+            Double earningsAsDouble = tuple.get("totalEarnings", Double.class);  // Fetch as Double
+            BigDecimal totalEarnings = BigDecimal.valueOf(earningsAsDouble);  // Convert to BigDecimal
+            earningsPerMonth.put(month, totalEarnings);
+        }
+        
+        return earningsPerMonth;
+    }
+    
+    
 }

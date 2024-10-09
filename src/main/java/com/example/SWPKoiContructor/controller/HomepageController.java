@@ -1,22 +1,21 @@
 package com.example.SWPKoiContructor.controller;
 
-import com.example.SWPKoiContructor.configs.security.SecurityConfig;
 import com.example.SWPKoiContructor.entities.*;
 import com.example.SWPKoiContructor.services.BlogService;
 import com.example.SWPKoiContructor.services.CustomerService;
 import com.example.SWPKoiContructor.services.ProjectService;
+import com.example.SWPKoiContructor.services.ServiceService;
 import com.example.SWPKoiContructor.services.StaffService;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import javax.servlet.http.HttpSession;
-
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomepageController {
@@ -26,19 +25,19 @@ public class HomepageController {
     private BlogService blogService;
     private StaffService staffService;
     private CustomerService customerService;
+    private ServiceService serviceService;
 
-    public HomepageController(ProjectService projectService, BlogService blogService, StaffService staffService,CustomerService customerService) {
+    public HomepageController(ProjectService projectService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService) {
         this.projectService = projectService;
         this.blogService = blogService;
         this.staffService = staffService;
-        
-        
-        
+        this.customerService = customerService;
+        this.serviceService = serviceService;
     }
 
     @GetMapping("")
-    public String HomePageShow(Model model, HttpSession session) {
-        
+    public String homePageShow(Model model) {
+
         List<Project> projectList = projectService.getProjectListIsSharable();
         List<Staff> staffList = staffService.getTopStaffList();
         List<Blog> allBlogs = blogService.getAllBlogs();
@@ -56,11 +55,119 @@ public class HomepageController {
         model.addAttribute("staffList", staffList);
         return "customer/mainPage/homepage";
     }
-    
+
     @GetMapping("/home/services")
-    public String servicesShow(Model model){
+    public String servicesShow(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
+        int pageSize = 6; // Number of services per page
+
+        // Fetch services for the current page (page is 1-based, so subtract 1 for 0-based index)
+        List<Service> services = serviceService.getServicesPaged(page, pageSize);
+        services.removeIf(service -> !service.isServiceStatus());
+        model.addAttribute("services", services);
+        model.addAttribute("currentPage", page);
+
+        // Get the total number of services using the serviceList size method
+        long totalServices = serviceService.getServiceList(Integer.MAX_VALUE).stream().filter(Service::isServiceStatus).count();
+
+        // Calculate the total number of pages
+        int totalPages = (int) Math.ceil((double) totalServices / pageSize);
+        model.addAttribute("totalPages", totalPages);
+
+        // Check if there are more services for the next page
+        boolean hasMoreServices = page < totalPages;
+        model.addAttribute("hasMoreServices", hasMoreServices);
+
         return "customer/mainPage/services";
     }
 
+    @GetMapping("/home/services/{id}")
+    public String servicesShowDetail(Model model, @PathVariable("id") int id) {
+        Service service = serviceService.getServiceWithContentById(id);
+        if (service != null && service.isServiceStatus()) {
+            model.addAttribute("service", service);
+            return "customer/mainPage/serviceDetail";
+        } else {
+            return "redirect:/home/services";
+        }
+
+    }
+
+    @GetMapping("/home/projects")
+    public String getSharedProjects(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "6") int size,
+            Model model) {
+        // Retrieve the paginated list of projects
+        List<Project> projects = projectService.getShareableProject(page, size);
+        long totalProjects = projectService.getProjectListIsSharable().size();
+
+        model.addAttribute("projects", projects);
+        model.addAttribute("currentPage", page + 1); // Incrementing for display purposes (page index starts from 0)
+        model.addAttribute("totalPages", (int) Math.ceil((double) totalProjects / size));
+        model.addAttribute("hasMoreServices", (page + 1) * size < totalProjects);
+
+        return "customer/mainPage/projects";  // JSP page name
+    }
+
+    @GetMapping("/home/projects/{id}")
+    public String getProjectDetail(Model model, @PathVariable("id") int id) {
+        Project project = projectService.getProjectWithContent(id);
+        if (project != null && project.isIsSharedAble() && project.getContent() != null) {
+
+            model.addAttribute("project", project);
+            return "customer/mainPage/projectDetail";
+        } else {
+            return "redirect:/home/projects";
+        }
+
+    }
+
+    @GetMapping("/home/blogs")
+    public String getBlogPosts(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "3") int size,
+            Model model) {
+
+        // Convert page number to 0-based for internal use
+        int adjustedPage = page - 1;
+
+        // Parse LocalDate from request parameters
+        // Fetch paginated blogs based on criteria
+        List<Blog> blogs = blogService.getBlogsByCriteria(null, 1, null, null, adjustedPage, size);
+
+        // Fetch total count for pagination
+        long totalBlogs = blogService.countBlogsByCriteria(null, 1,null,null);
+
+        // Calculate total pages and whether there are more blogs for pagination
+        int totalPages = (int) Math.ceil((double) totalBlogs / size);
+        boolean hasMoreBlogs = page < totalPages;
+        System.out.println(hasMoreBlogs);
+
+        // Add attributes to the model for the view
+        model.addAttribute("blogs", blogs);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("hasMoreServices", hasMoreBlogs);
+
+        return "customer/mainPage/blogs";  // Return the view name that will display the blogs
+    }
+    
+    
+    @GetMapping("/home/blogs/{id}")
+    public String getBlogPosts(Model model,@PathVariable("id") int id){
+        Blog blog = blogService.getBlogWithContentById(id);
+        if(blog!= null){
+            model.addAttribute("blog", blog);
+            return "customer/mainPage/blogDetail";
+        }
+        return "redirect:/home/blogs";
+        
+    }
+    
+    @GetMapping("/home/packages")
+    public String getPackets(Model model){
+        
+        return "customer/mainPage/pricingPackage";
+        
+    }
     
 }

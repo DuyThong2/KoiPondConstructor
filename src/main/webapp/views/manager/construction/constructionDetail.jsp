@@ -101,7 +101,6 @@
                                                                 ${rawStage.constructionStageStatus != 2 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
                                                             <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
                                                             <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                                                            <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
                                                             <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
                                                         </select>
                                                         <button type="submit" class="btn btn-primary ml-2"
@@ -191,7 +190,6 @@
                                                                 ${completeStage.constructionStageStatus != 2 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
                                                             <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
                                                             <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                                                            <option value="3" ${detail.constructionStageDetailStatus == 3 ? 'selected' : ''}>Cancel</option>
                                                             <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
                                                         </select>
                                                         <button type="submit" class="btn btn-primary ml-2"

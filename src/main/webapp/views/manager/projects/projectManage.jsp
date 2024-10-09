@@ -242,7 +242,7 @@
                                                         <button class="btn btn-info"
                                                                 onclick="window.location.href = '/manager/design/viewDetail/${project.design.designId}'">Design
                                                             Details</button>
-                                                        <a href="/manager/design/assign/${project.design.designId}"
+                                                        <a href="/manager/projects/assign/${project.projectId}"
                                                            class="btn btn-warning">Assign Staff</a>
                                                     </td>
                                                 </tr>
@@ -305,7 +305,7 @@
                                                         <button class="btn btn-info"
                                                                 onclick="window.location.href = '/manager/construction/viewDetail/${project.construction.constructionId}'">Construction
                                                             Details</button>
-                                                        <a href="/manager/construction/assign/${project.construction.constructionId}"
+                                                        <a href="/manager/projects/assign/${project.projectId}"
                                                            class="btn btn-warning">Assign Staff</a>
                                                     </td>
                                                 </tr>

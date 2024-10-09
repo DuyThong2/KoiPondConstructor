@@ -17,6 +17,7 @@ import java.util.List;
  */
 @Repository
 public class ServiceDAO {
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -26,8 +27,15 @@ public class ServiceDAO {
 
     // Get a limited number of services
     public List<Service> getServiceList(int size) {
-        TypedQuery<Service> query = entityManager.createQuery("SELECT s FROM Service s ORDER BY s.serviceStatus ASC, s.serviceName ASC", Service.class);
+        TypedQuery<Service> query = entityManager.createQuery("SELECT s FROM Service s where s.serviceStatus = 1 ORDER BY s.serviceStatus ASC, s.serviceName ASC", Service.class);
         query.setMaxResults(size);
+        return query.getResultList();
+    }
+
+    public List<Service> getServicesPaged(int offset, int pageSize) {
+        TypedQuery<Service> query = entityManager.createQuery("SELECT s FROM Service s", Service.class);
+        query.setFirstResult(offset);
+        query.setMaxResults(pageSize);
         return query.getResultList();
     }
 
@@ -56,7 +64,7 @@ public class ServiceDAO {
 
     // Create a new service
     public void createService(Service service) {
-         entityManager.persist(service);
+        entityManager.persist(service);
 
     }
 
@@ -171,5 +179,17 @@ public class ServiceDAO {
         TypedQuery<Service> query = entityManager.createQuery(queryString, Service.class);
         query.setParameter("customerId", customerId);
         return query.getResultList();
+    }
+
+    public Service getServiceWithContentById(int id) {
+        try {
+            TypedQuery<Service> query = entityManager.createQuery(
+                    "SELECT s FROM Service s JOIN FETCH s.content inner join s.servicePrice price where s.serviceId = :id and price.servicePriceStatus= 1", Service.class);
+            query.setParameter("id", id);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+
     }
 }

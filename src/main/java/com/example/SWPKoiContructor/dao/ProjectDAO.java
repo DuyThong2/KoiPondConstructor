@@ -5,17 +5,15 @@
  */
 package com.example.SWPKoiContructor.dao;
 
-import com.example.SWPKoiContructor.entities.Design;
 import com.example.SWPKoiContructor.entities.Project;
-import com.example.SWPKoiContructor.entities.Staff;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import javax.persistence.FlushModeType;
 import javax.persistence.NoResultException;
+import javax.persistence.Tuple;
 
 /**
  *
@@ -168,14 +166,12 @@ public class ProjectDAO {
 
     }
 
-
     public long countCustomerProjectsById(int customerId) {
         String queryString = "SELECT count(p.id) FROM Project p WHERE p.contract.customer.id = :customerId";
         TypedQuery<Long> query = entityManager.createQuery(queryString, Long.class);
         query.setParameter("customerId", customerId);
         return query.getSingleResult();
     }
-
 
     public List<Project> getCustomerProjectsById(int customerId) {
         String queryString = "SELECT p FROM Project p WHERE p.contract.customer.id = :customerId";
@@ -198,4 +194,41 @@ public class ProjectDAO {
         return query.getResultList();
     }
 
+    public Project getProjectWithContentById(int id) {
+        try {
+            TypedQuery<Project> query = entityManager.createQuery("select p from Project p join fetch p.content c where p.projectId = :id ", Project.class);
+            query.setParameter("id", id);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+
+    }
+
+    //USE FOR DASHBOARD ONLY
+    public List<Tuple> getTotalEarningsForCompletedProjectsPerMonth(int year) {
+        // JPQL query to get the total price from completed projects at stage 5 with status 3, grouped by month
+        String jpql = "SELECT FUNCTION('MONTH', p.dateEnd) AS month, SUM(c.totalPrice) AS totalEarnings "
+                + "FROM Project p "
+                + "JOIN p.contract c "
+                + "WHERE p.stage = 5 "
+                + "AND p.status = 3 "
+                + "AND FUNCTION('YEAR', p.dateEnd) = :year "
+                + "GROUP BY FUNCTION('MONTH', p.dateEnd)";
+
+        TypedQuery<Tuple> query = entityManager.createQuery(jpql, Tuple.class);
+        query.setParameter("year", year);
+
+        return query.getResultList();
+    }
+
+    public List<Project> findPaginatedProjectsForShowing(int page, int size) {
+        String jpql = "SELECT p FROM Project p where p.isSharedAble = 1 ORDER BY p.projectName ASC";
+        TypedQuery<Project> query = entityManager.createQuery(jpql, Project.class);
+
+        query.setFirstResult(page * size);  // Start index for pagination
+        query.setMaxResults(size);  // Number of results per page
+
+        return query.getResultList();
+    }
 }
