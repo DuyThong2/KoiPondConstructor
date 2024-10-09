@@ -16,7 +16,7 @@
             <h2>Contract List</h2>
 
             <!-- Sort Form -->
-            <form method="get" action="/manager/contract">
+            <form method="get" action="/customer/contract">
                 <div class="form-row align-items-center">
                     <div class="col-auto">
                         <label for="sortBy">Sort by:</label>

@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en_US" />
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -13,11 +15,37 @@
         <!-- Place favicon.ico in the root directory -->
 
         <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/favicon.svg">
+        
         <!-- CSS here -->   
         <%@include file="../cssTemplate.jsp"%>
         <%@include file="../cssCustom.jsp"%>
 
-       
+        <style>
+            .author-container {
+                display: flex;
+                align-items: center;
+            }
+
+            .author-img img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                margin-right: 15px;
+            }
+
+            .author-info h5 {
+                font-size: 1.2rem;
+                font-weight: bold;
+            }
+
+            .author-info p {
+                font-size: 0.9rem;
+                color: #666;
+            }
+
+        </style>
+
+
     </head>
 
     <body class="body-1">
@@ -186,78 +214,148 @@
                             <div class="page-title-inner">
                                 <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
                                     <a href="index.html" class="theme-color">Home</a>
-                                    <span class="current">Services</span>
+                                    <span class="current">Blog</span>
                                 </div>
-                                <h1 class="page-title mb-0">Services</h1>                                    
+                                <h1 class="page-title mb-0">${blog.name}</h1>                                    
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div style="height:100px">
+
+        </div>
         <main>
-            <div class="container">
-                <!-- Row -->
-                <div class="row">
-                    <div class="offset-md-2 col-md-8">
-                        <div class="title-wrap text-center">
-                            <div class="section-title">
-                                <h2 class="title mb-0">Unique Solutions For <span class="theme-color">Your Business</span></h2>    
-                            </div>
-                            <div class="section-description">
-                                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa officia deserunt mollit anim est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit vestibulum nec.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Services Grid -->
-                    <div class="col-md-12">
+            <section id="blog-single" class="blog-single">
+                <div class="container">
+                    <!-- Blog Main Wrap -->
+                    <div class="blog-main-wrap blog-list">
+                        <!-- Row -->
                         <div class="row">
-                            <c:forEach var="service" items="${services}">
-                                <div class="col-md-4">
-                                    <div class="service-box-wrap service-box-style-1 text-center">
-                                        <!-- Service Icon or Image -->
-                                        <div class="service-icon mb-3">
-                                            <img src="/assets/imgs/logo/zoomed_logo_image.png" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
+                            <!-- Col -->
+                            <div class="col-lg-8">
+                                <!-- blog-wrap -->
+                                <div class="blog-wrap mb-4 pb-3">
+                                    <!-- blog-info-wrap -->
+                                    <div class="blog-info-wrap">
+                                        <!-- blog img -->
+                                        <div class="blog-single-img mb-4 pb-2">
+                                            <img src="/assets/imgs/mylogo/koi-background.jpg" width="1280" height="852" class="img-fluid b-radius-8" alt="blog-img">
                                         </div>
-                                        <!-- Service Content -->
-                                        <h3 class="service-title">${service.serviceName}</h3>
-                                        <p class="service-description">${service.serviceDescription}</p>
-                                        <a href="/home/services/${service.serviceId}" class="btn btn-default link">Detail</a>
+                                        
+                                        <div>
+                                            
+                                            ${blog.introContent.content}
+                                            
+                                            
+                                            
+                                            
+                                        </div>
+
+                                        <!-- Meta -->
+                                    </div>
+                                    <!-- blog-info-wrap -->
+                                </div>
+                                <!-- blog-wrap -->
+                                <!-- row -->
+
+                                <!-- Row -->
+                            </div>
+                            <!-- Col -->
+                            <!-- Sidebar -->
+                            <!-- Col -->
+                            <!-- Sidebar for Author, Date Posted, Date Updated -->
+                            <div class="col-lg-4 ps-5 px-sm-15">
+                                <div class="sidebar right-sidebar">
+                                    <div class="widget">
+                                        <h4 class="widget-title">Blog Details</h4>
+                                        <div class="author-details" style="border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
+                                            <!-- Flex container for image and details -->
+                                            <div class="author-container" style="display: flex; align-items: center; margin-bottom: 20px;">
+                                                <!-- Author Image -->
+                                                <div class="author-img" style="margin-right: 15px;">
+                                                    <img src="/assets/imgs/mylogo/koi-background.jpg" alt="${blog.staff.name}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" />
+                                                </div>
+
+                                                <!-- Author Name and Department -->
+                                                <div class="author-info">
+                                                    <h5 style="margin-bottom: 5px; font-size: 1.2rem; font-weight: bold;">${blog.staff.name}</h5>
+                                                    <p style="font-size: 0.9rem; color: #666;">Department: ${blog.staff.department}</p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Date Posted -->
+                                            <div class="post-info" style="text-align: left; margin-bottom: 10px;">
+                                                <p><strong>Date Posted:</strong> <fmt:formatDate value="${blog.datePost}" pattern="MMM dd, yyyy" /></p>
+                                            </div>
+
+                                            <!-- Date Updated -->
+                                            <div class="post-info" style="text-align: left;">
+                                                <p><strong>Last Updated:</strong> <fmt:formatDate value="${blog.introContent.lastUpdatedDate}" pattern="MMM dd, yyyy" /></p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </c:forEach>
+
+                                <form class="banner-3__from" action="/save" method="POST">
+                                    <h4>Need Construction Help?</h4>
+                                    <p>We are always here to help you at any time, </p>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="banner-3__form-input">
+                                                <input name="name" id="lname" type="text" placeholder="Full Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="banner-3__form-input">
+                                                <input name="email" id="email" type="email" placeholder="Email Address">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="banner-3__form-input">
+                                                <input name="phone" id="phone" type="text" placeholder="Phone number">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="banner-3__form-input-select d-flex flex-column">
+                                                <select name="type" id="subject" style="display: none;">
+                                                    <option value="">Type 1- Construction</option>
+                                                    <option value="order">Type 2 - Maintenance</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="banner-3__form-input">
+                                                <div class="validation__wrapper-up position-relative">
+                                                    <textarea name="content" id="textarea" placeholder="Message"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <button type="submit" class="rr-btn">
+                                                <span class="btn-wrap">
+                                                    <span class="text-one turn-off-animation-button">Send Message</span>
+                                                </span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Col -->
                         </div>
+                        <!-- Row -->
                     </div>
+                    <!-- Blog Main Wrap -->
                 </div>
-            </div>
-
-            <div class="d-flex align-items-center mt-4">
-                <!-- Previous Button -->
-                <c:if test="${currentPage > 1}">
-                    <a href="?page=${currentPage - 1}" class="btn btn-custom">&lt;</a>
-                </c:if>
-                <c:if test="${currentPage == 1}">
-                    <button class="btn btn-custom" disabled>&lt;</button>
-                </c:if>
-
-                <!-- Page Indicator -->
-                <span class="page-indicator"><strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
-
-                <!-- Next Button -->
-                <c:if test="${hasMoreServices}">
-                    <a href="?page=${currentPage + 1}" class="btn btn-custom">&gt;</a>
-                </c:if>
-                <c:if test="${!hasMoreServices}">
-                    <button class="btn btn-custom" disabled>&gt;</button>
-                </c:if>
-            </div>
-
-
-
-
-
-
+                <!-- Container -->
+            </section>
         </main>
+
+
         <!-- Footer area start -->
 
         <%@include file="../footer.jsp" %>

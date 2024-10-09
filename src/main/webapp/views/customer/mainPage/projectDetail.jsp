@@ -12,12 +12,87 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Place favicon.ico in the root directory -->
 
+
         <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/favicon.svg">
         <!-- CSS here -->   
         <%@include file="../cssTemplate.jsp"%>
         <%@include file="../cssCustom.jsp"%>
 
-       
+        <style>
+            .sidebar {
+                width: 300px;
+                background-color: #FFC107;
+                padding: 20px;
+                border-radius: 10px;
+            }
+
+            .sidebar table {
+                width: 100%;
+            }
+
+            .sidebar table td {
+                padding: 8px;
+                vertical-align: top;
+            }
+
+            .sidebar h5 {
+                font-size: 16px;
+                font-weight: bold;
+                margin: 0;
+                white-space: nowrap; /* Ensure the label doesn't break into a new line */
+            }
+
+            .sidebar .entry-date, 
+            .sidebar .entry-client, 
+            .sidebar .entry-duration, 
+            .sidebar .entry-category, 
+            .sidebar .entry-tags {
+                font-size: 1.1em;
+                color: #000;
+            }
+
+            .sidebar .portfolio-meta-icon {
+                font-size: 1.5em;
+                margin-right: 10px;
+                color: #000;
+            }
+
+            .sidebar .social-icons a {
+                margin-right: 5px;
+                color: #fff;
+                font-size: 1.5em;
+                display: inline-block;
+            }
+
+            .single-portfolio-wrap {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .content {
+                width: 65%; /* Adjust to control the width of the content section */
+                margin-right: 30px; /* Space between content and sidebar */
+            }
+
+            .sidebar {
+                width: 30%; /* Adjust to control the width of the sidebar */
+                background-color: #FFC107;
+                padding: 20px;
+                border-radius: 10px;
+            }
+            @media screen and (max-width: 768px) {
+                .single-portfolio-wrap {
+                    flex-direction: column; /* Stack the content and sidebar vertically */
+                }
+
+                .sidebar {
+                    width: 100%;
+                    margin-top: 20px;
+                    margin-right: 0;
+                }
+            }
+
+        </style>
     </head>
 
     <body class="body-1">
@@ -186,78 +261,83 @@
                             <div class="page-title-inner">
                                 <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
                                     <a href="index.html" class="theme-color">Home</a>
-                                    <span class="current">Services</span>
+                                    <span class="current">Project</span>
                                 </div>
-                                <h1 class="page-title mb-0">Services</h1>                                    
+                                <h1 class="page-title mb-0">${project.projectName}</h1>                                    
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <main>
-            <div class="container">
-                <!-- Row -->
-                <div class="row">
-                    <div class="offset-md-2 col-md-8">
-                        <div class="title-wrap text-center">
-                            <div class="section-title">
-                                <h2 class="title mb-0">Unique Solutions For <span class="theme-color">Your Business</span></h2>    
-                            </div>
-                            <div class="section-description">
-                                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa officia deserunt mollit anim est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit vestibulum nec.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Services Grid -->
-                    <div class="col-md-12">
-                        <div class="row">
-                            <c:forEach var="service" items="${services}">
-                                <div class="col-md-4">
-                                    <div class="service-box-wrap service-box-style-1 text-center">
-                                        <!-- Service Icon or Image -->
-                                        <div class="service-icon mb-3">
-                                            <img src="/assets/imgs/logo/zoomed_logo_image.png" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
-                                        </div>
-                                        <!-- Service Content -->
-                                        <h3 class="service-title">${service.serviceName}</h3>
-                                        <p class="service-description">${service.serviceDescription}</p>
-                                        <a href="/home/services/${service.serviceId}" class="btn btn-default link">Detail</a>
-                                    </div>
+        <div style="height:100px">
+
+        </div>
+        <main style="margin-bottom: 100px">
+            <section id="single-portfolio" class="single-portfolio">
+                <div class="container">
+                    <div class="single-portfolio-wrap">
+                        <!-- Main Content Section -->
+                        <div class="content">
+                            <!-- Image -->
+                            <div class="zoom-gallery mb-5">
+                                <div class="portfolio-thumb">
+                                    <img src="/uploads/${project.imgURL}" alt="Project Image">
                                 </div>
-                            </c:forEach>
+                            </div>
+
+                            <!-- Text Content -->
+                            
+                            ${project.content.content}
+                            
+                            
+                            
+                            
+                            
+                            
+                            <!-- Text Content -->
+                            
                         </div>
+
+                        <!-- Sidebar Section -->
+                        <div class="sidebar col-md-4">
+                            <table>
+                                <tr>
+                                    <td><span class="portfolio-meta-icon"><i class="ti-calendar"></i></span></td>
+                                    <td><h5>Date</h5></td>
+                                    <td class="entry-date">${project.dateEnd}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="portfolio-meta-icon"><i class="ti-user"></i></span></td>
+                                    <td><h5>Client</h5></td>
+                                    <td class="entry-client">${project.contract.customer.name}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="portfolio-meta-icon"><i class="ti-alarm-clock"></i></span></td>
+                                    <td><h5>Duration</h5></td>
+                                    <td class="entry-duration">6 Months</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="portfolio-meta-icon"><i class="ti-folder"></i></span></td>
+                                    <td><h5>Category</h5></td>
+                                    <td class="entry-category">${project.style}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="portfolio-meta-icon"><i class="ti-tag"></i></span></td>
+                                    <td><h5>description</h5></td>
+                                    <td class="entry-tags">${project.description}</td>
+                                </tr>
+                                
+                            </table>
+                        </div>
+
+
                     </div>
                 </div>
-            </div>
-
-            <div class="d-flex align-items-center mt-4">
-                <!-- Previous Button -->
-                <c:if test="${currentPage > 1}">
-                    <a href="?page=${currentPage - 1}" class="btn btn-custom">&lt;</a>
-                </c:if>
-                <c:if test="${currentPage == 1}">
-                    <button class="btn btn-custom" disabled>&lt;</button>
-                </c:if>
-
-                <!-- Page Indicator -->
-                <span class="page-indicator"><strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
-
-                <!-- Next Button -->
-                <c:if test="${hasMoreServices}">
-                    <a href="?page=${currentPage + 1}" class="btn btn-custom">&gt;</a>
-                </c:if>
-                <c:if test="${!hasMoreServices}">
-                    <button class="btn btn-custom" disabled>&gt;</button>
-                </c:if>
-            </div>
-
-
-
-
-
-
+            </section>
         </main>
+
+
         <!-- Footer area start -->
 
         <%@include file="../footer.jsp" %>

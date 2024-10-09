@@ -1,0 +1,244 @@
+/* Page Title */
+.page-title-wrap {
+    position: relative;
+}
+.page-title-wrap-inner {
+    padding: 64px 0 60px;
+    background-image: linear-gradient(85deg,#CBE7E5,#FAF4F3);
+}
+.page-title-wrap-inner .container >* {
+    position: relative;
+    z-index: 1;
+}
+
+.page-title-wrap-inner {
+    padding: 64px 0 60px;
+    background-image: linear-gradient(85deg,#CBE7E5,#FAF4F3);
+}
+.page-title-wrap-inner .container >* {
+    position: relative;
+    z-index: 1;
+}
+
+.section-bg-img,
+.div-bg-img {
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+.section-bg-img.bg-repeat {
+    background-repeat: repeat;
+    background-size: auto;
+}
+.section-bg-img.bg-align-left {
+    background-position: -800px 0px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.section-bg-img.bg-rc {
+    background-repeat: repeat;
+    background-size: contain;
+}
+
+/*Background Overlay*/
+.black-overlay,
+.black-overlay1,
+.black-overlay2 {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+.black-overlay {
+    background: rgba(0,0,0,0.7);
+}
+.black-overlay1 {
+    background: rgba(0, 0, 0, 0.9);
+}
+.black-overlay2 {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    display: block;
+    font-size: 14px;
+}
+.typo-dark .breadcrumb a:hover {
+    color: #000;
+}
+.breadcrumb>a:hover {
+    color: #fff;
+}
+.breadcrumb>a::after {
+    content: "-";
+    font-family: fontawesome;
+    padding: 0 10px;
+}
+.breadcrumb li > a {
+    font-size: 13px;
+}
+.breadcrumb li.active {
+    font-size: 13px;
+}
+.breadcrumb>li+li:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: "/\00a0";
+}
+
+.title-wrap {
+    margin-bottom: 40px;
+}
+.title-wrap.text-center .section-description {
+    max-width: 580px;
+    margin: 0 auto;
+}
+
+.section-title {
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.service-box-style-2 .service-box-inner {
+    position: relative;
+    overflow: hidden;
+}
+
+.service-box-style-1.br-style {
+    border: 15px solid #fff;
+}
+
+.service-box-wrap {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    height: 500px; /* Increased height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 30px; /* Maintain padding */
+}
+
+.service-box-wrap:hover {
+    background-color: #000;
+    color: #fff;
+    transform: translateY(-10px);
+}
+
+.service-box-wrap h3,
+.service-box-wrap p {
+    transition: color 0.3s ease;
+}
+
+.service-box-wrap:hover h3,
+.service-box-wrap:hover p {
+    color: #fff;
+}
+
+.service-box-wrap img {
+    max-width: 150px;
+    height: 150px;
+    margin: 0 auto;
+}
+
+.service-box-wrap .btn-default {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #000;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 16px;
+    padding: 12px 24px;
+    margin-top: 15px;
+    display: inline-block;
+}
+
+.service-box-wrap:hover .btn-default {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+.service-icon {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.service-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+/* Add margin between the service boxes */
+.col-md-4 {
+    margin-bottom: 30px;
+}
+
+@media (min-width: 768px) {
+    .col-md-4 {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+}
+
+.btn-custom {
+    background-color: transparent; /* Transparent background by default */
+    color: #000; /* Black text or arrow */
+    border: 1px solid #ccc; /* Light grey border */
+    padding: 10px 15px; /* Adjust padding for button size */
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
+    display: inline-block;
+    text-align: center;
+}
+
+/* Hover effect */
+.btn-custom:hover {
+    background-color: #000; /* Black background on hover */
+    color: #fff; /* White arrow or text on hover */
+    border-color: #000; /* Change border to black */
+}
+
+/* Disabled button styling */
+.btn-custom:disabled {
+    color: #ccc; /* Light grey text for disabled buttons */
+    border-color: #ccc; /* Light grey border for disabled buttons */
+    cursor: not-allowed; /* Not-allowed cursor for disabled buttons */
+    background-color: transparent; /* Keep transparent background for disabled */
+}
+
+
+
+.d-flex {
+    margin-top: 15px; /* Bring pagination closer to content */
+    justify-content: center; /* Center pagination */
+}
+.page-indicator {
+    font-size: 2.5rem; /* Adjust the font size to a reasonable large size */
+    font-weight: 400;  /* Reduced font weight */
+    text-align: center; /* Center the text */
+    display: inline-block; /* Ensures it doesn't take up the full width */
+    margin: 20px 0; /* Add some margin for spacing */
+}
+
+.page-indicator strong {
+    font-size: 3rem; /* Increase font size of numbers slightly */
+    color: #d3d3d3; /* Light grey color for the numbers by default */
+    transition: color 0.3s ease, background-color 0.3s ease; /* Add transition for hover effect */
+    padding: 0 5px;
+}
+
+/* Hover effect */

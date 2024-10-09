@@ -17,7 +17,52 @@
         <%@include file="../cssTemplate.jsp"%>
         <%@include file="../cssCustom.jsp"%>
 
-       
+        <style>
+/*             Form input styles 
+            .banner-3__form-input {
+                margin-bottom: 15px;
+            }
+
+            .banner-3__form-input input,
+            .banner-3__form-input textarea,
+            .banner-3__form-input select {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+                box-sizing: border-box;  Ensures padding is included in width calculation 
+                background-color: #f9f9f9;
+            }
+
+             Fixing dropdown styling 
+            .banner-3__form-input-select select {
+                appearance: none;
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                background-color: #f9f9f9;
+                border-radius: 4px;
+                padding: 10px;
+                font-size: 16px;
+            }
+
+             Adjust button styling 
+            .rr-btn {
+                padding: 10px 20px;
+                background-color: #d42a57;
+                color: white;
+                border-radius: 4px;
+                border: none;
+                cursor: pointer;
+                width: 100%;
+            }
+
+            .rr-btn:hover {
+                background-color: #b22242;
+            }*/
+
+
+
+        </style>
     </head>
 
     <body class="body-1">
@@ -188,73 +233,128 @@
                                     <a href="index.html" class="theme-color">Home</a>
                                     <span class="current">Services</span>
                                 </div>
-                                <h1 class="page-title mb-0">Services</h1>                                    
+                                <h1 class="page-title mb-0">${service.serviceName}</h1>                                    
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div style="height:100px">
+
+        </div>
         <main>
-            <div class="container">
-                <!-- Row -->
-                <div class="row">
-                    <div class="offset-md-2 col-md-8">
-                        <div class="title-wrap text-center">
-                            <div class="section-title">
-                                <h2 class="title mb-0">Unique Solutions For <span class="theme-color">Your Business</span></h2>    
-                            </div>
-                            <div class="section-description">
-                                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa officia deserunt mollit anim est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit vestibulum nec.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Services Grid -->
-                    <div class="col-md-12">
-                        <div class="row">
-                            <c:forEach var="service" items="${services}">
-                                <div class="col-md-4">
-                                    <div class="service-box-wrap service-box-style-1 text-center">
-                                        <!-- Service Icon or Image -->
-                                        <div class="service-icon mb-3">
-                                            <img src="/assets/imgs/logo/zoomed_logo_image.png" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
+            <div class="content-wrapper pad-none">
+                <div class="content-inner">					
+                    <!-- Services Single Section -->
+                    <section id="single-service" class="single-service">
+                        <div class="container">
+                            <div class="single-service-wrap">
+                                <!-- Row -->                                
+                                <div class="row">                                    
+                                    <!-- Sidebar -->
+                                    <!-- Col -->
+                                    <div class="col-lg-4 px-3 pe-lg-4">
+                                        <div class="service-sidebar-wrap">
+
+                                            <div class="contact-info pad-bottom-30" style="margin-left: 30px">
+                                                <h4 class="sidebar-title mb-3">Contact Info</h4>										
+                                                <p class="contact-address mb-1"><span class="event-subtitle"><strong>Address : </strong></span>
+                                                    12, Victoria Street, Australia <a class="zegen-popup-gmaps theme-color" href="https://maps.google.com/maps?q=12%2C+Victoria+Street%2C+Australia&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed"><span class="ti-location-pin"></span></a>
+                                                </p>
+                                                <p class="contact-email mb-1"><span class="event-subtitle"><strong>E-mail : </strong></span>
+                                                    <a href="mailto:info@zozothemes.com">info@zozothemes.com</a>
+                                                </p>
+                                                <p class="contact-phone mb-0"><span class="event-subtitle"><strong>Phone : </strong></span>
+                                                    <a href="tel:+(123) 456-7890">+(123) 456-7890</a>
+                                                </p>												
+                                            </div>
+
+                                            <div class="contact-wrap">
+
+                                                <!-- Form -->
+                                                <form class="banner-3__from" action="/save" method="POST">
+                                                    <h4>Need Construction Help?</h4>
+                                                    <p>We are always here to help you at any time, </p>
+                                                    <div class="row">
+                                                        <div class="col-12">
+                                                            <div class="banner-3__form-input">
+                                                                <input name="name" id="lname" type="text" placeholder="Full Name">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="banner-3__form-input">
+                                                                <input name="email" id="email" type="email" placeholder="Email Address">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="banner-3__form-input">
+                                                                <input name="phone" id="phone" type="text" placeholder="Phone number">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="banner-3__form-input-select d-flex flex-column">
+                                                                <select name="type" id="subject" style="display: none;">
+                                                                    <option value="">Type 1- Construction</option>
+                                                                    <option value="order">Type 2 - Maintenance</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="banner-3__form-input">
+                                                                <textarea name="content" id="textarea" placeholder="Message"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <button type="submit" class="rr-btn">
+                                                                <span class="btn-wrap">
+                                                                    <span class="text-one">Send Message</span>
+                                                                </span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                                <!-- Form End-->
+                                            </div>
+                                            <!-- contact-form-7 -->		
                                         </div>
-                                        <!-- Service Content -->
-                                        <h3 class="service-title">${service.serviceName}</h3>
-                                        <p class="service-description">${service.serviceDescription}</p>
-                                        <a href="/home/services/${service.serviceId}" class="btn btn-default link">Detail</a>
                                     </div>
+                                    <!-- Sidebar -->
+                                    <!-- Col -->
+                                    <div class="col-lg-8 px-3">
+                                        <!-- Service img -->
+                                        <div class="zoom-gallery mb-4">
+                                            <div class="events-thumb relative">
+                                                <a class="popup-img" href="#" title="Single Portfolio">
+                                                    <img src="images/services/single/service-single4.jpg" class="img-fluid single-event-img b-radius-10" alt="service-img" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <!-- COntent-->
+
+                                        ${service.content.content}
+
+
+
+
+
+
+
+                                        <!-- Get a Quote Section End -->
+                                    </div>
+                                    <!-- Col -->
                                 </div>
-                            </c:forEach>
+                                <!-- Row 2 -->								
+                            </div>
+                            <!-- Portfolio Single Wrap -->
                         </div>
-                    </div>
+                    </section>
+                    <!-- Portfolios Section End -->
+                    <!-- Get a Quote Section -->
+
+                    <!-- Get a Quote Section End -->
                 </div>
             </div>
-
-            <div class="d-flex align-items-center mt-4">
-                <!-- Previous Button -->
-                <c:if test="${currentPage > 1}">
-                    <a href="?page=${currentPage - 1}" class="btn btn-custom">&lt;</a>
-                </c:if>
-                <c:if test="${currentPage == 1}">
-                    <button class="btn btn-custom" disabled>&lt;</button>
-                </c:if>
-
-                <!-- Page Indicator -->
-                <span class="page-indicator"><strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
-
-                <!-- Next Button -->
-                <c:if test="${hasMoreServices}">
-                    <a href="?page=${currentPage + 1}" class="btn btn-custom">&gt;</a>
-                </c:if>
-                <c:if test="${!hasMoreServices}">
-                    <button class="btn btn-custom" disabled>&gt;</button>
-                </c:if>
-            </div>
-
-
-
-
 
 
         </main>

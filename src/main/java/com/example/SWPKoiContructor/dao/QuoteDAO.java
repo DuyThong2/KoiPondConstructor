@@ -132,4 +132,8 @@ public class QuoteDAO {
                 "SELECT Count(q) FROM Quotes q WHERE q.quotesStatus = 1", Long.class);
         return tq.getSingleResult();
     }
+    
+    public long test(){
+        return 0;
+    }
 }

@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en_US" />
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -13,11 +15,103 @@
         <!-- Place favicon.ico in the root directory -->
 
         <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/favicon.svg">
+        
         <!-- CSS here -->   
         <%@include file="../cssTemplate.jsp"%>
         <%@include file="../cssCustom.jsp"%>
 
-       
+        <style>
+            /* Container for blog items */
+            .isotope-grid {
+                display: flex;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 25px; /* Add more space between items */
+            }
+
+            .isotope-item {
+                width: 360px; /* Make the items bigger */
+                margin-bottom: 30px;
+                position: relative;
+                border-radius: 10px; /* Add border radius */
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+                transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
+                background-color: #fff; /* Ensure the items have a white background */
+            }
+
+            .isotope-item:hover {
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhance shadow on hover */
+            }
+
+            .blog-thumb {
+                position: relative;
+                overflow: hidden;
+                border-radius: 10px 10px 0 0; /* Make the top corners rounded */
+            }
+
+            .blog-thumb img {
+                width: 360px; /* Adjust the size for bigger items */
+                height: 260px;
+                object-fit: cover; /* Ensure the image fits well */
+                border-radius: 10px 10px 0 0; /* Match the corner rounding */
+            }
+
+            .post-date {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                background-color: #FFC107;
+                padding: 8px;
+                border-radius: 4px;
+                font-size: 12px;
+                color: #fff;
+                font-weight: bold;
+                writing-mode: vertical-rl; /* To display text vertically */
+                text-align: center;
+                width: 35px; /* Ensure the label width is fixed */
+            }
+
+            .blog-details {
+                padding: 20px; /* Add padding inside the content */
+                background-color: #fff; /* Ensure a white background for content */
+                border-radius: 0 0 10px 10px; /* Rounded corners for bottom */
+            }
+
+            .blog-title h4 {
+                font-size: 20px; /* Larger font for the title */
+                color: #333;
+                margin-bottom: 5px;
+            }
+
+            /* Small description text below the title */
+            .blog-description {
+                font-size: 14px; /* Smaller font size for the description */
+                color: #666;
+                margin-bottom: 10px;
+            }
+
+            .post-desc a {
+                color: #FFC107;
+                font-size: 16px; /* Slightly larger font for 'Read More' */
+                font-weight: 500;
+                text-decoration: none;
+            }
+
+            /* Make sure the layout adjusts on smaller screens */
+            @media (max-width: 768px) {
+                .isotope-item {
+                    width: 100%;
+                    margin-bottom: 20px;
+                }
+
+                .blog-thumb img {
+                    width: 100%;
+                    height: auto;
+                }
+            }
+        </style>
+
+
     </head>
 
     <body class="body-1">
@@ -186,78 +280,105 @@
                             <div class="page-title-inner">
                                 <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
                                     <a href="index.html" class="theme-color">Home</a>
-                                    <span class="current">Services</span>
+                                    <span class="current">Project</span>
                                 </div>
-                                <h1 class="page-title mb-0">Services</h1>                                    
+                                <h1 class="page-title mb-0">Project</h1>                                    
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div style="height:100px">
+
+        </div>
         <main>
-            <div class="container">
-                <!-- Row -->
-                <div class="row">
-                    <div class="offset-md-2 col-md-8">
-                        <div class="title-wrap text-center">
-                            <div class="section-title">
-                                <h2 class="title mb-0">Unique Solutions For <span class="theme-color">Your Business</span></h2>    
-                            </div>
-                            <div class="section-description">
-                                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa officia deserunt mollit anim est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit vestibulum nec.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Services Grid -->
-                    <div class="col-md-12">
+            <section id="blog-section" class="blog-section pad-bottom-70">
+                <div class="container">
+                    <!-- Blog Main Wrap -->
+                    <div class="blog-main-wrap blog-grid masonry-grid-default">
+                        <!-- Row -->
                         <div class="row">
-                            <c:forEach var="service" items="${services}">
-                                <div class="col-md-4">
-                                    <div class="service-box-wrap service-box-style-1 text-center">
-                                        <!-- Service Icon or Image -->
-                                        <div class="service-icon mb-3">
-                                            <img src="/assets/imgs/logo/zoomed_logo_image.png" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
+                            <div class="col-md-12">
+                                <div class="isotope-grid" data-gutter="30" data-cols="3">											
+                                    <!-- isotope-item-->
+                                    <c:forEach var="blog" items="${blogs}">
+                                        <div class="isotope-item">
+                                            <div class="blog-style-1 post-type post-grid">
+                                                <div class="blog-inner mb-4">
+                                                    <div class="blog-thumb relative">
+                                                        <img src="/assets/imgs/mylogo/koi-background.jpg" class="img-fluid" alt="blog-img" />
+                                                        <div class="post-date">
+                                                            <p> <i class="ti-calendar"></i> 
+                                                                <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/></p>
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="blog-details">
+                                                        <div class="blog-title">
+                                                            <h4 class="margin-bottom-10"><a href="/home/blogs/${blog.id}" class="blog-name">${blog.name}</a></h4>
+                                                        </div>
+                                                        <!-- Small description below the title -->
+                                                        <div class="blog-description">
+                                                            ${blog.description}
+                                                        </div>
+                                                        <div class="post-desc mt-2">
+                                                            <div class="blog-link">
+                                                                <a target="_blank" href="/home/blogs/${blog.id}" class="link font-w-500">Read More</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <!-- Service Content -->
-                                        <h3 class="service-title">${service.serviceName}</h3>
-                                        <p class="service-description">${service.serviceDescription}</p>
-                                        <a href="/home/services/${service.serviceId}" class="btn btn-default link">Detail</a>
-                                    </div>
+                                    </c:forEach>
+
+                                    <!-- isotope-item end -->
                                 </div>
-                            </c:forEach>
+                            </div>
+                            <!-- Col -->
+                            <div class="col-lg-12">
+                                <div class="post-pagination-wrap mt-4 mt-xl-0">
+                                    <ul class="nav pagination post-pagination justify-content-center test-pagination">
+                                        <li class="nav-item"><a href="#" class="prev-page" title="prev"><i class="ti-angle-left"></i></a></li>
+                                        <li class="nav-item active"><span class="active">01</span></li>
+                                        <li class="nav-item"><a href="#">02</a></li>
+                                        <li class="nav-item"><a href="#" class="next-page" title="next"><i class="ti-angle-right"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- Col -->
                         </div>
+                        <!-- row -->
+                    </div>
+                    <!-- Blog Main Wrap -->
+                    <div class="d-flex align-items-center mt-4">
+                        <!-- Previous Button -->
+                        <c:if test="${currentPage > 1}">
+                            <a href="?page=${currentPage - 1}" class="btn btn-custom">&lt;</a>
+                        </c:if>
+                        <c:if test="${currentPage == 1}">
+                            <button class="btn btn-custom" disabled>&lt;</button>
+                        </c:if>
+
+                        <!-- Page Indicator -->
+                        <span class="page-indicator">Page <strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
+
+                        <!-- Next Button -->
+                        <c:if test="${hasMoreServices}">
+                            <a href="?page=${currentPage + 1}" class="btn btn-custom">&gt;</a>
+                        </c:if>
+                        <c:if test="${!hasMoreServices}">
+                            <button class="btn btn-custom" disabled>&gt;</button>
+                        </c:if>
                     </div>
                 </div>
-            </div>
-
-            <div class="d-flex align-items-center mt-4">
-                <!-- Previous Button -->
-                <c:if test="${currentPage > 1}">
-                    <a href="?page=${currentPage - 1}" class="btn btn-custom">&lt;</a>
-                </c:if>
-                <c:if test="${currentPage == 1}">
-                    <button class="btn btn-custom" disabled>&lt;</button>
-                </c:if>
-
-                <!-- Page Indicator -->
-                <span class="page-indicator"><strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
-
-                <!-- Next Button -->
-                <c:if test="${hasMoreServices}">
-                    <a href="?page=${currentPage + 1}" class="btn btn-custom">&gt;</a>
-                </c:if>
-                <c:if test="${!hasMoreServices}">
-                    <button class="btn btn-custom" disabled>&gt;</button>
-                </c:if>
-            </div>
-
-
-
-
-
-
+                <!-- Container -->
+            </section>
         </main>
+
+
         <!-- Footer area start -->
 
         <%@include file="../footer.jsp" %>

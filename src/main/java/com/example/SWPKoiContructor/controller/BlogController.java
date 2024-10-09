@@ -31,8 +31,6 @@ public class BlogController {
         this.fileUtility = fileUtility;
     }
 
-    
-
     @GetMapping("/staff/blogs")
     public String staffBlogs(
             @RequestParam(required = false) String name,
@@ -45,17 +43,18 @@ public class BlogController {
             HttpSession session
     ) {
         Staff staff = (Staff) session.getAttribute("user");
-        if (staff == null){
+        System.out.println(staff);
+        if (staff == null) {
             return "redirect:/login";
         }
         List<Blog> blogs = blogService.getBlogsByCriteria(name, status, dateFrom, dateTo, page, size);
-        if (!"Management".equalsIgnoreCase(staff.getDepartment())){
+        if (!"Management".equalsIgnoreCase(staff.getDepartment())) {
             blogs = blogs.stream()
-                .filter(blog -> blog.isBlogBelongToAuthor(staff))
-                .collect(Collectors.toList());
+                    .filter(blog -> blog.isBlogBelongToAuthor(staff))
+                    .collect(Collectors.toList());
         }
-        
-        long totalBlogs = blogs.size();
+
+        long totalBlogs = blogService.countBlogsByCriteria(name, status, dateFrom, dateTo);
 
         // Add attributes to the model
         model.addAttribute("blogs", blogs);
@@ -63,6 +62,7 @@ public class BlogController {
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
         model.addAttribute("totalPages", (int) Math.ceil((double) totalBlogs / size));
+        model.addAttribute("status", status);
 
         return "manager/blog/blogManage";
     }
@@ -71,8 +71,9 @@ public class BlogController {
     public String viewDetailBlog(@PathVariable("id") int id, Model model, HttpSession session) {
         Blog blog = blogService.getBlogWithContentById(id);
         Staff staff = (Staff) session.getAttribute("user");
-        if (staff == null)
+        if (staff == null) {
             return "redirect:/login";
+        }
         if (blog != null && (blog.isBlogBelongToAuthor(staff) || "Management".equalsIgnoreCase(staff.getDepartment()))) {
             model.addAttribute("blog", blog);
             return "/manager/blog/blogDetail";
@@ -165,6 +166,27 @@ public class BlogController {
             e.printStackTrace();
             return "redirect:/staff/blogs";
         }
+    }
+
+    @PostMapping("/staff/blog/changeStatus")
+    public String changeBlogStatus(@RequestParam("blogId") int blogId) {
+        Blog blog = blogService.getBlogById(blogId);
+        if (blog != null) {
+            // Cycle through statuses: 1 -> 2 -> 3 -> 1
+            switch (blog.getStatus()) {
+                case 1:
+                    blog.setStatus(2); // Set to Ready
+                    break;
+                case 2:
+                    blog.setStatus(3); // Set to Disabled
+                    break;
+                default:
+                    blog.setStatus(1); // Set to Not Ready
+                    break;
+            }
+            blogService.updateBlog(blog);
+        }
+        return "redirect:/staff/blogs"; // Redirect back to the blog list
     }
 
 }

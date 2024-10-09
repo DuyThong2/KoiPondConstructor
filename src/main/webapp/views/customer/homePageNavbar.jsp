@@ -60,9 +60,9 @@
                              <nav id="mobile-menu">
                                  <ul>
                                      <li><a href="/">Home</a></li> 
-                                     <li><a href="#mision">Best Design</a></li>
-                                     <li><a href="#services">Services</a></li>
-                                     <li><a href="#portfolio">Blog</a></li>
+                                     <li><a href="/home/projects">Best Design</a></li>
+                                     <li><a href="/home/services">Services</a></li>
+                                     <li><a href="/home/blogs">Blog</a></li>
                                      <li><a href="#pricing">Pricing</a></li>
                                      
                                      <li><a href="/customer/projects/">Your Project</a></li>

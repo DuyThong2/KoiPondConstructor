@@ -17,7 +17,77 @@
         <%@include file="../cssTemplate.jsp"%>
         <%@include file="../cssCustom.jsp"%>
 
-       
+        <style>
+            /* Container for portfolio items */
+            /* Container for portfolio items */
+            .portfolio-wrap {
+                display: flex;
+                justify-content: center; /* Center horizontally */
+                flex-wrap: wrap; /* Allow items to wrap if necessary */
+                gap: 20px; /* Add some space between items */
+            }
+
+            .portfolio-item {
+                width: 360px; /* Fixed width */
+                height: 360px; /* Fixed height */
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                justify-content: center; /* Center content horizontally */
+                align-items: center; /* Center content vertically */
+                margin-bottom: 20px;
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+            /* Make the image cover the container while maintaining its aspect ratio */
+            .portfolio-thumb img {
+                width: 360px;
+                height: 360px;
+                object-fit: cover; /* Ensures the image covers the area while maintaining aspect ratio */
+                transition: filter 0.3s ease, transform 0.3s ease;
+            }
+
+            /* Hover effect to brighten the image */
+            .portfolio-thumb:hover img {
+                filter: brightness(1.1); /* Increase brightness */
+                transform: scale(1.05); /* Slight zoom on hover */
+            }
+
+            /* Centered project name and description (hidden initially) */
+            .portfolio-info {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                background: rgba(0, 0, 0, 0.5); /* Optional: Add background overlay for readability */
+            }
+
+            /* Show the text when hovering */
+            .portfolio-thumb:hover .portfolio-info {
+                opacity: 1;
+            }
+
+            .portfolio-name {
+                font-weight: bold;
+                font-size: 24px;
+                color: #fff;
+            }
+
+            .portfolio-description {
+                font-size: 16px;
+                color: #ccc;
+                font-style: italic;
+            }
+
+        </style>
     </head>
 
     <body class="body-1">
@@ -186,51 +256,61 @@
                             <div class="page-title-inner">
                                 <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
                                     <a href="index.html" class="theme-color">Home</a>
-                                    <span class="current">Services</span>
+                                    <span class="current">Project</span>
                                 </div>
-                                <h1 class="page-title mb-0">Services</h1>                                    
+                                <h1 class="page-title mb-0">Project</h1>                                    
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div style="height:100px">
+
+        </div>
         <main>
-            <div class="container">
-                <!-- Row -->
-                <div class="row">
-                    <div class="offset-md-2 col-md-8">
-                        <div class="title-wrap text-center">
-                            <div class="section-title">
-                                <h2 class="title mb-0">Unique Solutions For <span class="theme-color">Your Business</span></h2>    
-                            </div>
-                            <div class="section-description">
-                                <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa officia deserunt mollit anim est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit vestibulum nec.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Services Grid -->
-                    <div class="col-md-12">
-                        <div class="row">
-                            <c:forEach var="service" items="${services}">
-                                <div class="col-md-4">
-                                    <div class="service-box-wrap service-box-style-1 text-center">
-                                        <!-- Service Icon or Image -->
-                                        <div class="service-icon mb-3">
-                                            <img src="/assets/imgs/logo/zoomed_logo_image.png" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
+            <div class="content-wrapper pad-none">
+                <div class="content-inner">
+                    <!-- Portfolio Section -->
+                    <section id="portfolio-section" class="portfolio-section">
+                        <div class="container">
+                            <div class="row">
+                                <!-- Col -->
+                                <div class="offset-md-2 col-md-8">
+                                    <div class="title-wrap text-center">
+                                        <div class="section-title">
+                                            <h2 class="title mb-0">Our Projects</h2>
                                         </div>
-                                        <!-- Service Content -->
-                                        <h3 class="service-title">${service.serviceName}</h3>
-                                        <p class="service-description">${service.serviceDescription}</p>
-                                        <a href="/home/services/${service.serviceId}" class="btn btn-default link">Detail</a>
                                     </div>
                                 </div>
-                            </c:forEach>
+
+                                <!-- Col -->
+                                <div class="col-md-12">
+                                    <div class="row portfolio-wrap portfolio-modern">
+                                        <!-- .portfolio-item -->
+                                        <c:forEach var="project" items="${projects}">
+                                            <div class="portfolio-item col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                                                <a href="/home/projects/${project.projectId}">
+                                                   <div class="portfolio-thumb">
+                                                    <img src="/uploads/${project.imgURL}" alt="Project 1">
+                                                    <div class="portfolio-info">
+                                                        <div class="portfolio-name">${project.projectName}</div>
+                                                        <div class="portfolio-description">${project.description}</div>
+                                                    </div>
+                                                </div> 
+                                                </a>
+                                            </div>
+                                        </c:forEach>
+
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </section>
+                    <!-- Portfolio Section End -->
                 </div>
             </div>
-
             <div class="d-flex align-items-center mt-4">
                 <!-- Previous Button -->
                 <c:if test="${currentPage > 1}">
@@ -241,7 +321,7 @@
                 </c:if>
 
                 <!-- Page Indicator -->
-                <span class="page-indicator"><strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
+                <span class="page-indicator">Page <strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
 
                 <!-- Next Button -->
                 <c:if test="${hasMoreServices}">
@@ -252,12 +332,9 @@
                 </c:if>
             </div>
 
-
-
-
-
-
         </main>
+
+
         <!-- Footer area start -->
 
         <%@include file="../footer.jsp" %>
