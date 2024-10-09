@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.dao;
 
+import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Staff;
 
 import java.util.ArrayList;
@@ -18,8 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
- * <<<<<<< HEAD
- * @a
+ * <<<<<<< HEAD @a
+ *
  *
  * uthor Admin
  */
@@ -54,20 +55,19 @@ public class StaffDAO {
 
     }
 
-    public List<Staff> getTopStaffList(){
-        TypedQuery<String> typedQuery= entityManager.createQuery("Select distinct c.department From Staff c",String.class);
-        List<String> roleList= typedQuery.getResultList();
+    public List<Staff> getTopStaffList() {
+        TypedQuery<String> typedQuery = entityManager.createQuery("Select distinct c.department From Staff c", String.class);
+        List<String> roleList = typedQuery.getResultList();
         List<Staff> listStaff = new ArrayList<>();
-        roleList.forEach(role ->{
-            List<Staff> staffList= getListStaffByRole(role);
+        roleList.forEach(role -> {
+            List<Staff> staffList = getListStaffByRole(role);
             Staff staff = staffList.get(0);
             listStaff.add(staff);
         });
         return listStaff;
     }
 
-
-    public Staff createStaff(Staff staff){
+    public Staff createStaff(Staff staff) {
         Staff createStaff = entityManager.merge(staff);
         return createStaff;
     }
@@ -92,8 +92,9 @@ public class StaffDAO {
             return null; // Return empty if no customer is found
         }
     }
-    public long countStaff(){
-        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(s) FROM Staff s where s.enabled = true",Long.class);
+
+    public long countStaff() {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(s) FROM Staff s where s.enabled = true", Long.class);
         return query.getSingleResult();
     }
 
@@ -104,6 +105,7 @@ public class StaffDAO {
         query.setParameter("projectId", projectId);
         return query.getResultList();
     }
+
     public List<Staff> getAllStaff() {
         String query = "SELECT s FROM Staff s WHERE LOWER(s.department) IN ('design', 'construction')";
         TypedQuery<Staff> typedQuery = entityManager.createQuery(query, Staff.class);
@@ -128,7 +130,7 @@ public class StaffDAO {
     public void assignStaffToConstruction(int staffId, int constructionId) {
         try {
             entityManager.createNativeQuery(
-                            "INSERT INTO Construction_Staff (staff_id, construction_id, role_in_project) VALUES (:staffId, :constructionId, :roleInProject)")
+                    "INSERT INTO Construction_Staff (staff_id, construction_id, role_in_project) VALUES (:staffId, :constructionId, :roleInProject)")
                     .setParameter("staffId", staffId)
                     .setParameter("constructionId", constructionId)
                     .setParameter("roleInProject", 1) // Assigning the value 1 directly
@@ -138,11 +140,10 @@ public class StaffDAO {
         }
     }
 
-
     public void assignStaffToDesign(int staffId, int designId) {
         try {
             entityManager.createNativeQuery(
-                            "INSERT INTO Staff_Design (staff_id, design_id) VALUES (:staffId, :designId)")
+                    "INSERT INTO Staff_Design (staff_id, design_id) VALUES (:staffId, :designId)")
                     .setParameter("staffId", staffId)
                     .setParameter("designId", designId)
                     .executeUpdate();
@@ -150,6 +151,7 @@ public class StaffDAO {
             throw new RuntimeException("Failed to assign staff to design: " + e.getMessage(), e);
         }
     }
+
 
 
     public List<Staff> searchConstructionStaffByName(String name) {
@@ -165,4 +167,76 @@ public class StaffDAO {
 
         return typedQuery.getResultList();
     }
+
+    public List<Staff> getFilterListOfStaff(String name, String email, String department, Boolean status, int page, int size) {
+        StringBuilder queryBuilder = new StringBuilder("SELECT s FROM Staff s WHERE 1 = 1");
+        if (name != null && !name.isEmpty()) {
+            queryBuilder.append(" AND s.name LIKE :name");
+        }
+        if (email != null && !email.isEmpty()) {
+            queryBuilder.append(" AND s.email LIKE :email");
+        }
+        if (department != null && !department.isEmpty()) {
+            queryBuilder.append(" AND s.department LIKE :department");
+        }
+        if (status != null) {
+            queryBuilder.append(" AND s.enabled = :enabled");
+        }
+
+        queryBuilder.append(" ORDER BY s.department asc");
+        TypedQuery<Staff> query = entityManager.createQuery(queryBuilder.toString(), Staff.class);
+        if (name != null && !name.isEmpty()) {
+            query.setParameter("name", "%" + name + "%");
+        }
+        if (email != null && !email.isEmpty()) {
+            query.setParameter("email", "%" + email + "%");
+        }
+        if (department != null && !department.isEmpty()) {
+            query.setParameter("department", "%" + department + "%");
+        }
+
+        if (status != null) {
+            query.setParameter("enabled", status);
+        }
+
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getResultList();
+    }
+
+    public long countFilterStaff(String name, String email, String department, Boolean status) {
+        StringBuilder queryBuilder = new StringBuilder("SELECT count(s) FROM Staff s WHERE 1 = 1 ");
+        if (name != null && !name.isEmpty()) {
+            queryBuilder.append(" AND s.name LIKE :name");
+        }
+        if (email != null && !email.isEmpty()) {
+            queryBuilder.append(" AND s.email LIKE :email");
+        }
+        if (department != null && !department.isEmpty()) {
+            queryBuilder.append(" AND s.department LIKE :department");
+        }
+        if (status != null) {
+            queryBuilder.append(" AND s.enabled = :enabled");
+        }
+
+        TypedQuery<Long> query = entityManager.createQuery(queryBuilder.toString(), Long.class);
+
+        if (email != null && !email.isEmpty()) {
+            query.setParameter("email", "%" + email + "%");
+        }
+        if (name != null && !name.isEmpty()) {
+            query.setParameter("name", "%" + name + "%");
+        }
+        if (department != null && !department.isEmpty()) {
+            query.setParameter("department", "%" + department + "%");
+        }
+
+        if (status != null) {
+            query.setParameter("enabled", status);
+        }
+        return query.getSingleResult();
+    }
+
+
 }

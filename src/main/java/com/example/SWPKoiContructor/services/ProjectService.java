@@ -1,12 +1,8 @@
 package com.example.SWPKoiContructor.services;
 
-import com.example.SWPKoiContructor.dao.ConstructionDAO;
-import com.example.SWPKoiContructor.dao.ContractDAO;
-import com.example.SWPKoiContructor.dao.DesignDAO;
 import com.example.SWPKoiContructor.dao.ProjectDAO;
 
 
-import com.example.SWPKoiContructor.entities.*;
 import com.example.SWPKoiContructor.entities.Construction;
 import com.example.SWPKoiContructor.entities.ConstructionStage;
 import com.example.SWPKoiContructor.entities.ConstructionStageDetail;
@@ -15,25 +11,25 @@ import com.example.SWPKoiContructor.entities.DesignStage;
 import com.example.SWPKoiContructor.entities.DesignStageDetail;
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Term;
+import com.example.SWPKoiContructor.utils.Utility;
+import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.TypedQuery;
 import java.util.List;
+import org.springframework.context.annotation.Lazy;
 
 @Service
 public class ProjectService {
 
     private ProjectDAO projectDAO;
+    private LoyaltyPointService loyaltyPointService;
+    
 
-    private DesignDAO designDAO;
-    private ConstructionDAO constructionDAO;
-
-    private ContractDAO contractDAO;
-
-    public ProjectService(ProjectDAO projectDAO) {
+    public ProjectService(ProjectDAO projectDAO,@Lazy LoyaltyPointService loyaltyPointService) {
         this.projectDAO = projectDAO;
+        this.loyaltyPointService = loyaltyPointService;
     }
 
 
@@ -138,6 +134,11 @@ public class ProjectService {
             if (design != null && design.getStatus() == 3 && (construction == null || construction.getConstructionStatus() == 3)) {
                 project.setStatus(2); // Completed (Both Design and Construction are completed)
                 project.setStage(4); // Maintenace
+                
+                //gain royality point after completing project 
+                loyaltyPointService.gainLoyaltyPoints(project.getContract().getCustomer(), project.getContract().getTotalPrice());
+                LocalDate localDate = LocalDate.now();
+                project.setDateEnd(Utility.localDateToUtilDate(localDate));
             } else if (construction != null && construction.getConstructionStatus() == 2) {
                 project.setStatus(2); // Processing
                 project.setStage(3); // Construction
@@ -211,9 +212,11 @@ public class ProjectService {
 
     public long countProjectComplete() {
         return projectDAO.countProjectComplete();
-
     }
 
+    public long countCustomerProjectsById(int customerId) {
+        return projectDAO.countCustomerProjectsById(customerId);
+    }
 
     public List<Project> getCustomerProjectsById(int customerId) {
         return projectDAO.getCustomerProjectsById(customerId);

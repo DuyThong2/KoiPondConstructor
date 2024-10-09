@@ -37,6 +37,10 @@ public class Service {
     @OrderBy("servicePriceStatus DESC, dateApply DESC")
     private List<ServicePrice> servicePrice;
 
+    @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
+
     public Service(String serviceName, String serviceDescription,  boolean serviceStatus) {
         this.serviceName = serviceName;
         this.serviceDescription = serviceDescription;
@@ -104,8 +108,12 @@ public class Service {
     public void setServiceDetails(List<ServiceDetail> serviceDetails) {
         this.serviceDetails = serviceDetails;
     }
-    
-    
-    
-    
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -8,38 +9,21 @@
         <title>Design Project Details</title>
         <!-- Sử dụng Bootstrap 4.3.1 từ CDN -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-                <%@include file="../cssTemplate.jsp"%>
+        <%@include file="../cssTemplate.jsp"%>
 
         <style>
             body {
                 font-family: 'Arial', sans-serif;
                 background-color: #f8f9fa;
-                padding-top: 80px;
             }
 
-            /* Sửa container để phù hợp hơn với Bootstrap grid */
+
             .container {
                 max-width: 95%;
                 margin: 20px auto;
             }
+            
 
-            /* Cải tiến header với đổ bóng và độ trong suốt */
-            .nav {
-                margin-bottom: 10px;
-                padding: 20px;
-                background-color: rgba(52, 58, 64, 0.9); /* Màu đen trong suốt */
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-radius: 10px;
-                position: fixed;
-                top: 0;
-                width: 95%;
-                z-index: 1000;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            }
-
-            /* Đổ bóng và thêm hiệu ứng hover cho các button */
             .btn {
                 transition: all 0.3s ease;
             }
@@ -48,29 +32,17 @@
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             }
 
-            .btn-logout {
-                background-color: #dc3545;
-                color: white;
-                padding: 8px 15px;
-                border-radius: 5px;
-                border: none;
-                font-size: 16px;
-                font-weight: bold;
-            }
-
-            .btn-logout:hover {
-                background-color: #c82333;
-            }
-
-            /* Cải thiện bố cục cột với Bootstrap */
             .left-column {
+                width: 30%;
                 background-color: #fff;
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 padding: 20px;
+                margin-right: 10px;
             }
 
             .right-column {
+                width: 69%;
                 background-color: #fff;
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -97,7 +69,10 @@
             }
 
             .stage-tabs button {
-                margin-right: 10px;
+                margin: 0 10px;
+                border-radius: 15px;
+                padding: 13px 15px;
+                font-size: 14px;
             }
 
             .detail-name-bar {
@@ -106,17 +81,15 @@
                 margin-top: 15px;
             }
 
-            /* Badge trạng thái */
             .badge-status {
                 font-size: 14px;
-                padding: 8px 15px;
+                padding: 5px 13px;
                 margin-right: 10px;
                 margin-bottom: 10px;
                 border-radius: 15px;
                 text-transform: capitalize;
             }
 
-            /* Màu sắc cho badge */
             .badge-status.success {
                 background-color: #28a745;
                 color: white;
@@ -135,7 +108,6 @@
                 color: white;
             }
 
-            /* Thêm độ bóng nhẹ cho các thẻ card */
             .card {
                 margin-bottom: 20px;
                 border: none;
@@ -156,7 +128,6 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
-            /* Image gallery cải thiện */
             .image-gallery img {
                 width: 30%; /* Điều chỉnh kích thước ảnh nếu cần */
                 margin-right: 5px;
@@ -169,14 +140,40 @@
                 transform: scale(1.05); /* Phóng to nhẹ khi hover */
             }
             .payment-status {
-                font-size: 1rem;
+                font-size: 1.8rem;
                 color: #28a745;
                 margin-bottom: 10px;
                 font-weight: bold;
             }
+            p {
+                margin-bottom: 10px;
+            }
+            h4 {
+                font-size: 2.4rem;
+                color: #343a40;
+                margin-bottom: 20px;
+            }
+
+            button.btn-info {
+                font-weight: 600;
+                font-size: 1.5rem; 
+                padding: 15px 25px;
+                border-radius: 8px;
+                width: 100%; 
+                max-width: 300px; 
+                display: inline-block;
+                text-align: center;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+                transition: box-shadow 0.3s ease, transform 0.3s ease; 
+            }
+
+            button.btn-info:hover {
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Thêm đổ bóng khi hover */
+                transform: translateY(-2px); /* Di chuyển nhẹ nút khi hover */
+            }
         </style>
     </head>
-<%@include file="../homePageNavbar.jsp"%>
+    <%@include file="../homePageNavbar.jsp"%>
     <body>
         <div class="container mt-5">
             <!-- Navigation -->
@@ -196,12 +193,10 @@
                     <!-- Additional Information -->
                     <div class="additional-info">
                         <h4>Additional Information</h4>
-                        <p><strong>Start Date:</strong> ${project.dateStart}</p>
-                        <p><strong>Expected End Date:</strong> ${project.dateEnd}</p>
+                        <p><strong>Start Date:</strong><fmt:formatDate value="${project.dateStart}" pattern="dd-MM-yyyy"/></p>
+                        <p><strong>Expected End Date:</strong><fmt:formatDate value="${project.dateEnd}" pattern="dd-MM-yyyy"/></p>
                         <p><strong>Design Team:</strong>
-                            <c:forEach var="staff" items="${design.staff}">
-                                | ${staff.name} |
-                            </c:forEach>
+                            <c:forEach var="staff" items="${design.staff}"> | ${staff.name} | </c:forEach>
                         </p>
                     </div>
                 </div>
@@ -237,10 +232,10 @@
 
                     <!-- Display the Design Stages -->
                     <c:forEach var="stage" items="${designStages}">
-                        <div class="card mb-3">
+                        <div class="card mt-4">
                             <div class="card-body">
                                 <h4>
-                                    <a data-status="${stage.designStageStatus}" class="design-stage-link " 
+                                    <a data-status="${stage.designStageStatus}" class="design-stage-link "
                                        href="${pageContext.request.contextPath}/customer/project/design/blueprint/${stage.designStageId}">
                                         ${stage.designStageName}
                                     </a>
@@ -257,7 +252,7 @@
                                             <span class="badge badge-secondary">Canceled</span>
                                         </c:when>
                                         <c:when test="${stage.designStageStatus == 4}">
-                                            <span class="badge badge-success">Accepted</span>
+                                            <span class="badge badge-success">Complete</span>
                                         </c:when>
                                     </c:choose>
                                 </p>
@@ -276,15 +271,28 @@
                                 </div>
 
                                 <c:forEach var="detail" items="${stage.designDetail}">
-                                    <c:if test="${detail.name == 'Editing' && detail.status == 2}">
+                                    <c:if test="${detail.name == 'Payment' && detail.status == 2}">
                                         <div style="float: right;">
+                                            <!-- PayPal Payment Button -->
+                                            <form action="${pageContext.request.contextPath}/paypal/pay/design" method="post" style="display:inline-block;">
+                                                <input type="hidden" name="detailId" value="${detail.id}" />
+                                                <input type="hidden" name="designId" value="${design.designId}" />
+                                                <input type="hidden" name="amount" value="${stage.designStagePrice}" />
+                                                <button type="submit" class="btn btn-info">Pay with PayPal</button>
+                                            </form>
+                                        </div>
+                                    </c:if>
+
+                                    <!-- Existing "Complete Editing" Button -->
+                                    <c:if test="${detail.name == 'Editing' && detail.status == 2}">
+                                        <div style="float: right; margin-right: 10px;">
                                             <form action="${pageContext.request.contextPath}/customer/designStageDetail/updateStatus/"
                                                   method="post" style="display:inline-block;" onsubmit="return confirmStatusChange();">
                                                 <input type="hidden" name="detailId" value="${detail.id}">
                                                 <input type="hidden" name="newStatus" value="4"> <!-- Status for 'Completed' -->
                                                 <input type="hidden" name="designStageId" value="${stage.designStageId}">
                                                 <input type="hidden" name="designId" value="${design.designId}">
-                                                <button type="submit" class="btn btn-success">Complete Editing</button>
+                                                <button type="submit" class="btn btn-info">Complete Editing</button>
                                             </form>
                                         </div>
                                     </c:if>
@@ -328,8 +336,8 @@
             </div>
         </div>
 
-    <%@include file="../footer.jsp"%>
-                <%@include file="../scriptTemplate.jsp"%>
+        <%@include file="../footer.jsp"%>
+        <%@include file="../scriptTemplate.jsp"%>
         <!-- Script to dynamically change button color based on stage status -->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
@@ -347,10 +355,7 @@
                     }
                 });
             });
-        </script>
 
-        <!-- Script for design-stage link interaction -->
-        <script>
             document.addEventListener('DOMContentLoaded', function () {
                 // Lắng nghe sự kiện click cho các liên kết của design stage
                 document.querySelectorAll('.design-stage-link').forEach(function (link) {

@@ -41,9 +41,9 @@ public class Comment {
     @Column(name = "comment_date_post")
     private Calendar datePost;
     
-//    @ManyToOne
-//    @JoinColumn(name = "blog_id")
-//    private Blog blog;
+    @ManyToOne
+    @JoinColumn(name = "blog_id")
+    private Blog blog;
     
     @ManyToOne
     @JoinColumn(name = "service_id")
@@ -60,8 +60,11 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    
-    //Staff
+
+    @ManyToOne
+    @JoinColumn(name = "staff_id")
+    private Staff staff;
+
 
     @ManyToOne
     @JoinColumn(name = "parent_comment_id")
@@ -159,9 +162,20 @@ public class Comment {
     public void setReplies(List<Comment> replies) {
         this.replies = replies;
     }
-    
-    
-    
 
-    
+    public Blog getBlog() {
+        return blog;
+    }
+
+    public void setBlog(Blog blog) {
+        this.blog = blog;
+    }
+
+    public Staff getStaff() {
+        return staff;
+    }
+
+    public void setStaff(Staff staff) {
+        this.staff = staff;
+    }
 }

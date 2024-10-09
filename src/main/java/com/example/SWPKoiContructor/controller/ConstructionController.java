@@ -174,16 +174,16 @@ public class ConstructionController {
             @RequestParam int constructionId,
             RedirectAttributes redirectAttributes) {
         if (detailId == null || newStatus == null) {
-            redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
+            redirectAttributes.addFlashAttribute("message", "Missing required parameters.");
             return "redirect:/staff/updateStatus/constructionStage/" + constructionStageId + "?constructionId=" + constructionId;
         }
         try {
             // Update the construction stage detail status
             constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
-            redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+            redirectAttributes.addFlashAttribute("message", "Status updated successfully!");
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("message", "Failed to update status: " + e.getMessage());
         }
 
         // Redirect back to the construction stage details page

@@ -1,8 +1,6 @@
 package com.example.SWPKoiContructor.configs.security;
 
-import com.example.SWPKoiContructor.configs.security.CustomAuthenticationSuccessHandler;
-import com.example.SWPKoiContructor.configs.security.CustomOAuth2UserService;
-import com.example.SWPKoiContructor.configs.security.OAuth2SuccessHandler;
+import com.example.SWPKoiContructor.configs.filter.SessionTimeoutFilter;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,8 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,31 +20,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomAuthenticationSuccessHandler successHandler;
 //    private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2SuccessHandler auth2SuccessHandler;
+   
 
     @Autowired
-    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler, OAuth2SuccessHandler auth2SuccessHandler) {
+    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler, 
+                          OAuth2SuccessHandler auth2SuccessHandler
+                         ) {
         this.successHandler = successHandler;
-//        this.customOAuth2UserService = customOAuth2UserService;
         this.auth2SuccessHandler = auth2SuccessHandler;
+        
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.addFilterBefore(new SessionTimeoutFilter(), UsernamePasswordAuthenticationFilter.class) 
+                .
+                csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/customer/**").hasRole("CUSTOMER") // Only customers can access /customer/*
                 .antMatchers("/manager/**").hasRole("MANAGER") // Only managers can access /manager/*
                 .antMatchers("/consultant/**").hasRole("CONSULTANT")
                 .antMatchers("/designer/**").hasRole("DESIGNER")
                 .antMatchers("/constructor/**").hasRole("CONSTRUCTOR")
-                .antMatchers("/staff/**").hasAnyRole("MANAGER","CONSULTANT","DESIGNER","CONSTRUCTOR")
-                .antMatchers("/resources/**", "/assets/**", "/", "/register","/forgot-password", "/reset-password","/home/**","/css/**","/js/**").permitAll()
+                .antMatchers("/staff/**").hasAnyRole("MANAGER", "CONSULTANT", "DESIGNER", "CONSTRUCTOR")
+                .antMatchers("/resources/**", "/assets/**", "/", "/register", "/forgot-password", "/reset-password", "/home/**", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin() // Enable form login
                 .loginPage("/login") // Set custom login page
                 .loginProcessingUrl("/authenticateTheUser")
-                .failureUrl("/")
+                .failureUrl("/loginFail")
                 .successHandler(successHandler)// Form action to handle authentication
                 .permitAll()
                 .and()
@@ -63,6 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/error/error-403");
+
+
     }
 
     @Bean
@@ -84,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public static NoOpPasswordEncoder passwordEncoder() {
-        return (NoOpPasswordEncoder) NoOpPasswordEncoder.getInstance();  // For simplicity, no password encoding
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();  // BCrypt for password encryption
     }
 }

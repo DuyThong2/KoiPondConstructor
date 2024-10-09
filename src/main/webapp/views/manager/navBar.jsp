@@ -4,12 +4,17 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Admin Dashboard</title>
+
+        <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
+        <!-- Bootstrap Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
         <style>
+            /* Sidebar styling */
             .sidebar {
                 position: fixed;
                 top: 0;
@@ -17,107 +22,93 @@
                 height: 100%;
                 width: 240px;
                 background-color: #343a40;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
                 padding: 20px;
                 color: white;
                 overflow-y: auto;
-                scrollbar-width: none;
             }
+
             .sidebar::-webkit-scrollbar {
                 display: none;
             }
+
             .admin-info {
                 text-align: center;
                 margin-bottom: 20px;
             }
-            .admin-avatar {
-                width: 80px;
-                height: 80px;
-                border-radius: 50%;
-                margin-bottom: 10px;
-                border: 2px solid white;
-            }
+
+            /* Tăng cỡ chữ cho các phần tử trong menu */
             .menu .nav-item {
                 margin-bottom: 15px;
             }
+
             .menu .nav-link {
                 color: white;
-                font-size: 15px;
+                font-size: 17px;
                 padding: 10px 20px;
                 text-decoration: none;
                 border-radius: 4px;
                 transition: background-color 0.3s ease, transform 0.3s ease;
             }
+
             .menu .nav-link:hover {
                 background-color: #495057;
                 transform: translateX(5px);
             }
-            .logout-section .btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: #dc3545;
-                border: none;
-                width: 100%;
-                padding: 12px;
-                font-size: 16px;
-                border-radius: 4px;
-                transition: background-color 0.3s ease, box-shadow 0.3s ease;
+
+            /* Mở/đóng submenu với hiệu ứng mượt */
+            .collapse {
+                transition: height 0.5s ease-in-out; /* Tăng thời gian và sử dụng ease-in-out để mượt hơn */
             }
+
+            /* Luôn hiển thị mũi tên sang phải */
+            .menu .nav-link[data-toggle="collapse"]::after {
+                content: '\25B7'; /* Mũi tên sang phải */
+                float: right;
+                transition: transform 0.3s ease;
+                font-size: 0.9rem;
+            }
+
+            .menu .nav-link[aria-expanded="true"]::after {
+                transform: rotate(90deg);
+            }
+
+            /* Submenu styling */
+            .sidebar ul.collapse {
+                list-style-type: none;
+                padding-left: 0;
+            }
+
+            .sidebar ul.collapse .nav-item {
+                margin-left: 15px;
+            }
+
+            .sidebar ul.collapse .nav-link {
+                padding-left: 20px;
+                font-size: 15px;
+            }
+
+            /* Logout button styling */
+            .logout-section .btn {
+                width: 100%;
+                background-color: #dc3545;
+                font-size: 16px;
+                padding: 12px;
+                border-radius: 4px;
+            }
+
             .logout-section .btn:hover {
                 background-color: #c82333;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             }
+            .sidebar ul {
+                list-style: none; /* Remove bullets from all unordered lists */
+                padding-left: 0;
+            }
 
-            /* Notification bell at the top right with adjusted color */
-            .notification-bell {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background-color: #6c757d; /* Change to a more neutral gray */
-                color: white;
-                font-size: 18px;
-                padding: 6px;
-                border-radius: 50%;
-                width: 36px;
-                height: 36px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                z-index: 1000;
-            }
-            .notification-bell i {
-                font-size: 16px;
-            }
-            .notification-bell:hover {
-                background-color: #5a6268; /* Darker gray on hover */
-            }
-            .content {
-                margin-left: 260px;
-                padding: 40px;
-                background-color: #f8f9fa;
-                min-height: 100vh;
-            }
-            .content h1 {
-                margin-bottom: 20px;
-                font-weight: 700;
-                font-size: 28px;
-            }
-            ::-webkit-scrollbar {
-                width: 8px;
-            }
-            ::-webkit-scrollbar-thumb {
-                background-color: #adb5bd;
-                border-radius: 10px;
-            }
-            ::-webkit-scrollbar-thumb:hover {
-                background-color: #6c757d;
-            }
         </style>
     </head>
     <body>
+
         <!-- Notification Bell -->
         <button class="notification-bell">
             <i class="bi bi-bell"></i>
@@ -126,7 +117,7 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="admin-info">
-                <img src="images/admin.jpg" alt="Admin Avatar" class="admin-avatar">
+                <i class="fas fa-user" style="font-size: 3rem; color: white;"></i>
                 <p>Welcome, <strong>Manager</strong></p>
             </div>
 
@@ -154,6 +145,27 @@
                         <a class="nav-link" href="/manager/construction"><i class="bi bi-tools"></i> Construction</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="/staff/blogs"><i class="bi bi-newspaper"></i> Blog</a>
+                    </li>
+
+                    <!-- Manage User section with submenu -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-toggle="collapse" data-target="#manageUserSubmenu" aria-expanded="false" aria-controls="manageUserSubmenu">
+                            <i class="bi bi-people"></i> Manage User
+                        </a>
+                        <ul class="collapse" id="manageUserSubmenu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/manager/manageCustomer"><i class="bi bi-person-circle"></i> Manage Customer</a>
+                            </li>
+                            <li class="nav-item">
+
+                                <a class="nav-link" href="/manager/manageStaff"><i class="bi bi-person-badge"></i> Manage Staff</a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link" href="#"><i class="bi bi-file-earmark-text"></i> Terms</a>
                     </li>
                     <li class="nav-item">
@@ -163,13 +175,23 @@
                         <a class="nav-link" href="/manager/serviceDetails"><i class="bi bi-bar-chart-line"></i> Services Orders</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-bar-chart-line"></i> Reports</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#"><i class="bi bi-gear"></i> Settings</a>
                     </li>
                 </ul>
             </nav>
+
             <div class="logout-section">
-                <a class="btn btn-danger" href="/logout">Logout</a>
+                <a class="btn btn-danger" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </aside>
+
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     </body>
 </html>

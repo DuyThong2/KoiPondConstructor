@@ -1,7 +1,7 @@
 package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Blog;
-import java.sql.Date;
+import java.util.Date;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -95,7 +95,7 @@ public class BlogDAO {
         }
 
         // Set pagination parameters
-        query.setFirstResult((page - 1) * size); // Skips previous pages' results
+        query.setFirstResult(page  * size); // Skips previous pages' results
         query.setMaxResults(size);               // Limits results per page
 
         return query.getResultList();

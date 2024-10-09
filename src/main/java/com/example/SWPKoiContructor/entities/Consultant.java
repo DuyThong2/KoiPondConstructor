@@ -70,7 +70,10 @@ public class Consultant {
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
-
+    
+    @OneToMany(mappedBy = "consultant")
+    private List<Feedback> feedback;
+            
     public Consultant() {
     }
 
@@ -191,6 +194,14 @@ public class Consultant {
     public void setStaff(Staff staff) {
         this.staff = staff;
     }
-    
+
+    public List<Feedback> getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(List<Feedback> feedback) {
+        this.feedback = feedback;
+    }
+
     
 }

@@ -7,32 +7,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Manage Design Stage Details</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <style>
-            body {
-                font-family: 'Arial', sans-serif;
-                background-color: #f0f2f5;
-                padding-top: 80px; /* Space for fixed navbar */
-            }
-            .container {
-                max-width: 90%;
-                margin: auto;
-                padding: 20px;
-                background: #ffffff;
-                border-radius: 10px;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            }
             h2 {
                 margin-bottom: 20px;
                 text-align: center;
                 color: #343a40;
                 font-weight: bold;
             }
-            table {
-                margin-top: 20px;
-                background-color: #ffffff;
-                border-radius: 10px;
-                overflow: hidden; /* For rounded corners */
-            }
+
             th, td {
                 padding: 15px;
                 text-align: center;
@@ -79,10 +63,46 @@
             }
         </style>
     </head>
-    <%@include file="../homePageNavbar.jsp"%>
-
     <body>
+    <div class="container">
+        <header>
+            <div class="nav">
+                <a href="/designer/manage" class="nav-link">
+                    <i class="fas fa-project-diagram"></i> My Projects
+                </a>
+
+                <!-- Thông báo và cài đặt -->
+                <div class="nav-item-group">
+                    <!-- Notifications icon with badge -->
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge badge-danger">3</span> <!-- Số thông báo chưa đọc -->
+                    </a>
+
+                    <!-- Avatar và tên người dùng -->
+                    <div class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="/assets/imgs/logo/final_resized_colored_logo_image.png" alt="User Avatar" class="rounded-circle" width="40">
+                            <span class="ml-2 user-name">${sessionScope.user.name}</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="/profile">Profile</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/help">Help</a>
+                            <div class="dropdown-divider"></div>
+                            <!-- Logout button in dropdown -->
+                            <a href="/logout" class="dropdown-item btn-logout">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
         <div class="container mt-5">
+
             <h2>Design Stage Details</h2>
             <table class="table table-bordered table-striped">
                 <thead>
@@ -116,13 +136,11 @@
                                                 <c:choose>
                                                     <c:when test="${detail.status == 2}">
                                                         <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
-                                                        <option value="3" ${detail.status == 3 ? 'selected' : ''}>Cancel</option>
                                                         <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
                                                     </c:when>
                                                     <c:otherwise>
                                                         <option value="1" ${detail.status == 1 ? 'selected' : ''}>Pending</option>
                                                         <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
-                                                        <option value="3" ${detail.status == 3 ? 'selected' : ''}>Cancel</option>
                                                         <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
                                                     </c:otherwise>
                                                 </c:choose>
@@ -145,7 +163,7 @@
                             <td>
                                 <input type="hidden" name="designId" value="${designId}">
                                 <input type="hidden" name="detailId" value="${detail.id}">
-                                <input type="hidden" name="designStageId" value="${id}">
+                                <input type="hidden" name="designStageId" value="${designStageId}">
                                 <!-- Only show the update button if the select is enabled -->
                                 <c:if test="${previousComplete && detail.status != 4 && detail.status != 3}">
                                     <button type="submit" class="btn btn-primary mt-2">Update</button>
@@ -166,23 +184,17 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <c:if test="${not empty success}">
-                <div class="alert alert-success mt-3" style="font-size: large">
-                    ${success}
-                </div>
+            <c:if test="${not empty message}">
+                <script>
+                    alert("${message}");
+                </script>
             </c:if>
 
-            <c:if test="${not empty error}">
-                <div class="alert alert-danger mt-3">
-                    ${error}
-                </div>
-            </c:if>
             <div class="text-center mt-3">
                 <a href="${pageContext.request.contextPath}/designer/design/${designId}" class="btn btn-secondary">Back to Design</a>
             </div>
         </div>
-
-
+    </div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -192,7 +204,7 @@
                 return confirm("Are you sure you want to change the status?");
             }
         </script>
+
     </body>
-    <%@include file="../footer.jsp"%>
 
 </html>

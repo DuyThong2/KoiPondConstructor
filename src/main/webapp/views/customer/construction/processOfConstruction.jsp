@@ -1,12 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Construction Project Details</title>
-        <!-- Sử dụng Bootstrap 4.3.1 từ CDN -->
+        <!-- Use Bootstrap 4.3.1 from CDN -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
             <%@include file="../cssTemplate.jsp"%>
 
@@ -14,27 +15,11 @@
             body {
                 font-family: 'Arial', sans-serif;
                 background-color: #f8f9fa;
-                padding-top: 80px;
             }
 
             .container {
                 max-width: 95%;
                 margin: 20px auto;
-            }
-
-            .nav {
-                margin-bottom: 10px;
-                padding: 20px;
-                background-color: rgba(52, 58, 64, 0.9);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-radius: 10px;
-                position: fixed;
-                top: 0;
-                width: 95%;
-                z-index: 1000;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
             .btn {
@@ -45,21 +30,17 @@
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             }
 
-            .btn-logout {
-                background-color: #dc3545;
-                color: white;
-                padding: 8px 15px;
-                border-radius: 5px;
-                border: none;
-                font-size: 16px;
-                font-weight: bold;
+            .left-column {
+                width: 30%;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                margin-right: 10px;
             }
 
-            .btn-logout:hover {
-                background-color: #c82333;
-            }
-
-            .left-column, .right-column {
+            .right-column {
+                width: 69%;
                 background-color: #fff;
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -86,12 +67,21 @@
             }
 
             .stage-tabs button {
-                margin-right: 10px;
+                margin: 0 10px;
+                border-radius: 15px;
+                padding: 13px 15px;
+                font-size: 14px;
+            }
+
+            .detail-name-bar {
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 15px;
             }
 
             .badge-status {
                 font-size: 14px;
-                padding: 8px 15px;
+                padding: 5px 13px;
                 margin-right: 10px;
                 margin-bottom: 10px;
                 border-radius: 15px;
@@ -102,12 +92,10 @@
                 background-color: #28a745;
                 color: white;
             }
-
             .badge-status.processing {
                 background-color: #0d6efd;
                 color: white;
             }
-
             .badge-status.pending {
                 background-color: #6c757d;
                 color: white;
@@ -130,20 +118,107 @@
                 box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             }
 
-            .detail-name-bar {
-                display: flex;
-                flex-wrap: wrap;
-                margin-top: 15px;
+            .project-description, .additional-info {
+                margin-top: 20px;
+                padding: 15px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
+            .image-gallery img {
+                width: 30%; /* Điều chỉnh kích thước ảnh nếu cần */
+                margin-right: 5px;
+                margin-bottom: 5px;
+                border-radius: 5px;
+                transition: transform 0.3s ease;
+            }
+
+            .image-gallery img:hover {
+                transform: scale(1.05); /* Phóng to nhẹ khi hover */
+            }
             .payment-status {
-                font-size: 1rem;
+                font-size: 1.8rem;
                 color: #28a745;
                 margin-bottom: 10px;
                 font-weight: bold;
             }
+            p {
+                margin-bottom: 10px;
+            }
+            h4 {
+                font-size: 2.4rem;
+                color: #343a40;
+                margin-bottom: 20px;
+            }
+            .btn-lg {
+                font-size: 1.5rem; /* Điều chỉnh kích thước font */
+                padding: 15px 30px; /* Điều chỉnh padding */
+                margin: 10px;
+                float: right;
+            }
         </style>
-    </head><%@include file="../homePageNavbar.jsp"%>
+        <script>
+            function createPayPalButton(detailId, constructionStageId, constructionId, amount, targetId) {
+                const target = document.getElementById(targetId);
+                if (!target) {
+                    console.error('Target not found:', targetId);
+                    return;
+                }
+
+                const form = document.createElement('form');
+                form.action = '/paypal/pay/construction';
+                form.method = 'post';
+
+                form.innerHTML = `
+                        <input type="hidden" name="detailId" value="` + detailId + `" />
+                        <input type="hidden" name="constructionStageId" value="` + constructionStageId + `" />
+                        <input type="hidden" name="constructionId" value="` + constructionId + `" />
+                        <input type="hidden" name="amount" value="` + amount + `" />
+                        <button type="submit" class="btn btn-primary btn-lg">Pay with PayPal</button>
+                    `;
+
+                target.appendChild(form);
+            }
+
+            // Function to create Approve and Reject buttons and insert them into the correct target location
+            function createApproveRejectButtons(detailId, constructionStageId, constructionId, targetId) {
+                const target = document.getElementById(targetId);
+                if (!target) {
+                    console.error('Target not found:', targetId);
+                    return;
+                }
+
+                const approveForm = document.createElement('form');
+                approveForm.action = '/customer/approveInspection';
+                approveForm.method = 'post';
+                approveForm.style = 'display:inline; margin-right: 10px;';
+                approveForm.innerHTML = `
+                        <input type="hidden" name="detailId" value="` + detailId + `" />
+                        <input type="hidden" name="constructionStageId" value="` + constructionStageId + `" />
+                        <input type="hidden" name="constructionId" value="` + constructionId + `" />
+                        <button type="submit" class="btn btn-success btn-lg">Approve</button>
+                    `;
+
+                const rejectForm = document.createElement('form');
+                rejectForm.action = '/customer/rejectInspection';
+                rejectForm.method = 'post';
+                rejectForm.style = 'display:inline;';
+                rejectForm.innerHTML = `
+                        <input type="hidden" name="detailId" value="` + detailId + `" />
+                        <input type="hidden" name="constructionStageId" value="` + constructionStageId + `" />
+                        <input type="hidden" name="constructionId" value="` + constructionId + `" />
+                        <button type="submit" class="btn btn-danger btn-lg">Reject</button>
+                    `;
+
+                target.appendChild(approveForm);
+                target.appendChild(rejectForm);
+            }
+        </script>
+
+    </head>
+    
+    <%@include file="../homePageNavbar.jsp"%>
 
     <body>
         <div class="container ">
@@ -164,8 +239,8 @@
                     <!-- Additional Information -->
                     <div class="additional-info">
                         <h4>Additional Information</h4>
-                        <p><strong>Start Date:</strong> ${construction.project.dateStart}</p>
-                        <p><strong>Expected End Date:</strong> ${construction.project.dateEnd}</p>
+                        <p><strong>Start Date:</strong><fmt:formatDate value="${construction.project.dateStart}" pattern="dd-MM-yyyy"/></p>
+                        <p><strong>Expected End Date:</strong><fmt:formatDate value="${construction.project.dateEnd}" pattern="dd-MM-yyyy"/></p>
                         <p><strong>Team:</strong>
                             <c:forEach var="staff" items="${construction.constructionStaffs}">
                                 | ${staff.staff.name} |
@@ -240,25 +315,21 @@
                                             ${detail.constructionStageDetailName}
                                         </span>
 
-                                        <!-- Check if this is the inspection stage (ensure case-sensitive check) -->
-                                        <c:if test="${detail.constructionStageDetailName.equals('Inspection') && detail.constructionStageDetailStatus == 2}">
-                                            <div class="d-flex justify-content-center mt-2">
-                                                <!-- Approve Button -->
-                                                <form action="${pageContext.request.contextPath}/customer/approveInspection" method="post" style="display:inline; margin-right: 10px;">
-                                                    <input type="hidden" name="detailId" value="${detail.constructionStageDetailId}" />
-                                                    <input type="hidden" name="constructionStageId" value="${stage.constructionStageId}" />
-                                                    <input type="hidden" name="constructionId" value="${construction.constructionId}" />
-                                                    <button type="submit" class="btn btn-success btn-md">Approve</button>
-                                                </form>
+                                        <!-- If the current stage detail is Payment and it's in processing or pending state -->
+                                        <c:if test="${detail.constructionStageDetailName.equals('Payment') && detail.constructionStageDetailStatus == 2}">
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    createPayPalButton(${detail.constructionStageDetailId}, ${stage.constructionStageId}, ${construction.constructionId}, ${stage.constructionStagePrice}, "button-placement-${stage.constructionStageId}");
+                                                });
+                                            </script>
+                                        </c:if>
 
-                                                <!-- Reject Button -->
-                                                <form action="${pageContext.request.contextPath}/customer/rejectInspection" method="post" style="display:inline;">
-                                                    <input type="hidden" name="detailId" value="${detail.constructionStageDetailId}" />
-                                                    <input type="hidden" name="constructionStageId" value="${stage.constructionStageId}" />
-                                                    <input type="hidden" name="constructionId" value="${construction.constructionId}" />
-                                                    <button type="submit" class="btn btn-danger btn-md">Reject</button>
-                                                </form>
-                                            </div>
+                                        <c:if test="${detail.constructionStageDetailName.equals('Inspection') && detail.constructionStageDetailStatus == 2}">
+                                            <script>
+                                                document.addEventListener('DOMContentLoaded', function () {
+                                                    createApproveRejectButtons(${detail.constructionStageDetailId}, ${stage.constructionStageId}, ${construction.constructionId}, "button-placement-${stage.constructionStageId}");
+                                                });
+                                            </script>
                                         </c:if>
                                     </c:forEach>
                                 </div>
@@ -284,7 +355,10 @@
                                         }
                                     })();
                                 </script>
-
+                                <!-- Unique button placement for this stage -->
+                                <div id="button-placement-${stage.constructionStageId}">
+                                    <!-- Buttons will be inserted here dynamically -->
+                                </div>
 
                             </div>
                         </div>
@@ -328,6 +402,8 @@
                 });
             });
         </script>
+
+
 
         <!-- Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
