@@ -232,7 +232,7 @@
                         <div class="input-group">
                             <input type="text" class="form-control" id="email" name="email" placeholder="Enter user" required>
                             <div class="input-group-append">
-                                <span class="input-group-text">@example.com</span>
+                                <span class="input-group-text">@gmail.com</span>
                             </div>
                         </div>
                     </div>

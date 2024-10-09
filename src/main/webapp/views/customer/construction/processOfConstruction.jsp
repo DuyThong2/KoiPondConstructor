@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,27 +15,11 @@
             body {
                 font-family: 'Arial', sans-serif;
                 background-color: #f8f9fa;
-                padding-top: 80px;
             }
 
             .container {
                 max-width: 95%;
                 margin: 20px auto;
-            }
-
-            .nav {
-                margin-bottom: 10px;
-                padding: 20px;
-                background-color: rgba(52, 58, 64, 0.9);
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-radius: 10px;
-                position: fixed;
-                top: 0;
-                width: 95%;
-                z-index: 1000;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
             .btn {
@@ -45,21 +30,17 @@
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             }
 
-            .btn-logout {
-                background-color: #dc3545;
-                color: white;
-                padding: 8px 15px;
-                border-radius: 5px;
-                border: none;
-                font-size: 16px;
-                font-weight: bold;
+            .left-column {
+                width: 30%;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                margin-right: 10px;
             }
 
-            .btn-logout:hover {
-                background-color: #c82333;
-            }
-
-            .left-column, .right-column {
+            .right-column {
+                width: 69%;
                 background-color: #fff;
                 border-radius: 8px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -86,12 +67,21 @@
             }
 
             .stage-tabs button {
-                margin-right: 10px;
+                margin: 0 10px;
+                border-radius: 15px;
+                padding: 13px 15px;
+                font-size: 14px;
+            }
+
+            .detail-name-bar {
+                display: flex;
+                flex-wrap: wrap;
+                margin-top: 15px;
             }
 
             .badge-status {
                 font-size: 14px;
-                padding: 8px 15px;
+                padding: 5px 13px;
                 margin-right: 10px;
                 margin-bottom: 10px;
                 border-radius: 15px;
@@ -102,12 +92,10 @@
                 background-color: #28a745;
                 color: white;
             }
-
             .badge-status.processing {
                 background-color: #0d6efd;
                 color: white;
             }
-
             .badge-status.pending {
                 background-color: #6c757d;
                 color: white;
@@ -130,17 +118,44 @@
                 box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             }
 
-            .detail-name-bar {
-                display: flex;
-                flex-wrap: wrap;
-                margin-top: 15px;
+            .project-description, .additional-info {
+                margin-top: 20px;
+                padding: 15px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
+            .image-gallery img {
+                width: 30%; /* Điều chỉnh kích thước ảnh nếu cần */
+                margin-right: 5px;
+                margin-bottom: 5px;
+                border-radius: 5px;
+                transition: transform 0.3s ease;
+            }
+
+            .image-gallery img:hover {
+                transform: scale(1.05); /* Phóng to nhẹ khi hover */
+            }
             .payment-status {
-                font-size: 1rem;
+                font-size: 1.8rem;
                 color: #28a745;
                 margin-bottom: 10px;
                 font-weight: bold;
+            }
+            p {
+                margin-bottom: 10px;
+            }
+            h4 {
+                font-size: 2.4rem;
+                color: #343a40;
+                margin-bottom: 20px;
+            }
+            .btn-lg {
+                font-size: 1.5rem; /* Điều chỉnh kích thước font */
+                padding: 15px 30px; /* Điều chỉnh padding */
+                margin: 10px;
+                float: right;
             }
         </style>
         <script>
@@ -160,7 +175,7 @@
                         <input type="hidden" name="constructionStageId" value="` + constructionStageId + `" />
                         <input type="hidden" name="constructionId" value="` + constructionId + `" />
                         <input type="hidden" name="amount" value="` + amount + `" />
-                        <button type="submit" class="btn btn-primary btn-md">Pay with PayPal</button>
+                        <button type="submit" class="btn btn-primary btn-lg">Pay with PayPal</button>
                     `;
 
                 target.appendChild(form);
@@ -182,7 +197,7 @@
                         <input type="hidden" name="detailId" value="` + detailId + `" />
                         <input type="hidden" name="constructionStageId" value="` + constructionStageId + `" />
                         <input type="hidden" name="constructionId" value="` + constructionId + `" />
-                        <button type="submit" class="btn btn-success btn-md">Approve</button>
+                        <button type="submit" class="btn btn-success btn-lg">Approve</button>
                     `;
 
                 const rejectForm = document.createElement('form');
@@ -193,7 +208,7 @@
                         <input type="hidden" name="detailId" value="` + detailId + `" />
                         <input type="hidden" name="constructionStageId" value="` + constructionStageId + `" />
                         <input type="hidden" name="constructionId" value="` + constructionId + `" />
-                        <button type="submit" class="btn btn-danger btn-md">Reject</button>
+                        <button type="submit" class="btn btn-danger btn-lg">Reject</button>
                     `;
 
                 target.appendChild(approveForm);
@@ -224,8 +239,8 @@
                     <!-- Additional Information -->
                     <div class="additional-info">
                         <h4>Additional Information</h4>
-                        <p><strong>Start Date:</strong> ${construction.project.dateStart}</p>
-                        <p><strong>Expected End Date:</strong> ${construction.project.dateEnd}</p>
+                        <p><strong>Start Date:</strong><fmt:formatDate value="${construction.project.dateStart}" pattern="dd-MM-yyyy"/></p>
+                        <p><strong>Expected End Date:</strong><fmt:formatDate value="${construction.project.dateEnd}" pattern="dd-MM-yyyy"/></p>
                         <p><strong>Team:</strong>
                             <c:forEach var="staff" items="${construction.constructionStaffs}">
                                 | ${staff.staff.name} |

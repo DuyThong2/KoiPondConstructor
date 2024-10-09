@@ -70,9 +70,9 @@ public class DesignDAO {
     }
 
     public boolean isAssignedToDesign(int designId, int userId) {
-        String staffinDesign
-                = "SELECT COUNT(ds) FROM Design d JOIN d.staff ds WHERE d.designId = :designId AND ds.id = :userId";
-        TypedQuery<Long> query = entityManager.createQuery(staffinDesign, Long.class);
+        String staffInDesign
+                = "SELECT COUNT(s) FROM Design d JOIN d.staff s WHERE d.designId = :designId AND s.id = :userId";
+        TypedQuery<Long> query = entityManager.createQuery(staffInDesign, Long.class);
         query.setParameter("designId", designId);
         query.setParameter("userId", userId);
         Long count = query.getSingleResult();

@@ -6,6 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+
 @Service
 public class DesignStageDetailService {
 
@@ -21,6 +24,9 @@ public class DesignStageDetailService {
         return designStageDetailDao.getDesignStageDetailOfDesignStageId(id);
     }
 
+    public DesignStageDetail getDesignStageDetailById(int designStageDetailId) {
+     return designStageDetailDao.getDesignStageDetailById(designStageDetailId);
+    }
     @Transactional
     public void updateDesignStageDetailStatus(int designStageDetailId, int newStatus) {
         // Step 1: Update DesignStageDetail status

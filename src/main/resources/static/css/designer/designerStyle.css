@@ -13,10 +13,20 @@ body {
     padding: 0;
     flex: 1;
 }
+.user-name {
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 16px;
+    transition: color 0.3s ease-in-out;
+}
+.user-name:hover {
+    color: #f8f9fa;
+}
+
 /* Tạo thêm đường viền bo tròn và hiệu ứng chuyển động */
 .nav {
     background-color: #343a40;
-    padding: 10px 20px;
+    padding: 10px 22px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -31,6 +41,7 @@ body {
 .nav-item-group {
     display: flex;
     align-items: center;
+    gap: 15px;
 }
 
 .nav a {
@@ -53,19 +64,23 @@ body {
     text-decoration: underline;
 }
 
-.nav .btn-logout {
-    background-color: #dc3545;
+.nav .dropdown-toggle {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
     color: white;
-    padding: 8px 20px;
-    border-radius: 5px;
-    border: none;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease-in-out;
+    transition: color 0.3s ease-in-out;
 }
 
-.nav .btn-logout:hover {
-    background-color: #c82333;
+.nav .dropdown-toggle:hover {
+    color: #f8f9fa;
+}
+.nav .rounded-circle {
+    border: 2px solid #ffffff; /* Viền trắng quanh avatar */
+    transition: border-color 0.3s ease-in-out;
+}
+.nav .rounded-circle:hover {
+    border-color: #f8f9fa;
 }
 
 .nav input {
@@ -81,20 +96,21 @@ body {
 
 .nav input:focus {
     outline: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
-.nav .dropdown-menu {
-    background-color: #343a40;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 0;
-}
+
+.dropdown-menu {
+     background-color: #343a40;
+     border-radius: 5px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+     padding: 0;
+     width: 200px;
+ }
+
 .dropdown-item {
-    padding: 10px 20px;
+    padding: 10px;
     font-size: 16px;
-    color: #ffffff; /* Màu chữ trắng để nổi bật trên nền tối */
-    text-align: center;
-    text-decoration: none;
+    color: #ffffff;
     transition: background-color 0.3s ease-in-out;
 }
 
@@ -103,6 +119,13 @@ body {
     color: #ffffff;
 }
 
+.dropdown-divider {
+    margin: 0;
+    border-color: #6c757d;
+}
+.dropdown-menu {
+    animation: fadeIn 0.3s ease;
+}
 .btn-logout {
     background-color: #dc3545;
     padding: 10px 20px;
@@ -219,37 +242,26 @@ td {
     text-align: center;
 }
 
-/* Dark mode styles */
-.dark-mode {
-    background-color: #343a40;
-    color: white;
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+.fas.fa-bell {
+    animation: shake 1s ease-in-out infinite;
 }
 
-.dark-mode .nav {
-    background-color: #212529;
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    25% { transform: translate(-1px, -2px) rotate(-1deg); }
+    50% { transform: translate(-3px, 0px) rotate(1deg); }
+    75% { transform: translate(1px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -1px) rotate(-1deg); }
 }
 
-.dark-mode .table {
-    background-color: #495057;
-    color: white;
-}
-
-.dark-mode th {
-    background-color: #343a40;
-    color: white;
-}
-
-.dark-mode td {
-    color: white;
-}
-
-.dark-mode .btn-info {
-    background-color: #17a2b8;
-    color: white;
-}
-
-.dark-mode .btn-primary {
-    background-color: #007bff;
-    color: white;
-}
 

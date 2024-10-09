@@ -229,10 +229,10 @@
                                                                         <span class="badge badge-secondary">Pending</span>
                                                                     </c:when>
                                                                     <c:when test="${bluePrint.bluePrintStatus == 2}">
-                                                                        <span class="badge badge-primary">Approve By Customer</span>
+                                                                        <span class="badge badge-primary">Editing</span>
                                                                     </c:when>
                                                                     <c:when test="${bluePrint.bluePrintStatus == 3}">
-                                                                        <span class="badge badge-warning">Approve By Customer</span>
+                                                                        <span class="badge badge-success">Approve By Customer</span>
                                                                     </c:when>
                                                                 </c:choose>
                                                             </td>

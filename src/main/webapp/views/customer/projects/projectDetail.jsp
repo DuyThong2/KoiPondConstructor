@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
         <!doctype html>
         <html class="no-js" lang="zxx">
 
@@ -78,6 +79,22 @@
                     /* Example font size */
                     font-weight: bold;
                     /* Make text bold for better readability */
+                }
+                .btn-md{
+                    font-weight: 600;
+                    font-size: 1.5rem;
+                    padding: 10px 25px;
+                    border-radius: 8px;
+                    width: 100%;
+                    max-width: 300px;
+                    display: inline-block;
+                    text-align: center;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    transition: box-shadow 0.3s ease, transform 0.3s ease;
+                }
+                .btn-md:hover {
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Thêm đổ bóng khi hover */
+                    transform: translateY(-2px); /* Di chuyển nhẹ nút khi hover */
                 }
             </style>
         </head>
@@ -361,7 +378,7 @@
                                                 <div class="col text-center mb-2">
                                                     <c:choose>
                                                         <c:when
-                                                            test="${buttonClass == 'btn-success' || buttonClass1 == 'btn-primary'}">
+                                                            test="${buttonClass == 'btn-success' || buttonClass == 'btn-primary'}">
                                                             <a href="/customer/project/construction/${project.construction.constructionId}"
                                                                 class="btn stage-button btn-md btn-block px-3 ${buttonClass}">
                                                                 Construction
@@ -423,7 +440,7 @@
                                                 </h4>
                                                 <p class="done-project-subtitle text-muted">Project Code:
                                                     ${project.projectId}</p>
-                                                <p class="project-status text-muted">Completed on: ${project.dateEnd}
+                                                <p class="project-status text-muted">Completed on: <fmt:formatDate value="${project.dateEnd}" pattern="dd-MM-yyyy"/>
                                                 </p>
 
                                             </div>

@@ -38,7 +38,7 @@ public class BluePrintDAO {
     }
 
     public List<BluePrint> findByDesignStageIdWithComments(int designStageId) {
-        String hql = "SELECT DISTINCT b FROM BluePrint b LEFT JOIN FETCH b.comments WHERE b.designStage.designStageId = :designStageId";
+        String hql = "SELECT DISTINCT b FROM BluePrint b LEFT JOIN FETCH b.comments WHERE b.bluePrintStatus = 2 and b.designStage.designStageId = :designStageId";
         return entityManager.createQuery(hql, BluePrint.class)
                 .setParameter("designStageId", designStageId)
                 .getResultList();

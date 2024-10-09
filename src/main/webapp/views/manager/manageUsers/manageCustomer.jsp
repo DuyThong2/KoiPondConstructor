@@ -54,14 +54,13 @@
             <div class="filter-card">
                 <!-- Search Form -->
                 <form action="/manager/manageCustomer" method="GET" class="form-row">
-                    <!-- Search by email -->
-                    <div class="col-md-3 mb-3">
-                        <input type="text" name="searchEmail" class="form-control" placeholder="Search by Email.." value="${param.searchEmail}">
-                    </div>
-
                     <!-- Search by name -->
                     <div class="col-md-3 mb-3">
                         <input type="text" name="name" class="form-control" placeholder="Search by Name..." value="${param.name}">
+                    </div>
+                    <!-- Search by email -->
+                    <div class="col-md-3 mb-3">
+                        <input type="text" name="searchEmail" class="form-control" placeholder="Search by Email.." value="${param.searchEmail}">
                     </div>
 
                     <!-- Status Dropdown -->

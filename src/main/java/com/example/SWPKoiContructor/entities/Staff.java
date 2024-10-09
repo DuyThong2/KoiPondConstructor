@@ -32,7 +32,10 @@ public class Staff extends User{
     
     @OneToMany(mappedBy ="staff")
     private List<Blog> blogs;
-    
+
+    @ManyToMany(mappedBy = "staff")
+    private List<Comment> comments;
+
     public Staff() {
     }
 
