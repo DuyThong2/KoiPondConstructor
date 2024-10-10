@@ -6,6 +6,7 @@ import com.example.SWPKoiContructor.entities.Service;
 import com.example.SWPKoiContructor.entities.ServicePrice;
 import com.example.SWPKoiContructor.services.ServicePriceService;
 import com.example.SWPKoiContructor.services.ServiceService;
+import com.example.SWPKoiContructor.utils.FileUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +29,8 @@ public class ServiceController {
 
     @Autowired
     private ServiceService serviceService;
+    @Autowired
+    private FileUtility fileUtility;
     private ServicePriceService servicePriceService;
     @GetMapping("/manager/services")
     public String serviceList(
@@ -67,7 +73,8 @@ public class ServiceController {
                                    @RequestParam String serviceName,
                                    @RequestParam String serviceDescription,
                                    @RequestParam double servicePriceValue,
-                                   @RequestParam String contentText) {
+                                   @RequestParam String contentText
+    ,@RequestParam("file") MultipartFile file) {
         try {
             Date currentTimestamp = new Date();
 
@@ -76,7 +83,11 @@ public class ServiceController {
             newService.setServiceName(serviceName);
             newService.setServiceDescription(serviceDescription);
             newService.setServiceStatus(true);
-
+            String imgUrl = fileUtility.handleFileUpload(file,FileUtility.SERVICE_DIR);
+            if(imgUrl!=null){
+                newService.setServiceImgUrl(imgUrl);
+            }
+            String base64ContentText = Base64.getEncoder().encodeToString(contentText.getBytes());
 // Set Content for Service
             Content newContent = new Content();
             newContent.setContent(contentText);

@@ -24,7 +24,8 @@ public class Service {
     private String serviceName;
     
     private String serviceDescription;
-    
+
+    private String serviceImgUrl;
     @OneToOne(mappedBy = "service", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Content content;
     
@@ -79,6 +80,18 @@ public class Service {
         return content;
     }
 
+    public Service(int serviceId, String serviceName, String serviceDescription, String serviceImgUrl, Content content, boolean serviceStatus, List<ServiceDetail> serviceDetails, List<ServicePrice> servicePrice, List<Comment> comments) {
+        this.serviceId = serviceId;
+        this.serviceName = serviceName;
+        this.serviceDescription = serviceDescription;
+        this.serviceImgUrl = serviceImgUrl;
+        this.content = content;
+        this.serviceStatus = serviceStatus;
+        this.serviceDetails = serviceDetails;
+        this.servicePrice = servicePrice;
+        this.comments = comments;
+    }
+
     public void setContent(Content content) {
         this.content = content;
     }
@@ -115,5 +128,13 @@ public class Service {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String getServiceImgUrl() {
+        return serviceImgUrl;
+    }
+
+    public void setServiceImgUrl(String serviceImgUrl) {
+        this.serviceImgUrl = serviceImgUrl;
     }
 }

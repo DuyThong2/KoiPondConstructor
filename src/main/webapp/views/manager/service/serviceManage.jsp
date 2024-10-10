@@ -11,6 +11,7 @@
                 <title>Admin Dashboard - Services</title>
                 <!-- Bootstrap CSS -->
                 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
                 <style>
                     /* Custom styles for the sidebar */
                     .sidebar {
@@ -44,6 +45,18 @@
                         border-bottom: 2px solid #007bff;
                         padding-bottom: 10px;
                         margin-bottom: 20px;
+                    }
+
+                    .modal-body {
+                        overflow-y: auto;
+                        max-height: calc(100vh - 150px);
+                        /* Ensures 
+                        the modal is scrollable when it overflows */
+                    }
+
+                    .cke_dialog {
+                        z-index: 1051 !important;
+                        /* Adjust as needed */
                     }
                 </style>
             </head>
@@ -118,11 +131,11 @@
                                 <!-- Modal -->
 
 
+                                <!-- Modal -->
                                 <div id="createServiceModal" class="modal fade" tabindex="-1" role="dialog"
                                     aria-labelledby="createServiceModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-fullscreen" role="document"
-                                        style="max-width: 70%; width: 70%; height: 85vh;">
-                                        <div class="modal-content" style="height: 85vh;">
+                                    <div class="modal-dialog modal-lg" role="document" style="max-width: 70%;">
+                                        <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="createServiceModalLabel">Create New Service
                                                 </h5>
@@ -131,8 +144,10 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form method="POST" action="/manager/services/create">
-                                                <div class="modal-body" style="height: calc(85vh - 120px);">
+                                            <form method="POST" action="/manager/services/create"
+                                                enctype="multipart/form-data">
+                                                <div class="modal-body"
+                                                    style="max-height: calc(100vh - 150px); overflow-y: auto;">
                                                     <!-- Service Information -->
                                                     <div class="form-group">
                                                         <label for="serviceName">Service Name</label>
@@ -144,7 +159,11 @@
                                                         <textarea class="form-control" id="serviceDescription"
                                                             name="serviceDescription" rows="3" required></textarea>
                                                     </div>
-
+                                                    <div class="form-group">
+                                                        <label for="file">Upload Image</label>
+                                                        <input type="file" id="file" name="file"
+                                                            class="form-control-file" required>
+                                                    </div>
                                                     <!-- Content Information -->
                                                     <h5 class="mt-4">Content Information</h5>
                                                     <div class="form-group">
@@ -170,6 +189,7 @@
                                         </div>
                                     </div>
                                 </div>
+
 
 
 
@@ -237,12 +257,13 @@
                                 </div>
 
                                 <!-- Update Service Modal -->
+
+                                <!-- Update Service Modal -->
                                 <!-- Update Service Modal -->
                                 <div id="updateServiceModal" class="modal fade" tabindex="-1" role="dialog"
                                     aria-labelledby="updateServiceModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-fullscreen" role="document"
-                                        style="max-width: 70%; width: 70%; height: 85vh;">
-                                        <div class="modal-content" style="height: 85vh;">
+                                    <div class="modal-dialog modal-lg" role="document" style="max-width: 70%;">
+                                        <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="updateServiceModalLabel">Update Service</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
@@ -250,8 +271,10 @@
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
-                                            <form method="POST" action="/manager/services/update">
-                                                <div class="modal-body" style="height: calc(85vh - 120px);">
+                                            <form method="POST" action="/manager/services/update"
+                                                enctype="multipart/form-data">
+                                                <div class="modal-body"
+                                                    style="max-height: calc(100vh - 150px); overflow-y: auto;">
                                                     <!-- Hidden input to store service ID -->
                                                     <input type="hidden" id="updateServiceId" name="serviceId">
 
@@ -261,6 +284,7 @@
                                                         <input type="text" class="form-control" id="updateServiceName"
                                                             name="serviceName" required>
                                                     </div>
+
                                                     <div class="form-group">
                                                         <label for="updateServiceDescription">Service
                                                             Description</label>
@@ -268,12 +292,18 @@
                                                             name="serviceDescription" rows="3" required></textarea>
                                                     </div>
 
+                                                    <div class="form-group">
+                                                        <label for="file">Upload Image</label>
+                                                        <input type="file" id="file" name="file"
+                                                            class="form-control-file">
+                                                    </div>
+
                                                     <!-- Content Information -->
                                                     <h5 class="mt-4">Content Information</h5>
                                                     <div class="form-group">
                                                         <label for="updateContentText">Content</label>
                                                         <textarea class="form-control" id="updateContentText"
-                                                            name="contentText" rows="3" required></textarea>
+                                                            name="contentText" rows="6" required></textarea>
                                                     </div>
 
                                                     <!-- Service Price Information -->
@@ -295,6 +325,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+
 
 
                                 <table class="table table-bordered table-hover">
@@ -349,9 +381,9 @@
                                                             </tr>
                                                             <tr>
                                                                 <th>Content ID</th>
-                                                                <th>Content</th>
                                                                 <th>Create Date</th>
                                                                 <th>Last Updated Date</th>
+                                                                <th></th> <!-- Empty placeholder to make 5 columns -->
                                                                 <th>Actions</th>
                                                             </tr>
                                                         </thead>
@@ -359,13 +391,14 @@
                                                             <c:if test="${service.content != null}">
                                                                 <tr>
                                                                     <td>${service.content.id}</td>
-                                                                    <td>${service.content.content}</td>
                                                                     <td>${service.content.createDate}</td>
                                                                     <td>${service.content.lastUpdatedDate}</td>
+                                                                    <td></td> <!-- Empty placeholder for alignment -->
                                                                     <td>
                                                                         <button class="btn btn-info"
-                                                                            onclick="window.location.href = '/admin/content/viewDetail/${service.content.id}'">View
-                                                                            Details</button>
+                                                                            onclick="window.location.href = '/admin/content/viewDetail/${service.content.id}'">
+                                                                            View Details
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
                                                             </c:if>
@@ -375,6 +408,8 @@
                                                                 </tr>
                                                             </c:if>
                                                         </tbody>
+                                                
+                                                        <!-- Service Price Information -->
                                                         <thead>
                                                             <tr class="table-info">
                                                                 <th colspan="5">Service Price Information</th>
@@ -396,20 +431,14 @@
                                                                     <td>
                                                                         <c:choose>
                                                                             <c:when test="${price.servicePriceStatus}">
-                                                                                <button
-                                                                                    id="price-status-badge-${price.servicePriceId}"
-                                                                                    class="badge badge-success"
-                                                                                    onclick="changePriceStatus(${price.servicePriceId});"
-                                                                                    style="cursor: pointer; border:none;">
+                                                                                <button id="price-status-badge-${price.servicePriceId}" class="badge badge-success"
+                                                                                    onclick="changePriceStatus(${price.servicePriceId});" style="cursor: pointer; border:none;">
                                                                                     Active
                                                                                 </button>
                                                                             </c:when>
                                                                             <c:otherwise>
-                                                                                <button
-                                                                                    id="price-status-badge-${price.servicePriceId}"
-                                                                                    class="badge badge-danger"
-                                                                                    onclick="changePriceStatus(${price.servicePriceId});"
-                                                                                    style="cursor: pointer; border:none;">
+                                                                                <button id="price-status-badge-${price.servicePriceId}" class="badge badge-danger"
+                                                                                    onclick="changePriceStatus(${price.servicePriceId});" style="cursor: pointer; border:none;">
                                                                                     Inactive
                                                                                 </button>
                                                                             </c:otherwise>
@@ -417,8 +446,9 @@
                                                                     </td>
                                                                     <td>
                                                                         <button class="btn btn-info"
-                                                                            onclick="window.location.href = '/admin/servicePrice/viewDetail/${price.servicePriceId}'">View
-                                                                            Details</button>
+                                                                            onclick="window.location.href = '/admin/servicePrice/viewDetail/${price.servicePriceId}'">
+                                                                            View Details
+                                                                        </button>
                                                                     </td>
                                                                 </tr>
                                                             </c:forEach>
@@ -428,9 +458,9 @@
                                                                 </tr>
                                                             </c:if>
                                                         </tbody>
-
                                                     </table>
                                                 </td>
+                                                
                                             </tr>
                                         </c:forEach>
                                     </tbody>
@@ -543,17 +573,28 @@
                             }
 
                             // Log for debugging
+                            var decodedContentText = window.atob(contentText);
 
 
                             // Set the input fields in the update modal with the values passed to the function
                             $('#updateServiceId').val(serviceId);
                             $('#updateServiceName').val(serviceName);
                             $('#updateServiceDescription').val(serviceDescription);
-                            $('#updateContentText').val(contentText);
+                            $('#updateContentText').val(decodedContentText);
                             $('#updateServicePriceValue').val(servicePriceValue);
 
                             // Open the update modal
                             $('#updateServiceModal').modal('show');
+                            if (CKEDITOR.instances['updateContentText']) {
+                                CKEDITOR.instances['updateContentText'].destroy(); // Destroy existing instance if it's already initialized
+                            }
+                            CKEDITOR.replace('updateContentText', {
+                                extraPlugins: 'uploadimage,image2', // Enable image2 plugin for resizing images
+                                filebrowserImageUploadUrl: '/base64/uploadImage', // Set your correct image upload URL
+                                uploadUrl: '/base64/uploadImage', // URL for handling image file uploads
+                                height: 300,
+                                image2_disableResizer: false // Allow manual resizing of images
+                            });
                         };
                     });
                     var changePriceId;
@@ -614,12 +655,33 @@
                             $('table tbody').append(row);
                         });
                     }
+                    $(document).ready(function () {
+                        CKEDITOR.replace('contentText', {
+                            extraPlugins: 'uploadimage,image2', // Enables the image upload and resize functionality
+                            filebrowserImageUploadUrl: '/base64/uploadImage', // Set the correct URL to handle image uploads
+                            uploadUrl: '/base64/uploadImage', // URL for handling file uploads
+                            height: 500,
 
+                            // Image resize feature
+                            image2_disableResizer: false, // Allows manual resizing of images
+                        })
+                    });
+
+                    CKEDITOR.on('dialogShow', function (ev) {
+                        var dialog = ev.data;
+                        dialog.focus();
+                    });
                 </script>
                 <!-- Bootstrap JS and dependencies -->
+                <!-- Load jQuery -->
                 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+                <!-- Load Bootstrap -->
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+                <!-- Load CKEditor -->
+                <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
             </body>
 
             </html>
