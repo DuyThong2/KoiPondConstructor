@@ -26,18 +26,23 @@ public class ConstructionStageDetailDAO {
         }
 
     }
-    
-    public List<ConstructionStageDetail> getConstructionStageDetailByStageId(int id){
-        TypedQuery<ConstructionStageDetail> details = entityManager.createQuery("Select csd from ConstructionStageDetail csd where csd.constructionStage.constructionStageId = :id order by csd.constructionStageDetailId ", ConstructionStageDetail.class);
-        details.setParameter("id", id);
-        return details.getResultList();
+
+    public List<ConstructionStageDetail> getConstructionStageDetailByStageId(int id) {
+        try {
+            TypedQuery<ConstructionStageDetail> details = entityManager.createQuery("Select csd from ConstructionStageDetail csd where csd.constructionStage.constructionStageId = :id order by csd.constructionStageDetailId ", ConstructionStageDetail.class);
+            details.setParameter("id", id);
+            return details.getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+
     }
-    
-    public ConstructionStageDetail updateConstructionStageDetail(ConstructionStageDetail constructionStageDetail){
+
+    public ConstructionStageDetail updateConstructionStageDetail(ConstructionStageDetail constructionStageDetail) {
         return entityManager.merge(constructionStageDetail);
     }
 
-     public ConstructionStageDetail getPreviousStageDetail(int constructionStageId) {
+    public ConstructionStageDetail getPreviousStageDetail(int constructionStageId) {
         String jpql = "SELECT d FROM ConstructionStageDetail d WHERE d.constructionStage.constructionStageId = :stageId ORDER BY d.constructionStageDetailId DESC";
         TypedQuery<ConstructionStageDetail> query = entityManager.createQuery(jpql, ConstructionStageDetail.class);
         query.setParameter("stageId", constructionStageId);

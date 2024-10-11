@@ -236,7 +236,8 @@ public class ContractController {
                 ) {
             model.addAttribute("quote", quote);
             model.addAttribute("customer", quote.getCustomer());
-            List<Term> terms = termService.getAllTemplateTerm();  // Get all available terms for the dropdown
+            List<Term> terms = termService.getAllTemplateTerm();
+            terms.forEach(System.out::println);// Get all available terms for the dropdown
             model.addAttribute("contract", contract);
             model.addAttribute("terms", terms);
 

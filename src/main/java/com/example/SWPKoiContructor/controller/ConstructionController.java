@@ -48,7 +48,7 @@ public class ConstructionController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         return "manager/construction/constructionManage";
-        
+
     }
 
     @GetMapping("/manager/construction/viewDetail/{id}")
@@ -116,27 +116,31 @@ public class ConstructionController {
 
         // Fetch the construction project by ID
         Construction construction = constructionService.getConstructionById(id);
+        if (construction != null) {
+            boolean isAssignedToConstruction = construction.getConstructionStaffs().stream()
+                    .anyMatch(constructionStaff -> constructionStaff.getStaff().getId() == user.getId());
 
-        // Check if the current user is assigned to the construction project
-        boolean isAssignedToConstruction = construction.getConstructionStaffs().stream()
-                .anyMatch(constructionStaff -> constructionStaff.getStaff().getId() == user.getId());
+            if (!isAssignedToConstruction) {
+                redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this project.");
+                return "redirect:/error/error-403"; // Redirect to error page
+            }
 
-        if (!isAssignedToConstruction) {
-            redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this project.");
-            return "redirect:/error/error-403"; // Redirect to error page
+            // Fetch the project associated with the construction
+            Project project = construction.getProject();
+            model.addAttribute("construction", construction);
+            model.addAttribute("project", project);
+
+            // Fetch the construction stages related to the construction project
+            List<ConstructionStage> constructionStages = constructionStageService.getListConstructionStage(id);
+            model.addAttribute("constructionStages", constructionStages);
+            model.addAttribute("constructionId", id);
+
+            return "constructor/constructionDetail";
+        } else {
+            return "/constructor/manage";
         }
-
-        // Fetch the project associated with the construction
-        Project project = construction.getProject();
-        model.addAttribute("construction", construction);
-        model.addAttribute("project", project);
-
-        // Fetch the construction stages related to the construction project
-        List<ConstructionStage> constructionStages = constructionStageService.getListConstructionStage(id);
-        model.addAttribute("constructionStages", constructionStages);
-        model.addAttribute("constructionId", id);
-
-        return "constructor/constructionDetail"; // Return the view for construction details
+        // Check if the current user is assigned to the construction project
+        // Return the view for construction details
     }
 
     @GetMapping("/staff/updateStatus/constructionStage/{id}")
@@ -146,26 +150,22 @@ public class ConstructionController {
         if (user == null) {
             return "redirect:/login";
         }
-        if(user.getAuthority().getAuthority().equalsIgnoreCase("ROLE_MANAGER")){
-             return "redirect:/manager/construction/viewDetail/"+constructionId;
+        if (user.getAuthority().getAuthority().equalsIgnoreCase("ROLE_MANAGER")) {
+            return "redirect:/manager/construction/viewDetail/" + constructionId;
         }
-        
+
         // Fetch the construction stage details by constructionStageId
         List<ConstructionStageDetail> details = constructionStageDetailService.getConstructionStageDetailByStageId(id);
-
+        if (details != null) {
+            model.addAttribute("constructionId", constructionId);
+            model.addAttribute("details", details);
+            model.addAttribute("id", id);  // constructionStageId
+        }
         // Add attributes to the model to render in the JSP
-        model.addAttribute("constructionId", constructionId);
-        model.addAttribute("details", details);
-        model.addAttribute("id", id);  // constructionStageId
 
-       
-             return "constructor/constructionCompleteTask";  // Adjust the view to your construction task view
-        
-       
+        return "constructor/constructionCompleteTask";  // Adjust the view to your construction task view
+
     }
-    
-    
-    
 
     @PostMapping("/constructionStageDetail/updateStatus")
     public String updateStatus(@RequestParam(required = false) Integer detailId,
@@ -236,7 +236,8 @@ public class ConstructionController {
         }
 
         Construction construction = constructionService.getConstructionById(id);
-        Project project = construction.getProject();
+        if(construction != null){
+            Project project = construction.getProject();
 
         Customer customer = project.getContract().getCustomer();
         if (customer == null || customer.getId() != user.getId()) {
@@ -252,9 +253,11 @@ public class ConstructionController {
         model.addAttribute("constructionStages", designStages);
 
         return "customer/construction/processOfConstruction";
+        }else{
+            return "redirect:/customer/projects/";
+        }
+        
     }
-    
-    
 
     // Method to approve the inspection stage
     @PostMapping("/customer/approveInspection")
@@ -263,7 +266,7 @@ public class ConstructionController {
             @RequestParam("constructionStageId") int constructionStageId,
             @RequestParam("constructionId") int constructionId,
             RedirectAttributes redirectAttributes) {
-        
+
         try {
             // Approve the inspection stage
             constructionStageDetailService.updateConstructionStageDetailStatus(constructionStageDetailId, 4); // Assuming 4 is 'approved' status
@@ -274,17 +277,17 @@ public class ConstructionController {
         }
 
         // Redirect back to the construction stage details page
-        return "redirect:/customer/project/construction/"+ constructionId;
+        return "redirect:/customer/project/construction/" + constructionId;
     }
-    
-        // Method to reject the inspection stage
+
+    // Method to reject the inspection stage
     @PostMapping("/customer/rejectInspection")
     public String rejectInspection(
             @RequestParam("detailId") int constructionStageDetailId,
             @RequestParam("constructionStageId") int constructionStageId,
             @RequestParam("constructionId") int constructionId,
             RedirectAttributes redirectAttributes) {
-        
+
         try {
             // Reject the inspection stage
             constructionStageDetailService.updateConstructionStageDetailStatus(constructionStageDetailId, 3); // Assuming 3 is 'rejected' status
@@ -302,10 +305,7 @@ public class ConstructionController {
         }
 
         // Redirect back to the construction stage details page
-        return "redirect:/customer/project/construction/"+ constructionId;
+        return "redirect:/customer/project/construction/" + constructionId;
     }
 
 }
-
-
-

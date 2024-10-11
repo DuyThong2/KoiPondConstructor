@@ -127,10 +127,9 @@
                             </div>
 
                             <!-- Blog Description -->
-                            <p class="blog-description">
+                            
                                 ${blog.description}
-                            </p>
-
+                            
                             <!-- Blog Content Section -->
                             <h4>Full Content</h4>
                             <div class="blog-body">

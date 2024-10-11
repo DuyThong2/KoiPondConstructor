@@ -53,7 +53,22 @@
                     <c:forEach var="contract" items="${contracts}">
                         <tr>
                             <td>${contract.dateCreate}</td>
-                            <td><a href="/download/${contract.fileURL}">${contract.fileURL}</a></td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${not empty contract.fileURL}">
+                                        <form action="/download/${contract.fileURL}" method="get">
+                                            <button type="submit" class="btn btn-outline-primary">
+                                                <i class="fas fa-download"></i> Download Contract
+                                            </button>
+                                        </form>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button type="submit" class="btn btn-outline-danger">
+                                            <i class="fas fa-download"></i> File not available
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
+                            </td>
                             <td>${contract.totalPrice}</td>
                             
                             <td>${contract.contractTerm}</td>

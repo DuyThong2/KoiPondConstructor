@@ -1,8 +1,8 @@
 package com.example.SWPKoiContructor.controller.functionalController;
 
-import com.example.SWPKoiContructor.services.ContractService;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.services.QuoteService;
+import com.example.SWPKoiContructor.services.ServiceService;
 import com.example.SWPKoiContructor.services.StaffService;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -19,13 +19,13 @@ public class DashboardAPIController {
 
     private final QuoteService quoteService;
     private final ProjectService projectService;
-    private final ContractService contractService;
+    private final ServiceService serviceService;
     private final StaffService staffService;
 
-    public DashboardAPIController(QuoteService quoteService, ProjectService projectService, ContractService contractService, StaffService staffService) {
+    public DashboardAPIController(QuoteService quoteService,ServiceService serviceService, ProjectService projectService, StaffService staffService) {
         this.quoteService = quoteService;
         this.projectService = projectService;
-        this.contractService = contractService;
+        this.serviceService = serviceService;
         this.staffService = staffService;
     }
 
@@ -52,5 +52,11 @@ public class DashboardAPIController {
     public ResponseEntity<Map<Integer, BigDecimal>> getMonthlyEarnings(@RequestParam int year) {
         Map<Integer, BigDecimal> monthlyEarnings = projectService.getTotalEarningsForCompletedProjectsPerMonth(year);
         return ResponseEntity.ok(monthlyEarnings);
+    }
+    
+    @GetMapping("/service-booking-percentages")
+    public ResponseEntity<Map<String, BigDecimal>> getServiceBookingPercentages() {
+        Map<String, BigDecimal> servicePercentages = serviceService.getServiceBookingPercentages();
+        return ResponseEntity.ok(servicePercentages);
     }
 }
