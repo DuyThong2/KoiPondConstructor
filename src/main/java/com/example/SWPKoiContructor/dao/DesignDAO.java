@@ -69,6 +69,20 @@ public class DesignDAO {
         return query.getSingleResult();
     }
 
+    public long countDesignsCompleteByStaffId(int staffId) {
+        String countDesign = "SELECT COUNT(d) FROM Design d JOIN d.staff s WHERE s.id = :staffId and d.status = 3";
+        TypedQuery<Long> query = entityManager.createQuery(countDesign, Long.class);
+        query.setParameter("staffId", staffId);
+        return query.getSingleResult();
+    }
+
+    public long countDesignsProcessingByStaffId(int staffId) {
+        String countDesign = "SELECT COUNT(d) FROM Design d JOIN d.staff s WHERE s.id = :staffId and d.status = 2";
+        TypedQuery<Long> query = entityManager.createQuery(countDesign, Long.class);
+        query.setParameter("staffId", staffId);
+        return query.getSingleResult();
+    }
+
     public boolean isAssignedToDesign(int designId, int userId) {
         String staffInDesign
                 = "SELECT COUNT(s) FROM Design d JOIN d.staff s WHERE d.designId = :designId AND s.id = :userId";

@@ -171,4 +171,12 @@ public class ServiceDetailDAO {
         query.setParameter("customerId", customerId);
         return query.getResultList();
     }
+
+    // Count service details customer Id
+    public long countServiceDetailsByCustomerId(int customerId) {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.id = :customerId", Long.class);
+        query.setParameter("customerId", customerId);
+        return query.getSingleResult();
+    }
+
 }

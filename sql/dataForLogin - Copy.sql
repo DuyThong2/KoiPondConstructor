@@ -199,14 +199,14 @@ VALUES
 
 update Term set term_status = 1;
 -- Insert data into Pre_Design table
-INSERT INTO Pre_Design (pre_design_name, pre_design_img_url, pre_design_description)
+INSERT INTO Pre_Design (pre_design_name, pre_design_img_url, pre_design_description, pre_design_status)
 VALUES
-('Modern Koi Pond', 'preDesign/modern_koi_pond.jpg', 'A modern and sleek koi pond design with clean lines and minimalist features.'),
-('Traditional Koi Pond', 'preDesign/traditional_koi_pond.jpg', 'A traditional koi pond design with natural stone elements and a classic feel.'),
-('Zen Garden Pond', 'preDesign/zen_garden_pond.jpg', 'A calming zen-style garden pond featuring natural rocks and a peaceful layout.'),
-('Waterfall Koi Pond', 'preDesign/waterfall_koi_pond.jpg', 'A stunning koi pond design with a cascading waterfall and lush greenery.'),
-('Raised Koi Pond', 'preDesign/raised_koi_pond.jpg', 'An elevated koi pond design perfect for smaller spaces or urban environments.'),
-('Tropical Koi Pond', 'preDesign/tropical_koi_pond.jpg', 'A vibrant and tropical-themed koi pond with colorful plants and dynamic water features.');
+('Modern Koi Pond', 'preDesign/modern_koi_pond.jpg', 'A modern and sleek koi pond design with clean lines and minimalist features.',1),
+('Traditional Koi Pond', 'preDesign/traditional_koi_pond.jpg', 'A traditional koi pond design with natural stone elements and a classic feel.', 1),
+('Zen Garden Pond', 'preDesign/zen_garden_pond.jpg', 'A calming zen-style garden pond featuring natural rocks and a peaceful layout.', 1),
+('Waterfall Koi Pond', 'preDesign/waterfall_koi_pond.jpg', 'A stunning koi pond design with a cascading waterfall and lush greenery.', 1),
+('Raised Koi Pond', 'preDesign/raised_koi_pond.jpg', 'An elevated koi pond design perfect for smaller spaces or urban environments.', 1),
+('Tropical Koi Pond', 'preDesign/tropical_koi_pond.jpg', 'A vibrant and tropical-themed koi pond with colorful plants and dynamic water features.', 1);
 
 
 -- Insert more sample data with completed consultations into Consultant table

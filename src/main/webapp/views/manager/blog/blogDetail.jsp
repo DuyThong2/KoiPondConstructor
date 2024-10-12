@@ -114,7 +114,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="text-muted">Posted on: ${blog.datePost}</p>
                                 <div class="blog-status">
-                                    Status: 
+                                    Status:
                                     <c:choose>
                                         <c:when test="${blog.status == 1}">
                                             <span class="badge bg-success">Active</span>

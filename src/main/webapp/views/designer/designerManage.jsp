@@ -29,23 +29,19 @@
                             <span class="badge badge-danger">3</span>
                         </a>
 
-                        <div class="dropdown">
-                            <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="/assets/imgs/logo/final_resized_colored_logo_image.png" alt="User Avatar" class="rounded-circle" width="40">
-                                <span class="ml-2 user-name">${sessionScope.user.name}</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/profile">Profile</a>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/help">Help</a>
-                                <div class="dropdown-divider"></div>
-
-                                <a href="/logout" class="dropdown-item btn-logout">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
-                                </a>
-                            </div>
-                        </div>
+                          <div class="dropdown">
+                        <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="/uploads/${sessionScope.user.imgURL}" alt="User Avatar" class="rounded-circle" width="40">
+                            <span class="ml-2 user-name">Designer 1</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/designer/profile"><i class="fas fa-user"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-paint-brush"></i> Theme</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/logout" class="dropdown-item btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                        </ul>
+                    </div>
                     </div>
                 </div>
             </header>

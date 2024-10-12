@@ -95,8 +95,9 @@
                                         </c:when>
                                         <c:otherwise>
                                             <div class="d-flex justify-content-center align-items-center">
+                                                <a href="/customer/profile">
                                              <i class="fas fa-user profile-icon rounded-circle me-3"
-                                             style="font-size: 3rem; color: var(--rr-theme-white);"></i>
+                                             style="font-size: 3rem; color: var(--rr-theme-white);"></i></a>
                                             </div>
                                              <a href="/logout" class="rr-btn__header ml-15" style="background-color:black;">
                                                   <span class="btn-wrap">

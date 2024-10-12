@@ -322,7 +322,7 @@ CREATE TABLE Comment (
     blog_id INT,
     service_id INT,
     blue_print_id INT,
-    construction_stage_detail_id INT,
+    construction_id INT ,
     customer_id INT,
     staff_id INT,
 	
@@ -330,7 +330,7 @@ CREATE TABLE Comment (
     FOREIGN KEY (blog_id) REFERENCES Blog(blog_id),
     FOREIGN KEY (service_id) REFERENCES Service(service_id),
     FOREIGN KEY (blue_print_id) REFERENCES Blue_Print(blue_print_id),
-    FOREIGN KEY (construction_stage_detail_id) REFERENCES Construction_Stage_Detail(construction_stage_detail_id),
+    FOREIGN KEY (construction_id) REFERENCES Construction(construction_id),
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
     FOREIGN KEY (staff_id) REFERENCES Staffs(id),
     FOREIGN KEY (parent_comment_id) REFERENCES Comment(comment_id) -- Self-reference for hierarchical comments

@@ -88,7 +88,7 @@
                 <div class="form-group">
                     <label for="content">Blog Content</label>
                     <textarea id="content" name="content" class="form-control" rows="6" required>
-                    
+
                         ${blog.introContent.content}
                     </textarea>
                 </div>

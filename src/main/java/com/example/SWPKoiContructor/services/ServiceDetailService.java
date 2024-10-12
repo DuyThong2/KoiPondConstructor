@@ -10,6 +10,7 @@ import com.example.SWPKoiContructor.entities.ServiceDetail;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 /**
@@ -93,5 +94,8 @@ public class ServiceDetailService {
 
     public List<ServiceDetail> getCompleteOrCancelledCustomerServiceDetailsById(int customerId) {
         return serviceDetailDAO.getCompleteOrCancelledCustomerServiceDetailsById(customerId);
+    }
+    public long countServiceDetailsByCustomerId(int customerId) {
+        return serviceDetailDAO.countServiceDetailsByCustomerId(customerId);
     }
 }

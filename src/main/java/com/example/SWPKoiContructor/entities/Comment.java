@@ -54,8 +54,8 @@ public class Comment {
     private BluePrint bluePrint;
     
     @ManyToOne
-    @JoinColumn(name = "construction_stage_detail_id")
-    private ConstructionStageDetail constructionStageDetail;
+    @JoinColumn(name = "construction_id")
+    private Construction construction;
     
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -139,12 +139,12 @@ public class Comment {
         this.service = service;
     }
 
-    public ConstructionStageDetail getConstructionStageDetail() {
-        return constructionStageDetail;
+    public Construction getConstruction() {
+        return construction;
     }
 
-    public void setConstructionStageDetail(ConstructionStageDetail constructionStageDetail) {
-        this.constructionStageDetail = constructionStageDetail;
+    public void setConstruction(Construction construction) {
+        this.construction = construction;
     }
 
     public Comment getParentComment() {

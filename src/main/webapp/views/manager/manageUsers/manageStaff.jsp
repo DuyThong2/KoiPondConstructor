@@ -256,7 +256,6 @@
                             <option value="Construction">Construction</option>
                             <option value="Consulting">Consultant</option>
                             <option value="Design">Designer</option>
-                            <option value="Management">Manager</option>
                         </select>
                     </div>
                     <div class="modal-footer">
