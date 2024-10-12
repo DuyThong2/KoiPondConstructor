@@ -31,7 +31,7 @@ public class ProjectController {
     private ProjectService projectService;
     private ContractService contractService;
     private StaffService staffService;
-    private DesignService designService;
+    
 
     public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService,StaffService staffService, DesignService designService) {
         this.fileUtility = fileUtility;

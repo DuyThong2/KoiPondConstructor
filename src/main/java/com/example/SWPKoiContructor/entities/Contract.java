@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import com.example.SWPKoiContructor.entities.interfaces.HaveImagesFile;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;

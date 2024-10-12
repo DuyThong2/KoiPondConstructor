@@ -1,5 +1,6 @@
 package com.example.SWPKoiContructor.entities;
 
+import com.example.SWPKoiContructor.entities.interfaces.HaveImagesFile;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name="Blog")
-public class Blog {
+public class Blog implements HaveImagesFile{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "blog_id")
@@ -144,6 +145,8 @@ public class Blog {
     public boolean isBlogBelongToAuthor(Staff staff){
         return staff != null && this.staff.getId() == staff.getId();
     }
+    
+    
     
     
 

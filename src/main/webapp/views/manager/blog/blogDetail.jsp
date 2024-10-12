@@ -102,7 +102,7 @@
                     <!-- Blog Card -->
                     <div class="card blog-card">
                         <!-- Blog Image -->
-                        <img src="/uploads/${blog.imgUrl}" class="blog-image" alt="Blog Image">
+                        <img src="${blog.getShowingImg(blog.imgUrl)}" class="blog-image" alt="Blog Image">
 
                         <!-- Blog Content -->
                         <div class="card-body blog-content">

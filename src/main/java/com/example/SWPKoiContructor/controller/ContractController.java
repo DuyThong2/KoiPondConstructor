@@ -54,7 +54,7 @@ public class ContractController {
     private FeedbackService feedbackService;
 
     public ContractController(ContractService contractService, TermService termService, CustomerService customerService,
-            StaffService staffService, QuoteService quotesService, ContractDAO contractDAO, UserService userService, FeedbackService feedbackService) {
+            StaffService staffService, QuoteService quotesService, ContractDAO contractDAO, UserService userService, FeedbackService feedbackService, FileUtility fileUtility) {
         this.contractService = contractService;
         this.termService = termService;
         this.customerService = customerService;
@@ -63,7 +63,7 @@ public class ContractController {
         this.contractDAO = contractDAO;
         this.userService = userService;
         this.feedbackService = feedbackService;
-        fileUtility = new FileUtility();
+        this.fileUtility = fileUtility;
     }
 
     @GetMapping("/manager/contract")
