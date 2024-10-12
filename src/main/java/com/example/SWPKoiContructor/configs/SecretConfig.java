@@ -20,6 +20,15 @@ public class SecretConfig {
 
     @Value("${mail.password}")
     private String mailPassword;
+    
+    @Value("${aws.access}")
+    private String awsAccess;
+    
+    @Value("${aws.secret}")
+    private String awsSecret;
+    
+    @Value("${aws.region}")
+    private String awsRegion;
 
     // Add getters or use @PostConstruct to verify if values are loaded correctly
     @PostConstruct
@@ -28,5 +37,8 @@ public class SecretConfig {
         System.out.println("Google Client Secret: " + googleClientSecret);
         System.out.println("Mail Username: " + mailUsername);
         System.out.println("Mail Password: " + mailPassword);
+        System.out.println("Aws access : "+ awsAccess );
+        System.out.println("aws secret : "+ awsSecret);
+        System.out.println("aws region : "+ awsRegion);
     }
 }
