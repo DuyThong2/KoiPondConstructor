@@ -1012,3 +1012,6 @@ VALUES
 ('If you are new to owning a Koi pond, here are some tips from our consultants...', '2024-09-15', '2024-09-18', NULL, 3, NULL),
 ('A comprehensive guide to selecting the best filtration system for your Koi pond...', '2024-09-20', '2024-09-22', NULL, 4, NULL),
 ('Landscaping around your Koi pond can enhance its beauty and provide a serene environment...', '2024-09-25', '2024-09-27', NULL, 5, NULL);
+
+
+update Pre_Design set pre_design_status = 1;

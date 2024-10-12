@@ -65,13 +65,13 @@ public class Content {
     }
 
     public Content(String content, Date createDate, Date lastUpdatedDate) {
-        this.content = encodeBase64(content);
+        this.content = content;
         this.createDate = createDate;
         this.lastUpdatedDate = lastUpdatedDate;
     }
 
     public Content(String content) {
-        this.content = encodeBase64(content);
+        this.content = content;
         createDate = new Date();
         lastUpdatedDate= createDate;
     }
@@ -90,7 +90,7 @@ public class Content {
     }
 
     public void setContent(String content) {
-        this.content = encodeBase64(content);
+        this.content = content;
     }
 
     public Project getProject() {

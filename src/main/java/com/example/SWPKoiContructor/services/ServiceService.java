@@ -1,17 +1,26 @@
 package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.ServiceDAO;
+import com.example.SWPKoiContructor.dao.ServiceDetailDAO;
 import com.example.SWPKoiContructor.entities.Service;
-import com.example.SWPKoiContructor.entities.ServicePrice;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
+import java.util.Map;
+import javax.persistence.Tuple;
 
 @org.springframework.stereotype.Service
 public class ServiceService {
+    
+    
 
     @Autowired
     private ServiceDAO serviceDAO;
+    
+    @Autowired
+    private ServiceDetailDAO serviceDetailDAO;
 
     // Get a paginated list of services with an optional status filter
     public List<Service> getPaginatedServiceListByStatus(int page, int size, String sortBy, String sortType, Boolean statusFilter) {
@@ -95,4 +104,24 @@ public class ServiceService {
     }
 
 
+    
+    public Map<String, BigDecimal> getServiceBookingPercentages() {
+        // Fetch total bookings and bookings per service
+        Long totalBookings = serviceDetailDAO.countTotalServiceBookings();
+        List<Tuple> serviceBookingCounts = serviceDetailDAO.countBookingsPerService();
+
+        Map<String, BigDecimal> servicePercentages = new HashMap<>();
+
+        // Loop through each tuple and calculate percentages
+        for (Tuple tuple : serviceBookingCounts) {
+            String serviceName = tuple.get("serviceName", String.class);
+            Long bookingCount = tuple.get("bookingCount", Long.class);
+
+            // Calculate percentage
+            BigDecimal percentage = BigDecimal.valueOf((bookingCount * 100.0) / totalBookings);
+            servicePercentages.put(serviceName, percentage);
+        }
+
+        return servicePercentages;
+    }
 }

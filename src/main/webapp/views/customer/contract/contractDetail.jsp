@@ -10,7 +10,7 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <!-- FontAwesome Icons -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-            <%@include file="../cssTemplate.jsp"%>
+        <%@include file="../cssTemplate.jsp"%>
 
         <style>
             .section-header {
@@ -70,9 +70,20 @@
                         <tr>
                             <th>Contract Document</th>
                             <td>
-                                <form action="/download/${contract.fileURL}" method="get">
-                                    <button type="submit" class="btn btn-primary"><i class="fas fa-download"></i> Download Contract</button>
-                                </form>
+                                <c:choose>
+                                    <c:when test="${not empty contract.fileURL}">
+                                        <form action="/download/${contract.fileURL}" method="get">
+                                            <button type="submit" class="btn btn-outline-primary">
+                                                <i class="fas fa-download"></i> Download Contract
+                                            </button>
+                                        </form>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button type="submit" class="btn btn-outline-danger">
+                                            <i class="fas fa-download"></i> File not available
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                         </tr>
                         <tr>
@@ -256,16 +267,16 @@
                                     <input type="hidden" name="status" value="6">
                                     <button type="submit" class="btn btn-success">Accept</button>
                                 </form>
-<!--                            <form action="/customer/contract/editStatus" method="POST" class="d-inline">
-                                    <input type="hidden" name="id" value="$/{contract.contractId}">
-                                    <input type="hidden" name="status" value="3">
-                                    <button type="submit" class="btn btn-warning">Reject</button>
-                                </form>-->
+                                <!--                            <form action="/customer/contract/editStatus" method="POST" class="d-inline">
+                                                                    <input type="hidden" name="id" value="$/{contract.contractId}">
+                                                                    <input type="hidden" name="status" value="3">
+                                                                    <button type="submit" class="btn btn-warning">Reject</button>
+                                                                </form>-->
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                         onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
-                                                 document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
-                                                 document.getElementById('declineForm').status.value = '3';"><i class="fas fa-times icon-btn"></i>
-                                                Reject
+                                                document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
+                                                document.getElementById('declineForm').status.value = '3';"><i class="fas fa-times icon-btn"></i>
+                                    Reject
                                 </button>
                                 <form action="/customer/contract/editStatus" method="POST" class="d-inline">
                                     <input type="hidden" name="id" value="${contract.contractId}">
@@ -314,7 +325,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

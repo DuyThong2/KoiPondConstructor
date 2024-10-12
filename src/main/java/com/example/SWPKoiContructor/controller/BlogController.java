@@ -130,6 +130,9 @@ public class BlogController {
         if (blog != null && blog.isBlogBelongToAuthor(staff)) {
             model.addAttribute("blog", blog);
             return "manager/blog/editBlog";
+        } else if (blog != null && staff.getDepartment().equalsIgnoreCase("Management")) {
+            model.addAttribute("blog", blog);
+            return "manager/blog/editBlog";
         } else {
             return "redirect:/staff/blogs";
         }
@@ -149,7 +152,7 @@ public class BlogController {
                 originBlog.setStatus(1);
                 String imgURL = fileUtility.handleFileUpload(file, FileUtility.BLOG_DIR);
                 if (imgURL != null) {
-                    blog.setImgUrl(imgURL);
+                    originBlog.setImgUrl(imgURL);
                 }
 
                 Content contentUpdated = originBlog.getIntroContent();

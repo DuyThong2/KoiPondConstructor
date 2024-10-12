@@ -1,5 +1,6 @@
 package com.example.SWPKoiContructor.entities;
 
+import com.example.SWPKoiContructor.entities.interfaces.HaveImagesFile;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "Blue_Print")
-public class BluePrint {
+public class BluePrint implements HaveImagesFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

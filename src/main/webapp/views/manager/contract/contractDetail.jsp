@@ -115,11 +115,20 @@
                             <tr>
                                 <th>Contract Document</th>
                                 <td>
-                                    <form action="/download/${contract.fileURL}" method="get">
-                                        <button type="submit" class="btn btn-outline-primary">
-                                            <i class="fas fa-download"></i> Download Contract
-                                        </button>
-                                    </form>
+                                    <c:choose>
+                                        <c:when test="${not empty contract.fileURL}">
+                                            <form action="/download/${contract.fileURL}" method="get">
+                                                <button type="submit" class="btn btn-outline-primary">
+                                                    <i class="fas fa-download"></i> Download Contract
+                                                </button>
+                                            </form>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="submit" class="btn btn-outline-danger">
+                                                <i class="fas fa-download"></i> File not available
+                                            </button>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                             </tr>
                             <tr>
@@ -134,7 +143,7 @@
                                             <span class="badge badge-warning status-badge">Pending</span>
                                         </c:when>
                                         <c:when test="${contract.contractStatus == 2}">
-                                            <span class="badge badge-success status-badge">Approved</span>
+                                            <span class="badge badge-success status-badge">Wait for customer</span>
                                         </c:when>
                                         <c:when test="${contract.contractStatus == 3}">
                                             <span class="badge badge-danger status-badge">Rejected (Customer)</span>

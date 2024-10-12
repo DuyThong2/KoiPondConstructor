@@ -66,11 +66,20 @@
                         <tr>
                             <th>Contract Document</th>
                             <td>
-                                <form action="/download/${contract.fileURL}" method="get">
-                                    <button type="submit" class="btn btn-outline-primary">
-                                        <i class="fas fa-download"></i> Download Contract
-                                    </button>
-                                </form>
+                                <c:choose>
+                                    <c:when test="${not empty contract.fileURL}">
+                                        <form action="/download/${contract.fileURL}" method="get">
+                                            <button type="submit" class="btn btn-outline-primary">
+                                                <i class="fas fa-download"></i> Download Contract
+                                            </button>
+                                        </form>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <button type="submit" class="btn btn-outline-danger">
+                                            <i class="fas fa-download"></i> File not available
+                                        </button>
+                                    </c:otherwise>
+                                </c:choose>
                             </td>
                         </tr>
                         <tr>

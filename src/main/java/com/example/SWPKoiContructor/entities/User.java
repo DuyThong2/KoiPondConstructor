@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import com.example.SWPKoiContructor.entities.interfaces.HaveImagesFile;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +28,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Users")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public class User implements HaveImagesFile {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
