@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import javax.persistence.Tuple;
 
 /**
  * Service layer for ServiceDetail.
@@ -93,5 +94,15 @@ public class ServiceDetailService {
 
     public List<ServiceDetail> getCompleteOrCancelledCustomerServiceDetailsById(int customerId) {
         return serviceDetailDAO.getCompleteOrCancelledCustomerServiceDetailsById(customerId);
+    }
+    
+    
+    
+    
+    
+    
+    
+    public List<Tuple> getServiceRevenue() {
+        return serviceDetailDAO.getRevenueByService();
     }
 }

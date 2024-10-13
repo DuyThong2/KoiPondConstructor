@@ -280,11 +280,13 @@ public class ContractController {
 
     }
 
-    @PutMapping("/consultant/contract/edit")
+    @PostMapping("/consultant/contract/edit")
     public String saveUpdatedContractByConsultant(@ModelAttribute("contract") Contract contract,
             @RequestParam("file") MultipartFile file) {
         String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
-        contract.setFileURL(fileURL);
+         if (fileURL != null) {
+            contract.setFileURL(fileURL);
+        }
         contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
         contract.setDateCreate(new Date());
 
@@ -309,11 +311,14 @@ public class ContractController {
 
     }
 
-    @PutMapping("/manager/contract/edit")
+    @PostMapping("/manager/contract/edit")
     public String saveUpdatedContractByManager(@ModelAttribute("contract") Contract contract,
             @RequestParam("file") MultipartFile file) {
         String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
-        contract.setFileURL(fileURL);
+        if (fileURL != null) {
+            contract.setFileURL(fileURL);
+        }
+
         contract.setContractStatus(2);  // Assuming 1 is for 'Pending'
         contract.setDateCreate(new Date());
 
@@ -329,13 +334,13 @@ public class ContractController {
         return "redirect:/customer/contract/viewDetail/" + contractId;
 
     }
-    
+
     @PostMapping("/customer/contract/editStatusAndFeedback")
-    public String editStatusFeedbackByCustomer(@RequestParam("id") int contractId, 
-                                               @RequestParam("status") int status,
-                                               @RequestParam("declineReason") String feedbackContent,
-                                               @RequestParam("toUserId") int toUserId,
-                                               HttpSession session) {
+    public String editStatusFeedbackByCustomer(@RequestParam("id") int contractId,
+            @RequestParam("status") int status,
+            @RequestParam("declineReason") String feedbackContent,
+            @RequestParam("toUserId") int toUserId,
+            HttpSession session) {
         Contract contract = contractService.changeStatusContract(status, contractId);
         User fromUser = (User) session.getAttribute("user");
         User toUser = userService.getUserById(toUserId);

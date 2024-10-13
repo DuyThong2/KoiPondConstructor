@@ -220,6 +220,17 @@ public class ProjectDAO {
         query.setParameter("year", year);
 
         return query.getResultList();
+        
+        
+        
+    }
+    
+    
+    public Long countByStage(int stage) {
+        TypedQuery<Long> query = entityManager.createQuery(
+            "SELECT COUNT(p) FROM Project p WHERE p.stage = :stage", Long.class);
+        query.setParameter("stage", stage);
+        return query.getSingleResult();
     }
 
     public List<Project> findPaginatedProjectsForShowing(int page, int size) {
@@ -231,4 +242,7 @@ public class ProjectDAO {
 
         return query.getResultList();
     }
+    
+    
+    
 }

@@ -110,7 +110,7 @@ public class BlogController {
             blog.setStatus(1);
             blogService.createBlog(blog);
             // Redirect to the blog list page after creation
-            return "redirect:/blog/list";
+            return "redirect:/staff/blogs";
 
         } catch (Exception e) {
             e.printStackTrace();
