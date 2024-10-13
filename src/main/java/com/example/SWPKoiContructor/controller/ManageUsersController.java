@@ -54,7 +54,7 @@ public class ManageUsersController {
         model.addAttribute("searchEmail", searchEmail);
         model.addAttribute("status", status);
 
-        return "/manager/manageUsers/manageCustomer";
+        return "manager/manageUsers/manageCustomer";
     }
 
     @GetMapping("/manager/manageCustomer/detail/{customerId}")
@@ -75,7 +75,7 @@ public class ManageUsersController {
         model.addAttribute("totalLoyaltyPoint", totalLoyaltyPoint);
         model.addAttribute("projects", projects);
 
-        return "/manager/manageUsers/customerDetail";
+        return "manager/manageUsers/customerDetail";
     }
 
     @GetMapping("/manager/manageStaff")
@@ -99,7 +99,7 @@ public class ManageUsersController {
         model.addAttribute("department", department);
         model.addAttribute("status", status);
 
-        return "/manager/manageUsers/manageStaff";
+        return "manager/manageUsers/manageStaff";
     }
 
     @PostMapping("/manager/manageStaff/add")
@@ -199,7 +199,7 @@ public class ManageUsersController {
         model.addAttribute("constructions", constructions);
         model.addAttribute("consultants", consultants);
 
-        return "/manager/manageUsers/staffDetail";
+        return "manager/manageUsers/staffDetail";
     }
 
 

@@ -22,7 +22,7 @@
                 max-width: 95%;
                 margin: 20px auto;
             }
-            
+
 
             .btn {
                 transition: all 0.3s ease;
@@ -197,13 +197,13 @@
                         <p><strong>Expected End Date:</strong><fmt:formatDate value="${project.dateEnd}" pattern="dd-MM-yyyy"/></p>
                         <p><strong>Design Team:</strong>
                             <c:forEach var="staff" items="${design.staff}"> | ${staff.name} | </c:forEach>
-                        </p>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <!-- Right Column -->
-                <div class="col-md-8 right-column">
-                    <h2 class="card-title mb-3 text-center">Information Of Design</h2>
-                    <p>Design's Name: ${design.designName}</p>
+                    <!-- Right Column -->
+                    <div class="col-md-8 right-column">
+                        <h2 class="card-title mb-3 text-center">Information Of Design</h2>
+                        <p>Design's Name: ${design.designName}</p>
                     <p>Design Status: 
                         <c:choose>
                             <c:when test="${design.status == 1}">
@@ -322,8 +322,23 @@
                                     })();
                                 </script>
 
+
                                 <c:if test="${stage.designStageStatus == 4}">
-                                    <p><strong>Summary File:</strong> <a href="/download/${stage.summaryFile}">Download</a></p>
+                                    <p><strong>Summary File:</strong>
+                                        <c:choose>
+                                            <c:when test="${not empty contract.fileURL}">
+                                            <form action="/download/${stage.summaryFile}" method="get">
+                                                <button type="submit" class="btn btn-outline-primary">
+                                                    <i class="fas fa-download"></i> Download file
+                                                </button>
+                                            </form>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="submit" class="btn btn-outline-danger">
+                                                <i class="fas fa-download"></i> File not available
+                                            </button>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:if>
                             </div>
                         </div>

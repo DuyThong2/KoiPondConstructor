@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import com.example.SWPKoiContructor.entities.interfaces.HaveImagesFile;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ import javax.persistence.TemporalType;
  */
 @Entity
 @Table(name = "project")
-public class Project {
+public class Project implements HaveImagesFile{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

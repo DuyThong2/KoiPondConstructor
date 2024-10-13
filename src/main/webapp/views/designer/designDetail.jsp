@@ -165,11 +165,11 @@
                         <!-- Avatar và tên người dùng -->
                         <div class="dropdown">
                             <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="/assets/imgs/logo/final_resized_colored_logo_image.png" alt="User Avatar" class="rounded-circle" width="40">
+                                <img src="/uploads/${sessionScope.user.imgURL}" alt="User Avatar" class="rounded-circle" width="40">
                                 <span class="ml-2 user-name">${sessionScope.user.name}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/profile">Profile</a>
+                                <a class="dropdown-item" href="/designer/profile">Profile</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/help">Help</a>
@@ -192,16 +192,16 @@
                     </div>
                     <!-- Notes Section -->
                     <div class="notes-box">
-                            <h3>Customer Information</h3>
-                            <div class="info-item">
-                                <p><strong>Name:</strong> ${customer.name}</p>
-                            </div>
-                            <div class="info-item">
-                                <p><strong>Phone Number:</strong> ${customer.phone}</p>
-                            </div>
-                            <div class="info-item mb-4">
-                                <p><strong>Email:</strong> ${customer.email}</p>
-                            </div>
+                        <h3>Customer Information</h3>
+                        <div class="info-item">
+                            <p><strong>Name:</strong> ${customer.name}</p>
+                        </div>
+                        <div class="info-item">
+                            <p><strong>Phone Number:</strong> ${customer.phone}</p>
+                        </div>
+                        <div class="info-item mb-4">
+                            <p><strong>Email:</strong> ${customer.email}</p>
+                        </div>
                     </div>
                 </div>
                 <!-- Right Column -->
@@ -246,14 +246,28 @@
                                               <c:if test="${detail.status == 2}">proccessing</c:if>
                                               <c:if test="${detail.status == 3}">canceled</c:if>
                                               <c:if test="${detail.status == 4}">success</c:if> ">
-                                                ${detail.name}
+                                            ${detail.name}
                                         </span>
                                     </c:forEach>
                                 </div>
 
                                 <p><strong>Price:</strong> ${stage.designStagePrice}</p>
                                 <c:if test="${stage.designStageStatus == 4}">
-                                    <p><strong>Summary File:</strong> <a href="/download/${stage.summaryFile}">Download</a></p>
+                                    <p><strong>Summary File:</strong>
+                                        <c:choose>
+                                            <c:when test="${not empty contract.fileURL}">
+                                            <form action="/download/${stage.summaryFile}" method="get">
+                                                <button type="submit" class="btn btn-outline-primary">
+                                                    <i class="fas fa-download"></i> Download file
+                                                </button>
+                                            </form>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <button type="submit" class="btn btn-outline-danger">
+                                                <i class="fas fa-download"></i> File not available
+                                            </button>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </c:if>
                                 <a href="/designer/updateStatus/designStage/${stage.designStageId}?designId=${designId}" class="btn btn-info">Update Progress</a>
 

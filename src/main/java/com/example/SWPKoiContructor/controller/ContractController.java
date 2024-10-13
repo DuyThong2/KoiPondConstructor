@@ -54,7 +54,7 @@ public class ContractController {
     private FeedbackService feedbackService;
 
     public ContractController(ContractService contractService, TermService termService, CustomerService customerService,
-            StaffService staffService, QuoteService quotesService, ContractDAO contractDAO, UserService userService, FeedbackService feedbackService) {
+            StaffService staffService, QuoteService quotesService, ContractDAO contractDAO, UserService userService, FeedbackService feedbackService, FileUtility fileUtility) {
         this.contractService = contractService;
         this.termService = termService;
         this.customerService = customerService;
@@ -63,7 +63,7 @@ public class ContractController {
         this.contractDAO = contractDAO;
         this.userService = userService;
         this.feedbackService = feedbackService;
-        fileUtility = new FileUtility();
+        this.fileUtility = fileUtility;
     }
 
     @GetMapping("/manager/contract")
@@ -236,7 +236,8 @@ public class ContractController {
                 ) {
             model.addAttribute("quote", quote);
             model.addAttribute("customer", quote.getCustomer());
-            List<Term> terms = termService.getAllTemplateTerm();  // Get all available terms for the dropdown
+            List<Term> terms = termService.getAllTemplateTerm();
+            terms.forEach(System.out::println);// Get all available terms for the dropdown
             model.addAttribute("contract", contract);
             model.addAttribute("terms", terms);
 

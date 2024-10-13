@@ -102,7 +102,7 @@
                     <!-- Blog Card -->
                     <div class="card blog-card">
                         <!-- Blog Image -->
-                        <img src="/uploads/${blog.imgUrl}" class="blog-image" alt="Blog Image">
+                        <img src="${blog.getShowingImg(blog.imgUrl)}" class="blog-image" alt="Blog Image">
 
                         <!-- Blog Content -->
                         <div class="card-body blog-content">
@@ -114,7 +114,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="text-muted">Posted on: ${blog.datePost}</p>
                                 <div class="blog-status">
-                                    Status: 
+                                    Status:
                                     <c:choose>
                                         <c:when test="${blog.status == 1}">
                                             <span class="badge bg-success">Active</span>
@@ -127,10 +127,9 @@
                             </div>
 
                             <!-- Blog Description -->
-                            <p class="blog-description">
+                            
                                 ${blog.description}
-                            </p>
-
+                            
                             <!-- Blog Content Section -->
                             <h4>Full Content</h4>
                             <div class="blog-body">

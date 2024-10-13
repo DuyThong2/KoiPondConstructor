@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import com.example.SWPKoiContructor.entities.interfaces.HaveImagesFile;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +25,7 @@ import javax.persistence.Table;
 //tạm xong
 @Entity
 @Table(name = "Pre_Design")
-public class PreDesign {
+public class PreDesign implements HaveImagesFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pre_design_id")

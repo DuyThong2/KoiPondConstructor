@@ -205,11 +205,11 @@
                         <!-- Avatar và tên người dùng -->
                         <div class="dropdown">
                             <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="/assets/imgs/logo/final_resized_colored_logo_image.png" alt="User Avatar" class="rounded-circle" width="40">
+                                <img src="/uploads/${sessionScope.user.imgURL}" alt="User Avatar" class="rounded-circle" width="40">
                                 <span class="ml-2 user-name">${sessionScope.user.name}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/profile">Profile</a>
+                                <a class="dropdown-item" href="/designer/profile">Profile</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/help">Help</a>
@@ -237,7 +237,7 @@
                         <c:forEach var="blueprint" items="${allBlueprints}">
                             <div class="col-md-4">
                                 <div class="card">
-                                    <img class="card-img-top" src="/uploads/${blueprint.imgUrl}" alt="Blueprint Image">
+                                    <img class="card-img-top" src="${blueprint.getShowingImg(blueprint.imgUrl)}" alt="Blueprint Image">
                                     <div class="card-body">
                                         <p><strong>Date Uploaded:</strong> <fmt:formatDate value="${blueprint.dateCreate}" pattern="dd-MM-yyyy"/></p>
                                         <div class="d-flex justify-content-between">

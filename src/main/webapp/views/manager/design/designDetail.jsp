@@ -174,9 +174,23 @@
                                         </c:choose>
                                     </td>
                                     <td>${stage.designDetail[0].description}</td>
+
                                     <td>
                                         <c:if test="${stage.designStageStatus == 4}">
-                                            <a href="/download/${stage.summaryFile}" class="btn btn-link">Download Summary File</a>
+                                            <c:choose>
+                                                <c:when test="${not empty contract.fileURL}">
+                                                    <form action="/download/${stage.summaryFile}" method="get">
+                                                        <button type="submit" class="btn btn-outline-primary">
+                                                            <i class="fas fa-download"></i> Download file
+                                                        </button>
+                                                    </form>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button type="submit" class="btn btn-outline-danger">
+                                                        <i class="fas fa-download"></i> File not available
+                                                    </button>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:if>
                                     </td>
                                     <td>

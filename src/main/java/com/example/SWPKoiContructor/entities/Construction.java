@@ -53,6 +53,8 @@ public class Construction {
     @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL)
     private List<ConstructionStaff> constructionStaffs;
 
+    @OneToMany(mappedBy = "construction", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     @ManyToMany
     @JoinTable(
@@ -68,13 +70,14 @@ public class Construction {
     }
 
 
-    public Construction(int constructionId, String constructionName, int constructionStatus, Project project, List<ConstructionStage> constructionStage, List<Staff> staff) {
+    public Construction(int constructionId, String constructionName, int constructionStatus, Project project, List<ConstructionStage> constructionStage, List<Staff> staff, List<Comment> comments) {
         this.constructionId = constructionId;
         this.constructionName = constructionName;
         this.constructionStatus = constructionStatus;
         this.project = project;
         this.constructionStage = constructionStage;
         this.staff = staff;
+        this.comments = comments;
     }
 
 
@@ -137,7 +140,14 @@ public class Construction {
         this.constructionStaffs = constructionStaffs;
     }
 
-    //Convinience method
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+//Convinience method
    
     public void addConstructionStage(ConstructionStage constructionStage){
         

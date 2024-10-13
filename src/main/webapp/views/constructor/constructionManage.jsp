@@ -35,7 +35,7 @@
                                 <span class="ml-2 user-name">${sessionScope.user.name}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/profile">Profile</a>
+                                <a class="dropdown-item" href="/constructor/profile">Profile</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/help">Help</a>

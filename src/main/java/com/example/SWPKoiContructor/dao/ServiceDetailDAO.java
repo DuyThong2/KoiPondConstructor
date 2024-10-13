@@ -13,6 +13,7 @@ import javax.persistence.FlushModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import javax.persistence.Tuple;
 
 /**
  *
@@ -171,4 +172,30 @@ public class ServiceDetailDAO {
         query.setParameter("customerId", customerId);
         return query.getResultList();
     }
+
+    // Count service details customer Id
+    public long countServiceDetailsByCustomerId(int customerId) {
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.id = :customerId", Long.class);
+        query.setParameter("customerId", customerId);
+        return query.getSingleResult();
+    }
+
+    
+    
+    public Long countTotalServiceBookings() {
+        String jpql = "SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.serviceDetailStatus = 3";  // Only count completed bookings
+        return entityManager.createQuery(jpql, Long.class).getSingleResult();
+    }
+
+    // Count of bookings per service using Tuple
+    public List<Tuple> countBookingsPerService() {
+        String jpql = "SELECT s.serviceName AS serviceName, COUNT(sd) AS bookingCount " +
+                      "FROM ServiceDetail sd JOIN sd.service s " +
+                      "WHERE sd.serviceDetailStatus = 3 " +
+                      "GROUP BY s.serviceName";
+
+        TypedQuery<Tuple> query = entityManager.createQuery(jpql, Tuple.class);
+        return query.getResultList();
+    }
+
 }

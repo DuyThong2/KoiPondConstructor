@@ -78,6 +78,16 @@ public class Staff extends User{
     public void setBlogs(List<Blog> blogs) {
         this.blogs = blogs;
     }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+    
+    
     
     
     

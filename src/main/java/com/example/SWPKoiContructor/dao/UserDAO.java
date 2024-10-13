@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.dao;
 
+import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.User;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -58,5 +59,8 @@ public class UserDAO {
         }catch (NoResultException e){
             return null;
         }
+    }
+    public User updateUser(User user) {
+        return entityManager.merge(user);
     }
 }

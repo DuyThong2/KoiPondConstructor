@@ -39,13 +39,13 @@ public class DesignController {
     private DesignStageDetailService designStageDetailService;
     private CommentService commentService;
 
-    public DesignController(DesignService designService, DesignStageService designStageService, BluePrintService bluePrintService, DesignStageDetailService designStageDetailService, CommentService commentService) {
+    public DesignController(DesignService designService, DesignStageService designStageService, BluePrintService bluePrintService, DesignStageDetailService designStageDetailService, CommentService commentService,FileUtility fileUtility) {
         this.designService = designService;
         this.designStageService = designStageService;
         this.bluePrintService = bluePrintService;
         this.designStageDetailService = designStageDetailService;
         this.commentService = commentService;
-        fileUtility = new FileUtility();
+        this.fileUtility = fileUtility;
     }
 
     @GetMapping("/manager/design")

@@ -88,10 +88,10 @@
                                 <span class="ml-2 user-name">${sessionScope.user.name}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/profile">Profile</a>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
+                                <a class="dropdown-item" href="/constructor/profile"><i class="fas fa-user"></i>Profile</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal"><i class="fas fa-paint-brush"></i>Theme</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/help">Help</a>
+                                <a class="dropdown-item" href="/help"><i class="fas fa-question-circle"></i>Help</a>
                                 <div class="dropdown-divider"></div>
                                 <!-- Logout button in dropdown -->
                                 <a href="/logout" class="dropdown-item btn-logout">

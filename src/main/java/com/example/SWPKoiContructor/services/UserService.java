@@ -80,4 +80,7 @@ public class UserService {
     public List<User> getUserListByRole(String role){
         return userDAO.getUserListByRole(role);
     }
+    public User updateUser(User user) {
+        return userDAO.updateUser(user);
+    }
 }

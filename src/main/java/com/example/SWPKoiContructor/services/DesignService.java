@@ -54,6 +54,17 @@ public class DesignService {
         return (int) Math.ceil((double) totalDesigns / size); // Tính tổng số trang
     }
 
+    public long countDesignsByStaff(int staffId) {
+        return designDao.countDesignsByStaff(staffId);
+    }
+
+    public long countDesignsCompleteByStaffId(int staffId) {
+        return designDao.countDesignsCompleteByStaffId(staffId);
+    }
+    public long countDesignsProcessingByStaffId(int staffId) {
+        return designDao.countDesignsProcessingByStaffId(staffId);
+    }
+
     protected void propagateStatusToDesign(int designId) {
         Design design = getDesignById(designId);
 

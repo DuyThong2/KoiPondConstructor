@@ -98,52 +98,90 @@ body {
     outline: none;
     box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
-
 .dropdown-menu {
-     background-color: #343a40;
-     border-radius: 5px;
-     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-     padding: 0;
-     width: 200px;
- }
-
-.dropdown-item {
-    padding: 10px;
-    font-size: 16px;
-    color: #ffffff;
-    transition: background-color 0.3s ease-in-out;
+    background-color: #343a40;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px 0; /* Thêm khoảng trống cho menu */
+    min-width: 180px; /* Đặt chiều rộng tối thiểu */
 }
 
-.dropdown-item:hover {
+/* Dropdown menu items */
+.dropdown-menu .dropdown-item {
+    color: #000000;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    display: block;
+}
+
+/* Hover effect for dropdown items */
+.dropdown-menu .dropdown-item:hover {
     background-color: #495057;
     color: #ffffff;
 }
 
-.dropdown-divider {
-    margin: 0;
-    border-color: #6c757d;
-}
-.dropdown-menu {
-    animation: fadeIn 0.3s ease;
-}
-.btn-logout {
-    background-color: #dc3545;
-    padding: 10px 20px;
-    text-align: center;
-    font-weight: bold;
-    color: white;
-    display: block;
-    border-radius: 0;
+/* Divider between dropdown items */
+.dropdown-menu .divider {
+    height: 1px;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    background-color: #6c757d;
 }
 
+/* Special styling for logout button */
+.btn-logout {
+    color: #ffffff;
+    background-color: #dc3545;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+    text-align: center;
+    border: none;
+    width: 100%; /* Chiều rộng 100% để ôm sát menu */
+    transition: background-color 0.3s ease;
+}
+
+/* Hover effect for logout button */
 .btn-logout:hover {
     background-color: #c82333;
 }
 
-.dropdown-divider {
-    margin: 0;
-    border-color: #6c757d;
+/* Adjust icon and text alignment in dropdown items */
+.dropdown-item i {
+    margin-right: 8px;
+    font-size: 16px;
+    vertical-align: middle;
 }
+
+/* Dropdown toggle adjustments */
+.nav-link.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+}
+
+.nav-link.dropdown-toggle:hover {
+    background-color: #495057;
+    color: #ffffff;
+}
+
+.nav-link.dropdown-toggle .rounded-circle {
+    border: 2px solid #ffffff;
+    margin-right: 8px;
+    transition: border-color 0.3s ease;
+}
+
+.nav-link.dropdown-toggle:hover .rounded-circle {
+    border-color: #f8f9fa;
+}
+
 
 table {
     margin-top: 20px;

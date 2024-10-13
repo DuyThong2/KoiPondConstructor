@@ -1,17 +1,13 @@
 package com.example.SWPKoiContructor.controller;
 
-import com.example.SWPKoiContructor.entities.Construction;
-import com.example.SWPKoiContructor.entities.ConstructionStage;
-import com.example.SWPKoiContructor.entities.ConstructionStageDetail;
-import com.example.SWPKoiContructor.entities.Contract;
-import com.example.SWPKoiContructor.entities.Quotes;
+import com.example.SWPKoiContructor.entities.*;
 
-import com.example.SWPKoiContructor.entities.Customer;
-import com.example.SWPKoiContructor.entities.Project;
-import com.example.SWPKoiContructor.entities.User;
+import com.example.SWPKoiContructor.services.CommentService;
 import com.example.SWPKoiContructor.services.ConstructionService;
 import com.example.SWPKoiContructor.services.ConstructionStageDetailService;
 import com.example.SWPKoiContructor.services.ConstructionStageService;
+
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
@@ -27,15 +23,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 public class ConstructionController {
 
+    private final CommentService commentService;
     private ConstructionService constructionService;
     private ConstructionStageService constructionStageService;
     private ConstructionStageDetailService constructionStageDetailService;
 
-    public ConstructionController(ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService) {
+    public ConstructionController(ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService) {
         this.constructionService = constructionService;
         this.constructionStageService = ConstructionStageService;
         this.constructionStageDetailService = ConstructionStageDetailService;
-
+        this.commentService = commentService;
     }
 
     @GetMapping("/manager/construction")
@@ -48,7 +45,7 @@ public class ConstructionController {
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
         return "manager/construction/constructionManage";
-        
+
     }
 
     @GetMapping("/manager/construction/viewDetail/{id}")
@@ -116,27 +113,33 @@ public class ConstructionController {
 
         // Fetch the construction project by ID
         Construction construction = constructionService.getConstructionById(id);
+        if (construction != null) {
+            boolean isAssignedToConstruction = construction.getConstructionStaffs().stream()
+                    .anyMatch(constructionStaff -> constructionStaff.getStaff().getId() == user.getId());
 
-        // Check if the current user is assigned to the construction project
-        boolean isAssignedToConstruction = construction.getConstructionStaffs().stream()
-                .anyMatch(constructionStaff -> constructionStaff.getStaff().getId() == user.getId());
+            if (!isAssignedToConstruction) {
+                redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this project.");
+                return "redirect:/error/error-403"; // Redirect to error page
+            }
 
-        if (!isAssignedToConstruction) {
-            redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this project.");
-            return "redirect:/error/error-403"; // Redirect to error page
+            List<Comment> comments = commentService.getCommentByConstructionId(id);
+            model.addAttribute("comments", comments);
+
+            // Fetch the project associated with the construction
+            Project project = construction.getProject();
+            model.addAttribute("construction", construction);
+            model.addAttribute("project", project);
+
+            // Fetch the construction stages related to the construction project
+            List<ConstructionStage> constructionStages = constructionStageService.getListConstructionStage(id);
+            model.addAttribute("constructionStages", constructionStages);
+            model.addAttribute("constructionId", id);
+
+            return "constructor/constructionDetail";
+        } else {
+            return "/constructor/manage";
         }
 
-        // Fetch the project associated with the construction
-        Project project = construction.getProject();
-        model.addAttribute("construction", construction);
-        model.addAttribute("project", project);
-
-        // Fetch the construction stages related to the construction project
-        List<ConstructionStage> constructionStages = constructionStageService.getListConstructionStage(id);
-        model.addAttribute("constructionStages", constructionStages);
-        model.addAttribute("constructionId", id);
-
-        return "constructor/constructionDetail"; // Return the view for construction details
     }
 
     @GetMapping("/staff/updateStatus/constructionStage/{id}")
@@ -146,26 +149,22 @@ public class ConstructionController {
         if (user == null) {
             return "redirect:/login";
         }
-        if(user.getAuthority().getAuthority().equalsIgnoreCase("ROLE_MANAGER")){
-             return "redirect:/manager/construction/viewDetail/"+constructionId;
+        if (user.getAuthority().getAuthority().equalsIgnoreCase("ROLE_MANAGER")) {
+            return "redirect:/manager/construction/viewDetail/" + constructionId;
         }
-        
+
         // Fetch the construction stage details by constructionStageId
         List<ConstructionStageDetail> details = constructionStageDetailService.getConstructionStageDetailByStageId(id);
-
+        if (details != null) {
+            model.addAttribute("constructionId", constructionId);
+            model.addAttribute("details", details);
+            model.addAttribute("id", id);  // constructionStageId
+        }
         // Add attributes to the model to render in the JSP
-        model.addAttribute("constructionId", constructionId);
-        model.addAttribute("details", details);
-        model.addAttribute("id", id);  // constructionStageId
 
-       
-             return "constructor/constructionCompleteTask";  // Adjust the view to your construction task view
-        
-       
+        return "constructor/constructionCompleteTask";  // Adjust the view to your construction task view
+
     }
-    
-    
-    
 
     @PostMapping("/constructionStageDetail/updateStatus")
     public String updateStatus(@RequestParam(required = false) Integer detailId,
@@ -236,12 +235,16 @@ public class ConstructionController {
         }
 
         Construction construction = constructionService.getConstructionById(id);
-        Project project = construction.getProject();
+        if(construction != null){
+            Project project = construction.getProject();
 
         Customer customer = project.getContract().getCustomer();
         if (customer == null || customer.getId() != user.getId()) {
             return "redirect:/error/error-403";
         }
+
+        List<Comment> comments = commentService.getCommentByConstructionId(id);
+        model.addAttribute("comments", comments);
 
         Contract contract = project.getContract();
         Quotes quote = contract.getQuote();
@@ -252,9 +255,11 @@ public class ConstructionController {
         model.addAttribute("constructionStages", designStages);
 
         return "customer/construction/processOfConstruction";
+        }else{
+            return "redirect:/customer/projects/";
+        }
+        
     }
-    
-    
 
     // Method to approve the inspection stage
     @PostMapping("/customer/approveInspection")
@@ -263,7 +268,7 @@ public class ConstructionController {
             @RequestParam("constructionStageId") int constructionStageId,
             @RequestParam("constructionId") int constructionId,
             RedirectAttributes redirectAttributes) {
-        
+
         try {
             // Approve the inspection stage
             constructionStageDetailService.updateConstructionStageDetailStatus(constructionStageDetailId, 4); // Assuming 4 is 'approved' status
@@ -274,17 +279,17 @@ public class ConstructionController {
         }
 
         // Redirect back to the construction stage details page
-        return "redirect:/customer/project/construction/"+ constructionId;
+        return "redirect:/customer/project/construction/" + constructionId;
     }
-    
-        // Method to reject the inspection stage
+
+    // Method to reject the inspection stage
     @PostMapping("/customer/rejectInspection")
     public String rejectInspection(
             @RequestParam("detailId") int constructionStageDetailId,
             @RequestParam("constructionStageId") int constructionStageId,
             @RequestParam("constructionId") int constructionId,
             RedirectAttributes redirectAttributes) {
-        
+
         try {
             // Reject the inspection stage
             constructionStageDetailService.updateConstructionStageDetailStatus(constructionStageDetailId, 3); // Assuming 3 is 'rejected' status
@@ -302,10 +307,129 @@ public class ConstructionController {
         }
 
         // Redirect back to the construction stage details page
-        return "redirect:/customer/project/construction/"+ constructionId;
+        return "redirect:/customer/project/construction/" + constructionId;
     }
 
+
+    @PostMapping("/customer/feedback/send")
+    public String submitFeedbackByCustomer(
+            @RequestParam("feedback") String feedbackContent,
+            @RequestParam("constructionId") int constructionId,
+            HttpSession session, RedirectAttributes redirectAttributes) {
+
+        Customer customer = (Customer) session.getAttribute("user");
+        if (customer == null)
+            return "redirect:/login";
+
+        Comment comment = new Comment();
+        comment.setCommentContent(feedbackContent);
+        comment.setCustomer(customer);
+        comment.setConstruction(constructionService.getConstructionById(constructionId));
+        comment.setDatePost(Calendar.getInstance());
+
+        commentService.saveComment(comment);
+        redirectAttributes.addFlashAttribute("message", "Feedback has been submitted successfully!");
+        return "redirect:/customer/project/construction/" + constructionId;
+    }
+
+    @PostMapping("/customer/feedback/delete")
+    public String deleteCommentByCustomer(@RequestParam("commentId") int commentId,
+                                HttpSession session, RedirectAttributes redirectAttributes) {
+        Customer customer = (Customer) session.getAttribute("user");
+        if (customer == null)
+            return "redirect:/login";
+
+        Comment comment = commentService.getCommentById(commentId);
+
+        if (comment == null || comment.getCustomer().getId() != customer.getId()) {
+            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+        }
+
+        commentService.deleteComment(commentId);
+        redirectAttributes.addFlashAttribute("message", "Comment deleted successfully.");
+        return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+    }
+
+    @PostMapping("/customer/feedback/update")
+    public String updateCommentByCustomer(@RequestParam("commentId") int commentId,
+                                    @RequestParam("newContent") String commentContent,
+                                    HttpSession session, RedirectAttributes redirectAttributes) {
+        Customer customer = (Customer) session.getAttribute("user");
+        if (customer == null)
+            return "redirect:/login";
+
+        Comment comment = commentService.getCommentById(commentId);
+
+        if (comment == null || comment.getCustomer().getId() != customer.getId()) {
+            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+        }
+
+        comment.setCommentContent(commentContent);
+        commentService.saveComment(comment);
+        redirectAttributes.addFlashAttribute("message", "Comment updated successfully.");
+        return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+    }
+
+    @PostMapping("/staff/feedback/send")
+    public String submitFeedbackByStaff(
+            @RequestParam("feedback") String feedbackContent,
+            @RequestParam("constructionId") int constructionId,
+            HttpSession session, RedirectAttributes redirectAttributes) {
+
+        Staff staff = (Staff) session.getAttribute("user");
+        if (staff == null)
+            return "redirect:/login";
+
+        Comment comment = new Comment();
+        comment.setCommentContent(feedbackContent);
+        comment.setStaff(staff);
+        comment.setConstruction(constructionService.getConstructionById(constructionId));
+        comment.setDatePost(Calendar.getInstance());
+
+        commentService.saveComment(comment);
+        redirectAttributes.addFlashAttribute("message", "Feedback has been submitted successfully!");
+        return "redirect:/constructor/construction/" + constructionId;
+    }
+
+    @PostMapping("/staff/feedback/delete")
+    public String deleteCommentByStaff(@RequestParam("commentId") int commentId,
+                                HttpSession session, RedirectAttributes redirectAttributes) {
+        Staff staff = (Staff) session.getAttribute("user");
+        if (staff == null)
+            return "redirect:/login";
+
+        Comment comment = commentService.getCommentById(commentId);
+        if (comment == null || comment.getStaff().getId() != staff.getId()) {
+            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+        }
+        commentService.deleteComment(commentId);
+        redirectAttributes.addFlashAttribute("message", "Comment deleted successfully.");
+        return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
+    }
+
+    @PostMapping("/staff/feedback/update")
+    public String updateCommentByStaff(@RequestParam("commentId") int commentId,
+                                    @RequestParam("newContent") String commentContent,
+                                    HttpSession session, RedirectAttributes redirectAttributes) {
+        Staff staff = (Staff) session.getAttribute("user");
+        if (staff == null)
+            return "redirect:/login";
+
+        Comment comment = commentService.getCommentById(commentId);
+
+        if (comment == null || comment.getStaff().getId() != staff.getId()) {
+            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+        }
+
+        comment.setCommentContent(commentContent);
+        commentService.saveComment(comment);
+        redirectAttributes.addFlashAttribute("message", "Comment updated successfully.");
+        return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
+    }
+
+
 }
-
-
-

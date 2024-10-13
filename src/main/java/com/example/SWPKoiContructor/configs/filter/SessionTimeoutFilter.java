@@ -39,7 +39,9 @@ public class SessionTimeoutFilter implements javax.servlet.Filter {
             requestURI.startsWith("/constructor/") || requestURI.startsWith("/staff/")) {
 
             // Check if the session is invalid or if the user is not authenticated
-            if (session == null || auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+
+            if (session == null || session.getAttribute("user") == null || auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+
                 // Clear the security context (remove authentication and authorization)
                 SecurityContextHolder.clearContext();
                
