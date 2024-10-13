@@ -71,10 +71,12 @@
                     <h2 class="mb-4">Edit Contract</h2>
 
                     <!-- Bind the form to the "contract" object -->
-                    <form:form action="${pageContext.request.contextPath}/consultant/contract/edit" modelAttribute="contract" method="PUT" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                    <form:form action="${pageContext.request.contextPath}/consultant/contract/edit" modelAttribute="contract" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="contractId" value="${contract.contractId}"/>
                         <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
                         <form:hidden path="customer.id" value="${customer.id}" />
+                        <form:hidden path="fileURL" value="${contract.fileURL}" />
+
 
                         <!-- Total Price (Read-Only, auto-calculated) -->
                         <div class="form-group">
@@ -106,7 +108,7 @@
                         <!-- Total Design Cost (Used for calculation only) -->
                         <div class="form-group">
                             <label for="totalDesignCost">Total Design Cost:</label>
-                            <input type="number" id="totalDesignCost" step="0.01" class="form-control" readonly="readonly" />
+                            <input type="number" id="totalDesignCost" step="0.01" class="form-control" readonly />
                         </div>
 
                         <!-- Construction Costs -->
@@ -127,7 +129,7 @@
                         <!-- Total Construction Cost (Used for calculation only) -->
                         <div class="form-group">
                             <label for="totalConstructionCost">Total Construction Cost:</label>
-                            <input type="number" id="totalConstructionCost" step="0.01" class="form-control" readonly="readonly" />
+                            <input type="number" id="totalConstructionCost" step="0.01" class="form-control" readonly />
                         </div>
 
                         <!-- Term Selection Button and Hidden Fields -->
@@ -137,7 +139,7 @@
                                 Choose Term
                             </button>
                             <input type="hidden" id="selectedTermId" name="term.termId" value="${contract.term.termId}" />
-                            <input type="text" id="term" name="termDescription" readonly="readonly" class="form-control" value="${contract.term.description}"/>
+                            <input type="text" id="term" name="termDescription" readonly class="form-control" value="${contract.term.description}"/>
                         </div>
 
                         <!-- Button to Adjust Costs -->

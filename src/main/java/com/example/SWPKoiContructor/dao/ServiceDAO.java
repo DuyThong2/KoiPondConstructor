@@ -192,4 +192,34 @@ public class ServiceDAO {
         }
 
     }    
+    
+    
+    
+    
+    
+    
+    // Fetches the total revenue for each active service for the last 12 months using Tuple
+    public List<Tuple> getMonthlyRevenueForActiveServices() {
+        String sql = "SELECT "
+                + "s.service_name AS serviceName, "
+                + "YEAR(sd.date_register) AS year, "
+                + "MONTH(sd.date_register) AS month, "
+                + "SUM(sd.service_detail_price) AS totalRevenue "
+                + "FROM Service_Detail sd "
+                + "JOIN Service s ON sd.service_id = s.service_id "
+                + "WHERE sd.service_detail_status = 3 " // Only completed services
+                + "AND s.service_status = 1 "          // Only active services
+                + "AND sd.date_register >= DATEADD(month, -12, GETDATE()) " // Last 12 months
+                + "GROUP BY s.service_name, YEAR(sd.date_register), MONTH(sd.date_register) "
+                + "ORDER BY year, month";
+
+        Query query = entityManager.createNativeQuery(sql, Tuple.class);
+        return query.getResultList();
+    }
+    
+    
+    
+    
+    
+    
 }

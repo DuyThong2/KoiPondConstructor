@@ -180,11 +180,11 @@
                             <h2 class="mb-4">Create Contract</h2>
 
                             <!-- Bind the form to the "contract" object -->
-                            <form:form action="${pageContext.request.contextPath}/manager/contract/edit" modelAttribute="contract" method="PUT" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                            <form:form action="${pageContext.request.contextPath}/manager/contract/edit" modelAttribute="contract" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                                 <form:hidden path="contractId" value="${contract.contractId}"/>
                                 <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
                                 <form:hidden path="customer.id" value="${customer.id}" />
-
+                                <form:hidden path="fileURL" value="${contract.fileURL}" />
 
                                 <!-- Total Price (Read-Only, auto-calculated) -->
                                 <div class="form-group">
@@ -216,7 +216,7 @@
                                 <!-- Total Design Cost (Used for calculation only) -->
                                 <div class="form-group">
                                     <label for="totalDesignCost">Total Design Cost:</label>
-                                    <input type="number" id="totalDesignCost" step="0.01"  class="form-control" readonly="readonly"/>
+                                    <input type="number" id="totalDesignCost" step="0.01"  class="form-control" readonly/>
                                 </div>
 
                                 <!-- Construction Costs -->

@@ -238,21 +238,7 @@ public class ProjectService {
         return projectDAO.getProjectWithContentById(id);
     }
 
-    //USE FOR DASHBOARD ONLY
-    public Map<Integer, BigDecimal> getTotalEarningsForCompletedProjectsPerMonth(int year) {
-        List<Tuple> results = projectDAO.getTotalEarningsForCompletedProjectsPerMonth(year);
-        Map<Integer, BigDecimal> earningsPerMonth = new HashMap<>();
-        
-        // Populate the map with month and total earnings
-        for (Tuple tuple : results) {
-            Integer month = tuple.get("month", Integer.class);
-            Double earningsAsDouble = tuple.get("totalEarnings", Double.class);  // Fetch as Double
-            BigDecimal totalEarnings = BigDecimal.valueOf(earningsAsDouble);  // Convert to BigDecimal
-            earningsPerMonth.put(month, totalEarnings);
-        }
-        
-        return earningsPerMonth;
-    }
+    
     
     
 }

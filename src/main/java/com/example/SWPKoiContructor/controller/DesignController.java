@@ -64,8 +64,13 @@ public class DesignController {
     @GetMapping("/manager/design/viewDetail/{id}")
     public String viewDetailDetail(Model model, @PathVariable("id") int id) {
         Design design = designService.getDesignById(id);
-        model.addAttribute("design", design);
-        return "manager/design/designDetail";
+        if(design != null){
+            model.addAttribute("design", design);
+            return "manager/design/designDetail";
+        }else{
+            return "redirect:/manager/design";
+        }
+        
     }
 
     @PostMapping("/manager/completePayment/")
@@ -297,7 +302,8 @@ public class DesignController {
         }
 
         Design design = designService.getDesignById(id);
-        Project project = design.getProject();
+        if (design != null){
+            Project project = design.getProject();
 
         Customer customer = project.getContract().getCustomer();
         if (customer == null || customer.getId() != user.getId()) {
@@ -313,6 +319,10 @@ public class DesignController {
         model.addAttribute("designStages", designStages);
 
         return "customer/design/processOfDesign";
+        }else{
+            return "redirect:/customer/projects/";
+        }
+        
     }
 
     @PostMapping("/customer/designStageDetail/updateStatus/")

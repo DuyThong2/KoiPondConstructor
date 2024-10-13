@@ -52,6 +52,8 @@
                 max-width: 400px;  /* Set a maximum width to avoid resizing issues */
                 height: 300px !important;  /* Set a fixed height to prevent resizing */
             }
+
+
         </style>
     </head>
     <body>
@@ -118,6 +120,51 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-md-3">
+                            <!-- Service Stats Card -->
+                            <div class="card text-white bg-info mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Service Stats</h5>
+                                    <h6>Total Services Booked: <span data-name="totalServicesBooked">Loading...</span></h6>
+                                    <h6>Total Services Completed: <span data-name="totalServicesCompleted">Loading...</span></h6>
+                                </div>
+                            </div>
+
+                            <!-- Project and Contract Stats Card -->
+                            <div class="card text-white bg-success mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Project and Contract Stats</h5>
+                                    <h6>Total Contracts Signed: <span data-name="totalContractsSigned">Loading...</span></h6>
+                                    <p>Projects in Planning: <span data-name="totalProjectsInPlanning">Loading...</span></p>
+                                    <p>Projects in Design: <span data-name="totalProjectsInDesign">Loading...</span></p>
+                                    <p>Projects in Construction: <span data-name="totalProjectsInConstruction">Loading...</span></p>
+                                    <p>Projects in Maintenance: <span data-name="totalProjectsInMaintenance">Loading...</span></p>
+                                    <p>Projects Completed: <span data-name="totalProjectsCompleted">Loading...</span></p>
+                                </div>
+                            </div>
+
+                            <!-- Consultant, Quote, and Contract Stats Card -->
+                            <div class="card text-white bg-primary mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Consultant, Quote, and Contract Stats</h5>
+                                    <h6>Total Consultants Received: <span data-name="totalConsultantsReceived">Loading...</span></h6>
+                                    <h6>Total Quotes Created: <span data-name="totalQuotesCreated">Loading...</span></h6>
+                                    <h6>Total Contracts Created: <span data-name="totalContractsCreated">Loading...</span></h6>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Right column for the Monthly Service Revenue Chart -->
+                        <div class="col-md-9">
+                            <div class="card">
+                                <div class="card-header">Monthly Service Revenue (Last 12 Months)</div>
+                                <div class="card-body">
+                                    <canvas id="serviceRevenueChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </main>
             </div>
@@ -157,7 +204,7 @@
                             new Chart(ctx, {
                                 type: 'bar',
                                 data: {
-                                    labels: months.map(month => `Month ${month}`), // Label each month
+                                    labels: months.map(month => `Month ` + month), // Label each month
                                     datasets: [{
                                             label: 'Total Earnings',
                                             data: earnings,
@@ -184,6 +231,34 @@
                             const serviceNames = Object.keys(data);  // Get the service names
                             const servicePercentages = Object.values(data);  // Get the percentages
 
+                            // A broader color palette for more variety
+                            const backgroundColors = [
+                                'rgba(75, 192, 192, 0.2)', // teal
+                                'rgba(255, 159, 64, 0.2)', // orange
+                                'rgba(255, 205, 86, 0.2)', // yellow
+                                'rgba(54, 162, 235, 0.2)', // blue
+                                'rgba(153, 102, 255, 0.2)', // purple
+                                'rgba(255, 99, 132, 0.2)', // red
+                                'rgba(0, 206, 201, 0.2)', // turquoise
+                                'rgba(251, 233, 231, 0.2)', // pale pink
+                                'rgba(102, 51, 153, 0.2)', // violet
+                                'rgba(255, 235, 59, 0.2)', // light yellow
+                                'rgba(233, 30, 99, 0.2)', // pink
+                                'rgba(0, 123, 255, 0.2)', // vibrant blue
+                                'rgba(76, 175, 80, 0.2)', // green
+                                'rgba(255, 87, 34, 0.2)', // deep orange
+                                'rgba(103, 58, 183, 0.2)', // deep purple
+                                'rgba(139, 195, 74, 0.2)', // light green
+                                'rgba(33, 150, 243, 0.2)', // sky blue
+                                'rgba(121, 85, 72, 0.2)', // brown
+                                'rgba(255, 215, 0, 0.2)', // gold
+                                'rgba(72, 61, 139, 0.2)', // dark slate blue
+                                'rgba(85, 239, 196, 0.2)', // mint green
+                                'rgba(0, 250, 154, 0.2)'        // medium spring green
+                            ];
+
+                            const borderColors = backgroundColors.map(color => color.replace('0.2', '1')); // Darken the borders
+
                             // Render pie chart using Chart.js
                             const ctxService = document.getElementById('serviceBookingChart').getContext('2d');
                             new Chart(ctxService, {
@@ -192,24 +267,8 @@
                                     labels: serviceNames,
                                     datasets: [{
                                             data: servicePercentages,
-                                            backgroundColor: [
-                                                'rgba(75, 192, 192, 0.2)',
-                                                'rgba(255, 159, 64, 0.2)',
-                                                'rgba(255, 205, 86, 0.2)',
-                                                'rgba(54, 162, 235, 0.2)',
-                                                'rgba(153, 102, 255, 0.2)',
-                                                'rgba(255, 99, 132, 0.2)',
-                                                'rgba(255, 206, 86, 0.2)'
-                                            ],
-                                            borderColor: [
-                                                'rgba(75, 192, 192, 1)',
-                                                'rgba(255, 159, 64, 1)',
-                                                'rgba(255, 205, 86, 1)',
-                                                'rgba(54, 162, 235, 1)',
-                                                'rgba(153, 102, 255, 1)',
-                                                'rgba(255, 99, 132, 1)',
-                                                'rgba(255, 206, 86, 1)'
-                                            ],
+                                            backgroundColor: backgroundColors,
+                                            borderColor: borderColors,
                                             borderWidth: 1
                                         }]
                                 },
@@ -220,7 +279,7 @@
                                         legend: {
                                             position: 'right', // Move legend to the right
                                             labels: {
-                                                boxWidth: 20, // Smaller legend box size
+                                                boxWidth: 10, // Smaller legend box size
                                                 font: {
                                                     size: 12
                                                 }
@@ -229,16 +288,101 @@
                                     },
                                     layout: {
                                         padding: {
-                                            top: 20,
-                                            bottom: 20,
+                                            top: 0,
+                                            bottom: 0,
                                             left: 0,
-                                            right: 30  // Add padding on the right to ensure the legend is fully visible
+                                            right: 0  // Add padding on the right to ensure the legend is fully visible
                                         }
                                     }
                                 }
                             });
                         })
                         .catch(error => console.error('Error fetching service booking percentages:', error));
+
+
+
+
+                fetch('/api/dashboard/monthly-service-revenue')
+                        .then(response => response.json())
+                        .then(data => {
+                            // Extract labels (months) and datasets (revenue per service)
+                            const months = Array.from({length: 12}, (_, i) => i + 1);
+                            const services = Object.keys(data);  // Get the service names
+                            const datasets = services.map(service => {
+                                return {
+                                    label: service,
+                                    data: months.map(month => data[service][month] || 0), // Fill missing months with 0
+                                    fill: false,
+                                    borderColor: getRandomColor(),
+                                    tension: 0.1  // Smooth the lines
+                                };
+                            });
+
+                            // Render line chart using Chart.js
+                            const ctx = document.getElementById('serviceRevenueChart').getContext('2d');
+                            new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: months.map(month => 'Month ' + month),
+                                    datasets: datasets
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+                        })
+                        .catch(error => console.error('Error fetching service revenue data:', error));
+
+                // Function to generate random color for each service
+                function getRandomColor() {
+                    const letters = '0123456789ABCDEF';
+                    let color = '#';
+                    for (let i = 0; i < 6; i++) {
+                        color += letters[Math.floor(Math.random() * 16)];
+                    }
+                    return color;
+                }
+
+
+                fetch('/api/dashboard/service-stats')
+                        .then(response => response.json())
+                        .then(data => {
+                            document.querySelector('span[data-name="totalServicesBooked"]').textContent = data.totalServicesBooked;
+                            document.querySelector('span[data-name="totalServicesCompleted"]').textContent = data.totalServicesCompleted;
+                        })
+                        .catch(error => console.error('Error fetching service stats:', error));
+
+                // Fetch Project and Contract Stats
+                fetch('/api/dashboard/project-contract-stats')
+                        .then(response => response.json())
+                        .then(data => {
+                            document.querySelector('span[data-name="totalContractsSigned"]').textContent = data.totalContractsSigned;
+                            document.querySelector('span[data-name="totalProjectsInPlanning"]').textContent = data.totalProjectsInPlanning;
+                            document.querySelector('span[data-name="totalProjectsInDesign"]').textContent = data.totalProjectsInDesign;
+                            document.querySelector('span[data-name="totalProjectsInConstruction"]').textContent = data.totalProjectsInConstruction;
+                            document.querySelector('span[data-name="totalProjectsInMaintenance"]').textContent = data.totalProjectsInMaintenance;
+                            document.querySelector('span[data-name="totalProjectsCompleted"]').textContent = data.totalProjectsCompleted;
+                        })
+                        .catch(error => console.error('Error fetching project and contract stats:', error));
+
+                // Fetch Consultant, Quote, and Contract Stats
+                fetch('/api/dashboard/consultant-quote-contract-stats')
+                        .then(response => response.json())
+                        .then(data => {
+                            document.querySelector('span[data-name="totalConsultantsReceived"]').textContent = data.totalConsultantsReceived;
+                            document.querySelector('span[data-name="totalQuotesCreated"]').textContent = data.totalQuotesCreated;
+                            document.querySelector('span[data-name="totalContractsCreated"]').textContent = data.totalContractsCreated;
+                        })
+                        .catch(error => console.error('Error fetching consultant, quote, and contract stats:', error));
+
+
+
+
+
 
 
             });

@@ -105,23 +105,5 @@ public class ServiceService {
 
 
     
-    public Map<String, BigDecimal> getServiceBookingPercentages() {
-        // Fetch total bookings and bookings per service
-        Long totalBookings = serviceDetailDAO.countTotalServiceBookings();
-        List<Tuple> serviceBookingCounts = serviceDetailDAO.countBookingsPerService();
-
-        Map<String, BigDecimal> servicePercentages = new HashMap<>();
-
-        // Loop through each tuple and calculate percentages
-        for (Tuple tuple : serviceBookingCounts) {
-            String serviceName = tuple.get("serviceName", String.class);
-            Long bookingCount = tuple.get("bookingCount", Long.class);
-
-            // Calculate percentage
-            BigDecimal percentage = BigDecimal.valueOf((bookingCount * 100.0) / totalBookings);
-            servicePercentages.put(serviceName, percentage);
-        }
-
-        return servicePercentages;
-    }
+    
 }

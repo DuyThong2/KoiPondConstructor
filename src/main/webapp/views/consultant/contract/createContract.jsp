@@ -25,7 +25,7 @@
             .customer-info {
                 text-align: center;
             }
-            
+
             .modal-dialog.modal-lg {
                 max-width: 90%; /* Increase the width of the modal */
             }
@@ -106,7 +106,7 @@
                         <!-- Total Design Cost (Used for calculation only) -->
                         <div class="form-group">
                             <label for="totalDesignCost">Total Design Cost:</label>
-                            <input type="number" id="totalDesignCost" step="0.01" class="form-control" readonly="readonly"/>
+                            <input type="number" id="totalDesignCost" step="0.01" class="form-control" readonly/>
                         </div>
 
                         <!-- Construction Costs -->
@@ -127,7 +127,7 @@
                         <!-- Total Construction Cost (Used for calculation only) -->
                         <div class="form-group">
                             <label for="totalConstructionCost">Total Construction Cost:</label>
-                            <input type="number" id="totalConstructionCost" step="0.01" class="form-control" readonly="readonly"/>
+                            <input type="number" id="totalConstructionCost" step="0.01" class="form-control" readonly/>
                         </div>
 
                         <!-- Term Selection Dropdown -->
@@ -138,8 +138,8 @@
                             </button>
 
 
-                            <input type="hidden" id="selectedTermId" name="term.termId" />
-                            <input type="text" id="term" name="termDescription" readonly="readonly" class="form-control" />
+                            <input type="hidden" id="selectedTermId" name="term.termId"required />
+                            <input type="text" id="term" name="termDescription" readonly class="form-control" />
                         </div>
 
                         <!-- Button to Adjust Costs -->
@@ -339,15 +339,25 @@
 
                 // Prevent form submission if the total price does not match the total quote price
                 document.querySelector('form').addEventListener('submit', function (event) {
+                    // Check if the selected term ID is filled
+                    const selectedTermId = document.getElementById('selectedTermId').value;
+                    if (!selectedTermId) {
+                        event.preventDefault();  // Stop form submission
+                        alert('You must select a term before submitting the contract.');
+                        return false;
+                    }
+
                     const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
                     if (totalPrice !== totalQuotePrice) {
-                        event.preventDefault();
+                        event.preventDefault();  // Stop form submission
                         alert('The total price must match the total quote price.');
+                        return false;
                     }
 
                     // Add the negative value check
                     if (!validateFields()) {
                         event.preventDefault();  // Prevent form submission if there are invalid fields
+                        return false;
                     }
                 });
 

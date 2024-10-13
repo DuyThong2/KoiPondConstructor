@@ -108,7 +108,7 @@
                         <!-- Total Price (Read-Only, auto-calculated) -->
                         <div class="form-group">
                             <label for="totalPrice">Total Price:</label>
-                            <form:input path="quotesTotalPrice" id="totalPrice" class="form-control" readonly="readonly" />
+                            <form:input path="quotesTotalPrice" id="totalPrice" class="form-control" readonly="true" />
                         </div>
 
                         <!-- Button to Auto Calculate Costs -->

@@ -173,6 +173,7 @@ public class ServiceDetailDAO {
         return query.getResultList();
     }
 
+
     // Count service details customer Id
     public long countServiceDetailsByCustomerId(int customerId) {
         TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.id = :customerId", Long.class);
@@ -182,20 +183,37 @@ public class ServiceDetailDAO {
 
     
     
-    public Long countTotalServiceBookings() {
-        String jpql = "SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.serviceDetailStatus = 3";  // Only count completed bookings
-        return entityManager.createQuery(jpql, Long.class).getSingleResult();
-    }
+
+
 
     // Count of bookings per service using Tuple
     public List<Tuple> countBookingsPerService() {
         String jpql = "SELECT s.serviceName AS serviceName, COUNT(sd) AS bookingCount " +
                       "FROM ServiceDetail sd JOIN sd.service s " +
-                      "WHERE sd.serviceDetailStatus = 3 " +
+                      
                       "GROUP BY s.serviceName";
 
         TypedQuery<Tuple> query = entityManager.createQuery(jpql, Tuple.class);
         return query.getResultList();
+    }
+
+    
+    
+
+    public List<Tuple> getRevenueByService() {
+        String query = "SELECT s.serviceName AS serviceName, SUM(sd.price) AS totalRevenue " +
+                       "FROM ServiceDetail sd " +
+                       "JOIN sd.service s " +
+                       "GROUP BY s.serviceName";
+        return entityManager.createQuery(query, Tuple.class).getResultList();
+    }
+
+
+    public Long countByStatus(int status) {
+        TypedQuery<Long> query = entityManager.createQuery(
+            "SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.serviceDetailStatus = :status", Long.class);
+        query.setParameter("status", status);
+        return query.getSingleResult();
     }
 
 }

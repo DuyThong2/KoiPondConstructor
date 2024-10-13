@@ -9,6 +9,7 @@ import com.paypal.base.rest.PayPalRESTException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -131,14 +132,14 @@ public class PayPalController {
     }
 
     // Handles payment cancellation for construction
-    @GetMapping("/cancel/construction")
-    public String cancelForConstruction() {
-        return "payment/cancelConstruction"; // View for construction payment cancellation
+    @GetMapping("/cancel/construction/{id}")
+    public String cancelForConstruction(@PathVariable("id") int constructionId) {
+        return "redirect:/customer/project/construction/"+constructionId; // View for construction payment cancellation
     }
 
     // Handles payment cancellation for design
-    @GetMapping("/cancel/design")
-    public String cancelForDesign() {
-        return "payment/cancelDesign"; // View for design payment cancellation
+    @GetMapping("/cancel/design/{id}")
+    public String cancelForDesign(@PathVariable("id") int designId) {
+        return "redirect:/customer/project/design/" + designId; // View for design payment cancellation
     }
 }
