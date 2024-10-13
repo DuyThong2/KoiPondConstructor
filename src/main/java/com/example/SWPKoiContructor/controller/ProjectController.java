@@ -1,15 +1,14 @@
 package com.example.SWPKoiContructor.controller;
 
-import com.example.SWPKoiContructor.entities.Contract;
-import com.example.SWPKoiContructor.entities.Customer;
-import com.example.SWPKoiContructor.entities.Project;
-import com.example.SWPKoiContructor.entities.Staff;
+import com.example.SWPKoiContructor.entities.*;
 import com.example.SWPKoiContructor.services.ContractService;
 import com.example.SWPKoiContructor.services.DesignService;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.services.StaffService;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import com.example.SWPKoiContructor.utils.Utility;
+
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
 import org.springframework.http.HttpStatus;
@@ -21,10 +20,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
-
 public class ProjectController {
 
     private FileUtility fileUtility;
@@ -43,7 +42,7 @@ public class ProjectController {
 
     public String ProjectList(Model model,
     @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "10") int size,
+    @RequestParam(defaultValue = "5") int size,
     @RequestParam(defaultValue = "status") String sortBy,
     @RequestParam(defaultValue = "asc") String sortType,
                               @RequestParam(required = false) Integer statusFilter,
@@ -69,19 +68,39 @@ public class ProjectController {
         model.addAttribute("stageFilter",stageFilter);
         return "manager/projects/projectManage";
     }
+    public boolean isBase64Encoded(String content) {
+        try {
+            Base64.getDecoder().decode(content);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
     @GetMapping("/manager/projects/details/{id}")
-    public String PrọectDetail(@PathVariable("id") int id, Model model){
+    public String projectDetail(@PathVariable("id") int id, Model model) {
         Project project = projectService.getProjectById(id);
-        if (project != null){
+        if (project != null) {
             Customer customer = project.getContract().getCustomer();
-        model.addAttribute("customer", customer);
-        model.addAttribute("project", project);
-        return "manager/projects/projectDetail";
-        }else{
+
+            String decodedContent = "";
+            try {
+                String content = project.getContent().getContent().trim();
+                decodedContent = new String(Base64.getDecoder().decode(content));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error decoding Base64: " + e.getMessage());
+                decodedContent = "Error decoding content";
+            }
+            System.out.println(decodedContent);
+            model.addAttribute("customer", customer);
+            model.addAttribute("project", project);
+            model.addAttribute("decodedContent", decodedContent);
+            return "manager/projects/projectDetail";
+        } else {
             return "redirect:/manager/projects";
         }
-        
     }
+
     @GetMapping("/manager/project/create")
     public String createProjectPage(@RequestParam("id") int contractId, Model model) {
         Contract contract = contractService.getContractById(contractId);
@@ -115,6 +134,8 @@ public class ProjectController {
     public String assignStaffPage(
             @PathVariable int id,
             @RequestParam(name = "searchTerm", required = false) String searchTerm,
+            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+            @RequestParam(name = "currentPage", required = false, defaultValue = "1") int currentPage,
             Model model) {
 
         Project project = projectService.getProjectById(id);
@@ -132,24 +153,40 @@ public class ProjectController {
             constructionStaff = project.getConstruction().getStaff();
         }
 
-        // If searchTerm is empty, fetch all available staff (Design or Construction).
+        List<String> departments = new ArrayList<>();
+        departments.add("construction");
+        departments.add("design");
+
+        // Total number of staff that match the search term (or all staff)
+        long totalStaff;
+
+        // Fetch all available staff and count total staff
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
-            availableStaff = staffService.getAllStaff();
+            availableStaff = staffService.getAllStaffSortedForProject(id, currentPage, size, departments);
+            totalStaff = staffService.countTotalStaffByDepartmentsForProject(id,departments);
         } else {
-            // Fetch staff members that match the search query.
-            availableStaff = staffService.searchStaffByName(searchTerm.trim());
+            availableStaff = staffService.searchStaffByNameSortedForProject(searchTerm.trim(), id, currentPage, size, departments);
+            totalStaff = staffService.countTotalStaffByDepartmentsSearchForProject(searchTerm.trim(),id, departments);
         }
 
-        // Add data to model
+        // Calculate the total number of pages
+        int totalPage = (int) Math.ceil((double) totalStaff / size);
+
+        // Add data to the model
         model.addAttribute("project", project);
         model.addAttribute("constructionStaff", constructionStaff);
         model.addAttribute("designerStaff", designerStaff);
         model.addAttribute("customer", customer);
         model.addAttribute("availableStaff", availableStaff);
-        model.addAttribute("searchTerm", searchTerm);  // Retain the search term for the view
+        model.addAttribute("searchTerm", searchTerm);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("size", size);
 
         return "manager/projects/projectAssignStaff";
     }
+
+
     @PostMapping("/updateStage")
     @ResponseBody
     public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId){
@@ -226,7 +263,10 @@ public class ProjectController {
         try {
             Project project = projectService.getProjectById(projectId);
             Staff staff = staffService.getStaffById(staffId);
-
+            if(project.getStatus()==3||project.getStatus()==4){
+                model.addAttribute("errorMessage", "Can't delete project");
+                return "manager/projects/projectAssignStaff";
+            }
             if (staff == null) {
                 throw new IllegalArgumentException("Staff with ID " + staffId + " not found.");
             }
@@ -285,5 +325,45 @@ public class ProjectController {
         model.addAttribute("Customer",customer);
         return "customer/projects/projectDetail";
     }
+    @PostMapping("/manager/projects/shareProject")
 
+    public ResponseEntity<String> shareProject(Model model,@RequestParam int projectId){
+      try{
+          Project project = projectService.getProjectById(projectId);
+          if (project == null) {
+              return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+          }
+
+          if (project.isIsSharedAble()) {
+              project.setIsSharedAble(false);
+          } else {
+              project.setIsSharedAble(true);
+          }
+          projectService.updateProject(project);
+          return ResponseEntity.ok("Changed Successfully");
+      }catch(Exception e){
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+      }
+    }
+    @PostMapping("/manager/projects/cancelProject")
+    public ResponseEntity<String> cancelProject(Model model,@RequestParam int projectId){
+        try{
+            Project project = projectService.getProjectById(projectId);
+            if(project ==null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            if(project.getStatus()!=4&&project.getStatus()!=3){
+                project.setStatus(4);
+            }else{
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+            if (project.isIsSharedAble()) {
+                project.setIsSharedAble(false);
+            }
+            projectService.updateProject(project);
+            return ResponseEntity.ok("Changed Successfully");
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
