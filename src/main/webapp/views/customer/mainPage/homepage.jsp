@@ -221,8 +221,8 @@
                             <div class="col-12">
                                 <div class="banner-3__form-input-select d-flex flex-column">
                                     <select name="type" id="subject" style="display: none;">
-                                        <option value="">Type 1- Construction</option>
-                                        <option value="order">Type 2 - Maintenance</option>
+                                        <option value="Construction">Type 1- Construction</option>
+                                        <option value="Service">Type 2 - Service</option>
                                     </select>
                                 </div>
                             </div>

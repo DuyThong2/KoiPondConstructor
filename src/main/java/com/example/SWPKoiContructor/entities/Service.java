@@ -39,6 +39,9 @@ public class Service {
 
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
+    
+    @OneToMany(mappedBy = "service")
+    private List<ServiceQuotes> serviceQuotes;
 
 
     public Service(String serviceName, String serviceDescription,  boolean serviceStatus) {
@@ -116,4 +119,16 @@ public class Service {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
+    public List<ServiceQuotes> getServiceQuotes() {
+        return serviceQuotes;
+    }
+
+    public void setServiceQuotes(List<ServiceQuotes> serviceQuotes) {
+        this.serviceQuotes = serviceQuotes;
+    }
+
+    
+    
+    
 }

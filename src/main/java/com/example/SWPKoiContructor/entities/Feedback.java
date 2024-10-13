@@ -55,6 +55,10 @@ public class Feedback {
     @ManyToOne
     @JoinColumn(name = "contract_id")
     private Contract contract;
+    
+    @ManyToOne
+    @JoinColumn(name = "service_quotes_id")
+    private ServiceQuotes serviceQuotes;
 
     public Feedback() {
     }
@@ -154,6 +158,14 @@ public class Feedback {
 
     public void setContract(Contract contract) {
         this.contract = contract;
+    }
+
+    public ServiceQuotes getServiceQuotes() {
+        return serviceQuotes;
+    }
+
+    public void setServiceQuotes(ServiceQuotes serviceQuotes) {
+        this.serviceQuotes = serviceQuotes;
     }
     
     

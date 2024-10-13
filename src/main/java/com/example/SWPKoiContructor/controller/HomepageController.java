@@ -3,6 +3,7 @@ package com.example.SWPKoiContructor.controller;
 import com.example.SWPKoiContructor.entities.*;
 import com.example.SWPKoiContructor.services.BlogService;
 import com.example.SWPKoiContructor.services.CustomerService;
+import com.example.SWPKoiContructor.services.PreDesignService;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.services.ServiceService;
 import com.example.SWPKoiContructor.services.StaffService;
@@ -21,20 +22,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class HomepageController {
 
     private ProjectService projectService;
-
+    private PreDesignService preDesignService;
     private BlogService blogService;
     private StaffService staffService;
     private CustomerService customerService;
     private ServiceService serviceService;
 
-    public HomepageController(ProjectService projectService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService) {
+    public HomepageController(ProjectService projectService, PreDesignService preDesignService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService) {
         this.projectService = projectService;
+        this.preDesignService = preDesignService;
         this.blogService = blogService;
         this.staffService = staffService;
         this.customerService = customerService;
         this.serviceService = serviceService;
     }
-
+   
     @GetMapping("")
     public String homePageShow(Model model) {
 
@@ -91,6 +93,37 @@ public class HomepageController {
         }
 
     }
+    
+    @GetMapping("/home/preDesign")
+    public String getPreDesignList(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "6") int size,
+                                   Model model){
+        List<PreDesign> preDesignList = preDesignService.getPreDesignListForHomePage(page, size);
+        long totalPreDesign = preDesignService.countPreDesignListOfHomePage();
+        
+        model.addAttribute("preDesignList", preDesignList);
+        model.addAttribute("currentPage", page + 1); // Incrementing for display purposes (page index starts from 0)
+        model.addAttribute("totalPages", (int) Math.ceil((double) totalPreDesign / size));
+        model.addAttribute("hasMoreServices", (page + 1) * size < totalPreDesign);
+        
+        return "customer/mainPage/preDesign";
+    }
+    
+    @GetMapping("/home/preDesign/{id}")
+    public String getPreDesignDetail(Model model, @PathVariable("id") int id) {
+//        Project project = projectService.getProjectWithContent(id);
+        PreDesign preDesign = preDesignService.getPreDesignAndContentById(id);
+        if (preDesign != null && preDesign.isPreDesignStatus() && preDesign.getContent() != null) {
+
+            model.addAttribute("preDesign", preDesign);
+            return "customer/mainPage/preDesignDetail";
+        } else {
+            return "redirect:/home/preDesign";
+        }
+
+    } 
+    
+    
 
     @GetMapping("/home/projects")
     public String getSharedProjects(@RequestParam(defaultValue = "0") int page,

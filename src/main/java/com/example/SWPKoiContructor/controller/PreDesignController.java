@@ -93,6 +93,7 @@ public class PreDesignController {
             @RequestParam("file")MultipartFile file,
             @RequestParam("content")String content,
             Model model){
+        try{
         preDesign.setPreDesignStatus(true);
         Content newContent = new Content(content);
         preDesign.addContent(newContent);
@@ -100,6 +101,14 @@ public class PreDesignController {
         preDesign.setPreDesignImgUrl(imgURL);
         preDesignService.createNewPreDesign(preDesign);
         return "redirect:/manager/preDesign";
+        }catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("error", "Error uploading image");
+
+            // Return the blog form with existing data to allow the user to correct input
+            model.addAttribute("preDesign", preDesign);
+            return "manager/preDesign/preDesignCreate";
+        }
     }    
     
     @PostMapping("/manager/preDesign/saveUpdate")

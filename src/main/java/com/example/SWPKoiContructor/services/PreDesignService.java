@@ -34,9 +34,17 @@ public class PreDesignService {
     public List<PreDesign> getPreDesignList(int page, int size, String sortBy, String sortDirection){
         return preDesignDAO.getPreDesignList(page, size, sortBy, sortDirection);
     }
-    
+           
     public long countPreDesignList(){
         return preDesignDAO.countPreDesignList();
+    }
+    
+    public List<PreDesign> getPreDesignListForHomePage(int page, int size){
+        return preDesignDAO.getPreDesignListForHomePage(page, size);
+    }
+    
+    public long countPreDesignListOfHomePage(){
+        return preDesignDAO.countPreDesignListOfHomepage();
     }
     
     public PreDesign getPredesignById(int id){
@@ -51,5 +59,9 @@ public class PreDesignService {
     @Transactional
     public PreDesign updatePreDesign(PreDesign preDesign){
         return preDesignDAO.updatePreDesign(preDesign);
+    }
+    
+    public PreDesign getPreDesignAndContentById(int preDesignId){
+        return preDesignDAO.getPreDesignAndContentById(preDesignId);
     }
 }
