@@ -77,8 +77,7 @@
                             <label for="type">Select Service:</label>
                             <form:select path="consultantType" id="type" class="form-control">
                                 <form:option value="Construction">Construction</form:option>
-                                <form:option value="Upgrade">Upgrade</form:option>
-                                <form:option value="Take care">Take care</form:option>
+                                <form:option value="Service">Service</form:option>                                
                             </form:select>
                         </div>
 

@@ -297,6 +297,25 @@ CREATE TABLE Construction_Staff (
     FOREIGN KEY (construction_id) REFERENCES Construction(construction_id)
 );
 
+CREATE TABLE Service_Quotes (
+    service_quotes_id INT PRIMARY KEY IDENTITY(1,1),
+	service_quotes_name NVARCHAR(200),
+    service_quotes_content NVARCHAR(MAX),
+    service_quotes_total_price DECIMAL(10, 2),
+    service_quotes_area DECIMAL(10, 2),
+    service_quotes_date DATETIME,
+    service_quotes_status INT,  --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel
+    customer_id INT,
+    consultant_id int,
+    staff_id INT,	
+	service_id int,
+    FOREIGN KEY (customer_id) REFERENCES Customers(id),
+    FOREIGN KEY (consultant_id) references Consultant(consultant_id),
+    FOREIGN KEY (staff_id) REFERENCES Staffs(id),
+	FOREIGN KEY (service_id) REFERENCES Service(service_id)
+    
+);
+
 -- 25. Service_Detail
 CREATE TABLE Service_Detail (
     service_detail_id INT PRIMARY KEY IDENTITY(1,1),
@@ -364,6 +383,7 @@ CREATE TABLE Feedback (
 	to_user INT NOT NULL,
 	consultant_id INT,
 	quotes_id INT,
+	service_quotes_id INT,
 	contract_id INT,
 	feedback_date DATE,
 	FOREIGN KEY (from_user) REFERENCES Users(id),
@@ -371,4 +391,5 @@ CREATE TABLE Feedback (
 	FOREIGN KEY (consultant_id) REFERENCES Consultant(consultant_id),
 	FOREIGN KEY (quotes_id) REFERENCES Quotes(quotes_id),
 	FOREIGN KEY (contract_id) REFERENCES contract(Contract_id),
+	FOREIGN KEY (service_quotes_id) REFERENCES Service_Quotes(service_quotes_id)
 )

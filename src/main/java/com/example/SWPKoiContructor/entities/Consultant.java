@@ -73,6 +73,9 @@ public class Consultant {
     
     @OneToMany(mappedBy = "consultant")
     private List<Feedback> feedback;
+    
+    @OneToOne(mappedBy = "consultant")
+    private ServiceQuotes serviceQuotes;
             
     public Consultant() {
     }
@@ -201,6 +204,14 @@ public class Consultant {
 
     public void setFeedback(List<Feedback> feedback) {
         this.feedback = feedback;
+    }
+
+    public ServiceQuotes getServiceQuotes() {
+        return serviceQuotes;
+    }
+
+    public void setServiceQuotes(ServiceQuotes serviceQuotes) {
+        this.serviceQuotes = serviceQuotes;
     }
 
     

@@ -30,7 +30,7 @@ public class QuoteDAO {
         return tq.getResultList();
     }
 
-    //----------------------------------------------  MANAGER SITE  -----------------------------------------------------------------
+    //----------------------------------------------  MANAGER SITE  --------------------------------------------
     public List<Quotes> getQuotesList(int page, int size, String sortBy, String sortDirection) {
         TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q ORDER BY q." + sortBy + " " + sortDirection, Quotes.class);
         tq.setFirstResult(size * page);
@@ -57,7 +57,7 @@ public class QuoteDAO {
         return tq.getSingleResult();
     }
 
-    //----------------------------------------------  CONSULTANT SITE  -----------------------------------------------------------------
+    //----------------------------------------------  CONSULTANT SITE  -----------------------------------------
     public List<Quotes> getQuotesListByStaffId(int staffId, int page, int size, String sortBy, String sortDirection) {
         TypedQuery<Quotes> tq = entityManager.createQuery("SELECT q FROM Quotes q WHERE q.staff.id = :staffId ORDER BY q." + sortBy + " " + sortDirection, Quotes.class);
         tq.setParameter("staffId", staffId);

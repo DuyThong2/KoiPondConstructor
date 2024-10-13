@@ -35,6 +35,9 @@ public class Staff extends User{
 
     @ManyToMany(mappedBy = "staff")
     private List<Comment> comments;
+    
+    @OneToMany(mappedBy = "staff")
+    private List<ServiceQuotes> serviceQuotes;
 
     public Staff() {
     }
@@ -98,6 +101,22 @@ public class Staff extends User{
         this.constructionStaffs = constructionStaffs;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<ServiceQuotes> getServiceQuotes() {
+        return serviceQuotes;
+    }
+
+    public void setServiceQuotes(List<ServiceQuotes> serviceQuotes) {
+        this.serviceQuotes = serviceQuotes;
+    }
+    
     
     public void addConstructionToStaff(Construction construction, int roleInProject) {
         ConstructionStaff constructionStaff = new ConstructionStaff(new ConstructionStaffId(this.getId(), construction.getConstructionId()), this, construction, roleInProject);

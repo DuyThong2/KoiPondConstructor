@@ -189,7 +189,7 @@ public class QuoteController {
         return "consultant/quote/quoteManage";
     }
 
-    @GetMapping("consultant/quote/detail/{id}")
+    @GetMapping("/consultant/quote/detail/{id}")
     public String getQuoteDetailById(@PathVariable("id") int quoteId, Model model, HttpSession session) {
         Quotes quotes = quoteService.getQuoteById(quoteId);
         if (quotes.getQuotesStatus() == 5) {

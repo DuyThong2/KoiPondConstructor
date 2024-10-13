@@ -112,6 +112,14 @@
                                 </form>
                             </div>
                         </c:when>
+                        <c:when test="${consultant.consultantStatus == 4 && empty consultant.quotes && consultant.consultantType == 'Service'}">
+                            <div class="">
+                                <form action="/consultant/serviceQuote/create" method="get" class="d-inline">
+                                    <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
+                                    <button type="submit" class="btn btn-success">Create New Service Quote</button>
+                                </form>                                   
+                            </div>
+                        </c:when>
                         <c:when test="${consultant.consultantStatus == 4 && empty consultant.quotes}">
                             <div class="">
                                 <form action="/consultant/quote/createNewQuotes" method="post" class="d-inline">
@@ -120,6 +128,12 @@
                                 </form>
                             </div>
                         </c:when>
+                        <c:when test="${consultant.consultantStatus == 4 && not empty consultant.quotes}">
+                            <div class="">                               
+                                <a href="/consultant/quote/detail/${consultant.quotes.quotesId}" class="btn btn-secondary">View Quote</a>
+                            </div>
+                        </c:when>
+                        
                     </c:choose>
                 </div>
 
@@ -145,6 +159,26 @@
                                 <tr>
                                     <th>Quotes Description</th>
                                     <td>${consultant.quotes.quotesContent}</td>
+                                </tr>
+                            </table>
+                        </c:if>
+                        <c:if test="${not empty consultant.serviceQuotes}">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Quotes ID</th>
+                                    <td>${consultant.serviceQuotes.serviceQuotesId}</td>
+                                </tr>
+                                <tr>
+                                    <th>Quotes Name</th>
+                                    <td>${consultant.serviceQuotes.serviceQuotesName}</td>
+                                </tr>
+                                <tr>
+                                    <th>Quotes Total Price</th>
+                                    <td>${consultant.serviceQuotes.serviceQuotesTotalPrice}</td>
+                                </tr>
+                                <tr>
+                                    <th>Quotes Description</th>
+                                    <td>${consultant.serviceQuotes.serviceQuotesContent}</td>
                                 </tr>
                             </table>
                         </c:if>

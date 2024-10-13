@@ -8,6 +8,7 @@ package com.example.SWPKoiContructor.dao;
 import com.example.SWPKoiContructor.entities.PreDesign;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
@@ -85,10 +86,32 @@ public class PreDesignDAO {
          return tq.getSingleResult();
     }
     
+    public List<PreDesign> getPreDesignListForHomePage(int page, int size){        
+        TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p WHERE p.preDesignStatus = true ORDER BY p.preDesignName ASC", PreDesign.class);
+        tq.setFirstResult(page * size);
+        tq.setMaxResults(size);
+        return tq.getResultList();
+    }
+    
+    public long countPreDesignListOfHomepage(){
+         TypedQuery<Long> tq = entityManager.createQuery("SELECT COUNT(p) FROM PreDesign p WHERE p.preDesignStatus = true ", Long.class);
+         return tq.getSingleResult();
+    }
+    
     public PreDesign getPreDesignById(int preDesignId){
         TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p WHERE p.preDesignId = :id", PreDesign.class);
         tq.setParameter("id", preDesignId);
         return tq.getSingleResult();
+    }
+    
+    public PreDesign getPreDesignAndContentById(int preDesignId){
+        try{
+        TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p JOIN FETCH p.content c WHERE p.preDesignId = :id", PreDesign.class);
+        tq.setParameter("id", preDesignId);
+        return tq.getSingleResult();
+        }catch (NoResultException e) {
+            return null;
+        }
     }
    
     public PreDesign createNewPreDesign(PreDesign preDesign){
