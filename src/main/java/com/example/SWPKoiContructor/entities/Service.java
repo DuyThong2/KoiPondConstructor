@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import com.example.SWPKoiContructor.entities.interfaces.HaveImagesFile;
 import java.util.List;
 import javax.persistence.*;
 
@@ -15,7 +16,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Service")
-public class Service {
+public class Service implements HaveImagesFile{
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +25,8 @@ public class Service {
     private String serviceName;
     
     private String serviceDescription;
-    
+
+    private String serviceImgUrl;
     @OneToOne(mappedBy = "service", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Content content;
     
@@ -82,6 +84,18 @@ public class Service {
         return content;
     }
 
+    public Service(int serviceId, String serviceName, String serviceDescription, String serviceImgUrl, Content content, boolean serviceStatus, List<ServiceDetail> serviceDetails, List<ServicePrice> servicePrice, List<Comment> comments) {
+        this.serviceId = serviceId;
+        this.serviceName = serviceName;
+        this.serviceDescription = serviceDescription;
+        this.serviceImgUrl = serviceImgUrl;
+        this.content = content;
+        this.serviceStatus = serviceStatus;
+        this.serviceDetails = serviceDetails;
+        this.servicePrice = servicePrice;
+        this.comments = comments;
+    }
+
     public void setContent(Content content) {
         this.content = content;
     }
@@ -120,6 +134,7 @@ public class Service {
         this.comments = comments;
     }
 
+
     public List<ServiceQuotes> getServiceQuotes() {
         return serviceQuotes;
     }
@@ -131,4 +146,13 @@ public class Service {
     
     
     
+
+    public String getServiceImgUrl() {
+        return serviceImgUrl;
+    }
+
+    public void setServiceImgUrl(String serviceImgUrl) {
+        this.serviceImgUrl = serviceImgUrl;
+    }
+
 }

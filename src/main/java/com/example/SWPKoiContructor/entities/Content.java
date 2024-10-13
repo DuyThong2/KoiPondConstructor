@@ -92,7 +92,6 @@ public class Content {
     public void setContent(String content) {
         this.content = content;
     }
-
     public Project getProject() {
         return project;
     }
@@ -147,7 +146,7 @@ public class Content {
     }
 
     private String decodeBase64(String base64Content){
-        return new String(Base64.getDecoder().decode(base64Content));
+        return new String(Base64.getDecoder().decode(base64Content.getBytes()));
     }
-    
+
 }

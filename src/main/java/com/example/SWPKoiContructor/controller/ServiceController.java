@@ -6,17 +6,22 @@ import com.example.SWPKoiContructor.entities.Service;
 import com.example.SWPKoiContructor.entities.ServicePrice;
 import com.example.SWPKoiContructor.services.ServicePriceService;
 import com.example.SWPKoiContructor.services.ServiceService;
+import com.example.SWPKoiContructor.utils.FileUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +30,9 @@ public class ServiceController {
 
     @Autowired
     private ServiceService serviceService;
+    @Autowired
+    private FileUtility fileUtility;
+    @Autowired
     private ServicePriceService servicePriceService;
     @GetMapping("/manager/services")
     public String serviceList(
@@ -66,8 +74,8 @@ public class ServiceController {
     public String createNewService(RedirectAttributes redirectAttributes,
                                    @RequestParam String serviceName,
                                    @RequestParam String serviceDescription,
-                                   @RequestParam double servicePriceValue,
-                                   @RequestParam String contentText) {
+                                   @RequestParam double servicePriceValue
+    ,@RequestParam("file") MultipartFile file) {
         try {
             Date currentTimestamp = new Date();
 
@@ -76,22 +84,24 @@ public class ServiceController {
             newService.setServiceName(serviceName);
             newService.setServiceDescription(serviceDescription);
             newService.setServiceStatus(true);
+            String imgUrl = fileUtility.handleFileUpload(file,FileUtility.SERVICE_DIR);
+            if(imgUrl!=null){
+                newService.setServiceImgUrl(imgUrl);
+            }
+
 
 // Set Content for Service
             Content newContent = new Content();
-            newContent.setContent(contentText);
             newContent.setCreateDate(currentTimestamp);
             newContent.setLastUpdatedDate(currentTimestamp);
             newContent.setService(newService); // Link Content to Service
             newService.setContent(newContent); // Link Service to Content
-
 // Create new ServicePrice object
             ServicePrice newServicePrice = new ServicePrice();
             newServicePrice.setValue(servicePriceValue);
             newServicePrice.setDateApply(currentTimestamp);
             newServicePrice.setServicePriceStatus(true);
             newServicePrice.setService(newService); // Link ServicePrice to Service
-
             List<ServicePrice> servicePriceList = new ArrayList<>();
             servicePriceList.add(newServicePrice);
             newService.setServicePrice(servicePriceList); // Link Service to ServicePrice
@@ -113,9 +123,10 @@ public class ServiceController {
 
     @PostMapping("manager/services/changeStatusAjax")
     public ResponseEntity<String> changeServiceStatusAjax(@RequestParam int serviceId) {
-        try {
+        try{
             // Get the current service
             Service service = serviceService.getServiceById(serviceId);
+
             if (service == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found.");
             }
@@ -125,16 +136,16 @@ public class ServiceController {
             serviceService.updateServiceStatus(serviceId, newStatus);
 
             return ResponseEntity.ok("Service status successfully updated to " + (newStatus ? "Active" : "Inactive"));
-        } catch (Exception e) {
+        }catch(Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while changing the status: " + e.getMessage());
         }
     }
+
     @PostMapping("/manager/services/update")
     public String updateService(@RequestParam int serviceId,
                                 @RequestParam String serviceName,
                                 @RequestParam String serviceDescription,
                                 @RequestParam double servicePriceValue,
-                                @RequestParam String contentText,
                                 RedirectAttributes redirectAttributes) {
         try {
             // Retrieve the current service by its ID
@@ -158,7 +169,8 @@ public class ServiceController {
                 existingContent.setService(existingService);
                 existingService.setContent(existingContent);
             }
-            existingContent.setContent(contentText);
+//            String base64encodedContent = Base64.getEncoder().encodeToString(contentText.getBytes());
+//            existingContent.setContent(base64encodedContent);
             existingContent.setLastUpdatedDate(currentTimestamp);
 
             // Update service price information
@@ -224,4 +236,9 @@ public class ServiceController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the service price status: " + e.getMessage());
         }
     }
+//    @GetMapping("/manager/serviceContent/updateDetail/${id}")
+//    public String updateContentPage(Model model, @PathVariable(name = "id")int serviceId){
+//        Service service = serviceService.getServiceWithContentById(serviceId);
+//        return "/manager/service/updateServiceContent";
+//    }
 }
