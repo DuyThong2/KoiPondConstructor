@@ -1,66 +1,9 @@
 body {
     background: #f9f9fb;
 }
-/* Căn chỉnh nút Update Profile và Change Password */
-.btn-primary, .btn-change-password, .btn-forgot-password {
-    margin-left: 0; /* Đảm bảo lề trái bằng nhau */
-    display: inline-block;
-}
-
-.btn-img{
-    padding: 8px 10px;
-    font-size: 12px;
-}
-/* Thêm khoảng cách giữa các nút */
-.btn-form a {
-    margin-left: 10px;
-    margin-right: 10px;
-}
-
-/* Đảm bảo nút ở lề trái */
-.col-md-push-2, .col-sm-push-3, .col-xs-push-0 {
-    padding-left: 0;
-}
-
 .view-account {
     background: #ffffff;
     margin-top: 20px;
-}
-/* Tùy chỉnh cho nút Change Password */
-.btn-change-password {
-    background-color: #337ab7; /* Màu xanh dương Bootstrap */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    margin: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s ease; /* Hiệu ứng hover */
-}
-
-.btn-change-password:hover {
-    background-color: #286090; /* Màu khi hover */
-}
-
-/* Tùy chỉnh cho nút Forgot Password */
-.btn-forgot-password {
-    background-color: #5bc0de; /* Màu xanh nhạt Bootstrap */
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
-    font-size: 14px;
-    transition: background-color 0.3s ease; /* Hiệu ứng hover */
-}
-
-.btn-forgot-password:hover {
-    background-color: #31b0d5; /* Màu khi hover */
-}
-.btn-form{
-    margin-left: 150px;
-    margin-bottom: 30px;
-
-
 }
 .view-account .pro-label {
     font-size: 13px;
@@ -73,7 +16,6 @@ body {
 
 .view-account .side-bar {
     padding-bottom: 30px;
-    width: 400px;
 }
 
 .view-account .side-bar .user-info {
@@ -85,7 +27,7 @@ body {
 }
 
 .view-account .side-bar .user-info .img-profile {
-    width: 190px;
+    width: 120px;
     height: 120px;
     margin-bottom: 15px;
 }
@@ -96,8 +38,9 @@ body {
 
 .view-account .side-bar .user-info .meta li span {
     display: inline-block;
-    width: 200px;
-    text-align: center;
+    width: 190px;
+    margin-right: 5px;
+    text-align: right;
 }
 
 .view-account .side-bar .user-info .meta li a {
@@ -119,6 +62,7 @@ body {
 
 .view-account .side-bar .side-menu .nav > li {
     font-size: 14px;
+    margin-bottom: 0;
     border-bottom: none;
     display: inline-block;
     float: left;
@@ -185,8 +129,7 @@ body {
     border-bottom: 1px solid #eaeaf1;
     margin-bottom: 30px;
     color: #616670;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 16px;
 }
 
 .view-account .content-panel .avatar .figure img {
@@ -641,17 +584,6 @@ a:hover {
         width: auto;
         text-align: left;
     }
-
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        padding: 6px 10px;
-        margin-left: 150px;
-        font-size: 16px;
-        font-weight: bold;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-    }
 }
 
 @media (min-width: 768px) {
@@ -665,24 +597,13 @@ a:hover {
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        padding: 6px 10px;
-        font-size: 16px;
-        font-weight: bold;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-        float: left;
-    }
 }
 
 @media (min-width: 992px) {
     .view-account .content-panel {
         min-height: 800px;
-        border-left: 2px solid #f3f3f7;
-        margin-left: 250px;
+        border-left: 1px solid #f3f3f7;
+        margin-left: 200px;
     }
     .view-account .mail-subject .subject {
         max-width: 280px;
@@ -748,125 +669,6 @@ a:hover {
         width: 40px;
         display: inline-block;
     }
-
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-        padding: 10px 15px;
-        margin-left: 17px;
-        font-size: 16px;
-        font-weight: bold;
-        border-radius: 4px;
-        transition: background-color 0.3s ease;
-    }
-}
-
-/* Modal Customization */
-.modal-header {
-    background-color: #000000;
-    color: white;
-    border-bottom: none;
-    text-align: center;
-    padding: 15px;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-.modal-title {
-    font-size: 24px;
-    font-weight: bold;
-    color: white;
-}
-
-.modal-footer {
-    background-color: #f1f1f1;
-    border-top: none;
-    padding: 10px;
-    text-align: center;
-}
-
-.modal-content {
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.modal-body {
-    padding: 20px;
-}
-/* Global styles for form inputs */
-.form-control {
-    border: 1px solid #ced4da; /* Subtle border */
-    border-radius: 4px; /* Rounded corners */
-    background-color: #f8f9fa; /* Light gray background */
-    color: #495057; /* Text color */
-    padding: 10px 15px; /* Add some padding */
-    font-size: 16px; /* Larger text */
-    width: 100%; /* Full width */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-/* Input field focus */
-.form-control:focus {
-    border-color: #007bff; /* Blue border on focus */
-    background-color: #ffffff; /* White background on focus */
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2); /* Shadow on focus */
-}
-
-/* Placeholder text color */
-.form-control::placeholder {
-    color: #6c757d; /* Light gray for placeholder text */
-}
-
-/* Adjusting the width of password input fields */
-.password-wrapper .input-group .form-control {
-    padding-right: 50px; /* Ensure padding for the eye icon */
-    color: black; /* Ensure black text color */
-    background-color: #dee0e3; /* Light gray background */
-}
-
-/* Adjusting eye icon alignment */
-.input-group-text {
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    right: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-}
-
-.input-group-text .fas {
-    font-size: 18px;
-    color: #6c757d;
-}
-
-.input-group-text .fas:hover {
-    color: #007bff; /* Change color on hover */
-}
-
-/* For form labels */
-.form-group label {
-    font-weight: 600;
-    color: #495057; /* Text color for labels */
-    margin-bottom: 5px;
-    display: block;
-}
-
-/* Button styling */
-.btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
-    padding: 10px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
 }
 
 /* Styling for modal */
@@ -905,14 +707,86 @@ a:hover {
 .modal-dialog {
     margin-top: 100px;
 }
+/* Adjusting eye icon alignment */
+.input-group-text {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+}
 
-/* Remove background color on inputs */
+.input-group-text .fas {
+    font-size: 18px;
+    color: #6c757d;
+}
+
+.input-group-text .fas:hover {
+    color: #007bff; /* Change color on hover */
+}
+
+.btn-change-password {
+    background-color: #337ab7;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-change-password:hover {
+    background-color: #198754;
+}
+
+.btn-forgot-password {
+    background-color: #5bc0de;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-forgot-password:hover {
+    background-color: #198754;
+}
+.view-account .side-bar {
+    padding-bottom: 30px;
+}
+
+.view-account .side-bar .user-info .img-profile {
+    width: 120px;
+    height: 120px;
+}
 .form-control {
-    background-color: #ffffff; /* White background */
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 16px;
+    width: 100%;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+.modal-header {
+    background-color: #000000;
+    color: white;
+    text-align: center;
+}
+.btn-img {
+    padding: 8px 10px;
+    font-size: 12px;
+}
+.btn-form {
+    margin-left: 150px;
+    margin-bottom: 30px;
 }
 .btn-default{
     padding: 10px;
     font-size: 15px;
 }
-
-

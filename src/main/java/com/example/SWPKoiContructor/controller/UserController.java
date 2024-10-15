@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class UserController {
 
+    private ConsultantService consultantService;
     private FileUtility fileUtility;
     private ProjectService projectService;
     private StaffService staffService;
@@ -29,8 +30,10 @@ public class UserController {
     private UserService userService;
     private PasswordEncoder passwordEncoder;
     private DesignService designService;
+    private ConstructionService constructionService;
 
-    public UserController(FileUtility fileUtility, DesignService designService, ProjectService projectService, StaffService staffService, CustomerService customerService, ServiceDetailService serviceDetailService, LoyaltyPointService loyaltyPointService, UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(ConsultantService consultantService, FileUtility fileUtility, ProjectService projectService, StaffService staffService, CustomerService customerService, ServiceDetailService serviceDetailService, LoyaltyPointService loyaltyPointService, UserService userService, PasswordEncoder passwordEncoder, DesignService designService, ConstructionService constructionService) {
+        this.consultantService = consultantService;
         this.fileUtility = fileUtility;
         this.projectService = projectService;
         this.staffService = staffService;
@@ -40,6 +43,7 @@ public class UserController {
         this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.designService = designService;
+        this.constructionService = constructionService;
     }
 
     //========================================Customer Profile============================================//
@@ -55,7 +59,7 @@ public class UserController {
         model.addAttribute("totalService", totalService);
         model.addAttribute("totalProject", totalProject);
         model.addAttribute("totalPoint", totalPoint);
-        model.addAttribute("customer", customer);
+        model.addAttribute("user", customer);
         return "customer/profile";
     }
 
@@ -157,7 +161,7 @@ public class UserController {
         model.addAttribute("totalDesign", totalDesign);
         model.addAttribute("totalDesignInProcess", totalDesignInProcess);
         model.addAttribute("totalDesignComplete", totalDesignComplete);
-        model.addAttribute("staff", staff);
+        model.addAttribute("user", staff);
         return "designer/profile";
     }
 
@@ -171,9 +175,9 @@ public class UserController {
             if(staff.getDepartment().equalsIgnoreCase("Design"))
                 return "redirect:/designer/profile";
             if(staff.getDepartment().equalsIgnoreCase("Consulting"))
-                return "redirect:/projects/profile";
+                return "redirect:/consultant/profile";
             if(staff.getDepartment().equalsIgnoreCase("Construction"))
-                return "redirect:/staff/profile";
+                return "redirect:/constructor/profile";
         }
 
         if (staff == null)
@@ -186,9 +190,9 @@ public class UserController {
                 if(staff.getDepartment().equalsIgnoreCase("Design"))
                     return "redirect:/designer/profile";
                 if(staff.getDepartment().equalsIgnoreCase("Consulting"))
-                    return "redirect:/projects/profile";
+                    return "redirect:/consultant/profile";
                 if(staff.getDepartment().equalsIgnoreCase("Construction"))
-                    return "redirect:/staff/profile";
+                    return "redirect:/constructor/profile";
             }
 
             staff.setImgURL(uploadedFilePath);
@@ -201,9 +205,9 @@ public class UserController {
             if(staff.getDepartment().equalsIgnoreCase("Design"))
                 return "redirect:/designer/profile";
             if(staff.getDepartment().equalsIgnoreCase("Consulting"))
-                return "redirect:/projects/profile";
+                return "redirect:/consultant/profile";
             if(staff.getDepartment().equalsIgnoreCase("Construction"))
-                return "redirect:/staff/profile";
+                return "redirect:/constructor/profile";
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "An error occurred while uploading the file.");
@@ -229,9 +233,9 @@ public class UserController {
             if(staff.getDepartment().equalsIgnoreCase("Design"))
                 return "redirect:/designer/profile";
             if(staff.getDepartment().equalsIgnoreCase("Consulting"))
-                return "redirect:/projects/profile";
+                return "redirect:/consultant/profile";
             if(staff.getDepartment().equalsIgnoreCase("Construction"))
-                return "redirect:/staff/profile";
+                return "redirect:/constructor/profile";
         }
 
         staff.setPassword(passwordEncoder.encode(newPassword));
@@ -262,9 +266,9 @@ public class UserController {
         if(staff.getDepartment().equalsIgnoreCase("Design"))
             return "redirect:/designer/profile";
         if(staff.getDepartment().equalsIgnoreCase("Consulting"))
-            return "redirect:/projects/profile";
+            return "redirect:/consultant/profile";
 
-        return "redirect:/staff/profile";
+        return "redirect:/constructor/profile";
     }
 
 
@@ -274,14 +278,31 @@ public class UserController {
         if(staff == null)
             return "redirect:/login";
 
+        long totalConstruction = constructionService.countConstructionsByStaff(staff.getId());
+        long totalConstructionInProcess = constructionService.countConstructionsInProcessByStaffId(staff.getId());
+        long totalConstructionComplete= constructionService.countConstructionsInCompleteByStaffId(staff.getId());
+
+        model.addAttribute("totalConstruction", totalConstruction);
+        model.addAttribute("totalConstructionInProcess", totalConstructionInProcess);
+        model.addAttribute("totalConstructionComplete", totalConstructionComplete);
+        model.addAttribute("user", staff);
+        return "constructor/profile";
+    }
+
+    @GetMapping("/consultant/profile")
+    public String consultantProfile(Model model,  HttpSession session) {
+        Staff staff = (Staff) session.getAttribute("user");
+        if(staff == null)
+            return "redirect:/login";
+
         long totalDesign = designService.countDesignsByStaff(staff.getId());
-        long totalDesignInProcess = designService.countDesignsProcessingByStaffId(staff.getId());
+        long totalDesignInProcess = consultantService.countConsultantByStaffId(staff.getId());
         long totalDesignComplete= designService.countDesignsCompleteByStaffId(staff.getId());
 
         model.addAttribute("totalDesign", totalDesign);
         model.addAttribute("totalDesignInProcess", totalDesignInProcess);
         model.addAttribute("totalDesignComplete", totalDesignComplete);
-        model.addAttribute("staff", staff);
-        return "designer/profile";
+        model.addAttribute("user", staff);
+        return "consultant/profile";
     }
 }
