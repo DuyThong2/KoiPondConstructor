@@ -1,8 +1,10 @@
 package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.ServiceDetail;
+import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.services.ServiceDetailService;
+import com.example.SWPKoiContructor.services.ServiceQuoteService;
 import com.example.SWPKoiContructor.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -22,6 +25,9 @@ public class ServiceDetailAdminController {
 
     @Autowired
     private StaffService staffService;
+    
+    @Autowired
+    private ServiceQuoteService serviceQuoteService;
 
     // Display list of service details with pagination and optional status filtering
     @GetMapping("/manager/serviceDetails")
@@ -76,6 +82,23 @@ public class ServiceDetailAdminController {
         model.addAttribute("service", serviceDetail.getService());
 
         return "manager/service/serviceDetail"; // JSP page to show service detail information
+    }
+    
+    @PostMapping("/manager/serviceDetails/create")
+    public String createNewServiceDetail(@RequestParam("serviceQuoteId")int serviceQuoteId, Model model){
+        try{
+        ServiceQuotes serviceQuotes = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
+        ServiceDetail newServiceDetail = new ServiceDetail();
+        newServiceDetail.setPrice(serviceQuotes.getServiceQuotesTotalPrice());
+        newServiceDetail.setDateRegister(new Date());
+        newServiceDetail.setServiceDetailStatus(1);
+        newServiceDetail.setService(serviceQuotes.getService());
+        newServiceDetail.setCustomer(serviceQuotes.getCustomer());
+        newServiceDetail = serviceDetailService.createServiceDetail(newServiceDetail);
+        return "redirect:/manager/serviceDetails";
+        }catch(Exception e){
+            return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
+        }
     }
 
     // Display page for assigning construction staff to a service detail

@@ -6,13 +6,16 @@
 package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Consultant;
+import com.example.SWPKoiContructor.entities.Feedback;
 import com.example.SWPKoiContructor.entities.Service;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.ConsultantService;
+import com.example.SWPKoiContructor.services.FeedbackService;
 import com.example.SWPKoiContructor.services.ServiceQuoteService;
 import com.example.SWPKoiContructor.services.ServiceService;
+import com.example.SWPKoiContructor.services.UserService;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -36,12 +39,90 @@ public class ServiceQuoteController {
     private ServiceQuoteService serviceQuoteService;
     private ServiceService serviceService;
     private ConsultantService consultantService;
+    private UserService userService;
+    private FeedbackService feedbackService;
 
-    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService) {
+    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService) {
         this.serviceQuoteService = serviceQuoteService;
         this.serviceService = serviceService;
         this.consultantService = consultantService;
+        this.userService = userService;
+        this.feedbackService = feedbackService;
     }
+
+       
+    //----------------------------------- MANAGER SECTION ----------------------------------------------
+    @GetMapping("/manager/serviceQuote/detail/{id}")
+    public String getDetailServiceQuoteManager(@PathVariable("id")int id, Model model){
+        ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(id);
+        if(serviceQuote != null){
+            model.addAttribute("serviceQuote", serviceQuote);
+            Feedback feedback = feedbackService.getLatestServiceQuoteFeedback(id);
+            if(feedback != null){
+                model.addAttribute("feedback", feedback);
+            }
+            return "manager/serviceQuote/serviceQuoteDetail";
+        }
+        return "redirect:/manager/serviceQuote";
+    }
+    
+    @GetMapping("/manager/serviceQuote")
+    public String listFilteredServiceQuoteManager(Model model, HttpSession session,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(defaultValue = "serviceQuotesDate") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDirection,
+            @RequestParam(required = false) Integer statusFilter,
+            @RequestParam(required = false) String searchName,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+
+        List<ServiceQuotes> serviceQuoteses;
+        long totalServiceQuotes;
+
+        // Apply filtering based on the name, date range, and status
+        
+            serviceQuoteses = serviceQuoteService.getFilteredServiceQuoteManager(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
+            totalServiceQuotes = serviceQuoteService.countFilteredServiceQuoteManager(statusFilter, searchName, fromDate, toDate);
+                   
+
+        int totalPages = (int) Math.ceil((double) totalServiceQuotes / size);
+
+        // Add attributes to the model for JSP rendering
+        model.addAttribute("serviceQuote", serviceQuoteses);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);  // Add searchName to model
+        model.addAttribute("fromDate", fromDate);  // Add fromDate to model
+        model.addAttribute("toDate", toDate);  // Add toDate to model
+
+        return "manager/serviceQuote/serviceQuoteManage";  // JSP page to display the contract list
+    }
+    
+    @PostMapping("/manager/serviceQuote/detail/saveStatus")
+    public String saveStatusUpdateManager(Model model, HttpSession session,
+            @RequestParam("id")int serviceQuoteId,
+            @RequestParam("status")int statusId,
+            @RequestParam(name = "declineReason", required = false) String feedbackContent,
+            @RequestParam(name = "toUserId", required = false) Integer toUserId){
+        ServiceQuotes serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
+        if(feedbackContent != null && toUserId != null){
+            User fromUser = (User) session.getAttribute("user");
+            User toUser = userService.getUserById(toUserId);
+            Feedback feedback = new Feedback();
+            feedback.setFeedbackContent(feedbackContent);
+            feedback.setFeedbackDate( new Date());
+            feedback.setFromUser(fromUser);
+            feedback.setToUser(toUser);
+            feedback.setServiceQuotes(serviceQuotes);
+            feedback = feedbackService.saveFeedback(feedback);
+        }
+        return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
+    }
+    
     
     //----------------------------------- STAFF SECTION ----------------------------------------------
     
@@ -51,10 +132,15 @@ public class ServiceQuoteController {
         Staff staff = (Staff) session.getAttribute("user");
         if(serviceQuote != null && serviceQuote.isServiceQuoteBelongToStaff(staff, serviceQuote)){
             model.addAttribute("serviceQuote", serviceQuote);
+            Feedback feedback = feedbackService.getLatestServiceQuoteFeedback(id);
+            if(feedback != null){
+                model.addAttribute("feedback", feedback);
+            }
             return "consultant/serviceQuote/serviceQuoteDetail";
         }
         return "redirect:/consultant/serviceQuote";
     }
+    
     
     @GetMapping("/consultant/serviceQuote")
     public String listFilteredServiceQuote(Model model, HttpSession session,
@@ -145,4 +231,26 @@ public class ServiceQuoteController {
         serviceQuote = serviceQuoteService.saveNewServiceQuote(serviceQuote);        
         return "redirect:/consultant/serviceQuote/detail/" + serviceQuote.getServiceQuotesId();
     }
+    
+    @PostMapping("/consultant/serviceQuote/detail/saveStatus")
+    public String saveStatusUpdateConsultant(Model model, HttpSession session,
+            @RequestParam("id")int serviceQuoteId,
+            @RequestParam("status")int statusId,
+            @RequestParam(name = "declineReason", required = false) String feedbackContent,
+            @RequestParam(name = "toUserId", required = false) Integer toUserId){
+        ServiceQuotes serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
+        if(feedbackContent != null && toUserId != null){
+            User fromUser = (User) session.getAttribute("user");
+            User toUser = userService.getManager();
+            Feedback feedback = new Feedback();
+            feedback.setFeedbackContent(feedbackContent);
+            feedback.setFeedbackDate( new Date());
+            feedback.setFromUser(fromUser);
+            feedback.setToUser(toUser);
+            feedback.setServiceQuotes(serviceQuotes);
+            feedback = feedbackService.saveFeedback(feedback);
+        }
+        return "redirect:/consultant/serviceQuote/detail/" + serviceQuoteId;
+    }
+    
 }

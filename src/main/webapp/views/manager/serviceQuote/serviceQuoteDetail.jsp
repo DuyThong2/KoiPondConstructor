@@ -1,6 +1,6 @@
 <%-- 
     Document   : serviceQuoteDetail
-    Created on : Oct 13, 2024, 3:15:18 AM
+    Created on : Oct 13, 2024, 11:31:35 PM
     Author     : HP
 --%>
 
@@ -11,7 +11,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Service Quote Details</title>
+        <title>Service Quote Details Manager</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <!-- FontAwesome Icons -->
@@ -101,7 +101,6 @@
             .section-header i {
                 margin-right: 8px;
             }
-            
             .feedback-section {
                 background-color: #f8d7da; /* Light red background */
                 border: 2px solid #f0f0f0;
@@ -127,13 +126,16 @@
                 border-bottom: 2px solid #007bff;
                 font-weight: bold;
                 color: #007bff;
-            }           
+            }            
+
+
         </style>
     </head>
     <body>
         <div class="container-fluid mt-5">
             <div class="row">
                 <!-- Include Navbar -->
+                <%@include file="../navBar.jsp" %>
 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <!-- Contract Details Section -->
@@ -193,7 +195,8 @@
                             <tr>
                                 <th>Service Quote Total Price</th>
                                 <td>${serviceQuote.serviceQuotesTotalPrice}</td>
-                            </tr>                            
+                            </tr>
+
                         </table>
                     </div>
 
@@ -209,6 +212,7 @@
                             </div>
                         </div>
                     </c:if>
+
 
                     <div class="row">
                         <!-- Term Details Section -->
@@ -315,35 +319,40 @@
                         <c:choose>
                             <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
                                 <div class="">
-                                    <form action="/consultant/serviceQuote/update" method="get" class="d-inline">
-                                        <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" >
-                                        <button type="submit" class="btn btn-info">Edit Service Quotes</button>
-                                    </form>
-                                </div>
-                            </c:when>
-                            <c:when test="${serviceQuote.serviceQuotesStatus == 3}">
-                                <div class="">
-                                    <form action="/consultant/serviceQuote/update" method="get" class="d-inline">
-                                        <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" >
-                                        <button type="submit" class="btn btn-info">Edit Service Quotes</button>
-                                    </form>
-                                </div>
-                            </c:when>
-                            <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                <div class="">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
+                                            onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                    document.getElementById('acceptForm').status.value = '2';">Approve
+                                    </button>
 
-                                </div>
-                            </c:when>
-                            <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
-                                <div class="">
-                                    <form action="/consultant/serviceQuote/update" method="get" class="d-inline">
-                                        <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" >
-                                        <button type="submit" class="btn btn-info">Edit Service Quotes</button>
-                                    </form>
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                             onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                     document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
-                                                    document.getElementById('declineForm').status.value = '6';">Reject
+                                                    document.getElementById('declineForm').status.value = '3';">Reject
+                                    </button>
+                                </div>
+                            </c:when>
+
+                            <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
+                                <div class="">
+                                    <form action="/manager/serviceDetails/create" method="post" class="d-inline">
+                                        <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}">
+                                        <button type="submit" class="btn btn-success">Create New Service Detail</button>
+                                    </form>
+                                </div>
+                            </c:when>
+
+                            <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
+                                <div class=""> 
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                            onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                    document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
+                                                    document.getElementById('declineForm').status.value = '7';">Cancel
+                                    </button>
+
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                            onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                    document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
+                                                    document.getElementById('declineForm').status.value = '3';">Continue Quotation
                                     </button>
                                 </div>
                             </c:when>
@@ -365,8 +374,8 @@
                         </button>
                     </div>
                     <div class="modal-body">
-
-                        <form id="acceptForm" action="/consultant/serviceQuote/detail/saveStatus" method="post">
+                        are you sure you want to accept ?
+                        <form id="acceptForm" action="/manager/serviceQuote/detail/saveStatus" method="post">
                             <input type="hidden" name="id" value="">
                             <input type="hidden" name="status" value="">
                         </form>
@@ -390,7 +399,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="declineForm" action="/consultant/serviceQuote/detail/saveStatus" method="post">
+                        <form id="declineForm" action="/manager/serviceQuote/detail/saveStatus" method="post">
                             <input type="hidden" name="id" value="">
                             <input type="hidden" name="status" value="">
                             <input type="hidden" name="toUserId" value="">
@@ -414,3 +423,4 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 </html>
+

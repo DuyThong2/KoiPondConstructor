@@ -111,8 +111,6 @@ public class Staff extends User{
         this.constructionStaffs = constructionStaffs;
     }
 
-    
-
     public List<ServiceQuotes> getServiceQuotes() {
         return serviceQuotes;
     }
