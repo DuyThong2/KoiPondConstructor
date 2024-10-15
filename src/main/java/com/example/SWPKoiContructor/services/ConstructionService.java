@@ -90,4 +90,13 @@ public class ConstructionService {
     public List<Construction> getConstructionByStaffId(int staffId) {
         return constructionDAO.getconstructionByStaffId(staffId);
     }
+    public long countConstructionsByStaff(int staffId) {
+        return constructionDAO.countConstructionsByStaff(staffId);
+    }
+    public long countConstructionsInProcessByStaffId(int staffId) {
+        return constructionDAO.countConstructionsInProcessByStaffId(staffId);
+    }
+    public long countConstructionsInCompleteByStaffId(int staffId) {
+        return constructionDAO.countConstructionsInCompleteByStaffId(staffId);
+    }
 }

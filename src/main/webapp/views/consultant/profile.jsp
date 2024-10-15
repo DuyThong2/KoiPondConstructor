@@ -157,7 +157,7 @@
 <div class="container">
     <header class="mb-4">
         <div class="nav d-flex justify-content-between align-items-center">
-            <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
+            <a href="#" class="nav-link">
                 <i class="fas fa-project-diagram"></i> My Projects
             </a>
             <div class="nav-item-group d-flex align-items-center">

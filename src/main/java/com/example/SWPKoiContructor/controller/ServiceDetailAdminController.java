@@ -2,9 +2,11 @@ package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.ServiceDetail;
+import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.services.ServiceDetailService;
+import com.example.SWPKoiContructor.services.ServiceQuoteService;
 import com.example.SWPKoiContructor.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -24,6 +27,9 @@ public class ServiceDetailAdminController {
 
     @Autowired
     private StaffService staffService;
+    
+    @Autowired
+    private ServiceQuoteService serviceQuoteService;
 
     @Autowired
     private ProjectService projectService;
@@ -66,6 +72,41 @@ public class ServiceDetailAdminController {
     }
 
     // Show detailed information about a specific service detail
+
+    @GetMapping("/manager/serviceDetails/{serviceDetailId}")
+    public String showServiceDetail(
+            @PathVariable("serviceDetailId") int serviceDetailId, Model model) {
+        ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
+
+        if (serviceDetail == null) {
+            return "redirect:/manager/serviceDetails"; // Redirect if service detail not found
+        }
+
+        // Add attributes to the model for rendering
+        model.addAttribute("serviceDetail", serviceDetail);
+        model.addAttribute("customer", serviceDetail.getCustomer());
+        model.addAttribute("service", serviceDetail.getService());
+
+        return "manager/service/serviceDetail"; // JSP page to show service detail information
+    }
+    
+    @PostMapping("/manager/serviceDetails/create")
+    public String createNewServiceDetail(@RequestParam("serviceQuoteId")int serviceQuoteId, Model model){
+        try{
+        ServiceQuotes serviceQuotes = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
+        ServiceDetail newServiceDetail = new ServiceDetail();
+        newServiceDetail.setPrice(serviceQuotes.getServiceQuotesTotalPrice());
+        newServiceDetail.setDateRegister(new Date());
+        newServiceDetail.setServiceDetailStatus(1);
+        newServiceDetail.setService(serviceQuotes.getService());
+        newServiceDetail.setCustomer(serviceQuotes.getCustomer());
+        newServiceDetail = serviceDetailService.createServiceDetail(newServiceDetail);
+        return "redirect:/manager/serviceDetails";
+        }catch(Exception e){
+            return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
+        }
+    }
+
 
     // Display page for assigning construction staff to a service detail
     @GetMapping("/manager/serviceDetails/assign/{serviceDetailId}")
