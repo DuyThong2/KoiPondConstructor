@@ -176,7 +176,7 @@ public class ServiceDetailDAO {
 
     // Count service details customer Id
     public long countServiceDetailsByCustomerId(int customerId) {
-        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.id = :customerId", Long.class);
+        TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.customer.id= :customerId", Long.class);
         query.setParameter("customerId", customerId);
         return query.getSingleResult();
     }
@@ -216,4 +216,12 @@ public class ServiceDetailDAO {
         return query.getSingleResult();
     }
 
+    public List<ServiceDetail> getPaginationServiceDetailListByCustomerId(int id, int page, int size, String sortBy, String sortType) {
+        TypedQuery<ServiceDetail> query = entityManager.createQuery("SELECT sd FROM ServiceDetail sd Where sd.customer.id =:id ORDER BY sd." + sortBy + " " + sortType, ServiceDetail.class);
+        query.setParameter("id",id);
+
+        query.setFirstResult((page - 1) * size);
+        query.setMaxResults(size);
+        return query.getResultList();
+    }
 }

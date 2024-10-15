@@ -1,6 +1,6 @@
 package com.example.SWPKoiContructor.controller;
 
-import com.example.SWPKoiContructor.entities.Project;
+import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.ServiceDetail;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
@@ -14,13 +14,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Controller
-public class ServiceDetailAdminController {
+public class ServiceDetailController {
 
     @Autowired
     private ServiceDetailService serviceDetailService;
@@ -36,7 +38,7 @@ public class ServiceDetailAdminController {
 
     // Display list of service details with pagination and optional status filtering
     @GetMapping("/manager/serviceDetails")
-    public String serviceDetailList(
+    public String serviceDetailListManager(
             Model model,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -261,6 +263,53 @@ public class ServiceDetailAdminController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+    @GetMapping("/customer/serviceDetails/")
+    public String serviceDetailListCustomer(
+            HttpSession session,
+            Model model,
+            RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "1") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortType) {
+
+        Customer customer = (Customer) session.getAttribute("user");
+
+        // Redirect to login page if the customer is not logged in
+        if (customer == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Please login.");
+            return "redirect:/login";
+        }
+
+        // Fetch paginated and sorted service details for the customer
+        List<ServiceDetail> serviceDetailList = serviceDetailService.getPaginationServiceDetailListByCustomerId(
+                customer.getId(), page, size, sortBy, sortType);
+        long serviceDetailNum = serviceDetailService.countServiceDetailsByCustomerId(customer.getId());
+        System.out.println("VAI CACHUONG" +serviceDetailNum);
+
+        // Calculate total number of pages
+        long totalPage = (long) Math.ceil((double) serviceDetailNum / size);
+
+        // Ensure the current page is within valid range
+        if (page > totalPage) {
+            page = (int) totalPage;
+        } else if (page < 1) {
+            page = 1;
+
+        }
+        page = Math.max(page, 1);
+
+        // Add attributes to the model for rendering in the view
+        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("serviceDetailsList", serviceDetailList);
+        System.out.println("Hello:" + (totalPage*10));
+
+        return "/customer/serviceDetail/serviceDetailPage"; // Path to your JSP page for customer service details
     }
 
 }

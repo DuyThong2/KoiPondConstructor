@@ -4,7 +4,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Update Service Content</title>
+        <title>Update Project Content</title>
         <!-- Bootstrap 5 CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
         <style>
@@ -63,21 +63,22 @@
                 <%@include file="../navBar.jsp" %>
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
-                    <h1>Update Service Content</h1>
-                    <form method="post" enctype="multipart/form-data" modelAttribute="service" action="/manager/serviceContent/update/">
-                        <!-- Service Title -->
-                        <!-- Service Content -->
-                         <input type="hidden" name="serviceId" value="${service.serviceId}">
+                    <h1>Update Project Content</h1>
+                    <form method="post" enctype="multipart/form-data" modelAttribute="project" action="/manager/projectContent/update/">
+                        <!-- Hidden field for Project ID -->
+                        <input type="hidden" name="projectId" value="${project.projectId}">
+                        
+                        <!-- Project Content -->
                         <div class="form-group">
-                            <label for="content">Service Content</label>
+                            <label for="content">Project Content</label>
                             <textarea id="content" name="content" class="form-control" rows="6" required>
-                                ${service.content.content}
+                                ${project.content.content}
                             </textarea>
                         </div>
-                        <!-- Service Image Upload -->
+                        
                         <!-- Submit Button -->
                         <div class="form-group btn-submit">
-                            <button type="submit" class="btn btn-primary">Update Service</button>
+                            <button type="submit" class="btn btn-primary">Update Project Content</button>
                         </div>
                     </form>
                 </main>

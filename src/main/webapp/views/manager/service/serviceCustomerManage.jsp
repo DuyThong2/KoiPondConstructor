@@ -174,7 +174,7 @@
                                                     <td>${service.customer.email}</td>
                                                     <td>
                                                         <button class="btn btn-info"
-                                                            onclick="window.location.href = '/manager/customer/view/${service.customer.id}'">
+                                                            onclick="window.location.href = '/manager/manageCustomer/detail/${service.customer.id}'">
                                                             Customer Details
                                                         </button>
                                                     </td>
@@ -212,7 +212,7 @@
                                                    
                                                     <td>
                                                         <button class="btn btn-info"
-                                                            onclick="window.location.href = '/manager/staff/view/${service.staff.id}'">
+                                                            onclick="window.location.href = '/manager/manageStaff/detail/${service.staff.id}'">
                                                             Staff Details
                                                         </button>
                                                         <a href="/manager/serviceDetails/assign/${service.id}"

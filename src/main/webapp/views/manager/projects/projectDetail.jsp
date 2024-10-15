@@ -116,6 +116,21 @@
                 .badge-custom {
                     font-size: 16px !important;
                 }
+
+
+
+                /* Custom modal height and width */
+                .modal-lg {
+                    max-width: 100%;
+                    /* You can adjust this to increase the width */
+                }
+
+                .modal-body {
+                    max-height: 90vh;
+                    /* This sets the maximum height of the modal body */
+                    overflow-y: auto;
+                    /* Adds scrolling for overflow */
+                }
             </style>
         </head>
 
@@ -136,9 +151,18 @@
                                     <div class="col-md-9 p-4" id="main-content">
                                         <div class="section-card">
                                             <div>
-                                                <h4 class="section-header"><i class="fas fa-project-diagram"></i>
-                                                    Project
-                                                    Information</h4>
+                                                <div class="section-header d-flex justify-content-between">
+                                                    <h4><i class="fas fa-project-diagram"></i>
+                                                        Project
+                                                        Information
+
+                                                    </h4>
+                                                    <button id="updateProjectButton" type="button"
+                                                        onclick="showUpdateModal(${project.projectId}, '${project.projectName}', '${project.address}', '${project.style}', '${project.description}')"
+                                                        class="btn btn-primary">
+                                                        Update Project
+                                                    </button>
+                                                </div>
                                                 <div class="row justify-content-between mt-2 mb-2">
 
                                                     <!-- Planning Stage -->
@@ -222,6 +246,14 @@
                                                     </div>
                                                 </div>
                                                 <table class="table table-hover">
+                                                    <div class="row mt-3 mb-3">
+                                                        <th>Project Image</th>
+                                                        <td class="justify-content-center text-center">
+                                                            <img src="${project.imgURL}"
+                                                                alternative="${project.projectName}"
+                                                                style="height:200px; width:300px; object-fit:contain;">
+                                                        </td>
+                                                    </div>
                                                     <tr>
                                                         <th>Project ID</th>
                                                         <td>${project.projectId}</td>
@@ -257,6 +289,17 @@
                                                                     ${project.dateEnd}
                                                                 </c:otherwise>
                                                             </c:choose>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Project Content</th>
+                                                        <td>
+                                                            <button type="button" class="btn btn-info"
+                                                                data-toggle="modal" data-target="#projectContentModal"
+                                                                data-content="<c:out value='${project.content.content}' escapeXml='true' />"
+                                                                onclick="showProjectContent(this)">
+                                                                View Content
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -300,27 +343,10 @@
                                                         </td>
                                                     </tr>
 
-                                                    <tr>
-                                                        <th>Note</th>
-                                                        <td>
-                                                            <p class="form-control" name="description" rows="3">
-                                                                ${project.description}</p>
-                                                        </td>
-                                                    </tr>
 
                                                 </table>
                                             </div>
-                                            <div>
-                                                <h4 class="section-header"><i class="fas fa-project-diagram"></i>
-                                                    Project
-                                                    Content</h4>
 
-                                                <div row="mt-2 mb-2">
-                                                    <!-- show project content inside here -->
-                                                    <p id='projectContent'>
-                                                    </p>
-                                                </div>
-                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-3 p-4" id="sidebar">
@@ -345,20 +371,165 @@
                                                 </table>
                                             </div>
                                         </div>
+                                        <div class="section-card">
+                                            <h3 class="section-header"><i class="fas fa-project-diagram"></i></h3>
+                                            <div class="row  d-flex text-center justify-content-center">
+                                                <a href="/manager/projects/assign/${project.projectId}" class="btn btn-md btn-warning">Manage</a>
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>
                             </div>
+                            <div style="height:25vh;">
 
+                            </div>
                         </main>
+                        <!-- Modal for Project Content -->
+                        <!-- Modal for Project Content -->
+                        <div class="modal fade" id="projectContentModal" tabindex="-1"
+                            aria-labelledby="projectContentModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" style="max-width: 85vw;">
+                                <!-- Use viewport width to make the modal nearly full-screen -->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="projectContentModalLabel">Project Content</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" style="max-height: 85vh; overflow-y: auto;">
+                                        <!-- Make the modal higher and enable scrolling -->
+                                        <p id="modalProjectContent">
+                                            <!-- Content will be loaded dynamically here -->
+                                        </p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="/manager/projectContent/updateDetail/${project.projectId}"
+                                            type="button" class="btn btn-primary">Update Content</a>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="updateProjectModal" class="modal fade" tabindex="-1" role="dialog"
+                            aria-labelledby="updateProjectModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document" style="max-width: 70%;">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateProjectModalLabel">Update Project</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="POST" action="/manager/projects/update" enctype="multipart/form-data">
+                                        <div class="modal-body"
+                                            style="max-height: calc(100vh - 150px); overflow-y: auto;">
+                                            <!-- Hidden input to store project ID -->
+                                            <input type="hidden" id="updateProjectId" name="projectId">
+                                            <input type="hidden" id="currentSite" name="currentSite"
+                                                value="projectDetailSite">
+
+                                            <!-- Project Name -->
+                                            <div class="form-group">
+                                                <label for="updateProjectName">Project Name</label>
+                                                <input type="text" class="form-control" id="updateProjectName"
+                                                    name="projectName" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="updateProjectAddress">Project Address</label>
+                                                <input type="text" class="form-control" id="updateProjectAddress"
+                                                    name="projectAddress" required>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="updateProjectStyle">Design Style</label>
+                                                <input class="form-control" id="updateProjectStyle" name="projectStyle"
+                                                    rows="1" required></input>
+                                            </div>
+                                            <!-- Project Description -->
+                                            <div class="form-group">
+                                                <label for="updateProjectDescription">Project Description</label>
+                                                <textarea class="form-control" id="updateProjectDescription"
+                                                    name="projectDescription" rows="3" required></textarea>
+                                            </div>
+
+                                            <!-- Upload Project Image -->
+                                            <div class="form-group">
+                                                <label for="updateProjectImage">Upload Image</label>
+                                                <input type="file" id="updateProjectImage" name="projectImage"
+                                                    class="form-control-file">
+                                            </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Update Project</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="messageModal" class="modal fade" tabindex="-1" role="dialog"
+                            aria-labelledby="messageModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="messageModalLabel">Message</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div id="messageModalBody" class="modal-body">
+                                        <!-- Success or Error Message -->
+                                        <c:if test="${not empty message}">
+                                            <div class="alert alert-success" role="alert">
+                                                ${message}
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${not empty error}">
+                                            <div class="alert alert-danger" role="alert">
+                                                ${error}
+                                            </div>
+                                        </c:if>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" id="messageCloseButton" class="btn btn-secondary"
+                                            data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </div>
             </div>
-           <script>
-            
-           </script>
+            <script>
+                function showProjectContent(button) {
+                    // Get content from the data-content attribute
+                    var content = button.getAttribute('data-content');
+
+                    // Update modal content
+                    document.getElementById('modalProjectContent').innerHTML = content;
+                }
+                function showUpdateModal(projectId, projectName, address, style, description) {
+                    $('#updateProjectId').val(projectId);
+                    $('#updateProjectName').val(projectName);
+                    $('#updateProjectAddress').val(address);
+                    $('#updateProjectStyle').val(style);
+                    $('#updateProjectDescription').val(description);
+                    $('#updateProjectModal').modal('show');
+                }
+                $(document).ready(function () {
+                    // Check if there is a message or an error in the page
+                    if ($('.alert-success').length || $('.alert-danger').length) {
+                        // If message or error exists, show the modal
+                        $('#messageModal').modal('show');
+                    }
+                });
+            </script>
             <!-- Bootstrap JS and dependencies -->
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></scrip>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         </body>
 

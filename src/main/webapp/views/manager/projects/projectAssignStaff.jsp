@@ -191,38 +191,43 @@
                                             Image</a>
                                     </p>
                                 </div>
+                               <div>
                                 <c:if test="${project.status!=4}">
-                                    <div class="d-flex justify-content-center">
-                                        <input type="hidden" name="projectId" value="${project.projectId}">
-
-                                        <c:choose>
-                                            <c:when test="${project.isSharedAble == true}">
-                                                <button class="btn btn-danger" id="shareBtn"
-                                                    onclick="showConfirmationModal(${project.projectId},'share')">
-                                                    Stop Sharing Project
-                                                </button>
-                                            </c:when>
-                                            <c:when test="${project.isSharedAble == false}">
-                                                <button class="btn btn-primary" id="shareBtn"
-                                                    onclick="showConfirmationModal(${project.projectId},'share')">
-                                                    Share Project
-                                                </button>
-                                            </c:when>
-                                        </c:choose>
-
-                                    </div>
-                                    <!-- Cancel Project Button -->
-                                    <c:if test="${project.status!=3}">
-                                        <div class="d-flex justify-content-center mt-3">
-
-                                            <button class="btn btn-warning" id="cancelProjectBtn"
-                                                onclick="showConfirmationModal(${project.projectId},'cancel')">
-                                                Cancel Project
-                                            </button>
-
+                                    <hr>
+                                    <div class="row justify-content-around ư">
+                                        <div class="d-flex justify-content-center">
+                                            <input type="hidden" name="projectId" value="${project.projectId}">
+    
+                                            <c:choose>
+                                                <c:when test="${project.isSharedAble == true}">
+                                                    <button class="btn btn-danger" id="shareBtn"
+                                                        onclick="showConfirmationModal(${project.projectId},'share')">
+                                                        Stop Share
+                                                    </button>
+                                                </c:when>
+                                                <c:when test="${project.isSharedAble == false}">
+                                                    <button class="btn btn-primary" id="shareBtn"
+                                                        onclick="showConfirmationModal(${project.projectId},'share')">
+                                                        Share Project
+                                                    </button>
+                                                </c:when>
+                                            </c:choose>
+    
                                         </div>
-                                    </c:if>
+                                        <!-- Cancel Project Button -->
+                                        <c:if test="${project.status!=3}">
+                                            <div class="d-flex justify-content-center ">
+    
+                                                <button class="btn btn-warning" id="cancelProjectBtn"
+                                                    onclick="showConfirmationModal(${project.projectId},'cancel')">
+                                                    Cancel Project
+                                                </button>
+    
+                                            </div>
+                                        </c:if>
+                                    </div>
                                 </c:if>
+                               </div>
                             </div>
                         </div>
 
@@ -325,7 +330,7 @@
                                             <h3>Planning Stage</h3>
                                         </div>
                                         <div class="col-6 text-right">
-                                            <c:if test="${project.stage==1}">
+                                            <c:if test="${project.stage==1 &&project.status!=3 &&project.status!=4}">
                                                 <button type="button" id="confirmPlanningStageButton"
                                                     onclick="handleStageClick(2)" class="btn btn-primary btn-md">
                                                     Confirm Planning Stage

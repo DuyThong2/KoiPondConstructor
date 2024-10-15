@@ -111,4 +111,8 @@ public class ServiceDetailService {
         return serviceDetailDAO.getRevenueByService();
 
     }
+
+    public List<ServiceDetail> getPaginationServiceDetailListByCustomerId(int id, int page, int size, String sortBy, String sortType) {
+        return serviceDetailDAO.getPaginationServiceDetailListByCustomerId(id,page,size,sortBy,sortType);
+    }
 }
