@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -179,7 +180,7 @@ public class ProjectController {
         model.addAttribute("customer", customer);
         model.addAttribute("availableStaff", availableStaff);
         model.addAttribute("searchTerm", searchTerm);
-        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("totalPage", totalPage==0?1:totalPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("size", size);
 
@@ -311,11 +312,10 @@ public class ProjectController {
 
 
     @GetMapping("/customer/projects/")
-    public String customerAssignStaffPage(Model model, HttpSession session, RedirectAttributes redirectAttributes){
+    public String customerProjectPage(Model model, HttpSession session, RedirectAttributes redirectAttributes){
         Customer customer = (Customer) session.getAttribute("user");
         if (customer == null) {
-            // Nếu chưa đăng nhập, yêu cầu đăng nhập
-            redirectAttributes.addFlashAttribute("errorMessage", "Please login to submit feedback.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Please login.");
             return "redirect:/login";
         }
         List<Project> currentProjects = projectService.getActiveCustomerProjectsById(customer.getId());
@@ -365,5 +365,71 @@ public class ProjectController {
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
+    @PostMapping("/manager/projects/update")
+    public String updateProject(@RequestParam("projectId") int id,
+                                @RequestParam("currentSite") String site,
+                                @RequestParam("projectName") String name,
+                                @RequestParam("projectAddress") String address,
+                                @RequestParam("projectStyle") String style,
+                                @RequestParam("projectDescription") String description,
+
+                                @RequestParam("projectImage")MultipartFile file,
+    RedirectAttributes redirectAttributes){
+        String returnSite="";
+        if(site.equalsIgnoreCase("projectDetailSite")){
+            returnSite = "redirect:/manager/projects/details/"+ id;
+        }else if(site.equalsIgnoreCase("projectManageSite")){
+            returnSite="redirect:/manager/projects/manage/";
+        }
+        try{
+            Project project = projectService.getProjectById(id);
+            if(project!=null){
+                project.setProjectName(name);
+                project.setAddress(address);
+                project.setStyle(style);
+                project.setDescription(description);
+                String imgUrl ="";
+                if(file!=null){
+                     imgUrl= fileUtility.handleFileUpload(file,FileUtility.PROJECT_DIR);
+                }
+                project.setImgURL(imgUrl);
+                projectService.updateProject(project);
+                redirectAttributes.addFlashAttribute("message","Project Updated Successfully");
+                return returnSite;
+            }
+        }catch(Exception e){
+            redirectAttributes.addFlashAttribute("error","Project Update Failed");
+            return returnSite;
+        }
+        return returnSite;
+    }
+    @GetMapping("/manager/projectContent/updateDetail/{id}")
+    public String updateProjectContentPage(Model model, @PathVariable int id){
+        Project project = projectService.getProjectWithContent(id);
+        model.addAttribute("project",project);
+        return "/manager/projects/updateProjectContent";
+    }
+    @PostMapping("/manager/projectContent/update/")
+    public String updateServiceContent(@RequestParam int projectId,
+                                       @RequestParam("content") String content,
+                                       RedirectAttributes redirectAttributes){
+        try{
+            Project existingProject = projectService.getProjectWithContent(projectId);
+            if (existingProject == null) {
+                // If the service doesn't exist, add an error message and redirect
+                redirectAttributes.addFlashAttribute("error", "Project not found.");
+                return "redirect:/manager/projects/";
+            }
+            existingProject.getContent().setContent(content);
+//            existingProject.setServiceStatus(true);
+            projectService.updateProject(existingProject);
+            redirectAttributes.addFlashAttribute("message", "Project content updated successfully.");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error updating Project content: " + e.getMessage());
+            return "redirect:/manager/projects";
+        }
+        return "redirect:/manager/projects";
     }
 }

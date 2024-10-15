@@ -145,8 +145,9 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <form action="/manager/project/details/${project.projectId}" method="GET" class="d-inline">
-                                        <button type="submit" class="btn btn-info">
+                                    <form action="/manager/projects/details/${project.projectId}" method="GET" class="d-inline">
+                                        <button type="submit" class="btn btn-info"
+                                        >
                                             <i class="fas fa-eye icon-btn"></i> View Details
                                         </button>
                                     </form>
@@ -157,7 +158,7 @@
                     </table>
                 </c:if>
                 <c:if test="${empty projects}">
-                    <p class="text-muted">No projects associated with this customer.</p>
+                    <p class="text-muted">No projects associated with ths customer.</p>
                 </c:if>
             </div>
         </main>

@@ -209,7 +209,7 @@
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
-                                                <div class="modal-body">
+                                                <div id="messageModalBody" class="modal-body">
                                                     <!-- Success or Error Message -->
                                                     <c:if test="${not empty message}">
                                                         <div class="alert alert-success" role="alert">
@@ -223,8 +223,8 @@
                                                     </c:if>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-dismiss="modal">Close</button>
+                                                    <button type="button" id="messageCloseButton"
+                                                        class="btn btn-secondary" data-dismiss="modal">Close</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -395,16 +395,27 @@
                                                                         <td>${service.content.id}</td>
                                                                         <td>${service.content.createDate}</td>
                                                                         <td>${service.content.lastUpdatedDate}</td>
-                                                                        <td></td>
+                                                                        <td>
+                                                                            <c:if
+                                                                                test="${empty service.content.content}">
+                                                                                <i class="fa fa-exclamation-triangle"
+                                                                                    style="color: red;"></i>Please
+                                                                                update Content
+                                                                            </c:if>
+                                                                        </td>
                                                                         <!-- Empty placeholder for alignment -->
                                                                         <td>
-                                                                            <button class="btn btn-info"
-                                                                                onclick="window.location.href = '/manager/serviceContent/viewDetail/${service.content.id}'">
-                                                                                View Details
+                                                                            <button type="button" class="btn btn-info"
+                                                                                data-toggle="modal"
+                                                                                data-target="#serviceContentModal"
+                                                                                data-service="<c:out value='${service.serviceId}'/>"
+                                                                                data-content="<c:out value='${service.content.content}' escapeXml='true' />"
+                                                                                onclick="showServiceContent(this)">
+                                                                                View Content
                                                                             </button>
-                                                                            <button class="btn btn-info"
-                                                                                onclick="window.location.href = '/manager/serviceContent/updateDetail/${service.content.id}'">
-                                                                                View Details
+                                                                            <button class="btn btn-success"
+                                                                                onclick="window.location.href = '/manager/serviceContent/updateDetail/${service.serviceId}'">
+                                                                                Update Content
                                                                             </button>
                                                                         </td>
                                                                     </tr>
@@ -510,6 +521,34 @@
                                         </c:if>
                                     </div>
                                 </main>
+                                <div class="modal fade" id="serviceContentModal" tabindex="-1"
+                                    aria-labelledby="serviceContentModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" style="max-width: 85vw;">
+                                        <!-- Use viewport width to make the modal nearly full-screen -->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="serviceContentModalLabel">Service Content
+                                                </h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="max-height: 85vh; overflow-y: auto;">
+                                                <!-- Make the modal higher and enable scrolling -->
+                                                <p id="modalServiceContent">
+                                                    <!-- Content will be loaded dynamically here -->
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a id="updateContentBtn" type="button" class="btn btn-primary">Update
+                                                    Content</a>
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
                     </div>
 
@@ -576,7 +615,17 @@
                                         // Optionally show a success message
                                     },
                                     error: function (xhr) {
+                                        var errorMessage = xhr.responseText || "An error occurred while changing the status";
+                                        console.log(errorMessage)
                                         // Optionally handle the error
+                                        $('#confirmStatusChangeModal').modal('hide');
+                                        $('#messageModalBody').html(
+                                            '<div class="alert alert-danger" role="alert"> ' + errorMessage + ' </div>');
+                                        $('#messageModal').modal('show');
+                                        $('#messageCloseButton').off('click').on('click', function () {
+                                            window.location.href = "/manager/serviceContent/updateDetail/" + selectedServiceId;
+                                        })
+
                                     }
                                 });
                             });
@@ -659,6 +708,18 @@
                             $.each(rows, function (index, row) {
                                 $('table tbody').append(row);
                             });
+                        }
+
+                        function showServiceContent(button) {
+                            // Get content from the data-content attribute
+                            var content = button.getAttribute('data-content');
+                            var serviceId = button.getAttribute('data-service');
+
+                            // Update modal content
+                            document.getElementById('modalServiceContent').innerHTML = content;
+
+                            // Correct the href for the "Update Content" button
+                            document.getElementById('updateContentBtn').href = "/manager/serviceContent/updateDetail/"+serviceId;
                         }
 
                     </script>

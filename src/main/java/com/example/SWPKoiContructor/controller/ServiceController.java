@@ -12,13 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServlet;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -83,7 +81,7 @@ public class ServiceController {
             Service newService = new Service();
             newService.setServiceName(serviceName);
             newService.setServiceDescription(serviceDescription);
-            newService.setServiceStatus(true);
+            newService.setServiceStatus(false);
             String imgUrl = fileUtility.handleFileUpload(file,FileUtility.SERVICE_DIR);
             if(imgUrl!=null){
                 newService.setServiceImgUrl(imgUrl);
@@ -122,7 +120,7 @@ public class ServiceController {
     }
 
     @PostMapping("manager/services/changeStatusAjax")
-    public ResponseEntity<String> changeServiceStatusAjax(@RequestParam int serviceId) {
+    public ResponseEntity<String> changeServiceStatusAjax(RedirectAttributes redirectAttributes, @RequestParam int serviceId) {
         try{
             // Get the current service
             Service service = serviceService.getServiceById(serviceId);
@@ -130,7 +128,10 @@ public class ServiceController {
             if (service == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service not found.");
             }
-
+            if (service.getContent() == null || service.getContent().getContent() == null || service.getContent().getContent().trim().isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Please update your content first");
+                return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Please update your content first.");
+            }
             // Toggle the status
             boolean newStatus = !service.isServiceStatus();
             serviceService.updateServiceStatus(serviceId, newStatus);
@@ -146,6 +147,7 @@ public class ServiceController {
                                 @RequestParam String serviceName,
                                 @RequestParam String serviceDescription,
                                 @RequestParam double servicePriceValue,
+                                @RequestParam("file") MultipartFile file,
                                 RedirectAttributes redirectAttributes) {
         try {
             // Retrieve the current service by its ID
@@ -169,10 +171,11 @@ public class ServiceController {
                 existingContent.setService(existingService);
                 existingService.setContent(existingContent);
             }
-//            String base64encodedContent = Base64.getEncoder().encodeToString(contentText.getBytes());
-//            existingContent.setContent(base64encodedContent);
             existingContent.setLastUpdatedDate(currentTimestamp);
-
+            String imgUrl = fileUtility.handleFileUpload(file,FileUtility.SERVICE_DIR);
+            if(imgUrl!=null){
+                existingService.setServiceImgUrl(imgUrl);
+            }
             // Update service price information
             List<ServicePrice> existingServicePrices = existingService.getServicePrice();
 
@@ -236,9 +239,33 @@ public class ServiceController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the service price status: " + e.getMessage());
         }
     }
-//    @GetMapping("/manager/serviceContent/updateDetail/${id}")
-//    public String updateContentPage(Model model, @PathVariable(name = "id")int serviceId){
-//        Service service = serviceService.getServiceWithContentById(serviceId);
-//        return "/manager/service/updateServiceContent";
-//    }
+    @GetMapping("/manager/serviceContent/updateDetail/{id}")
+    public String updateServiceContentPage(Model model, @PathVariable int id){
+        Service service = serviceService.getServiceWithContentById(id);
+
+        model.addAttribute("service",service);
+        return "/manager/service/updateServiceContent";
+    }
+    @PostMapping("/manager/serviceContent/update/")
+    public String updateServiceContent(@RequestParam int serviceId,
+                                       @RequestParam("content") String content,
+                                       RedirectAttributes redirectAttributes){
+        try{
+            Service existingService = serviceService.getServiceById(serviceId);
+            if (existingService == null) {
+                // If the service doesn't exist, add an error message and redirect
+                redirectAttributes.addFlashAttribute("error", "Service not found.");
+                return "redirect:/manager/services/";
+            }
+            existingService.getContent().setContent(content);
+            existingService.setServiceStatus(true);
+            serviceService.updateService(existingService);
+            redirectAttributes.addFlashAttribute("message", "Service content updated successfully.");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error updating service content: " + e.getMessage());
+            return "redirect:/manager/services";
+        }
+        return "redirect:/manager/services";
+    }
 }
