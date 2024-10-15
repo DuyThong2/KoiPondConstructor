@@ -35,7 +35,7 @@ public class ProjectDAO {
     }
 
     public List<Project> getProjectListIsSharable() {
-        TypedQuery<Project> query = entityManager.createQuery("Select c from Project c where c.isSharedAble=1 order by c.dateEnd desc", Project.class);
+        TypedQuery<Project> query = entityManager.createQuery("Select c from Project c where c.isSharedAble= true order by c.dateEnd desc", Project.class);
         return query.getResultList();
     }
 
@@ -99,9 +99,15 @@ public class ProjectDAO {
         StringBuilder queryBuilder = new StringBuilder("SELECT c FROM Project c");
 
         String filter = filterQueryString(statusFilter, stageFilter);
-        queryBuilder.append(filter);
+        if (filter != null) {
+            queryBuilder.append(filter);
+        }
 
-        queryBuilder.append(" ORDER BY c.").append(sortBy).append(" ").append(sortType);
+        // Ensure valid defaults for sortBy and sortType
+        String validSortBy = (sortBy != null && !sortBy.isEmpty()) ? sortBy : "projectName"; // Default to 'projectName'
+        String validSortType = (sortType != null && (sortType.equalsIgnoreCase("ASC") || sortType.equalsIgnoreCase("DESC"))) ? sortType : "ASC"; // Default to 'ASC'
+
+        queryBuilder.append(" ORDER BY c.").append(validSortBy).append(" ").append(validSortType);
 
         TypedQuery<Project> query = entityManager.createQuery(queryBuilder.toString(), Project.class);
 
@@ -119,9 +125,12 @@ public class ProjectDAO {
     }
 
     public long countProjectFilter(Integer statusFilter, Integer stageFilter) {
-        StringBuilder queryBuilder = new StringBuilder("Select Count(c) from Project c");
+        StringBuilder queryBuilder = new StringBuilder("SELECT COUNT(c) FROM Project c");
+
         String filter = filterQueryString(statusFilter, stageFilter);
-        queryBuilder.append(filter);
+        if (filter != null) {
+            queryBuilder.append(filter);
+        }
 
         TypedQuery<Long> query = entityManager.createQuery(queryBuilder.toString(), Long.class);
         if (statusFilter != null) {
@@ -130,6 +139,7 @@ public class ProjectDAO {
         if (stageFilter != null) {
             query.setParameter("stageFilter", stageFilter);
         }
+
         return query.getSingleResult();
     }
 
@@ -220,15 +230,12 @@ public class ProjectDAO {
         query.setParameter("year", year);
 
         return query.getResultList();
-        
-        
-        
+
     }
-    
-    
+
     public Long countByStage(int stage) {
         TypedQuery<Long> query = entityManager.createQuery(
-            "SELECT COUNT(p) FROM Project p WHERE p.stage = :stage", Long.class);
+                "SELECT COUNT(p) FROM Project p WHERE p.stage = :stage", Long.class);
         query.setParameter("stage", stage);
         return query.getSingleResult();
     }
@@ -237,12 +244,17 @@ public class ProjectDAO {
         String jpql = "SELECT p FROM Project p where p.isSharedAble = 1 ORDER BY p.projectName ASC";
         TypedQuery<Project> query = entityManager.createQuery(jpql, Project.class);
 
-        query.setFirstResult(page * size);  // Start index for pagination
+        query.setFirstResult((page-1) * size);  // Start index for pagination
         query.setMaxResults(size);  // Number of results per page
 
         return query.getResultList();
     }
-    
-    
-    
+
+    public long countSharedProjects() {
+        String jpql = "SELECT COUNT(p) FROM Project p WHERE p.isSharedAble = 1";
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+
+        return query.getSingleResult();
+    }
+
 }
