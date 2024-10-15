@@ -238,6 +238,14 @@ public class ProjectService {
         return projectDAO.getProjectWithContentById(id);
     }
 
+    public List<Project> findPaginatedProjectsForShowing(int page, int size) {
+        return projectDAO.findPaginatedProjectsForShowing(page, size);
+    }
+
+    public long countSharedProjects() {
+        return projectDAO.countSharedProjects();
+    }
+
     
     
     

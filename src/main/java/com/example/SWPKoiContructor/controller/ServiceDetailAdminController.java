@@ -1,8 +1,10 @@
 package com.example.SWPKoiContructor.controller;
 
+import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.ServiceDetail;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
+import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.services.ServiceDetailService;
 import com.example.SWPKoiContructor.services.ServiceQuoteService;
 import com.example.SWPKoiContructor.services.StaffService;
@@ -28,6 +30,9 @@ public class ServiceDetailAdminController {
     
     @Autowired
     private ServiceQuoteService serviceQuoteService;
+
+    @Autowired
+    private ProjectService projectService;
 
     // Display list of service details with pagination and optional status filtering
     @GetMapping("/manager/serviceDetails")
@@ -67,6 +72,7 @@ public class ServiceDetailAdminController {
     }
 
     // Show detailed information about a specific service detail
+
     @GetMapping("/manager/serviceDetails/{serviceDetailId}")
     public String showServiceDetail(
             @PathVariable("serviceDetailId") int serviceDetailId, Model model) {
@@ -101,36 +107,61 @@ public class ServiceDetailAdminController {
         }
     }
 
+
     // Display page for assigning construction staff to a service detail
     @GetMapping("/manager/serviceDetails/assign/{serviceDetailId}")
     public String assignConstructionStaffPage(
             @PathVariable("serviceDetailId") int serviceDetailId,
             @RequestParam(name = "searchTerm", required = false) String searchTerm,
+            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+            @RequestParam(name = "currentPage", required = false, defaultValue = "1") int currentPage,
             Model model) {
 
+        // Fetch the service detail by its ID
         ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
 
+        if (serviceDetail == null) {
+            return "redirect:/manager/serviceDetails"; // Redirect if service detail not found
+        }
+
+        // Load the currently assigned construction staff member for this service detail
         List<Staff> constructionStaff = new ArrayList<>();
         if (serviceDetail.getStaff() != null) {
             constructionStaff.add(serviceDetail.getStaff());
         }
-        List<Staff> availableStaff;
 
-        // Fetch available construction staff with optional search functionality
+        // Total number of staff that match the search term (or all staff)
+        long totalStaff;
+
+        // Fetch available construction staff based on search term or just fetch all
+        List<Staff> availableStaff;
+        List<String> departments = new ArrayList<>();
+        departments.add("construction");
+
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
-            availableStaff = staffService.getStaffListByRole("Construction");
+            availableStaff = staffService.getAllStaffSortedForServiceDetail(serviceDetailId, currentPage, size, departments);
+            totalStaff = staffService.countTotalStaffByDepartmentsForServiceDetail(serviceDetailId, departments);
         } else {
-            availableStaff = staffService.searchConstructionStaffByName(searchTerm.trim());
+            availableStaff = staffService.searchStaffByNameSortedForProject(searchTerm.trim(), serviceDetailId, currentPage, size, departments);
+            totalStaff = staffService.countTotalStaffByDepartmentsSearchForServiceDetail(searchTerm.trim(), serviceDetailId, departments);
         }
 
-        // Add attributes to the model for rendering
+        // Calculate total number of pages for pagination
+        int totalPage = (int) Math.ceil((double) totalStaff / size);
+
+        // Add data to the model
         model.addAttribute("serviceDetail", serviceDetail);
         model.addAttribute("constructionStaff", constructionStaff);
         model.addAttribute("availableStaff", availableStaff);
         model.addAttribute("searchTerm", searchTerm);
+        model.addAttribute("totalPage", totalPage==0?1:totalPage);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("size", size);
 
-        return "manager/service/serviceAssignStaff"; // JSP page for assigning construction staff
+        return "manager/service/serviceAssignStaff"; // JSP page to show the available staff for assignment
     }
+
+
 
     // Handle staff assignment to a service detail
     @PostMapping("/manager/serviceDetails/assignStaff")

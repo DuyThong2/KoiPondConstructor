@@ -36,7 +36,7 @@ public class HomepageController {
         this.customerService = customerService;
         this.serviceService = serviceService;
     }
-   
+
     @GetMapping("")
     public String homePageShow(Model model) {
 
@@ -62,14 +62,13 @@ public class HomepageController {
     public String servicesShow(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
         int pageSize = 6; // Number of services per page
 
-        // Fetch services for the current page (page is 1-based, so subtract 1 for 0-based index)
-        List<Service> services = serviceService.getServicesPaged(page, pageSize);
-        services.removeIf(service -> !service.isServiceStatus());
+        // Fetch services for the current page
+        List<Service> services = serviceService.getPaginationServiceListByStatus(page,pageSize,null,null,true);
         model.addAttribute("services", services);
         model.addAttribute("currentPage", page);
 
-        // Get the total number of services using the serviceList size method
-        long totalServices = serviceService.getServiceList(Integer.MAX_VALUE).stream().filter(Service::isServiceStatus).count();
+        // Get the total number of active services using a count method
+        long totalServices = serviceService.countServiceFilter(Boolean.TRUE);
 
         // Calculate the total number of pages
         int totalPages = (int) Math.ceil((double) totalServices / pageSize);
@@ -93,22 +92,22 @@ public class HomepageController {
         }
 
     }
-    
+
     @GetMapping("/home/preDesign")
     public String getPreDesignList(@RequestParam(defaultValue = "0") int page,
-                                   @RequestParam(defaultValue = "6") int size,
-                                   Model model){
+            @RequestParam(defaultValue = "6") int size,
+            Model model) {
         List<PreDesign> preDesignList = preDesignService.getPreDesignListForHomePage(page, size);
         long totalPreDesign = preDesignService.countPreDesignListOfHomePage();
-        
+
         model.addAttribute("preDesignList", preDesignList);
         model.addAttribute("currentPage", page + 1); // Incrementing for display purposes (page index starts from 0)
         model.addAttribute("totalPages", (int) Math.ceil((double) totalPreDesign / size));
         model.addAttribute("hasMoreServices", (page + 1) * size < totalPreDesign);
-        
+
         return "customer/mainPage/preDesign";
     }
-    
+
     @GetMapping("/home/preDesign/{id}")
     public String getPreDesignDetail(Model model, @PathVariable("id") int id) {
 //        Project project = projectService.getProjectWithContent(id);
@@ -121,22 +120,21 @@ public class HomepageController {
             return "redirect:/home/preDesign";
         }
 
-    } 
-    
-    
+    }
 
     @GetMapping("/home/projects")
-    public String getSharedProjects(@RequestParam(defaultValue = "0") int page,
+    public String getSharedProjects(@RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "6") int size,
             Model model) {
         // Retrieve the paginated list of projects
-        List<Project> projects = projectService.getShareableProject(page, size);
-        long totalProjects = projectService.getProjectListIsSharable().size();
+        List<Project> projects = projectService.findPaginatedProjectsForShowing(page,size);
+        long totalProjects = projectService.countSharedProjects();
+        System.out.println(totalProjects);
 
         model.addAttribute("projects", projects);
-        model.addAttribute("currentPage", page + 1); // Incrementing for display purposes (page index starts from 0)
+        model.addAttribute("currentPage", page); // Incrementing for display purposes (page index starts from 0)
         model.addAttribute("totalPages", (int) Math.ceil((double) totalProjects / size));
-        model.addAttribute("hasMoreServices", (page + 1) * size < totalProjects);
+        model.addAttribute("hasMoreServices", (page) * size < totalProjects);
 
         return "customer/mainPage/projects";  // JSP page name
     }
@@ -168,7 +166,7 @@ public class HomepageController {
         List<Blog> blogs = blogService.getBlogsByCriteria(null, 1, null, null, adjustedPage, size);
 
         // Fetch total count for pagination
-        long totalBlogs = blogService.countBlogsByCriteria(null, 1,null,null);
+        long totalBlogs = blogService.countBlogsByCriteria(null, 1, null, null);
 
         // Calculate total pages and whether there are more blogs for pagination
         int totalPages = (int) Math.ceil((double) totalBlogs / size);
@@ -183,24 +181,23 @@ public class HomepageController {
 
         return "customer/mainPage/blogs";  // Return the view name that will display the blogs
     }
-    
-    
+
     @GetMapping("/home/blogs/{id}")
-    public String getBlogPosts(Model model,@PathVariable("id") int id){
+    public String getBlogPosts(Model model, @PathVariable("id") int id) {
         Blog blog = blogService.getBlogWithContentById(id);
-        if(blog!= null){
+        if (blog != null) {
             model.addAttribute("blog", blog);
             return "customer/mainPage/blogDetail";
         }
         return "redirect:/home/blogs";
-        
+
     }
-    
+
     @GetMapping("/home/packages")
-    public String getPackets(Model model){
-        
+    public String getPackets(Model model) {
+
         return "customer/mainPage/pricingPackage";
-        
+
     }
-    
+
 }

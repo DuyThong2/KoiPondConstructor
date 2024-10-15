@@ -33,6 +33,7 @@ CREATE TABLE Service (
     service_id INT PRIMARY KEY IDENTITY(1,1),
     service_name NVARCHAR(255),
     service_description NVARCHAR(255),
+    service_img_url varchar(255),
     service_status bit  -- active // disable
 );
 

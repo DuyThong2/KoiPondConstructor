@@ -1,15 +1,14 @@
 package com.example.SWPKoiContructor.controller;
 
-import com.example.SWPKoiContructor.entities.Contract;
-import com.example.SWPKoiContructor.entities.Customer;
-import com.example.SWPKoiContructor.entities.Project;
-import com.example.SWPKoiContructor.entities.Staff;
+import com.example.SWPKoiContructor.entities.*;
 import com.example.SWPKoiContructor.services.ContractService;
 import com.example.SWPKoiContructor.services.DesignService;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.services.StaffService;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import com.example.SWPKoiContructor.utils.Utility;
+
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 
 import org.springframework.http.HttpStatus;
@@ -21,67 +20,88 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Controller
-
 public class ProjectController {
 
     private FileUtility fileUtility;
     private ProjectService projectService;
     private ContractService contractService;
     private StaffService staffService;
-    
 
-    public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService,StaffService staffService, DesignService designService) {
+    public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService, StaffService staffService, DesignService designService) {
         this.fileUtility = fileUtility;
         this.projectService = projectService;
         this.contractService = contractService;
-        this.staffService= staffService;
+        this.staffService = staffService;
     }
+
     @GetMapping("/manager/projects")
 
     public String ProjectList(Model model,
-    @RequestParam(defaultValue = "1") int page,
-    @RequestParam(defaultValue = "10") int size,
-    @RequestParam(defaultValue = "status") String sortBy,
-    @RequestParam(defaultValue = "asc") String sortType,
-                              @RequestParam(required = false) Integer statusFilter,
-                              @RequestParam(required = false) Integer stageFilter){
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "status") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortType,
+            @RequestParam(required = false) Integer statusFilter,
+            @RequestParam(required = false) Integer stageFilter) {
         List<Project> list;
         long projectNum;
-        if(stageFilter!=null || statusFilter!=null){
-            list = projectService.getPaginationProjectListByStatusAndStage(page,size,sortBy,sortType,statusFilter,stageFilter);
-           projectNum =  projectService.countProjectFilter(statusFilter,stageFilter);
-        }else{
-           list= projectService.getPaginationProjectList(page,size,sortBy,sortType);
-           projectNum = projectService.countProject();
+        if (stageFilter != null || statusFilter != null) {
+            list = projectService.getPaginationProjectListByStatusAndStage(page, size, sortBy, sortType, statusFilter, stageFilter);
+            projectNum = projectService.countProjectFilter(statusFilter, stageFilter);
+        } else {
+            list = projectService.getPaginationProjectList(page, size, sortBy, sortType);
+            projectNum = projectService.countProject();
         }
-        long totalPage= (long) Math.ceil(projectNum/(double)size);
+        long totalPage = (long) Math.ceil(projectNum / (double) size);
         page = Math.max(page, 1);
-        model.addAttribute("currentPage",page);
-        model.addAttribute("size",size);
-        model.addAttribute("sortBy",sortBy);
-        model.addAttribute("sortType",sortType);
-        model.addAttribute("totalPage",totalPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("totalPage", totalPage);
         model.addAttribute("projectList", list);
-        model.addAttribute("statusFilter",statusFilter);
-        model.addAttribute("stageFilter",stageFilter);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("stageFilter", stageFilter);
         return "manager/projects/projectManage";
     }
+
+    public boolean isBase64Encoded(String content) {
+        try {
+            Base64.getDecoder().decode(content);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
     @GetMapping("/manager/projects/details/{id}")
-    public String PrọectDetail(@PathVariable("id") int id, Model model){
+    public String projectDetail(@PathVariable("id") int id, Model model) {
         Project project = projectService.getProjectById(id);
-        if (project != null){
+        if (project != null) {
             Customer customer = project.getContract().getCustomer();
-        model.addAttribute("customer", customer);
-        model.addAttribute("project", project);
-        return "manager/projects/projectDetail";
-        }else{
+
+            String decodedContent = "";
+            try {
+                String content = project.getContent().getContent().trim();
+                decodedContent = new String(Base64.getDecoder().decode(content));
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error decoding Base64: " + e.getMessage());
+                decodedContent = "Error decoding content";
+            }
+            System.out.println(decodedContent);
+            model.addAttribute("customer", customer);
+            model.addAttribute("project", project);
+            model.addAttribute("decodedContent", decodedContent);
+            return "manager/projects/projectDetail";
+        } else {
             return "redirect:/manager/projects";
         }
-        
     }
+
     @GetMapping("/manager/project/create")
     public String createProjectPage(@RequestParam("id") int contractId, Model model) {
         Contract contract = contractService.getContractById(contractId);
@@ -94,6 +114,7 @@ public class ProjectController {
             return "redirect:/manager/contracts";
         }
     }
+
     @PostMapping("/manager/project/create")
     public String createProject(@ModelAttribute("project") Project project) {
 
@@ -111,10 +132,13 @@ public class ProjectController {
             return "redirect:/manager/contracts";
         }
     }
+
     @GetMapping("/manager/projects/assign/{id}")
     public String assignStaffPage(
             @PathVariable int id,
             @RequestParam(name = "searchTerm", required = false) String searchTerm,
+            @RequestParam(name = "size", required = false, defaultValue = "5") int size,
+            @RequestParam(name = "currentPage", required = false, defaultValue = "1") int currentPage,
             Model model) {
 
         Project project = projectService.getProjectById(id);
@@ -132,54 +156,50 @@ public class ProjectController {
             constructionStaff = project.getConstruction().getStaff();
         }
 
-        // If searchTerm is empty, fetch all available staff (Design or Construction).
+        List<String> departments = new ArrayList<>();
+        departments.add("construction");
+        departments.add("design");
+
+        // Total number of staff that match the search term (or all staff)
+        long totalStaff;
+
+        // Fetch all available staff and count total staff
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
-            availableStaff = staffService.getAllStaff();
+            availableStaff = staffService.getAllStaffSortedForProject(id, currentPage, size, departments);
+            totalStaff = staffService.countTotalStaffByDepartmentsForProject(id, departments);
         } else {
-            // Fetch staff members that match the search query.
-            availableStaff = staffService.searchStaffByName(searchTerm.trim());
+            availableStaff = staffService.searchStaffByNameSortedForProject(searchTerm.trim(), id, currentPage, size, departments);
+            totalStaff = staffService.countTotalStaffByDepartmentsSearchForProject(searchTerm.trim(), id, departments);
         }
 
-        // Add data to model
+        // Calculate the total number of pages
+        int totalPage = (int) Math.ceil((double) totalStaff / size);
+
+        // Add data to the model
         model.addAttribute("project", project);
         model.addAttribute("constructionStaff", constructionStaff);
         model.addAttribute("designerStaff", designerStaff);
         model.addAttribute("customer", customer);
         model.addAttribute("availableStaff", availableStaff);
-        model.addAttribute("searchTerm", searchTerm);  // Retain the search term for the view
+        model.addAttribute("searchTerm", searchTerm);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("size", size);
 
         return "manager/projects/projectAssignStaff";
     }
+
     @PostMapping("/updateStage")
     @ResponseBody
-    public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId){
-        try{
+    public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId) {
+        try {
             projectService.updateProjectStage(projectId);
             return ResponseEntity.ok("Change stage successfully");
-        }catch(Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating project stage");
         }
     }
-    @GetMapping("/getConstructionStaff")
-    @ResponseBody
-    public ResponseEntity<?> getConstructionStaff() {
-        try {
-            List<Staff> constructionStaffList = staffService.getStaffListByRole("Construction");
-            return ResponseEntity.ok(constructionStaffList);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching construction staff");
-        }
-    }
-    @GetMapping("/getDesignerStaff")
-    @ResponseBody
-    public ResponseEntity<?> getDesignStaff() {
-        try {
-            List<Staff> designStaffList = staffService.getStaffListByRole("Design");
-            return ResponseEntity.ok(designStaffList);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error fetching design staff");
-        }
-    }
+
     @GetMapping("/manager/staff/search")
     public String searchStaff(@RequestParam(name = "searchTerm", required = false) String searchTerm, Model model) {
         List<Staff> staffList;
@@ -205,11 +225,12 @@ public class ProjectController {
         // Return the view for project staff assignment.
         return "manager/projects/projectAssignStaff";
     }
+
     @PostMapping("/manager/projects/assignStaff")
     public String assignStaff(@RequestParam("staffId") int staffId,
-                              @RequestParam("projectId") int projectId,
-                              @RequestParam("role") String role,
-                              Model model) {
+            @RequestParam("projectId") int projectId,
+            @RequestParam("role") String role,
+            Model model) {
         try {
             staffService.assignStaffToProject(staffId, projectId, role);
             return "redirect:/manager/projects/assign/" + projectId;
@@ -218,15 +239,19 @@ public class ProjectController {
             return "manager/projects/projectAssignStaff";
         }
     }
+
     @PostMapping("/manager/projects/deleteStaff")
     public String deleteStaff(@RequestParam("staffId") int staffId,
-                              @RequestParam("projectId") int projectId,
-                              @RequestParam("role") String role,
-                              Model model) {
+            @RequestParam("projectId") int projectId,
+            @RequestParam("role") String role,
+            Model model) {
         try {
             Project project = projectService.getProjectById(projectId);
             Staff staff = staffService.getStaffById(staffId);
-
+            if (project.getStatus() == 3 || project.getStatus() == 4) {
+                model.addAttribute("errorMessage", "Can't delete project");
+                return "manager/projects/projectAssignStaff";
+            }
             if (staff == null) {
                 throw new IllegalArgumentException("Staff with ID " + staffId + " not found.");
             }
@@ -265,13 +290,9 @@ public class ProjectController {
             return "manager/projects/projectAssignStaff";
         }
     }
-    
-    
-    
-
 
     @GetMapping("/customer/projects/")
-    public String customerAssignStaffPage(Model model, HttpSession session, RedirectAttributes redirectAttributes){
+    public String customerAssignStaffPage(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
         Customer customer = (Customer) session.getAttribute("user");
         if (customer == null) {
             // Nếu chưa đăng nhập, yêu cầu đăng nhập
@@ -280,10 +301,52 @@ public class ProjectController {
         }
         List<Project> currentProjects = projectService.getActiveCustomerProjectsById(customer.getId());
         List<Project> completeAndCancelProjects = projectService.getCompleteAndCancelCustomerProjectsById(customer.getId());
-        model.addAttribute("currentProjects",currentProjects);
-        model.addAttribute("doneProjects",completeAndCancelProjects);
-        model.addAttribute("Customer",customer);
+        model.addAttribute("currentProjects", currentProjects);
+        model.addAttribute("doneProjects", completeAndCancelProjects);
+        model.addAttribute("Customer", customer);
         return "customer/projects/projectDetail";
     }
 
+    @PostMapping("/manager/projects/shareProject")
+
+    public ResponseEntity<String> shareProject(Model model, @RequestParam int projectId) {
+        try {
+            Project project = projectService.getProjectById(projectId);
+            if (project == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            if (project.isIsSharedAble()) {
+                project.setIsSharedAble(false);
+            } else {
+                project.setIsSharedAble(true);
+            }
+            projectService.updateProject(project);
+            return ResponseEntity.ok("Changed Successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @PostMapping("/manager/projects/cancelProject")
+    public ResponseEntity<String> cancelProject(Model model, @RequestParam int projectId) {
+        try {
+            Project project = projectService.getProjectById(projectId);
+            if (project == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            if (project.getStatus() != 4 && project.getStatus() != 3) {
+                project.setStatus(4);
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
+            if (project.isIsSharedAble()) {
+                project.setIsSharedAble(false);
+            }
+            projectService.updateProject(project);
+            return ResponseEntity.ok("Changed Successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

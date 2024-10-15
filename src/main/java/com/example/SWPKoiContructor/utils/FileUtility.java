@@ -76,6 +76,10 @@ public class FileUtility {
 //    }
     
     
+
+    public static final String SERVICE_DIR= ROOT_DIR+ "service/";
+
+
     public String handleFileUpload(MultipartFile file, String directory) {
     try {
         if (file.isEmpty()) {

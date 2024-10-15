@@ -5,17 +5,18 @@
  */
 package com.example.SWPKoiContructor.dao;
 
-import com.example.SWPKoiContructor.entities.Customer;
+import com.example.SWPKoiContructor.entities.Project;
+import com.example.SWPKoiContructor.entities.ServiceDetail;
 import com.example.SWPKoiContructor.entities.Staff;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -111,7 +112,104 @@ public class StaffDAO {
         TypedQuery<Staff> typedQuery = entityManager.createQuery(query, Staff.class);
         return typedQuery.getResultList();
     }
+    public List<Staff> getAllStaffSortedForProject(int projectId, int currentPage, int size, List<String> departmentFilters) {
+        // Get the project by its ID to find the assigned staff
+        ProjectDAO projectDAO = new ProjectDAO(entityManager);
+        Project project = projectDAO.getProjectById(projectId);
 
+        // Retrieve the assigned staff (designer + construction)
+        List<Staff> assignedStaff = new ArrayList<>();
+        if (project.getDesign() != null) {
+            assignedStaff.addAll(project.getDesign().getStaff());
+        }
+        if (project.getConstruction() != null) {
+            assignedStaff.addAll(project.getConstruction().getStaff());
+        }
+
+        // Retrieve all staff members
+        String queryStr = "SELECT s FROM Staff s";
+        if(departmentFilters!=null && !departmentFilters.isEmpty()){
+            queryStr += " WHERE LOWER(s.department) IN :departments";
+        }
+        if(assignedStaff!=null && !assignedStaff.isEmpty()){
+            queryStr += " AND LOWER(s.name) NOT IN :names";
+
+        }
+        TypedQuery<Staff> query = entityManager.createQuery(queryStr, Staff.class);
+        if (departmentFilters != null && !departmentFilters.isEmpty()) {
+            List<String> lowerCaseDepartments = departmentFilters.stream()
+
+                    .collect(Collectors.toList());
+            query.setParameter("departments", lowerCaseDepartments);
+        }
+        if(assignedStaff!=null && !assignedStaff.isEmpty()) {
+            List<String> lowerCaseAssignedStaff= assignedStaff.stream()
+                            .map(staff->staff.getName().toLowerCase())
+                    .collect(Collectors.toList());
+            query.setParameter("names",lowerCaseAssignedStaff);
+        }
+
+            // Apply pagination logic
+        int firstResult = (currentPage - 1) * size;
+        query.setFirstResult(firstResult);
+        query.setMaxResults(size);
+
+        List<Staff> allStaff = query.getResultList();
+
+
+
+        return allStaff;
+    }
+    public List<Staff> searchStaffByNameSortedForProject(String name, int projectId, int currentPage, int size, List<String> departmentFilters) {
+        ProjectDAO projectDAO = new ProjectDAO(entityManager);
+        Project project = projectDAO.getProjectById(projectId);
+        List<Staff> assignedStaff = new ArrayList<>();
+
+        // Retrieve assigned staff
+        if (project != null && project.getDesign() != null) {
+            assignedStaff.addAll(project.getDesign().getStaff());
+        }
+        if (project != null && project.getConstruction() != null) {
+            assignedStaff.addAll(project.getConstruction().getStaff());
+        }
+
+        // Build the base query for staff search
+        String jpaQuery = "SELECT s FROM Staff s WHERE LOWER(s.name) LIKE :name";
+
+        // Add department filter if provided (list of departments)
+        if (departmentFilters != null && !departmentFilters.isEmpty()) {
+            jpaQuery += " AND LOWER(s.department) IN (:departments)";
+        }
+        if(assignedStaff!=null && !assignedStaff.isEmpty()){
+            jpaQuery += " AND LOWER(s.name) NOT IN :names";
+        }
+        // Create the query
+        TypedQuery<Staff> query = entityManager.createQuery(jpaQuery, Staff.class);
+        query.setParameter("name", "%" + name.toLowerCase() + "%");
+
+        // Set the department filter parameter (if provided)
+        if (departmentFilters != null && !departmentFilters.isEmpty()) {
+            query.setParameter("departments", departmentFilters.stream().map(String::toLowerCase).collect(Collectors.toList()));
+        }
+        if(assignedStaff!=null && !assignedStaff.isEmpty()) {
+            List<String> lowerCaseAssignedStaff= assignedStaff.stream()
+                    .map(staff->staff.getName().toLowerCase())
+                    .collect(Collectors.toList());
+            query.setParameter("names",lowerCaseAssignedStaff);
+        }
+        // Apply pagination logic
+        int firstResult = (currentPage - 1) * size;
+        query.setFirstResult(firstResult);
+        query.setMaxResults(size);
+
+        // Fetch the result list
+        List<Staff> allStaffList = query.getResultList();
+
+
+        return allStaffList;
+    }
+
+    // Get the project by its ID to find the assigned staff
     // Method to search staff by name and filter by "design" or "construction" department
     public List<Staff> searchStaffByName(String name) {
         String query = "SELECT s FROM Staff s WHERE LOWER(s.department) IN ('design', 'construction')";
@@ -238,5 +336,182 @@ public class StaffDAO {
         return query.getSingleResult();
     }
 
+
+    public long countTotalStaffByDepartmentsForProject(Project project, List<String> departments) {
+        String queryStr = "SELECT COUNT(s) FROM Staff s WHERE LOWER(s.department) IN :departments AND LOWER(s.name) NOT IN :names";
+        List<Staff> staff = new ArrayList<>();
+        List<String> staffName ;
+        List<String> lowerCaseDepartments =departments.stream().map(String::toLowerCase).collect(Collectors.toList());
+        if(project!=null && project.getDesign()!=null){
+            staff.addAll(project.getDesign().getStaff());
+        }
+        if(project!=null && project.getConstruction()!=null){
+            staff.addAll(project.getConstruction().getStaff());
+        }
+        staffName = staff.stream().map(s-> s.getName().toLowerCase()).collect(Collectors.toList());
+
+        TypedQuery<Long> query = entityManager.createQuery(queryStr, Long.class);
+
+        query.setParameter("departments",lowerCaseDepartments );
+        query.setParameter("names",staffName);
+        return query.getSingleResult();
+    }
+
+    public long countTotalStaffByDepartmentsSearchForProject(String trim,Project project, List<String> departments) {
+        String queryStr = "SELECT COUNT(s) FROM Staff s WHERE LOWER(s.department) IN :departments AND LOWER(s.name) LIKE :name AND LOWER(s.name) NOT IN :names";
+        List<Staff> staff = new ArrayList<>();
+        List<String> staffName ;
+        List<String> lowerCaseDepartments =departments.stream().map(String::toLowerCase).collect(Collectors.toList());
+        if(project!=null && project.getDesign()!=null){
+            staff.addAll(project.getDesign().getStaff());
+        }
+        if(project!=null && project.getConstruction()!=null){
+            staff.addAll(project.getConstruction().getStaff());
+        }
+        staffName = staff.stream().map(s-> s.getName().toLowerCase()).collect(Collectors.toList());
+        TypedQuery<Long> query = entityManager.createQuery(queryStr, Long.class);
+        query.setParameter("departments", departments.stream().map(String::toLowerCase).collect(Collectors.toList()));
+        query.setParameter("name", "%" + trim.toLowerCase() + "%");
+        query.setParameter("names",staffName);
+
+        return query.getSingleResult();
+    }
+    public long countTotalStaffByDepartmentsForServiceDetail(ServiceDetail serviceDetail, List<String> departments) {
+        // Adjusted to handle cases where no staff is present
+        String queryStr = "SELECT COUNT(s) FROM Staff s WHERE LOWER(s.department) IN :departments";
+
+        // Only apply the "NOT IN" clause if staff is actually assigned
+        if (serviceDetail != null && serviceDetail.getStaff() != null) {
+            queryStr += " AND LOWER(s.name) NOT IN :names";
+        }
+
+        List<String> staffName = new ArrayList<>();
+        if (serviceDetail != null && serviceDetail.getStaff() != null) {
+            staffName.add(serviceDetail.getStaff().getName().toLowerCase());
+        }
+
+        TypedQuery<Long> query = entityManager.createQuery(queryStr, Long.class);
+        query.setParameter("departments", departments.stream().map(String::toLowerCase).collect(Collectors.toList()));
+
+        if (!staffName.isEmpty()) {
+            query.setParameter("names", staffName);
+        }
+
+        return query.getSingleResult();
+    }
+    public long countTotalStaffByDepartmentsSearchForServiceDetail(String searchTerm, ServiceDetail serviceDetail, List<String> departments) {
+        String queryStr = "SELECT COUNT(s) FROM Staff s WHERE LOWER(s.department) IN :departments AND LOWER(s.name) LIKE :name AND LOWER(s.name) NOT IN :names";
+        List<Staff> assignedStaff = new ArrayList<>();
+        List<String> assignedStaffNames;
+
+        List<String> lowerCaseDepartments = departments.stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toList());
+
+        // Add the currently assigned staff to the list
+        if (serviceDetail != null && serviceDetail.getStaff() != null) {
+            assignedStaff.add(serviceDetail.getStaff());
+        }
+
+        assignedStaffNames = assignedStaff.stream()
+                .map(staff -> staff.getName().toLowerCase())
+                .collect(Collectors.toList());
+
+        TypedQuery<Long> query = entityManager.createQuery(queryStr, Long.class);
+        query.setParameter("departments", lowerCaseDepartments);
+        query.setParameter("name", "%" + searchTerm.toLowerCase() + "%");
+        query.setParameter("names", assignedStaffNames);
+
+        return query.getSingleResult();
+    }
+    public List<Staff> getAllStaffSortedForServiceDetail(int serviceDetailId, int currentPage, int size, List<String> departmentFilters) {
+        // Get the service detail by its ID to find the assigned staff
+        ServiceDetailDAO serviceDetailDAO = new ServiceDetailDAO(entityManager);
+        ServiceDetail serviceDetail = serviceDetailDAO.getServiceDetailById(serviceDetailId);
+
+        // Retrieve the assigned staff (for the construction or service detail)
+        List<Staff> assignedStaff = new ArrayList<>();
+        if (serviceDetail.getStaff() != null) {
+            assignedStaff.add(serviceDetail.getStaff());
+        }
+
+        // Retrieve all staff members
+        String queryStr = "SELECT s FROM Staff s";
+        if (departmentFilters != null && !departmentFilters.isEmpty()) {
+            queryStr += " WHERE LOWER(s.department) IN :departments";
+        }
+        if (assignedStaff != null && !assignedStaff.isEmpty()) {
+            queryStr += " AND LOWER(s.name) NOT IN :names";
+        }
+
+        TypedQuery<Staff> query = entityManager.createQuery(queryStr, Staff.class);
+        if (departmentFilters != null && !departmentFilters.isEmpty()) {
+            List<String> lowerCaseDepartments = departmentFilters.stream()
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toList());
+            query.setParameter("departments", lowerCaseDepartments);
+        }
+        if (assignedStaff != null && !assignedStaff.isEmpty()) {
+            List<String> lowerCaseAssignedStaff = assignedStaff.stream()
+                    .map(staff -> staff.getName().toLowerCase())
+                    .collect(Collectors.toList());
+            query.setParameter("names", lowerCaseAssignedStaff);
+        }
+
+        // Apply pagination logic
+        int firstResult = (currentPage - 1) * size;
+        query.setFirstResult(firstResult);
+        query.setMaxResults(size);
+
+        List<Staff> allStaff = query.getResultList();
+
+        return allStaff;
+    }
+    public List<Staff> searchStaffByNameSortedForServiceDetail(String name, int serviceDetailId, int currentPage, int size, List<String> departmentFilters) {
+        ServiceDetailDAO serviceDetailDAO = new ServiceDetailDAO(entityManager);
+        ServiceDetail serviceDetail = serviceDetailDAO.getServiceDetailById(serviceDetailId);
+        List<Staff> assignedStaff = new ArrayList<>();
+
+        // Retrieve assigned staff
+        if (serviceDetail != null && serviceDetail.getStaff() != null) {
+            assignedStaff.add(serviceDetail.getStaff());
+        }
+
+        // Build the base query for staff search
+        String jpaQuery = "SELECT s FROM Staff s WHERE LOWER(s.name) LIKE :name";
+
+        // Add department filter if provided (list of departments)
+        if (departmentFilters != null && !departmentFilters.isEmpty()) {
+            jpaQuery += " AND LOWER(s.department) IN (:departments)";
+        }
+        if (assignedStaff != null && !assignedStaff.isEmpty()) {
+            jpaQuery += " AND LOWER(s.name) NOT IN :names";
+        }
+
+        // Create the query
+        TypedQuery<Staff> query = entityManager.createQuery(jpaQuery, Staff.class);
+        query.setParameter("name", "%" + name.toLowerCase() + "%");
+
+        // Set the department filter parameter (if provided)
+        if (departmentFilters != null && !departmentFilters.isEmpty()) {
+            query.setParameter("departments", departmentFilters.stream().map(String::toLowerCase).collect(Collectors.toList()));
+        }
+        if (assignedStaff != null && !assignedStaff.isEmpty()) {
+            List<String> lowerCaseAssignedStaff = assignedStaff.stream()
+                    .map(staff -> staff.getName().toLowerCase())
+                    .collect(Collectors.toList());
+            query.setParameter("names", lowerCaseAssignedStaff);
+        }
+
+        // Apply pagination logic
+        int firstResult = (currentPage - 1) * size;
+        query.setFirstResult(firstResult);
+        query.setMaxResults(size);
+
+        // Fetch the result list
+        List<Staff> allStaffList = query.getResultList();
+
+        return allStaffList;
+    }
 
 }

@@ -170,8 +170,8 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <button class="btn btn-info"
-                                                >Details</button>
+                                        <a class="btn btn-info"  href="/manager/projects/details/${project.projectId}"
+                                                >Details</a>
                                         <c:if test="${ project.stage != 5}">
                                             <a href="/manager/projects/assign/${project.projectId}"
                                                class="btn btn-warning">Edit Staff</a>

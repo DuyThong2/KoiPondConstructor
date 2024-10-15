@@ -1,213 +1,365 @@
-<%--
-    Document   : projectManage
-    Created on : Sep 21, 2024, 2:33:13 PM
-    Author     : ASUS
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %> <!-- JSTL Taglib Declaration -->
+        <!DOCTYPE html>
+        <html lang="en">
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Project Details</title>
+            <!-- Bootstrap CSS -->
+            <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+            <!-- FontAwesome Icons -->
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+            <!-- Custom Styles -->
+            <style>
+                body {
+                    background-color: #f7f9fc;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
 
+                /* General Layout */
+                .container {
+                    max-width: 1200px;
+                    margin: auto;
+                    padding: 20px;
+                }
 
-<html>
-    <head>
-        <title>Admin Dashboard - Projects</title>
-        <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-            .sidebar {
-                height: 100vh;
-                background-color: #343a40;
-                color: white;
-                position: fixed; /* Makes the sidebar fixed */
-                top: 0;
-                left: 0;
-                width: 200px; /* Fixed width for the sidebar */
-                z-index: 1000; /* Ensure it's above other elements */
-            }
-            .sidebar a {
-                color: white;
-                display: block;
-                padding: 10px;
-                text-decoration: none;
-            }
-            .sidebar a:hover {
-                background-color: #495057;
-            }
+                .section-header {
+                    margin-bottom: 20px;
+                    padding-bottom: 10px;
+                    border-bottom: 2px solid #007bff;
+                    font-weight: bold;
+                    color: #007bff;
+                }
 
-            /* Ensure the main content doesn't overlap the sidebar */
-            .main-content {
-                margin-left: 200px; /* Matches the sidebar width */
-            }
+                /* Cards for sections */
+                .section-card {
+                    background-color: #fff;
+                    padding: 25px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    margin-bottom: 30px;
+                    transition: transform 0.3s ease;
+                    max-width: 100%;
+                    /* Prevents overflow */
+                }
 
-            /* Other styles */
-            body {
-                background-color: #f7f7f7;
-            }
+                .section-card:hover {
+                    transform: translateY(-5px);
+                }
 
-            #main-content {
-                background-color: #ffffff;
-            }
-
-            .user-info h5 {
-                font-size: 14px;
-                font-weight: bold;
-                margin-bottom: 5px;
-            }
-
-            .user-info p {
-                font-size: 12px;
-                margin-bottom: 15px;
-            }
-
-            .btn-danger {
-                background-color: #f44336;
-                border-color: #f44336;
-            }
-
-            .btn-primary {
-                background-color: #6c63ff;
-                border-color: #6c63ff;
-            }
-
-            .project-info {
-                background-color: #e0d7ff;
-                border-radius: 10px;
-            }
-
-            .project-info .info-item p {
-                background-color: #e6c6f9;
-                padding: 10px;
-                border-radius: 10px;
-            }
-
-            .project-info textarea {
-                background-color: #e6c6f9;
-                border-radius: 10px;
-            }
-        </style>
-    </head>
-    <body>
-
-        <div class="container-fluid">
-            <div class="row">
-                <!-- Sidebar -->
-                <%@include file="../navBar.jsp" %>
-                <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                    <div id="top-bar" class="d-flex justify-content-between align-items-center p-3 bg-light">
-
-                        <h3 class="ms-3">My Projects</h3>
-                        <a href="${pageContext.request.contextPath}/logout" class="btn btn-danger me-3">Logout</a>
-                    </div>
+                .btn-custom {
+                    margin-top: 20px;
+                    padding: 12px 25px;
+                    font-size: 1rem;
+                    border-radius: 5px;
+                    width: 100%;
+                }
 
 
-                    <div class="container-fluid">
-                        <div class="row mt-4">
-                            <!-- Sidebar -->
-                            <div class="col-md-3 p-4" id="sidebar">
-                                <div class="text-center">
-                                    <img src="${pageContext.request.contextPath}/images/avatar.png" alt="Avatar" class="img-fluid rounded-circle mb-3" style="width: 150px;">
-                                    <div class="user-info mb-4">
-                                        <h5>Name</h5>
-                                        <p>${customer.name}</p>
-                                        <h5>Phone Number</h5>
-                                        <p>${customer.phone}</p>
-                                        <h5>Email</h5>
-                                        <p>${customer.email}</p>
+                .status-badge {
+                    padding: 8px 15px;
+                    text-transform: uppercase;
+                    border-radius: 12px;
+                }
+
+                /* Updated: Allow content to break within table cells */
+                .table th,
+                .table td {
+                    vertical-align: middle;
+                    padding: 15px;
+                    word-break: break-all;
+                    /* Forces word breaking */
+                    overflow-wrap: break-word;
+                    /* Ensures wrapping on long text */
+                }
+
+                .table th {
+                    background-color: #f0f0f0;
+                    font-weight: bold;
+                }
+
+                .icon-btn {
+                    margin-right: 8px;
+                }
+
+                /* Responsive Design */
+                @media (max-width: 768px) {
+                    .table {
+                        font-size: 0.9rem;
+                    }
+
+                    .btn-custom {
+                        font-size: 0.9rem;
+                    }
+                }
+
+                .action-buttons {
+                    display: flex;
+                    justify-content: center;
+                    gap: 15px;
+                }
+
+                .section-header i {
+                    margin-right: 8px;
+                }
+
+                /* Ensure customer card is properly aligned */
+                .customer-card {
+                    height: auto;
+                    word-wrap: break-word;
+                    max-width: 100%;
+                    /* Make sure the card doesn't overflow */
+                }
+
+                .badge-custom {
+                    font-size: 16px !important;
+                }
+            </style>
+        </head>
+
+        <body>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Sidebar -->
+                    <%@include file="../navBar.jsp" %>
+                        <!-- Main content -->
+                        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
+                            <div class="container-fluid">
+                                <div class="row mt-4">
+                                    <!-- Sidebar -->
+
+
+                                    <!-- Main Content -->
+                                    <div class="col-md-9 p-4" id="main-content">
+                                        <div class="section-card">
+                                            <div>
+                                                <h4 class="section-header"><i class="fas fa-project-diagram"></i>
+                                                    Project
+                                                    Information</h4>
+                                                <div class="row justify-content-between mt-2 mb-2">
+
+                                                    <!-- Planning Stage -->
+                                                    <c:set var="planningClass"
+                                                        value="${(project.stage > 1) ? 'btn-success' : (project.stage == 1) ? 'btn-warning' : 'btn-secondary'}" />
+                                                    <div class="col text-center mb-2">
+                                                        <button type="button"
+                                                            class="btn stage-button btn-md btn-block px-3 ${planningClass}">
+                                                            Planning
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Design Stage -->
+                                                    <!-- Design Stage -->
+                                                    <c:set var="designClass"
+                                                        value="${(project.stage > 2) ? 'btn-success' : (project.stage == 2) ? 'btn-warning' : 'btn-secondary'}" />
+                                                    <div class="col text-center mb-2">
+                                                        <c:choose>
+                                                            <c:when
+                                                                test="${designClass == 'btn-success' || designClass == 'btn-warning'}">
+                                                                <a
+                                                                    href="/manager/design/viewDetail/${project.design.designId}">
+                                                                    <button type="button"
+                                                                        class="btn stage-button btn-md btn-block px-3 ${designClass}">
+                                                                        Design
+                                                                    </button>
+                                                                </a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <button type="button"
+                                                                    class="btn stage-button btn-md btn-block px-3 ${designClass}">
+                                                                    Design
+                                                                </button>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </div>
+
+                                                    <!-- Construction Stage -->
+                                                    <c:set var="constructionClass"
+                                                        value="${(project.stage > 3) ? 'btn-success' : (project.stage == 3) ? 'btn-warning' : 'btn-secondary'}" />
+                                                    <div class="col text-center mb-2">
+                                                        <c:choose>
+                                                            <c:when
+                                                                test="${constructionClass == 'btn-success' || constructionClass == 'btn-warning'}">
+                                                                <a
+                                                                    href="/manager/construction/viewDetail/${project.construction.constructionId}">
+                                                                    <button type="button"
+                                                                        class="btn stage-button btn-md btn-block px-3 ${constructionClass}">
+                                                                        Construction
+                                                                    </button>
+                                                                </a>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <button type="button"
+                                                                    class="btn stage-button btn-md btn-block px-3 ${constructionClass}">
+                                                                    Construction
+                                                                </button>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </div>
+
+
+                                                    <!-- Maintenance Stage -->
+                                                    <c:set var="maintenanceClass"
+                                                        value="${(project.stage > 4) ? 'btn-success' : (project.stage == 4) ? 'btn-warning' : 'btn-secondary'}" />
+                                                    <div class="col text-center mb-2">
+                                                        <button type="button"
+                                                            class="btn stage-button btn-md btn-block px-3 ${maintenanceClass}">
+                                                            Maintenance
+                                                        </button>
+                                                    </div>
+
+                                                    <!-- Complete Stage -->
+                                                    <c:set var="completeClass"
+                                                        value="${(project.stage == 5) ? 'btn-success'  : 'btn-secondary'}" />
+                                                    <div class="col text-center mb-2">
+                                                        <button type="button"
+                                                            class="btn stage-button btn-md btn-block px-3 ${completeClass}">
+                                                            Complete
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <table class="table table-hover">
+                                                    <tr>
+                                                        <th>Project ID</th>
+                                                        <td>${project.projectId}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Project Name</th>
+                                                        <td>${project.projectName}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Address</th>
+                                                        <td>${project.address}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Design Aesthetic</th>
+                                                        <td>${project.style}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Description</th>
+                                                        <td>${project.description}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Start Date</th>
+                                                        <td>${project.dateStart}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>End Date</th>
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${project.dateEnd == null }">
+                                                                    Not yet
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    ${project.dateEnd}
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Project Status</th>
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${project.status == 1}">
+                                                                    <span
+                                                                        class="badge badge-secondary badge-custom">Pending</span>
+                                                                </c:when>
+                                                                <c:when test="${project.status == 2}">
+                                                                    <span class="badge badge-primary badge-custom">In
+                                                                        Progress</span>
+                                                                </c:when>
+                                                                <c:when test="${project.status == 3}">
+                                                                    <span
+                                                                        class="badge badge-success badge-custom">Completed</span>
+                                                                </c:when>
+                                                                <c:when test="${project.status == 4}">
+                                                                    <span
+                                                                        class="badge badge-danger badge-custom">Cancelled</span>
+                                                                </c:when>
+                                                            </c:choose>
+                                                        </td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <th>Is Shareable</th>
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${project.isSharedAble == true}">
+                                                                    <span
+                                                                        class="badge badge-success badge-custom">Shared</span>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <span class="badge badge-danger badge-custom">Not
+                                                                        Shared</span>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <th>Note</th>
+                                                        <td>
+                                                            <p class="form-control" name="description" rows="3">
+                                                                ${project.description}</p>
+                                                        </td>
+                                                    </tr>
+
+                                                </table>
+                                            </div>
+                                            <div>
+                                                <h4 class="section-header"><i class="fas fa-project-diagram"></i>
+                                                    Project
+                                                    Content</h4>
+
+                                                <div row="mt-2 mb-2">
+                                                    <!-- show project content inside here -->
+                                                    <p id='projectContent'>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <a href="#" class="btn btn-danger w-100 mb-3">Design Status</a>
-                                    <a href="#" class="btn btn-primary w-100">To Design</a>
+                                    <div class="col-md-3 p-4" id="sidebar">
+                                        <div class="text-center">
+
+                                            <div class="section-card customer-card">
+                                                <h4 class="section-header"><i class="fas fa-user"></i> Customer
+                                                    Information</h4>
+                                                <table class="table table-hover">
+                                                    <tr>
+                                                        <th>Customer Name</th>
+                                                        <td>${customer.name}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Phone</th>
+                                                        <td>${customer.phone}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Email</th>
+                                                        <td>${customer.email}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
-                            <!-- Main Content -->
-                            <div class="col-md-9 p-4" id="main-content">
-                                <div class="project-info p-4 bg-light rounded">
-                                    <h4>Project Information</h4>
-
-                                    <!-- Start Form -->
-                                    <form:form method="post" modelAttribute="project" enctype="multipart/form-data">
-                                        <div class="info-item">
-                                            <p><strong>Project Name:</strong> ${project.projectName}</p>
-                                        </div>
-                                        <div class="info-item">
-                                            <p><strong>Address:</strong> ${project.address}</p>
-                                        </div>
-                                        <div class="info-item">
-                                            <p><strong>Design Aesthetic:</strong> ${project.style}</p>
-                                        </div>
-                                        <div class="info-item">
-                                            <p><strong>Description:</strong> ${project.description}</p>
-                                        </div>
-                                        <div class="info-item">
-                                            <p><strong>Start Date:</strong> ${project.dateStart}</p>
-                                        </div>
-                                        <div class="info-item">
-                                            <p><strong>End Date:</strong>
-                                                <c:choose>
-                                                    <c:when test="${empty project.dateEnd}">
-                                                        Not yet
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        ${project.dateEnd}
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </p>
-                                        </div>
-                                        <div class="info-item">
-                                            <p><strong>Project Status:</strong>
-                                                <c:choose>
-                                                    <c:when test="${project.status == 1}">Pending</c:when>
-                                                    <c:when test="${project.status == 2}">Processing</c:when>
-                                                    <c:when test="${project.status == 3}">Completed</c:when>
-                                                    <c:when test="${project.status == 4}">Canceled</c:when>
-                                                </c:choose>
-                                            </p>
-                                        </div>
-                                        <div class="info-item">
-                                            <p><strong>Stage:</strong>
-                                                <c:choose>
-                                                    <c:when test="${project.stage == 1}">Planning</c:when>
-                                                    <c:when test="${project.stage == 2}">Design</c:when>
-                                                    <c:when test="${project.stage == 3}">Construction</c:when>
-                                                    <c:when test="${project.stage == 4}">Maintenance</c:when>
-                                                    <c:when test="${project.stage == 5}">Finish</c:when>
-                                                </c:choose>
-                                            </p>
-                                        </div>
-                                        <div class="info-item">
-                                            <p><strong>Is Shareable:</strong> ${project.isSharedAble}</p>
-                                        </div>
-                                        <div class="info-item">
-                                            <p><strong>Location:</strong> <a href="${project.imgURL}">Link to Picture</a></p>
-                                        </div>
-                                        <div class="info-item">
-                                            <p><strong>Note:</strong></p>
-                                            <textarea class="form-control" name="description" rows="3">${project.description}</textarea>
-                                        </div>
-                                        <div class="info-item mt-3">
-                                            <label for="sketch-upload" class="form-label"><strong>Concept Sketch Upload:</strong></label>
-                                            <input type="file" class="form-control" id="sketch-upload" name="sketchUpload">
-                                        </div>
-                                        <div class="mt-3">
-                                            <button type="submit" class="btn btn-danger">Update</button>
-                                        </div>
-                                    </form:form>
-                                    <!-- End Form -->
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
+                        </main>
+                </div>
             </div>
-        </div>
+           <script>
+            
+           </script>
+            <!-- Bootstrap JS and dependencies -->
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></scrip>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        </body>
 
-        <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    </body>
-</html>
+        </html>

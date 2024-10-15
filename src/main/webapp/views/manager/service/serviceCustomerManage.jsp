@@ -293,6 +293,7 @@
                 currentDetailsRow = detailsRow;
             }
         }
+
     </script>
 </body>
 

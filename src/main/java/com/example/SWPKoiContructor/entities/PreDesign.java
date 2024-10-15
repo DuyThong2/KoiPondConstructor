@@ -60,6 +60,16 @@ public class PreDesign implements HaveImagesFile {
         
     }
 
+    public PreDesign(int preDesignId, String preDesignName, String preDesignImgUrl, String preDesignDescription, boolean preDesignStatus, List<Consultant> consultant, Content content) {
+        this.preDesignId = preDesignId;
+        this.preDesignName = preDesignName;
+        this.preDesignImgUrl = preDesignImgUrl;
+        this.preDesignDescription = preDesignDescription;
+        this.preDesignStatus = preDesignStatus;
+        this.consultant = consultant;
+        this.content = content;
+    }
+
     public int getPreDesignId() {
         return preDesignId;
     }

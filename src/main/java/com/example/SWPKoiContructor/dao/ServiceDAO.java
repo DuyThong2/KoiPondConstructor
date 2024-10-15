@@ -27,7 +27,7 @@ public class ServiceDAO {
 
     // Get a limited number of services
     public List<Service> getServiceList(int size) {
-        TypedQuery<Service> query = entityManager.createQuery("SELECT s FROM Service s where s.serviceStatus = 1 ORDER BY s.serviceStatus ASC, s.serviceName ASC", Service.class);
+        TypedQuery<Service> query = entityManager.createQuery("SELECT s FROM Service s where s.serviceStatus = true ORDER BY s.serviceStatus ASC, s.serviceName ASC", Service.class);
         query.setMaxResults(size);
         return query.getResultList();
     }
@@ -41,7 +41,18 @@ public class ServiceDAO {
 
     // Get all sharable services
     public List<Service> getServiceListIsSharable() {
-        TypedQuery<Service> query = entityManager.createQuery("SELECT s FROM Service s WHERE s.isSharable = true ORDER BY s.serviceName ASC", Service.class);
+        TypedQuery<Service> query = entityManager.createQuery("SELECT s FROM Service s WHERE s.serviceStatus = true ORDER BY s.serviceName ASC", Service.class);
+        return query.getResultList();
+    }
+
+    public List<Service> getServiceListIsSharable(int page, int pageSize) {
+        TypedQuery<Service> query = entityManager.createQuery(
+                "SELECT s FROM Service s WHERE s.serviceStatus = true ORDER BY s.serviceName ASC", Service.class);
+
+        // Apply pagination
+        query.setFirstResult((page - 1) * pageSize); // Start from the correct offset
+        query.setMaxResults(pageSize); // Limit the result set to pageSize
+
         return query.getResultList();
     }
 
@@ -106,15 +117,18 @@ public class ServiceDAO {
         return query.getSingleResult();
     }
 
-    // Get paginated list of services filtered by status
     public List<Service> getPaginationServiceListByStatus(int page, int size, String sortBy, String sortType, Boolean statusFilter) {
+        // Ensure valid defaults for sortBy and sortType
+        String validSortBy = (sortBy != null && !sortBy.isEmpty()) ? sortBy : "serviceName";
+        String validSortType = (sortType != null && (sortType.equalsIgnoreCase("ASC") || sortType.equalsIgnoreCase("DESC"))) ? sortType : "ASC"; 
+
         StringBuilder queryBuilder = new StringBuilder("SELECT s FROM Service s");
 
         if (statusFilter != null) {
             queryBuilder.append(" WHERE s.serviceStatus = :statusFilter");
         }
 
-        queryBuilder.append(" ORDER BY s.").append(sortBy).append(" ").append(sortType);
+        queryBuilder.append(" ORDER BY s.").append(validSortBy).append(" ").append(validSortType);
 
         TypedQuery<Service> query = entityManager.createQuery(queryBuilder.toString(), Service.class);
 
@@ -191,13 +205,8 @@ public class ServiceDAO {
             return null;
         }
 
-    }    
-    
-    
-    
-    
-    
-    
+    }
+
     // Fetches the total revenue for each active service for the last 12 months using Tuple
     public List<Tuple> getMonthlyRevenueForActiveServices() {
         String sql = "SELECT "
@@ -208,7 +217,7 @@ public class ServiceDAO {
                 + "FROM Service_Detail sd "
                 + "JOIN Service s ON sd.service_id = s.service_id "
                 + "WHERE sd.service_detail_status = 3 " // Only completed services
-                + "AND s.service_status = 1 "          // Only active services
+                + "AND s.service_status = 1 " // Only active services
                 + "AND sd.date_register >= DATEADD(month, -12, GETDATE()) " // Last 12 months
                 + "GROUP BY s.service_name, YEAR(sd.date_register), MONTH(sd.date_register) "
                 + "ORDER BY year, month";
@@ -216,10 +225,5 @@ public class ServiceDAO {
         Query query = entityManager.createNativeQuery(sql, Tuple.class);
         return query.getResultList();
     }
-    
-    
-    
-    
-    
-    
+
 }
