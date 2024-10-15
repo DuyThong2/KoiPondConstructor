@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Feedback;
+import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import java.util.List;
 import java.util.Optional;
 import javax.persistence.EntityManager;
@@ -107,5 +108,13 @@ public class FeedbackDAO {
         }catch (NoResultException e) {
             return null;
         }
+    }
+    
+    //-------------------------- SERVICE QUOTE  -------------------------
+    public Feedback getLatestFeedback(int serviceQuoteId){
+        TypedQuery<Feedback> tq = entityManager.createQuery("SELECT f FROM Feedback f WHERE f.serviceQuotes.serviceQuotesId = :serviceQuoteId ORDER BY f.feedbackId DESC", Feedback.class);
+        tq.setParameter("serviceQuoteId", serviceQuoteId);
+        tq.setMaxResults(1);
+        return tq.getSingleResult();       
     }
 }

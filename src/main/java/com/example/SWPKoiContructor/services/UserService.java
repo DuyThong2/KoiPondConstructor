@@ -83,4 +83,8 @@ public class UserService {
     public User updateUser(User user) {
         return userDAO.updateUser(user);
     }
+    
+    public User getManager(){
+        return userDAO.getManagerUser();
+    }
 }

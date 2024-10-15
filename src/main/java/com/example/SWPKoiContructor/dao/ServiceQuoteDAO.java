@@ -30,7 +30,7 @@ public class ServiceQuoteDAO {
     }
     
     //-----------------------------  GET LIST SECTION  ---------------------------------------------
-    //lay ra list serviceQuotes
+    //---------------------- Consultant
     public List<ServiceQuotes> getFilteredServiceQuoteConsultant(int page, int size, String sortBy, String sortDirection,
             Integer statusFilter, String searchName, LocalDate fromDate, LocalDate toDate, User staff){
         StringBuilder queryStr = new StringBuilder("SELECT s FROM ServiceQuotes s WHERE 1=1 AND s.staff.id = :id");
@@ -115,7 +115,93 @@ public class ServiceQuoteDAO {
 
         return query.getSingleResult();
     }
-    //---------------- GET DETAIL SECTION -------------------------------
+    
+    //------------------------- manager
+    public List<ServiceQuotes> getFilteredServiceQuoteManager(int page, int size, String sortBy, String sortDirection,
+            Integer statusFilter, String searchName, LocalDate fromDate, LocalDate toDate){
+        StringBuilder queryStr = new StringBuilder("SELECT s FROM ServiceQuotes s WHERE 1=1");
+
+        // Dynamic query construction
+        if (statusFilter != null) {
+            queryStr.append(" AND s.serviceQuotesStatus = :statusFilter");
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            queryStr.append(" AND s.serviceQuotesName LIKE :searchName");
+        }
+        if (fromDate != null) {
+            queryStr.append(" AND s.serviceQuotesDate >= :fromDate");
+        }
+        if (toDate != null) {
+            queryStr.append(" AND s.serviceQuotesDate <= :toDate");
+        }
+
+        // Sorting
+        queryStr.append(" ORDER BY s.").append(sortBy).append(" ").append(sortDirection);
+
+        // Creating the query
+        TypedQuery<ServiceQuotes> query = entityManager.createQuery(queryStr.toString(), ServiceQuotes.class);
+
+        // Setting parameters dynamically       
+        if (statusFilter != null) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
+        if (fromDate != null) {
+            query.setParameter("fromDate", java.sql.Date.valueOf(fromDate));  // Convert LocalDate to java.sql.Date
+        }
+        if (toDate != null) {
+            query.setParameter("toDate", java.sql.Date.valueOf(toDate));  // Convert LocalDate to java.sql.Date
+        }
+
+        // Pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getResultList();
+    }
+    
+    
+    public long countFilteredServiceQuoteManager(Integer statusFilter, String searchName, LocalDate fromDate, LocalDate toDate) {
+        StringBuilder queryStr = new StringBuilder("SELECT COUNT(s) FROM ServiceQuotes s WHERE 1=1");
+
+        // Dynamic query construction
+        if (statusFilter != null) {
+            queryStr.append(" AND s.serviceQuotesStatus = :statusFilter");
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            queryStr.append(" AND s.serviceQuotesName LIKE :searchName");
+        }
+        if (fromDate != null) {
+            queryStr.append(" AND s.serviceQuotesDate >= :fromDate");
+        }
+        if (toDate != null) {
+            queryStr.append(" AND s.serviceQuotesDate <= :toDate");
+        }
+
+        // Creating the query
+        TypedQuery<Long> query = entityManager.createQuery(queryStr.toString(), Long.class);
+
+        // Setting parameters dynamically
+        if (statusFilter != null) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
+        if (fromDate != null) {
+            query.setParameter("fromDate", java.sql.Date.valueOf(fromDate));  // Convert LocalDate to java.sql.Date
+        }
+        if (toDate != null) {
+            query.setParameter("toDate", java.sql.Date.valueOf(toDate));  // Convert LocalDate to java.sql.Date
+        }
+
+        return query.getSingleResult();
+    }
+    
+    
+    //------------------------------------------- GET DETAIL SECTION --------------------------------------
     public ServiceQuotes getServiceQuoteById(int id) {
         try {
             TypedQuery<ServiceQuotes> tq = entityManager.createQuery("SELECT s FROM ServiceQuotes s WHERE s.serviceQuotesId = :id", ServiceQuotes.class);
@@ -127,7 +213,7 @@ public class ServiceQuoteDAO {
         }
     }
     
-    //-----------------  CREATE SECTION  --------------------------------
+    //-------------------------------------------  CREATE SECTION  --------------------------------
     public ServiceQuotes createNewServiceQuote(ServiceQuotes serviceQuotes){
         ServiceQuotes newServiceQuotes = entityManager.merge(serviceQuotes);
         return newServiceQuotes;
@@ -135,5 +221,12 @@ public class ServiceQuoteDAO {
     
     public ServiceQuotes saveServiceQuotes(ServiceQuotes serviceQuotes){
         return entityManager.merge(serviceQuotes);
+    }
+    
+    //------------------------------------------ UPDATE STATUS ------------------------------------
+    public ServiceQuotes updateServiceQuoteStatus(int serviceQuoteId, int serviceQuoteStatus){
+        ServiceQuotes serviceQuotes = getServiceQuoteById(serviceQuoteId);
+        serviceQuotes.setServiceQuotesStatus(serviceQuoteStatus);
+        return serviceQuotes;
     }
 }

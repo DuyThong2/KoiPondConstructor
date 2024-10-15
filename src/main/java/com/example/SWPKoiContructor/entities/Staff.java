@@ -110,15 +110,7 @@ public class Staff extends User{
     public void setConstructionStaffs(List<ConstructionStaff> constructionStaffs) {
         this.constructionStaffs = constructionStaffs;
     }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
+  
     public List<ServiceQuotes> getServiceQuotes() {
         return serviceQuotes;
     }

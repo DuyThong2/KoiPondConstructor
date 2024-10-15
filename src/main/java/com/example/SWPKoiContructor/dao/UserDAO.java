@@ -39,6 +39,13 @@ public class UserDAO {
             return null;
         }
     }
+    
+    public User getManagerUser(){
+        TypedQuery<User> tq = entityManager.createQuery("SELECT u FROM User u WHERE u.authority.authority like :role", User.class);
+        tq.setParameter("role","%MANAGER%");
+        tq.setMaxResults(1);
+        return tq.getSingleResult();
+    }
 
     public User findUserByEmail(String email) {
         try {
