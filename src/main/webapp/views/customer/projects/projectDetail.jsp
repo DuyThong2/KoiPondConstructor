@@ -352,6 +352,9 @@
                                                     <span class="fas fa-project-diagram"></span> My Project</a>
                                             </li>
                                             <li>
+                                                <a href="${pageContext.request.contextPath}/customer/quote"><span class="bi bi-bar-chart-line"></span> Quotes</a>
+                                            </li>
+                                            <li>
                                                 <a href="#"><span class="bi bi-bar-chart-line"></span> Service</a>
                                             </li>
 
@@ -361,7 +364,7 @@
                                 <div class="content-panel">
                                     <div class="container">
                                         <!-- Projects Section -->
-                                        <div class="col-md-9 projects-section" style="z-index:1000;">
+                                        <div class="col-md-9 projects-section" style="z-index:100;">
                                             <!-- Current Project Section -->
                                             <div class="current-project-section mb-5" style="margin-right: 10px">
                                                 <h2 class="section-title text-dark">Current Project</h2>

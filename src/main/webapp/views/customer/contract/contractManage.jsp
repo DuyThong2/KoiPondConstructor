@@ -86,23 +86,27 @@
                                 </ul>
                             </div>
                             <nav class="side-menu">
-                                <ul class="nav">
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/customer/profile"
-                                            ><span class="fa fa-user"></span> Profile</a>
-                                    </li>
-                                    <li class="active">
-                                        <a href="${pageContext.request.contextPath}/customer/contract">
-                                            <span class="fas fa-file-contract"></span> My Contract</a>
-                                    </li>
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/customer/projects/">
-                                            <span class="fas fa-project-diagram"></span> Project</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><span class="bi bi-bar-chart-line"></span> Service</a>
-                                    </li>
-                                </ul>
+                                <nav class="side-menu">
+                                    <ul class="nav">
+                                        <li class="active">
+                                            <a href="${pageContext.request.contextPath}/customer/profile"><span class="fa fa-user"></span> Profile</a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/customer/contract">
+                                                <span class="fas fa-file-contract"></span> My Contract</a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/customer/projects/">
+                                                <span class="fas fa-project-diagram"></span> My Project</a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/customer/quote"><span class="bi bi-bar-chart-line"></span> Quotes</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><span class="bi bi-bar-chart-line"></span> Service</a>
+                                        </li>
+                                    </ul>
+                                </nav>
                             </nav>
                         </div>
                         <div class="content-panel">

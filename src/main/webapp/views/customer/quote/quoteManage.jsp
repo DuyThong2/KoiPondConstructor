@@ -13,8 +13,10 @@
         <title>Contract Details</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
             <%@include file="../cssTemplate.jsp"%>
-
+        <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
         <style>
             /* Custom styles for the sidebar */
             .sidebar {
@@ -31,14 +33,84 @@
             .sidebar a:hover {
                 background-color: #495057;
             }
+            @media (min-width: 992px) {
+                .view-account .content-panel {
+                    min-height: 800px;
+                    border-left: 1px solid #f3f3f7;
+                    margin-left: 250px;
+                }
+                .view-account .side-bar .side-menu .nav > li > a {
+                    display: block;
+                    color: #9499a3;
+                    padding: 13px 15px;
+                    padding-left: 30px;
+                    width: 250px;
+                }
+            }
+            .view-account .side-bar .user-info .meta li span {
+                width: 140px;
+                margin-right: 5px;
+                text-align: center;
+            }
+            body{
+                background: #f9f9fb;
+            }
         </style>
     </head>
             <%@include file="../homePageNavbar.jsp"%>
 
     <body>
         <div class="container-fluid">
+            <link
+                    href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+                    rel="stylesheet" />
+            <div class="container">
+                <div class="view-account">
+                    <section class="module">
+                        <div class="module-inner">
+                            <div class="side-bar">
+                                <div class="user-info">
+                                    <img
+                                            class="img-profile img-circle img-responsive center-block"
+                                            src="${user.getShowingImg(user.imgURL)}"
+                                            alt />
+                                    <ul class="meta list list-unstyled">
+                                        <li class="name">
+                                            ${user.name}
+                                            <br />
+                                            <label class="label label-info">Customer</label>
+                                        </li>
+                                        <li class="email">
+                                            <a href="#"><span>${user.email}</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <nav class="side-menu">
+                                    <ul class="nav">
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/customer/profile"
+                                            ><span class="fa fa-user"></span> Profile</a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/customer/contract">
+                                                <span class="fas fa-file-contract"></span> My Contract</a>
+                                        </li>
+                                        <li>
+                                            <a href="${pageContext.request.contextPath}/customer/projects/">
+                                                <span class="fas fa-project-diagram"></span> My Project</a>
+                                        </li>
+                                        <li  class="active">
+                                            <a href="${pageContext.request.contextPath}/customer/quote"><span class="bi bi-bar-chart-line"></span> Quotes</a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><span class="bi bi-bar-chart-line"></span> Service</a>
+                                        </li>
 
-            <div class="row">
+                                    </ul>
+                                </nav>
+                            </div>
+                            <div class="content-panel">
+
 
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
@@ -183,6 +255,10 @@
                 </div>
             </div>
         </div>
+
+                    </section>
+                </div>
+            </div>
 
         <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
