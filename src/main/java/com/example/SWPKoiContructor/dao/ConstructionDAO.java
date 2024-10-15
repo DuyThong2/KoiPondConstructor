@@ -81,4 +81,23 @@ public class ConstructionDAO {
         query.setParameter("staffId", staffId);
         return query.getResultList();
     }
+
+    public long countConstructionsInProcessByStaffId(int staffId) {
+        String jpql = "SELECT COUNT(c) FROM Construction c "
+                + "JOIN c.constructionStaffs cs "
+                + "JOIN cs.staff s "
+                + "WHERE s.id = :staffId and cs.construction.constructionStatus = 2";
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        query.setParameter("staffId", staffId);
+        return query.getSingleResult();
+    }
+    public long countConstructionsInCompleteByStaffId(int staffId) {
+        String jpql = "SELECT COUNT(c) FROM Construction c "
+                + "JOIN c.constructionStaffs cs "
+                + "JOIN cs.staff s "
+                + "WHERE s.id = :staffId and cs.construction.constructionStatus = 3";
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        query.setParameter("staffId", staffId);
+        return query.getSingleResult();
+    }
 }

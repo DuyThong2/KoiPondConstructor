@@ -67,7 +67,7 @@
     <div class="container">
     <header>
         <div class="nav">
-            <a href="/constructor/manage" class="nav-link">
+            <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
                 <i class="fas fa-project-diagram"></i> My Projects
             </a>
 
@@ -82,7 +82,8 @@
                 <!-- Avatar và tên người dùng -->
                 <div class="dropdown">
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="/assets/imgs/logo/final_resized_colored_logo_image.png" alt="User Avatar" class="rounded-circle" width="40">
+
+                        <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
                         <span class="ml-2 user-name">${sessionScope.user.name}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">

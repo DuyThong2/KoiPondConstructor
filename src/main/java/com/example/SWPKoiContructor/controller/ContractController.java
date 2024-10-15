@@ -137,7 +137,7 @@ public class ContractController {
     @GetMapping("/customer/contract")
     public String listContractsByCustomer(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(defaultValue = "4") int size,
             @RequestParam(defaultValue = "dateCreate") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection,
             HttpSession session) {

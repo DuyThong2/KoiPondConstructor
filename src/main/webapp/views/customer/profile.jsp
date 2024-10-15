@@ -6,10 +6,10 @@
     <head>
         <meta charset="utf-8" />
 
-        <title>Update user profile - Bootdey.com</title>
+        <title>My Profile</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <%@include file="cssTemplate.jsp"%>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet">
         <style>
@@ -17,31 +17,68 @@
             .modal {
                 opacity: 1 !important; /* Đảm bảo modal không bị trong suốt */
             }
+            .btn-update{
+                padding: 15px;
+                font-size: 13px;
+                border-radius: 15px;
+            }
+            @media (min-width: 992px) {
+                .view-account .content-panel {
+                    min-height: 800px;
+                    border-left: 1px solid #f3f3f7;
+                    margin-left: 250px;
+                }
+                .view-account .side-bar .side-menu .nav > li > a {
+                    display: block;
+                    color: #9499a3;
+                    padding: 13px 15px;
+                    padding-left: 30px;
+                    width: 250px;
+                }
+            }
 
         </style>
     </head>
     <%@include file="homePageNavbar.jsp"%>
     <body>
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
-        <div class="container">
+        <div class="container mt-5">
             <div class="view-account">
                 <section class="module">
                     <div class="module-inner">
                         <div class="side-bar">
                             <div class="user-info">
                                 <img class="img-profile img-circle img-responsive center-block"
-                                     src="/uploads/${customer.imgURL}" alt />
+                                     src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt />
                                 <ul class="meta list list-unstyled">
                                     <li class="name">
-                                        ${customer.name}
+                                        ${user.name}
                                         <br>
                                         <label class="label label-info">Customer</label>
                                     </li>
                                     <li class="email">
-                                        <a href="#"><span>${customer.email}</span></a>
+                                        <a href="#"><span>${user.email}</span></a>
                                     </li>
                                 </ul>
                             </div>
+                            <nav class="side-menu">
+                                <ul class="nav">
+                                    <li class="active">
+                                        <a href="${pageContext.request.contextPath}/customer/profile"><span class="fa fa-user"></span> Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/customer/contract">
+                                            <span class="fas fa-file-contract"></span> My Contract</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/customer/projects/">
+                                            <span class="fas fa-project-diagram"></span> My Project</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"><span class="bi bi-bar-chart-line"></span> Service</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
 
                         <div class="content-panel">
@@ -55,9 +92,9 @@
                                     <div class="form-group avatar">
 
                                         <figure class="figure col-md-2 col-sm-3 col-xs-12">
-                                            <img class="img-rounded img-responsive" src="/uploads/${customer.imgURL}" alt/>
+                                            <img class="img-rounded img-responsive" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt/>
                                         </figure>
-                                        <input type="hidden" name="id" value="${customer.id}">
+                                        <input type="hidden" name="id" value="${user.id}">
 
                                         <div class="form-inline col-md-10 col-sm-9 col-xs-12">
                                             <input type="file" name="file" class="file-uploader pull-left" accept="image/*"/>
@@ -66,43 +103,37 @@
                                     </div>
                                 </form>
                                 <form class="form-horizontal" action="${pageContext.request.contextPath}/profile/update" method="post" enctype="multipart/form-data">
-                                    <input type="hidden" name="id" value="${customer.id}">
+                                    <input type="hidden" name="id" value="${user.id}">
                                     <div class="form-group">
                                         <label class="col-md-2 col-sm-3 col-xs-12 control-label">Email</label>
                                         <div class="col-md-10 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control" name="email" value="${sessionScope.user.email}" readonly/>
+                                            <input type="text" class="form-control" name="email" value="${user.email}" readonly/>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-2 col-sm-3 col-xs-12 control-label">Name</label>
                                         <div class="col-md-10 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control input-group" name = "name" value="${sessionScope.user.name}" />
+                                            <input type="text" class="form-control input-group" name = "name" value="${user.name}" />
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-md-2 col-sm-3 col-xs-12 control-label">Phone: </label>
                                         <div class="col-md-10 col-sm-9 col-xs-12">
-                                            <input type="text" class="form-control input-group" name="phone" value="${sessionScope.user.phone}" />
+                                            <input type="text" class="form-control input-group" name="phone" value="${user.phone}" />
                                         </div>
                                     </div>
 
                                     <!-- Nút Update Profile -->
                                     <div class="form-group" style="margin-top: 30px">
                                         <div class="col-md-10 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0">
-                                            <button class="btn btn-primary" type="submit">Update Profile</button>
+                                            <button class="btn btn-primary btn-update" type="submit">Update Profile</button>
+                                            <a class="btn btn-sm btn-default-alt btn-change-password btn-update" data-toggle="modal" data-target="#changePasswordModal">Change Password</a>
+                                            <a class="btn btn-sm btn-default-alt btn-forgot-password btn-update" href="/forgot-password">Forgot Password</a>
                                         </div>
                                     </div>
                                 </form>
-
-                                <!-- Chuyển các nút Change Password xuống dưới -->
-                                <div class="form-group" style="margin-top: 20px;">
-                                    <div class="col-md-10 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0">
-                                        <a class="btn btn-sm btn-default-alt btn-change-password" data-toggle="modal" data-target="#changePasswordModal">Change Password</a>
-                                        <a class="btn btn-sm btn-default-alt btn-forgot-password" href="/forgot-password">Forgot Password</a>
-                                    </div>
-                                </div>
 
                             </fieldset>
                             <form class="form-horizontal">
@@ -144,7 +175,7 @@
                         <h4 class="modal-title" id="changePasswordModalLabel">Change Password</h4>
                     </div>
                     <form action="${pageContext.request.contextPath}/profile/changePassword" method="post">
-                        <input type="hidden" name="id" value="${customer.id}">
+                        <input type="hidden" name="id" value="${user.id}">
                         <div class="modal-body">
                             <div class="form-group password-wrapper">
                                 <label for="currentPassword">Current Password</label>
@@ -207,16 +238,6 @@
                     icon.classList.add("fa-eye");
                 }
             }
-            $(document).on('click', '[data-toggle="modal"]', function () {
-                console.log('Modal button clicked');
-            });
-            $(document).ready(function () {
-                if (typeof $().modal == 'function') {
-                    console.log('Bootstrap modal function exists.');
-                } else {
-                    console.log('Bootstrap modal function does not exist.');
-                }
-            });
 
         </script>
 
@@ -231,6 +252,10 @@
         <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script type="text/javascript"></script>
 
-
+        <script>
+            $('#changePasswordModal').on('hidden.bs.modal', function () {
+                $(this).find('form').trigger('reset');
+            });
+        </script>
     </body>
 </html>

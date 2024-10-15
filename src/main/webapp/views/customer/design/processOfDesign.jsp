@@ -326,7 +326,7 @@
                                 <c:if test="${stage.designStageStatus == 4}">
                                     <p><strong>Summary File:</strong>
                                         <c:choose>
-                                            <c:when test="${not empty contract.fileURL}">
+                                            <c:when test="${not empty stage.summaryFile}">
                                             <form action="/download/${stage.summaryFile}" method="get">
                                                 <button type="submit" class="btn btn-outline-primary">
                                                     <i class="fas fa-download"></i> Download file
