@@ -133,7 +133,7 @@
                                         <div class="col-md-10 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0">
                                             <button class="btn btn-primary btn-update" type="submit">Update Profile</button>
                                             <a class="btn btn-sm btn-default-alt btn-change-password btn-update" data-toggle="modal" data-target="#changePasswordModal">Change Password</a>
-                                            <a class="btn btn-sm btn-default-alt btn-forgot-password btn-update" href="/forgot-password">Forgot Password</a>
+                                            <a class="btn btn-sm btn-default-alt btn-forgot-password btn-update" href="${pageContext.request.contextPath}/forgot-password">Forgot Password</a>
                                         </div>
                                     </div>
                                 </form>

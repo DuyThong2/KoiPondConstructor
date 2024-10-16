@@ -83,17 +83,17 @@
                 <div class="dropdown">
                     <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                        <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
+                        <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
                         <span class="ml-2 user-name">${sessionScope.user.name}</span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="/constructor/profile">Profile</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/constructor/profile">Profile</a>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/help">Help</a>
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/help">Help</a>
                         <div class="dropdown-divider"></div>
                         <!-- Logout button in dropdown -->
-                        <a href="/logout" class="dropdown-item btn-logout">
+                        <a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
                     </div>
@@ -141,7 +141,7 @@
                                     <c:when test="${detail.constructionStageDetailName == 'Payment' || detail.constructionStageDetailStatus == 4  || !previousCompleted}">
                                         <span class="status-label">
                                             <c:choose>
-                                                <c:when test="${detail.constructionStageDetailStatus == 1}">Pending</c:when>
+                                                
                                                 <c:when test="${detail.constructionStageDetailStatus == 2}">Processing</c:when>
                                                 <c:when test="${detail.constructionStageDetailStatus == 4}">Completed</c:when>
                                             </c:choose>
@@ -158,7 +158,7 @@
 
                                     <c:otherwise>
                                         <select class="form-control text-center" name="newStatus" required>
-                                            <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
+                                           
                                             <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
                                             <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
                                         </select>

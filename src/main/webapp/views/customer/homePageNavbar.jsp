@@ -48,9 +48,9 @@
              <div class="mega__menu-wrapper p-relative">
                  <div class="header__main">
                      <div class="header__logo">
-                         <a href="/">
+                         <a href="${pageContext.request.contextPath}/">
                              <div class="logo">
-                                 <img class="img-fluid" src="/assets/imgs/logo/final_resized_colored_logo_image.png" alt="logo not found">
+                                 <img class="img-fluid" src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" alt="logo not found">
                              </div>
                          </a>
                      </div>
@@ -59,13 +59,13 @@
                          <div class="main-menu main-menu-3 onepagenav">
                              <nav id="mobile-menu">
                                  <ul>
-                                     <li><a href="/">Home</a></li> 
-                                     <li><a href="/home/projects">Best Design</a></li>
-                                     <li><a href="/home/services">Services</a></li>
-                                     <li><a href="/home/blogs">Blog</a></li>
+                                     <li><a href="${pageContext.request.contextPath}/">Home</a></li> 
+                                     <li><a href="${pageContext.request.contextPath}/home/projects">Best Design</a></li>
+                                     <li><a href="${pageContext.request.contextPath}/home/services">Services</a></li>
+                                     <li><a href="${pageContext.request.contextPath}/home/blogs">Blog</a></li>
                                      <li><a href="#pricing">Pricing</a></li>
                                      
-                                     <li><a href="/customer/projects/">Your Project</a></li>
+                                     <li><a href="${pageContext.request.contextPath}/customer/projects/">Your Project</a></li>
                                  </ul>
                              </nav>
                          </div>
@@ -87,7 +87,7 @@
                                     
                                    <c:choose>
                                         <c:when test="${user == null}">
-                                             <a href="/login" class="rr-btn__header">
+                                             <a href="${pageContext.request.contextPath}/login" class="rr-btn__header">
                                                   <span class="btn-wrap">
                                                       <span class="text-one turn-off-animation-button ">Login </span>
                                                   </span>
@@ -95,11 +95,11 @@
                                         </c:when>
                                         <c:otherwise>
                                             <div class="d-flex justify-content-center align-items-center">
-                                                <a href="/customer/profile">
+                                                <a href="${pageContext.request.contextPath}/customer/profile">
                                              <i class="fas fa-user profile-icon rounded-circle me-3"
                                              style="font-size: 3rem; color: var(--rr-theme-white);"></i></a>
                                             </div>
-                                             <a href="/logout" class="rr-btn__header ml-15" style="background-color:black;">
+                                             <a href="${pageContext.request.contextPath}/logout" class="rr-btn__header ml-15" style="background-color:black;">
                                                   <span class="btn-wrap">
                                                       <span class="text-one turn-off-animation-button">Logout </span>
                                                   </span>
