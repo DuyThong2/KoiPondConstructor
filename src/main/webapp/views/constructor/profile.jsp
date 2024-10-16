@@ -160,6 +160,9 @@
             <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
                 <i class="fas fa-project-diagram"></i> My Projects
             </a>
+            <a href="${pageContext.request.contextPath}/constructor/serviceDetailManage" class="nav-link">
+                <i class="fas fa-project-diagram"></i> My Service Details
+           </a>
             <div class="nav-item-group d-flex align-items-center">
                 <a href="#" class="nav-link">
                     <i class="fas fa-bell"></i>
