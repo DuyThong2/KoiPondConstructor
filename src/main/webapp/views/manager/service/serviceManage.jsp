@@ -61,6 +61,11 @@
                             z-index: 1051 !important;
                             /* Adjust as needed */
                         }
+
+                        .collapse {
+                            transition: height 0.5s ease-in-out;
+                            /* Adjust for smoother transition if needed */
+                        }
                     </style>
                 </head>
 
@@ -351,24 +356,36 @@
                                                             <c:when test="${service.serviceStatus}">
                                                                 <button id="status-badge-${service.serviceId}"
                                                                     class="badge badge-success"
-                                                                    onclick="confirmStatusChange(${service.serviceId}, event);"
                                                                     style="cursor: pointer; border:none;">Active</button>
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <button id="status-badge-${service.serviceId}"
                                                                     class="badge badge-danger"
-                                                                    onclick="confirmStatusChange(${service.serviceId}, event);"
                                                                     style="cursor: pointer; border:none;">Inactive</button>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
-                                                    <td style="z-index: 100;">
-                                                        <button class="btn btn-info">Details</button>
+                                                    <td style="z-index: 100;" class="d-flex flex-column g-2">
+                                                        <button class="btn btn-info mb-2"">Details</button>
 
-                                                        <a href="javascript:void(0);" class="btn btn-primary"
-                                                            onclick="showUpdateModal(${service.serviceId}, event, '${service.serviceName}', '${service.serviceDescription}', ${service.servicePrice[0].value})">
-                                                            Update
-                                                        </a>
+                                                       
+
+                                                        <!-- Collapsible Section containing the Update and Activate/Deactivate buttons -->
+                                                        <button class=" btn btn-outline-warning"
+                                                            id="action-btn-${service.serviceId}" type="button"
+                                                            onclick="toggleButtonList(${service.serviceId}, event)">
+                                                            Actions
+                                                        </button>
+
+                                                        <!-- Section containing the Update and Activate/Deactivate buttons -->
+                                                        <div id="buttonList-${service.serviceId}"
+                                                            style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
+                                                            <button class="btn btn-primary mb-2"
+                                                                onclick="showUpdateModal(${service.serviceId}, event, '${service.serviceName}', '${service.serviceDescription}', ${service.servicePrice[0].value})">Update</button>
+                                                            <button class="btn btn-danger"
+                                                                id="toggle-btn-${service.serviceId}"
+                                                                onclick="confirmStatusChange(${service.serviceId}, event)">Deactivate</button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                                 <!-- Details Row for Service -->
@@ -603,10 +620,14 @@
                                         var badge = $('#status-badge-' + selectedServiceId);
                                         var newStatus = badge.hasClass("badge-success") ? "Inactive" : "Active";
 
-                                        if (newStatus === "Active") {
-                                            badge.removeClass("badge-danger").addClass("badge-success").text("Active");
+                                        if (newStatus === 'Active') {
+                                            badge.removeClass('badge-danger').addClass('badge-success').text('Active');
+                                            // Change button to outline-danger and text to 'Deactivate'
+                                            $('#deactivate-btn-' + serviceId).removeClass('btn-outline-success').addClass('btn-outline-danger').text('Deactivate');
                                         } else {
-                                            badge.removeClass("badge-success").addClass("badge-danger").text("Inactive");
+                                            badge.removeClass('badge-success').addClass('badge-danger').text('Inactive');
+                                            // Change button to outline-success and text to 'Activate'
+                                            $('#deactivate-btn-' + serviceId).removeClass('btn-outline-danger').addClass('btn-outline-success').text('Activate');
                                         }
 
                                         // Hide the confirmation modal
@@ -719,9 +740,22 @@
                             document.getElementById('modalServiceContent').innerHTML = content;
 
                             // Correct the href for the "Update Content" button
-                            document.getElementById('updateContentBtn').href = "/manager/serviceContent/updateDetail/"+serviceId;
+                            document.getElementById('updateContentBtn').href = "/manager/serviceContent/updateDetail/" + serviceId;
                         }
+                        function toggleButtonList(serviceId, event) {
+                            // Prevent the row click event from firing
+                            event.stopPropagation();
 
+                            var buttonList = document.getElementById('buttonList-' + serviceId);
+                            var displayStyle = buttonList.style.display;
+
+                            // Toggle between showing and hiding the buttons
+                            if (displayStyle === 'none' || displayStyle === '') {
+                                buttonList.style.display = 'flex';  // Show the buttons
+                            } else {
+                                buttonList.style.display = 'none';  // Hide the buttons
+                            }
+                        }
                     </script>
                     <!-- Bootstrap JS and dependencies -->
                     <!-- Load jQuery -->

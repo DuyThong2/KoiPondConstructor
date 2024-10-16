@@ -19,6 +19,9 @@
                     <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
                         <i class="fas fa-project-diagram"></i> My Projects
                     </a>
+                    <a href="${pageContext.request.contextPath}/constructor/serviceDetailManage" class="nav-link">
+                        <i class="fas fa-project-diagram"></i> My Service Details
+                   </a>
 
                     <input type="text" placeholder="Search..." id="search">
 

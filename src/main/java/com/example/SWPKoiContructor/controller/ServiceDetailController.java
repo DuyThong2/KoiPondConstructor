@@ -70,7 +70,7 @@ public class ServiceDetailController {
         model.addAttribute("serviceDetailsList", list);
         model.addAttribute("statusFilter", statusFilter);
 
-        return "manager/service/serviceCustomerManage"; // Path to your JSP page for service details list
+        return "manager/service/serviceDetailManage"; // Path to your JSP page for service details list
     }
 
     // Show detailed information about a specific service detail
@@ -87,9 +87,10 @@ public class ServiceDetailController {
         // Add attributes to the model for rendering
         model.addAttribute("serviceDetail", serviceDetail);
         model.addAttribute("customer", serviceDetail.getCustomer());
+        model.addAttribute("staff", serviceDetail.getStaff());
         model.addAttribute("service", serviceDetail.getService());
 
-        return "manager/service/serviceDetail"; // JSP page to show service detail information
+        return "manager/service/serviceDetailInfo"; // JSP page to show service detail information
     }
     
     @PostMapping("/manager/serviceDetails/create")

@@ -144,7 +144,7 @@
 
                                 </td>
                                 <td>
-                                    <button class="btn btn-info">Details</button>
+                                    <a href="/manager/serviceDetails/${service.id}" class="btn btn-info">Details</a>
                                 </td>
                             </tr>
 
