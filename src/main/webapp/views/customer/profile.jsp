@@ -51,34 +51,35 @@
                                 <img class="img-profile img-circle img-responsive center-block"
                                      src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt />
                                 <ul class="meta list list-unstyled">
-                                    <li class="name">
-                                        ${user.name}
+                                    <li class="name" style="font-size: 18px;">${user.name}
                                         <br>
                                         <label class="label label-info">Customer</label>
                                     </li>
-                                    <li class="email">
+                                    <li class="email" style="font-size: 17px;">
                                         <a href="#"><span>${user.email}</span></a>
                                     </li>
                                 </ul>
                             </div>
                             <nav class="side-menu">
                                 <ul class="nav">
-                                    <li class="active">
-                                        <a href="${pageContext.request.contextPath}/customer/profile"><span class="fa fa-user"></span> Profile</a>
+                                    <li   class="active">
+                                        <a href="${pageContext.request.contextPath}/customer/profile"  style="font-size: 16px"><span class="fa fa-user"></span> Profile</a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/customer/contract">
+                                        <a href="${pageContext.request.contextPath}/customer/contract" style="font-size: 16px">
                                             <span class="fas fa-file-contract"></span> My Contract</a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/customer/projects/">
+                                        <a href="${pageContext.request.contextPath}/customer/quote" style="font-size: 16px">
+                                            <i class="bi bi-file-earmark-text"></i> Quotes</a>
+                                    </li>
+                                    <li>
+                                        <a href="${pageContext.request.contextPath}/customer/projects/" style="font-size: 16px">
                                             <span class="fas fa-project-diagram"></span> My Project</a>
                                     </li>
                                     <li>
-                                        <a href="${pageContext.request.contextPath}/customer/quote"><span class="bi bi-bar-chart-line"></span> Quotes</a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><span class="bi bi-bar-chart-line"></span> Service</a>
+                                        <a href="${pageContext.request.contextPath}/customer/serviceDetails/" style="font-size: 16px">
+                                            <span class="bi bi-bar-chart-line"></span> Service</a>
                                     </li>
                                 </ul>
                             </nav>
