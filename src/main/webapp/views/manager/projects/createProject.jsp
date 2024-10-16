@@ -30,7 +30,7 @@
                         <h2 class="text-center mb-4">Create New Project</h2>
 
                         <!-- Form binding to the project model -->
-                        <form:form method="POST" modelAttribute="project" action="/manager/project/create">
+                        <form:form method="POST" modelAttribute="project" action="${pageContext.request.contextPath}/manager/project/create">
 
                             <form:hidden path="contract.contractId" value="${contract.contractId}"/>
                             <!-- Project Name -->

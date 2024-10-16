@@ -108,7 +108,8 @@
                     <h1>Create New Pre Design</h1>
 
                     <!-- Form for Creating a New Pre Design -->
-                    <form:form method="post" enctype="multipart/form-data" modelAttribute="preDesign" action="/manager/preDesign/save">
+                    <form:form method="post" enctype="multipart/form-data" modelAttribute="preDesign"
+                                    action="${pageContext.request.contextPath}/manager/preDesign/save">
 
                         <!-- Pre Design Name -->
                         <div class="form-group">

@@ -92,11 +92,11 @@
 
                     <!-- Button to Create New Blog -->
                     <div class="mb-4">
-                        <a href="/staff/blog/new" class="btn btn-success">Create New Blog</a>
+                        <a href="${pageContext.request.contextPath}/staff/blog/new" class="btn btn-success">Create New Blog</a>
                     </div>
 
                     <!-- Search and Filter Form -->
-                    <form action="/staff/blogs" method="GET" class="d-flex flex-wrap align-items-center justify-content-start gap-3 mb-4">
+                    <form action="${pageContext.request.contextPath}/staff/blogs" method="GET" class="d-flex flex-wrap align-items-center justify-content-start gap-3 mb-4">
                         <!-- Search by name -->
                         <div class="form-group mb-0">
                             <input type="text" name="name" class="form-control" placeholder="Search by name" value="${param.name}">
@@ -134,7 +134,7 @@
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card h-100">
                                     <!-- Adjusted Image Height -->
-                                    <img src="/uploads/${blog.imgUrl}" class="card-img-top" alt="Blog Image" style="height: 250px; object-fit: cover;">
+                                    <img src="${blog.staff.getShowingImg(blog.staff.imgURL)}" class="card-img-top" alt="Blog Image" style="height: 250px; object-fit: cover;">
 
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">${blog.name}</h5>
@@ -200,7 +200,7 @@
         </div>
 
         <!-- JS and Bootstrap scripts -->
-        <script src="/assets/js/vendor/bootstrap.bundle.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/vendor/bootstrap.bundle.min.js"></script>
 
     </body>
 </html>

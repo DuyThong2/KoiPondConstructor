@@ -115,7 +115,7 @@
                             <!-- Assign Staff Button -->
                             <c:choose>
                                 <c:when test="${consultant.consultantStatus == 1}">
-                                    <form action="/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" method="get" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" method="get" class="d-inline">
                                         <button type="submit" class="btn btn-secondary">Assign Staff</button>
                                     </form>
                                 </c:when>

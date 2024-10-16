@@ -68,7 +68,7 @@
             <h2>Term Information</h2>
 
             <!-- Form Binding with Spring -->
-            <form:form modelAttribute="term" action="/manager/updateTerm" method="PUT">
+            <form:form modelAttribute="term" action="${pageContext.request.contextPath}/manager/updateTerm" method="PUT">
                 <form:hidden path="termId" value="${term.termId}" />
 
                 <!-- Design and Construction Percentages Row -->

@@ -109,7 +109,7 @@
                             <div class="search__top d-flex justify-content-between align-items-center">
                                 <div class="search__logo">
                                     <a href="index.html">
-                                        <img src="/assets/imgs/logo/logo-white.svg" alt="img">
+                                        <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                                     </a>
                                 </div>
                                 <div class="search__close">
@@ -241,7 +241,7 @@
                                     <div class="blog-info-wrap">
                                         <!-- blog img -->
                                         <div class="blog-single-img mb-4 pb-2">
-                                            <img src="/assets/imgs/mylogo/koi-background.jpg" width="1280" height="852" class="img-fluid b-radius-8" alt="blog-img">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg" width="1280" height="852" class="img-fluid b-radius-8" alt="blog-img">
                                         </div>
                                         
                                         <div>
@@ -275,7 +275,7 @@
                                             <div class="author-container" style="display: flex; align-items: center; margin-bottom: 20px;">
                                                 <!-- Author Image -->
                                                 <div class="author-img" style="margin-right: 15px;">
-                                                    <img src="/assets/imgs/mylogo/koi-background.jpg" alt="${blog.staff.name}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" />
+                                                    <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg" alt="${blog.staff.name}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" />
                                                 </div>
 
                                                 <!-- Author Name and Department -->
@@ -298,7 +298,7 @@
                                     </div>
                                 </div>
 
-                                <form class="banner-3__from" action="/save" method="POST">
+                                <form class="banner-3__from" action="${pageContext.request.contextPath}/save" method="POST">
                                     <h4>Need Construction Help?</h4>
                                     <p>We are always here to help you at any time, </p>
                                     <div class="row">

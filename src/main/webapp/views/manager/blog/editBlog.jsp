@@ -63,53 +63,53 @@
 
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-3">
-            <h1>Create New Blog</h1>
+                    <h1>Create New Blog</h1>
 
-            <form:form method="post" enctype="multipart/form-data" modelAttribute="blog" action="/staff/blog/update">
+                    <form:form method="post" enctype="multipart/form-data" modelAttribute="blog" action="${pageContext.request.contextPath}/staff/blog/update">
 
-                <form:hidden path="id" value="${blog.id}"/>
-                <form:hidden path="imgUrl" value="${blog.imgUrl}"/>
-                <form:hidden path="introContent.id" value="${blog.introContent.id}"/>
-                <!-- Blog Title -->
-                <div class="form-group">
-                    <label for="title">Blog Title</label>
-                    <form:input path="name" class="form-control" value="${blog.name}" placeholder="Enter blog title" required ="required"/>
-                    <form:errors path="name" cssClass="text-danger"/>
-                </div>
+                        <form:hidden path="id" value="${blog.id}"/>
+                        <form:hidden path="imgUrl" value="${blog.imgUrl}"/>
+                        <form:hidden path="introContent.id" value="${blog.introContent.id}"/>
+                        <!-- Blog Title -->
+                        <div class="form-group">
+                            <label for="title">Blog Title</label>
+                            <form:input path="name" class="form-control" value="${blog.name}" placeholder="Enter blog title" required ="required"/>
+                            <form:errors path="name" cssClass="text-danger"/>
+                        </div>
 
-                <!-- Blog Description -->
-                <div class="form-group">
-                    <label for="description">Blog Description</label>
-                    <form:textarea path="description" class="form-control" placeholder="Enter blog description" rows="4" required="required"/>
-                    <form:errors path="description" cssClass="text-danger"/>
-                </div>
+                        <!-- Blog Description -->
+                        <div class="form-group">
+                            <label for="description">Blog Description</label>
+                            <form:textarea path="description" class="form-control" placeholder="Enter blog description" rows="4" required="required"/>
+                            <form:errors path="description" cssClass="text-danger"/>
+                        </div>
 
-                <!-- Blog Content -->
-                <div class="form-group">
-                    <label for="content">Blog Content</label>
+                        <!-- Blog Content -->
+                        <div class="form-group">
+                            <label for="content">Blog Content</label>
 
-                    <textarea id="content" name="content" class="form-control" rows="6" required>
+                            <textarea id="content" name="content" class="form-control" rows="6" required>
 
-                        ${blog.introContent.content}
-                    </textarea>
-                </div>
+                                ${blog.introContent.content}
+                            </textarea>
+                        </div>
 
-                <!-- Blog Image Upload -->
-                <div class="form-group">
-                    <label for="file">Upload Image</label>
-                    <input type="file" id="file" name="file" class="form-control-file">
-                </div>
+                        <!-- Blog Image Upload -->
+                        <div class="form-group">
+                            <label for="file">Upload Image</label>
+                            <input type="file" id="file" name="file" class="form-control-file">
+                        </div>
 
-                <!-- Blog Status -->
+                        <!-- Blog Status -->
 
 
-                <!-- Submit Button -->
-                <div class="form-group btn-submit">
-                    <button type="submit" class="btn btn-primary">Create Blog</button>
-                </div>
-            </form:form>
+                        <!-- Submit Button -->
+                        <div class="form-group btn-submit">
+                            <button type="submit" class="btn btn-primary">Create Blog</button>
+                        </div>
+                    </form:form>
                 </main>
-        </div>
+            </div>
         </div>
 
         <!-- CKEditor Integration -->

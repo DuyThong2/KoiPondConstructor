@@ -81,12 +81,12 @@
                             <div class="search__top d-flex justify-content-between align-items-center">
                                 <div class="search__logo">
                                     <a href="index.html">
-                                        <img src="/assets/imgs/logo/logo-white.svg" alt="img">
+                                        <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                                     </a>
                                 </div>
                                 <div class="search__close">
                                     <button type="button" class="search__close-btn search-close-btn">
-                                        <s   vg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                                             <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                                   stroke-linejoin="round" />
                                             <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -128,7 +128,7 @@
                         <div class="offcanvas__top d-flex justify-content-between align-items-center">
                             <div class="offcanvas__logo">
                                 <a href="index.html">
-                                    <img src="/assets/imgs/logo/logo-white.svg" alt="logo not found">
+                                    <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                                 </a>
                             </div>
                             <div class="offcanvas__close">
@@ -217,7 +217,7 @@
                                     <div class="service-box-wrap service-box-style-1 text-center">
                                         <!-- Service Icon or Image -->
                                         <div class="service-icon mb-3">
-                                            <img src="/assets/imgs/logo/zoomed_logo_image.png" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/logo/zoomed_logo_image.png" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
                                         </div>
                                         <!-- Service Content -->
                                         <h3 class="service-title">${service.serviceName}</h3>

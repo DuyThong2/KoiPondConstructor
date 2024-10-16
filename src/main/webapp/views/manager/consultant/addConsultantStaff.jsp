@@ -82,7 +82,7 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${consultant.staff.id != staff.id}">
-                                                <form action="/manager/consultant/viewConsultantStaffList/editConsultantStaff" method="POST" class="d-inline">
+                                                <form action="${pageContext.request.contextPath}/manager/consultant/viewConsultantStaffList/editConsultantStaff" method="POST" class="d-inline">
                                                     <input type="hidden" name="id" value="${consultant.consultantId}">
                                                     <input type="hidden" name="staffId" value="${staff.id}">
                                                     <button type="submit" class="btn btn-info">Update Staff</button>

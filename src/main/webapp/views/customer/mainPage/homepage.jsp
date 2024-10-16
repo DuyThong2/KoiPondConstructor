@@ -80,12 +80,12 @@
                     <div class="search__top d-flex justify-content-between align-items-center">
                         <div class="search__logo">
                             <a href="index.html">
-                                <img src="/assets/imgs/logo/logo-white.svg" alt="img">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                             </a>
                         </div>
                         <div class="search__close">
                             <button type="button" class="search__close-btn search-close-btn">
-                                <s   vg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                                     <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                           stroke-linejoin="round" />
                                     <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -272,7 +272,7 @@
                     <div class="col-xl-4 col-md-6">
                         <div class="team__item mb-30">
                             <a href="team-details.html" class="team__item-media d-block" data-cursor-text="View">
-                                <img src="/assets/imgs/mylogo/koi-background.jpg" alt="image not found" class="img-fluid">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg" alt="image not found" class="img-fluid">
                             </a>
     
                             <div class="team__item-text d-flex align-items-center justify-content-between">
@@ -357,7 +357,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="what-we-do-3__media pr-15 rr-pr-none-xl rr-mb-60-md">
-                        <img src="/assets/imgs/what-we-do-3/what-we-do.jpg" alt="" class="img-fluid">
+                        <img src="${pageContext.request.contextPath}/assets/imgs/what-we-do-3/what-we-do.jpg" alt="" class="img-fluid">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -438,7 +438,7 @@
                     <div class="col-xl-3 col-md-6">
                         <div class="our-professional__item mb-30">
                             <a href="team-details.html" class="our-professional__item-media d-block" data-cursor-text="View">
-                                <img src="/assets/imgs/our-professional/anhthien.jpg" alt="image not found" class="img-fluid">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/our-professional/anhthien.jpg" alt="image not found" class="img-fluid">
                             </a>
                             <div class="our-professional__item__content d-flex align-items-center justify-content-center text-center">
                                 <div class="our-professional__item-text">
@@ -469,14 +469,14 @@
 
                         <div class="support__list mb-minus-30">
                             <div class="support__list-item d-flex mb-30">
-                                <div class="icon"><img src="/assets/imgs/support/angle-right.svg" alt=""></div>
+                                <div class="icon"><img src="${pageContext.request.contextPath}/assets/imgs/support/angle-right.svg" alt=""></div>
                                 <div class="text">
                                     <p class="mb-0 rr-br-hidden-xl text-start">Vivamus eget tristique purus. Mauris rhoncus sem non lorem aliquet varius.
                                         <br> Aliquam non odio et arcu ullamcorper efficitur.</p>
                                 </div>
                             </div>
                             <div class="support__list-item d-flex mb-30">
-                                <div class="icon"><img src="/assets/imgs/support/angle-right.svg" alt=""></div>
+                                <div class="icon"><img src="${pageContext.request.contextPath}/assets/imgs/support/angle-right.svg" alt=""></div>
                                 <div class="text">
                                     <p class="mb-0 rr-br-hidden-xl text-start">Suspendisse facilisis dolor id turpis varius malesuada. Morbi egestas libero
                                         <br> ac consectetur interdum uisque.</p>
@@ -624,11 +624,11 @@
     <section id="pricing" class="pricing section-space section-bg-1 overflow-hidden">
         <div class="container rr-shape-p-c_1">
             <div class="why-choose-us__shape d-none d-lg-block">
-                <div class="pricing__shape-1 rr-shape-p-s_1 rr-upDown"><img src="/assets/imgs/pricing/shape-1.png" alt="image not found"></div>
-                <div class="pricing__shape-2 rr-shape-p-s_1 rr-downUp"><img src="/assets/imgs/pricing/shape-2.png" alt="image not found"></div>
-                <div class="pricing__shape-3 rr-shape-p-s_1 rr-upDown"><img src="/assets/imgs/pricing/shape-3.png" alt="image not found"></div>
-                <div class="pricing__shape-4 rr-shape-p-s_1 rr-upDown"><img src="/assets/imgs/pricing/shape-4.png" alt="image not found"></div>
-                <div class="pricing__shape-5 rr-shape-p-s_1 rr-downUp"><img src="/assets/imgs/pricing/shape-5.png" alt="image not found"></div>
+                <div class="pricing__shape-1 rr-shape-p-s_1 rr-upDown"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/shape-1.png" alt="image not found"></div>
+                <div class="pricing__shape-2 rr-shape-p-s_1 rr-downUp"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/shape-2.png" alt="image not found"></div>
+                <div class="pricing__shape-3 rr-shape-p-s_1 rr-upDown"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/shape-3.png" alt="image not found"></div>
+                <div class="pricing__shape-4 rr-shape-p-s_1 rr-upDown"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/shape-4.png" alt="image not found"></div>
+                <div class="pricing__shape-5 rr-shape-p-s_1 rr-downUp"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/shape-5.png" alt="image not found"></div>
             </div>
             <div class="row mb-60 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
                 <div class="col-xl-6">

@@ -45,7 +45,7 @@
                     <h2 class="mb-4">Create Consultant</h2>
 
                     <!-- Bind the form to the "contract" object -->
-                    <form:form action="/customer/consultant/save" modelAttribute="newConsultant" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                    <form:form action="${pageContext.request.contextPath}/customer/consultant/save" modelAttribute="newConsultant" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
 
                         <form:hidden path="customer.id" value="${customer.id}" />
 

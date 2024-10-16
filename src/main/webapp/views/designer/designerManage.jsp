@@ -18,7 +18,7 @@
         <div class="container">
             <header>
                 <div class="nav">
-                    <a href="/designer/manage" class="nav-link">
+                    <a href="${pageContext.request.contextPath}/designer/manage" class="nav-link">
                         <i class="fas fa-project-diagram"></i> My Projects
                     </a>
 
@@ -29,19 +29,19 @@
                             <span class="badge badge-danger">3</span>
                         </a>
 
-                          <div class="dropdown">
-                        <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
-                            <span class="ml-2 user-name">${user.name}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="/designer/profile"><i class="fas fa-user"></i> Profile</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-paint-brush"></i> Theme</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Help</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/logout" class="dropdown-item btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                        </ul>
-                    </div>
+                        <div class="dropdown">
+                            <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
+                                <span class="ml-2 user-name">${user.name}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/designer/profile"><i class="fas fa-user"></i> Profile</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-paint-brush"></i> Theme</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Help</a></li>
+                                <li class="divider"></li>
+                                <li><a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </header>
@@ -81,8 +81,8 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="/designer/manage/viewDetail/${designs.designId}" class="btn btn-info">Detail</a>
-                                    <a href="/designer/design/${designs.designId}" class="btn btn-secondary">To Design</a>
+                                    <a href="${pageContext.request.contextPath}/designer/manage/viewDetail/${designs.designId}" class="btn btn-info">Detail</a>
+                                    <a href="${pageContext.request.contextPath}/designer/design/${designs.designId}" class="btn btn-secondary">To Design</a>
                                 </td>
 
                             </tr>
@@ -92,27 +92,27 @@
             </div>
 
 
-               <!-- Pagination Controls -->
-        <div class="d-flex justify-content-between align-items-center mt-4">
-            <!-- Previous Button -->
-            <c:if test="${currentPage > 0}">
-                <a href="?page=${currentPage - 1}" class="btn btn-primary">&lt;</a>
-            </c:if>
-            <c:if test="${currentPage == 0}">
-                <button class="btn btn-primary" disabled>&lt;</button>
-            </c:if>
+            <!-- Pagination Controls -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <!-- Previous Button -->
+                <c:if test="${currentPage > 0}">
+                    <a href="?page=${currentPage - 1}" class="btn btn-primary">&lt;</a>
+                </c:if>
+                <c:if test="${currentPage == 0}">
+                    <button class="btn btn-primary" disabled>&lt;</button>
+                </c:if>
 
-            <!-- Page Indicator -->
-            <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
+                <!-- Page Indicator -->
+                <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
 
-            <!-- Next Button -->
-            <c:if test="${currentPage < totalPages - 1}">
-                <a href="?page=${currentPage + 1}" class="btn btn-primary">&gt;</a>
-            </c:if>
-            <c:if test="${currentPage == totalPages - 1}">
-                <button class="btn btn-primary" disabled>&gt;</button>
-            </c:if>
-        </div>
+                <!-- Next Button -->
+                <c:if test="${currentPage < totalPages - 1}">
+                    <a href="?page=${currentPage + 1}" class="btn btn-primary">&gt;</a>
+                </c:if>
+                <c:if test="${currentPage == totalPages - 1}">
+                    <button class="btn btn-primary" disabled>&gt;</button>
+                </c:if>
+            </div>
         </div>
 
         <!-- jQuery -->

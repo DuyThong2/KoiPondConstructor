@@ -41,7 +41,7 @@
                     <h2 class="mb-4">Create Package</h2>
 
                     <!-- Bind the form to the "contract" object -->
-                    <form:form action="/manager/parcel/save" modelAttribute="newParcel" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                    <form:form action="${pageContext.request.contextPath}/manager/parcel/save" modelAttribute="newParcel" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
 
                         <!-- Customer Name -->
                         <div class="form-group">
@@ -66,7 +66,7 @@
                             <label for="packageDescription">package Description: </label>
                             <form:input path="packageDescription" id="packageDescription" class="form-control" />
                         </div>
-                       
+
                         <button  type="submit" class="btn btn-primary">Create Package</button>
                     </form:form>
                 </div>       

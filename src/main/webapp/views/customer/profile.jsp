@@ -256,9 +256,9 @@
         <script type="text/javascript"></script>
 
         <script>
-            $('#changePasswordModal').on('hidden.bs.modal', function () {
-                $(this).find('form').trigger('reset');
-            });
+                $('#changePasswordModal').on('hidden.bs.modal', function () {
+                    $(this).find('form').trigger('reset');
+                });
         </script>
     </body>
 </html>

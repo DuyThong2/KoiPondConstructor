@@ -137,7 +137,7 @@
 
                     <div class="filter-card">
                         <!-- Sort and Search Form -->
-                        <form method="get" action="/consultant/serviceQuote">
+                        <form method="get" action="${pageContext.request.contextPath}/consultant/serviceQuote">
                             <div class="form-row align-items-center d-flex justify-content-between">
                                 <!-- Sort By -->
                                 <div class="col-auto">
@@ -173,7 +173,7 @@
                                         <option value="7" ${statusFilter == 7 ? 'selected' : ''}>Cancel</option>
                                     </select>
                                 </div>
-                                
+
                                 <!-- Date Range Filter -->
                                 <div class="col-auto">
                                     <label for="fromDate">From Date:</label>
@@ -184,7 +184,7 @@
                                     <label for="toDate">To Date:</label>
                                     <input type="date" name="toDate" id="toDate" class="form-control" value="${toDate}">
                                 </div>
-                                
+
                                 <!-- Search by Name -->
                                 <div class="col-auto">
                                     <label for="searchName">Service Quote Name</label>

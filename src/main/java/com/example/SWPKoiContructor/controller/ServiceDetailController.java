@@ -9,6 +9,7 @@ import com.example.SWPKoiContructor.services.ServiceDetailService;
 import com.example.SWPKoiContructor.services.ServiceQuoteService;
 import com.example.SWPKoiContructor.services.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,9 @@ import java.util.List;
 
 @Controller
 public class ServiceDetailController {
+
+    @Value("${spring.application.name}")
+    private String contexPath;
 
     @Autowired
     private ServiceDetailService serviceDetailService;
@@ -81,7 +85,7 @@ public class ServiceDetailController {
         ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
 
         if (serviceDetail == null) {
-            return "redirect:/manager/serviceDetails"; // Redirect if service detail not found
+            return "redirect:"+ contexPath +"/manager/serviceDetails"; // Redirect if service detail not found
         }
 
         // Add attributes to the model for rendering
@@ -103,9 +107,9 @@ public class ServiceDetailController {
         newServiceDetail.setService(serviceQuotes.getService());
         newServiceDetail.setCustomer(serviceQuotes.getCustomer());
         newServiceDetail = serviceDetailService.createServiceDetail(newServiceDetail);
-        return "redirect:/manager/serviceDetails";
+        return "redirect:"+ contexPath +"/manager/serviceDetails";
         }catch(Exception e){
-            return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
+            return "redirect:"+ contexPath +"/manager/serviceQuote/detail/" + serviceQuoteId;
         }
     }
 
@@ -123,7 +127,7 @@ public class ServiceDetailController {
         ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
 
         if (serviceDetail == null) {
-            return "redirect:/manager/serviceDetails"; // Redirect if service detail not found
+            return "redirect:"+ contexPath +"/manager/serviceDetails"; // Redirect if service detail not found
         }
 
         // Load the currently assigned construction staff member for this service detail
@@ -182,7 +186,7 @@ public class ServiceDetailController {
                     serviceDetail.setServiceDetailStatus(2); // Set status to Processing (2)
                 }
                 serviceDetailService.updateServiceDetail(serviceDetail); // Update service detail
-                return "redirect:/manager/serviceDetails/assign/" + serviceDetailId;
+                return "redirect:"+ contexPath +"/manager/serviceDetails/assign/" + serviceDetailId;
             } else {
                 model.addAttribute("errorMessage", "Invalid Service Detail or Staff.");
                 return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
@@ -215,7 +219,7 @@ public class ServiceDetailController {
                 throw new IllegalArgumentException("Staff not assigned to this service detail.");
             }
 
-            return "redirect:/manager/serviceDetails/assign/" + serviceDetailId;
+            return "redirect:"+ contexPath +"/manager/serviceDetails/assign/" + serviceDetailId;
 
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Error removing staff: " + e.getMessage());
@@ -279,7 +283,7 @@ public class ServiceDetailController {
         // Redirect to login page if the customer is not logged in
         if (customer == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Please login.");
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
 
         // Fetch paginated and sorted service details for the customer

@@ -67,13 +67,13 @@
                                             </c:when>
                                         </c:choose>
                                     </td>
-                                    <td><a href="/manager/design/viewDetail/${designs.designId}" class="btn btn-info">View Details</a></td>
+                                    <td><a href="${pageContext.request.contextPath}/manager/design/viewDetail/${designs.designId}" class="btn btn-info">View Details</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
 
-              <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div class="d-flex justify-content-between align-items-center mt-4">
                         <!-- Previous Button -->
                         <c:if test="${currentPage > 0}">
                             <a href="?page=${currentPage - 1}" class="btn btn-primary">&lt;</a>

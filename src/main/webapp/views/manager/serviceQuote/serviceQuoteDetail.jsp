@@ -334,7 +334,7 @@
 
                             <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
                                 <div class="">
-                                    <form action="/manager/serviceDetails/create" method="post" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/manager/serviceDetails/create" method="post" class="d-inline">
                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}">
                                         <button type="submit" class="btn btn-success">Create New Service Detail</button>
                                     </form>
@@ -375,7 +375,7 @@
                     </div>
                     <div class="modal-body">
                         are you sure you want to accept ?
-                        <form id="acceptForm" action="/manager/serviceQuote/detail/saveStatus" method="post">
+                        <form id="acceptForm" action="${pageContext.request.contextPath}/manager/serviceQuote/detail/saveStatus" method="post">
                             <input type="hidden" name="id" value="">
                             <input type="hidden" name="status" value="">
                         </form>
@@ -399,7 +399,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="declineForm" action="/manager/serviceQuote/detail/saveStatus" method="post">
+                        <form id="declineForm" action="${pageContext.request.contextPath}/manager/serviceQuote/detail/saveStatus" method="post">
                             <input type="hidden" name="id" value="">
                             <input type="hidden" name="status" value="">
                             <input type="hidden" name="toUserId" value="">

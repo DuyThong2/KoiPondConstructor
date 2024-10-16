@@ -25,6 +25,8 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +44,9 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Controller
 public class ContractController {
+
+    @Value("${spring.application.name}")
+    private String contexPath;
 
     private FileUtility fileUtility;
     private ContractService contractService;
@@ -116,7 +121,7 @@ public class ContractController {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             // Redirect to login page or show an error if the user is not logged in
-            return "redirect:/login";  // Adjust as needed for your project
+            return "redirect:"+ contexPath +"/login";  // Adjust as needed for your project
         }
         List<Contract> contracts = contractService.getContractListOfConsultant(user.getId(), page, size, sortBy, sortDirection);
 
@@ -179,7 +184,7 @@ public class ContractController {
             }
             return "manager/contract/contractDetail";
         } else {
-            return "redirect:/manager/contract";
+            return "redirect:"+ contexPath +"/manager/contract";
         }
 
     }
@@ -203,7 +208,7 @@ public class ContractController {
             }
             return "consultant/contract/contractDetail";
         } else {
-            return "redirect:/consultant/contract";
+            return "redirect:"+ contexPath +"/consultant/contract";
         }
 
     }
@@ -222,7 +227,7 @@ public class ContractController {
             }
             return "customer/contract/contractDetail";
         } else {
-            return "redirect:/customer/contract";
+            return "redirect:"+ contexPath +"/customer/contract";
         }
 
     }
@@ -243,7 +248,7 @@ public class ContractController {
 
             return "consultant/contract/createContract";
         } else {
-            return "redirect:/consultant/contract";
+            return "redirect:"+ contexPath +"/consultant/contract";
         }
 
     }
@@ -261,7 +266,7 @@ public class ContractController {
         // Save the contract entity
         contract = contractService.createContract(contract);
 
-        return "redirect:/consultant/contract/viewDetail/" + contract.getContractId();  // Redirect to contract listing page after saving
+        return "redirect:"+ contexPath +"/consultant/contract/viewDetail/" + contract.getContractId();  // Redirect to contract listing page after saving
     }
 
     @GetMapping("/consultant/contract/edit")
@@ -275,7 +280,7 @@ public class ContractController {
             model.addAttribute("customer", contract.getCustomer());
             return "consultant/contract/editContract";
         } else {
-            return "redirect:/consultant/contract";
+            return "redirect:"+ contexPath +"/consultant/contract";
         }
 
     }
@@ -293,7 +298,7 @@ public class ContractController {
         // Save the contract entity
         contract = contractService.createContract(contract);
 
-        return "redirect:/consultant/contract/viewDetail/" + contract.getContractId();  // Redirect to contract listing page after saving
+        return "redirect:"+ contexPath +"/consultant/contract/viewDetail/" + contract.getContractId();  // Redirect to contract listing page after saving
     }
 
     @GetMapping("/manager/contract/edit")
@@ -306,7 +311,7 @@ public class ContractController {
             model.addAttribute("customer", contract.getCustomer());
             return "manager/contract/editContract";
         } else {
-            return "redirect:/manager/contract";
+            return "redirect:"+ contexPath +"/manager/contract";
         }
 
     }
@@ -325,13 +330,13 @@ public class ContractController {
         // Save the contract entity
         contract = contractService.createContract(contract);
 
-        return "redirect:/manager/contract/viewDetail/" + contract.getContractId();  // Redirect to contract listing page after saving
+        return "redirect:"+ contexPath +"/manager/contract/viewDetail/" + contract.getContractId();  // Redirect to contract listing page after saving
     }
 
     @PostMapping("/customer/contract/editStatus")
     public String editStatusByCustomer(@RequestParam("id") int contractId, @RequestParam("status") int status) {
         Contract contract = contractService.changeStatusContract(status, contractId);
-        return "redirect:/customer/contract/viewDetail/" + contractId;
+        return "redirect:"+ contexPath +"/customer/contract/viewDetail/" + contractId;
 
     }
 
@@ -346,14 +351,14 @@ public class ContractController {
         User toUser = userService.getUserById(toUserId);
         Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, contract);
         newFeedback = feedbackService.saveFeedback(newFeedback);
-        return "redirect:/customer/contract/viewDetail/" + contractId;
+        return "redirect:"+ contexPath +"/customer/contract/viewDetail/" + contractId;
 
     }
 
     @PostMapping("/manager/contract/editStatus")
     public String editStatusByManager(@RequestParam("id") int contractId, @RequestParam("status") int status) {
         Contract contract = contractService.changeStatusContract(status, contractId);
-        return "redirect:/manager/contract/viewDetail/" + contractId;
+        return "redirect:"+ contexPath +"/manager/contract/viewDetail/" + contractId;
 
     }
 
@@ -368,14 +373,14 @@ public class ContractController {
         User toUser = userService.getUserById(toUserId);
         Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, contract);
         newFeedback = feedbackService.saveFeedback(newFeedback);
-        return "redirect:/manager/contract/viewDetail/" + contractId;
+        return "redirect:"+ contexPath +"/manager/contract/viewDetail/" + contractId;
 
     }
 
     @PostMapping("/consultant/contract/editStatus")
     public String editStatusByConsultant(@RequestParam("id") int contractId, @RequestParam("status") int status) {
         Contract contract = contractService.changeStatusContract(status, contractId);
-        return "redirect:/consultant/contract/viewDetail/" + contractId;
+        return "redirect:"+ contexPath +"/consultant/contract/viewDetail/" + contractId;
 
     }
 

@@ -115,7 +115,7 @@
 
                     <div class="filter-card">
                         <!-- Sort and Search Form -->
-                        <form method="get" action="/manager/contract">
+                        <form method="get" action="${pageContext.request.contextPath}/manager/contract">
                             <div class="form-row align-items-center d-flex justify-content-between">
                                 <!-- Sort By -->
                                 <div class="col-auto">
@@ -198,7 +198,7 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${not empty contract.fileURL}">
-                                                <form action="/download/${contract.fileURL}" method="get">
+                                                <form action="${pageContext.request.contextPath}/download/${contract.fileURL}" method="get">
                                                     <button type="submit" class="btn btn-outline-primary">
                                                         <i class="fas fa-download"></i> Download Contract
                                                     </button>
@@ -236,7 +236,7 @@
                                         </c:choose>
                                     </td>
                                     <td>${contract.contractNote}</td>
-                                    <td><a href="/manager/contract/viewDetail/${contract.contractId}" class="btn btn-info">View</a></td>
+                                    <td><a href="${pageContext.request.contextPath}/manager/contract/viewDetail/${contract.contractId}" class="btn btn-info">View</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>

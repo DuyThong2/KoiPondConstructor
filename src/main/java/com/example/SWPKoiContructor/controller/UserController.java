@@ -5,6 +5,7 @@ import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.*;
 import com.example.SWPKoiContructor.utils.FileUtility;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,9 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
+
+    @Value("${spring.application.name}")
+    private String contexPath;
 
     private ConsultantService consultantService;
     private FileUtility fileUtility;
@@ -51,7 +55,7 @@ public class UserController {
     public String customerProfile(Model model,  HttpSession session) {
         Customer customer = (Customer) session.getAttribute("user");
         if(customer == null)
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
 
         long totalProject = projectService.countCustomerProjectsById(customer.getId());
         long totalPoint = loyaltyPointService.TotalPoints(customer.getId());
@@ -69,20 +73,20 @@ public class UserController {
                                   RedirectAttributes redirectAttributes, HttpSession session) {
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Choose a file to upload!");
-            return "redirect:/customer/profile";
+            return "redirect:"+ contexPath +"/customer/profile";
         }
 
         Customer customer = customerService.getCustomerById(id);
         if (customer == null) {
             redirectAttributes.addFlashAttribute("message", "Customer not found!");
-            return "redirect:/customer/profile";
+            return "redirect:"+ contexPath +"/customer/profile";
         }
 
         try {
             String uploadedFilePath = fileUtility.handleFileUpload(file, FileUtility.USER_DIR);
             if (uploadedFilePath == null) {
                 redirectAttributes.addFlashAttribute("message", "Failed to upload file.");
-                return "redirect:/customer/profile";
+                return "redirect:"+ contexPath +"/customer/profile";
             }
 
             customer.setImgURL(uploadedFilePath);
@@ -94,7 +98,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message", "An error occurred while uploading the file.");
         }
 
-        return "redirect:/customer/profile";
+        return "redirect:"+ contexPath +"/customer/profile";
     }
 
 
@@ -107,7 +111,7 @@ public class UserController {
         Customer customer = customerService.getCustomerById(id);
         if (customer == null) {
             redirectAttributes.addFlashAttribute("message", "Customer not found!");
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
             customer.setName(name);
             customer.setPhone(phone);
@@ -115,7 +119,7 @@ public class UserController {
             //update session to upload new image
             session.setAttribute("user", customer);
             redirectAttributes.addFlashAttribute("message", "Update successfully!");
-        return "redirect:/customer/profile";
+        return "redirect:"+ contexPath +"/customer/profile";
     }
 
     @PostMapping("/profile/changePassword")
@@ -128,11 +132,11 @@ public class UserController {
         Customer customer = customerService.getCustomerById(id);
         if (customer == null) {
             redirectAttributes.addFlashAttribute("message", "You must be login!");
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
         if(!passwordEncoder.matches(currentPassword, customer.getPassword()) || !newPassword.equals(confirmPassword)) {
             redirectAttributes.addFlashAttribute("message", "Passwords do not match or do not correct!");
-            return "redirect:/customer/profile";
+            return "redirect:"+ contexPath +"/customer/profile";
         }
 
         customer.setPassword(passwordEncoder.encode(newPassword));
@@ -140,7 +144,7 @@ public class UserController {
         //clear session
         SecurityContextHolder.clearContext();
         redirectAttributes.addFlashAttribute("message", "Password changed successfully! Let's Login Again!");
-        return "redirect:/login";
+        return "redirect:"+ contexPath +"/login";
     }
 
     //========================================End Of Customer Profile============================================//
@@ -152,7 +156,7 @@ public class UserController {
     public String designerProfile(Model model,  HttpSession session) {
         Staff staff = (Staff) session.getAttribute("user");
         if(staff == null)
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
 
         long totalDesign = designService.countDesignsByStaff(staff.getId());
         long totalDesignInProcess = designService.countDesignsProcessingByStaffId(staff.getId());
@@ -173,26 +177,26 @@ public class UserController {
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Choose a file to upload!");
             if(staff.getDepartment().equalsIgnoreCase("Design"))
-                return "redirect:/designer/profile";
+                return "redirect:"+ contexPath +"/designer/profile";
             if(staff.getDepartment().equalsIgnoreCase("Consulting"))
-                return "redirect:/consultant/profile";
+                return "redirect:"+ contexPath +"/consultant/profile";
             if(staff.getDepartment().equalsIgnoreCase("Construction"))
-                return "redirect:/constructor/profile";
+                return "redirect:"+ contexPath +"/constructor/profile";
         }
 
         if (staff == null)
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
 
         try {
             String uploadedFilePath = fileUtility.handleFileUpload(file, FileUtility.USER_DIR);
             if (uploadedFilePath == null) {
                 redirectAttributes.addFlashAttribute("message", "Failed to upload file.");
                 if(staff.getDepartment().equalsIgnoreCase("Design"))
-                    return "redirect:/designer/profile";
+                    return "redirect:"+ contexPath +"/designer/profile";
                 if(staff.getDepartment().equalsIgnoreCase("Consulting"))
-                    return "redirect:/consultant/profile";
+                    return "redirect:"+ contexPath +"/consultant/profile";
                 if(staff.getDepartment().equalsIgnoreCase("Construction"))
-                    return "redirect:/constructor/profile";
+                    return "redirect:"+ contexPath +"/constructor/profile";
             }
 
             staff.setImgURL(uploadedFilePath);
@@ -203,17 +207,17 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message", "File uploaded successfully!");
 
             if(staff.getDepartment().equalsIgnoreCase("Design"))
-                return "redirect:/designer/profile";
+                return "redirect:"+ contexPath +"/designer/profile";
             if(staff.getDepartment().equalsIgnoreCase("Consulting"))
-                return "redirect:/consultant/profile";
+                return "redirect:"+ contexPath +"/consultant/profile";
             if(staff.getDepartment().equalsIgnoreCase("Construction"))
-                return "redirect:/constructor/profile";
+                return "redirect:"+ contexPath +"/constructor/profile";
 
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "An error occurred while uploading the file.");
         }
 
-        return "redirect:/login";
+        return "redirect:"+ contexPath +"/login";
     }
 
     @PostMapping("/profileStaff/changePassword")
@@ -226,16 +230,16 @@ public class UserController {
         Staff staff = staffService.getStaffById(id);
         if (staff == null) {
             redirectAttributes.addFlashAttribute("message", "You must be login!");
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
         if(!passwordEncoder.matches(currentPassword, staff.getPassword()) || !newPassword.equals(confirmPassword)) {
             redirectAttributes.addFlashAttribute("message", "Passwords do not match or do not correct!");
             if(staff.getDepartment().equalsIgnoreCase("Design"))
-                return "redirect:/designer/profile";
+                return "redirect:"+ contexPath +"/designer/profile";
             if(staff.getDepartment().equalsIgnoreCase("Consulting"))
-                return "redirect:/consultant/profile";
+                return "redirect:"+ contexPath +"/consultant/profile";
             if(staff.getDepartment().equalsIgnoreCase("Construction"))
-                return "redirect:/constructor/profile";
+                return "redirect:"+ contexPath +"/constructor/profile";
         }
 
         staff.setPassword(passwordEncoder.encode(newPassword));
@@ -243,7 +247,7 @@ public class UserController {
         //clear session
         SecurityContextHolder.clearContext();
         redirectAttributes.addFlashAttribute("message", "Password changed successfully! Let's Login Again!");
-        return "redirect:/login";
+        return "redirect:"+ contexPath +"/login";
     }
 
     @PostMapping("/profileStaff/update")
@@ -255,7 +259,7 @@ public class UserController {
         Staff staff = staffService.getStaffById(id);
         if (staff == null) {
             redirectAttributes.addFlashAttribute("message", "Customer not found!");
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
         staff.setName(name);
         staff.setPhone(phone);
@@ -264,11 +268,11 @@ public class UserController {
         session.setAttribute("user", staff);
         redirectAttributes.addFlashAttribute("message", "Update successfully!");
         if(staff.getDepartment().equalsIgnoreCase("Design"))
-            return "redirect:/designer/profile";
+            return "redirect:"+ contexPath +"/designer/profile";
         if(staff.getDepartment().equalsIgnoreCase("Consulting"))
-            return "redirect:/consultant/profile";
+            return "redirect:"+ contexPath +"/consultant/profile";
 
-        return "redirect:/constructor/profile";
+        return "redirect:"+ contexPath +"/constructor/profile";
     }
 
 
@@ -276,7 +280,7 @@ public class UserController {
     public String constructorProfile(Model model,  HttpSession session) {
         Staff staff = (Staff) session.getAttribute("user");
         if(staff == null)
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
 
         long totalConstruction = constructionService.countConstructionsByStaff(staff.getId());
         long totalConstructionInProcess = constructionService.countConstructionsInProcessByStaffId(staff.getId());
@@ -293,7 +297,7 @@ public class UserController {
     public String consultantProfile(Model model,  HttpSession session) {
         Staff staff = (Staff) session.getAttribute("user");
         if(staff == null)
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
 
         long totalDesign = designService.countDesignsByStaff(staff.getId());
         long totalDesignInProcess = consultantService.countConsultantByStaffId(staff.getId());

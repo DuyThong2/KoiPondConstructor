@@ -64,10 +64,10 @@
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
                     <h1>Update Service Content</h1>
-                    <form method="post" enctype="multipart/form-data" modelAttribute="service" action="/manager/serviceContent/update/">
+                    <form method="post" enctype="multipart/form-data" modelAttribute="service" action="${pageContext.request.contextPath}/manager/serviceContent/update/">
                         <!-- Service Title -->
                         <!-- Service Content -->
-                         <input type="hidden" name="serviceId" value="${service.serviceId}">
+                        <input type="hidden" name="serviceId" value="${service.serviceId}">
                         <div class="form-group">
                             <label for="content">Service Content</label>
                             <textarea id="content" name="content" class="form-control" rows="6" required>

@@ -41,7 +41,7 @@
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
                     <h2 class="mb-4">Quote List</h2>
                     <div class="filter-card">
-                        <form method="get" action="/manager/quote">
+                        <form method="get" action="${pageContext.request.contextPath}/manager/quote">
                             <div class="form-row align-items-center">
                                 <!-- Sort By -->
                                 <div class="col-auto">
@@ -138,7 +138,7 @@
                                         </c:choose>
                                     </td>
                                     <td>                                   
-                                        <a href="/manager/quote/detail/${quote.quotesId}" class="btn btn-primary">Detail</a> 
+                                        <a href="${pageContext.request.contextPath}/manager/quote/detail/${quote.quotesId}" class="btn btn-primary">Detail</a>
                                     </td>
                                 </tr>
                             </c:forEach>

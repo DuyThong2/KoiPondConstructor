@@ -108,7 +108,7 @@
                                 <c:choose>
                                     <c:when test="${quotes.quotesStatus == 1}">
                                         <div class="">
-                                            <form action="/manager/quote/detail/updateStatus" method="post" class="d-inline">
+                                            <form action="${pageContext.request.contextPath}/manager/quote/detail/updateStatus" method="post" class="d-inline">
                                                 <input type="hidden" name="quoteId" value="${quotes.quotesId}">
                                                 <input type="hidden" name="statusId" value="2">
                                                 <button type="submit" class="btn btn-success">Approved</button>
@@ -141,7 +141,7 @@
                                                 <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                             </div>
                                             <!--Nút Cancel báo giá-->
-                                            <form action="/manager/quote/detail/updateStatus" method="post" class="d-inline">
+                                            <form action="${pageContext.request.contextPath}/manager/quote/detail/updateStatus" method="post" class="d-inline">
                                                 <input type="hidden" name="quoteId" value="${quotes.quotesId}">
                                                 <input type="hidden" name="statusId" value="7">
                                                 <button type="submit" class="btn btn-danger">Cancel</button>
@@ -237,7 +237,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="declineForm" action="/manager/quote/detail/updateStatusAndFeedback" method="POST">
+                        <form id="declineForm" action="${pageContext.request.contextPath}/manager/quote/detail/updateStatusAndFeedback" method="POST">
                             <input type="hidden" name="quoteId" value="">
                             <input type="hidden" name="statusId" value="">
                             <input type="hidden" name="toUserId" value="">

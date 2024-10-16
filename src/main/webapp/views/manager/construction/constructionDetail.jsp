@@ -255,9 +255,9 @@
 
         <!-- Confirmation Script -->
         <script>
-                                                    function confirmStatusChange() {
-                                                        return confirm("Are you sure you want to change the status?");
-                                                    }
+            function confirmStatusChange() {
+                return confirm("Are you sure you want to change the status?");
+            }
         </script>
 
     </body>

@@ -64,144 +64,144 @@
         </style>
     </head>
     <body>
-    <div class="container">
-    <header>
-        <div class="nav">
-            <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
-                <i class="fas fa-project-diagram"></i> My Projects
-            </a>
-
-            <!-- Thông báo và cài đặt -->
-            <div class="nav-item-group">
-                <!-- Notifications icon with badge -->
-                <a href="#" class="nav-link">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge badge-danger">3</span> <!-- Số thông báo chưa đọc -->
-                </a>
-
-                <!-- Avatar và tên người dùng -->
-                <div class="dropdown">
-                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
-                        <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
-                        <span class="ml-2 user-name">${sessionScope.user.name}</span>
+        <div class="container">
+            <header>
+                <div class="nav">
+                    <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
+                        <i class="fas fa-project-diagram"></i> My Projects
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/constructor/profile">Profile</a>
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="${pageContext.request.contextPath}/help">Help</a>
-                        <div class="dropdown-divider"></div>
-                        <!-- Logout button in dropdown -->
-                        <a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout">
-                            <i class="fas fa-sign-out-alt"></i> Logout
+
+                    <!-- Thông báo và cài đặt -->
+                    <div class="nav-item-group">
+                        <!-- Notifications icon with badge -->
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-bell"></i>
+                            <span class="badge badge-danger">3</span> <!-- Số thông báo chưa đọc -->
                         </a>
+
+                        <!-- Avatar và tên người dùng -->
+                        <div class="dropdown">
+                            <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
+                                <span class="ml-2 user-name">${sessionScope.user.name}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/constructor/profile">Profile</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/help">Help</a>
+                                <div class="dropdown-divider"></div>
+                                <!-- Logout button in dropdown -->
+                                <a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </div>
+                        </div>
                     </div>
+                </div>
+            </header>
+            <div class="container mt-5">
+                <h2>Construction Stage Details</h2>
+
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:set var="canUpdateNext" value="true"/> <!-- Initialize canUpdateNext to true -->
+
+                        <c:forEach var="detail" items="${details}" varStatus="status">
+                        <form action="${pageContext.request.contextPath}/constructionStageDetail/updateStatus" method="post" onsubmit="return confirmStatusChange();">
+                            <input type="hidden" name="constructionId" value="${constructionId}">
+                            <input type="hidden" name="detailId" value="${detail.constructionStageDetailId}">
+                            <input type="hidden" name="constructionStageId" value="${id}">
+                            <tr>
+                                <td>${detail.constructionStageDetailId}</td>
+                                <td>${detail.constructionStageDetailName}</td>
+                                <td>${detail.constructionStageDetailDescription}</td>
+
+                                <td>
+                                    <!-- Check if previous detail is completed (if it's not the first detail) -->
+                                    <c:set var="previousCompleted" value="true"/> <!-- Default to true if it's the first detail -->
+                                    <c:if test="${!status.first}"> <!-- Only check previous detail if not the first -->
+                                        <c:if test="${details[status.index - 1].constructionStageDetailStatus != 4}">
+                                            <c:set var="previousCompleted" value="false"/> <!-- Previous detail is not completed -->
+                                        </c:if>
+                                    </c:if>
+
+                                    <!-- Display status label if it's Payment, Inspection, or already completed/canceled, or if the previous detail is not completed -->
+                                    <c:choose>
+                                        <c:when test="${detail.constructionStageDetailName == 'Payment' || detail.constructionStageDetailStatus == 4  || !previousCompleted}">
+                                            <span class="status-label">
+                                                <c:choose>
+
+                                                    <c:when test="${detail.constructionStageDetailStatus == 2}">Processing</c:when>
+                                                    <c:when test="${detail.constructionStageDetailStatus == 4}">Completed</c:when>
+                                                </c:choose>
+                                            </span>
+                                        </c:when>
+
+                                        <c:when test="${detail.constructionStageDetailName == 'Inspection' && previousCompleted && detail.constructionStageDetailStatus != 4}">
+                                            <select class="form-control text-center" name="newStatus" required>
+                                                <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
+                                            </select>
+
+                                        </c:when>
+
+
+                                        <c:otherwise>
+                                            <select class="form-control text-center" name="newStatus" required>
+
+                                                <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
+                                                <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
+                                            </select>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </td>
+
+                                <td>
+                                    <!-- Disable the button if Payment, Inspection, or the previous detail is incomplete -->
+                                    <c:if test="${canUpdateNext && detail.constructionStageDetailName != 'Payment' && previousCompleted && detail.constructionStageDetailStatus != 4}">
+                                        <button type="submit" class="btn btn-primary mt-2">Update</button>
+                                    </c:if>
+                                </td>
+                            </tr>
+
+                            <!-- Update canUpdateNext to false if this stage is not completed or canceled -->
+                            <c:if test="${detail.constructionStageDetailStatus != 4 && detail.constructionStageDetailStatus != 3}">
+                                <c:set var="canUpdateNext" value="false"/>
+                            </c:if>
+                        </form>
+                    </c:forEach>
+                    </tbody>
+
+                </table>
+
+                <div class="text-center mt-3">
+                    <a href="${pageContext.request.contextPath}/constructor/construction/${constructionId}" class="btn btn-secondary">Back to Construction</a>
                 </div>
             </div>
         </div>
-    </header>
-        <div class="container mt-5">
-            <h2>Construction Stage Details</h2>
-
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:set var="canUpdateNext" value="true"/> <!-- Initialize canUpdateNext to true -->
-
-                    <c:forEach var="detail" items="${details}" varStatus="status">
-                    <form action="${pageContext.request.contextPath}/constructionStageDetail/updateStatus" method="post" onsubmit="return confirmStatusChange();">
-                        <input type="hidden" name="constructionId" value="${constructionId}">
-                        <input type="hidden" name="detailId" value="${detail.constructionStageDetailId}">
-                        <input type="hidden" name="constructionStageId" value="${id}">
-                        <tr>
-                            <td>${detail.constructionStageDetailId}</td>
-                            <td>${detail.constructionStageDetailName}</td>
-                            <td>${detail.constructionStageDetailDescription}</td>
-
-                            <td>
-                                <!-- Check if previous detail is completed (if it's not the first detail) -->
-                                <c:set var="previousCompleted" value="true"/> <!-- Default to true if it's the first detail -->
-                                <c:if test="${!status.first}"> <!-- Only check previous detail if not the first -->
-                                    <c:if test="${details[status.index - 1].constructionStageDetailStatus != 4}">
-                                        <c:set var="previousCompleted" value="false"/> <!-- Previous detail is not completed -->
-                                    </c:if>
-                                </c:if>
-
-                                <!-- Display status label if it's Payment, Inspection, or already completed/canceled, or if the previous detail is not completed -->
-                                <c:choose>
-                                    <c:when test="${detail.constructionStageDetailName == 'Payment' || detail.constructionStageDetailStatus == 4  || !previousCompleted}">
-                                        <span class="status-label">
-                                            <c:choose>
-                                                
-                                                <c:when test="${detail.constructionStageDetailStatus == 2}">Processing</c:when>
-                                                <c:when test="${detail.constructionStageDetailStatus == 4}">Completed</c:when>
-                                            </c:choose>
-                                        </span>
-                                    </c:when>
-
-                                    <c:when test="${detail.constructionStageDetailName == 'Inspection' && previousCompleted && detail.constructionStageDetailStatus != 4}">
-                                        <select class="form-control text-center" name="newStatus" required>
-                                            <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                                        </select>
-
-                                    </c:when>
-
-
-                                    <c:otherwise>
-                                        <select class="form-control text-center" name="newStatus" required>
-                                           
-                                            <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                                            <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
-                                        </select>
-                                    </c:otherwise>
-                                </c:choose>
-                                
-                            </td>
-
-                            <td>
-                                <!-- Disable the button if Payment, Inspection, or the previous detail is incomplete -->
-                                <c:if test="${canUpdateNext && detail.constructionStageDetailName != 'Payment' && previousCompleted && detail.constructionStageDetailStatus != 4}">
-                                    <button type="submit" class="btn btn-primary mt-2">Update</button>
-                                </c:if>
-                            </td>
-                        </tr>
-
-                        <!-- Update canUpdateNext to false if this stage is not completed or canceled -->
-                        <c:if test="${detail.constructionStageDetailStatus != 4 && detail.constructionStageDetailStatus != 3}">
-                            <c:set var="canUpdateNext" value="false"/>
-                        </c:if>
-                    </form>
-                </c:forEach>
-                </tbody>
-
-            </table>
-
-            <div class="text-center mt-3">
-                <a href="${pageContext.request.contextPath}/constructor/construction/${constructionId}" class="btn btn-secondary">Back to Construction</a>
-            </div>
-        </div>
-    </div>
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <c:if test="${not empty message}">
+        <c:if test="${not empty message}">
+            <script>
+                        alert("${message}");
+            </script>
+        </c:if>
         <script>
-            alert("${message}");
-        </script>
-    </c:if>
-        <script>
-                        function confirmStatusChange() {
-                            return confirm("Are you sure you want to change the status?");
-                        }
+            function confirmStatusChange() {
+                return confirm("Are you sure you want to change the status?");
+            }
 
         </script>
 

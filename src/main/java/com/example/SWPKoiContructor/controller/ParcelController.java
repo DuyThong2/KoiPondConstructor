@@ -8,6 +8,8 @@ package com.example.SWPKoiContructor.controller;
 import com.example.SWPKoiContructor.entities.Parcel;
 import com.example.SWPKoiContructor.services.ParcelService;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class ParcelController {
+
+    @Value("${spring.application.name}")
+    private String contexPath;
 
     private ParcelService parcelService;
 
@@ -64,7 +69,7 @@ public class ParcelController {
     public String saveParcel(@ModelAttribute("newParcel") Parcel newParcel, Model model) {
         newParcel.setPackage_status(true);
         parcelService.saveParcel(newParcel);
-        return "redirect:/manager/parcel";
+        return "redirect:"+ contexPath +"/manager/parcel";
     }
 
     @GetMapping("/manager/parcel/update/{id}")
@@ -74,7 +79,7 @@ public class ParcelController {
             model.addAttribute("newParcel", parcel);
             return "manager/parcel/parcelUpdate";
         } else {
-            return "redirect:/manager/parcel";
+            return "redirect:"+ contexPath +"/manager/parcel";
         }
 
     }
@@ -82,7 +87,7 @@ public class ParcelController {
     @PostMapping("/manager/parcel/update")
     public String updateParcel(@ModelAttribute("newParcel") Parcel newParcel, Model model) {
         parcelService.saveParcel(newParcel);
-        return "redirect:/manager/parcel";
+        return "redirect:"+ contexPath +"/manager/parcel";
     }
 
 }

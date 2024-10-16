@@ -224,7 +224,7 @@
                                 <a class="dropdown-item" href="/help">Help</a>
                                 <div class="dropdown-divider"></div>
                                 <!-- Logout button in dropdown -->
-                                <a href="/logout" class="dropdown-item btn-logout">
+                                <a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout">
                                     <i class="fas fa-sign-out-alt"></i> Logout
                                 </a>
                             </div>

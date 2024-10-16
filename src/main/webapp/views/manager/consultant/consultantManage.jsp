@@ -116,7 +116,7 @@
 
                     <!-- Filter Form -->
                     <div class="filter-card">
-                        <form method="get" action="/manager/consultant">
+                        <form method="get" action="${pageContext.request.contextPath}/manager/consultant">
                             <div class="form-row align-items-center">
                                 <!-- Sort By -->
                                 <div class="col-auto">
@@ -201,7 +201,7 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="/manager/consultant/detail/${consultant.consultantId}" class="btn btn-info">View Detail</a>
+                                        <a href="${pageContext.request.contextPath}/manager/consultant/detail/${consultant.consultantId}" class="btn btn-info">View Detail</a>
                                     </td>
                                 </tr>
                             </c:forEach>

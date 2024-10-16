@@ -64,45 +64,45 @@
 
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
-            <h1>Create New Blog</h1>
+                    <h1>Create New Blog</h1>
 
-            <form:form method="post" enctype="multipart/form-data" modelAttribute="blog" action="/staff/blog/new">
-                <!-- Blog Title -->
-                <div class="form-group">
-                    <label for="title">Blog Title</label>
-                    <form:input path="name" class="form-control" placeholder="Enter blog title" required = "true"/>
-                    <form:errors path="name" cssClass="text-danger"/>
-                </div>
+                    <form:form method="post" enctype="multipart/form-data" modelAttribute="blog" action="${pageContext.request.contextPath}/staff/blog/new">
+                        <!-- Blog Title -->
+                        <div class="form-group">
+                            <label for="title">Blog Title</label>
+                            <form:input path="name" class="form-control" placeholder="Enter blog title" required = "true"/>
+                            <form:errors path="name" cssClass="text-danger"/>
+                        </div>
 
-                <!-- Blog Description -->
-                <div class="form-group">
-                    <label for="description">Blog Description</label>
-                    <form:textarea path="description" class="form-control" placeholder="Enter blog description" rows="4" required = "true"/>
-                    <form:errors path="description" cssClass="text-danger"/>
-                </div>
+                        <!-- Blog Description -->
+                        <div class="form-group">
+                            <label for="description">Blog Description</label>
+                            <form:textarea path="description" class="form-control" placeholder="Enter blog description" rows="4" required = "true"/>
+                            <form:errors path="description" cssClass="text-danger"/>
+                        </div>
 
-                <!-- Blog Content -->
-                <div class="form-group">
-                    <label for="content">Blog Content</label>
-                    <textarea id="content" name="content" class="form-control" rows="6" required>
+                        <!-- Blog Content -->
+                        <div class="form-group">
+                            <label for="content">Blog Content</label>
+                            <textarea id="content" name="content" class="form-control" rows="6" required>
 
-                    </textarea>
-                </div>
+                            </textarea>
+                        </div>
 
-                <!-- Blog Image Upload -->
-                <div class="form-group">
-                    <label for="file">Upload Image</label>
-                    <input type="file" id="file" name="file" class="form-control-file" required>
-                </div>
+                        <!-- Blog Image Upload -->
+                        <div class="form-group">
+                            <label for="file">Upload Image</label>
+                            <input type="file" id="file" name="file" class="form-control-file" required>
+                        </div>
 
-                <!-- Blog Status -->
+                        <!-- Blog Status -->
 
 
-                <!-- Submit Button -->
-                <div class="form-group btn-submit">
-                    <button type="submit" class="btn btn-primary">Create Blog</button>
-                </div>
-            </form:form>
+                        <!-- Submit Button -->
+                        <div class="form-group btn-submit">
+                            <button type="submit" class="btn btn-primary">Create Blog</button>
+                        </div>
+                    </form:form>
                 </main>
             </div>
         </div>

@@ -162,7 +162,7 @@
                             <div class="search__top d-flex justify-content-between align-items-center">
                                 <div class="search__logo">
                                     <a href="index.html">
-                                        <img src="/assets/imgs/logo/logo-white.svg" alt="img">
+                                        <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                                     </a>
                                 </div>
                                 <div class="search__close">
@@ -209,7 +209,7 @@
                         <div class="offcanvas__top d-flex justify-content-between align-items-center">
                             <div class="offcanvas__logo">
                                 <a href="index.html">
-                                    <img src="/assets/imgs/logo/logo-white.svg" alt="logo not found">
+                                    <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                                 </a>
                             </div>
                             <div class="offcanvas__close">

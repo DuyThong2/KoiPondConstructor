@@ -57,12 +57,12 @@
                     <h2 class="mb-4">Create Service Quote</h2>
 
                     <!-- Bind the form to the "contract" object -->
-                    <form:form action="/consultant/serviceQuote/save" modelAttribute="newServiceQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                    <form:form action="${pageContext.request.contextPath}/consultant/serviceQuote/save" modelAttribute="newServiceQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
 
                         <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
 
                         <form:hidden path="customer.id" value="${customer.id}" />
-                        
+
                         <form:hidden path="staff.id" value="${staff.id}" />
 
                         <!-- Quotes Name -->
@@ -79,7 +79,7 @@
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="serviceQuotesArea">Area (m²):</label>
+                            <label for="serviceQuotesArea">Area (mï¿½):</label>
                             <form:input path="serviceQuotesArea" id="serviceQuotesArea" step="0.01" class="form-control" />
                         </div>
 
@@ -90,7 +90,7 @@
                                 <form:options items="${service}" itemValue="serviceId" itemLabel="serviceName" />
                             </form:select>
                         </div>
-                        
+
                         <!-- Total Price (Read-Only, auto-calculated) -->
                         <div class="form-group">
                             <label for="serviceQuotesTotalPrice">Total Price:</label>
@@ -109,7 +109,7 @@
 
             <!-- JavaScript for Auto Adjustment -->
             <script>
-                
+
             </script>
 
         </div>

@@ -18,6 +18,8 @@ import com.example.SWPKoiContructor.utils.FileUtility;
 import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +35,10 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class ConsultantController {
-    
+
+    @Value("${spring.application.name}")
+    private String contexPath;
+
     private ConsultantService consultantService;
     private StaffService staffService;
     private CustomerService customerService;
@@ -95,7 +100,7 @@ public class ConsultantController {
     public String updateConsultantStaff(@RequestParam("id")int id, @RequestParam("staffId")int staffId,Model model){
         Staff consultantStaff = staffService.getStaffById(staffId);
         Consultant consultant = consultantService.updateConsultantStaff(id, consultantStaff);
-        return "redirect:/manager/consultant/detail/" + id;
+        return "redirect:"+ contexPath +"/manager/consultant/detail/" + id;
     }
     
     
@@ -150,7 +155,7 @@ public class ConsultantController {
     @GetMapping("/consultant/viewConsultantDetail/updateStatus")
     public String updateConsultantStatus(@RequestParam("consultantId")int consultantId, @RequestParam("statusId")int statusId, Model model){
         Consultant consultant = consultantService.updateConsultantStatus(consultantId, statusId);
-        return "redirect:/consultant/viewConsultantDetail/" + consultantId;
+        return "redirect:"+ contexPath +"/consultant/viewConsultantDetail/" + consultantId;
     }
     
     
@@ -170,7 +175,7 @@ public class ConsultantController {
         newConsultant.setConsultantDateTime(Calendar.getInstance());
         newConsultant.setConsultantStatus(1);
         newConsultant = consultantService.createConsultant(newConsultant);
-        return "redirect:/customer/consultant/create";
+        return "redirect:"+ contexPath +"/customer/consultant/create";
     }
 
     
@@ -199,7 +204,7 @@ public class ConsultantController {
             
         }
         newConsultant = consultantService.createConsultant(newConsultant);
-        return "redirect:/";
+        return "redirect:"+ contexPath +"/";
     }
     
 }

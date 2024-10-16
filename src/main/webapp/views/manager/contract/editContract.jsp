@@ -304,41 +304,41 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <c:forEach var="term" items="${terms}">
-                                                <tr>
-                                                    <td>${term.description}</td>
-                                                    <td class="text-center">${term.percentOnDesign1}</td>
-                                                    <td class="text-center">${term.percentOnDesign2}</td>
-                                                    <td class="text-center">${term.percentOnDesign3}</td>
-                                                    <td class="text-center">${term.percentOnConstruct1}</td>
-                                                    <td class="text-center">${term.percentOnConstruct2}</td>
-                                                    <td class="text-center">
-                                                        <c:choose>
-                                                            <c:when test="${term.payOnStartOfDesign}">
-                                                                Yes
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                No
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <c:choose>
-                                                            <c:when test="${term.payOnStartOfConstruction}">
-                                                                Yes
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                No
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-primary" onclick="selectTerm(${term.termId}, '${term.description}')">
-                                                            Select
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
+                                        <c:forEach var="term" items="${terms}">
+                                            <tr>
+                                                <td>${term.description}</td>
+                                                <td class="text-center">${term.percentOnDesign1}</td>
+                                                <td class="text-center">${term.percentOnDesign2}</td>
+                                                <td class="text-center">${term.percentOnDesign3}</td>
+                                                <td class="text-center">${term.percentOnConstruct1}</td>
+                                                <td class="text-center">${term.percentOnConstruct2}</td>
+                                                <td class="text-center">
+                                            <c:choose>
+                                                <c:when test="${term.payOnStartOfDesign}">
+                                                    Yes
+                                                </c:when>
+                                                <c:otherwise>
+                                                    No
+                                                </c:otherwise>
+                                            </c:choose>
+                                            </td>
+                                            <td class="text-center">
+                                            <c:choose>
+                                                <c:when test="${term.payOnStartOfConstruction}">
+                                                    Yes
+                                                </c:when>
+                                                <c:otherwise>
+                                                    No
+                                                </c:otherwise>
+                                            </c:choose>
+                                            </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-sm btn-primary" onclick="selectTerm(${term.termId}, '${term.description}')">
+                                                    Select
+                                                </button>
+                                            </td>
+                                            </tr>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
                                 </div>

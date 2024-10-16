@@ -182,7 +182,7 @@
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
             .comment{
-               margin: 10px;
+                margin: 10px;
                 padding: 10px 10px;
                 width: 400px;
                 border-radius: 8px;
@@ -476,18 +476,18 @@
                 </div>
 
                 <!-- Feedback Section -->
-            <form action="${pageContext.request.contextPath}/customer/feedback/send" method="POST">
-                <input type="hidden" name="constructionId" value="${construction.constructionId}">
-                <div class="feedback-section">
-                    <h3>Feedback</h3>
-                    <div class="form-group">
-                        <label for="feedback">Please provide your feedback:</label>
-                        <textarea class="form-control" id="feedback" name="feedback" rows="4" required></textarea>
+                <form action="${pageContext.request.contextPath}/customer/feedback/send" method="POST">
+                    <input type="hidden" name="constructionId" value="${construction.constructionId}">
+                    <div class="feedback-section">
+                        <h3>Feedback</h3>
+                        <div class="form-group">
+                            <label for="feedback">Please provide your feedback:</label>
+                            <textarea class="form-control" id="feedback" name="feedback" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="padding: 10px; font-size: 15px">Send Feedback</button>
                     </div>
-                    <button type="submit" class="btn btn-primary" style="padding: 10px; font-size: 15px">Send Feedback</button>
-                </div>
-            </form>
-        </div>
+                </form>
+            </div>
         </div>
 
         <!-- Script to dynamically change button color based on stage status -->

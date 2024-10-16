@@ -65,7 +65,7 @@
 
     <body>
         <div class="wrapper">
-            <form action="/authenticateTheUser" method="post">
+            <form action="${pageContext.request.contextPath}/authenticateTheUser" method="post">
                 <h1>Login</h1>
                 <div class="input-box">
                     <input type="text" name="username" placeholder="Email" required>
@@ -79,14 +79,14 @@
                 <button type="submit" class="btn">Login</button>
                 <div class="register-link">
                     <p>Don't have an account?
-                        <a href="/register">Sign up</a>
+                        <a href="${pageContext.request.contextPath}/register">Sign up</a>
                     </p>
                 </div>
                 <div class="link register-link forgot-password">
-                    <a href="/forgot-password">Forgot your password?</a>
+                    <a href="${pageContext.request.contextPath}/forgot-password">Forgot your password?</a>
                 </div>
                 <div class="register-link">
-                    <a href="/oauth2/authorization/google" class="link oauth-btn">
+                    <a href="${pageContext.request.contextPath}/oauth2/authorization/google" class="link oauth-btn">
                         <i class='bx bxl-google'></i> Login with Google
                     </a>
                 </div>

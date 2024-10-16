@@ -57,12 +57,12 @@
                     <h2 class="mb-4">Create Quote</h2>
 
                     <!-- Bind the form to the "contract" object -->
-                    <form:form action="/consultant/quote/saveNewQuotes" modelAttribute="newQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                    <form:form action="${pageContext.request.contextPath}/consultant/quote/saveNewQuotes" modelAttribute="newQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
 
                         <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
 
                         <form:hidden path="customer.id" value="${customer.id}" />
-                        
+
                         <form:hidden path="staff.id" value="${staff.id}" />
 
                         <!-- Quotes Name -->
@@ -79,7 +79,7 @@
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="area">Area (m²):</label>
+                            <label for="area">Area (mï¿½):</label>
                             <form:input path="quotesArea" id="area" step="0.01" class="form-control" />
                         </div>
 

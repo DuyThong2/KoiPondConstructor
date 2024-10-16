@@ -4,7 +4,7 @@
     Author     : Admin
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
 
@@ -19,24 +19,24 @@
         <title>Reset password</title>
     </head>
     <body>
-       <form action="/reset-password" method="post" class="wrapper">
-           <h1>Reset Password</h1>
-           <input type="hidden" name="token" value="${token}">
+        <form action="${pageContext.request.contextPath}/reset-password" method="post" class="wrapper">
+            <h1>Reset Password</h1>
+            <input type="hidden" name="token" value="${token}">
 
-           <div class="input-box">
-               <input type="password" name="password" placeholder="Enter New Password" required minlength="8" class="input-field">
-               <i class='bx bx-lock'></i>
-           </div>
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Enter New Password" required minlength="8" class="input-field">
+                <i class='bx bx-lock'></i>
+            </div>
 
-           <div class="input-box">
-               <input type="password" name="confirmPassword" placeholder="Confirm New Password" required minlength="8" class="input-field">
-               <i class='bx bx-lock-open'></i>
-           </div>
+            <div class="input-box">
+                <input type="password" name="confirmPassword" placeholder="Confirm New Password" required minlength="8" class="input-field">
+                <i class='bx bx-lock-open'></i>
+            </div>
 
-           <button type="submit" class="btn">Reset Password</button>
-       </form>
+            <button type="submit" class="btn">Reset Password</button>
+        </form>
 
-        
+
     </body>
 </html>
 

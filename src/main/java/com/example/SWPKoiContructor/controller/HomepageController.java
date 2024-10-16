@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomepageController {
+
+    @Value("${spring.application.name}")
+    private String contexPath;
 
     private ProjectService projectService;
     private PreDesignService preDesignService;
@@ -88,7 +92,7 @@ public class HomepageController {
             model.addAttribute("service", service);
             return "customer/mainPage/serviceDetail";
         } else {
-            return "redirect:/home/services";
+            return "redirect:"+ contexPath +"/home/services";
         }
 
     }
@@ -117,7 +121,7 @@ public class HomepageController {
             model.addAttribute("preDesign", preDesign);
             return "customer/mainPage/preDesignDetail";
         } else {
-            return "redirect:/home/preDesign";
+            return "redirect:"+ contexPath +"/home/preDesign";
         }
 
     }
@@ -147,7 +151,7 @@ public class HomepageController {
             model.addAttribute("project", project);
             return "customer/mainPage/projectDetail";
         } else {
-            return "redirect:/home/projects";
+            return "redirect:"+ contexPath +"/home/projects";
         }
 
     }
@@ -189,7 +193,7 @@ public class HomepageController {
             model.addAttribute("blog", blog);
             return "customer/mainPage/blogDetail";
         }
-        return "redirect:/home/blogs";
+        return "redirect:"+ contexPath +"/home/blogs";
 
     }
 

@@ -175,7 +175,7 @@
                             <div class="search__top d-flex justify-content-between align-items-center">
                                 <div class="search__logo">
                                     <a href="index.html">
-                                        <img src="/assets/imgs/logo/logo-white.svg" alt="img">
+                                        <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                                     </a>
                                 </div>
                                 <div class="search__close">
@@ -222,7 +222,7 @@
                         <div class="offcanvas__top d-flex justify-content-between align-items-center">
                             <div class="offcanvas__logo">
                                 <a href="index.html">
-                                    <img src="/assets/imgs/logo/logo-white.svg" alt="logo not found">
+                                    <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                                 </a>
                             </div>
                             <div class="offcanvas__close">
@@ -307,7 +307,7 @@
                                             <div class="blog-style-1 post-type post-grid">
                                                 <div class="blog-inner mb-4">
                                                     <div class="blog-thumb relative">
-                                                        <img src="/assets/imgs/mylogo/koi-background.jpg" class="img-fluid" alt="blog-img" />
+                                                        <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg" class="img-fluid" alt="blog-img" />
                                                         <div class="post-date">
                                                             <p> <i class="ti-calendar"></i> 
                                                                 <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/></p>

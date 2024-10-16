@@ -83,7 +83,7 @@
                             <th>Consultant Content</th>
                             <td>${consultant.consultantContent}</td>
                         </tr>
-                                          
+
                         <!-- Contract Status moved back into the table -->
                     </table>
 
@@ -91,7 +91,7 @@
                     <c:choose>
                         <c:when test="${consultant.consultantStatus == 2}">
                             <div class="">
-                                <form action="/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
                                     <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
                                     <input type="hidden" name="statusId" value="3">
                                     <button type="submit" class="btn btn-secondary">Begin</button>
@@ -100,12 +100,12 @@
                         </c:when>
                         <c:when test="${consultant.consultantStatus == 3}">
                             <div class="">
-                                <form action="/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
                                     <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
                                     <input type="hidden" name="statusId" value="4">
                                     <button type="submit" class="btn btn-success">Completed</button>
                                 </form>
-                                <form action="/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
                                     <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
                                     <input type="hidden" name="statusId" value="5">
                                     <button type="submit" class="btn btn-danger">Cancel</button>
@@ -114,7 +114,7 @@
                         </c:when>
                         <c:when test="${consultant.consultantStatus == 4 && empty consultant.quotes && consultant.consultantType == 'Service'}">
                             <div class="">
-                                <form action="/consultant/serviceQuote/create" method="get" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/consultant/serviceQuote/create" method="get" class="d-inline">
                                     <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
                                     <button type="submit" class="btn btn-success">Create New Service Quote</button>
                                 </form>                                   
@@ -122,7 +122,7 @@
                         </c:when>
                         <c:when test="${consultant.consultantStatus == 4 && empty consultant.quotes}">
                             <div class="">
-                                <form action="/consultant/quote/createNewQuotes" method="post" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/consultant/quote/createNewQuotes" method="post" class="d-inline">
                                     <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
                                     <button type="submit" class="btn btn-success">Create New Quote</button>
                                 </form>
@@ -133,7 +133,7 @@
                                 <a href="/consultant/quote/detail/${consultant.quotes.quotesId}" class="btn btn-secondary">View Quote</a>
                             </div>
                         </c:when>
-                        
+
                     </c:choose>
                 </div>
 
@@ -186,28 +186,28 @@
                             <p class="text-muted">No Quotes is associated with this consultant.</p>
                         </c:if>
                     </div>
-                    
+
                     <!-- Associated customer Details -->
                     <div class="customer-section mb-4">
                         <h4 class="section-header text-primary">Associated Customer</h4>                       
-                            <table class="table table-bordered">
-                                <tr>
-                                    <th>Customer ID</th>
-                                    <td>${consultant.customer.id}</td>
-                                </tr>
-                                <tr>
-                                    <th>Customer Name</th>
-                                    <td>${consultant.customer.name}</td>
-                                </tr>
-                                <tr>
-                                    <th>Customer Email</th>
-                                    <td>${consultant.customer.email}</td>
-                                </tr>
-                                <tr>
-                                    <th>Customer phone</th>
-                                    <td>${consultant.customer.phone}</td>
-                                </tr>
-                            </table>                                            
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Customer ID</th>
+                                <td>${consultant.customer.id}</td>
+                            </tr>
+                            <tr>
+                                <th>Customer Name</th>
+                                <td>${consultant.customer.name}</td>
+                            </tr>
+                            <tr>
+                                <th>Customer Email</th>
+                                <td>${consultant.customer.email}</td>
+                            </tr>
+                            <tr>
+                                <th>Customer phone</th>
+                                <td>${consultant.customer.phone}</td>
+                            </tr>
+                        </table>                                            
                     </div>
 
                     <!-- Associated Pre-Design Details -->

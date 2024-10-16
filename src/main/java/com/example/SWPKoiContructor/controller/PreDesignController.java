@@ -11,6 +11,8 @@ import com.example.SWPKoiContructor.services.PreDesignService;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import java.io.File;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +28,10 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Controller
 public class PreDesignController {
-    
+
+    @Value("${spring.application.name}")
+    private String contexPath;
+
     private PreDesignService preDesignService;
     private FileUtility fileUtility;
 
@@ -100,7 +105,7 @@ public class PreDesignController {
         String imgURL = fileUtility.handleFileUpload(file, FileUtility.BLOG_DIR);
         preDesign.setPreDesignImgUrl(imgURL);
         preDesignService.createNewPreDesign(preDesign);
-        return "redirect:/manager/preDesign";
+        return "redirect:"+ contexPath +"/manager/preDesign";
         }catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Error uploading image");
@@ -131,15 +136,15 @@ public class PreDesignController {
                 contentUpdated.setContent(content);
                 contentUpdated.setLastUpdatedDate(new java.util.Date());
                 preDesignService.updatePreDesign(originPreDesign);
-                return "redirect:/manager/preDesign/detail/" + originPreDesign.getPreDesignId();
+                return "redirect:"+ contexPath +"/manager/preDesign/detail/" + originPreDesign.getPreDesignId();
             } else {
-                return "redirect:/manager/preDesign";
+                return "redirect:"+ contexPath +"/manager/preDesign";
             }
 
             // Redirect to the blog list page after creation
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:/manager/preDesign";
+            return "redirect:"+ contexPath +"/manager/preDesign";
         }
     }
     

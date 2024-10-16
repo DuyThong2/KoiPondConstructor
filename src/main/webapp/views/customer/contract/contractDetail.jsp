@@ -262,7 +262,7 @@
                     <c:choose>
                         <c:when test="${contract.contractStatus == 2}">
                             <div class="mt-4 text-center">
-                                <form action="/customer/contract/editStatus" method="POST" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/customer/contract/editStatus" method="POST" class="d-inline">
                                     <input type="hidden" name="id" value="${contract.contractId}">
                                     <input type="hidden" name="status" value="6">
                                     <button type="submit" class="btn btn-success">Accept</button>
@@ -278,7 +278,7 @@
                                                 document.getElementById('declineForm').status.value = '3';"><i class="fas fa-times icon-btn"></i>
                                     Reject
                                 </button>
-                                <form action="/customer/contract/editStatus" method="POST" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/customer/contract/editStatus" method="POST" class="d-inline">
                                     <input type="hidden" name="id" value="${contract.contractId}">
                                     <input type="hidden" name="status" value="5">
                                     <button type="submit" class="btn btn-danger">Cancel</button>
@@ -308,7 +308,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="declineForm" action="/customer/contract/editStatusAndFeedback" method="post">
+                        <form id="declineForm" action="${pageContext.request.contextPath}/customer/contract/editStatusAndFeedback" method="post">
                             <input type="hidden" name="id" value="">
                             <input type="hidden" name="status" value="">
                             <input type="hidden" name="toUserId" value="">

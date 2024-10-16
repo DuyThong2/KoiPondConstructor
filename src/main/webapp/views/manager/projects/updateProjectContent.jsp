@@ -64,10 +64,10 @@
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
                     <h1>Update Project Content</h1>
-                    <form method="post" enctype="multipart/form-data" modelAttribute="project" action="/manager/projectContent/update/">
+                    <form method="post" enctype="multipart/form-data" modelAttribute="project" action="${pageContext.request.contextPath}/manager/projectContent/update/">
                         <!-- Hidden field for Project ID -->
                         <input type="hidden" name="projectId" value="${project.projectId}">
-                        
+
                         <!-- Project Content -->
                         <div class="form-group">
                             <label for="content">Project Content</label>
@@ -75,7 +75,7 @@
                                 ${project.content.content}
                             </textarea>
                         </div>
-                        
+
                         <!-- Submit Button -->
                         <div class="form-group btn-submit">
                             <button type="submit" class="btn btn-primary">Update Project Content</button>

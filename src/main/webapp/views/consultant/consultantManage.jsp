@@ -51,7 +51,7 @@
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <h2 class="mb-4">Consultant List</h2>
-                    <form method="get" action="/consultant/viewConsultantList">
+                    <form method="get" action="${pageContext.request.contextPath}/consultant/viewConsultantList">
                         <div class="form-row align-items-center">
                             <!-- Sort By -->
                             <div class="col-auto">
@@ -135,7 +135,7 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="/consultant/viewConsultantDetail/${consultant.consultantId}" class="btn btn-info">View Detail</a>
+                                        <a href="${pageContext.request.contextPath}/consultant/viewConsultantDetail/${consultant.consultantId}" class="btn btn-info">View Detail</a>
                                     </td>
                                 </tr>
                             </c:forEach>

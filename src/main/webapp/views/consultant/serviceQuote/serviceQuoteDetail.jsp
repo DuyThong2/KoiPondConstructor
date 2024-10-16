@@ -101,7 +101,7 @@
             .section-header i {
                 margin-right: 8px;
             }
-            
+
             .feedback-section {
                 background-color: #f8d7da; /* Light red background */
                 border: 2px solid #f0f0f0;
@@ -315,7 +315,7 @@
                         <c:choose>
                             <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
                                 <div class="">
-                                    <form action="/consultant/serviceQuote/update" method="get" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/consultant/serviceQuote/update" method="get" class="d-inline">
                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" >
                                         <button type="submit" class="btn btn-info">Edit Service Quotes</button>
                                     </form>
@@ -323,7 +323,7 @@
                             </c:when>
                             <c:when test="${serviceQuote.serviceQuotesStatus == 3}">
                                 <div class="">
-                                    <form action="/consultant/serviceQuote/update" method="get" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/consultant/serviceQuote/update" method="get" class="d-inline">
                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" >
                                         <button type="submit" class="btn btn-info">Edit Service Quotes</button>
                                     </form>
@@ -336,7 +336,7 @@
                             </c:when>
                             <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
                                 <div class="">
-                                    <form action="/consultant/serviceQuote/update" method="get" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/consultant/serviceQuote/update" method="get" class="d-inline">
                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" >
                                         <button type="submit" class="btn btn-info">Edit Service Quotes</button>
                                     </form>
@@ -366,7 +366,7 @@
                     </div>
                     <div class="modal-body">
 
-                        <form id="acceptForm" action="/consultant/serviceQuote/detail/saveStatus" method="post">
+                        <form id="acceptForm" action="${pageContext.request.contextPath}/consultant/serviceQuote/detail/saveStatus" method="post">
                             <input type="hidden" name="id" value="">
                             <input type="hidden" name="status" value="">
                         </form>
@@ -390,7 +390,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="declineForm" action="/consultant/serviceQuote/detail/saveStatus" method="post">
+                        <form id="declineForm" action="${pageContext.request.contextPath}/consultant/serviceQuote/detail/saveStatus" method="post">
                             <input type="hidden" name="id" value="">
                             <input type="hidden" name="status" value="">
                             <input type="hidden" name="toUserId" value="">

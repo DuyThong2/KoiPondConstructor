@@ -40,19 +40,19 @@
                         <h4 class="text-center py-3">Consultant Dashboard</h4>
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/contracts">Consultant</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/contracts">Consultant</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/projects">Quotes</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/projects">Quotes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/terms">Contract</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/terms">Contract</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/reports">Reports</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/reports">Reports</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="/admin/settings">Settings</a>
@@ -64,7 +64,7 @@
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <h2 class="mb-4">Quote List</h2>
-                    <form method="get" action="/consultant/quote">
+                    <form method="get" action="${pageContext.request.contextPath}/consultant/quote">
                         <div class="form-row align-items-center">
                             <!-- Sort By -->
                             <div class="col-auto">
@@ -133,8 +133,8 @@
                                     <td>${quote.quotesConstructionCost}</td>
                                     <td>${quote.quotesTotalPrice}</td>
                                     <td>
-                                    <!--1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 
-                                        5.refused(customer), 6.refused(by staff), 7. cancel -->
+                                        <!--1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 
+                                            5.refused(customer), 6.refused(by staff), 7. cancel -->
                                         <c:choose>
                                             <c:when test="${quote.quotesStatus == 1}">
                                                 <span class="badge badge-warning badge-status">Pending</span>

@@ -37,7 +37,7 @@
         <div class="container mt-5">
             <div class="row">
                 <!-- Left Column for Customer Information -->
-                
+
                 <!-- Right Column for Contract Creation Form -->
                 <div class="col-md-12">
                     <h2 class="mb-4">Update Service Quote</h2>
@@ -46,11 +46,11 @@
                     <form:form action="/consultant/serviceQuote/saveUpdate" modelAttribute="serviceQuote" method="Post" enctype="multipart/form-data" class="needs-validation" novalidate="true">
 
                         <form:hidden path="serviceQuotesId" value="${serviceQuote.serviceQuotesId}"/>
-                        
+
                         <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
 
                         <form:hidden path="customer.id" value="${customer.id}" />
-                        
+
                         <form:hidden path="staff.id" value="${staff.id}" />
 
                         <!-- Quotes Name -->
@@ -78,7 +78,7 @@
                                 <form:options items="${service}" itemValue="serviceId" itemLabel="serviceName" />
                             </form:select>
                         </div>
-                        
+
                         <!-- Total Price (Read-Only, auto-calculated) -->
                         <div class="form-group">
                             <label for="serviceQuotesTotalPrice">Total Price:</label>
@@ -97,7 +97,7 @@
 
             <!-- JavaScript for Auto Adjustment -->
             <script>
-                
+
             </script>
 
         </div>

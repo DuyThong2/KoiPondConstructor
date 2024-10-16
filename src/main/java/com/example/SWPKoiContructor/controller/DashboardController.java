@@ -4,12 +4,16 @@ import com.example.SWPKoiContructor.services.ContractService;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.services.QuoteService;
 import com.example.SWPKoiContructor.services.StaffService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class DashboardController {
+
+    @Value("${spring.application.name}")
+    private String contexPath;
 
     private QuoteService quoteService;
     private ProjectService projectService;

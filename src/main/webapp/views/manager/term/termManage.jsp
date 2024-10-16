@@ -33,11 +33,11 @@
 
             <!-- Insert New Term Button -->
             <div class="mb-4 text-right">
-                <a href="/manager/termCreate" class="btn btn-success">Add New Term</a>
+                <a href="${pageContext.request.contextPath}/manager/termCreate" class="btn btn-success">Add New Term</a>
             </div>
 
             <!-- Filter, Sort, and Search Form -->
-            <form method="get" action="/manager/terms" class="form-inline justify-content-center row">
+            <form method="get" action="${pageContext.request.contextPath}/manager/terms" class="form-inline justify-content-center row">
                 <!-- Search by description -->
                 <div class="form-group col-12 col-md-4 mb-2">
                     <label for="searchDescription" class="mr-2">Search by Description:</label>
@@ -104,10 +104,10 @@
                                         <!-- View Details Button -->
                                             <button type="button" class="btn btn-info btn-sm" onclick="showDetails(${term.termId})">View Details</button>
                                     <!-- Update Button -->
-                                    <a href="/manager/updateTerm/${term.termId}" class="btn btn-warning btn-sm">Update</a>
+                                    <a href="${pageContext.request.contextPath}/manager/updateTerm/${term.termId}" class="btn btn-warning btn-sm">Update</a>
                                     <!-- Enable/Disable Button -->
-                                    <form action="/manager/term/updateStatus/${term.termId}" method="POST" style="display:inline;">
-                                        
+                                    <form action="${pageContext.request.contextPath}/manager/term/updateStatus/${term.termId}" method="POST" style="display:inline;">
+
                                         <input type="hidden" name="termStatus" value="${!term.termStatus}" />
                                         <button type="submit" class="btn ${term.termStatus ? 'btn-danger' : 'btn-success'}">
                                             ${term.termStatus ? 'Disable' : 'Enable'}

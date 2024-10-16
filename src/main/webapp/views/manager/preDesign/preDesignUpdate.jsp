@@ -108,7 +108,7 @@
                     <h1>Update Pre Design</h1>
 
                     <!-- Form for Creating a New Pre Design -->
-                    <form:form method="post" enctype="multipart/form-data" modelAttribute="preDesign" action="/manager/preDesign/saveUpdate">
+                    <form:form method="post" enctype="multipart/form-data" modelAttribute="preDesign" action="${pageContext.request.contextPath}/manager/preDesign/saveUpdate">
                         <form:hidden path="preDesignId" value="${preDesign.preDesignId}"/>
                         <form:hidden path="preDesignImgUrl" value="${preDesign.preDesignImgUrl}"/>
                         <form:hidden path="content.id" value="${preDesign.content.id}"/>
@@ -119,7 +119,7 @@
                             <form:input path="preDesignName" class="form-control" placeholder="Enter Pre Design Name" required="true"/>
                             <form:errors path="preDesignName" cssClass="form-error"/>
                         </div>
-                                               
+
                         <!-- Pre Design Description -->
                         <div class="form-group">
                             <label for="preDesignDescription">Pre Design Description</label>

@@ -179,7 +179,7 @@
                                         <c:if test="${stage.designStageStatus == 4}">
                                             <c:choose>
                                                 <c:when test="${not empty stage.summaryFile}">
-                                                    <form action="/download/${stage.summaryFile}" method="get">
+                                                    <form action="${pageContext.request.contextPath}/download/${stage.summaryFile}" method="get">
                                                         <button type="submit" class="btn btn-outline-primary">
                                                             <i class="fas fa-download"></i> Download file
                                                         </button>
@@ -251,7 +251,7 @@
                                                                 </c:choose>
                                                             </td>
                                                             <td>
-                                                                <a href="/uploads/${bluePrint.imgUrl}" class="btn btn-link">View Image</a>
+                                                                <a href="${bluePrint.getShowingImg(bluePrint.imgUrl)}" class="btn btn-link">View Image</a>
                                                             </td>
                                                         </tr>
                                                     </c:forEach>

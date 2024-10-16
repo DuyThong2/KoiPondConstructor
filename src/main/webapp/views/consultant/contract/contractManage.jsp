@@ -12,14 +12,14 @@
             <h2>Contract List</h2>
 
             <!-- Sort Form -->
-            <form method="get" action="/manager/contract">
+            <form method="get" action="${pageContext.request.contextPath}/manager/contract">
                 <div class="form-row align-items-center">
                     <div class="col-auto">
                         <label for="sortBy">Sort by:</label>
                         <select name="sortBy" id="sortBy" class="form-control">
                             <option value="dateCreate" ${sortBy == 'dateCreate' ? 'selected' : ''}>Date Created</option>
                             <option value="totalPrice" ${sortBy == 'totalPrice' ? 'selected' : ''}>Total Price</option>
-                          
+
                         </select>
                     </div>
                     <div class="col-auto">
@@ -70,7 +70,7 @@
                                 </c:choose>
                             </td>
                             <td>${contract.totalPrice}</td>
-                            
+
                             <td>${contract.contractTerm}</td>
                             <td>
                                 <c:choose>

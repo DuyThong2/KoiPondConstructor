@@ -117,7 +117,7 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${not empty contract.fileURL}">
-                                            <form action="/download/${contract.fileURL}" method="get">
+                                            <form action="${pageContext.request.contextPath}/download/${contract.fileURL}" method="get">
                                                 <button type="submit" class="btn btn-outline-primary">
                                                     <i class="fas fa-download"></i> Download Contract
                                                 </button>
@@ -284,7 +284,7 @@
                     <div class="action-buttons">
                         <c:choose>
                             <c:when test="${contract.contractStatus == 1}">
-                                <form action="/manager/contract/editStatus" method="POST" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
                                     <input type="hidden" name="id" value="${contract.contractId}">
                                     <input type="hidden" name="status" value="2">
                                     <button type="submit" class="btn btn-success"><i class="fas fa-check icon-btn"></i> Approve</button>
@@ -300,7 +300,7 @@
                                                 document.getElementById('declineForm').status.value = '4';"><i class="fas fa-times icon-btn"></i>
                                     Reject
                                 </button>
-                                <form action="/manager/contract/editStatus" method="POST" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
                                     <input type="hidden" name="id" value="${contract.contractId}">
                                     <input type="hidden" name="status" value="5">
                                     <button type="submit" class="btn btn-danger"><i class="fas fa-ban icon-btn"></i> Cancel</button>
@@ -313,11 +313,11 @@
                                         <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                     </div>
                                     <p>Status: <span class="badge badge-danger">Refused by Customer</span></p>
-                                    <form action="/manager/contract/edit" method="GET" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/manager/contract/edit" method="GET" class="d-inline">
                                         <input type="hidden" name="id" value="${contract.contractId}">
                                         <button type="submit" class="btn btn-primary">Edit</button>
                                     </form>
-                                    <form action="/manager/contract/editStatus" method="POST" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
                                         <input type="hidden" name="id" value="${contract.contractId}">
                                         <input type="hidden" name="status" value="5">
                                         <button type="submit" class="btn btn-danger">Cancel</button>
@@ -336,7 +336,7 @@
                             <c:when test="${contract.contractStatus == 6 && empty contract.project}">
                                 <div class="mt-4 text-center">
                                     <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
-                                    <form action="/manager/project/create" method="GET" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/manager/project/create" method="GET" class="d-inline">
                                         <input type="hidden" name="id" value="${contract.contractId}">
                                         <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
                                     </form>
@@ -346,7 +346,7 @@
                             <c:when test="${not empty contract.project}">
                                 <div class="mt-4 text-center">
                                     <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
-                                    <form action="/manager/projects/details/${contract.contractId}" method="GET" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/manager/projects/details/${contract.contractId}" method="GET" class="d-inline">
                                         <button type="submit" class="btn btn-success">VIEW PROJECT</button>
                                     </form>
                                 </div>
@@ -368,7 +368,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="declineForm" action="/manager/contract/editStatusAndFeedback" method="post">
+                        <form id="declineForm" action="${pageContext.request.contextPath}/manager/contract/editStatusAndFeedback" method="post">
                             <input type="hidden" name="id" value="">
                             <input type="hidden" name="status" value="">
                             <input type="hidden" name="toUserId" value="">

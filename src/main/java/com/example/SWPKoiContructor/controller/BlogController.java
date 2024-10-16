@@ -9,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class BlogController {
+
+    @Value("${spring.application.name}")
+    private String contexPath;
 
     private BlogService blogService;
     private FileUtility fileUtility;
@@ -45,7 +50,7 @@ public class BlogController {
         Staff staff = (Staff) session.getAttribute("user");
         System.out.println(staff);
         if (staff == null) {
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
         List<Blog> blogs = blogService.getBlogsByCriteria(name, status, dateFrom, dateTo, page, size);
         if (!"Management".equalsIgnoreCase(staff.getDepartment())) {
@@ -72,16 +77,16 @@ public class BlogController {
         Blog blog = blogService.getBlogWithContentById(id);
         Staff staff = (Staff) session.getAttribute("user");
         if (staff == null) {
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
         if (blog != null && (blog.isBlogBelongToAuthor(staff) || "Management".equalsIgnoreCase(staff.getDepartment()))) {
             model.addAttribute("blog", blog);
             return "/manager/blog/blogDetail";
         } else {
             if ("manager".equalsIgnoreCase(staff.getDepartment())) {
-                return "redirect:/manager/blogs";
+                return "redirect:"+ contexPath +"/manager/blogs";
             } else {
-                return "redirect:/staff/blogs";
+                return "redirect:"+ contexPath +"/staff/blogs";
             }
 
         }
@@ -110,7 +115,7 @@ public class BlogController {
             blog.setStatus(1);
             blogService.createBlog(blog);
             // Redirect to the blog list page after creation
-            return "redirect:/staff/blogs";
+            return "redirect:"+ contexPath +"/staff/blogs";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,7 +123,7 @@ public class BlogController {
 
             // Return the blog form with existing data to allow the user to correct input
             model.addAttribute("blog", blog);
-            return "redirect:/staff/blogs";
+            return "redirect:"+ contexPath +"/staff/blogs";
         }
     }
 
@@ -134,7 +139,7 @@ public class BlogController {
             model.addAttribute("blog", blog);
             return "manager/blog/editBlog";
         } else {
-            return "redirect:/staff/blogs";
+            return "redirect:"+ contexPath +"/staff/blogs";
         }
 
     }
@@ -159,15 +164,15 @@ public class BlogController {
                 contentUpdated.setContent(content);
                 contentUpdated.setLastUpdatedDate(new java.util.Date());
                 blogService.updateBlog(originBlog);
-                return "redirect:/staff/blog/viewDetail/" + originBlog.getId();
+                return "redirect:"+ contexPath +"/staff/blog/viewDetail/" + originBlog.getId();
             } else {
-                return "redirect:/staff/blogs";
+                return "redirect:"+ contexPath +"/staff/blogs";
             }
 
             // Redirect to the blog list page after creation
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:/staff/blogs";
+            return "redirect:"+ contexPath +"/staff/blogs";
         }
     }
 
@@ -189,7 +194,7 @@ public class BlogController {
             }
             blogService.updateBlog(blog);
         }
-        return "redirect:/staff/blogs"; // Redirect back to the blog list
+        return "redirect:"+ contexPath +"/staff/blogs"; // Redirect back to the blog list
     }
 
 }

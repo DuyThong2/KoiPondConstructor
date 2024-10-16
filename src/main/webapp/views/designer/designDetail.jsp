@@ -150,7 +150,7 @@
         <div class="container mt-5">
             <header>
                 <div class="nav">
-                    <a href="/designer/manage" class="nav-link">
+                    <a href="${pageContext.request.contextPath}/designer/manage" class="nav-link">
                         <i class="fas fa-project-diagram"></i> My Projects
                     </a>
 
@@ -169,13 +169,13 @@
                                 <span class="ml-2 user-name">${sessionScope.user.name}</span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/designer/profile">Profile</a>
+                                <a class="dropdown-item" href="${pageContext.request.contextPath}/designer/profile">Profile</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/help">Help</a>
+                                <a class="dropdown-item" href="#">Help</a>
                                 <div class="dropdown-divider"></div>
                                 <!-- Logout button in dropdown -->
-                                <a href="/logout" class="dropdown-item btn-logout">
+                                <a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout">
                                     <i class="fas fa-sign-out-alt"></i> Logout
                                 </a>
                             </div>
@@ -188,7 +188,7 @@
                 <!-- Left Column -->
                 <div class="left-column">
                     <div class="img-box">
-                        <img src="/uploads/${project.imgURL}" alt="Project Image">
+                        <img src="${project.getShowingImg(project.imgURL)}" alt="Project Image">
                     </div>
                     <!-- Notes Section -->
                     <div class="notes-box">

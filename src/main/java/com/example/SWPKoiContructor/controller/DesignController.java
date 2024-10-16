@@ -20,6 +20,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class DesignController {
+    @Value("${spring.application.name}")
+    private String contexPath;
 
     private FileUtility fileUtility;
     private DesignService designService;
@@ -68,7 +72,7 @@ public class DesignController {
             model.addAttribute("design", design);
             return "manager/design/designDetail";
         }else{
-            return "redirect:/manager/design";
+            return "redirect:"+ contexPath +"/manager/design";
         }
         
     }
@@ -82,7 +86,7 @@ public class DesignController {
 
         if (detailId == null || newStatus == null) {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
-            return "redirect:/manager/design/viewDetail/" + designId;
+            return "redirect:"+ contexPath +"/manager/design/viewDetail/" + designId;
         }
         try {
             designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
@@ -90,7 +94,7 @@ public class DesignController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
-        return "redirect:/manager/design/viewDetail/" + designId;
+        return "redirect:"+ contexPath +"/manager/design/viewDetail/" + designId;
     }
 //=========================Designer Controller====================================//
 
@@ -101,7 +105,7 @@ public class DesignController {
             @RequestParam(defaultValue = "6") int size) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
 
         List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size);
@@ -118,12 +122,12 @@ public class DesignController {
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
         if (user == null)
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
 
         Design design = designService.getDesignById(id);
         boolean isAssignedToDesign = designService.isAssignedToDesign(id, user.getId());
         if (design == null || !isAssignedToDesign)
-            return "redirect:/error/error-403";
+            return "redirect:"+ contexPath +"/error/error-403";
 
         Project project = design.getProject();
         Contract contract = project.getContract();
@@ -141,14 +145,14 @@ public class DesignController {
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
 
         Design design = designService.getDesignById(designId);
 
         boolean isAssignedToDesign = designService.isAssignedToDesign(designId, user.getId());
         if (design == null || !isAssignedToDesign)
-            return "redirect:/error/error-403";
+            return "redirect:"+ contexPath +"/error/error-403";
 
         Project project = design.getProject();
         model.addAttribute("design", design);
@@ -169,14 +173,14 @@ public class DesignController {
 
         User user = (User) session.getAttribute("user");
         if (user == null)
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
 
         DesignStage designStage = designStageService.getDesignStageById(designStageId);
         boolean isAssignedToDesign = designStage.getDesign().getStaff().stream().anyMatch(
                 staff -> staff.getId() == user.getId());
 
         if (!isAssignedToDesign)
-            return "redirect:/error/error-403";
+            return "redirect:"+ contexPath +"/error/error-403";
 
         List<BluePrint> allBlueprints = bluePrintService.findByDesignStageId(designStageId);
         model.addAttribute("allBlueprints", allBlueprints);
@@ -200,7 +204,7 @@ public class DesignController {
 
         if(uploadedFilePath == null){
             redirectAttributes.addFlashAttribute("message", "Choose file to uploads!");
-            return "redirect:/designer/manage/blueprint/" + designStageId;
+            return "redirect:"+ contexPath +"/designer/manage/blueprint/" + designStageId;
         }
         BluePrint blueprint = new BluePrint();
         blueprint.setDesignStage(designStage);
@@ -210,7 +214,7 @@ public class DesignController {
 
         bluePrintService.saveBluePrint(blueprint);
 
-        return "redirect:/designer/manage/blueprint/" + designStageId;
+        return "redirect:"+ contexPath +"/designer/manage/blueprint/" + designStageId;
     }
 
     @PostMapping("/updateSummary/")
@@ -226,7 +230,7 @@ public class DesignController {
         designStage.setSummaryFile(uploadedFilePath);
         designStageService.updateDesignStage(designStage);
 
-        return "redirect:/designer/manage/blueprint/" + designStageId;
+        return "redirect:"+ contexPath +"/designer/manage/blueprint/" + designStageId;
     }
 
     @PostMapping("/delete/blueprint")
@@ -238,7 +242,7 @@ public class DesignController {
         fileUtility.deleteFile(bluePrint.getImgUrl(), FileUtility.DESIGN_BLUEPRINT_DIR);
         bluePrintService.deleteBluePrint(bluePrintId);
         redirectAttributes.addFlashAttribute("message", "Delete Success!!");
-        return "redirect:/designer/manage/blueprint/" + designStageId;
+        return "redirect:"+ contexPath +"/designer/manage/blueprint/" + designStageId;
     }
 //========================================End Design BluePrints=================================//
 
@@ -249,20 +253,20 @@ public class DesignController {
                                          Model model, @RequestParam int designId, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null)
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
 
         Design design = designService.getDesignById(designId);
         if (design == null)
-            return "redirect:/error/error-403";
+            return "redirect:"+ contexPath +"/error/error-403";
 
         boolean isAssignedToDesign  = designService.isAssignedToDesign(designId, user.getId());
 
         if (!isAssignedToDesign)
-            return "redirect:/error/error-403";
+            return "redirect:"+ contexPath +"/error/error-403";
 
         List<DesignStageDetail> details = designStageDetailService.getDesignStageDetailOfDesignStageId(designStageId);
         if (details == null || details.isEmpty())
-            return "redirect:/error/error-403";
+            return "redirect:"+ contexPath +"/error/error-403";
 
         model.addAttribute("designId", designId);
         model.addAttribute("details", details);
@@ -279,7 +283,7 @@ public class DesignController {
         DesignStageDetail detail = designStageDetailService.getDesignStageDetailById(detailId);
         if(detail.getStatus() == newStatus || detail.getStatus() > newStatus) {
             redirectAttributes.addFlashAttribute("message", "Progress is also updated!");
-            return "redirect:/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
+            return "redirect:"+ contexPath +"/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
         }
 
         try {
@@ -288,7 +292,7 @@ public class DesignController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("message", "Failed to update status!!");
         }
-        return "redirect:/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
+        return "redirect:"+ contexPath +"/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
     }
 //===============================End Update Status Design Detail=====================================//
 
@@ -298,7 +302,7 @@ public class DesignController {
             HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
 
         Design design = designService.getDesignById(id);
@@ -307,7 +311,7 @@ public class DesignController {
 
         Customer customer = project.getContract().getCustomer();
         if (customer == null || customer.getId() != user.getId()) {
-            return "redirect:/error/error-403";
+            return "redirect:"+ contexPath +"/error/error-403";
         }
 
         Contract contract = project.getContract();
@@ -320,7 +324,7 @@ public class DesignController {
 
         return "customer/design/processOfDesign";
         }else{
-            return "redirect:/customer/projects/";
+            return "redirect:"+ contexPath +"/customer/projects/";
         }
         
     }
@@ -334,7 +338,7 @@ public class DesignController {
 
         if (detailId == null || newStatus == null) {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
-            return "redirect:/customer/project/design/" + designId;
+            return "redirect:"+ contexPath +"/customer/project/design/" + designId;
         }
 
         List<BluePrint> blueprints = bluePrintService.findByDesignStageId(designStageId);
@@ -349,7 +353,7 @@ public class DesignController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
-        return "redirect:/customer/project/design/" + designId;
+        return "redirect:"+ contexPath +"/customer/project/design/" + designId;
     }
 
     @GetMapping("/customer/project/design/blueprint/{designStageId}")
@@ -358,7 +362,7 @@ public class DesignController {
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
         // Get the design stage details
         DesignStage designStage = designStageService.getDesignStageById(designStageId);
@@ -367,7 +371,7 @@ public class DesignController {
 
         Customer customer = project.getContract().getCustomer();
         if (customer == null || customer.getId() != user.getId()) {
-            return "redirect:/error/error-403";
+            return "redirect:"+ contexPath +"/error/error-403";
         }
 
         model.addAttribute("designStage", designStage);
@@ -389,7 +393,7 @@ public class DesignController {
         Customer customer = (Customer) session.getAttribute("user");
         if (customer == null) {
             redirectAttributes.addFlashAttribute("message", "Please login to submit feedback.");
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
         }
 
         if (blueprintsId != null && !blueprintsId.isEmpty()) {
@@ -408,7 +412,7 @@ public class DesignController {
         }
 
         redirectAttributes.addFlashAttribute("message", "Feedback has been submitted successfully!");
-        return "redirect:/customer/project/design/blueprint/" + designStageId;
+        return "redirect:"+ contexPath +"/customer/project/design/blueprint/" + designStageId;
     }
 
 }

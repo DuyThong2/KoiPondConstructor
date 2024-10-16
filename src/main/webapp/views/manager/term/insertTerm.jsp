@@ -68,7 +68,7 @@
             <h2>Term Information</h2>
 
             <!-- Form Binding with Spring -->
-            <form:form modelAttribute="term" action="/manager/termCreate" method="POST">
+            <form:form modelAttribute="term" action="${pageContext.request.contextPath}/manager/termCreate" method="POST">
                 <!-- Design and Construction Percentages Row -->
                 <div class="form-row">
                     <!-- Design Box -->

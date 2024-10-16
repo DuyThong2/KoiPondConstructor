@@ -41,9 +41,9 @@
                     <h2 class="mb-4">Update Package</h2>
 
                     <!-- Bind the form to the "contract" object -->
-                    <form:form action="/manager/parcel/update" modelAttribute="newParcel" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
+                    <form:form action="${pageContext.request.contextPath}/manager/parcel/update" modelAttribute="newParcel" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="packageId" value="${newParcel.packageId}"/>
-                        
+
                         <!-- Package Name -->
                         <div class="form-group">
                             <label for="packageName">Package name:</label>
@@ -67,7 +67,7 @@
                             <label for="packageDescription">package Description: </label>
                             <form:input path="packageDescription" id="packageDescription" class="form-control" />
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="package_status">Select Status: </label>
                             <form:select path="package_status" id="package_status" class="form-control">

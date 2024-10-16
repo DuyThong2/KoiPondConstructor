@@ -127,9 +127,9 @@
                             </div>
 
                             <!-- Blog Description -->
-                            
-                                ${blog.description}
-                            
+
+                            ${blog.description}
+
                             <!-- Blog Content Section -->
                             <h4>Full Content</h4>
                             <div class="blog-body">
@@ -138,7 +138,7 @@
 
                             <!-- Author Section -->
                             <div class="author-section mt-4">
-                                <img src="${blog.staff.imgURL}" class="author-avatar" alt="Author Avatar">
+                                <img src="${blog.staff.getShowingImg(blog.staff.imgURL)}" class="author-avatar" alt="Author Avatar">
                                 <div>
                                     <p class="author-name">Written by: ${blog.staff.name}</p>
                                     <p class="author-email">Department: ${blog.staff.department}</p>
@@ -148,7 +148,7 @@
                             <!-- Action Buttons -->
                             <div class="action-buttons">
                                 <!-- Change Status Button -->
-                                <form action="/staff/blog/changeStatus" method="post">
+                                <form action="${pageContext.request.contextPath}/staff/blog/changeStatus" method="post">
                                     <input type="hidden" name="blogId" value="${blog.id}">
                                     <button type="submit" class="btn btn-warning">
                                         <c:choose>
@@ -166,7 +166,7 @@
                                 </form>
 
                                 <!-- Update Blog Button -->
-                                <a href="/staff/blog/update/${blog.id}" class="btn btn-info">Update Blog</a>
+                                <a href="${pageContext.request.contextPath}/staff/blog/update/${blog.id}" class="btn btn-info">Update Blog</a>
                             </div>
 
                         </div>
@@ -174,7 +174,7 @@
                 </main>
                 <!-- Footer Section with Back Button -->
                 <div class="blog-footer">
-                    <a href="/staff/blogs" class="btn btn-outline-primary">Back to Blog List</a>
+                    <a href="${pageContext.request.contextPath}/staff/blogs" class="btn btn-outline-primary">Back to Blog List</a>
                 </div>
             </div>
         </div>

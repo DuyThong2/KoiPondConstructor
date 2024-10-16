@@ -2,6 +2,7 @@ package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.*;
 import com.example.SWPKoiContructor.services.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Controller
 public class ManageUsersController {
+
+    @Value("${spring.application.name}")
+    private String contexPath;
 
     private CustomerService customerService;
     private StaffService staffService;
@@ -64,7 +68,7 @@ public class ManageUsersController {
         Customer customer = customerService.getCustomerById(customerId);
         if (customer == null) {
             redirectAttributes.addFlashAttribute("message", "You do not have permission to access this project.");
-            return "redirect:/error/error-403";
+            return "redirect:"+ contexPath +"/error/error-403";
         }
         int totalProject = (int) projectService.countCustomerProjectsById(customerId);
         int totalLoyaltyPoint = (int) loyaltyPointService.TotalPoints(customerId);
@@ -110,7 +114,7 @@ public class ManageUsersController {
         if (staffService.findStaffByEmail(fullEmail) != null) {
             // If email exists, add an error message
             redirectAttributes.addFlashAttribute("message", "Email already exists. Please use a different email.");
-            return "redirect:/manager/manageStaff";
+            return "redirect:"+ contexPath +"/manager/manageStaff";
         }
 
         staff.setEmail(fullEmail);
@@ -136,7 +140,7 @@ public class ManageUsersController {
         staffService.createStaff(staff);
         // Add success message
         redirectAttributes.addFlashAttribute("message", "Staff added successfully!");
-        return "redirect:/manager/manageStaff";  // Redirect back to the manage staff page
+        return "redirect:"+ contexPath +"/manager/manageStaff";  // Redirect back to the manage staff page
     }
 
     @PostMapping("/manager/manageUser/block/{userId}")
@@ -146,7 +150,7 @@ public class ManageUsersController {
         //check department is management  is accessed for update
         User user = (User) session.getAttribute("user");
         if (user == null)
-            return "redirect:/login";
+            return "redirect:"+ contexPath +"/login";
 
         Customer customer = customerService.getCustomerById(userId);
         if (customer != null) {
@@ -158,7 +162,7 @@ public class ManageUsersController {
                 redirectAttributes.addFlashAttribute("message", "User successfully unblocked!");
             }
             customerService.updateCustomer(customer);
-            return "redirect:/manager/manageCustomer";
+            return "redirect:"+ contexPath +"/manager/manageCustomer";
         }
 
         Staff staff = staffService.getStaffById(userId);
@@ -170,7 +174,7 @@ public class ManageUsersController {
             redirectAttributes.addFlashAttribute("message", "User successfully unblocked!");
         }
         staffService.updateStaff(staff);
-        return "redirect:/manager/manageStaff";
+        return "redirect:"+ contexPath +"/manager/manageStaff";
     }
 
     @GetMapping("/manager/manageStaff/detail/{staffId}")
@@ -180,7 +184,7 @@ public class ManageUsersController {
         Staff staff = staffService.getStaffById(staffId);
         if (staff == null) {
             redirectAttributes.addFlashAttribute("message", "Staff không tồn tại.");
-            return "redirect:/error/error-403";
+            return "redirect:"+ contexPath +"/error/error-403";
         }
 
         List<Design> designs = null;

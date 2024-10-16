@@ -75,8 +75,7 @@
                             <div class="user-info">
                                 <img class="img-profile img-circle img-responsive center-block" src="${user.getShowingImg(user.imgURL)}" alt />
                                 <ul class="meta list list-unstyled">
-                                    <li class="name">
-                                        ${user.name}
+                                    <li class="name">${user.name}
                                         <br>
                                         <label class="label label-info">Customer</label>
                                     </li>
@@ -88,10 +87,10 @@
                             <nav class="side-menu">
                                 <nav class="side-menu">
                                     <ul class="nav">
-                                        <li class="active">
+                                        <li>
                                             <a href="${pageContext.request.contextPath}/customer/profile"><span class="fa fa-user"></span> Profile</a>
                                         </li>
-                                        <li>
+                                        <li class="active">
                                             <a href="${pageContext.request.contextPath}/customer/contract">
                                                 <span class="fas fa-file-contract"></span> My Contract</a>
                                         </li>
@@ -114,7 +113,7 @@
                                 <h2>Contract List</h2>
 
                                 <!-- Sort Form -->
-                                <form method="get" action="/customer/contract">
+                                <form method="get" action="${pageContext.request.contextPath}/customer/contract">
                                     <div class="form-row align-items-center">
                                         <div class="col-auto">
                                             <label for="sortBy">Sort by:</label>

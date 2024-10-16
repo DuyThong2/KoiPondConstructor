@@ -114,7 +114,7 @@
                     <c:choose>
                         <c:when test="${quotes.quotesStatus == 1}">
                             <div class="">
-                                <form action="/consultant/quote/updateQuote" method="post" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="post" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                                     <button type="submit" class="btn btn-info">Edit Quotes</button>
                                 </form>
@@ -125,7 +125,7 @@
                                 <div class="alert alert-danger" role="alert">
                                     <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                 </div>
-                                <form action="/consultant/quote/updateQuote" method="post" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="post" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                                     <button type="submit" class="btn btn-info">Edit Quotes</button>
                                 </form>
@@ -133,7 +133,7 @@
                         </c:when>
                         <c:when test="${quotes.quotesStatus == 4}">
                             <div class="">
-                                <form action="/consultant/contract/create" method="get" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/consultant/contract/create" method="get" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                                     <button type="submit" class="btn btn-info">Create Contract</button>
                                 </form>
@@ -144,12 +144,12 @@
                                 <div class="alert alert-danger" role="alert">
                                     <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                 </div>
-                                <form action="/consultant/quote/updateQuote" method="post" class="d-inline">
+                                <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="post" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                                     <button type="submit" class="btn btn-info">Edit Quotes</button>
                                 </form>                                
                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
-                                                    onclick="document.getElementById('declineForm').quoteId.value = '${quotes.quotesId}';">Rejected</button>
+                                        onclick="document.getElementById('declineForm').quoteId.value = '${quotes.quotesId}';">Rejected</button>
                             </div>
                         </c:when>
                         <c:when test="${quotes.quotesStatus == 6}">
@@ -230,7 +230,7 @@
                 </div>
             </div>
         </div>
-                            
+
         <!-- Decline Modal -->
         <div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -242,7 +242,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="declineForm" action="/consultant/quote/detail/updateStatusAndFeedback" method="post">
+                        <form id="declineForm" action="${pageContext.request.contextPath}/consultant/quote/detail/updateStatusAndFeedback" method="post">
                             <input type="hidden" name="quoteId" value="">
                             <input type="hidden" name="statusId" value="6">
                             <div class="form-group">

@@ -40,22 +40,22 @@
                         <h4 class="text-center py-3">Admin Dashboard</h4>
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/contracts">Contracts</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/contracts">Contracts</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/projects">Projects</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/projects">Projects</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/terms">Terms</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/terms">Terms</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/reports">Reports</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/reports">Reports</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/admin/settings">Settings</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/admin/settings">Settings</a>
                             </li>
                         </ul>
                     </div>
@@ -64,7 +64,7 @@
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <h2 class="mb-4">Packet List</h2>
-                    <form method="get" action="/manager/parcel">
+                    <form method="get" action="${pageContext.request.contextPath}/manager/parcel">
                         <div class="form-row align-items-center">
                             <!-- Sort By -->
                             <div class="col-auto">
@@ -124,7 +124,7 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <a href="/manager/parcel/update/${parcel.packageId}" class="btn btn-info">Update</a>
+                                        <a href="${pageContext.request.contextPath}/manager/parcel/update/${parcel.packageId}" class="btn btn-info">Update</a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -132,7 +132,7 @@
                     </table>
 
                     <div class="text-right mt-2">
-                        <a href="/manager/parcel/create" class="btn btn-success">Create New Package</a>
+                        <a href="${pageContext.request.contextPath}/manager/parcel/create" class="btn btn-success">Create New Package</a>
                     </div>
 
                     <!-- Pagination Controls -->

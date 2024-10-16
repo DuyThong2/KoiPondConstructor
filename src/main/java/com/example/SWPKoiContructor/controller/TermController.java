@@ -8,6 +8,8 @@ package com.example.SWPKoiContructor.controller;
 import com.example.SWPKoiContructor.entities.Term;
 import com.example.SWPKoiContructor.services.TermService;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +26,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
  */
 @Controller
 public class TermController {
+
+    @Value("${spring.application.name}")
+    private String contexPath;
 
     private TermService termService;
 
@@ -75,7 +80,7 @@ public class TermController {
             redirectAttributes.addFlashAttribute("errorMessage", "Error updating term status.");
         }
 
-        return "redirect:/manager/terms";  // Redirect back to the term list after the update
+        return "redirect:"+ contexPath +"/manager/terms";  // Redirect back to the term list after the update
     }
     
      @GetMapping("/manager/termCreate")
@@ -92,7 +97,7 @@ public class TermController {
         term.setIsTemplate(true);
         termService.save(term);
         model.addAttribute("savedTerm", term); // Redirect to a success page or show success message
-        return "redirect:/manager/terms";// Make sure you have a corresponding success page (term-success.jsp)
+        return "redirect:"+ contexPath +"/manager/terms";// Make sure you have a corresponding success page (term-success.jsp)
     }
     
     @GetMapping("/manager/updateTerm/{id}")
@@ -104,7 +109,7 @@ public class TermController {
              return "manager/term/termUpdate";
             
         }else{
-            return "redirect:/manager/terms";// Make sure you have a corresponding success page (term-success.jsp)
+            return "redirect:"+ contexPath +"/manager/terms";// Make sure you have a corresponding success page (term-success.jsp)
         }// Add the saved Term object to the model
        
     }
@@ -125,6 +130,6 @@ public class TermController {
         model.addAttribute("savedTerm", term);
 
         // Redirect to a success page or show success message
-        return "redirect:/manager/terms";// Make sure you have a corresponding success page (term-success.jsp)
+        return "redirect:"+ contexPath +"/manager/terms";// Make sure you have a corresponding success page (term-success.jsp)
     }
 }
