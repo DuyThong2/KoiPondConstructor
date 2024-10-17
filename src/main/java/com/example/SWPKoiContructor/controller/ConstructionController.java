@@ -483,11 +483,19 @@ public class ConstructionController {
             HttpSession session) {
 
         // Retrieve the service detail by ID
+        Staff staff = (Staff) session.getAttribute("user");
+        if (staff == null) {
+            return "redirect:/login"; // Redirect to login if not logged in
+        }
+
         ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
 
         // If the service detail is not found, redirect to the service detail management page
         if (serviceDetail == null) {
-            return "redirect:/constructor/serviceDetailManage";
+            return "redirect:/constructor/serviceDetailManage/";
+        }
+        if(serviceDetail.getStaff().getId()!=staff.getId()){
+            return "redirect:/constructor/serviceDetailManage/";
         }
 
         // Retrieve the related customer information

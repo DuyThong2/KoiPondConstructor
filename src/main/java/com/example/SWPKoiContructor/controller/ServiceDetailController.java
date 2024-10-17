@@ -327,5 +327,40 @@ public class ServiceDetailController {
             return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred while accepting the cancellation request\"}");
         }
     }
+    @GetMapping("/customer/serviceDetail/{id}")
+    public String customerServiceDetailInfo(Model model,@PathVariable("id") int id,HttpSession session){
+        Customer customer = (Customer)session.getAttribute("user");
+        if(customer==null){
+            return "redirect:/login";
+        }
+        ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(id);
+        if(serviceDetail==null||serviceDetail.getCustomer().getId()!= customer.getId()){
+            return "redirect:/customer/serviceDetails";
+        }
+        model.addAttribute("serviceDetail",serviceDetail);
+
+        return "/customer/serviceDetail/serviceDetailInfo";
+    }
+    @PostMapping("/customer/serviceDetail/feedback")
+    public String submitFeedback(
+            @RequestParam("serviceDetailId") int serviceDetailId,
+            @RequestParam("rating") int rating,
+            @RequestParam("feedback") String feedback,
+            Model model
+    ) {
+        // Fetch the service detail entity by its ID
+        ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
+
+        // Update the service detail with feedback and rating
+        serviceDetail.setFeedback(feedback);
+        serviceDetail.setRating(rating);
+        serviceDetail.setFeedbackDate(new Date()); // Set the current date as feedback date
+
+        // Save the updated service detail
+        serviceDetailService.updateServiceDetail(serviceDetail);
+
+        // Redirect or load the page where feedback was submitted
+        return "redirect:/customer/serviceDetail/" + serviceDetailId;
+    }
 
 }

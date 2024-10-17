@@ -322,16 +322,18 @@ CREATE TABLE Service_Detail (
     service_detail_id INT PRIMARY KEY IDENTITY(1,1),
     service_detail_price DECIMAL(10, 2),
     date_register DATE,
-    rating INT,
-    service_detail_status INT,  -- 1: Pending 2:Processing 3:Completed 4.Request Cancel 5. Cancel
-    feedback NVARCHAR(MAX),
+    rating INT,                      -- Rating for the service
+    service_detail_status INT,        -- Service status
+    feedback NVARCHAR(MAX),           -- Feedback from the customer
+    feedback_date DATE,               -- Date when the feedback was provided
     service_id INT,
-    customer_id INT,
+    customer_id INT,                  -- Links to the customer giving feedback
     staff_id INT,
     FOREIGN KEY (service_id) REFERENCES Service(service_id),
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
     FOREIGN KEY (staff_id) REFERENCES Staffs(id)
 );
+--26. Service_Feedback
 
 -- 18. Comment
 CREATE TABLE Comment (

@@ -950,26 +950,26 @@ VALUES
 
 
 -- Insert data into Service_Detail table based on the status rules
-INSERT INTO Service_Detail (service_detail_price, date_register, rating, service_detail_status, feedback, service_id, customer_id, staff_id)
+INSERT INTO Service_Detail (service_detail_price, date_register, rating, service_detail_status, feedback, feedback_date, service_id, customer_id, staff_id)
 VALUES
--- Completed services with feedback and rating
-(150.00, '2024-09-15', 5, 3, 'Very efficient service!', 1, 1, 9),  -- Flash Cleaning, Completed
-(200.00, '2024-09-20', 4, 3, 'Good job, but could be a bit faster.', 2, 6, 4),  -- Routine Cleaning Package, Completed
-(300.00, '2024-09-18', 5, 3, 'Excellent cleaning, highly recommend!', 3, 11, 14),  -- Deep Cleaning Service, Completed
-(250.00, '2024-09-22', 4, 3, 'Algae issue resolved, good service.', 4, 16, 19),  -- Algae Control Cleaning, Completed
-(180.00, '2024-09-25', 5, 3, 'My koi fish are very happy, thanks!', 5, 21, 24),  -- Basic Koi Care, Completed
-(250.00, '2024-09-27', 4, 3, 'Comprehensive care for my pond, satisfied.', 6, 26, 24),  -- Koi Care Plus, Completed
-(500.00, '2024-09-29', 5, 3, 'Top-notch service, covers everything.', 7, 31, 29),  -- Full Care Package, Completed
+-- Completed services with feedback, rating, and feedback_date
+(150.00, '2024-09-15', 5, 3, 'Very efficient service!', '2024-09-16', 1, 1, 9),  -- Flash Cleaning, Completed
+(200.00, '2024-09-20', 4, 3, 'Good job, but could be a bit faster.', '2024-09-21', 2, 6, 4),  -- Routine Cleaning Package, Completed
+(300.00, '2024-09-18', 5, 3, 'Excellent cleaning, highly recommend!', '2024-09-19', 3, 11, 14),  -- Deep Cleaning Service, Completed
+(250.00, '2024-09-22', 4, 3, 'Algae issue resolved, good service.', '2024-09-23', 4, 16, 19),  -- Algae Control Cleaning, Completed
+(180.00, '2024-09-25', 5, 3, 'My koi fish are very happy, thanks!', '2024-09-26', 5, 21, 24),  -- Basic Koi Care, Completed
+(250.00, '2024-09-27', 4, 3, 'Comprehensive care for my pond, satisfied.', '2024-09-28', 6, 26, 24),  -- Koi Care Plus, Completed
+(500.00, '2024-09-29', 5, 3, 'Top-notch service, covers everything.', '2024-09-30', 7, 31, 29),  -- Full Care Package, Completed
 
--- Canceled services with feedback and rating
-(300.00, '2024-10-01', 5, 4, 'Took care of everything while I was away!', 8, 1, 34),  -- Vacation Care Service, Canceled
-(200.00, '2024-10-03', 4, 4, 'Regular maintenance, good job.', 9, 6, 23),  -- Essential Maintenance, Canceled
-(350.00, '2024-10-05', 4, 4, 'Preventive care for my pond, satisfied.', 10, 11, 4),  -- Preventive Maintenance Package, Canceled
-(600.00, '2024-10-07', 5, 4, 'The complete package, highly recommend.', 11, 16, 9),  -- Complete Maintenance Plan, Canceled
+-- Canceled services without feedback, rating, or feedback_date
+(300.00, '2024-10-01', NULL, 4, NULL, NULL, 8, 1, 34),  -- Vacation Care Service, Canceled
+(200.00, '2024-10-03', NULL, 4, NULL, NULL, 9, 6, 23),  -- Essential Maintenance, Canceled
+(350.00, '2024-10-05', NULL, 4, NULL, NULL, 10, 11, 4),  -- Preventive Maintenance Package, Canceled
+(600.00, '2024-10-07', NULL, 4, NULL, NULL, 11, 16, 9),  -- Complete Maintenance Plan, Canceled
 
--- Services in Processing or Pending status without feedback or rating
-(400.00, '2024-10-09', NULL, 2, NULL, 12, 21, 29),  -- Seasonal Maintenance Service, Processing
-(250.00, '2024-10-10', NULL, 1, NULL, 5, 21, 4);  -- Basic Koi Care, Pending
+-- Services in Processing or Pending status without feedback, rating, or feedback_date
+(400.00, '2024-10-09', NULL, 2, NULL, NULL, 12, 21, 29),  -- Seasonal Maintenance Service, Processing
+(250.00, '2024-10-10', NULL, 1, NULL, NULL, 5, 21, 4);  -- B Service, Pending
 
 
 

@@ -65,6 +65,47 @@
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
                 transform: translateY(-5px);
             }
+
+            .star-rating i {
+                font-size: 2rem;
+                color: #ddd;
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+
+            .star-rating i:hover,
+            .star-rating i.fas {
+                color: #f39c12;
+            }
+
+            .modal-header {
+                border-bottom: 0;
+            }
+
+            .modal-body h6 {
+                font-weight: 600;
+                margin-bottom: 10px;
+            }
+
+            .form-group textarea {
+                resize: none;
+            }
+
+            .modal-footer {
+                border-top: 0;
+                justify-content: flex-end;
+            }
+
+            /* Custom modal size for width and height */
+            .modal-lg-custom {
+                max-width: 900px;
+                /* Adjust width */
+            }
+
+            .modal-lg-custom .modal-content {
+                height: 80vh;
+                /* Adjust height */
+            }
         </style>
 
         <body>
@@ -128,138 +169,124 @@
                                 <div class="info-item">
                                     <p><strong>Email:</strong> ${customer.email}</p>
                                 </div>
-                                
+
                             </div>
-                            <div class="feedback-section info-box mt-3" style="min-height:30vh"">
-                                <h5 class="text-success">Box Chat:</h5>
-                                <div class="feedback-content">
-                                    <c:forEach var="comment" items="${comments}">
-                                        <div class="feedback-item">
-                                            <div class="d-flex justify-content-between">
-                                                <div class="comment">
-                                                    <!-- Hiển thị nội dung comment hoặc textarea nếu đang edit -->
-                                                    <div id="comment-content-${comment.commentId}">
-                                                        <c:if test="${comment.customer != null}">
-                                                            <p><strong>Customer: ${comment.customer.name}</strong></p>
+                            < </div>
+
+                                <!-- Service Information -->
+                                <div class="col-md-8">
+                                    <div class="info-box">
+                                        <div>
+                                            <h3 class="w-100 d-flex justify-content-between"> <span>Service Detail
+                                                    Information</span>
+                                                <c:if
+                                                    test="${serviceDetail.serviceDetailStatus!=3 && serviceDetail.serviceDetailStatus!=5}">
+                                                    <span>
+                                                        <c:if test="${serviceDetail.serviceDetailStatus!=4}">
+                                                            <button id="confirmBtn" class="btn btn-md  btn-success"
+                                                                data-toggle="modal"
+                                                                data-target="#confirmationModal">Confirm
+                                                                Complete</button>
                                                         </c:if>
-        
-                                                        <c:if test="${comment.staff != null}">
-                                                            <p><strong>Staff: ${comment.staff.name}</strong></p>
-                                                        </c:if>
-                                                        <p class="text-muted small mb-0"><fmt:formatDate value="${comment.datePost.time}" pattern="dd-MM-yyyy HH:mm"/></p>
-                                                        <p class="mb-2"> ${comment.commentContent}</p>
-                                                    </div>
-        
-                                                    <!-- Hiển thị textarea để chỉnh sửa khi nhấn nút Edit -->
-                                                    <div id="edit-section-${comment.commentId}" style="display: none;">
-                                                        <form action="${pageContext.request.contextPath}/customer/feedback/update" method="POST">
-                                                            <input type="hidden" name="commentId" value="${comment.commentId}">
-                                                            <textarea name="newContent" class="form-control mb-2">${comment.commentContent}</textarea>
-                                                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                                                            <button type="button" class="btn btn-secondary btn-sm" onclick="cancelEdit(${comment.commentId})">Cancel</button>
-                                                        </form>
+                                                        <c:choose>
+                                                            <c:when test="${serviceDetail.serviceDetailStatus!=4}">
+                                                                <button id="cancelBtn" class="btn btn-md  btn-danger"
+                                                                    data-toggle="modal"
+                                                                    data-target="#cancelRequestModal">Request
+                                                                    Cancel</button>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <button id="cancelBtn" class="btn btn-md  btn-danger"
+                                                                    data-toggle="modal"
+                                                                    data-target="#cancelRequestModal" disabled>
+                                                                    Requesting
+                                                                </button>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                    </span>
+                                                </c:if>
+                                            </h3>
+                                        </div>
+                                        <div class="info-item">
+                                            <p><strong>Service Name:</strong> ${serviceDetail.service.serviceName}</p>
+                                        </div>
+                                        <div class="info-item">
+                                            <p><strong>Description:</strong> ${serviceDetail.service.serviceDescription}
+                                            </p>
+                                        </div>
+                                        <div class="info-item">
+                                            <p><strong>Price:</strong> ${serviceDetail.price}</p>
+                                        </div>
+                                        <div class="info-item">
+                                            <p><strong>Date Registered:</strong> ${serviceDetail.dateRegister}</p>
+                                        </div>
+
+                                        <div class="info-item">
+                                            <p><strong>Status:</strong>
+                                                <c:choose>
+                                                    <c:when test="${serviceDetail.serviceDetailStatus == 1}">
+                                                        <span class="badge badge-secondary">Planning</span>
+                                                    </c:when>
+                                                    <c:when test="${serviceDetail.serviceDetailStatus == 2}">
+                                                        <span class="badge badge-primary">Processing</span>
+                                                    </c:when>
+                                                    <c:when test="${serviceDetail.serviceDetailStatus == 3}">
+                                                        <span class="badge badge-success">Complete</span>
+                                                    </c:when>
+                                                    <c:when test="${serviceDetail.serviceDetailStatus == 4}">
+                                                        <span class="badge badge-warning">Requesting Cancel</span>
+                                                    </c:when>
+                                                    <c:when test="${serviceDetail.serviceDetailStatus == 5}">
+                                                        <span class="badge badge-danger">Canceled</span>
+                                                    </c:when>
+                                                </c:choose>
+                                            </p>
+                                        </div>
+                                        <div>
+                                            <h3 class="section-header"><i class="fas fa-comments"></i> Customer
+                                                Feedback</h3>
+
+                                            <!-- Display feedback only if available -->
+                                            <c:if test="${serviceDetail.feedback != null}">
+                                                <div class="card mb-3">
+                                                    <div class="card-body">
+                                                        <!-- Display customer name -->
+                                                        <h5 class="card-title">Feedback from:
+                                                            ${serviceDetail.customer.name}</h5>
+
+                                                        <!-- Star rating display -->
+                                                        <div class="star-rating mb-2">
+                                                            <c:forEach var="i" begin="1" end="5">
+                                                                <i class="<c:choose>
+                                                                            <c:when test='${i <= serviceDetail.rating}'>
+                                                                                fas fa-star
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                far fa-star
+                                                                            </c:otherwise>
+                                                                        </c:choose>" data-value="${i}"></i>
+                                                            </c:forEach>
+                                                        </div>
+
+                                                        <!-- Feedback comment -->
+                                                        <p class="card-text">${serviceDetail.feedback}</p>
+
+                                                        <!-- Date of feedback (optional) -->
+                                                        <p class="text-muted small">Posted on:
+                                                            ${serviceDetail.feedbackDate}</p>
                                                     </div>
                                                 </div>
-        
-                                                <!-- Nút ba chấm ... -->
-                                                <c:if test="${sessionScope.user.id == comment.customer.id}">
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-link text-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            ...
-                                                        </button>
-                                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                            <!-- Nút Edit -->
-                                                            <button type="button" class="dropdown-item" onclick="editComment(${comment.commentId})">Edit</button>
-        
-                                                            <!-- Nút Delete -->
-                                                            <form action="${pageContext.request.contextPath}/customer/feedback/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
-                                                                <input type="hidden" name="commentId" value="${comment.commentId}">
-                                                                <button type="submit" class="dropdown-item text-danger">Delete</button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </c:if>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Service Information -->
-                      <div class="col-md-8">
-                        <div class="info-box">
-                            <div>
-                                <h3 class="w-100 d-flex justify-content-between"> <span>Service Detail
-                                        Information</span>
-                                    <c:if
-                                        test="${serviceDetail.serviceDetailStatus!=3 && serviceDetail.serviceDetailStatus!=5}">
-                                        <span>
-                                            <c:if test="${serviceDetail.serviceDetailStatus!=4}">
-                                                <button id="confirmBtn" class="btn btn-md  btn-success"
-                                                    data-toggle="modal" data-target="#confirmationModal">Confirm
-                                                    Complete</button>
                                             </c:if>
-                                            <c:choose>
-                                                <c:when test="${serviceDetail.serviceDetailStatus!=4}">
-                                                    <button id="cancelBtn" class="btn btn-md  btn-danger"
-                                                        data-toggle="modal" data-target="#cancelRequestModal">Request
-                                                        Cancel</button>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <button id="cancelBtn" class="btn btn-md  btn-danger"
-                                                        data-toggle="modal" data-target="#cancelRequestModal" disabled> Requesting
-                                                        </button>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </span>
-                                    </c:if>
-                                </h3>
-                            </div>
-                            <div class="info-item">
-                                <p><strong>Service Name:</strong> ${serviceDetail.service.serviceName}</p>
-                            </div>
-                            <div class="info-item">
-                                <p><strong>Description:</strong> ${serviceDetail.service.serviceDescription}</p>
-                            </div>
-                            <div class="info-item">
-                                <p><strong>Price:</strong> ${serviceDetail.price}</p>
-                            </div>
-                            <div class="info-item">
-                                <p><strong>Date Registered:</strong> ${serviceDetail.dateRegister}</p>
-                            </div>
-                            <div class="info-item">
-                                <p><strong>Rating:</strong> ${serviceDetail.rating != null ? serviceDetail.rating : 'No
-                                    rating yet'}</p>
-                            </div>
-                            <div class="info-item">
-                                <p><strong>Status:</strong>
-                                    <c:choose>
-                                        <c:when test="${serviceDetail.serviceDetailStatus == 1}">
-                                            <span class="badge badge-secondary">Planning</span>
-                                        </c:when>
-                                        <c:when test="${serviceDetail.serviceDetailStatus == 2}">
-                                            <span class="badge badge-primary">Processing</span>
-                                        </c:when>
-                                        <c:when test="${serviceDetail.serviceDetailStatus == 3}">
-                                            <span class="badge badge-success">Complete</span>
-                                        </c:when>
-                                        <c:when test="${serviceDetail.serviceDetailStatus == 4}">
-                                            <span class="badge badge-warning">Requesting Cancel</span>
-                                        </c:when>
-                                        <c:when test="${serviceDetail.serviceDetailStatus == 5}">
-                                            <span class="badge badge-danger">Canceled</span>
-                                        </c:when>
-                                    </c:choose>
-                                </p>
-                            </div>
-                            <div class="info-item">
-                                <p><strong>Feedback:</strong> ${serviceDetail.feedback != null ? serviceDetail.feedback
-                                    : 'No feedback yet'}</p>
-                            </div>
+
+                                            <!-- Display message if no feedback available -->
+                                            <c:if test="${serviceDetail.feedback == null}">
+                                                <p>No feedback available for this service.</p>
+                                            </c:if>
+                                        </div>
+
+                                    </div>
+                                </div>
                         </div>
-                      </div>
-                    </div>
                 </main>
 
                 <!-- Confirmation Modal -->
