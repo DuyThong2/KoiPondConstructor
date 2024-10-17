@@ -135,4 +135,8 @@ public class ServiceDetailService {
     }
 
 
+    public List<ServiceDetail> getServiceDetailsByStaffId(int staffId) {
+        return serviceDetailDAO.getServiceDetailsByStaffId(staffId);
+    }
+
 }

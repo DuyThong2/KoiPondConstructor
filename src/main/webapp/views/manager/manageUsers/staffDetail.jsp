@@ -70,6 +70,20 @@
                             font-size: 0.9rem;
                         }
                     }
+                    .table-container {
+                        max-height: 300px; /* Chiều cao tối đa của bảng */
+                        overflow-y: hidden; /* Ẩn thanh cuộn dọc */
+                        overflow-x: hidden; /* Ẩn thanh cuộn ngang */
+                        border: 1px solid #ddd; /* Tùy chọn: thêm viền cho bảng */
+                        border-radius: 5px; /* Tùy chọn: bo tròn góc */
+                        padding: 10px; /* Tùy chọn: thêm khoảng cách bên trong */
+                        position: relative; /* Tùy chọn: đặt vị trí tương đối cho lớp */
+                        color: white;
+                    }
+
+                    .table-container:hover {
+                        overflow-y: auto; /* Hiển thị thanh cuộn khi rê chuột vào bảng */
+                    }
                 </style>
             </head>
 
@@ -84,6 +98,7 @@
                                 <!-- Staff Details Section -->
                                 <div class="section-card">
                                     <h2 class="section-header"><i class="fas fa-user-tie"></i> Staff Information</h2>
+                                    <div class="table-container">
                                     <table class="table table-striped">
                                         <tr>
                                             <th>Staff ID</th>
@@ -106,13 +121,14 @@
                                             <td>${staff.department}</td>
                                         </tr>
                                     </table>
+                                    </div>
                                 </div>
 
                                 <!-- Design Projects Section -->
                                 <c:if test="${not empty designs}">
                                     <div class="section-card">
-                                        <h4 class="section-header"><i class="fas fa-project-diagram"></i> Participate
-                                            project</h4>
+                                        <h4 class="section-header"><i class="fas fa-project-diagram"></i> Participate project</h4>
+                                        <div class="table-container">
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -156,14 +172,15 @@
                                                 </c:forEach>
                                             </tbody>
                                         </table>
+                                        </div>
                                     </div>
                                 </c:if>
 
                                 <!-- Construction Projects Section -->
                                 <c:if test="${not empty constructions}">
                                     <div class="section-card">
-                                        <h4 class="section-header"><i class="fas fa-hard-hat"></i> Participate project
-                                        </h4>
+                                        <h4 class="section-header"><i class="fas fa-hard-hat"></i> Participate project</h4>
+                                        <div class="table-container">
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
@@ -207,19 +224,58 @@
                                                 </c:forEach>
                                             </tbody>
                                         </table>
+                                        </div>
+                                    </div>
+                                    <!-- Service Section -->
+                                    <div class="section-card">
+                                        <h4 class="section-header"><i class="fas fa-project-diagram"></i> Associated Service</h4>
+                                        <c:if test="${not empty serviceDetails}">
+                                        <div class="table-container">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th>Service Detail ID</th>
+                                                    <th>Service Name</th>
+                                                    <th>Service Description</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <c:forEach var="detail" items="${serviceDetails}">
+                                                    <tr>
+                                                        <td>${detail.id}</td>
+                                                        <td>${detail.service.serviceName}</td>
+                                                        <td>${detail.service.serviceDescription}</td>
+                                                        <td>
+                                                            <form action="/manager/serviceDetails/${detail.id}" method="GET" class="d-inline">
+                                                                <button type="submit" class="btn btn-info">
+                                                                    <i class="fas fa-eye icon-btn"></i> View Details
+                                                                </button>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        </c:if>
+                                        <c:if test="${empty serviceDetails}">
+                                            <p class="text-muted">No Service associated with ths customer.</p>
+                                        </c:if>
                                     </div>
                                 </c:if>
 
                                 <!-- Consultant Section -->
                                 <c:if test="${not empty consultants}">
                                     <div class="section-card">
-                                        <h4 class="section-header"><i class="fas fa-hard-hat"></i> Participate project
-                                        </h4>
+                                        <h4 class="section-header"><i class="fas fa-hard-hat"></i> Consulting List</h4>
+                                        <div class="table-container">
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>Consultant ID</th>
                                                     <th>Consultant Name</th>
+                                                    <th>Consultant Type</th>
                                                     <th>Time</th>
                                                     <th>Consultant Phone</th>
                                                     <th>Status</th>
@@ -231,6 +287,7 @@
                                                     <tr>
                                                         <td>${consultant.consultantId}</td>
                                                         <td>${consultant.consultantCustomerName}</td>
+                                                        <td>${consultant.consultantType}</td>
                                                         <td>
                                                             <fmt:formatDate
                                                                 value="${consultant.consultantDateTime.time}"
@@ -251,9 +308,9 @@
                                                             </c:choose>
                                                         </td>
                                                         <td>
-                                                            <form action="#" method="GET" class="d-inline">
+                                                            <form action="${pageContext.request.contextPath}/manager/consultant/detail/${consultant.consultantId}" method="GET" class="d-inline">
                                                                 <button type="submit" class="btn btn-info">
-                                                                    <i class="fas fa-eye icon-btn"></i> View Details
+                                                                    <i class="fas fa-eye icon-btn"></i>Details
                                                                 </button>
                                                             </form>
                                                         </td>
@@ -261,6 +318,7 @@
                                                 </c:forEach>
                                             </tbody>
                                         </table>
+                                        </div>
                                     </div>
                                 </c:if>
                             </main>

@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
         <!-- Bootstrap Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+        <!-- FontAwesome CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
         <style>
             /* Sidebar styling */
@@ -106,7 +108,7 @@
         </style>
     </head>
     <body>
-       
+
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="admin-info">
@@ -117,28 +119,28 @@
             <nav class="menu">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/consultant"><i class="bi bi-person-badge"></i> Consultant</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/consultant"><i class="bi bi-person-badge"></i> Consultant</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/quote"><i class="bi bi-file-earmark-text"></i> Quote</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/quote"><i class="bi bi-file-earmark-text"></i> Quote</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/contract"><i class="bi bi-file-earmark"></i> Contracts</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/contract"><i class="bi bi-file-earmark"></i> Contracts</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/projects"><i class="bi bi-diagram-3"></i> Projects</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/projects"><i class="bi bi-diagram-3"></i> Projects</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/design"><i class="bi bi-pencil-square"></i> Design</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/design"><i class="bi bi-pencil-square"></i> Design</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/construction"><i class="bi bi-tools"></i> Construction</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/construction"><i class="bi bi-tools"></i> Construction</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/staff/blogs"><i class="bi bi-newspaper"></i> Blog</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/staff/blogs"><i class="bi bi-newspaper"></i> Blog</a>
                     </li>
 
                     <!-- Manage User section with submenu -->
@@ -148,11 +150,11 @@
                         </a>
                         <ul class="collapse" id="manageUserSubmenu">
                             <li class="nav-item">
-                                <a class="nav-link" href="/manager/manageCustomer"><i class="bi bi-person-circle"></i> Manage Customer</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/manager/manageCustomer"><i class="bi bi-person-circle"></i> Manage Customer</a>
                             </li>
                             <li class="nav-item">
 
-                                <a class="nav-link" href="/manager/manageStaff"><i class="bi bi-person-badge"></i> Manage Staff</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/manager/manageStaff"><i class="bi bi-person-badge"></i> Manage Staff</a>
                             </li>
 
                         </ul>
@@ -162,10 +164,10 @@
                         <a class="nav-link" href="#"><i class="bi bi-file-earmark-text"></i> Terms</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/services"><i class="bi bi-bar-chart-line"></i> Services</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/services"><i class="bi bi-bar-chart-line"></i> Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/serviceDetails"><i class="bi bi-bar-chart-line"></i> Services Orders</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/serviceDetails"><i class="bi bi-bar-chart-line"></i> Services Orders</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="bi bi-bar-chart-line"></i> Reports</a>
@@ -177,7 +179,7 @@
             </nav>
 
             <div class="logout-section">
-                <a class="btn btn-danger" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a class="btn btn-danger" href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </aside>
 

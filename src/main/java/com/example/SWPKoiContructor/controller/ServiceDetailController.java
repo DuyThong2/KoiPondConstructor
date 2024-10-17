@@ -265,7 +265,7 @@ public class ServiceDetailController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    @GetMapping("/customer/serviceDetails/")
+    @GetMapping("/customer/serviceDetails")
     public String serviceDetailListCustomer(
             HttpSession session,
             Model model,

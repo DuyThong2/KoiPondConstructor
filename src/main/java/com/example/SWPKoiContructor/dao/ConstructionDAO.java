@@ -89,7 +89,10 @@ public class ConstructionDAO {
                 + "WHERE s.id = :staffId and cs.construction.constructionStatus = 2";
         TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
         query.setParameter("staffId", staffId);
-        return query.getSingleResult();
+        Long result = query.getSingleResult();
+
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
     public long countConstructionsInCompleteByStaffId(int staffId) {
         String jpql = "SELECT COUNT(c) FROM Construction c "
@@ -98,6 +101,9 @@ public class ConstructionDAO {
                 + "WHERE s.id = :staffId and cs.construction.constructionStatus = 3";
         TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
         query.setParameter("staffId", staffId);
-        return query.getSingleResult();
+        Long result = query.getSingleResult();
+
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
 }

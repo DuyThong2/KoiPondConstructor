@@ -172,15 +172,20 @@ public class ProjectDAO {
 
     public long countProjectComplete() {
         TypedQuery<Long> query = entityManager.createQuery("Select Count(c) from Project c where c.status = 3", Long.class);
-        return query.getSingleResult();
+        Long result = query.getSingleResult();
 
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
 
     public long countCustomerProjectsById(int customerId) {
         String queryString = "SELECT count(p.id) FROM Project p WHERE p.contract.customer.id = :customerId";
         TypedQuery<Long> query = entityManager.createQuery(queryString, Long.class);
         query.setParameter("customerId", customerId);
-        return query.getSingleResult();
+        Long result = query.getSingleResult();
+
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
 
     public List<Project> getCustomerProjectsById(int customerId) {

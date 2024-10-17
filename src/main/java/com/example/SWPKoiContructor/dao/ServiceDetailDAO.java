@@ -178,11 +178,11 @@ public class ServiceDetailDAO {
     public long countServiceDetailsByCustomerId(int customerId) {
         TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.customer.id= :customerId", Long.class);
         query.setParameter("customerId", customerId);
-        return query.getSingleResult();
-    }
+        Long result = query.getSingleResult();
 
-    
-    
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
+    }
 
 
 
@@ -263,4 +263,12 @@ public class ServiceDetailDAO {
     }
 
 
+
+    // Get service details by staff ID
+    public List<ServiceDetail> getServiceDetailsByStaffId(int staffId) {
+        String queryString = "SELECT sd FROM ServiceDetail sd WHERE sd.staff.id = :staffId";
+        TypedQuery<ServiceDetail> query = entityManager.createQuery(queryString, ServiceDetail.class);
+        query.setParameter("staffId", staffId);
+        return query.getResultList();
+    }
 }
