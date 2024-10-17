@@ -178,7 +178,7 @@
             .feedback-content {
                 max-height: 300px; /* Điều chỉnh chiều cao theo ý muốn */
                 overflow-y: auto;  /* Hiển thị thanh cuộn dọc */
-                padding-right: 10px; /* Để không bị che nội dung bởi thanh cuộn */
+                    padding-right: 10px; /* Để không bị che nội dung bởi thanh cuộn */
             }
         </style>
         <script>

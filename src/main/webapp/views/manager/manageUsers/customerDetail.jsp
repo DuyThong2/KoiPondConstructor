@@ -146,8 +146,7 @@
                                 </td>
                                 <td>
                                     <form action="/manager/projects/details/${project.projectId}" method="GET" class="d-inline">
-                                        <button type="submit" class="btn btn-info"
-                                        >
+                                        <button type="submit" class="btn btn-info">
                                             <i class="fas fa-eye icon-btn"></i> View Details
                                         </button>
                                     </form>
@@ -159,6 +158,41 @@
                 </c:if>
                 <c:if test="${empty projects}">
                     <p class="text-muted">No projects associated with ths customer.</p>
+                </c:if>
+            </div>
+            <!-- Service Section -->
+            <div class="section-card">
+                <h4 class="section-header"><i class="fas fa-project-diagram"></i> Associated Service</h4>
+                <c:if test="${not empty serviceDetails}">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>Service Detail ID</th>
+                            <th>Service Name</th>
+                            <th>Service Description</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach var="detail" items="${serviceDetails}">
+                            <tr>
+                                <td>${detail.id}</td>
+                                <td>${detail.service.serviceName}</td>
+                                <td>${detail.service.serviceDescription}</td>
+                                <td>
+                                    <form action="/manager/serviceDetails/${detail.id}" method="GET" class="d-inline">
+                                        <button type="submit" class="btn btn-info">
+                                            <i class="fas fa-eye icon-btn"></i> View Details
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </c:if>
+                <c:if test="${empty serviceDetails}">
+                    <p class="text-muted">No Service associated with ths customer.</p>
                 </c:if>
             </div>
         </main>
