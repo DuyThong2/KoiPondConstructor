@@ -133,6 +133,9 @@
                                             <span class="badge badge-success status-badge">Complete</span>
                                         </c:when>
                                         <c:when test="${serviceDetail.serviceDetailStatus == 4}">
+                                            <span class="badge badge-warning status-badge">Requesting Cancel</span>
+                                        </c:when>
+                                        <c:when test="${serviceDetail.serviceDetailStatus == 5}">
                                             <span class="badge badge-danger status-badge">Cancelled</span>
                                         </c:when>
                                     </c:choose>

@@ -323,7 +323,7 @@ CREATE TABLE Service_Detail (
     service_detail_price DECIMAL(10, 2),
     date_register DATE,
     rating INT,
-    service_detail_status INT,  -- 1: Pending 2:Processing 3:Completed 4.Cancel
+    service_detail_status INT,  -- 1: Pending 2:Processing 3:Completed 4.Request Cancel 5. Cancel
     feedback NVARCHAR(MAX),
     service_id INT,
     customer_id INT,

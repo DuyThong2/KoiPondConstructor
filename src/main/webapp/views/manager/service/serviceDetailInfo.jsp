@@ -107,11 +107,12 @@
                                                                  <span class="badge badge-success">Completed</span>
                                                             </c:when>
                                                             <c:when test="${serviceDetail.serviceDetailStatus == 4}">
-                                                                 <span class="badge badge-warning">Cancelled</span>
+                                                                 <span class="badge badge-warning">Requesting
+                                                                      Cancel</span>
                                                             </c:when>
-                                                            <c:otherwise>
-                                                                 <span class="badge badge-light">Unknown Status</span>
-                                                            </c:otherwise>
+                                                            <c:when test="${serviceDetail.serviceDetailStatus == 5}">
+                                                                 <span class="badge badge-danger">Canceled</span>
+                                                            </c:when>
                                                        </c:choose>
                                                   </td>
                                              </tr>

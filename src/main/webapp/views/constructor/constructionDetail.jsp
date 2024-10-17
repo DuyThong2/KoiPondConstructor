@@ -199,12 +199,15 @@
         <div class="container">
             <header>
                 <div class="nav">
-                    <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
-                        <i class="fas fa-project-diagram"></i> My Projects
-                    </a>
-                    <a href="${pageContext.request.contextPath}/constructor/serviceDetailManage" class="nav-link">
-                        <i class="fas fa-project-diagram"></i> My Service Details
-                   </a>
+                    <div class="d-flex flex-row">
+                        <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
+                            <i class="fas fa-project-diagram"></i>Projects
+                        </a>
+                        <a href="${pageContext.request.contextPath}/constructor/serviceDetailManage/"
+                            class="nav-link">
+                            <i class="fas fa-project-diagram"></i>Service Details
+                        </a>
+                    </div>
                     <!-- Thông báo và cài đặt -->
                     <div class="nav-item-group">
                         <!-- Notifications icon with badge -->

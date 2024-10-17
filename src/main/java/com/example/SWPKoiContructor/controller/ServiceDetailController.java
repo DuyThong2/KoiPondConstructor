@@ -312,5 +312,20 @@ public class ServiceDetailController {
 
         return "/customer/serviceDetail/serviceDetailPage"; // Path to your JSP page for customer service details
     }
+    @PostMapping("/construction/serviceDetail/acceptCancelRequest")
+    public ResponseEntity<String> acceptCancelRequest(@RequestParam("serviceDetailId") int serviceDetailId) {
+        try {
+            // Update the service detail status to 5 (Canceled)
+            ServiceDetail serviceDetail = serviceDetailService.updateServiceDetailStatus(serviceDetailId, 5);  // 5 for "Canceled"
+
+            if (serviceDetail != null) {
+                return ResponseEntity.ok("{\"status\":\"success\"}");
+            } else {
+                return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Could not update status to Canceled\"}");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred while accepting the cancellation request\"}");
+        }
+    }
 
 }
