@@ -120,7 +120,7 @@ public class ServiceController {
         }
 
         // Redirect back to the service list page after creation
-        return "redirect:"+ contexPath +"/manager/services";
+        return "redirect:/"+ contexPath +"/manager/services";
     }
 
     @PostMapping("manager/services/changeStatusAjax")
@@ -159,7 +159,7 @@ public class ServiceController {
             if (existingService == null) {
                 // If the service does not exist, return an error
                 redirectAttributes.addFlashAttribute("error", "Service not found.");
-                return "redirect:"+ contexPath +"/manager/services";
+                return "redirect:/"+ contexPath +"/manager/services";
             }
 
             Date currentTimestamp = new Date();
@@ -223,7 +223,7 @@ public class ServiceController {
         }
 
         // Redirect back to the service list page after updating
-        return "redirect:"+ contexPath +"/manager/services";
+        return "redirect:/"+ contexPath +"/manager/services";
     }
 
     @PostMapping("/manager/services/changePriceStatusAjax")
@@ -259,7 +259,7 @@ public class ServiceController {
             if (existingService == null) {
                 // If the service doesn't exist, add an error message and redirect
                 redirectAttributes.addFlashAttribute("error", "Service not found.");
-                return "redirect:"+ contexPath +"/manager/services/";
+                return "redirect:/"+ contexPath +"/manager/services/";
             }
             existingService.getContent().setContent(content);
             existingService.setServiceStatus(true);
@@ -268,8 +268,8 @@ public class ServiceController {
         }catch(Exception e){
             System.out.println(e.getMessage());
             redirectAttributes.addFlashAttribute("error", "Error updating service content: " + e.getMessage());
-            return "redirect:"+ contexPath +"/manager/services";
+            return "redirect:/"+ contexPath +"/manager/services";
         }
-        return "redirect:"+ contexPath +"/manager/services";
+        return "redirect:/"+ contexPath +"/manager/services";
     }
 }

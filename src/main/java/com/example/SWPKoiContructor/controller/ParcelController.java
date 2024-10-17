@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ParcelController {
 
     @Value("${spring.application.name}")
-    private String contexPath;
+    private String contextPath;
 
     private ParcelService parcelService;
 
@@ -69,7 +69,7 @@ public class ParcelController {
     public String saveParcel(@ModelAttribute("newParcel") Parcel newParcel, Model model) {
         newParcel.setPackage_status(true);
         parcelService.saveParcel(newParcel);
-        return "redirect:"+ contexPath +"/manager/parcel";
+        return "redirect:/"+ contextPath +"/manager/parcel";
     }
 
     @GetMapping("/manager/parcel/update/{id}")
@@ -79,7 +79,7 @@ public class ParcelController {
             model.addAttribute("newParcel", parcel);
             return "manager/parcel/parcelUpdate";
         } else {
-            return "redirect:"+ contexPath +"/manager/parcel";
+            return "redirect:/"+ contextPath +"/manager/parcel";
         }
 
     }
@@ -87,7 +87,7 @@ public class ParcelController {
     @PostMapping("/manager/parcel/update")
     public String updateParcel(@ModelAttribute("newParcel") Parcel newParcel, Model model) {
         parcelService.saveParcel(newParcel);
-        return "redirect:"+ contexPath +"/manager/parcel";
+        return "redirect:/"+ contextPath +"/manager/parcel";
     }
 
 }

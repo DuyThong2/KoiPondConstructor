@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ConsultantController {
 
     @Value("${spring.application.name}")
-    private String contexPath;
+    private String contextPath;
 
     private ConsultantService consultantService;
     private StaffService staffService;
@@ -100,7 +100,7 @@ public class ConsultantController {
     public String updateConsultantStaff(@RequestParam("id")int id, @RequestParam("staffId")int staffId,Model model){
         Staff consultantStaff = staffService.getStaffById(staffId);
         Consultant consultant = consultantService.updateConsultantStaff(id, consultantStaff);
-        return "redirect:"+ contexPath +"/manager/consultant/detail/" + id;
+        return "redirect:/"+ contextPath +"/manager/consultant/detail/" + id;
     }
     
     
@@ -155,7 +155,7 @@ public class ConsultantController {
     @GetMapping("/consultant/viewConsultantDetail/updateStatus")
     public String updateConsultantStatus(@RequestParam("consultantId")int consultantId, @RequestParam("statusId")int statusId, Model model){
         Consultant consultant = consultantService.updateConsultantStatus(consultantId, statusId);
-        return "redirect:"+ contexPath +"/consultant/viewConsultantDetail/" + consultantId;
+        return "redirect:/"+ contextPath +"/consultant/viewConsultantDetail/" + consultantId;
     }
     
     
@@ -175,7 +175,7 @@ public class ConsultantController {
         newConsultant.setConsultantDateTime(Calendar.getInstance());
         newConsultant.setConsultantStatus(1);
         newConsultant = consultantService.createConsultant(newConsultant);
-        return "redirect:"+ contexPath +"/customer/consultant/create";
+        return "redirect:/"+ contextPath +"/customer/consultant/create";
     }
 
     
@@ -204,7 +204,7 @@ public class ConsultantController {
             
         }
         newConsultant = consultantService.createConsultant(newConsultant);
-        return "redirect:"+ contexPath +"/";
+        return "redirect:/"+ contextPath +"/";
     }
     
 }

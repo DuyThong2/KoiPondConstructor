@@ -29,7 +29,7 @@ import java.util.List;
 public class ProjectController {
 
     @Value("${spring.application.name}")
-    private String contexPath;
+    private String contextPath;
 
     private FileUtility fileUtility;
     private ProjectService projectService;
@@ -103,7 +103,7 @@ public class ProjectController {
             model.addAttribute("decodedContent", decodedContent);
             return "manager/projects/projectDetail";
         } else {
-            return "redirect:"+ contexPath +"/manager/projects";
+            return "redirect:/"+ contextPath +"/manager/projects";
         }
     }
 
@@ -116,7 +116,7 @@ public class ProjectController {
             model.addAttribute("project", project);
             return "manager/projects/createProject";
         } else {
-            return "redirect:"+ contexPath +"/manager/contracts";
+            return "redirect:/"+ contextPath +"/manager/contracts";
         }
     }
 
@@ -132,9 +132,9 @@ public class ProjectController {
             project.setStage(1);
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);
-            return "redirect:"+ contexPath +"/manager/projects/details/" + newlyCreatedProject.getProjectId();
+            return "redirect:/"+ contextPath +"/manager/projects/details/" + newlyCreatedProject.getProjectId();
         } else {
-            return "redirect:"+ contexPath +"/manager/contracts";
+            return "redirect:/"+ contextPath +"/manager/contracts";
         }
     }
 
@@ -238,7 +238,7 @@ public class ProjectController {
             Model model) {
         try {
             staffService.assignStaffToProject(staffId, projectId, role);
-            return "redirect:"+ contexPath +"/manager/projects/assign/" + projectId;
+            return "redirect:/"+ contextPath +"/manager/projects/assign/" + projectId;
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Error assigning staff to project: " + e.getMessage());
             return "manager/projects/projectAssignStaff";
@@ -286,7 +286,7 @@ public class ProjectController {
             }
 
             projectService.updateProject(project); // Save the updated project after removing the staff
-            return "redirect:"+ contexPath +"/manager/projects/assign/" + projectId;
+            return "redirect:/"+ contextPath +"/manager/projects/assign/" + projectId;
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
             return "manager/projects/projectAssignStaff";
@@ -303,7 +303,7 @@ public class ProjectController {
         Customer customer = (Customer) session.getAttribute("user");
         if (customer == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Please login.");
-            return "redirect:"+ contexPath +"/login";
+            return "redirect:/"+ contextPath +"/login";
         }
         List<Project> currentProjects = projectService.getActiveCustomerProjectsById(customer.getId());
         List<Project> completeAndCancelProjects = projectService.getCompleteAndCancelCustomerProjectsById(customer.getId());
@@ -370,9 +370,9 @@ public class ProjectController {
     RedirectAttributes redirectAttributes){
         String returnSite="";
         if(site.equalsIgnoreCase("projectDetailSite")){
-            returnSite = "redirect:"+ contexPath +"/manager/projects/details/"+ id;
+            returnSite = "redirect:/"+ contextPath +"/manager/projects/details/"+ id;
         }else if(site.equalsIgnoreCase("projectManageSite")){
-            returnSite="redirect:"+ contexPath +"/manager/projects/manage/";
+            returnSite="redirect:/"+ contextPath +"/manager/projects/manage/";
         }
         try{
             Project project = projectService.getProjectById(id);
@@ -413,7 +413,7 @@ public class ProjectController {
             if (existingProject == null) {
                 // If the service doesn't exist, add an error message and redirect
                 redirectAttributes.addFlashAttribute("error", "Project not found.");
-                return "redirect:"+ contexPath +"/manager/projects/";
+                return "redirect:/"+ contextPath +"/manager/projects/";
             }
             existingProject.getContent().setContent(content);
 //            existingProject.setServiceStatus(true);
@@ -422,9 +422,9 @@ public class ProjectController {
         }catch(Exception e){
             System.out.println(e.getMessage());
             redirectAttributes.addFlashAttribute("error", "Error updating Project content: " + e.getMessage());
-            return "redirect:"+ contexPath +"/manager/projects";
+            return "redirect:/"+ contextPath +"/manager/projects";
         }
-        return "redirect:"+ contexPath +"/manager/projects";
+        return "redirect:/"+ contextPath +"/manager/projects";
     }
 }
 

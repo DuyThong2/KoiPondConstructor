@@ -127,7 +127,7 @@
                 <div class="offcanvas__top d-flex justify-content-between align-items-center">
                     <div class="offcanvas__logo">
                         <a href="index.html">
-                            <img src="/assets/imgs/logo/logo-white.svg" alt="logo not found">
+                            <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                         </a>
                     </div>
                     <div class="offcanvas__close">
@@ -656,7 +656,7 @@
             <div class="row mb-minus-30">
                 <div class="col-xl-4 col-md-6">
                     <div class="pricing__card overflow-hidden mb-30 wow clip-t-b" data-background="/assets/imgs/pricing/bottom-shape.png">
-                        <div class="pricing__card-image mb-40"><img src="/assets/imgs/pricing/home.png" alt=""></div>
+                        <div class="pricing__card-image mb-40"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/home.png" alt=""></div>
                         <h4 class="pricing__card-title rr-fw-sbold"><span>Basic</span></h4>
                         <div class="pricing__card-price mb-30 pb-30">
                             <h2 data-yearly='<span class="price">$199.<span>00</span></span>
@@ -716,7 +716,7 @@
                 </div>
                 <div class="col-xl-4 col-md-6">
                     <div class="pricing__card pricing__card-standard overflow-hidden mb-30 wow clip-t-b" data-background="/assets/imgs/pricing/bottom-shape__white.png">
-                        <div class="pricing__card-image mb-40"><img src="/assets/imgs/pricing/home.png" alt=""></div>
+                        <div class="pricing__card-image mb-40"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/home.png" alt=""></div>
                         <h4 class="pricing__card-title rr-fw-sbold"><span>Premium</span></h4>
                         <div class="pricing__card-price mb-30 pb-30">
                             <h2 data-yearly='<span class="price">$215.<span>00</span></span>
@@ -775,7 +775,7 @@
                 </div>
                 <div class="col-xl-4 col-md-6">
                     <div class="pricing__card overflow-hidden mb-30 wow clip-t-b" data-background="/assets/imgs/pricing/bottom-shape.png">
-                        <div class="pricing__card-image mb-40"><img src="/assets/imgs/pricing/home.png" alt=""></div>
+                        <div class="pricing__card-image mb-40"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/home.png" alt=""></div>
                         <h4 class="pricing__card-title rr-fw-sbold"><span>Premium</span></h4>
                         <div class="pricing__card-price mb-30 pb-30">
                             <h2 data-yearly='<span class="price">$299.<span>00</span></span>

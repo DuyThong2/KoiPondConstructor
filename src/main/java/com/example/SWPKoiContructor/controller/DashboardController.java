@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class DashboardController {
 
-    @Value("${spring.application.name}")
-    private String contexPath;
-
     private QuoteService quoteService;
     private ProjectService projectService;
     private ContractService contractService;

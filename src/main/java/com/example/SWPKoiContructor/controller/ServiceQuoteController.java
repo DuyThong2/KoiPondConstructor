@@ -40,7 +40,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ServiceQuoteController {
 
     @Value("${spring.application.name}")
-    private String contexPath;
+    private String contextPath;
 
     private ServiceQuoteService serviceQuoteService;
     private ServiceService serviceService;
@@ -69,7 +69,7 @@ public class ServiceQuoteController {
             }
             return "manager/serviceQuote/serviceQuoteDetail";
         }
-        return "redirect:"+ contexPath +"/manager/serviceQuote";
+        return "redirect:/"+ contextPath +"/manager/serviceQuote";
     }
     
     @GetMapping("/manager/serviceQuote")
@@ -126,7 +126,7 @@ public class ServiceQuoteController {
             feedback.setServiceQuotes(serviceQuotes);
             feedback = feedbackService.saveFeedback(feedback);
         }
-        return "redirect:"+ contexPath +"/manager/serviceQuote/detail/" + serviceQuoteId;
+        return "redirect:/"+ contextPath +"/manager/serviceQuote/detail/" + serviceQuoteId;
     }
     
     
@@ -144,7 +144,7 @@ public class ServiceQuoteController {
             }
             return "consultant/serviceQuote/serviceQuoteDetail";
         }
-        return "redirect:"+ contexPath +"/consultant/serviceQuote";
+        return "redirect:/"+ contextPath +"/consultant/serviceQuote";
     }
     
     
@@ -203,7 +203,7 @@ public class ServiceQuoteController {
             return "consultant/serviceQuote/serviceQuoteCreate";
         }
         model.addAttribute("newServiceQuote", newServiceQuotes);
-        return "redirect:"+ contexPath +"/consultant/viewConsultantDetail/" + consultantId;
+        return "redirect:/"+ contextPath +"/consultant/viewConsultantDetail/" + consultantId;
     }
     
     @PostMapping("/consultant/serviceQuote/save")
@@ -211,7 +211,7 @@ public class ServiceQuoteController {
         newServiceQuotes.setServiceQuotesStatus(1);
         newServiceQuotes.setServiceQuotesDate(new Date());
         newServiceQuotes = serviceQuoteService.saveNewServiceQuote(newServiceQuotes);
-        return "redirect:"+ contexPath +"/consultant/serviceQuote";
+        return "redirect:/"+ contextPath +"/consultant/serviceQuote";
     }
     
     @GetMapping("/consultant/serviceQuote/update")
@@ -227,7 +227,7 @@ public class ServiceQuoteController {
             model.addAttribute("staff", user);
             return "consultant/serviceQuote/serviceQuoteUpdate";
         }
-        return "redirect:"+ contexPath +"/consultant/serviceQuote/detail/" + serviceQuoteId;
+        return "redirect:/"+ contextPath +"/consultant/serviceQuote/detail/" + serviceQuoteId;
     }
     
     @PostMapping("/consultant/serviceQuote/saveUpdate")
@@ -235,7 +235,7 @@ public class ServiceQuoteController {
         serviceQuote.setServiceQuotesStatus(1);
         serviceQuote.setServiceQuotesDate(new Date());
         serviceQuote = serviceQuoteService.saveNewServiceQuote(serviceQuote);        
-        return "redirect:"+ contexPath +"/consultant/serviceQuote/detail/" + serviceQuote.getServiceQuotesId();
+        return "redirect:/"+ contextPath +"/consultant/serviceQuote/detail/" + serviceQuote.getServiceQuotesId();
     }
     
     @PostMapping("/consultant/serviceQuote/detail/saveStatus")
@@ -256,7 +256,7 @@ public class ServiceQuoteController {
             feedback.setServiceQuotes(serviceQuotes);
             feedback = feedbackService.saveFeedback(feedback);
         }
-        return "redirect:"+ contexPath +"/consultant/serviceQuote/detail/" + serviceQuoteId;
+        return "redirect:/"+ contextPath +"/consultant/serviceQuote/detail/" + serviceQuoteId;
     }
     
 }

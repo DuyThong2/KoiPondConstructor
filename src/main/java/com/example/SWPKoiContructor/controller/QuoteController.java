@@ -37,7 +37,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class QuoteController {
 
     @Value("${spring.application.name}")
-    private String contexPath;
+    private String contextPath;
 
     private QuoteService quoteService;
     private ConsultantService consultantService;
@@ -65,7 +65,7 @@ public class QuoteController {
     @PostMapping("/customer/quote/updateStatus")
     public String customerUpdateQuoteStatus(@RequestParam("quoteId") int quoteId, @RequestParam("statusId") int statusId, Model model, HttpSession session) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
-        return "redirect:"+ contexPath +"/customer/quote";
+        return "redirect:/"+ contextPath +"/customer/quote";
     }
 
     @PostMapping("/customer/quote/updateStatusAndFeedback")
@@ -79,7 +79,7 @@ public class QuoteController {
         User toUser = userService.getUserById(toUserId);
         Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, quotes);
         newFeedback = feedbackService.saveFeedback(newFeedback);
-        return "redirect:"+ contexPath +"/customer/quote";
+        return "redirect:/"+ contextPath +"/customer/quote";
     }
 
     //--------------------------------  MANAGER SITE -------------------------------------------
@@ -140,7 +140,7 @@ public class QuoteController {
     @PostMapping("/manager/quote/detail/updateStatus")
     public String managerUpdateQuoteStatus(@RequestParam("quoteId") int quoteId, @RequestParam("statusId") int statusId, Model model) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
-        return "redirect:"+ contexPath +"/manager/quote/detail/" + quoteId;
+        return "redirect:/"+ contextPath +"/manager/quote/detail/" + quoteId;
     }
 
     //CAP NHAT STATUS CO FEEDBACK
@@ -156,9 +156,9 @@ public class QuoteController {
             User toUser = userService.getUserById(toUserId);
             Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, quotes);
             newFeedback = feedbackService.saveFeedback(newFeedback);
-            return "redirect:"+ contexPath +"/manager/quote/detail/" + quoteId;
+            return "redirect:/"+ contextPath +"/manager/quote/detail/" + quoteId;
         }catch(Exception e){
-            return "redirect:"+ contexPath +"/manager/quote/detail/" + quoteId;
+            return "redirect:/"+ contextPath +"/manager/quote/detail/" + quoteId;
         }
 
     }
@@ -221,7 +221,7 @@ public class QuoteController {
             @RequestParam("statusId") int statusId,
             Model model, HttpSession session) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
-        return "redirect:"+ contexPath +"/consultant/quote/detail/" + quoteId;
+        return "redirect:/"+ contextPath +"/consultant/quote/detail/" + quoteId;
     }
 
     @PostMapping("consultant/quote/detail/updateStatusAndFeedback")
@@ -236,7 +236,7 @@ public class QuoteController {
             Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, i, quotes);
             newFeedback = feedbackService.saveFeedback(newFeedback);
         }
-        return "redirect:"+ contexPath +"/consultant/quote/detail/" + quoteId;
+        return "redirect:/"+ contextPath +"/consultant/quote/detail/" + quoteId;
     }
 
     @PostMapping("consultant/quote/createNewQuotes")
@@ -253,7 +253,7 @@ public class QuoteController {
             model.addAttribute("staff", user);
             return "consultant/quote/quoteCreate";
         }
-        return "redirect:"+ contexPath +"/consultant/viewConsultantList";
+        return "redirect:/"+ contextPath +"/consultant/viewConsultantList";
     }
 
     @PostMapping("consultant/quote/saveNewQuotes")
@@ -261,7 +261,7 @@ public class QuoteController {
         newQuote.setQuotesStatus(1);
         newQuote.setQuotesDate(new Date());
         newQuote = quoteService.saveQuotes(newQuote);
-        return "redirect:"+ contexPath +"/consultant/quote";
+        return "redirect:/"+ contextPath +"/consultant/quote";
     }
 
     @PostMapping("consultant/quote/updateQuote")
@@ -280,7 +280,7 @@ public class QuoteController {
         newQuote.setQuotesStatus(1);
         newQuote.setQuotesDate(new Date());
         newQuote = quoteService.saveQuotes(newQuote);
-        return "redirect:"+ contexPath +"/consultant/quote/detail/" + newQuote.getQuotesId();
+        return "redirect:/"+ contextPath +"/consultant/quote/detail/" + newQuote.getQuotesId();
     }
 
 }

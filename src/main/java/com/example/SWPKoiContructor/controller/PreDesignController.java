@@ -30,7 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PreDesignController {
 
     @Value("${spring.application.name}")
-    private String contexPath;
+    private String contextPath;
 
     private PreDesignService preDesignService;
     private FileUtility fileUtility;
@@ -105,7 +105,7 @@ public class PreDesignController {
         String imgURL = fileUtility.handleFileUpload(file, FileUtility.BLOG_DIR);
         preDesign.setPreDesignImgUrl(imgURL);
         preDesignService.createNewPreDesign(preDesign);
-        return "redirect:"+ contexPath +"/manager/preDesign";
+        return "redirect:/"+ contextPath +"/manager/preDesign";
         }catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Error uploading image");
@@ -136,15 +136,15 @@ public class PreDesignController {
                 contentUpdated.setContent(content);
                 contentUpdated.setLastUpdatedDate(new java.util.Date());
                 preDesignService.updatePreDesign(originPreDesign);
-                return "redirect:"+ contexPath +"/manager/preDesign/detail/" + originPreDesign.getPreDesignId();
+                return "redirect:/"+ contextPath +"/manager/preDesign/detail/" + originPreDesign.getPreDesignId();
             } else {
-                return "redirect:"+ contexPath +"/manager/preDesign";
+                return "redirect:/"+ contextPath +"/manager/preDesign";
             }
 
             // Redirect to the blog list page after creation
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:"+ contexPath +"/manager/preDesign";
+            return "redirect:/"+ contextPath +"/manager/preDesign";
         }
     }
     

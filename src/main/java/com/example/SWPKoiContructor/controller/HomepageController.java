@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class HomepageController {
 
     @Value("${spring.application.name}")
-    private String contexPath;
+    private String contextPath;
 
     private ProjectService projectService;
     private PreDesignService preDesignService;
@@ -92,7 +92,7 @@ public class HomepageController {
             model.addAttribute("service", service);
             return "customer/mainPage/serviceDetail";
         } else {
-            return "redirect:"+ contexPath +"/home/services";
+            return "redirect:/"+ contextPath +"/home/services";
         }
 
     }
@@ -121,7 +121,7 @@ public class HomepageController {
             model.addAttribute("preDesign", preDesign);
             return "customer/mainPage/preDesignDetail";
         } else {
-            return "redirect:"+ contexPath +"/home/preDesign";
+            return "redirect:/"+ contextPath +"/home/preDesign";
         }
 
     }
@@ -151,7 +151,7 @@ public class HomepageController {
             model.addAttribute("project", project);
             return "customer/mainPage/projectDetail";
         } else {
-            return "redirect:"+ contexPath +"/home/projects";
+            return "redirect:/"+ contextPath +"/home/projects";
         }
 
     }
@@ -193,7 +193,7 @@ public class HomepageController {
             model.addAttribute("blog", blog);
             return "customer/mainPage/blogDetail";
         }
-        return "redirect:"+ contexPath +"/home/blogs";
+        return "redirect:/"+ contextPath +"/home/blogs";
 
     }
 

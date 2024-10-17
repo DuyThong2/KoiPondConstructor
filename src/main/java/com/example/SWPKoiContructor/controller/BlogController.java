@@ -26,7 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class BlogController {
 
     @Value("${spring.application.name}")
-    private String contexPath;
+    private String contextPath;
 
     private BlogService blogService;
     private FileUtility fileUtility;
@@ -45,12 +45,11 @@ public class BlogController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             Model model,
-            HttpSession session
-    ) {
+            HttpSession session) {
         Staff staff = (Staff) session.getAttribute("user");
         System.out.println(staff);
         if (staff == null) {
-            return "redirect:"+ contexPath +"/login";
+            return "redirect:/" + contextPath + "/login";
         }
         List<Blog> blogs = blogService.getBlogsByCriteria(name, status, dateFrom, dateTo, page, size);
         if (!"Management".equalsIgnoreCase(staff.getDepartment())) {
@@ -77,16 +76,17 @@ public class BlogController {
         Blog blog = blogService.getBlogWithContentById(id);
         Staff staff = (Staff) session.getAttribute("user");
         if (staff == null) {
-            return "redirect:"+ contexPath +"/login";
+            return "redirect:/" + contextPath + "/login";
         }
-        if (blog != null && (blog.isBlogBelongToAuthor(staff) || "Management".equalsIgnoreCase(staff.getDepartment()))) {
+        if (blog != null
+                && (blog.isBlogBelongToAuthor(staff) || "Management".equalsIgnoreCase(staff.getDepartment()))) {
             model.addAttribute("blog", blog);
             return "/manager/blog/blogDetail";
         } else {
             if ("manager".equalsIgnoreCase(staff.getDepartment())) {
-                return "redirect:"+ contexPath +"/manager/blogs";
+                return "redirect:/" + contextPath + "/manager/blogs";
             } else {
-                return "redirect:"+ contexPath +"/staff/blogs";
+                return "redirect:/" + contextPath + "/staff/blogs";
             }
 
         }
@@ -115,7 +115,7 @@ public class BlogController {
             blog.setStatus(1);
             blogService.createBlog(blog);
             // Redirect to the blog list page after creation
-            return "redirect:"+ contexPath +"/staff/blogs";
+            return "redirect:/" + contextPath + "/staff/blogs";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -123,7 +123,7 @@ public class BlogController {
 
             // Return the blog form with existing data to allow the user to correct input
             model.addAttribute("blog", blog);
-            return "redirect:"+ contexPath +"/staff/blogs";
+            return "redirect:/" + contextPath + "/staff/blogs";
         }
     }
 
@@ -139,7 +139,7 @@ public class BlogController {
             model.addAttribute("blog", blog);
             return "manager/blog/editBlog";
         } else {
-            return "redirect:"+ contexPath +"/staff/blogs";
+            return "redirect:/" + contextPath + "/staff/blogs";
         }
 
     }
@@ -164,15 +164,15 @@ public class BlogController {
                 contentUpdated.setContent(content);
                 contentUpdated.setLastUpdatedDate(new java.util.Date());
                 blogService.updateBlog(originBlog);
-                return "redirect:"+ contexPath +"/staff/blog/viewDetail/" + originBlog.getId();
+                return "redirect:/" + contextPath + "/staff/blog/viewDetail/" + originBlog.getId();
             } else {
-                return "redirect:"+ contexPath +"/staff/blogs";
+                return "redirect:/" + contextPath + "/staff/blogs";
             }
 
             // Redirect to the blog list page after creation
         } catch (Exception e) {
             e.printStackTrace();
-            return "redirect:"+ contexPath +"/staff/blogs";
+            return "redirect:/" + contextPath + "/staff/blogs";
         }
     }
 
@@ -194,7 +194,7 @@ public class BlogController {
             }
             blogService.updateBlog(blog);
         }
-        return "redirect:"+ contexPath +"/staff/blogs"; // Redirect back to the blog list
+        return "redirect:/" + contextPath + "/staff/blogs"; // Redirect back to the blog list
     }
 
 }
