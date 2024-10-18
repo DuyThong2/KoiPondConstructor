@@ -125,6 +125,7 @@ public class ProjectController {
             project.setDateStart(Utility.localDateToUtilDate(localDate));
             project.setStatus(1);
             project.setStage(1);
+            project.setContent(new Content());
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);
             return "redirect:/manager/projects/details/" + newlyCreatedProject.getProjectId();
