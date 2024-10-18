@@ -96,7 +96,10 @@ public class StaffDAO {
 
     public long countStaff() {
         TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(s) FROM Staff s where s.enabled = true", Long.class);
-        return query.getSingleResult();
+        Long result = query.getSingleResult();
+
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
 
     public List<Staff> findByRoleAndProjectId(String role, int projectId) {
@@ -137,9 +140,7 @@ public class StaffDAO {
         }
         TypedQuery<Staff> query = entityManager.createQuery(queryStr, Staff.class);
         if (departmentFilters != null && !departmentFilters.isEmpty()) {
-            List<String> lowerCaseDepartments = departmentFilters.stream()
-
-                    .collect(Collectors.toList());
+            List<String> lowerCaseDepartments = departmentFilters.stream().collect(Collectors.toList());
             query.setParameter("departments", lowerCaseDepartments);
         }
         if(assignedStaff!=null && !assignedStaff.isEmpty()) {
@@ -333,7 +334,10 @@ public class StaffDAO {
         if (status != null) {
             query.setParameter("enabled", status);
         }
-        return query.getSingleResult();
+        Long result = query.getSingleResult();
+
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
 
 

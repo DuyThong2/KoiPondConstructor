@@ -130,7 +130,10 @@ public class QuoteDAO {
     public long countQuotesPeding() {
         TypedQuery<Long> tq = entityManager.createQuery(
                 "SELECT Count(q) FROM Quotes q WHERE q.quotesStatus = 1", Long.class);
-        return tq.getSingleResult();
+        Long result = tq.getSingleResult();
+
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
     
     public long test(){

@@ -16,73 +16,47 @@
     <body>
 
         <div class="container">
-            <header>
-                <div class="nav">
-                    <a href="/designer/manage" class="nav-link">
-                        <i class="fas fa-project-diagram"></i> My Projects
-                    </a>
-
-                    <input type="text" placeholder="Search..." id="search">
-                    <div class="nav-item-group">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-bell"></i>
-                            <span class="badge badge-danger">3</span>
-                        </a>
-
-                          <div class="dropdown">
-                        <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
-                            <span class="ml-2 user-name">${user.name}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="/designer/profile"><i class="fas fa-user"></i> Profile</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-paint-brush"></i> Theme</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Help</a></li>
-                            <li class="divider"></li>
-                            <li><a href="/logout" class="dropdown-item btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                        </ul>
-                    </div>
-                    </div>
-                </div>
-            </header>
+            <%@include file="navbarDesign.jsp" %>
 
 
             <div class="table-responsive">
                 <table class="table table-bordered table-striped text-center">
                     <thead>
                         <tr>
-                            <th>Project Id</th>
+                            <th>Design Id</th>
                             <th>Project Name</th>
                             <th>Customer</th>
-                            <th>Status</th>
+                            <th>Design Status</th>
                             <th class="action-column">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <c:forEach var="designs" items="${designs}">
                             <tr>
-                                <td>${designs.project.projectId}</td>
+                                <td>${designs.designId}</td>
                                 <td>${designs.project.projectName}</td>
                                 <td>${designs.project.contract.customer.name}</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${designs.project.status == 1}">
+                                        <c:when test="${designs.status == 1}">
                                             <span class="badge badge-secondary">Pending</span>
                                         </c:when>
-                                        <c:when test="${designs.project.status == 2}">
+                                        <c:when test="${designs.status == 2}">
                                             <span class="badge badge-primary">Processing</span>
                                         </c:when>
-                                        <c:when test="${designs.project.status == 3}">
+                                        <c:when test="${designs.status == 3}">
                                             <span class="badge badge-success">Completed</span>
                                         </c:when>
-                                        <c:when test="${designs.project.status == 4}">
+                                        <c:when test="${designs.status == 4}">
                                             <span class="badge badge-warning">Canceled</span>
                                         </c:when>
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="/designer/manage/viewDetail/${designs.designId}" class="btn btn-info">Detail</a>
-                                    <a href="/designer/design/${designs.designId}" class="btn btn-secondary">To Design</a>
+                                    <a href="${pageContext.request.contextPath}/designer/manage/viewDetail/${designs.designId}" class="btn btn-info">Detail</a>
+                                    <c:if test="${designs.status != 4}">
+                                        <a href="${pageContext.request.contextPath}/designer/design/${designs.designId}" class="btn btn-secondary">To Design</a>
+                                    </c:if>
                                 </td>
 
                             </tr>

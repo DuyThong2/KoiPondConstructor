@@ -22,7 +22,10 @@ public class LoyaltyPointDAO {
         TypedQuery<Long> query = entityManager.createQuery(
                 "select SUM(l.amount) from LoyaltyPoint l where l.customer.id = :customerId", Long.class);
         query.setParameter("customerId", customerId);
-        return query.getSingleResult();
+        Long result = query.getSingleResult();
+
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
     
     

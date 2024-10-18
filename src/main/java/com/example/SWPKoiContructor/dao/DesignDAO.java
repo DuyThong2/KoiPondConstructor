@@ -66,21 +66,30 @@ public class DesignDAO {
         String countDesign = "SELECT COUNT(d) FROM Design d JOIN d.staff s WHERE s.id = :staffId";
         TypedQuery<Long> query = entityManager.createQuery(countDesign, Long.class);
         query.setParameter("staffId", staffId);
-        return query.getSingleResult();
+        Long result = query.getSingleResult();
+
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
 
     public long countDesignsCompleteByStaffId(int staffId) {
         String countDesign = "SELECT COUNT(d) FROM Design d JOIN d.staff s WHERE s.id = :staffId and d.status = 3";
         TypedQuery<Long> query = entityManager.createQuery(countDesign, Long.class);
         query.setParameter("staffId", staffId);
-        return query.getSingleResult();
+        Long result = query.getSingleResult();
+
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
 
     public long countDesignsProcessingByStaffId(int staffId) {
         String countDesign = "SELECT COUNT(d) FROM Design d JOIN d.staff s WHERE s.id = :staffId and d.status = 2";
         TypedQuery<Long> query = entityManager.createQuery(countDesign, Long.class);
         query.setParameter("staffId", staffId);
-        return query.getSingleResult();
+        Long result = query.getSingleResult();
+
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
     }
 
     public boolean isAssignedToDesign(int designId, int userId) {

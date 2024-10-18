@@ -2,15 +2,14 @@ package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.*;
 
-import com.example.SWPKoiContructor.services.CommentService;
-import com.example.SWPKoiContructor.services.ConstructionService;
-import com.example.SWPKoiContructor.services.ConstructionStageDetailService;
-import com.example.SWPKoiContructor.services.ConstructionStageService;
+import com.example.SWPKoiContructor.services.*;
 
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,11 +27,13 @@ public class ConstructionController {
     private ConstructionStageService constructionStageService;
     private ConstructionStageDetailService constructionStageDetailService;
 
-    public ConstructionController(ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService) {
+    private ServiceDetailService serviceDetailService;
+    public ConstructionController(ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService,ServiceDetailService serviceDetailService) {
         this.constructionService = constructionService;
         this.constructionStageService = ConstructionStageService;
         this.constructionStageDetailService = ConstructionStageDetailService;
         this.commentService = commentService;
+        this.serviceDetailService = serviceDetailService;
     }
 
     @GetMapping("/manager/construction")
@@ -431,5 +432,126 @@ public class ConstructionController {
         return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
     }
 
+
+    @GetMapping("/constructor/serviceDetailManage/")
+    public String constructionServiceDetailManagePage(
+            Model model,
+            HttpSession session,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortType,
+            @RequestParam(required = false) Integer statusFilter) {
+
+        // Retrieve the logged-in staff from session
+        Staff staff = (Staff) session.getAttribute("user");
+        if (staff == null) {
+            return "redirect:/login"; // Redirect to login if not logged in
+        }
+
+        List<ServiceDetail> serviceDetails;
+        long totalServiceDetails;
+
+        // Fetch service details based on whether a status filter is applied
+        if (statusFilter != null) {
+            serviceDetails = serviceDetailService.getServiceDetailsByStaffIdAndStatus(staff.getId(), page, size, sortBy, sortType, statusFilter);
+            totalServiceDetails = serviceDetailService.countServiceDetailsByStaffIdAndStatus(staff.getId(), statusFilter);
+        } else {
+            serviceDetails = serviceDetailService.getServiceDetailsByStaffId(staff.getId(), page, size, sortBy, sortType);
+            totalServiceDetails = serviceDetailService.countServiceDetailsByStaffId(staff.getId());
+        }
+
+        long totalPage = (long) Math.ceil(totalServiceDetails / (double) size);
+        page = Math.max(page, 1);
+
+        // Add attributes to the model for rendering in the view
+        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortType", sortType);
+        model.addAttribute("totalPage", totalPage);
+        model.addAttribute("serviceDetailsList", serviceDetails);
+        model.addAttribute("statusFilter", statusFilter);
+
+        return "constructor/constructionServiceManage"; // JSP page path
+    }
+
+    @GetMapping("/constructor/serviceDetail/{serviceDetailId}")
+    public String getServiceDetail(
+            @PathVariable("serviceDetailId") int serviceDetailId,
+            Model model,
+            HttpSession session) {
+
+        // Retrieve the service detail by ID
+        Staff staff = (Staff) session.getAttribute("user");
+        if (staff == null) {
+            return "redirect:/login"; // Redirect to login if not logged in
+        }
+
+        ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
+
+        // If the service detail is not found, redirect to the service detail management page
+        if (serviceDetail == null) {
+            return "redirect:/constructor/serviceDetailManage/";
+        }
+        if(serviceDetail.getStaff().getId()!=staff.getId()){
+            return "redirect:/constructor/serviceDetailManage/";
+        }
+
+        // Retrieve the related customer information
+        Customer customer = serviceDetail.getCustomer();
+
+        // Add attributes to the model to render in the JSP
+        model.addAttribute("serviceDetail", serviceDetail);
+        model.addAttribute("customer", customer);
+
+        // Retrieve comments/feedback related to the service
+//        List<Comment> comments = serviceDetailService.getCommentsByServiceDetailId(serviceDetailId);
+//        model.addAttribute("comments", comments);
+
+        return "constructor/constructorServiceDetailInfo"; // Path to the JSP page
+    }
+    @PostMapping("construction/serviceDetail/update")
+    public ResponseEntity<String> updateServiceDetailStatus(@RequestParam("serviceDetailId") int serviceDetailId) {
+        try {
+            // Attempt to update the service detail status
+            ServiceDetail serviceDetail = serviceDetailService.updateServiceDetailStatus(serviceDetailId, 3);  // 3 for "Complete" status
+
+            if (serviceDetail != null) {
+                // Return success JSON string wrapped in ResponseEntity with 200 OK
+                return ResponseEntity.ok("{\"status\":\"success\"}");
+            } else {
+                // Return error JSON string with 400 Bad Request status
+                return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Could not update status\"}");
+            }
+        } catch (Exception e) {
+            // Return error JSON string with 500 Internal Server Error status
+            return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred\"}");
+        }
+    }
+
+    @PostMapping("construction/serviceDetail/cancelRequest")
+    public ResponseEntity<String> cancelServiceDetailStatus(
+            @RequestParam("serviceDetailId") int serviceDetailId,
+            @RequestParam("cancelMessage") String cancelMessage) {
+        try {
+            // Attempt to update the service detail status to 4 (Canceled)
+            ServiceDetail serviceDetail = serviceDetailService.updateServiceDetailStatus(serviceDetailId, 4);  // 4 for "Canceled" status
+
+            if (serviceDetail != null) {
+                // Optionally, you may want to save the cancellation message
+//                serviceDetailService.saveCancellationMessage(serviceDetailId, cancelMessage);
+
+                // Return success JSON string wrapped in ResponseEntity with 200 OK
+                return ResponseEntity.ok("{\"status\":\"success\"}");
+            } else {
+                // Return error JSON string with 400 Bad Request status
+                return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Could not update status to Canceled\"}");
+            }
+        } catch (Exception e) {
+            // Return error JSON string with 500 Internal Server Error status
+            return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred during cancellation\"}");
+        }
+    }
 
 }

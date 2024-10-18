@@ -1,23 +1,30 @@
 package com.example.SWPKoiContructor.controller.functionalController;
 
+
 import com.example.SWPKoiContructor.services.ConstructionStageDetailService;
 import com.example.SWPKoiContructor.services.DesignStageDetailService;
 import com.example.SWPKoiContructor.services.functionalService.PayPalService;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping("/paypal")
 public class PayPalController {
+
+    @Value("${server.servlet.context-path}")
+    private String contexPath;
 
     @Autowired
     private PayPalService payPalService;
@@ -29,11 +36,18 @@ public class PayPalController {
     private DesignStageDetailService designStageDetailService;
 
     @PostMapping("/pay/construction")
-    public RedirectView payForConstruction(@RequestParam("amount") double amount,
-            @RequestParam("detailId") int detailId,
-            @RequestParam("constructionId") int constructionId) {
-        String cancelUrl = "http://localhost:8081/paypal/cancel/construction";
-        String successUrl = "http://localhost:8081/paypal/success/construction?detailId=" + detailId + "&constructionId=" + constructionId;
+    public RedirectView payForConstruction(HttpServletRequest request, 
+                                           @RequestParam("amount") double amount,
+                                           @RequestParam("detailId") int detailId,
+                                           @RequestParam("constructionId") int constructionId) {
+        // Dynamically build the base URL
+        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                                                    .replacePath(null)
+                                                    .build()
+                                                    .toUriString();
+
+        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/construction";
+        String successUrl = baseUrl + contexPath + "/paypal/success/construction?detailId=" + detailId + "&constructionId=" + constructionId;
 
         try {
             // Create PayPal payment for Construction
@@ -54,13 +68,19 @@ public class PayPalController {
         return new RedirectView(cancelUrl);
     }
 
-    // Initiates PayPal payment for DesignStageDetail
     @PostMapping("/pay/design")
-    public RedirectView payForDesign(@RequestParam("amount") double amount,
-            @RequestParam("detailId") int detailId,
-            @RequestParam("designId") int designId) {
-        String cancelUrl = "http://localhost:8081/paypal/cancel/design";
-        String successUrl = "http://localhost:8081/paypal/success/design?detailId=" + detailId + "&designId=" + designId;
+    public RedirectView payForDesign(HttpServletRequest request,
+                                     @RequestParam("amount") double amount,
+                                     @RequestParam("detailId") int detailId,
+                                     @RequestParam("designId") int designId) {
+        // Dynamically build the base URL
+        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                                                    .replacePath(null)
+                                                    .build()
+                                                    .toUriString();
+
+        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/design";
+        String successUrl = baseUrl + contexPath + "/paypal/success/design?detailId=" + detailId + "&designId=" + designId;
 
         try {
             // Create PayPal payment for Design
@@ -81,12 +101,11 @@ public class PayPalController {
         return new RedirectView(cancelUrl);
     }
 
-    // Handles successful PayPal payment for ConstructionStageDetail
     @GetMapping("/success/construction")
     public String successForConstruction(@RequestParam("paymentId") String paymentId,
-            @RequestParam("PayerID") String payerId,
-            @RequestParam("detailId") int detailId,
-            @RequestParam("constructionId") int constructionId) {
+                                         @RequestParam("PayerID") String payerId,
+                                         @RequestParam("detailId") int detailId,
+                                         @RequestParam("constructionId") int constructionId) {
         try {
             // Execute PayPal payment
             Payment payment = payPalService.executePayment(paymentId, payerId);
@@ -106,12 +125,11 @@ public class PayPalController {
         return "redirect:/error/error-500";
     }
 
-    // Handles successful PayPal payment for DesignStageDetail
     @GetMapping("/success/design")
     public String successForDesign(@RequestParam("paymentId") String paymentId,
-            @RequestParam("PayerID") String payerId,
-            @RequestParam("detailId") int detailId,
-            @RequestParam("designId") int designId) {
+                                   @RequestParam("PayerID") String payerId,
+                                   @RequestParam("detailId") int detailId,
+                                   @RequestParam("designId") int designId) {
         try {
             // Execute PayPal payment
             Payment payment = payPalService.executePayment(paymentId, payerId);
@@ -131,15 +149,13 @@ public class PayPalController {
         return "redirect:/error/error-500";
     }
 
-    // Handles payment cancellation for construction
     @GetMapping("/cancel/construction/{id}")
     public String cancelForConstruction(@PathVariable("id") int constructionId) {
-        return "redirect:/customer/project/construction/"+constructionId; // View for construction payment cancellation
+        return "redirect:/customer/project/construction/" + constructionId;
     }
 
-    // Handles payment cancellation for design
     @GetMapping("/cancel/design/{id}")
     public String cancelForDesign(@PathVariable("id") int designId) {
-        return "redirect:/customer/project/design/" + designId; // View for design payment cancellation
+        return "redirect:/customer/project/design/" + designId;
     }
 }

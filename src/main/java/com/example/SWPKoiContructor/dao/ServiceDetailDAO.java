@@ -178,11 +178,11 @@ public class ServiceDetailDAO {
     public long countServiceDetailsByCustomerId(int customerId) {
         TypedQuery<Long> query = entityManager.createQuery("SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.customer.id= :customerId", Long.class);
         query.setParameter("customerId", customerId);
-        return query.getSingleResult();
-    }
+        Long result = query.getSingleResult();
 
-    
-    
+        // Nếu kết quả là null (không có điểm), trả về 0
+        return result != null ? result : 0L;
+    }
 
 
 
@@ -222,6 +222,53 @@ public class ServiceDetailDAO {
 
         query.setFirstResult((page - 1) * size);
         query.setMaxResults(size);
+        return query.getResultList();
+    }
+    // Fetch paginated and sorted list of service details by staff ID
+    public List<ServiceDetail> getServiceDetailsByStaffId(int staffId, int page, int size, String sortBy, String sortType) {
+        String queryString = "SELECT sd FROM ServiceDetail sd WHERE sd.staff.id = :staffId ORDER BY sd." + sortBy + " " + sortType;
+        TypedQuery<ServiceDetail> query = entityManager.createQuery(queryString, ServiceDetail.class);
+        query.setParameter("staffId", staffId);
+        query.setFirstResult((page - 1) * size); // Pagination: skip first (page-1)*size results
+        query.setMaxResults(size); // Pagination: limit to size
+        return query.getResultList();
+    }
+
+    // Fetch paginated and sorted list of service details by staff ID and status
+    public List<ServiceDetail> getServiceDetailsByStaffIdAndStatus(int staffId, int page, int size, String sortBy, String sortType, int status) {
+        String queryString = "SELECT sd FROM ServiceDetail sd WHERE sd.staff.id = :staffId AND sd.serviceDetailStatus = :status ORDER BY sd." + sortBy + " " + sortType;
+        TypedQuery<ServiceDetail> query = entityManager.createQuery(queryString, ServiceDetail.class);
+        query.setParameter("staffId", staffId);
+        query.setParameter("status", status);
+        query.setFirstResult((page - 1) * size); // Pagination: skip first (page-1)*size results
+        query.setMaxResults(size); // Pagination: limit to size
+        return query.getResultList();
+    }
+
+    // Count total service details by staff ID
+    public long countServiceDetailsByStaffId(int staffId) {
+        String queryString = "SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.staff.id = :staffId";
+        TypedQuery<Long> query = entityManager.createQuery(queryString, Long.class);
+        query.setParameter("staffId", staffId);
+        return query.getSingleResult();
+    }
+
+    // Count total service details by staff ID and status
+    public long countServiceDetailsByStaffIdAndStatus(int staffId, int status) {
+        String queryString = "SELECT COUNT(sd) FROM ServiceDetail sd WHERE sd.staff.id = :staffId AND sd.serviceDetailStatus = :status";
+        TypedQuery<Long> query = entityManager.createQuery(queryString, Long.class);
+        query.setParameter("staffId", staffId);
+        query.setParameter("status", status);
+        return query.getSingleResult();
+    }
+
+
+
+    // Get service details by staff ID
+    public List<ServiceDetail> getServiceDetailsByStaffId(int staffId) {
+        String queryString = "SELECT sd FROM ServiceDetail sd WHERE sd.staff.id = :staffId";
+        TypedQuery<ServiceDetail> query = entityManager.createQuery(queryString, ServiceDetail.class);
+        query.setParameter("staffId", staffId);
         return query.getResultList();
     }
 }
