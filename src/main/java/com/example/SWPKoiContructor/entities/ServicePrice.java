@@ -45,6 +45,12 @@ public class ServicePrice {
         this.dateApply = dateApply;
         this.servicePriceStatus = servicePriceStatus;
     }
+    
+    public ServicePrice(double price){
+        this.value = price;
+        this.dateApply = new Date();
+        this.servicePriceStatus = true;
+    }
 
     public ServicePrice() {
     }

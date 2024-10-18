@@ -101,7 +101,7 @@ public class ServiceDetailController {
         newServiceDetail.setPrice(serviceQuotes.getServiceQuotesTotalPrice());
         newServiceDetail.setDateRegister(new Date());
         newServiceDetail.setServiceDetailStatus(1);
-        newServiceDetail.setService(serviceQuotes.getService());
+       
         newServiceDetail.setCustomer(serviceQuotes.getCustomer());
         newServiceDetail = serviceDetailService.createServiceDetail(newServiceDetail);
         return "redirect:/manager/serviceDetails";

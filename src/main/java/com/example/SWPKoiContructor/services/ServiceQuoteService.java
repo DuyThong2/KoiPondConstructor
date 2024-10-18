@@ -46,6 +46,15 @@ public class ServiceQuoteService {
         return serviceQuoteDAO.countFilteredServiceQuoteManager(statusFilter, searchName, fromDate, toDate);
     }
     
+    public List<ServiceQuotes> getFilteredServiceQuoteCustomer(int page, int size, String sortBy, String sortDirection,
+            LocalDate fromDate, LocalDate toDate, int cusId){
+        return serviceQuoteDAO.getFilteredServiceQuoteCustomer(page, size, sortBy, sortDirection, fromDate, toDate, cusId);
+    }
+    
+    public long countFilteredServiceQuoteCustomer(LocalDate fromDate, LocalDate toDate, int cusId){
+        return serviceQuoteDAO.countFilteredServiceCustomer(fromDate, toDate, cusId);
+    }
+    
     @Transactional
     public ServiceQuotes saveStatusUpdateManager(int serviceQuoteId, int serviceQuoteStatus){
         return serviceQuoteDAO.updateServiceQuoteStatus(serviceQuoteId, serviceQuoteStatus);

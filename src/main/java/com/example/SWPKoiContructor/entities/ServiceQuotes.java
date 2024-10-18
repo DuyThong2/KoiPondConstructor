@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -63,17 +65,21 @@ public class ServiceQuotes {
     @JoinColumn(name = "staff_id")
     private Staff staff;
     
-    @ManyToOne
-    @JoinColumn(name = "service_id")
-    private Service service;
+    @ManyToMany
+    @JoinTable(
+            name = "Service_Quotes_Service",
+            joinColumns = @JoinColumn(name = "service_quotes_id"),
+            inverseJoinColumns = @JoinColumn(name = "service_id")
+    )
+    private List<Service> service;
     
     @OneToMany(mappedBy = "serviceQuotes")
     private List<Feedback> feedback;
 
     public ServiceQuotes() {
     }
-       
-    public ServiceQuotes(int serviceQuotesId, String serviceQuotesName, String serviceQuotesContent, double serviceQuotesTotalPrice, double serviceQuotesArea, Date serviceQuotesDate, int serviceQuotesStatus, Customer customer, Consultant consultant, Staff staff, Service service, List<Feedback> feedback) {
+
+    public ServiceQuotes(int serviceQuotesId, String serviceQuotesName, String serviceQuotesContent, double serviceQuotesTotalPrice, double serviceQuotesArea, Date serviceQuotesDate, int serviceQuotesStatus, Customer customer, Consultant consultant, Staff staff, List<Service> service, List<Feedback> feedback) {
         this.serviceQuotesId = serviceQuotesId;
         this.serviceQuotesName = serviceQuotesName;
         this.serviceQuotesContent = serviceQuotesContent;
@@ -87,6 +93,8 @@ public class ServiceQuotes {
         this.service = service;
         this.feedback = feedback;
     }
+       
+    
 
     public int getServiceQuotesId() {
         return serviceQuotesId;
@@ -168,13 +176,15 @@ public class ServiceQuotes {
         this.staff = staff;
     }
 
-    public Service getService() {
+    public List<Service> getService() {
         return service;
     }
 
-    public void setService(Service service) {
+    public void setService(List<Service> service) {
         this.service = service;
     }
+
+    
 
     public List<Feedback> getFeedback() {
         return feedback;

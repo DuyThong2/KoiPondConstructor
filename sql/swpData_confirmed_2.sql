@@ -298,6 +298,7 @@ CREATE TABLE Construction_Staff (
     FOREIGN KEY (construction_id) REFERENCES Construction(construction_id)
 );
 
+--   Service Quote
 CREATE TABLE Service_Quotes (
     service_quotes_id INT PRIMARY KEY IDENTITY(1,1),
 	service_quotes_name NVARCHAR(200),
@@ -308,14 +309,22 @@ CREATE TABLE Service_Quotes (
     service_quotes_status INT,  --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel
     customer_id INT,
     consultant_id int,
-    staff_id INT,	
-	service_id int,
+    staff_id INT,		
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
     FOREIGN KEY (consultant_id) references Consultant(consultant_id),
     FOREIGN KEY (staff_id) REFERENCES Staffs(id),
-	FOREIGN KEY (service_id) REFERENCES Service(service_id)
     
 );
+
+-- Service Quote JOIN Service
+CREATE TABLE Service_Quotes_Service(
+	service_quotes_id INT,
+	service_id INT,
+	PRIMARY KEY(service_quotes_id, service_id),
+	FOREIGN KEY (service_quotes_id) REFERENCES Service_Quotes(service_quotes_id),
+    FOREIGN KEY (service_id) REFERENCES Service(service_id)
+)
+
 
 -- 25. Service_Detail
 CREATE TABLE Service_Detail (
