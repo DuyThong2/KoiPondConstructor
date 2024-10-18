@@ -164,7 +164,7 @@
                                                     class="btn btn-info">Details</a>
                                                 <c:if test="${service.serviceDetailStatus == 4}">
                                                     <!-- View Request Button -->
-                                                    <button id="viewRequestBtn" type="button"
+                                                    <button id="viewRequestBtn-${service.id}" type="button"
                                                         class="btn btn-danger btn-md mt-4"
                                                         onclick="showModal(${service.id}, event);">
                                                         View Request
@@ -241,18 +241,31 @@
                                                                         onclick="window.location.href = '/manager/manageStaff/detail/${service.staff.id}'">
                                                                         Staff Details
                                                                     </button>
-                                                                    <a href="/manager/serviceDetails/assign/${service.id}"
-                                                                        class="btn btn-warning">Edit Staff</a>
+                                                                    <c:if
+                                                                        test="${service.serviceDetailStatus!=3 && service.serviceDetailStatus!=5}">
+                                                                        <a href="/manager/serviceDetails/assign/${service.id}"
+                                                                            class="btn btn-warning">Edit Staff</a>
+                                                                    </c:if>
                                                                 </td>
                                                             </tr>
                                                         </c:if>
                                                         <c:if test="${empty service.staff}">
-                                                            <tr>
-                                                                <td colspan="5" class="text-center">
-                                                                    <a href="/manager/serviceDetails/assign/${service.id}"
-                                                                        class="btn btn-primary">Assign Staff</a>
-                                                                </td>
-                                                            </tr>
+                                                            <c:choose>
+                                                                <c:when
+                                                                    test="${service.serviceDetailStatus!=3 && service.serviceDetailStatus!=5}">
+                                                                    <tr>
+                                                                        <td colspan="5" class="text-center">
+                                                                            <a href="/manager/serviceDetails/assign/${service.id}"
+                                                                                class="btn btn-primary">Assign Staff</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <td colspan="5" class="text-center">
+                                                                        <h5>No Staff Assigned</h5>
+                                                                    </td>
+                                                                </c:otherwise>
+                                                            </c:choose>
                                                         </c:if>
                                                     </tbody>
                                                 </table>
@@ -296,6 +309,7 @@
                             </div>
                         </main>
                         <!-- Modal for viewing the cancellation request -->
+                        <!-- Modal for viewing the cancellation request -->
                         <div class="modal fade" id="viewRequestModal" tabindex="-1" role="dialog"
                             aria-labelledby="viewRequestModalLabel" aria-hidden="true" data-service-id="">
                             <div class="modal-dialog" role="document">
@@ -311,15 +325,19 @@
                                     </div>
                                     <div class="modal-footer">
                                         <!-- Accept Request Button -->
-                                        <button type="button" class="btn btn-success" onclick="acceptRequest(event);">
+                                        <button type="button" class="btn btn-success" onclick="acceptRequest();">
                                             Accept Request
                                         </button>
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Close</button>
+                                        <!-- Deny Request Button -->
+                                        <button type="button" class="btn btn-danger" onclick="denyRequest();">
+                                            Deny Request
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="modal fade" id="messageModal" tabindex="-1" role="dialog"
                             aria-labelledby="messageModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -374,14 +392,14 @@
                     };
 
                     // Accept the cancellation request for the specific service
-                    function acceptRequest(serviceId, event) {
+                    function acceptRequest() {
 
                         // Prevent the row's click event from triggering
                         var serviceId = $('#viewRequestModal').attr('data-service-id');
 
                         // Send AJAX request to accept cancellation
                         $.ajax({
-                            url: '/construction/serviceDetail/acceptCancelRequest',
+                            url: '${pageContext.request.contextPath}/construction/serviceDetail/acceptCancelRequest',
                             method: 'POST',
                             data: {
                                 serviceDetailId: serviceId
@@ -396,11 +414,41 @@
                                 $('#messageModal').modal('show');
 
                                 // Hide the "View Request" button after the request is accepted
-                                $('#viewRequestBtn').hide();
+                                $('#viewRequestBtn-' + serviceId).hide();
                             },
                             error: function (xhr, status, error) {
                                 // Show error message in the message modal
                                 $('#messageModalBody').text('An error occurred while accepting the cancellation request.');
+                                $('#messageModal').modal('show');
+                            }
+                        });
+                    }
+                    function denyRequest() {
+                        // Get the service ID from the modal's data attribute
+                        var serviceId = $('#viewRequestModal').attr('data-service-id');
+
+                        // Send AJAX request to deny the cancellation
+                        $.ajax({
+                            url: '${pageContext.request.contextPath}/construction/serviceDetail/denyCancelRequest',  // Update the URL as needed
+                            method: 'POST',
+                            data: {
+                                serviceDetailId: serviceId
+                            },
+                            success: function (response) {
+                                // Update the badge to "Processing" or other relevant status and hide the modal
+                                $('#badge-' + serviceId).removeClass('badge-warning').addClass('badge-primary').text('Processing');
+                                $('#viewRequestModal').modal('hide');
+
+                                // Show success message in the message modal
+                                $('#messageModalBody').text('Cancellation request denied successfully!');
+                                $('#messageModal').modal('show');
+
+                                // Hide the "View Request" button after the request is denied
+                                $('#viewRequestBtn-' + serviceId).hide();
+                            },
+                            error: function (xhr, status, error) {
+                                // Show error message in the message modal
+                                $('#messageModalBody').text('An error occurred while denying the cancellation request.');
                                 $('#messageModal').modal('show');
                             }
                         });

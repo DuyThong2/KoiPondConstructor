@@ -382,9 +382,19 @@
                                                             style="display: none; flex-direction: column; gap: 10px; margin-top: 10px;">
                                                             <button class="btn btn-primary mb-2"
                                                                 onclick="showUpdateModal(${service.serviceId}, event, '${service.serviceName}', '${service.serviceDescription}', ${service.servicePrice[0].value})">Update</button>
-                                                            <button class="btn btn-danger"
-                                                                id="toggle-btn-${service.serviceId}"
-                                                                onclick="confirmStatusChange(${service.serviceId}, event)">Deactivate</button>
+                                                            <c:choose>
+                                                                <c:when test="${service.serviceStatus}">
+                                                                    <button class="btn btn-danger"
+                                                                        id="deactivate-btn-${service.serviceId}"
+                                                                        onclick="confirmStatusChange(${service.serviceId}, event)">Deactivate</button>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <button class="btn btn-success"
+                                                                        id="deactivate-btn-${service.serviceId}"
+                                                                        onclick="confirmStatusChange(${service.serviceId}, event)">Activate</button>
+                                                                </c:otherwise>
+                                                            </c:choose>
+
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -623,11 +633,11 @@
                                         if (newStatus === 'Active') {
                                             badge.removeClass('badge-danger').addClass('badge-success').text('Active');
                                             // Change button to outline-danger and text to 'Deactivate'
-                                            $('#deactivate-btn-' + serviceId).removeClass('btn-outline-success').addClass('btn-outline-danger').text('Deactivate');
+                                            $('#deactivate-btn-' + serviceId).removeClass('btn-success').addClass('btn-danger').text('Deactivate');
                                         } else {
                                             badge.removeClass('badge-success').addClass('badge-danger').text('Inactive');
                                             // Change button to outline-success and text to 'Activate'
-                                            $('#deactivate-btn-' + serviceId).removeClass('btn-outline-danger').addClass('btn-outline-success').text('Activate');
+                                            $('#deactivate-btn-' + serviceId).removeClass('btn-danger').addClass('btn-success').text('Activate');
                                         }
 
                                         // Hide the confirmation modal

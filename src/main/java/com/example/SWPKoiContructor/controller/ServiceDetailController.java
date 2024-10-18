@@ -178,6 +178,19 @@ public class ServiceDetailController {
             ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
 
             if (serviceDetail != null && staff != null) {
+                if(serviceDetail.getServiceDetailStatus()==3 || serviceDetail.getServiceDetailStatus()==4 || serviceDetail.getServiceDetailStatus()==5) {
+                    model.addAttribute("errorMessage", "Can't assign staff");
+                    return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
+                }
+                    if(serviceDetail.getStaff()!=null){
+                        model.addAttribute("errorMessage", "Staff have been already assigned");
+                        return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
+                    }
+
+                if(serviceDetail.getStaff()!=null){
+                    model.addAttribute("errorMessage", "Staff have been already assigned");
+                    return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
+                }
                 serviceDetail.setStaff(staff); // Assign staff to service detail
                 if (serviceDetail.getServiceDetailStatus() == 1) {
                     serviceDetail.setServiceDetailStatus(2); // Set status to Processing (2)
@@ -324,6 +337,19 @@ public class ServiceDetailController {
                 return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Could not update status to Canceled\"}");
             }
         } catch (Exception e) {
+            return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred while accepting the cancellation request\"}");
+        }
+    }
+    @PostMapping("/construction/serviceDetail/denyCancelRequest")
+    public ResponseEntity<String> cancelCancelRequest(@RequestParam("serviceDetailId") int serviceDetailId){
+        try{
+            ServiceDetail serviceDetail= serviceDetailService.updateServiceDetailStatus(serviceDetailId,2);
+            if (serviceDetail != null) {
+                return ResponseEntity.ok("{\"status\":\"success\"}");
+            } else {
+                return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Could not update status to Canceled\"}");
+            }
+        }catch (Exception e) {
             return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred while accepting the cancellation request\"}");
         }
     }
