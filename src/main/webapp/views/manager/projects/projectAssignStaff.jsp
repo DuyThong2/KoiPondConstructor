@@ -829,7 +829,7 @@
                                                     // Properly initialize the project variables from JSP
                                                     function updateStage(projectId, newStage) {
                                                         $.ajax({
-                                                            url: '/updateStage', // Replace with the correct endpoint for your project
+                                                            url: '${pageContext.request.contextPath}/updateStage', // Replace with the correct endpoint for your project
                                                             type: 'POST',
                                                             data: {
                                                                 projectId: projectId,
@@ -930,7 +930,7 @@
                                                     $(document).ready(function () {
                                                         $('#assignDesignerButton').on('click', function () {
                                                             $.ajax({
-                                                                url: '/getDesignerStaff',
+                                                                url: '${pageContext.request.contextPath}/getDesignerStaff',
                                                                 method: 'GET',
                                                                 success: function (response) {
                                                                     $('#designerResults').empty();
@@ -951,7 +951,7 @@
 
                                                         $('#assignConstructionButton').on('click', function () {
                                                             $.ajax({
-                                                                url: '/getConstructionStaff',
+                                                                url: '${pageContext.request.contextPath}/getConstructionStaff',
                                                                 method: 'GET',
                                                                 success: function (response) {
                                                                     $('#constructionResults').empty();
@@ -1008,7 +1008,7 @@
                                                     // AJAX function to share the project
                                                     function shareProject(projectId) {
                                                         $.ajax({
-                                                            url: '/manager/projects/shareProject',
+                                                            url: '${pageContext.request.contextPath}/manager/projects/shareProject',
                                                             method: 'POST',
                                                             data: {projectId: projectId},
                                                             success: function (response) {
@@ -1051,7 +1051,7 @@
                                                     // AJAX function to cancel the project
                                                     function cancelProject(projectId) {
                                                         $.ajax({
-                                                            url: '/manager/projects/cancelProject',
+                                                            url: '${pageContext.request.contextPath}/manager/projects/cancelProject',
                                                             method: 'POST',
                                                             data: {projectId: projectId},
                                                             success: function (response) {

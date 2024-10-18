@@ -150,8 +150,10 @@
                                                                  onclick="window.location.href = '${pageContext.request.contextPath}/manager/manageStaff/detail/${staff.id}'">
                                                                  Staff Details
                                                             </button>
+                                                          <c:if test="${serviceDetail.serviceDetailStatus!=3 &&serviceDetail.serviceDetailStatus!=5}">
                                                             <a href="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}"
-                                                                 class="btn btn-warning">Edit Staff</a>
+                                                            class="btn btn-warning">Edit Staff</a>
+                                                          </c:if>
                                                        </div>
                                                   </c:if>
                                                   <c:if test="${empty staff}">
