@@ -79,7 +79,7 @@
 
                 <!-- Area -->
                 <div class="form-group">
-                    <label for="serviceQuotesArea">Area (m²):</label>
+                    <label for="serviceQuotesArea">Area (mï¿½):</label>
                     <form:input path="serviceQuotesArea" id="serviceQuotesArea" step="0.01" class="form-control" />
                 </div>
 

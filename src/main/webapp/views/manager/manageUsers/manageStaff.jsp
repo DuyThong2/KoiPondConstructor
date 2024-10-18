@@ -23,6 +23,9 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
+        .btn-block{
+            margin-bottom: 5px;
+        }
         .table th, .table td {
             vertical-align: middle;
         }
@@ -75,6 +78,7 @@
         }
     </style>
 </head>
+<div style="height:6vh;"></div>
 <body>
 
 <div class="container-fluid">
@@ -87,7 +91,7 @@
             <h2 class="mb-4">Manage Staffs</h2>
             <div class="filter-card">
                 <!-- Search Form -->
-                <form action="/manager/manageStaff" method="GET" class="form-row align-items-center">
+                <form action="${pageContext.request.contextPath}/manager/manageStaff" method="GET" class="form-row align-items-center">
                     <!-- Search by name -->
                     <div class="col-md-2 mb-3">
                         <input type="text" name="name" class="form-control" placeholder="Search by Name..." value="${param.name}">
@@ -163,9 +167,9 @@
                             </td>
                             <td>
                                 <c:if test="${staffs.department != 'Management'}">
-                                    <a href="/manager/manageStaff/detail/${staffs.id}" class="btn btn-info btn-block">
+                                    <a href="${pageContext.request.contextPath}/manager/manageStaff/detail/${staffs.id}" class="btn btn-info btn-block">
                                         <i class="fas fa-eye"></i> View Details</a>
-                                    <form action="/manager/manageUser/block/${staffs.id}" method="post" style="display: inline">
+                                    <form action="${pageContext.request.contextPath}/manager/manageUser/block/${staffs.id}" method="post" style="display: inline">
                                         <c:if test="${staffs.enabled}">
                                             <button type="submit" class="btn btn-outline-danger btn-block"
                                                     onclick="return confirm('Are you sure you want to block this user?');">
@@ -222,7 +226,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="addStaffForm" action="/manager/manageStaff/add" method="POST" onsubmit="return validatePasswords()">
+                <form id="addStaffForm" action="${pageContext.request.contextPath}/manager/manageStaff/add" method="POST" onsubmit="return validateEmail() && validatePasswords()">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" class="form-control" id="name" name="name" required>
@@ -274,6 +278,15 @@
 
 <!-- JavaScript for password validation and toggle -->
 <script>
+    function validateEmail() {
+        var email = document.getElementById("email").value;
+
+        if (email.includes('@')) {
+            alert("Email should not contain the '@' character. Please remove it.");
+            return false;
+        }
+        return true;
+    }
     function validatePasswords() {
         var password = document.getElementById("password").value;
         var confirmPassword = document.getElementById("confirmPassword").value;
@@ -299,6 +312,7 @@
             icon.classList.add("fa-eye");
         }
     }
+
 </script>
 
 <!-- Display email duplicate error if exists -->

@@ -22,9 +22,10 @@ public class ManageUsersController {
     private ConstructionService constructionService;
     private ConsultantService consultantService;
     private PasswordEncoder passwordEncoder;
+    private ServiceDetailService serviceDetailService;
 
     public ManageUsersController(CustomerService customerService, StaffService staffService, ProjectService projectService, LoyaltyPointService loyaltyPointService, DesignService designService,
-            ConstructionService constructionService, ConsultantService consultantService, PasswordEncoder passwordEncoder) {
+            ConstructionService constructionService, ConsultantService consultantService, PasswordEncoder passwordEncoder, ServiceDetailService serviceDetailService) {
         this.customerService = customerService;
         this.staffService = staffService;
         this.projectService = projectService;
@@ -33,6 +34,7 @@ public class ManageUsersController {
         this.constructionService = constructionService;
         this.consultantService = consultantService;
         this.passwordEncoder = passwordEncoder;
+        this.serviceDetailService = serviceDetailService;
     }
 
     @GetMapping("/manager/manageCustomer")
@@ -69,12 +71,13 @@ public class ManageUsersController {
         int totalProject = (int) projectService.countCustomerProjectsById(customerId);
         int totalLoyaltyPoint = (int) loyaltyPointService.TotalPoints(customerId);
         List<Project> projects = projectService.getCustomerProjectsById(customerId);
+        List<ServiceDetail> serviceDetails = serviceDetailService.getCustomerServiceDetailsById(customerId);
 
         model.addAttribute("customer", customer);
         model.addAttribute("totalProject", totalProject);
         model.addAttribute("totalLoyaltyPoint", totalLoyaltyPoint);
         model.addAttribute("projects", projects);
-
+        model.addAttribute("serviceDetails", serviceDetails);
         return "manager/manageUsers/customerDetail";
     }
 
@@ -103,7 +106,14 @@ public class ManageUsersController {
     }
 
     @PostMapping("/manager/manageStaff/add")
-    public String addStaff(@ModelAttribute Staff staff, RedirectAttributes redirectAttributes) {
+    public String addStaff(@ModelAttribute Staff staff, RedirectAttributes redirectAttributes,
+                           @RequestParam("password") String password, @RequestParam("confirmPassword") String confirmPassword) {
+
+        // Check if password confirmPassword
+        if (!password.equals(confirmPassword)) {
+            redirectAttributes.addFlashAttribute("message", "Passwords do not match. Please try again.");
+            return "redirect:/manager/manageStaff";
+        }
         String fullEmail = staff.getEmail() + "@gmail.com";
 
         // Check if email already exists
@@ -186,10 +196,14 @@ public class ManageUsersController {
         List<Design> designs = null;
         List<Construction> constructions = null;
         List<Consultant> consultants = null;
+        List<ServiceDetail> serviceDetails = null;
         if ("Design".equals(staff.getDepartment())) {
             designs = designService.getProjectsByStaffId(staffId);
+
         } else if ("Construction".equals(staff.getDepartment())) {
             constructions = constructionService.getConstructionByStaffId(staffId);
+            serviceDetails = serviceDetailService.getServiceDetailsByStaffId(staffId);
+
         }else if ("Consulting".equals(staff.getDepartment())) {
             consultants = consultantService.getConsultantListByStaffId(staffId);
         }
@@ -198,6 +212,7 @@ public class ManageUsersController {
         model.addAttribute("designs", designs);
         model.addAttribute("constructions", constructions);
         model.addAttribute("consultants", consultants);
+        model.addAttribute("serviceDetails", serviceDetails);
 
         return "manager/manageUsers/staffDetail";
     }

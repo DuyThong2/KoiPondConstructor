@@ -102,11 +102,6 @@ public class ServiceDetailService {
 
     }
     
-    
-    
-    
-    
-    
     public List<Tuple> getServiceRevenue() {
         return serviceDetailDAO.getRevenueByService();
 
@@ -115,4 +110,28 @@ public class ServiceDetailService {
     public List<ServiceDetail> getPaginationServiceDetailListByCustomerId(int id, int page, int size, String sortBy, String sortType) {
         return serviceDetailDAO.getPaginationServiceDetailListByCustomerId(id,page,size,sortBy,sortType);
     }
+    public List<ServiceDetail> getServiceDetailsByStaffId(int staffId, int page, int size, String sortBy, String sortType) {
+        return serviceDetailDAO.getServiceDetailsByStaffId(staffId, page, size, sortBy, sortType);
+    }
+
+    // Fetch paginated and sorted service details by staff ID and status
+    public List<ServiceDetail> getServiceDetailsByStaffIdAndStatus(int staffId, int page, int size, String sortBy, String sortType, int status) {
+        return serviceDetailDAO.getServiceDetailsByStaffIdAndStatus(staffId, page, size, sortBy, sortType, status);
+    }
+
+    // Count service details by staff ID
+    public long countServiceDetailsByStaffId(int staffId) {
+        return serviceDetailDAO.countServiceDetailsByStaffId(staffId);
+    }
+
+    // Count service details by staff ID and status
+    public long countServiceDetailsByStaffIdAndStatus(int staffId, int status) {
+        return serviceDetailDAO.countServiceDetailsByStaffIdAndStatus(staffId, status);
+    }
+
+
+    public List<ServiceDetail> getServiceDetailsByStaffId(int staffId) {
+        return serviceDetailDAO.getServiceDetailsByStaffId(staffId);
+    }
+
 }

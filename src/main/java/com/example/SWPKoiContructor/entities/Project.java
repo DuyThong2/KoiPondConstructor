@@ -150,9 +150,7 @@ public class Project implements HaveImagesFile{
         return status;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+    public void setStatus(int status) {this.status = status;}
 
     public String getImgURL() {
         return imgURL;

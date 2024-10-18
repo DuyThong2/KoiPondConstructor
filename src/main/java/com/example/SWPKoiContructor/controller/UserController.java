@@ -295,14 +295,20 @@ public class UserController {
         if(staff == null)
             return "redirect:/login";
 
-        long totalDesign = designService.countDesignsByStaff(staff.getId());
-        long totalDesignInProcess = consultantService.countConsultantByStaffId(staff.getId());
-        long totalDesignComplete= designService.countDesignsCompleteByStaffId(staff.getId());
 
-        model.addAttribute("totalDesign", totalDesign);
-        model.addAttribute("totalDesignInProcess", totalDesignInProcess);
-        model.addAttribute("totalDesignComplete", totalDesignComplete);
+        long totalConsulting = consultantService.countConsultantByStaffId(staff.getId());
+        long totalConsultingPending = consultantService.countConsultantByStaffIdAndStatus(staff.getId(), 1);
+        long totalConsultingInProcess = consultantService.countConsultantByStaffIdAndStatus(staff.getId(), 3);
+        long totalConsultingComplete = consultantService.countConsultantByStaffIdAndStatus(staff.getId(), 4);
+        long totalConsultingCancel= consultantService.countConsultantByStaffIdAndStatus(staff.getId(), 5);
+
+        model.addAttribute("totalConsulting", totalConsulting);
+        model.addAttribute("totalConsultingPending", totalConsultingPending);
+        model.addAttribute("totalConsultingInProcess", totalConsultingInProcess);
+        model.addAttribute("totalConsultingComplete", totalConsultingComplete);
+        model.addAttribute("totalConsultingCancel", totalConsultingCancel);
         model.addAttribute("user", staff);
         return "consultant/profile";
     }
+
 }

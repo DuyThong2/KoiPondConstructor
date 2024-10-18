@@ -10,6 +10,8 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700">
         <!-- Bootstrap Icons -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+        <!-- FontAwesome CDN -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
         <style>
             /* Sidebar styling */
@@ -102,13 +104,89 @@
                 list-style: none; /* Remove bullets from all unordered lists */
                 padding-left: 0;
             }
+            .header {
+                background-color: #343a40;
+                color: white;
+                padding: 10px 30px;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 100;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-bottom: 2px solid #007bff;
+            }
+
+            .header-icons {
+                display: flex;
+                margin-right: 17px;
+            }
+
+            .icon-link {
+                color: white;
+                margin-left: 20px;
+                font-size: 22px;
+                text-decoration: none;
+                transition: color 0.3s, transform 0.3s;
+            }
+
+            .icon-link:hover {
+                color: #007bff;
+                transform: scale(1.1);
+            }
+            .dropdown-menu {
+                min-width: 200px; /* Chiều rộng tối thiểu của dropdown */
+            }
+
+            .dropdown-header {
+                font-weight: bold; /* Đậm chữ cho tiêu đề dropdown */
+            }
+            .badge-note {
+                position: absolute;
+                top: -5px; /* Đặt vị trí theo chiều dọc */
+                right: -10px; /* Đặt vị trí theo chiều ngang */
+                font-size: 0.75rem; /* Kích thước chữ nhỏ hơn */
+                padding: 0.25em 0.4em; /* Khoảng cách bên trong */
+                border-radius: 10px; /* Bo tròn */
+            }
+            .dropdown-toggle::after {
+                display: none; /* Ẩn mũi tên */
+            }
 
         </style>
     </head>
     <body>
-       
-        <!-- Sidebar -->
-        <aside class="sidebar">
+    <header class="header">
+        <div class="header-icons">
+            <a href="#" class="icon-link" title="Messages" style="margin-right: 10px">
+                <i class="fas fa-envelope"></i>
+            </a>
+
+            <!-- Dropdown for Notifications -->
+            <div class="dropdown">
+                <a class="icon-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-bell"></i>
+                    <!-- Badge for unread notifications -->
+                    <span class="badge-note badge-danger" id="notificationCount">3</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown">
+                    <h6 class="dropdown-header">Notifications</h6>
+                    <a class="dropdown-item" href="#">Notification 1</a>
+                    <a class="dropdown-item" href="#">Notification 2</a>
+                    <a class="dropdown-item" href="#">Notification 3</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">See All Notifications</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+    <!-- Sidebar -->
+        <aside class="sidebar" style="z-index: 200">
             <div class="admin-info">
                 <i class="fas fa-user" style="font-size: 3rem; color: white;"></i>
                 <p>Welcome, <strong>Manager</strong></p>
@@ -117,28 +195,37 @@
             <nav class="menu">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/consultant"><i class="bi bi-person-badge"></i> Consultant</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/preDesign"><i class="bi bi-pencil-square"></i> Pre-design</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/quote"><i class="bi bi-file-earmark-text"></i> Quote</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/consultant"><i class="bi bi-person-badge"></i> Consultant</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/contract"><i class="bi bi-file-earmark"></i> Contracts</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/quote"><i class="bi bi-file-earmark-text"></i> Quote</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/projects"><i class="bi bi-diagram-3"></i> Projects</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/contract"><i class="bi bi-file-earmark"></i> Contracts</a>
                     </li>
+
+
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/design"><i class="bi bi-pencil-square"></i> Design</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/manager/construction"><i class="bi bi-tools"></i> Construction</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/staff/blogs"><i class="bi bi-newspaper"></i> Blog</a>
+                        <a class="nav-link" href="#" data-toggle="collapse" data-target="#projectSubmenu" aria-expanded="false" aria-controls="projectSubmenu">
+                            <i class="bi bi-diagram-3"></i> Projects
+                        </a>
+                        <ul class="collapse" id="projectSubmenu">
+                            <li class="nav-item">
+                                <a class="nav-link" href="${pageContext.request.contextPath}/manager/projects"><i class="bi bi-diagram-3"></i> Projects List</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="${pageContext.request.contextPath}/manager/design"><i class="bi bi-pencil-square"></i> Design</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="${pageContext.request.contextPath}/manager/construction"><i class="bi bi-tools"></i> Construction</a>
+                            </li>
+                        </ul>
                     </li>
 
                     <!-- Manage User section with submenu -->
@@ -148,43 +235,42 @@
                         </a>
                         <ul class="collapse" id="manageUserSubmenu">
                             <li class="nav-item">
-                                <a class="nav-link" href="/manager/manageCustomer"><i class="bi bi-person-circle"></i> Manage Customer</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/manager/manageCustomer"><i class="bi bi-person-circle"></i> Manage Customer</a>
                             </li>
                             <li class="nav-item">
 
-                                <a class="nav-link" href="/manager/manageStaff"><i class="bi bi-person-badge"></i> Manage Staff</a>
+                                <a class="nav-link" href="${pageContext.request.contextPath}/manager/manageStaff"><i class="bi bi-person-badge"></i> Manage Staff</a>
                             </li>
 
                         </ul>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-file-earmark-text"></i> Terms</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/terms"><i class="bi bi-file-earmark-text"></i> Terms</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/services"><i class="bi bi-bar-chart-line"></i> Services</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/services"><i class="bi bi-tools"></i> Services</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/manager/serviceDetails"><i class="bi bi-bar-chart-line"></i> Services Orders</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/serviceDetails"><i class="bi bi-file-earmark-text"></i> Services Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/parcel"><i class="bi bi-box"></i> Package</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/staff/blogs"><i class="bi bi-newspaper"></i> Blog</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"><i class="bi bi-bar-chart-line"></i> Reports</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-gear"></i> Settings</a>
                     </li>
                 </ul>
             </nav>
 
             <div class="logout-section">
-                <a class="btn btn-danger" href="/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                <a class="btn btn-danger" href="${pageContext.request.contextPath}/logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </aside>
 
-        <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     </body>
 </html>

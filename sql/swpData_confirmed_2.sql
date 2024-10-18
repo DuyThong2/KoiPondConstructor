@@ -125,7 +125,7 @@ CREATE TABLE Consultant (
     consultant_phone NVARCHAR(15),
     consultant_content NVARCHAR(MAX),
     consultant_type NVARCHAR(50),
-    consultant_status INT,   -- 1: Pending 2: Assign 3: Processing 4:Completed(khi hợp đồng đc ký) 5.Cancel(khi khác ko muốn tư vấn)
+    consultant_status INT,   -- 1: Pending 2: Assign 3: Processing 4:Completed(khi hợp đồng đc ký) 5.Cancel(khi khách ko muốn tư vấn)
     consultant_email NVARCHAR(255),
     customer_id INT,
     staff_id INT,
@@ -200,7 +200,7 @@ CREATE TABLE Project (
     description NVARCHAR(255),
     date_start DATE,
     date_end DATE,
-    project_status INT,		-- 1:Pending ; 2:Proccessing; 3: completed/ 4: Canceled
+    project_status INT,		-- 1:Pending ; 2:Proccessing; 3: completed/ 4: Canceled 5: manager reject; 6: customer reject 7: both reject
     img_url NVARCHAR(255),
     stage INT, -- 1: Planning; 2: Design; 3: Construction; 4:Maintance; 5: Finish
 	is_shareable bit, --accept; reject  
@@ -331,16 +331,18 @@ CREATE TABLE Service_Detail (
     service_detail_id INT PRIMARY KEY IDENTITY(1,1),
     service_detail_price DECIMAL(10, 2),
     date_register DATE,
-    rating INT,
-    service_detail_status INT,  -- 1: Pending 2:Processing 3:Completed 4.Cancel
-    feedback NVARCHAR(MAX),
+    rating INT,                      -- Rating for the service
+    service_detail_status INT,        -- Service status
+    feedback NVARCHAR(MAX),           -- Feedback from the customer
+    feedback_date DATE,               -- Date when the feedback was provided
     service_id INT,
-    customer_id INT,
+    customer_id INT,                  -- Links to the customer giving feedback
     staff_id INT,
     FOREIGN KEY (service_id) REFERENCES Service(service_id),
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
     FOREIGN KEY (staff_id) REFERENCES Staffs(id)
 );
+--26. Service_Feedback
 
 -- 18. Comment
 CREATE TABLE Comment (

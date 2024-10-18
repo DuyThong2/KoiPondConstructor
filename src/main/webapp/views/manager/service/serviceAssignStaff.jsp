@@ -133,6 +133,9 @@
                                             <span class="badge badge-success status-badge">Complete</span>
                                         </c:when>
                                         <c:when test="${serviceDetail.serviceDetailStatus == 4}">
+                                            <span class="badge badge-warning status-badge">Requesting Cancel</span>
+                                        </c:when>
+                                        <c:when test="${serviceDetail.serviceDetailStatus == 5}">
                                             <span class="badge badge-danger status-badge">Cancelled</span>
                                         </c:when>
                                     </c:choose>
@@ -146,17 +149,20 @@
                                     <c:if test="${serviceDetail.staff != null}">
                                         <div class="col-md-4">
                                             <div class="card">
-                                                <img src="/assets/imgs/mylogo/koi-background.jpg" class="staff-img"
+                                                <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg" class="staff-img"
                                                     alt="Staff Image">
                                                 <div class="card-body text-center">
                                                     <h5 class="card-title">${serviceDetail.staff.name}</h5>
-                                                    <button type="button" class="delete-button" data-toggle="modal"
-                                                        data-target="#deleteStaffModal"
-                                                        data-staffid="${serviceDetail.staff.id}"
-                                                        data-staffname="${serviceDetail.staff.name}">
-                                                        &times;
-                                                    </button>
-                                                    <button class="btn btn-info">Detail</button>
+                                                    <c:if
+                                                        test="${serviceDetail.serviceDetailStatus != 3 && serviceDetail.serviceDetailStatus != 5}">
+                                                        <button type="button" class="delete-button" data-toggle="modal"
+                                                            data-target="#deleteStaffModal"
+                                                            data-staffid="${serviceDetail.staff.id}"
+                                                            data-staffname="${serviceDetail.staff.name}">
+                                                            &times;
+                                                        </button>
+                                                    </c:if>
+                                                    <a href="${pageContext.request.contextPath}/manager/manageStaff/detail/${staff.id}" class="btn btn-info">Detail</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -170,86 +176,97 @@
                             </div>
 
                             <!-- Search and Assign Staff Section -->
-                            <div class="info-box">
-                                <h4>Search and Assign Staff</h4>
-                                <!-- Search Form -->
-                                <form action="/manager/serviceDetails/assign/${serviceDetail.id}" method="GET"
-                                    class="form-inline mb-3">
-                                    <input type="text" name="searchTerm" class="form-control mr-2"
-                                        placeholder="Search staff by name..." value="${param.searchTerm}">
-                                    <button type="submit" class="btn btn-primary">Search</button>
-                                </form>
+                            <c:if
+                                test="${serviceDetail.serviceDetailStatus != 3 && serviceDetail.serviceDetailStatus != 5}">
+                                <div class="info-box">
+                                    <h4>Search and Assign Staff</h4>
+                                    <!-- Search Form -->
 
-                                <!-- Available Staff Table -->
-                                <table class="table table-bordered table-hover">
-                                    <thead class="thead-dark">
-                                        <tr>
-                                            <th>Staff ID</th>
-                                            <th>Name</th>
-                                            <th>Role</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <c:forEach var="staff" items="${availableStaff}">
-                                            <tr>
-                                                <td>${staff.id}</td>
-                                                <td>${staff.name}</td>
-                                                <td>${staff.department}</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary assign-btn"
-                                                        onclick="confirmAssignStaff(${staff.id},'${staff.name}','${staff.department}')">
-                                                        Assign
-                                                    </button>
+                                    <!-- Search and Assign Staff Section -->
+                                    <div class="info-box">
+                                        <h4>Search and Assign Staff</h4>
+                                        <!-- Search Form -->
+                                        <form action="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}" method="GET"
+                                            class="form-inline mb-3">
+                                            <input type="text" name="searchTerm" class="form-control mr-2"
+                                                placeholder="Search staff by name..." value="${param.searchTerm}">
+                                            <button type="submit" class="btn btn-primary">Search</button>
+                                        </form>
 
-                                                </td>
-                                            </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                                <div class="d-flex w-100 justify-content-between align-items-center mt-4">
-                                    <!-- Previous Button -->
-                                    <c:choose>
-                                        <c:when test="${currentPage > 1}">
-                                            <form action="/manager/serviceDetails/assign/${serviceDetail.id}"
-                                                method="GET">
-                                                <button class="btn btn-primary" type="submit">&lt;</button>
-                                                <input type="hidden" name="currentPage" value="${currentPage - 1}">
-                                                <input type="hidden" name="size" value="${size}">
-                                                <c:if test="${searchTerm != null}">
-                                                    <input type="hidden" name="searchTerm" value="${searchTerm}">
-                                                </c:if>
-                                            </form>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <button class="btn btn-primary" type="submit" disabled>&lt;</button>
-                                        </c:otherwise>
-                                    </c:choose>
+                                        <!-- Available Staff Table -->
+                                        <table class="table table-bordered table-hover">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>Staff ID</th>
+                                                    <th>Name</th>
+                                                    <th>Role</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="staff" items="${availableStaff}">
+                                                    <tr>
+                                                        <td>${staff.id}</td>
+                                                        <td>${staff.name}</td>
+                                                        <td>${staff.department}</td>
+                                                        <td>
+                                                            <button type="button" class="btn btn-primary assign-btn"
+                                                                onclick="confirmAssignStaff(${staff.id},'${staff.name}','${staff.department}')">
+                                                                Assign
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                        <!-- Pagination controls here -->
+                                    </div>
+                                    <div class="d-flex w-100 justify-content-between align-items-center mt-4">
+                                        <!-- Previous Button -->
+                                        <c:choose>
+                                            <c:when test="${currentPage > 1}">
+                                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}"
+                                                    method="GET">
+                                                    <button class="btn btn-primary" type="submit">&lt;</button>
+                                                    <input type="hidden" name="currentPage" value="${currentPage - 1}">
+                                                    <input type="hidden" name="size" value="${size}">
+                                                    <c:if test="${searchTerm != null}">
+                                                        <input type="hidden" name="searchTerm" value="${searchTerm}">
+                                                    </c:if>
+                                                </form>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button class="btn btn-primary" type="submit" disabled>&lt;</button>
+                                            </c:otherwise>
+                                        </c:choose>
 
-                                    <!-- Page Indicator -->
-                                    <span class="mx-3">Page <strong>${currentPage}</strong> of
-                                        <strong>${totalPage}</strong></span>
+                                        <!-- Page Indicator -->
+                                        <span class="mx-3">Page <strong>${currentPage}</strong> of
+                                            <strong>${totalPage}</strong></span>
 
-                                    <!-- Next Button -->
-                                    <c:choose>
-                                        <c:when test="${currentPage < totalPage}">
-                                            <form action="/manager/serviceDetails/assign/${serviceDetail.id}"
-                                                method="GET">
-                                                <button class="btn btn-primary" type="submit">&gt;</button>
-                                                <input type="hidden" name="currentPage" value="${currentPage + 1}">
-                                                <input type="hidden" name="size" value="${size}">
-                                                <c:if test="${searchTerm != null}">
-                                                    <input type="hidden" name="searchTerm" value="${searchTerm}">
-                                                </c:if>
-                                            </form>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <button class="btn btn-primary" type="submit" disabled>&gt;</button>
-                                        </c:otherwise>
-                                    </c:choose>
+                                        <!-- Next Button -->
+                                        <c:choose>
+                                            <c:when test="${currentPage < totalPage}">
+                                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}"
+                                                    method="GET">
+                                                    <button class="btn btn-primary" type="submit">&gt;</button>
+                                                    <input type="hidden" name="currentPage" value="${currentPage + 1}">
+                                                    <input type="hidden" name="size" value="${size}">
+                                                    <c:if test="${searchTerm != null}">
+                                                        <input type="hidden" name="searchTerm" value="${searchTerm}">
+                                                    </c:if>
+                                                </form>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <button class="btn btn-primary" type="submit" disabled>&gt;</button>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+
+
+
                                 </div>
-
-                            </div>
+                            </c:if>
                         </div>
                     </div>
                 </div>
@@ -269,7 +286,7 @@
                                 Are you sure you want to assign <strong id="staffName"></strong> to this service?
                             </div>
                             <div class="modal-footer">
-                                <form action="/manager/serviceDetails/assignStaff" method="POST">
+                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/assignStaff" method="POST">
                                     <input type="hidden" id="staffId" name="staffId">
                                     <input type="hidden" name="serviceDetailId" value="${serviceDetail.id}">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -313,7 +330,7 @@
                                 service?
                             </div>
                             <div class="modal-footer">
-                                <form action="/manager/serviceDetails/deleteStaff" method="POST">
+                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/deleteStaff" method="POST">
                                     <input type="hidden" name="staffId" value="${serviceDetail.staff.id}">
                                     <input type="hidden" name="serviceDetailId" value="${serviceDetail.id}">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

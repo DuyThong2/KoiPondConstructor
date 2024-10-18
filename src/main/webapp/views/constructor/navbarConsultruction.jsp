@@ -1,8 +1,13 @@
 <header class="mb-4">
     <div class="nav d-flex justify-content-between align-items-center">
-        <a href="${pageContext.request.contextPath}/consultant/viewConsultantList" class="nav-link">
-            <i class="fas fa-project-diagram"></i> My Projects
+        <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
+            <i class="fas fa-project-diagram"></i>Projects
         </a>
+        <a href="${pageContext.request.contextPath}/constructor/serviceDetailManage/"
+           class="nav-link">
+            <i class="fas fa-project-diagram"></i>Service Details
+        </a>
+
         <div class="nav-item-group d-flex align-items-center">
             <div class="dropdown">
                 <a class="icon-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -26,7 +31,7 @@
                     <span class="ml-2 user-name">${user.name}</span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/consultant/profile"><i class="fas fa-user"></i> Profile</a></li>
+                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/constructor/profile"><i class="fas fa-user"></i> Profile</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-paint-brush"></i> Theme</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Help</a></li>
                     <li class="divider"></li>

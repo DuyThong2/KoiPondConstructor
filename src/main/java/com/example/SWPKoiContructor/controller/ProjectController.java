@@ -1,10 +1,7 @@
 package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.*;
-import com.example.SWPKoiContructor.services.ContractService;
-import com.example.SWPKoiContructor.services.DesignService;
-import com.example.SWPKoiContructor.services.ProjectService;
-import com.example.SWPKoiContructor.services.StaffService;
+import com.example.SWPKoiContructor.services.*;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import com.example.SWPKoiContructor.utils.Utility;
 
@@ -27,16 +24,18 @@ import java.util.List;
 @Controller
 public class ProjectController {
 
+    private final CustomerService customerService;
     private FileUtility fileUtility;
     private ProjectService projectService;
     private ContractService contractService;
     private StaffService staffService;
 
-    public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService, StaffService staffService, DesignService designService) {
+    public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService, StaffService staffService, DesignService designService, CustomerService customerService) {
         this.fileUtility = fileUtility;
         this.projectService = projectService;
         this.contractService = contractService;
         this.staffService = staffService;
+        this.customerService = customerService;
     }
 
     @GetMapping("/manager/projects")
@@ -126,6 +125,7 @@ public class ProjectController {
             project.setDateStart(Utility.localDateToUtilDate(localDate));
             project.setStatus(1);
             project.setStage(1);
+            project.setContent(new Content());
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);
             return "redirect:/manager/projects/details/" + newlyCreatedProject.getProjectId();
@@ -293,7 +293,6 @@ public class ProjectController {
     }
 
     @GetMapping("/customer/projects/")
-
     public String customerProjectPage(Model model, HttpSession session, RedirectAttributes redirectAttributes){
 
         Customer customer = (Customer) session.getAttribute("user");
@@ -422,5 +421,7 @@ public class ProjectController {
         }
         return "redirect:/manager/projects";
     }
+
+
 }
 

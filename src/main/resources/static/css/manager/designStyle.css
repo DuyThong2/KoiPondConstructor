@@ -54,3 +54,6 @@ ul.list-group-horizontal {
         font-size: 16px;
     }
 }
+.dropdown-toggle::after {
+    display: none; /* Ẩn mũi tên */
+}

@@ -13,7 +13,7 @@
                 padding-top: 50px;
             }
             .container {
-                max-width: 900px;
+                max-width: 1100px;
                 margin: auto;
                 background-color: #ffffff;
                 padding: 30px;
@@ -24,10 +24,12 @@
                 text-align: center;
                 color: #007bff;
                 margin-bottom: 30px;
+                font-weight: bold;
             }
             .form-row {
                 display: flex;
                 justify-content: space-between;
+                margin-bottom: 20px;
             }
             .form-box {
                 background-color: #f0f2f5;
@@ -48,7 +50,7 @@
             textarea {
                 resize: none;
             }
-            .btn-submit, .btn-adjust {
+            .btn-submit{
                 background-color: #007bff;
                 color: white;
                 font-size: 16px;
@@ -56,83 +58,124 @@
                 border: none;
                 border-radius: 5px;
                 margin-top: 15px;
+                transition: background-color 0.3s ease;
+            }
+            .btn-submit {
+                background-color: #007bff;
+                color: white;
+                font-size: 16px;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                margin-top: 15px;
+                transition: background-color 0.3s ease;
+            }
+            .btn-adjust {
+                background-color: #007bff;
+                color: white;
+                font-size: 16px;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                margin-top: 15px;
+                transition: background-color 0.3s ease;
             }
             .btn-submit:hover, .btn-adjust:hover {
                 background-color: #0056b3;
+            }
+            .btn-adjust {
+                background-color: #28a745; /* Màu xanh lá cây */
+            }
+            .btn-adjust:hover {
+                background-color: #218838; /* Màu xanh lá cây đậm hơn khi hover */
+            }
+            .is-invalid {
+                border-color: #dc3545; /* Đường viền màu đỏ cho trường không hợp lệ */
+            }
+            .text-danger {
+                font-size: 0.875rem; /* Kích thước chữ cho thông báo lỗi */
             }
         </style>
     </head>
     <body>
 
         <div class="container">
-            <h2>Term Information</h2>
+            <div class="row">
+                <!-- Sidebar -->
+                <%@include file="../navBar.jsp" %>
 
-            <!-- Form Binding with Spring -->
-            <form:form modelAttribute="term" action="/manager/termCreate" method="POST">
-                <!-- Design and Construction Percentages Row -->
-                <div class="form-row">
-                    <!-- Design Box -->
-                    <div class="form-box">
-                        <h5>Design Percentages</h5>
-                        <div class="form-group">
-                            <label for="percent_on_design1">Percent on Design 1</label>
-                            <form:input path="percentOnDesign1" class="form-control" id="percent_on_design1" min="0" max="100" step="0.01" />
-                            <form:errors path="percentOnDesign1" cssClass="text-danger" />
-                        </div>
-                        <div class="form-group">
-                            <label for="percent_on_design2">Percent on Design 2</label>
-                            <form:input path="percentOnDesign2" class="form-control" id="percent_on_design2" min="0" max="100" step="0.01" />
-                            <form:errors path="percentOnDesign2" cssClass="text-danger" />
-                        </div>
-                        <div class="form-group">
-                            <label for="percent_on_design3">Percent on Design 3</label>
-                            <form:input path="percentOnDesign3" class="form-control" id="percent_on_design3" min="0" max="100" step="0.01" />
-                            <form:errors path="percentOnDesign3" cssClass="text-danger" />
-                        </div>
-                        <div class="form-group">
-                            <label for="pay_on_start_of_design">Pay on Start of Design</label>
-                            <form:checkbox path="payOnStartOfDesign" class="custom-control-input" id="pay_on_start_of_design" />
-                            <label class="custom-control-label" for="pay_on_start_of_design">Yes</label>
-                        </div>
-                    </div>
+                <!-- Main content -->
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
+                    <h2>Term Information</h2>
 
-                    <!-- Construction Box -->
-                    <div class="form-box">
-                        <h5>Construction Percentages</h5>
-                        <div class="form-group">
-                            <label for="percent_on_construct1">Percent on Construction 1</label>
-                            <form:input path="percentOnConstruct1" class="form-control" id="percent_on_construct1" min="0" max="100" step="0.01" />
-                            <form:errors path="percentOnConstruct1" cssClass="text-danger" />
-                        </div>
-                        <div class="form-group">
-                            <label for="percent_on_construct2">Percent on Construction 2</label>
-                            <form:input path="percentOnConstruct2" class="form-control" id="percent_on_construct2" min="0" max="100" step="0.01" />
-                            <form:errors path="percentOnConstruct2" cssClass="text-danger" />
-                        </div>
-                        <div class="form-group">
-                            <label for="pay_on_start_of_construction">Pay on Start of Construction</label>
-                            <form:checkbox path="payOnStartOfConstruction" class="custom-control-input" id="pay_on_start_of_construction" />
-                            <label class="custom-control-label" for="pay_on_start_of_construction">Yes</label>
-                        </div>
-                    </div>
-                </div>
+                    <!-- Form Binding with Spring -->
+                    <form:form modelAttribute="term" action="${pageContext.request.contextPath}/manager/termCreate" method="POST">
+                        <!-- Design and Construction Percentages Row -->
+                        <div class="form-row">
+                            <!-- Design Box -->
+                            <div class="form-box">
+                                <h5>Design Percentages</h5>
+                                <div class="form-group">
+                                    <label for="percent_on_design1">Percent on Design 1</label>
+                                    <form:input path="percentOnDesign1" class="form-control" id="percent_on_design1" min="0" max="100" step="0.01" />
+                                    <form:errors path="percentOnDesign1" cssClass="text-danger" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="percent_on_design2">Percent on Design 2</label>
+                                    <form:input path="percentOnDesign2" class="form-control" id="percent_on_design2" min="0" max="100" step="0.01" />
+                                    <form:errors path="percentOnDesign2" cssClass="text-danger" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="percent_on_design3">Percent on Design 3</label>
+                                    <form:input path="percentOnDesign3" class="form-control" id="percent_on_design3" min="0" max="100" step="0.01" />
+                                    <form:errors path="percentOnDesign3" cssClass="text-danger" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="pay_on_start_of_design" style="margin-right: 15px">Pay on Start of Design</label>
+                                    <form:checkbox path="payOnStartOfDesign" class="custom-control-input" id="pay_on_start_of_design" />
+                                    <label class="custom-control-label" for="pay_on_start_of_design">Yes</label>
+                                </div>
+                            </div>
 
-                <div class="form-group">
-                    <label for="description">Description or Comments</label>
-                    <form:textarea path="description"  class="form-control" id="description" rows="4" />
-                    <form:errors path="description" cssClass="text-danger" />
-                </div>
+                            <!-- Construction Box -->
+                            <div class="form-box">
+                                <h5>Construction Percentages</h5>
+                                <div class="form-group">
+                                    <label for="percent_on_construct1">Percent on Construction 1</label>
+                                    <form:input path="percentOnConstruct1" class="form-control" id="percent_on_construct1" min="0" max="100" step="0.01" />
+                                    <form:errors path="percentOnConstruct1" cssClass="text-danger" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="percent_on_construct2">Percent on Construction 2</label>
+                                    <form:input path="percentOnConstruct2" class="form-control" id="percent_on_construct2" min="0" max="100" step="0.01" />
+                                    <form:errors path="percentOnConstruct2" cssClass="text-danger" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="pay_on_start_of_construction" style="margin-right: 15px">Pay on Start of Construction</label>
+                                    <form:checkbox path="payOnStartOfConstruction" class="custom-control-input" id="pay_on_start_of_construction" />
+                                    <label class="custom-control-label" for="pay_on_start_of_construction">Yes</label>
+                                </div>
+                            </div>
+                        </div>
 
-                <!-- Adjust Button -->
-                <div class="text-center">
-                    <button type="button" class="btn-adjust" onclick="adjustPercentages()">Adjust Percentages</button>
-                </div>
+                        <div class="form-group">
+                            <label for="description">Description or Comments</label>
+                            <form:textarea path="description"  class="form-control" id="description" rows="4" />
+                            <form:errors path="description" cssClass="text-danger" />
+                        </div>
 
-                <!-- Submit Button -->
-                <div class="text-center">
-                    <button type="submit" class="btn btn-submit">Submit</button>
-                </div>
-            </form:form>
+                        <!-- Adjust Button -->
+                        <div class="text-center">
+                            <button type="button" class="btn-adjust" onclick="adjustPercentages()">Adjust Percentages</button>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit" class="btn-submit">Submit</button>
+                        </div>
+                    </form:form>
+                </main>
+            </div>
         </div>
 
         <!-- JavaScript to adjust and validate percentages -->
@@ -234,10 +277,9 @@
             }
         </script>
 
-        <!-- Bootstrap JS -->
+        <!-- Bootstrap JS and dependencies -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
     </body>
 </html>

@@ -44,12 +44,12 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Payment Successful!</h1>
-        <p>Thank you for your payment. Your transaction has been successfully completed.</p>
-        <p>Transaction ID: ${transactionId}</p>
-        <p>An email confirmation has been sent to your registered email address.</p>
-        <a href="/" class="btn">Return to Home</a>
-    </div>
+<div class="container">
+    <h1>Payment Successful!</h1>
+    <p>Thank you for your payment. Your transaction has been successfully completed.</p>
+    <p>Transaction ID: ${transactionId}</p>
+    <p>An email confirmation has been sent to your registered email address.</p>
+    <a href="/" class="btn">Return to Home</a>
+</div>
 </body>
 </html>

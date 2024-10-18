@@ -154,5 +154,10 @@ public class Service implements HaveImagesFile{
     public void setServiceImgUrl(String serviceImgUrl) {
         this.serviceImgUrl = serviceImgUrl;
     }
+    
+    public void addPrice(ServicePrice price){
+        this.servicePrice.add(price);
+        price.setService(this);
+    }
 
 }

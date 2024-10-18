@@ -58,7 +58,17 @@ body {
 .nav a i {
     margin-right: 8px;
 }
-
+.dropdown-toggle::after {
+    display: none; /* Ẩn mũi tên */
+}
+.badge-note {
+    position: absolute;
+    top: -13px;
+    right: 1px;
+    font-size: 0.7rem;
+    padding: 0.25em 0.4em;
+    border-radius: 10px;
+}
 .nav a:hover {
     color: #f8f9fa;
     text-decoration: underline;
@@ -99,16 +109,16 @@ body {
     box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
 }
 .dropdown-menu {
-    background-color: #343a40;
+    background-color: #343a40; /* Dark background color for the dropdown */
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    padding: 10px 0; /* Thêm khoảng trống cho menu */
-    min-width: 180px; /* Đặt chiều rộng tối thiểu */
+    padding: 10px 0; /* Additional spacing for the menu */
+    min-width: 180px; /* Minimum width of the dropdown */
 }
 
 /* Dropdown menu items */
 .dropdown-menu .dropdown-item {
-    color: #000000;
+    color: #ffffff; /* White text color for dropdown items */
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
@@ -118,8 +128,8 @@ body {
 
 /* Hover effect for dropdown items */
 .dropdown-menu .dropdown-item:hover {
-    background-color: #495057;
-    color: #ffffff;
+    background-color: #495057; /* Slightly lighter background on hover */
+    color: #ffffff; /* Keep text color white on hover */
 }
 
 /* Divider between dropdown items */
@@ -127,26 +137,26 @@ body {
     height: 1px;
     margin: 0.5rem 0;
     overflow: hidden;
-    background-color: #6c757d;
+    background-color: #6c757d; /* Divider color */
 }
 
 /* Special styling for logout button */
 .btn-logout {
     color: #ffffff;
-    background-color: #dc3545;
+    background-color: #dc3545; /* Red background color */
     padding: 12px 20px;
     font-size: 14px;
     font-weight: 600;
     display: block;
     text-align: center;
     border: none;
-    width: 100%; /* Chiều rộng 100% để ôm sát menu */
+    width: 100%; /* Full width to fit the menu */
     transition: background-color 0.3s ease;
 }
 
 /* Hover effect for logout button */
 .btn-logout:hover {
-    background-color: #c82333;
+    background-color: #c82333; /* Darker red on hover */
 }
 
 /* Adjust icon and text alignment in dropdown items */
