@@ -190,7 +190,7 @@
                     <img class="img-profile img-circle img-responsive center-block" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}"
                          alt="User Avatar" width="150" />
                     <h4>${user.name}</h4>
-                    <label class="badge badge-info">Consultant</label>
+                    <label class="badge badge-info">Constructor</label>
                     <p>${user.email}</p>
                 </div>
             </div>
@@ -247,7 +247,6 @@
                             </div>
                         </div>
                     </form>
-
                 </fieldset>
 
                 <fieldset class="fieldset">
@@ -255,31 +254,19 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label">Total Projects:</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="${totalConsulting}" readonly />
+                            <input type="text" class="form-control" value="${totalConstruction}" readonly />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Total Construction In Process:</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="${totalConsultingPending}" readonly />
+                            <input type="text" class="form-control" value="${totalConstructionInProcess}" readonly />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-4 control-label">Total Construction Completed:</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="${totalConsultingInProcess}" readonly />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">Total Construction Completed:</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" value="${totalConsultingComplete}" readonly />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-4 control-label">Total Construction Completed:</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" value="${totalConsultingCancel}" readonly />
+                            <input type="text" class="form-control" value="${totalConstructionComplete}" readonly />
                         </div>
                     </div>
                 </fieldset>

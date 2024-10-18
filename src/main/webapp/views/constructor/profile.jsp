@@ -155,42 +155,13 @@
 </head>
 <body>
 <div class="container">
-    <header class="mb-4">
-        <div class="nav d-flex justify-content-between align-items-center">
-            <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
-                <i class="fas fa-project-diagram"></i> My Projects
-            </a>
-            <a href="${pageContext.request.contextPath}/constructor/serviceDetailManage" class="nav-link">
-                <i class="fas fa-project-diagram"></i> My Service Details
-           </a>
-            <div class="nav-item-group d-flex align-items-center">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge badge-danger">3</span>
-                </a>
-
-                <div class="dropdown">
-                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
-                        <span class="ml-2 user-name">${user.name}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/constructor/profile"><i class="fas fa-user"></i> Profile</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-paint-brush"></i> Theme</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Help</a></li>
-                        <li class="divider"></li>
-                        <li><a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </header>
+    <%@include file="navbarConsultruction.jsp" %>
 
     <div class="row">
         <div class="col-md-3">
             <div class="side-bar">
                 <div class="user-info text-center">
-                    <img class="img-profile img-circle img-responsive center-block" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}"
+                    <img class="img-profile img-circle img-responsive center-block" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}"
                          alt="User Avatar" width="150" />
                     <h4>${user.name}</h4>
                     <label class="badge badge-info">Constructor</label>
@@ -209,7 +180,7 @@
                         <div class="form-group avatar">
                             <div class="row">
                                 <div class="col-md-2">
-                                    <img class="img-rounded img-responsive" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="Avatar" width="80">
+                                    <img class="img-rounded img-responsive" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="Avatar" width="80">
                                 </div>
                                 <div class="col-md-10">
                                     <input type="file" name="file" class="file-uploader" accept="image/*" />

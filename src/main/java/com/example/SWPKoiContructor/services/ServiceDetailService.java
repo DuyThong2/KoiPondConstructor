@@ -102,11 +102,6 @@ public class ServiceDetailService {
 
     }
     
-    
-    
-    
-    
-    
     public List<Tuple> getServiceRevenue() {
         return serviceDetailDAO.getRevenueByService();
 

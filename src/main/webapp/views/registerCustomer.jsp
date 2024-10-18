@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Registration</title>
-    
+
     <!-- CSS Links -->
     <link rel="stylesheet" href="<c:url value='/css/login.css'/>">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -43,7 +43,7 @@
         }
 
         // Function to show message popup
-       
+
 
         function closeMessage() {
             var messageType = '${message}';
@@ -61,64 +61,64 @@
 </head>
 
 <body onload="showMessagePopup('${message}')">
-    <div class="wrapper">
-        <form:form action="register" modelAttribute="customerDTO" method="post" onsubmit="return checkPasswordMatch()">
-            <h1>Register</h1>
+<div class="wrapper">
+    <form:form action="register" modelAttribute="customerDTO" method="post" onsubmit="return checkPasswordMatch()">
+        <h1>Register</h1>
 
-            <div class="input-box">
-                <form:input path="name" placeholder="Enter Your Full Name" required="true" cssClass="form-control"/>
-                <i class='bx bxs-user'></i>
-                <form:errors path="name" cssClass="error"/>
-            </div>
-
-            <div class="input-box">
-                <form:input path="phone" placeholder="Enter Your Phone Number" required="true" minlength="10" cssClass="form-control"/>
-                <i class='bx bxs-phone'></i>
-                <form:errors path="phone" cssClass="error"/>
-            </div>
-
-            <div class="input-box">
-                <form:input path="email" placeholder="Enter Email" required="true" cssClass="form-control"/>
-                <i class='bx bxs-envelope'></i>
-                <form:errors path="email" cssClass="error"/>
-            </div>
-
-            <div class="input-box">
-                <form:password path="password" placeholder="Enter Password" id="password" required="true" minlength="8" cssClass="form-control"/>
-                <i class='bx bx-lock'></i>
-                <form:errors path="password" cssClass="error"/>
-            </div>
-
-            <div class="input-box">
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required minlength="8" class="form-control"/>
-                <i class='bx bx-lock-open'></i>
-                <div id="passwordError" style="color:red;"></div>
-            </div>
-
-            <button type="submit" value="register" class="btn">Register</button>
-
-            <div class="register-link">
-                <p> Have an account already?
-                    <a href="AMainController?action="> Back to Login</a>
-                </p>
-            </div>
-        </form:form>
-
-        <!-- Forgot Password link -->
-        <div class="forgot-password">
-            <a href="/forgot-password">Forgot your password?</a>
+        <div class="input-box">
+            <form:input path="name" placeholder="Enter Your Full Name" required="true" cssClass="form-control"/>
+            <i class='bx bxs-user'></i>
+            <form:errors path="name" cssClass="error"/>
         </div>
-    </div>
 
-    <!-- Error or Success Message Section -->
-   
-   <!-- Error Message Section -->
-   <c:if test="${message !=null}">
+        <div class="input-box">
+            <form:input path="phone" placeholder="Enter Your Phone Number" required="true" minlength="10" cssClass="form-control"/>
+            <i class='bx bxs-phone'></i>
+            <form:errors path="phone" cssClass="error"/>
+        </div>
+
+        <div class="input-box">
+            <form:input path="email" placeholder="Enter Email" required="true" cssClass="form-control"/>
+            <i class='bx bxs-envelope'></i>
+            <form:errors path="email" cssClass="error"/>
+        </div>
+
+        <div class="input-box">
+            <form:password path="password" placeholder="Enter Password" id="password" required="true" minlength="8" cssClass="form-control"/>
+            <i class='bx bx-lock'></i>
+            <form:errors path="password" cssClass="error"/>
+        </div>
+
+        <div class="input-box">
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required minlength="8" class="form-control"/>
+            <i class='bx bx-lock-open'></i>
+            <div id="passwordError" style="color:red;"></div>
+        </div>
+
+        <button type="submit" value="register" class="btn">Register</button>
+
+        <div class="register-link">
+            <p> Have an account already?
+                <a href="${pageContext.request.contextPath}/login"> Back to Login</a>
+            </p>
+        </div>
+    </form:form>
+
+    <!-- Forgot Password link -->
+    <div class="forgot-password">
+        <a href="${pageContext.request.contextPath}/forgot-password">Forgot your password?</a>
+    </div>
+</div>
+
+<!-- Error or Success Message Section -->
+
+<!-- Error Message Section -->
+<c:if test="${message !=null}">
     <div class="popup-error" style="top: -100%;">
         <i class='error-close bx bxs-x-circle' onclick="closeError()"></i>
         <p class="error-text">
             <!-- Display error message if available -->
-            ${message}
+                ${message}
         </p>
     </div>
     <div class="overlay"></div>

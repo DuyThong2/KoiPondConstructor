@@ -16,35 +16,7 @@
     <body>
 
         <div class="container">
-            <header>
-                <div class="nav">
-                    <a href="${pageContext.request.contextPath}/designer/manage" class="nav-link">
-                        <i class="fas fa-project-diagram"></i> My Projects
-                    </a>
-
-                    <input type="text" placeholder="Search..." id="search">
-                    <div class="nav-item-group">
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-bell"></i>
-                            <span class="badge badge-danger">3</span>
-                        </a>
-
-                          <div class="dropdown">
-                        <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
-                            <span class="ml-2 user-name">${user.name}</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/designer/profile"><i class="fas fa-user"></i> Profile</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-paint-brush"></i> Theme</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Help</a></li>
-                            <li class="divider"></li>
-                            <li><a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                        </ul>
-                    </div>
-                    </div>
-                </div>
-            </header>
+            <%@include file="navbarDesign.jsp" %>
 
 
             <div class="table-responsive">
@@ -81,9 +53,9 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="/designer/manage/viewDetail/${designs.designId}" class="btn btn-info">Detail</a>
+                                    <a href="${pageContext.request.contextPath}/designer/manage/viewDetail/${designs.designId}" class="btn btn-info">Detail</a>
                                     <c:if test="${designs.status != 4}">
-                                        <a href="/designer/design/${designs.designId}" class="btn btn-secondary">To Design</a>
+                                        <a href="${pageContext.request.contextPath}/designer/design/${designs.designId}" class="btn btn-secondary">To Design</a>
                                     </c:if>
                                 </td>
 

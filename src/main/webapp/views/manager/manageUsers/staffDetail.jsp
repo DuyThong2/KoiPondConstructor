@@ -86,7 +86,7 @@
                     }
                 </style>
             </head>
-
+            <div style="height:6vh;"></div>
             <body>
                 <div class="container-fluid mt-5">
                     <div class="row">
@@ -160,8 +160,7 @@
                                                             </c:choose>
                                                         </td>
                                                         <td>
-                                                            <form
-                                                                action="/manager/projects/details/${design.project.projectId}"
+                                                            <form action="${pageContext.request.contextPath}/manager/projects/details/${design.project.projectId}"
                                                                 method="GET" class="d-inline">
                                                                 <button type="submit" class="btn btn-info">
                                                                     <i class="fas fa-eye icon-btn"></i> View Details
@@ -212,8 +211,7 @@
                                                             </c:choose>
                                                         </td>
                                                         <td>
-                                                            <form
-                                                                action="/manager/projects/details/${construction.project.projectId}"
+                                                            <form action="${pageContext.request.contextPath}/manager/projects/details/${construction.project.projectId}"
                                                                 method="GET" class="d-inline">
                                                                 <button type="submit" class="btn btn-info">
                                                                     <i class="fas fa-eye icon-btn"></i> View Details
@@ -247,7 +245,7 @@
                                                         <td>${detail.service.serviceName}</td>
                                                         <td>${detail.service.serviceDescription}</td>
                                                         <td>
-                                                            <form action="/manager/serviceDetails/${detail.id}" method="GET" class="d-inline">
+                                                            <form action="${pageContext.request.contextPath}/manager/serviceDetails/${detail.id}" method="GET" class="d-inline">
                                                                 <button type="submit" class="btn btn-info">
                                                                     <i class="fas fa-eye icon-btn"></i> View Details
                                                                 </button>
@@ -296,6 +294,9 @@
                                                         <td>${consultant.consultantPhone}</td>
                                                         <td>
                                                             <c:choose>
+                                                                <c:when test="${consultant.consultantStatus == 2}">
+                                                                    <span class="badge badge-secondary badge-status">Assigned</span>
+                                                                </c:when>
                                                                 <c:when test="${consultant.consultantStatus == 3}">
                                                                     <span class="badge badge-primary">In Progress</span>
                                                                 </c:when>

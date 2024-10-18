@@ -52,10 +52,9 @@
                 max-width: 400px;  /* Set a maximum width to avoid resizing issues */
                 height: 300px !important;  /* Set a fixed height to prevent resizing */
             }
-
-
         </style>
     </head>
+    <div style="height:5vh;"></div>
     <body>
         <div class="container-fluid">
             <div class="row">
@@ -378,12 +377,6 @@
                             document.querySelector('span[data-name="totalContractsCreated"]').textContent = data.totalContractsCreated;
                         })
                         .catch(error => console.error('Error fetching consultant, quote, and contract stats:', error));
-
-
-
-
-
-
 
             });
         </script>
