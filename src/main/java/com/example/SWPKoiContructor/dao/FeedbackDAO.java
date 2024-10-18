@@ -112,9 +112,13 @@ public class FeedbackDAO {
     
     //-------------------------- SERVICE QUOTE  -------------------------
     public Feedback getLatestFeedback(int serviceQuoteId){
+        try{
         TypedQuery<Feedback> tq = entityManager.createQuery("SELECT f FROM Feedback f WHERE f.serviceQuotes.serviceQuotesId = :serviceQuoteId ORDER BY f.feedbackId DESC", Feedback.class);
         tq.setParameter("serviceQuoteId", serviceQuoteId);
         tq.setMaxResults(1);
-        return tq.getSingleResult();       
+        return tq.getSingleResult();  
+        }catch(NoResultException e){
+            return null;
+        }
     }
 }

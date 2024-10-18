@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Consultant;
+import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Feedback;
 import com.example.SWPKoiContructor.entities.Service;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
@@ -17,6 +18,7 @@ import com.example.SWPKoiContructor.services.ServiceQuoteService;
 import com.example.SWPKoiContructor.services.ServiceService;
 import com.example.SWPKoiContructor.services.UserService;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -29,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -36,6 +39,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class ServiceQuoteController {
+
     private ServiceQuoteService serviceQuoteService;
     private ServiceService serviceService;
     private ConsultantService consultantService;
@@ -50,22 +54,21 @@ public class ServiceQuoteController {
         this.feedbackService = feedbackService;
     }
 
-       
     //----------------------------------- MANAGER SECTION ----------------------------------------------
     @GetMapping("/manager/serviceQuote/detail/{id}")
-    public String getDetailServiceQuoteManager(@PathVariable("id")int id, Model model){
+    public String getDetailServiceQuoteManager(@PathVariable("id") int id, Model model) {
         ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(id);
-        if(serviceQuote != null){
+        if (serviceQuote != null) {
             model.addAttribute("serviceQuote", serviceQuote);
             Feedback feedback = feedbackService.getLatestServiceQuoteFeedback(id);
-            if(feedback != null){
+            if (feedback != null) {
                 model.addAttribute("feedback", feedback);
             }
             return "manager/serviceQuote/serviceQuoteDetail";
         }
         return "redirect:/manager/serviceQuote";
     }
-    
+
     @GetMapping("/manager/serviceQuote")
     public String listFilteredServiceQuoteManager(Model model, HttpSession session,
             @RequestParam(defaultValue = "0") int page,
@@ -81,10 +84,8 @@ public class ServiceQuoteController {
         long totalServiceQuotes;
 
         // Apply filtering based on the name, date range, and status
-        
-            serviceQuoteses = serviceQuoteService.getFilteredServiceQuoteManager(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
-            totalServiceQuotes = serviceQuoteService.countFilteredServiceQuoteManager(statusFilter, searchName, fromDate, toDate);
-                   
+        serviceQuoteses = serviceQuoteService.getFilteredServiceQuoteManager(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
+        totalServiceQuotes = serviceQuoteService.countFilteredServiceQuoteManager(statusFilter, searchName, fromDate, toDate);
 
         int totalPages = (int) Math.ceil((double) totalServiceQuotes / size);
 
@@ -101,20 +102,20 @@ public class ServiceQuoteController {
 
         return "manager/serviceQuote/serviceQuoteManage";  // JSP page to display the contract list
     }
-    
+
     @PostMapping("/manager/serviceQuote/detail/saveStatus")
     public String saveStatusUpdateManager(Model model, HttpSession session,
-            @RequestParam("id")int serviceQuoteId,
-            @RequestParam("status")int statusId,
+            @RequestParam("id") int serviceQuoteId,
+            @RequestParam("status") int statusId,
             @RequestParam(name = "declineReason", required = false) String feedbackContent,
-            @RequestParam(name = "toUserId", required = false) Integer toUserId){
+            @RequestParam(name = "toUserId", required = false) Integer toUserId) {
         ServiceQuotes serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
-        if(feedbackContent != null && toUserId != null){
+        if (feedbackContent != null && toUserId != null) {
             User fromUser = (User) session.getAttribute("user");
             User toUser = userService.getUserById(toUserId);
             Feedback feedback = new Feedback();
             feedback.setFeedbackContent(feedbackContent);
-            feedback.setFeedbackDate( new Date());
+            feedback.setFeedbackDate(new Date());
             feedback.setFromUser(fromUser);
             feedback.setToUser(toUser);
             feedback.setServiceQuotes(serviceQuotes);
@@ -122,26 +123,23 @@ public class ServiceQuoteController {
         }
         return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
     }
-    
-    
+
     //----------------------------------- STAFF SECTION ----------------------------------------------
-    
     @GetMapping("/consultant/serviceQuote/detail/{id}")
-    public String getDetailServiceQuote(@PathVariable("id")int id, Model model, HttpSession session){
+    public String getDetailServiceQuote(@PathVariable("id") int id, Model model, HttpSession session) {
         ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(id);
         Staff staff = (Staff) session.getAttribute("user");
-        if(serviceQuote != null && serviceQuote.isServiceQuoteBelongToStaff(staff, serviceQuote)){
+        if (serviceQuote != null && serviceQuote.isServiceQuoteBelongToStaff(staff, serviceQuote)) {
             model.addAttribute("serviceQuote", serviceQuote);
             Feedback feedback = feedbackService.getLatestServiceQuoteFeedback(id);
-            if(feedback != null){
+            if (feedback != null) {
                 model.addAttribute("feedback", feedback);
             }
             return "consultant/serviceQuote/serviceQuoteDetail";
         }
         return "redirect:/consultant/serviceQuote";
     }
-    
-    
+
     @GetMapping("/consultant/serviceQuote")
     public String listFilteredServiceQuote(Model model, HttpSession session,
             @RequestParam(defaultValue = "0") int page,
@@ -181,17 +179,17 @@ public class ServiceQuoteController {
 
         return "consultant/serviceQuote/serviceQuoteManage";  // JSP page to display the contract list
     }
-             
+
     @GetMapping("/consultant/serviceQuote/create")
-    public String createNewServiceQuote(@RequestParam("consultantId")int consultantId, Model model, HttpSession session){
+    public String createNewServiceQuote(@RequestParam("consultantId") int consultantId, Model model, HttpSession session) {
         ServiceQuotes newServiceQuotes = new ServiceQuotes();
         Consultant consultant = consultantService.getConsultantById(consultantId);
-        if(consultant.getServiceQuotes() == null){
+        if (consultant.getServiceQuotes() == null) {
             model.addAttribute("consultant", consultant);
-            model.addAttribute("customer", consultant.getCustomer());        
+            model.addAttribute("customer", consultant.getCustomer());
             model.addAttribute("newServiceQuote", newServiceQuotes);
             List<Service> services = serviceService.getServiceList(20);
-            model.addAttribute("service", services);
+            model.addAttribute("services", services);
             User user = (User) session.getAttribute("user");
             model.addAttribute("staff", user);
             return "consultant/serviceQuote/serviceQuoteCreate";
@@ -199,22 +197,31 @@ public class ServiceQuoteController {
         model.addAttribute("newServiceQuote", newServiceQuotes);
         return "redirect:/consultant/viewConsultantDetail/" + consultantId;
     }
-    
+
     @PostMapping("/consultant/serviceQuote/save")
-    public String saveServiceQuote(@ModelAttribute("newServiceQuote") ServiceQuotes newServiceQuotes) {
+    public String saveServiceQuote(@ModelAttribute("newServiceQuote") ServiceQuotes newServiceQuotes,
+            @RequestParam("serviceIds") List<Integer> serviceIds) {
+        List<Service> serviceList = new ArrayList<>();
         newServiceQuotes.setServiceQuotesStatus(1);
         newServiceQuotes.setServiceQuotesDate(new Date());
+        for (int id : serviceIds) {
+            Service service = serviceService.getServiceById(id);
+            if (service != null) { // Check if the service exists
+                serviceList.add(service);
+            }
+        }
+        newServiceQuotes.setService(serviceList);
         newServiceQuotes = serviceQuoteService.saveNewServiceQuote(newServiceQuotes);
         return "redirect:/consultant/serviceQuote";
     }
-    
+
     @GetMapping("/consultant/serviceQuote/update")
-    public String updateServiceQuote(@RequestParam("serviceQuoteId")int serviceQuoteId, Model model, HttpSession session){
+    public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuoteId, Model model, HttpSession session) {
         ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
         Staff staff = (Staff) session.getAttribute("user");
-        if(serviceQuote != null && serviceQuote.isServiceQuoteBelongToStaff(staff, serviceQuote)){
+        if (serviceQuote != null && serviceQuote.isServiceQuoteBelongToStaff(staff, serviceQuote)) {
             model.addAttribute("consultant", serviceQuote.getConsultant());
-            model.addAttribute("customer", serviceQuote.getCustomer());        
+            model.addAttribute("customer", serviceQuote.getCustomer());
             model.addAttribute("serviceQuote", serviceQuote);
             model.addAttribute("service", serviceService.getServiceList(20));
             User user = (User) session.getAttribute("user");
@@ -223,28 +230,28 @@ public class ServiceQuoteController {
         }
         return "redirect:/consultant/serviceQuote/detail/" + serviceQuoteId;
     }
-    
+
     @PostMapping("/consultant/serviceQuote/saveUpdate")
-    public String saveUpdateServiceQuote(@ModelAttribute("serviceQuote") ServiceQuotes serviceQuote){
+    public String saveUpdateServiceQuote(@ModelAttribute("serviceQuote") ServiceQuotes serviceQuote) {
         serviceQuote.setServiceQuotesStatus(1);
         serviceQuote.setServiceQuotesDate(new Date());
-        serviceQuote = serviceQuoteService.saveNewServiceQuote(serviceQuote);        
+        serviceQuote = serviceQuoteService.saveNewServiceQuote(serviceQuote);
         return "redirect:/consultant/serviceQuote/detail/" + serviceQuote.getServiceQuotesId();
     }
-    
+
     @PostMapping("/consultant/serviceQuote/detail/saveStatus")
     public String saveStatusUpdateConsultant(Model model, HttpSession session,
-            @RequestParam("id")int serviceQuoteId,
-            @RequestParam("status")int statusId,
+            @RequestParam("id") int serviceQuoteId,
+            @RequestParam("status") int statusId,
             @RequestParam(name = "declineReason", required = false) String feedbackContent,
-            @RequestParam(name = "toUserId", required = false) Integer toUserId){
+            @RequestParam(name = "toUserId", required = false) Integer toUserId) {
         ServiceQuotes serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
-        if(feedbackContent != null && toUserId != null){
+        if (feedbackContent != null && toUserId != null) {
             User fromUser = (User) session.getAttribute("user");
             User toUser = userService.getManager();
             Feedback feedback = new Feedback();
             feedback.setFeedbackContent(feedbackContent);
-            feedback.setFeedbackDate( new Date());
+            feedback.setFeedbackDate(new Date());
             feedback.setFromUser(fromUser);
             feedback.setToUser(toUser);
             feedback.setServiceQuotes(serviceQuotes);
@@ -252,5 +259,61 @@ public class ServiceQuoteController {
         }
         return "redirect:/consultant/serviceQuote/detail/" + serviceQuoteId;
     }
-    
+
+    //----------------------------------- CUSTOMER SECTION ----------------------------------------------
+    @GetMapping("/customer/serviceQuote")
+    public String listFilteredServiceQuoteCustomer(Model model, HttpSession session, RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(defaultValue = "serviceQuotesDate") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDirection,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+
+        User customer = (User) session.getAttribute("user");
+        if (customer == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Please login.");
+            return "redirect:/login";
+        }
+        List<ServiceQuotes> serviceQuoteses;
+        long totalServiceQuotes;
+
+        serviceQuoteses = serviceQuoteService.getFilteredServiceQuoteCustomer(page, size, sortBy, sortDirection, fromDate, toDate, customer.getId());
+        totalServiceQuotes = serviceQuoteService.countFilteredServiceQuoteCustomer(fromDate, toDate, customer.getId());
+
+        int totalPages = (int) Math.ceil((double) totalServiceQuotes / size);
+
+        // Add attributes to the model for JSP rendering
+        model.addAttribute("serviceQuote", serviceQuoteses);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("fromDate", fromDate);  // Add fromDate to model
+        model.addAttribute("toDate", toDate);  // Add toDate to model
+
+        return "customer/serviceQuote/serviceQuoteManage";  // JSP page to display the contract list
+    }
+
+    @PostMapping("/customer/serviceQuote/saveStatus")
+    public String saveStatusUpdateCustomer(Model model, HttpSession session,
+            @RequestParam("id") int serviceQuoteId,
+            @RequestParam("status") int statusId,
+            @RequestParam(name = "declineReason", required = false) String feedbackContent,
+            @RequestParam(name = "toUserId", required = false) Integer toUserId) {
+        ServiceQuotes serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
+        if (feedbackContent != null && toUserId != null) {
+            User fromUser = (User) session.getAttribute("user");
+            User toUser = serviceQuotes.getStaff();
+            Feedback feedback = new Feedback();
+            feedback.setFeedbackContent(feedbackContent);
+            feedback.setFeedbackDate(new Date());
+            feedback.setFromUser(fromUser);
+            feedback.setToUser(toUser);
+            feedback.setServiceQuotes(serviceQuotes);
+            feedback = feedbackService.saveFeedback(feedback);
+        }
+        return "redirect:/customer/serviceQuote";
+    }
+
 }

@@ -42,7 +42,7 @@ public class Service implements HaveImagesFile{
     @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
     
-    @OneToMany(mappedBy = "service")
+    @ManyToMany(mappedBy = "service")
     private List<ServiceQuotes> serviceQuotes;
 
 

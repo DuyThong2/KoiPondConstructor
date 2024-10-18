@@ -200,6 +200,67 @@ public class ServiceQuoteDAO {
         return query.getSingleResult();
     }
     
+    //----------------------CUSTOMER
+    public List<ServiceQuotes> getFilteredServiceQuoteCustomer(int page, int size, String sortBy, String sortDirection,
+            LocalDate fromDate, LocalDate toDate, int cusId){
+        StringBuilder queryStr = new StringBuilder("SELECT s FROM ServiceQuotes s WHERE 1=1 AND s.customer.id = :id AND (s.serviceQuotesStatus = 2 OR s.serviceQuotesStatus >= 4 OR s.serviceQuotesStatus != 6) ");
+       
+        // Dynamic query construction
+        if (fromDate != null) {
+            queryStr.append(" AND s.serviceQuotesDate >= :fromDate");
+        }
+        if (toDate != null) {
+            queryStr.append(" AND s.serviceQuotesDate <= :toDate");
+        }
+
+        // Sorting
+        queryStr.append(" ORDER BY s.").append(sortBy).append(" ").append(sortDirection);
+
+        // Creating the query
+        TypedQuery<ServiceQuotes> query = entityManager.createQuery(queryStr.toString(), ServiceQuotes.class);
+
+        query.setParameter("id", cusId);
+        // Setting parameters dynamically       
+        if (fromDate != null) {
+            query.setParameter("fromDate", java.sql.Date.valueOf(fromDate));  // Convert LocalDate to java.sql.Date
+        }
+        if (toDate != null) {
+            query.setParameter("toDate", java.sql.Date.valueOf(toDate));  // Convert LocalDate to java.sql.Date
+        }
+
+        // Pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getResultList();
+    }
+    
+    public long countFilteredServiceCustomer(LocalDate fromDate, LocalDate toDate, int cusId) {
+        StringBuilder queryStr = new StringBuilder("SELECT COUNT(s) FROM ServiceQuotes s WHERE 1=1 AND s.customer.id = :id AND (s.serviceQuotesStatus = 2 OR s.serviceQuotesStatus >= 4 OR s.serviceQuotesStatus != 6) ");
+
+        // Dynamic query construction         
+        if (fromDate != null) {
+            queryStr.append(" AND s.serviceQuotesDate >= :fromDate");
+        }
+        if (toDate != null) {
+            queryStr.append(" AND s.serviceQuotesDate <= :toDate");
+        }
+
+        // Creating the query
+        TypedQuery<Long> query = entityManager.createQuery(queryStr.toString(), Long.class);
+
+        query.setParameter("id", cusId);
+        // Setting parameters dynamically
+        if (fromDate != null) {
+            query.setParameter("fromDate", java.sql.Date.valueOf(fromDate));  // Convert LocalDate to java.sql.Date
+        }
+        if (toDate != null) {
+            query.setParameter("toDate", java.sql.Date.valueOf(toDate));  // Convert LocalDate to java.sql.Date
+        }
+
+        return query.getSingleResult();
+    }
+    
     
     //------------------------------------------- GET DETAIL SECTION --------------------------------------
     public ServiceQuotes getServiceQuoteById(int id) {
