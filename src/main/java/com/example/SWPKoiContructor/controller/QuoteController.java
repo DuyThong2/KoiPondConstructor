@@ -270,7 +270,7 @@ public class QuoteController {
         return "consultant/quote/quoteEdit";
     }
 
-    @PutMapping("consultant/quote/saveUpdateQuote")
+    @PostMapping("consultant/quote/saveUpdateQuote")
     public String saveUpdateQuoteById(@ModelAttribute("newQuote") Quotes newQuote) {
         newQuote.setQuotesStatus(1);
         newQuote.setQuotesDate(new Date());

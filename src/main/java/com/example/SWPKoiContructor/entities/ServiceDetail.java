@@ -38,9 +38,14 @@ public class ServiceDetail {
 
     private String feedback;
 
+    @Temporal(TemporalType.DATE)
+    @Column(name="feedback_date")
+    private Date feedbackDate;
     @ManyToOne
     @JoinColumn(name = "service_id")
     private Service service;
+
+
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -50,7 +55,7 @@ public class ServiceDetail {
     @JoinColumn(name = "staff_id")
     private Staff staff;
 
-    public ServiceDetail(int id, Double price, Date dateRegister, Integer rating, Integer serviceDetailStatus, String feedback, Service service, Customer customer, Staff staff) {
+    public ServiceDetail(int id, Double price, Date dateRegister, Integer rating, Integer serviceDetailStatus, String feedback, Service service, Customer customer, Staff staff,Date feedbackDate) {
         this.id = id;
         this.price = price;
         this.dateRegister = dateRegister;
@@ -60,9 +65,18 @@ public class ServiceDetail {
         this.service = service;
         this.customer = customer;
         this.staff = staff;
+        this.feedbackDate= feedbackDate;
     }
 
     public ServiceDetail() {
+    }
+
+    public Date getFeedbackDate() {
+        return feedbackDate;
+    }
+
+    public void setFeedbackDate(Date feedbackDate) {
+        this.feedbackDate = feedbackDate;
     }
 
     // Getters and setters

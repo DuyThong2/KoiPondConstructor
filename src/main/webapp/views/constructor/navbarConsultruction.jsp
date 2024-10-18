@@ -1,8 +1,13 @@
 <header class="mb-4">
     <div class="nav d-flex justify-content-between align-items-center">
         <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
-            <i class="fas fa-project-diagram"></i> My Projects
+            <i class="fas fa-project-diagram"></i>Projects
         </a>
+        <a href="${pageContext.request.contextPath}/constructor/serviceDetailManage/"
+           class="nav-link">
+            <i class="fas fa-project-diagram"></i>Service Details
+        </a>
+
         <div class="nav-item-group d-flex align-items-center">
             <div class="dropdown">
                 <a class="icon-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

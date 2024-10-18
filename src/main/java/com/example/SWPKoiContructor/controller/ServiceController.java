@@ -3,6 +3,7 @@ package com.example.SWPKoiContructor.controller;
 import com.example.SWPKoiContructor.dao.ServiceDAO;
 import com.example.SWPKoiContructor.entities.Content;
 import com.example.SWPKoiContructor.entities.Service;
+import com.example.SWPKoiContructor.entities.ServiceDetail;
 import com.example.SWPKoiContructor.entities.ServicePrice;
 import com.example.SWPKoiContructor.services.ServicePriceService;
 import com.example.SWPKoiContructor.services.ServiceService;
@@ -268,4 +269,6 @@ public class ServiceController {
         }
         return "redirect:/manager/services";
     }
+
+
 }
