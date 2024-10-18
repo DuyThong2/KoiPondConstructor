@@ -147,11 +147,11 @@
                                                        </table>
                                                        <div class="row justify-content-around">
                                                             <button class="btn btn-info"
-                                                                 onclick="window.location.href = '/manager/manageStaff/detail/${staff.id}'">
+                                                                 onclick="window.location.href = '${pageContext.request.contextPath}/manager/manageStaff/detail/${staff.id}'">
                                                                  Staff Details
                                                             </button>
                                                           <c:if test="${serviceDetail.serviceDetailStatus!=3 &&serviceDetail.serviceDetailStatus!=5}">
-                                                            <a href="/manager/serviceDetails/assign/${serviceDetail.id}"
+                                                            <a href="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}"
                                                             class="btn btn-warning">Edit Staff</a>
                                                           </c:if>
                                                        </div>
@@ -186,7 +186,7 @@
                                                        <div class="row justify-content-center">
                                                             <td>
                                                                  <button class="btn btn-info"
-                                                                      onclick="window.location.href = '/manager/manageCustomer/detail/${customer.id}'">
+                                                                      onclick="window.location.href = '${pageContext.request.contextPath}/manager/manageCustomer/detail/${customer.id}'">
                                                                       Customer Details
                                                                  </button>
                                                             </td>

@@ -1,9 +1,3 @@
-<%-- 
-    Document   : preDesignDetail
-    Created on : Oct 8, 2024, 11:24:13 AM
-    Author     : HP
---%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
@@ -85,70 +79,73 @@
         }
     </style>
 </head>
+<div style="height:6vh;"></div>
 <body>
 
-    <!-- Pre Design Detail Container -->
-    <div class="container-fluid mt-5">
-        <div class="row">
-            <%@include file="../navBar.jsp" %>
+<!-- Pre Design Detail Container -->
+<div class="container-fluid mt-5">
+    <div class="row">
+        <%@include file="../navBar.jsp" %>
 
-            <!-- Main content -->
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-        <!-- Pre Design Header -->
-        <div class="blog-header">
-            <h1>Pre Design Detail</h1>
-        </div>
-
-        <!-- Pre Design Card -->
-        <div class="card blog-card">
-            <!-- Pre Design Image -->
-            <img src="/uploads/${preDesign.preDesignImgUrl}" class="blog-image" alt="Blog Image">
-
-            <!-- Pre Design Content -->
-            <div class="card-body blog-content">
-                
-                <!-- Pre Design Title -->
-                <h2 class="blog-title">${preDesign.preDesignName}</h2>
-
-                <!-- Pre Design Date and Status -->
-                <div class="d-flex justify-content-between align-items-center">
-                    <p class="text-muted">Posted on: ${preDesign.content.createDate}</p>
-                    <div class="blog-status">
-                        Status: 
-                        <c:choose>
-                            <c:when test="${preDesign.preDesignStatus == true}">
-                                <span class="badge bg-success">Active</span>
-                            </c:when>
-                            <c:otherwise>
-                                <span class="badge bg-secondary">Inactive</span>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </div>
-
-                <!-- Pre Design Description -->
-                <p class="blog-description">
-                    ${preDesign.preDesignDescription}
-                </p>
-
-                <!-- Pre Design Content Section -->
-                <h4>Full Content</h4>
-                <div class="blog-body">
-                    <p>${preDesign.content.content}</p>
-                </div>
-                
+        <!-- Main content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+            <!-- Pre Design Header -->
+            <div class="blog-header">
+                <h1>Pre Design Detail</h1>
             </div>
-        </div>
-            </main>
+
+            <!-- Pre Design Card -->
+            <div class="card blog-card">
+                <!-- Pre Design Image -->
+                <img src="${preDesign.getShowingImg(preDesign.preDesignImgUrl)}" class="blog-image" alt="Blog Image">
+
+                <!-- Pre Design Content -->
+                <div class="card-body blog-content">
+
+                    <!-- Pre Design Title -->
+                    <h2 class="blog-title">${preDesign.preDesignName}</h2>
+
+                    <!-- Pre Design Date and Status -->
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="text-muted">Posted on: ${preDesign.content.createDate}</p>
+                        <div class="blog-status">
+                            Status:
+                            <c:choose>
+                                <c:when test="${preDesign.preDesignStatus == true}">
+                                    <span class="badge bg-success">Active</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <span class="badge bg-secondary">Inactive</span>
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+
+                    <!-- Pre Design Description -->
+                    <p class="blog-description">
+                        ${preDesign.preDesignDescription}
+                    </p>
+
+                    <!-- Pre Design Content Section -->
+                    <h4>Full Content</h4>
+                    <div class="blog-body">
+                        <p>${preDesign.content.content}</p>
+                    </div>
+
+                </div>
+            </div>
+        </main>
         <!-- Footer Section with Back Button -->
         <div class="blog-footer">
-            <a href="/manager/preDesign" class="btn btn-outline-secondary">Back to Pre Design List</a>
-            <a href="/manager/preDesign/update/${preDesign.preDesignId}" class="btn btn-outline-info">Update</a>
+            <a href="${pageContext.request.contextPath}/manager/preDesign" class="btn btn-outline-secondary">Back to Pre Design List</a>
+            <a href="${pageContext.request.contextPath}/manager/preDesign/update/${preDesign.preDesignId}" class="btn btn-outline-info">Update</a>
         </div>
     </div>
-    </div>
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</div>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>
 

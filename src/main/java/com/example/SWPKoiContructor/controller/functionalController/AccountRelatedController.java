@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,6 +37,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  *
@@ -44,6 +46,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AccountRelatedController {
 
+    
+    private String contexPath="";
+    
     private CustomerService customerService;
     private UserService userService;
     private EmailService emailService;
@@ -165,19 +170,29 @@ public class AccountRelatedController {
     }
 
     @PostMapping("/forgot-password")
-    public String processForgotPassword(@RequestParam("email") String email, Model model) {
+    public String processForgotPassword(HttpServletRequest request,
+            @RequestParam("email") String email,
+            Model model) {
         User user = userService.findUserByEmail(email);
+
         if (user != null) {
             String token = UUID.randomUUID().toString();
             userService.createPasswordResetTokenForUser(user, token);
 
-            String resetUrl = "http://localhost:8081/reset-password?token=" + token;
+            // Dynamically build the reset URL based on the request
+            String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                    .replacePath(null)
+                    .build()
+                    .toUriString();
+
+            String resetUrl = baseUrl + contexPath + "/reset-password?token=" + token;
             emailService.sendPasswordResetEmail(user.getEmail(), resetUrl);
 
             model.addAttribute("message", "A password reset link has been sent to your email.");
         } else {
             model.addAttribute("message", "No user found with the provided email.");
         }
+
         return "forgot_password_form";
     }
 

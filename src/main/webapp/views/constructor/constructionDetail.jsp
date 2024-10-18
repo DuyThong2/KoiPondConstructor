@@ -178,7 +178,7 @@
             .feedback-content {
                 max-height: 300px; /* Điều chỉnh chiều cao theo ý muốn */
                 overflow-y: auto;  /* Hiển thị thanh cuộn dọc */
-                    padding-right: 10px; /* Để không bị che nội dung bởi thanh cuộn */
+                padding-right: 10px; /* Để không bị che nội dung bởi thanh cuộn */
             }
         </style>
         <script>
@@ -187,6 +187,7 @@
                 document.getElementById("comment-content-" + commentId).style.display = "none"; // Ẩn nội dung comment
                 document.getElementById("edit-section-" + commentId).style.display = "block"; // Hiện textarea
             }
+
 
             // Ẩn form edit và hiển thị lại nội dung comment khi người dùng nhấn Cancel
             function cancelEdit(commentId) {
@@ -197,52 +198,13 @@
     </head>
     <body>
         <div class="container">
-            <header>
-                <div class="nav">
-                    <div class="d-flex flex-row">
-                        <a href="${pageContext.request.contextPath}/constructor/manage" class="nav-link">
-                            <i class="fas fa-project-diagram"></i>Projects
-                        </a>
-                        <a href="${pageContext.request.contextPath}/constructor/serviceDetailManage/"
-                            class="nav-link">
-                            <i class="fas fa-project-diagram"></i>Service Details
-                        </a>
-                    </div>
-                    <!-- Thông báo và cài đặt -->
-                    <div class="nav-item-group">
-                        <!-- Notifications icon with badge -->
-                        <a href="#" class="nav-link">
-                            <i class="fas fa-bell"></i>
-                            <span class="badge badge-danger">3</span> <!-- Số thông báo chưa đọc -->
-                        </a>
-
-                        <!-- Avatar và tên người dùng -->
-                        <div class="dropdown">
-                            <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
-                                <span class="ml-2 user-name">${sessionScope.user.name}</span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="/constructor/profile">Profile</a>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#themeModal">Theme</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="/help">Help</a>
-                                <div class="dropdown-divider"></div>
-                                <!-- Logout button in dropdown -->
-                                <a href="/logout" class="dropdown-item btn-logout">
-                                    <i class="fas fa-sign-out-alt"></i> Logout
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </header>
+            <%@include file="navbarConsultruction.jsp" %>
 
             <div class="row">
                 <!-- Left Column -->
                 <div class="left-column">
                     <div class="img-box">
-                        <img src="/uploads/${construction.project.imgURL}" alt="Construction Project Image">
+                        <img src="${pageContext.request.contextPath}/uploads/${construction.project.imgURL}" alt="Construction Project Image">
                     </div>
 
                     <!-- Feedback Section-->
@@ -336,14 +298,14 @@
                                 </p>
                                 <p><strong>Price:</strong> ${stage.constructionStagePrice}</p>
 
-                                <a href="/staff/updateStatus/constructionStage/${stage.constructionStageId}?constructionId=${constructionId}" class="btn btn-info">Update Status</a>
+                                <a href="${pageContext.request.contextPath}/staff/updateStatus/constructionStage/${stage.constructionStageId}?constructionId=${constructionId}" class="btn btn-info">Update Status</a>
 
                             </div>
                         </div>
 
                         <!-- Pass the stage status to the buttons via data attributes -->
                         <script>
-                            document.querySelector(`[data-stage='${stage.constructionStageName}']`).setAttribute('data-status', '${stage.constructionStageStatus}');
+                    document.querySelector(`[data-stage='${stage.constructionStageName}']`).setAttribute('data-status', '${stage.constructionStageStatus}');
                         </script>
                     </c:forEach>
                 </div>

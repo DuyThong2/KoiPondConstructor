@@ -69,6 +69,7 @@
 
     </style>
 </head>
+<div style="height:6vh;"></div>
 <body>
 <div class="container-fluid mt-5">
     <div class="row">
@@ -145,9 +146,9 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <form action="/manager/projects/details/${project.projectId}" method="GET" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/manager/projects/details/${project.projectId}" method="GET" class="d-inline">
                                         <button type="submit" class="btn btn-info">
-                                            <i class="fas fa-eye icon-btn"></i> View Details
+                                            <i class="fas fa-eye icon-btn"></i> Details
                                         </button>
                                     </form>
                                 </td>
@@ -180,9 +181,9 @@
                                 <td>${detail.service.serviceName}</td>
                                 <td>${detail.service.serviceDescription}</td>
                                 <td>
-                                    <form action="/manager/serviceDetails/${detail.id}" method="GET" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/manager/serviceDetails/${detail.id}" method="GET" class="d-inline">
                                         <button type="submit" class="btn btn-info">
-                                            <i class="fas fa-eye icon-btn"></i> View Details
+                                            <i class="fas fa-eye icon-btn"></i> Details
                                         </button>
                                     </form>
                                 </td>

@@ -56,7 +56,7 @@
 
                             <!-- Filter Card -->
                             <div class="filter-card">
-                                <form method="get" action="/manager/serviceDetails">
+                                <form method="get" action="${pageContext.request.contextPath}/manager/serviceDetails">
                                     <div class="form-row align-items-center">
                                         <!-- Sort By -->
                                         <div class="col-auto">
@@ -160,7 +160,7 @@
                                                 </c:choose>
                                             </td>
                                             <td class="d-flex flex-column">
-                                                <a href="/manager/serviceDetails/${service.id}"
+                                                <a href="${pageContext.request.contextPath}/manager/serviceDetails/${service.id}"
                                                     class="btn btn-info">Details</a>
                                                 <c:if test="${service.serviceDetailStatus == 4}">
                                                     <!-- View Request Button -->
@@ -199,7 +199,7 @@
                                                                 <td>${service.customer.email}</td>
                                                                 <td>
                                                                     <button class="btn btn-info"
-                                                                        onclick="window.location.href = '/manager/manageCustomer/detail/${service.customer.id}'">
+                                                                        onclick="window.location.href = '${pageContext.request.contextPath}/manager/manageCustomer/detail/${service.customer.id}'">
                                                                         Customer Details
                                                                     </button>
                                                                 </td>
@@ -238,12 +238,12 @@
 
                                                                 <td>
                                                                     <button class="btn btn-info"
-                                                                        onclick="window.location.href = '/manager/manageStaff/detail/${service.staff.id}'">
+                                                                        onclick="window.location.href = '${pageContext.request.contextPath}/manager/manageStaff/detail/${service.staff.id}'">
                                                                         Staff Details
                                                                     </button>
                                                                     <c:if
                                                                         test="${service.serviceDetailStatus!=3 && service.serviceDetailStatus!=5}">
-                                                                        <a href="/manager/serviceDetails/assign/${service.id}"
+                                                                        <a href="${pageContext.request.contextPath}/manager/serviceDetails/assign/${service.id}"
                                                                             class="btn btn-warning">Edit Staff</a>
                                                                     </c:if>
                                                                 </td>
@@ -255,7 +255,7 @@
                                                                     test="${service.serviceDetailStatus!=3 && service.serviceDetailStatus!=5}">
                                                                     <tr>
                                                                         <td colspan="5" class="text-center">
-                                                                            <a href="/manager/serviceDetails/assign/${service.id}"
+                                                                            <a href="${pageContext.request.contextPath}/manager/serviceDetails/assign/${service.id}"
                                                                                 class="btn btn-primary">Assign Staff</a>
                                                                         </td>
                                                                     </tr>
@@ -282,7 +282,7 @@
                             <!-- Pagination Controls -->
                             <div class="d-flex justify-content-between align-items-center mt-4">
                                 <c:if test="${currentPage != 1}">
-                                    <form method="get" action="/manager/serviceDetails">
+                                    <form method="get" action="${pageContext.request.contextPath}/manager/serviceDetails">
                                         <button class="btn btn-primary" type="submit">Previous</button>
                                         <input type="hidden" name="page" value="${currentPage - 1}">
                                         <input type="hidden" name="size" value="${size}">
@@ -295,7 +295,7 @@
                                 </c:if>
                                 <span>Page <strong>${currentPage}</strong> of <strong>${totalPage}</strong></span>
                                 <c:if test="${currentPage != totalPage}">
-                                    <form method="get" action="/manager/serviceDetails">
+                                    <form method="get" action="${pageContext.request.contextPath}/manager/serviceDetails">
                                         <button class="btn btn-primary" type="submit">Next</button>
                                         <input type="hidden" name="page" value="${currentPage + 1}">
                                         <input type="hidden" name="size" value="${size}">

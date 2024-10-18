@@ -109,118 +109,122 @@
         }
     </style>
 </head>
+<div style="height:6vh;"></div>
 <body>
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Include the Navbar -->
-            <%@include file="../navBar.jsp" %>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Include the Navbar -->
+        <%@include file="../navBar.jsp" %>
 
-            <!-- Main content -->
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
-                <h2 class="mb-4">Pre Design List</h2>
+        <!-- Main content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
+            <h2 class="mb-4">Pre Design List</h2>
 
-                <!-- Filter Card -->
-                <div class="filter-card">
-                    <!-- Sort and Search Form -->
-                    <form method="get" action="/manager/preDesign">
-                        <div class="form-row align-items-center d-flex justify-content-between">
-                            <!-- Sort By -->
-                            <div class="col-auto">
-                                <label for="sortBy">Sort by:</label>
-                                <select name="sortBy" id="sortBy" class="form-control">
-                                    <option value="preDesignId" ${sortBy == 'preDesignId' ? 'selected' : ''}>Default</option>
-                                    <option value="preDesignStatus" ${sortBy == 'preDesignStatus' ? 'selected' : ''}>Status</option>
-                                </select>
-                            </div>
-
-                            <!-- Sort Direction -->
-                            <div class="col-auto">
-                                <label for="sortDirection">Direction:</label>
-                                <select name="sortDirection" id="sortDirection" class="form-control">
-                                    <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
-                                    <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
-                                </select>
-                            </div>
-
-                            <!-- Filter By Status -->
-                            <div class="col-auto">
-                                <label for="statusFilter">Status:</label>
-                                <select name="statusFilter" id="statusFilter" class="form-control">
-                                    <option value="" ${statusFilter == null ? 'selected' : ''}>All</option>
-                                    <option value="true" ${statusFilter == true ? 'selected' : ''}>Active</option>
-                                    <option value="false" ${statusFilter == false ? 'selected' : ''}>Inactive</option>
-                                </select>
-                            </div>
-
-                            <!-- Search by Name -->
-                            <div class="col-auto">
-                                <label for="searchName">Search Name: </label>
-                                <input type="text" name="searchName" id="searchName" class="form-control" value="${searchName}">
-                            </div>
-
-                            <input type="hidden" name="page" value="${currentPage}">
-
-                            <!-- Apply Button -->
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-primary" style="margin-top: 2rem">Apply</button>
-                            </div>
+            <!-- Filter Card -->
+            <div class="filter-card">
+                <!-- Sort and Search Form -->
+                <form method="get" action="${pageContext.request.contextPath}/manager/preDesign">
+                    <div class="form-row align-items-center d-flex">
+                        <!-- Sort By -->
+                        <div class="col-auto">
+                            <label for="sortBy">Sort by:</label>
+                            <select name="sortBy" id="sortBy" class="form-control">
+                                <option value="preDesignId" ${sortBy == 'preDesignId' ? 'selected' : ''}>Default</option>
+                                <option value="preDesignStatus" ${sortBy == 'preDesignStatus' ? 'selected' : ''}>Status</option>
+                            </select>
                         </div>
-                    </form>
-                    <a class="btn btn-info" href="/manager/preDesign/create">Create New Pre Design</a>
-                </div>
 
-                <!-- Pre Design Cards -->
-                <div class="row">
-                    <c:forEach var="preDesign" items="${preDesign}">
-                        <div class="col-md-6 col-lg-4 mb-4">
-                            <div class="card h-100">
-                                <!-- Adjusted Image Height -->
-                                <img src="/uploads/${preDesign.preDesignImgUrl}" class="card-img-top" alt="Pre Design Image" style="height: 250px; object-fit: cover;">
+                        <!-- Sort Direction -->
+                        <div class="col-auto">
+                            <label for="sortDirection">Direction:</label>
+                            <select name="sortDirection" id="sortDirection" class="form-control">
+                                <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
+                                <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
+                            </select>
+                        </div>
 
-                                <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title">${preDesign.preDesignName}</h5>
+                        <!-- Filter By Status -->
+                        <div class="col-auto">
+                            <label for="statusFilter">Status:</label>
+                            <select name="statusFilter" id="statusFilter" class="form-control">
+                                <option value="" ${statusFilter == null ? 'selected' : ''}>All</option>
+                                <option value="true" ${statusFilter == true ? 'selected' : ''}>Active</option>
+                                <option value="false" ${statusFilter == false ? 'selected' : ''}>Inactive</option>
+                            </select>
+                        </div>
 
-                                    <!-- Limit Description Text to 3 lines -->
-                                    <p class="card-text text-truncate" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                        <!-- Search by Name -->
+                        <div class="col-auto">
+                            <label for="searchName">Search Name: </label>
+                            <input type="text" name="searchName" id="searchName" class="form-control" value="${searchName}">
+                        </div>
+
+                        <input type="hidden" name="page" value="${currentPage}">
+
+                        <!-- Apply Button -->
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary" style="margin-top: 2rem">Apply</button>
+                            <a class="btn btn-info" href="${pageContext.request.contextPath}/manager/preDesign/create" style="margin: 2rem 0 0 2rem">Create New Pre Design</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+            <!-- Pre Design Cards -->
+            <div class="row">
+                <c:forEach var="preDesign" items="${preDesign}">
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100">
+                            <!-- Adjusted Image Height -->
+                            <img src="${preDesign.getShowingImg(preDesign.preDesignImgUrl)}" class="card-img-top" alt="Pre Design Image" style="height: 250px; object-fit: cover;">
+
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">${preDesign.preDesignName}</h5>
+
+                                <!-- Limit Description Text to 3 lines -->
+                                <p class="card-text text-truncate" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
                                         ${preDesign.preDesignDescription}
-                                    </p>
+                                </p>
 
-                                    <!-- Button aligned at the bottom -->
-                                    <a href="/manager/preDesign/detail/${preDesign.preDesignId}" class="btn btn-info mt-auto">View Details</a>
-                                </div>
+                                <!-- Button aligned at the bottom -->
+                                <a href="${pageContext.request.contextPath}/manager/preDesign/detail/${preDesign.preDesignId}" class="btn btn-info mt-auto">View Details</a>
                             </div>
                         </div>
-                    </c:forEach>
-                </div>
+                    </div>
+                </c:forEach>
+            </div>
 
-                <!-- Pagination Controls -->
-                <div class="d-flex justify-content-between align-items-center mt-4">
-                    <!-- Previous Button -->
-                    <c:if test="${currentPage > 0}">
-                        <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&lt;</a>
-                    </c:if>
-                    <c:if test="${currentPage == 0}">
-                        <button class="btn btn-primary" disabled>&lt;</button>
-                    </c:if>
+            <!-- Pagination Controls -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <!-- Previous Button -->
+                <c:if test="${currentPage > 0}">
+                    <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&lt;</a>
+                </c:if>
+                <c:if test="${currentPage == 0}">
+                    <button class="btn btn-primary" disabled>&lt;</button>
+                </c:if>
 
-                    <!-- Page Indicator -->
-                    <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
+                <!-- Page Indicator -->
+                <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
 
-                    <!-- Next Button -->
-                    <c:if test="${currentPage < totalPages - 1}">
-                        <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&gt;</a>
-                    </c:if>
-                    <c:if test="${currentPage == totalPages - 1}">
-                        <button class="btn btn-primary" disabled>&gt;</button>
-                    </c:if>
-                </div>
-            </main>
-        </div>
+                <!-- Next Button -->
+                <c:if test="${currentPage < totalPages - 1}">
+                    <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&gt;</a>
+                </c:if>
+                <c:if test="${currentPage == totalPages - 1}">
+                    <button class="btn btn-primary" disabled>&gt;</button>
+                </c:if>
+            </div>
+            <div style="height:6vh;"></div>
+        </main>
+
     </div>
+</div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

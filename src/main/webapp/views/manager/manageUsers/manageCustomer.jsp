@@ -39,8 +39,12 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
         }
+        .btn-block{
+            margin-bottom: 5px;
+        }
     </style>
 </head>
+<div style="height:6vh;"></div>
 <body>
 
 <div class="container-fluid">
@@ -53,7 +57,7 @@
             <h2 class="mb-4">Manage Customer</h2>
             <div class="filter-card">
                 <!-- Search Form -->
-                <form action="/manager/manageCustomer" method="GET" class="form-row">
+                <form action="${pageContext.request.contextPath}/manager/manageCustomer" method="GET" class="form-row">
                     <!-- Search by name -->
                     <div class="col-md-3 mb-3">
                         <input type="text" name="name" class="form-control" placeholder="Search by Name..." value="${param.name}">
@@ -110,14 +114,14 @@
                                 </c:choose>
                             </td>
                             <td>
-                                <a href="/manager/manageCustomer/detail/${customers.id}" class="btn btn-info btn-block">
+                                <a href="${pageContext.request.contextPath}/manager/manageCustomer/detail/${customers.id}" class="btn btn-info btn-block">
                                     <i class="fas fa-eye"></i>View Details</a>
-                                <form action="/manager/manageUser/block/${customers.id}" method="post" style="display: inline">
+                                <form action="${pageContext.request.contextPath}/manager/manageUser/block/${customers.id}" method="post" style="display: inline">
                                     <c:if test="${customers.enabled}">
-                                    <button type="submit" class="btn btn-outline-danger btn-block"
-                                            onclick="return confirm('Are you sure you want to block this user?');">
-                                        <i class="fas fa-ban"></i> Block
-                                    </button>
+                                        <button type="submit" class="btn btn-outline-danger btn-block"
+                                                onclick="return confirm('Are you sure you want to block this user?');">
+                                            <i class="fas fa-ban"></i> Block
+                                        </button>
                                     </c:if>
                                     <c:if test="${!customers.enabled}">
                                         <button type="submit" class="btn btn-outline-success btn-block"

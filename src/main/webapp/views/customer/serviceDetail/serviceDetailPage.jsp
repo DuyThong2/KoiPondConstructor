@@ -172,8 +172,7 @@
                                         <div class="side-bar">
                                              <div class="user-info">
                                                   <img class="img-profile img-circle img-responsive center-block"
-                                                       src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "
-                                                       /assets/imgs/logo/final_resized_colored_logo_image.png"}" alt />
+                                                       src= "${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt />
                                                   <ul class="meta list list-unstyled">
                                                        <li class="name" style="font-size: 18px;">${user.name}
                                                             <br>
@@ -198,17 +197,18 @@
                                                                       <span class="fas fa-file-contract"></span> My
                                                                       Contract</a>
                                                             </li>
-                                                            <li>
-                                                                 <a href="${pageContext.request.contextPath}/customer/quote"
-                                                                      style="font-size: 16px">
-                                                                      <i class="bi bi-file-earmark-text"></i> Quotes</a>
-                                                            </li>
-                                                            <li>
+                                                              <li>
                                                                  <a href="${pageContext.request.contextPath}/customer/projects/"
                                                                       style="font-size: 16px">
                                                                       <span class="fas fa-project-diagram"></span> My
                                                                       Project</a>
                                                             </li>
+                                                            <li>
+                                                                 <a href="${pageContext.request.contextPath}/customer/quote"
+                                                                      style="font-size: 16px">
+                                                                      <i class="bi bi-file-earmark-text"></i> Quotes</a>
+                                                            </li>
+                                                          
                                                             <li class="active">
                                                                  <a href="${pageContext.request.contextPath}/customer/serviceDetails/"
                                                                       style="font-size: 16px">
@@ -227,7 +227,7 @@
 
                                                        <!-- Filter Card -->
                                                        <div class="filter-card">
-                                                            <form method="get" action="/customer/serviceDetails">
+                                                            <form method="get" action="${pageContext.request.contextPath}/customer/serviceDetails">
                                                                  <div class="form-row align-items-center">
                                                                       <!-- Sort By -->
                                                                       <div class="col-auto">
@@ -357,7 +357,7 @@
                                                                                 </c:choose>
                                                                            </td>
                                                                            <td>
-                                                                                <a href="/customer/serviceDetail/${service.id}"
+                                                                                <a href="${pageContext.request.contextPath}/customer/serviceDetail/${service.id}"
                                                                                      class="btn btn-default btn-info">Details</a>
                                                                            </td>
                                                                       </tr>
@@ -380,7 +380,7 @@
                                                             class="d-flex  justify-content-between align-items-center mt-4">
                                                             <c:if test="${currentPage != 1}">
 
-                                                                 <form method="get" action="/customer/serviceDetails/">
+                                                                 <form method="get" action="${pageContext.request.contextPath}/customer/serviceDetails/">
                                                                       <button class="btn btn-primary" type="submit">
                                                                            < </button>
                                                                                 <input type="hidden" name="page"
@@ -407,7 +407,7 @@
 
                                                             <c:if test="${currentPage != totalPage}">
 
-                                                                 <form method="get" action="/customer/serviceDetails/">
+                                                                 <form method="get" action="${pageContext.request.contextPath}/customer/serviceDetails/">
                                                                       <button class="btn btn-primary"
                                                                            type="submit">></button>
                                                                       <input type="hidden" name="page"

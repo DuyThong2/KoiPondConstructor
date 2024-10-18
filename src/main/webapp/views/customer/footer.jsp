@@ -1,15 +1,15 @@
 <footer>
     <section class="footer-2__area-common footer-bg-1 overflow-hidden">
         <div class="container rr-shape-p-c_1">
-            <div class="footer-2__shape-1 rr-shape-p-s_1 leftRight"><img src="/assets/imgs/footer-2/shape-1.png" alt="image not found"></div>
-            <div class="footer-2__shape-2 rr-shape-p-s_1 upDown"><img src="/assets/imgs/footer-2/shape-2.png" alt="image not found"></div>
+            <div class="footer-2__shape-1 rr-shape-p-s_1 leftRight"><img src="${pageContext.request.contextPath}/assets/imgs/footer-2/shape-1.png" alt="image not found"></div>
+            <div class="footer-2__shape-2 rr-shape-p-s_1 upDown"><img src="${pageContext.request.contextPath}/assets/imgs/footer-2/shape-2.png" alt="image not found"></div>
             <div class="footer-2__main-wrapper">
                 <div class="row mb-minus-50">
                     <div class="col-lg-4 col-6">
                         <div class="footer-2__widget footer-2__widget-item-1">
                             <div class="footer-2__logo mb-35">
-                                <a href="index.html">
-                                    <img class="img-fluid" src="/assets/imgs/logo/logo-white.svg" alt="logo not found">
+                                <a href="#">
+                                    <img class="img-fluid" src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                                 </a>
                             </div>
 
@@ -76,33 +76,33 @@
                             <div class="footer-2__widget-gallery">
                                 <div class="row g-10">
                                     <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-1.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-1.jpg" alt="">
+                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-1.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-1.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-2.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-2.jpg" alt="">
+                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-2.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-2.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-3.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-3.jpg" alt="">
+                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-3.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-3.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-4.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-4.jpg" alt="">
+                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-4.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-4.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-5.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-5.jpg" alt="">
+                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-5.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-5.jpg" alt="">
                                         </a>
                                     </div>
                                     <div class="col-4">
-                                        <a href="/assets/imgs/gallery__item/gallery__item-popup-6.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="/assets/imgs/gallery__item/gallery__item-6.jpg" alt="">
+                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-6.jpg" class="footer-2__widget-gallery__item popup-image">
+                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-6.jpg" alt="">
                                         </a>
                                     </div>
                                 </div>
