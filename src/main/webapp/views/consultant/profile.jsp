@@ -155,33 +155,8 @@
 </head>
 <body>
 <div class="container">
-    <header class="mb-4">
-        <div class="nav d-flex justify-content-between align-items-center">
-            <a href="#" class="nav-link">
-                <i class="fas fa-project-diagram"></i> My Projects
-            </a>
-            <div class="nav-item-group d-flex align-items-center">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge badge-danger">3</span>
-                </a>
+    <%@include file="consultantNav.jsp" %>
 
-                <div class="dropdown">
-                    <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
-                        <span class="ml-2 user-name">${user.name}</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        <li><a class="dropdown-item" href="${pageContext.request.contextPath}/constructor/profile"><i class="fas fa-user"></i> Profile</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-paint-brush"></i> Theme</a></li>
-                        <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Help</a></li>
-                        <li class="divider"></li>
-                        <li><a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </header>
 
     <div class="row">
         <div class="col-md-3">
@@ -252,21 +227,33 @@
                 <fieldset class="fieldset">
                     <h3 class="title">Account Summary</h3>
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Total Projects:</label>
+                        <label class="col-md-4 control-label">Total Consultant:</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="${totalConstruction}" readonly />
+                            <input type="text" class="form-control" value="${totalConsulting}" readonly />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Total Construction In Process:</label>
+                        <label class="col-md-4 control-label">Total Consultant In Pending:</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="${totalConstructionInProcess}" readonly />
+                            <input type="text" class="form-control" value="${totalConsultingPending}" readonly />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Total Construction Completed:</label>
+                        <label class="col-md-4 control-label">Total Consultant In Process:</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" value="${totalConstructionComplete}" readonly />
+                            <input type="text" class="form-control" value="${totalConsultingInProcess}" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Total Consultant Completed:</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" value="${totalConsultingComplete}" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Total Consultant Canceled:</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" value="${totalConsultingCancel}" readonly />
                         </div>
                     </div>
                 </fieldset>
