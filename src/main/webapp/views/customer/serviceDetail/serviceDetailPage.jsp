@@ -197,17 +197,18 @@
                                                                       <span class="fas fa-file-contract"></span> My
                                                                       Contract</a>
                                                             </li>
-                                                            <li>
-                                                                 <a href="${pageContext.request.contextPath}/customer/quote"
-                                                                      style="font-size: 16px">
-                                                                      <i class="bi bi-file-earmark-text"></i> Quotes</a>
-                                                            </li>
-                                                            <li>
+                                                              <li>
                                                                  <a href="${pageContext.request.contextPath}/customer/projects/"
                                                                       style="font-size: 16px">
                                                                       <span class="fas fa-project-diagram"></span> My
                                                                       Project</a>
                                                             </li>
+                                                            <li>
+                                                                 <a href="${pageContext.request.contextPath}/customer/quote"
+                                                                      style="font-size: 16px">
+                                                                      <i class="bi bi-file-earmark-text"></i> Quotes</a>
+                                                            </li>
+                                                          
                                                             <li class="active">
                                                                  <a href="${pageContext.request.contextPath}/customer/serviceDetails/"
                                                                       style="font-size: 16px">
