@@ -8,6 +8,8 @@
     <title>Contract Details</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         /* Sidebar full height */
         .sidebar {
@@ -44,8 +46,8 @@
 
 
         <!-- Main content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <h2 class="mb-4">Consultant List</h2>
+
+
             <form method="get" action="${pageContext.request.contextPath}/consultant/viewConsultantList">
                 <div class="form-row align-items-center">
                     <!-- Sort By -->
@@ -158,7 +160,7 @@
                     <button class="btn btn-primary" disabled>&gt;</button>
                 </c:if>
             </div>
-        </main>
+
 
     </div>
 </div>

@@ -78,7 +78,9 @@
                                 <a href="${pageContext.request.contextPath}/customer/quote"><span class="bi bi-bar-chart-line"></span> Quotes</a>
                             </li>
                             <li>
-                                <a href="${pageContext.request.contextPath}/customer/serviceDetails/"><span class="bi bi-bar-chart-line"></span> Service</a>
+
+                                <a href="${pageContext.request.contextPath}/customer/serviceDetails"><span class="bi bi-bar-chart-line"></span> Service</a>
+
                             </li>
                         </ul>
                     </nav>

@@ -128,11 +128,14 @@
                                             <span class="status-label">
                                                 <c:choose>
                                                     <c:when test="${detail.constructionStageDetailStatus == 1}">
-                                                        Pending</c:when>
-                                                    <c:when test="${detail.constructionStageDetailStatus == 2}">
-                                                        Processing</c:when>
-                                                    <c:when test="${detail.constructionStageDetailStatus == 4}">
-                                                        Completed</c:when>
+
+                                                        <select class="form-control text-center" name="newStatus" required>
+                                                            <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
+                                                        </select></c:when>
+
+                                                    <c:when test="${detail.constructionStageDetailStatus == 2}">Processing</c:when>
+                                                    <c:when test="${detail.constructionStageDetailStatus == 4}">Completed</c:when>
+
                                                 </c:choose>
                                             </span>
                                         </c:when>
@@ -163,17 +166,18 @@
 
                                 <td>
                                     <!-- Disable the button if Payment, Inspection, or the previous detail is incomplete -->
-                                    <c:if
-                                        test="${canUpdateNext && detail.constructionStageDetailName != 'Payment' && previousCompleted && detail.constructionStageDetailStatus != 4}">
+                                    <c:if test="${canUpdateNext && (detail.constructionStageDetailName == 'Payment' && detail.constructionStageDetailStatus == 1 ) && previousCompleted && detail.constructionStageDetailStatus != 4}">
                                         <button type="submit" class="btn btn-primary mt-2">Update</button>
                                     </c:if>
                                 </td>
                             </tr>
 
+                           
                             <!-- Update canUpdateNext to false if this stage is not completed or canceled -->
                             <c:if
                                 test="${detail.constructionStageDetailStatus != 4 && detail.constructionStageDetailStatus != 3}">
                                 <c:set var="canUpdateNext" value="false" />
+                                
                             </c:if>
                         </form>
                     </c:forEach>

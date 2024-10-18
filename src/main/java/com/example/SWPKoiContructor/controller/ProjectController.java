@@ -293,7 +293,6 @@ public class ProjectController {
     }
 
     @GetMapping("/customer/projects/")
-
     public String customerProjectPage(Model model, HttpSession session, RedirectAttributes redirectAttributes){
 
         Customer customer = (Customer) session.getAttribute("user");

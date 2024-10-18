@@ -23,8 +23,8 @@ import org.springframework.web.servlet.view.RedirectView;
 @RequestMapping("/paypal")
 public class PayPalController {
 
-    @Value("${server.servlet.context-path}")
-    private String contexPath;
+    
+    private String contexPath="";
 
     @Autowired
     private PayPalService payPalService;
