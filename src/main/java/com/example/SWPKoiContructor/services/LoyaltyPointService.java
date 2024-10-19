@@ -29,13 +29,16 @@ public class LoyaltyPointService {
 
         long totalAvailablePoints = loyaltyPointDAO.totalPoints(customer.getId());
         double pointsValue = totalAvailablePoints;
-
-        if (pointsValue >= moneyToBeReduced) {
-            loyaltyPointDAO.insertLoyaltyPointUsage(customer, (int) moneyToBeReduced);
-            return moneyToBeReduced;
-        } else {
-            loyaltyPointDAO.insertLoyaltyPointUsage(customer, (int) pointsValue);
-            return pointsValue;
+        if (totalAvailablePoints > 0) {
+            if (pointsValue >= moneyToBeReduced) {
+                loyaltyPointDAO.insertLoyaltyPointUsage(customer, (int) moneyToBeReduced);
+                return moneyToBeReduced;
+            } else {
+                loyaltyPointDAO.insertLoyaltyPointUsage(customer, (int) pointsValue);
+                return pointsValue;
+            }
         }
+        return 0;
+
     }
 }
