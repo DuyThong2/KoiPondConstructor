@@ -51,13 +51,18 @@ public class DesignController {
     @GetMapping("/manager/design")
     public String getListDesignWithCustomerName(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size) {
-        List<Design> list = designService.getListDesignWithSortedAndPaginated(page, size);
-        int totalPage = designService.getTotalOfAllDesigns(size);
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(required = false) Integer statusFilter, 
+            @RequestParam(required = false) String searchName) {
+
+        List<Design> list = designService.getListDesignWithSortedAndPaginated(page, size, statusFilter, searchName);
+        int totalPage = designService.getTotalOfAllDesigns(size, statusFilter, searchName);
 
         model.addAttribute("designList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPage);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);
         return "manager/design/designManage";
     }
 
@@ -98,18 +103,23 @@ public class DesignController {
     public String listContractsByDesigner(Model model,
             HttpSession session,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "6") int size) {
+            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(required = false) Integer statusFilter,
+            @RequestParam(required = false) String searchName) {
+
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }
 
-        List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size);
-        int totalPages = designService.getTotalPagesByDesigner(user.getId(), size);
+        List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size, statusFilter, searchName);
+        int totalPages = designService.getTotalPagesByDesigner(user.getId(), size, statusFilter, searchName);
 
         model.addAttribute("designs", designs);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);
         return "designer/designerManage";
     }
 
