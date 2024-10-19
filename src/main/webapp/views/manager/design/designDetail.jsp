@@ -150,6 +150,7 @@
                     <th>Status</th>
                     <th>Description</th>
                     <th>Summary File</th>
+                    <th style="width: 250px">Payment Process</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -195,17 +196,55 @@
                             </c:if>
                         </td>
                         <td>
-                            <c:forEach var="detail" items="${stage.designDetail}">
-                                <c:if test="${detail.name == 'Payment' && detail.status == 2}">
-                                    <form action="${pageContext.request.contextPath}/manager/completePayment/" method="post" onsubmit="return confirmStatusChange();">
-                                        <input type="hidden" name="detailId" value="${detail.id}">
-                                        <input type="hidden" name="newStatus" value="4">
-                                        <input type="hidden" name="designStageId" value="${stage.designStageId}">
-                                        <input type="hidden" name="designId" value="${design.designId}">
-                                        <button type="submit" class="btn btn-success btn-custom">Complete Payment</button>
-                                    </form>
-                                </c:if>
-                            </c:forEach>
+                            <c:set var="allPreviousCompleted" value="true" />
+
+                        <c:forEach var="detail" items="${stage.designDetail}">
+
+                            <c:if test="${detail.status != 4 && detail.name != 'Payment'}">
+                                <c:set var="allPreviousCompleted" value="false" />
+                            </c:if>
+
+                            <c:if test="${detail.name == 'Payment' && allPreviousCompleted}">
+
+                                <form action="${pageContext.request.contextPath}/manager/updatePayment" method="post" onsubmit="return confirmStatusChange();" class="form-inline">
+                                    <input type="hidden" name="detailId" value="${detail.id}">
+                                    <input type="hidden" name="designStageId" value="${stage.designStageId}">
+                                    <input type="hidden" name="designId" value="${design.designId}">
+
+                                    <div class="action-buttons d-flex align-items-center mt-2">
+
+                                        <select class="form-control select-status text-center mr-2" name="newStatus" required
+                                            ${stage.designStageStatus != 2 || detail.status == 4 ? 'disabled' : ''}>
+                                            <c:choose>
+
+                                                <c:when test="${detail.status == 1}">
+                                                    <option value="1" ${detail.status == 1 ? 'selected' : ''}>Pending</option>
+                                                    <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
+                                                    <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
+                                                </c:when>
+
+                                                <c:when test="${detail.status == 2}">
+                                                    <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
+                                                    <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
+                                                </c:when>
+
+                                                <c:when test="${detail.status == 4}">
+                                                    <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
+                                                </c:when>
+                                            </c:choose>
+                                        </select>
+
+                                        <button type="submit" class="btn btn-primary ml-2"
+                                            ${stage.designStageStatus != 2 || detail.status == 4 ? 'disabled' : ''}>
+                                            Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </c:if>
+                        </c:forEach>
+                    </td>
+
+                        <td>
                             <button class="btn btn-info btn-custom" onclick="toggleBlueprint(${stage.designStageId})">View</button>
                         </td>
                     </tr>
@@ -278,7 +317,11 @@
         return confirm("Do you confirm the customer completed the payment?");
     }
 </script>
-
+<c:if test="${not empty message}">
+    <script>
+        alert("${message}");
+    </script>
+</c:if>
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

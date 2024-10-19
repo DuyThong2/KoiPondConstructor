@@ -7,6 +7,8 @@
         <title>Update Service Quote</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
             .quote-info {
                 background-color: #f8f9fa;
@@ -41,6 +43,7 @@
     <body>
 
         <div class="container mt-5">
+            <%@include file="../consultantNav.jsp"%>
             <div class="row">
                 <!-- Right Column for Service Quote Update Form -->
                 <div class="col-md-12">
@@ -66,7 +69,7 @@
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="serviceQuotesArea">Area (m²):</label>
+                            <label for="serviceQuotesArea">Area (mï¿½):</label>
                             <form:input path="serviceQuotesArea" id="serviceQuotesArea" step="0.01" class="form-control" value="${serviceQuote.serviceQuotesArea}" />
                         </div>
 

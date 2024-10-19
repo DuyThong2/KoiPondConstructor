@@ -5,49 +5,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Contract Details</title>
+    <title>Consultant Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
     <style>
-        /* Sidebar full height */
-        .sidebar {
-            height: 100vh;
-            background-color: #343a40;
-            color: white;
-            position: fixed;
-        }
-        .sidebar a {
-            color: white;
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-        }
-        .sidebar a:hover {
-            background-color: #495057;
-        }
-        .sidebar .nav-link.active {
-            background-color: #007bff;
-            color: white;
-        }
-        /* Adjust content area to account for fixed sidebar */
-        main {
-            margin-left: 200px;
+        .filter-card {
+            background-color: #ffffff;
             padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        .btn-primary{
+            padding: 8px 19px;
+            border-radius: 20px;
+        }
+        h2 {
+            font-weight: bold;
+            border-bottom: 2px solid #343a40;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            width: 95%;
+            margin-left: 5px;
         }
     </style>
+
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
+<div class="container">
+
         <!-- Sidebar -->
         <%@include file="consultantNav.jsp"%>
 
 
         <!-- Main content -->
-
-
+    <h2>Consultant List</h2>
+    <div class="filter-card">
             <form method="get" action="${pageContext.request.contextPath}/consultant/viewConsultantList">
                 <div class="form-row align-items-center">
                     <!-- Sort By -->
@@ -82,12 +77,13 @@
 
                     <input type="hidden" name="page" value="${currentPage}">
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mt-2">Apply</button>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 1.8rem;">Apply</button>
                     </div>
                 </div>
             </form>
-
+    </div>
             <!-- Main Table -->
+    <div class="table-responsive">
             <table class="table table-bordered table-hover">
                 <thead class="thead-dark">
                 <tr>
@@ -138,7 +134,7 @@
                 </c:forEach>
                 </tbody>
             </table>
-
+    </div>
             <!-- Pagination Controls -->
             <div class="d-flex justify-content-between align-items-center mt-4">
                 <!-- Previous Button -->
@@ -162,7 +158,6 @@
             </div>
 
 
-    </div>
 </div>
 
 <!-- Bootstrap JS and dependencies -->

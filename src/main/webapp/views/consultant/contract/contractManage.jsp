@@ -5,14 +5,44 @@
 <head>
     <title>Contract Management</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        .filter-card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-weight: bold;
+            border-bottom: 2px solid #343a40;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            width: 95%;
+            margin-left: 5px;
+        }
+        .btn-sort {
+            padding: 8px 20px;
+            margin-top: 2rem;
+        }
+        .btn-primary{
+            border-radius: 20px;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container">
+    <jsp:include page="../consultantNav.jsp"/>
+
     <h2>Contract List</h2>
 
     <!-- Sort Form -->
-    <form method="get" action="${pageContext.request.contextPath}/manager/contract">
+    <div class="filter-card">
+    <form method="get" action="${pageContext.request.contextPath}/consultant/contract">
         <div class="form-row align-items-center">
             <div class="col-auto">
                 <label for="sortBy">Sort by:</label>
@@ -31,11 +61,11 @@
             </div>
             <input type="hidden" name="page" value="${currentPage}">
             <div class="col-auto">
-                <button type="submit" class="btn btn-primary mt-2">Sort</button>
+                <button type="submit" class="btn btn-primary btn-sort">Sort</button>
             </div>
         </div>
     </form>
-
+    </div>
     <!-- Table for contracts -->
     <table class="table table-bordered table-hover mt-3">
         <thead class="thead-dark">
@@ -123,6 +153,9 @@
         </c:if>
     </div>
 </div>
-
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

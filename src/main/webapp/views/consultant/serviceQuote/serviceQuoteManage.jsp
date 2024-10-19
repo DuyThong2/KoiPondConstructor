@@ -7,7 +7,8 @@
     <title>Contract Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
     <style>
         /* Custom styles to enhance UI performance */
         body {
@@ -122,12 +123,11 @@
     </style>
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <!-- Include the Navbar -->
+<div class="container">
+    <%@include file="../consultantNav.jsp"%>
 
         <!-- Main content -->
-        <main role="main" class="col-md-12 col-lg-9 mx-auto px-4 mt-4">
+
             <h2 class="mb-4">Service Quote List</h2>
 
             <div class="filter-card">
@@ -269,9 +269,9 @@
                     <button class="btn btn-primary" disabled>&gt;</button>
                 </c:if>
             </div>
-        </main>
+
     </div>
-</div>
+
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

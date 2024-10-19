@@ -5,60 +5,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Contract Details</title>
+    <title>Quote Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Custom styles for the sidebar */
-        .sidebar {
-            height: 100vh;
-            background-color: #343a40;
-            color: white;
+        .filter-card {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
-        .sidebar a {
-            color: white;
-            display: block;
-            padding: 10px;
-            text-decoration: none;
+        h2 {
+            font-weight: bold;
+            border-bottom: 2px solid #343a40;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            width: 95%;
+            margin-left: 5px;
         }
-        .sidebar a:hover {
-            background-color: #495057;
+        .btn-sort{
+            padding: 8px 20px;
+            margin-top: 2rem;
+        }
+        .btn-primary{
+            border-radius: 20px;
         }
     </style>
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <nav class="col-md-2 d-none d-md-block sidebar">
-            <div class="sidebar-sticky">
-                <h4 class="text-center py-3">Consultant Dashboard</h4>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/dashboard">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/contracts">Consultant</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/projects">Quotes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/terms">Contract</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/reports">Reports</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/admin/settings">Settings</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+<div class="container">
+    <jsp:include page="../consultantNav.jsp"/>
 
-        <!-- Main content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <h2 class="mb-4">Quote List</h2>
+    <div class="filter-card">
             <form method="get" action="${pageContext.request.contextPath}/consultant/quote">
                 <div class="form-row align-items-center">
                     <!-- Sort By -->
@@ -99,10 +81,11 @@
 
                     <input type="hidden" name="page" value="${currentPage}">
                     <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mt-2">Apply</button>
+                        <button type="submit" class="btn btn-primary btn-sort">Apply</button>
                     </div>
                 </div>
             </form>
+    </div>
             <table class="table table-bordered table-hover">
                 <thead class="thead-dark">
                 <tr>
@@ -183,9 +166,8 @@
                     <button class="btn btn-primary" disabled>&gt;</button>
                 </c:if>
             </div>
-        </main>
 
-    </div>
+
 </div>
 
 <!-- Bootstrap JS and dependencies -->
