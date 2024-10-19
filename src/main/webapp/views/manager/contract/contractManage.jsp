@@ -260,7 +260,7 @@
                 <c:if test="${currentPage < totalPages - 1}">
                     <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&gt;</a>
                 </c:if>
-                <c:if test="${currentPage == totalPages - 1}">
+                <c:if test="${currentPage >= totalPages - 1}">
                     <button class="btn btn-primary" disabled>&gt;</button>
                 </c:if>
             </div>

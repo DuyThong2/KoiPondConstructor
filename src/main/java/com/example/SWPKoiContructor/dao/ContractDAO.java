@@ -42,8 +42,6 @@ public class ContractDAO {
         }
     }
 
-    
-
     public List<Contract> getFilteredContracts(int page, int size, String sortBy, String sortDirection,
             Integer statusFilter, String searchName, LocalDate fromDate, LocalDate toDate) {
         StringBuilder queryStr = new StringBuilder("SELECT c FROM Contract c WHERE 1=1");
@@ -166,7 +164,7 @@ public class ContractDAO {
 
     public List<Contract> getSortedAndPaginatedByCustomer(int id, int page, int size, String sortBy, String sortDirection) {
         // Create the JPQL query with the correct alias
-        String jpql = "SELECT p FROM Contract p WHERE p.customer.id = :id AND (p.contractStatus != 1 OR p.contractStatus != 4) ORDER BY p." + sortBy + " " + sortDirection;
+        String jpql = "SELECT p FROM Contract p WHERE p.customer.id = :id AND (p.contractStatus != 1 AND p.contractStatus != 4) ORDER BY p." + sortBy + " " + sortDirection;
 
         // Create TypedQuery
         TypedQuery<Contract> query = entityManager.createQuery(jpql, Contract.class);
@@ -182,6 +180,100 @@ public class ContractDAO {
         return query.getResultList();
     }
 
+    public List<Contract> getContractListOfConsultant(int consultantId, int page, int size, String sortBy,
+                                                      String sortDirection, Integer statusFilter, String searchName,
+                                                      LocalDate fromDate, LocalDate toDate) {
+
+        // Start building the JPQL query
+        StringBuilder queryStr = new StringBuilder("SELECT c FROM Contract c WHERE c.quote.staff.id = :consultantId");
+
+        // Add filters if available
+        if (statusFilter != null) {
+            queryStr.append(" AND c.contractStatus = :statusFilter");
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            queryStr.append(" AND LOWER(c.contractNote) LIKE LOWER(:searchName)");
+        }
+        if (fromDate != null) {
+            queryStr.append(" AND c.dateCreate >= :fromDate");
+        }
+        if (toDate != null) {
+            queryStr.append(" AND c.dateCreate <= :toDate");
+        }
+
+        // Add sorting
+        queryStr.append(" ORDER BY c.").append(sortBy).append(" ").append(sortDirection);
+
+        // Create the query
+        TypedQuery<Contract> query = entityManager.createQuery(queryStr.toString(), Contract.class);
+
+        // Set parameters
+        query.setParameter("consultantId", consultantId);
+        if (statusFilter != null) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
+        if (fromDate != null) {
+            query.setParameter("fromDate", Date.valueOf(fromDate));  // Convert LocalDate to SQL Date
+        }
+        if (toDate != null) {
+            query.setParameter("toDate", Date.valueOf(toDate));  // Convert LocalDate to SQL Date
+        }
+
+        // Pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        // Execute the query and return the result list
+        return query.getResultList();
+    }
+
+    // Count the total number of filtered contracts for the consultant
+    public long countFilteredContractsForConsultant(int consultantId, Integer statusFilter, String searchName,
+                                                    LocalDate fromDate, LocalDate toDate) {
+
+        // Start building the JPQL query
+        StringBuilder queryStr = new StringBuilder("SELECT COUNT(c) FROM Contract c WHERE c.quote.staff.id = :consultantId");
+
+        // Add filters if available
+        if (statusFilter != null) {
+            queryStr.append(" AND c.contractStatus = :statusFilter");
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            queryStr.append(" AND LOWER(c.contractNote) LIKE LOWER(:searchName)");
+        }
+        if (fromDate != null) {
+            queryStr.append(" AND c.dateCreate >= :fromDate");
+        }
+        if (toDate != null) {
+            queryStr.append(" AND c.dateCreate <= :toDate");
+        }
+
+        // Create the query
+        TypedQuery<Long> query = entityManager.createQuery(queryStr.toString(), Long.class);
+
+        // Set parameters
+        query.setParameter("consultantId", consultantId);
+        if (statusFilter != null) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
+        if (fromDate != null) {
+            query.setParameter("fromDate", Date.valueOf(fromDate));  // Convert LocalDate to SQL Date
+        }
+        if (toDate != null) {
+            query.setParameter("toDate", Date.valueOf(toDate));  // Convert LocalDate to SQL Date
+        }
+
+        // Return the count of filtered contracts
+        return query.getSingleResult();
+    }
+
+    @Deprecated
     public List<Contract> getSortedAndPaginatedByConsultant(int id, int page, int size, String sortBy, String sortDirection) {
         // Tạo truy vấn động cho việc sắp xếp
         String jpql = "SELECT p FROM Contract p WHERE p.quote.staff.id = :id ORDER BY p." + sortBy + " " + sortDirection;
@@ -208,8 +300,8 @@ public class ContractDAO {
     public int getTotalContracts(boolean isCustomer, int id) {
         // Construct the appropriate condition based on the isCustomer flag
         String append = isCustomer
-                ? "c.quote.staff.id = :id"
-                : "c.customer.id = :id AND (c.contractStatus != 1 OR c.contractStatus != 4)";
+                ? "c.customer.id = :id AND (c.contractStatus != 1 AND c.contractStatus != 4)"
+                : "c.quote.staff.id = :id";
 
         // Construct the JPQL query
         String jpql = "SELECT COUNT(c) FROM Contract c WHERE " + append;
@@ -222,6 +314,7 @@ public class ContractDAO {
 
         // Get the result as Long and convert to int
         Long countResult = query.getSingleResult();
+        System.out.println(countResult);
         return countResult.intValue();
     }
 

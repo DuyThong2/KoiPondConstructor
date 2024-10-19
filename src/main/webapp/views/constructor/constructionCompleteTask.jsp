@@ -126,16 +126,13 @@
                                         <c:when
                                             test="${detail.constructionStageDetailName == 'Payment' || detail.constructionStageDetailStatus == 4  || !previousCompleted}">
                                             <span class="status-label">
-                                                <c:choose>
+                                                 <c:choose>
                                                     <c:when test="${detail.constructionStageDetailStatus == 1}">
-
-                                                        <select class="form-control text-center" name="newStatus" required>
-                                                            <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
-                                                        </select></c:when>
-
-                                                    <c:when test="${detail.constructionStageDetailStatus == 2}">Processing</c:when>
-                                                    <c:when test="${detail.constructionStageDetailStatus == 4}">Completed</c:when>
-
+                                                        Pending</c:when>
+                                                    <c:when test="${detail.constructionStageDetailStatus == 2}">
+                                                        Processing</c:when>
+                                                    <c:when test="${detail.constructionStageDetailStatus == 4}">
+                                                        Completed</c:when>
                                                 </c:choose>
                                             </span>
                                         </c:when>
@@ -152,8 +149,7 @@
 
                                         <c:otherwise>
                                             <select class="form-control text-center" name="newStatus" required>
-                                                <option value="1" ${detail.constructionStageDetailStatus==1
-                                                                    ? 'selected' : '' }>Pending</option>
+                                                
                                                 <option value="2" ${detail.constructionStageDetailStatus==2
                                                                     ? 'selected' : '' }>Processing</option>
                                                 <option value="4" ${detail.constructionStageDetailStatus==4
@@ -166,7 +162,8 @@
 
                                 <td>
                                     <!-- Disable the button if Payment, Inspection, or the previous detail is incomplete -->
-                                    <c:if test="${canUpdateNext && (detail.constructionStageDetailName == 'Payment' && detail.constructionStageDetailStatus == 1 ) && previousCompleted && detail.constructionStageDetailStatus != 4}">
+                                    <c:if
+                                        test="${canUpdateNext && detail.constructionStageDetailName != 'Payment' && previousCompleted && detail.constructionStageDetailStatus != 4}">
                                         <button type="submit" class="btn btn-primary mt-2">Update</button>
                                     </c:if>
                                 </td>

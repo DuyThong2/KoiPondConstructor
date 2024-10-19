@@ -292,20 +292,21 @@
                                             <span class="badge badge-secondary badge-status">Canceled</span>
                                         </c:when>
                                         <c:when test="${stage.constructionStageStatus == 4}">
-                                            <span class="badge badge-success badge-status">Accepted</span>
+                                            <span class="badge badge-success badge-status">Completed</span>
                                         </c:when>
                                     </c:choose>
                                 </p>
                                 <p><strong>Price:</strong> ${stage.constructionStagePrice}</p>
 
-                                <a href="${pageContext.request.contextPath}/staff/updateStatus/constructionStage/${stage.constructionStageId}?constructionId=${constructionId}" class="btn btn-info">Update Status</a>
-
+                                <c:if test="${stage.constructionStageStatus != 4}"> 
+                                    <a href="${pageContext.request.contextPath}/staff/updateStatus/constructionStage/${stage.constructionStageId}?constructionId=${constructionId}" class="btn btn-info">Update Status</a>
+                                </c:if>
                             </div>
                         </div>
 
                         <!-- Pass the stage status to the buttons via data attributes -->
                         <script>
-                    document.querySelector(`[data-stage='${stage.constructionStageName}']`).setAttribute('data-status', '${stage.constructionStageStatus}');
+                            document.querySelector(`[data-stage='${stage.constructionStageName}']`).setAttribute('data-status', '${stage.constructionStageStatus}');
                         </script>
                     </c:forEach>
                 </div>

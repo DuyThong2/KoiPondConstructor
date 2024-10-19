@@ -1,39 +1,39 @@
 INSERT INTO Users (email, img_url, name, phone, password, enabled) VALUES
-('thongduy06@gmail.com', 'user/user1.jpg', 'Customer 1', '123-456-7801', '12345', 1),
-('consultant1@example.com', 'user/user2.jpg', 'Consultant 1', '123-456-7802', '12345', 1),
-('designer1@example.com', 'user/user3.jpg', 'Designer 1', '123-456-7803', '12345', 1),
-('constructor1@example.com', 'user/user4.jpg', 'Constructor 1', '123-456-7804', '12345', 1),
-('manager1@example.com', 'user/user5.jpg', 'Manager 1', '123-456-7805', '12345', 1),
-('customer2@example.com', 'user/user6.jpg', 'Customer 2', '123-456-7806', '12345', 1),
-('consultant2@example.com', 'user/user7.jpg', 'Consultant 2', '123-456-7807', '12345', 1),
-('designer2@example.com', 'user/user8.jpg', 'Designer 2', '123-456-7808', '12345', 1),
-('constructor2@example.com', 'user/user9.jpg', 'Constructor 2', '123-456-7809', '12345', 1),
-('manager2@example.com', 'user/user10.jpg', 'Manager 2', '123-456-7810', '12345', 1),
-('customer3@example.com', 'user/user11.jpg', 'Customer 3', '123-456-7811', '12345', 1),
-('consultant3@example.com', 'user/user12.jpg', 'Consultant 3', '123-456-7812', '12345', 1),
-('designer3@example.com', 'user/user13.jpg', 'Designer 3', '123-456-7813', '12345', 1),
-('constructor3@example.com', 'user/user14.jpg', 'Constructor 3', '123-456-7814', '12345', 1),
-('manager3@example.com', 'user/user15.jpg', 'Manager 3', '123-456-7815', '12345', 1),
-('customer4@example.com', 'user/user16.jpg', 'Customer 4', '123-456-7816', '12345', 1),
-('consultant4@example.com', 'user/user17.jpg', 'Consultant 4', '123-456-7817', '12345', 1),
-('designer4@example.com', 'user/user18.jpg', 'Designer 4', '123-456-7818', '12345', 1),
-('constructor4@example.com', 'user/user19.jpg', 'Constructor 4', '123-456-7819', '12345', 1),
-('manager4@example.com', 'user/user20.jpg', 'Manager 4', '123-456-7820', '12345', 1),
-('customer5@example.com', 'user/user21.jpg', 'Customer 5', '123-456-7821', '12345', 1),
-('consultant5@example.com', 'user/user22.jpg', 'Consultant 5', '123-456-7822', '12345', 1),
-('designer5@example.com', 'user/user23.jpg', 'Designer 5', '123-456-7823', '12345', 1),
-('constructor5@example.com', 'user/user24.jpg', 'Constructor 5', '123-456-7824', '12345', 1),
-('manager5@example.com', 'user/user25.jpg', 'Manager 5', '123-456-7825', '12345', 1),
-('customer6@example.com', 'user/user26.jpg', 'Customer 6', '123-456-7826', '12345', 1),
-('consultant6@example.com', 'user/user27.jpg', 'Consultant 6', '123-456-7827', '12345', 1),
-('designer6@example.com', 'user/user28.jpg', 'Designer 6', '123-456-7828', '12345', 1),
-('constructor6@example.com', 'user/user29.jpg', 'Constructor 6', '123-456-7829', '12345', 1),
-('manager6@example.com', 'user/user30.jpg', 'Manager 6', '123-456-7830', '12345', 1),
-('customer7@example.com', 'user/user31.jpg', 'Customer 7', '123-456-7831', '12345', 1),
-('consultant7@example.com', 'user/user32.jpg', 'Consultant 7', '123-456-7832', '12345', 1),
-('designer7@example.com', 'user/user33.jpg', 'Designer 7', '123-456-7833', '12345', 1),
-('constructor7@example.com', 'user/user34.jpg', 'Constructor 7', '123-456-7834', '12345', 1),
-('manager7@example.com', 'user/user35.jpg', 'Manager 7', '123-456-7835', '12345', 1);
+('thongduy06@gmail.com', 'user1.jpg', 'Customer 1', '123-456-7801', '12345', 1),
+('consultant1@example.com', 'user2.jpg', 'Consultant 1', '123-456-7802', '12345', 1),
+('designer1@example.com', 'user3.jpg', 'Designer 1', '123-456-7803', '12345', 1),
+('constructor1@example.com', 'user4.jpg', 'Constructor 1', '123-456-7804', '12345', 1),
+('manager1@example.com', 'user5.jpg', 'Manager 1', '123-456-7805', '12345', 1),
+('customer2@example.com', 'user6.jpg', 'Customer 2', '123-456-7806', '12345', 1),
+('consultant2@example.com', 'user7.jpg', 'Consultant 2', '123-456-7807', '12345', 1),
+('designer2@example.com', 'user8.jpg', 'Designer 2', '123-456-7808', '12345', 1),
+('constructor2@example.com', 'user9.jpg', 'Constructor 2', '123-456-7809', '12345', 1),
+('manager2@example.com', 'user10.jpg', 'Manager 2', '123-456-7810', '12345', 1),
+('customer3@example.com', 'user11.jpg', 'Customer 3', '123-456-7811', '12345', 1),
+('consultant3@example.com', 'user12.jpg', 'Consultant 3', '123-456-7812', '12345', 1),
+('designer3@example.com', 'user13.jpg', 'Designer 3', '123-456-7813', '12345', 1),
+('constructor3@example.com', 'user14.jpg', 'Constructor 3', '123-456-7814', '12345', 1),
+('manager3@example.com', 'user15.jpg', 'Manager 3', '123-456-7815', '12345', 1),
+('customer4@example.com', 'user16.jpg', 'Customer 4', '123-456-7816', '12345', 1),
+('consultant4@example.com', 'user17.jpg', 'Consultant 4', '123-456-7817', '12345', 1),
+('designer4@example.com', 'user18.jpg', 'Designer 4', '123-456-7818', '12345', 1),
+('constructor4@example.com', 'user19.jpg', 'Constructor 4', '123-456-7819', '12345', 1),
+('manager4@example.com', 'user20.jpg', 'Manager 4', '123-456-7820', '12345', 1),
+('customer5@example.com', 'user21.jpg', 'Customer 5', '123-456-7821', '12345', 1),
+('consultant5@example.com', 'user22.jpg', 'Consultant 5', '123-456-7822', '12345', 1),
+('designer5@example.com', 'user23.jpg', 'Designer 5', '123-456-7823', '12345', 1),
+('constructor5@example.com', 'user24.jpg', 'Constructor 5', '123-456-7824', '12345', 1),
+('manager5@example.com', 'user25.jpg', 'Manager 5', '123-456-7825', '12345', 1),
+('customer6@example.com', 'user26.jpg', 'Customer 6', '123-456-7826', '12345', 1),
+('consultant6@example.com', 'user27.jpg', 'Consultant 6', '123-456-7827', '12345', 1),
+('designer6@example.com', 'user28.jpg', 'Designer 6', '123-456-7828', '12345', 1),
+('constructor6@example.com', 'user29.jpg', 'Constructor 6', '123-456-7829', '12345', 1),
+('manager6@example.com', 'user30.jpg', 'Manager 6', '123-456-7830', '12345', 1),
+('customer7@example.com', 'user31.jpg', 'Customer 7', '123-456-7831', '12345', 1),
+('consultant7@example.com', 'user32.jpg', 'Consultant 7', '123-456-7832', '12345', 1),
+('designer7@example.com', 'user33.jpg', 'Designer 7', '123-456-7833', '12345', 1),
+('constructor7@example.com', 'user34.jpg', 'Constructor 7', '123-456-7834', '12345', 1),
+('manager7@example.com', 'user35.jpg', 'Manager 7', '123-456-7835', '12345', 1);
 
   update Users set password = '$2a$12$LSuFlC/5tfjvSWamOexHguI4mt7RjFbgcGU2widUBB7yGRqwrqI22' --12345
 
@@ -201,12 +201,12 @@ update Term set term_status = 1;
 -- Insert data into Pre_Design table
 INSERT INTO Pre_Design (pre_design_name, pre_design_img_url, pre_design_description, pre_design_status)
 VALUES
-('Modern Koi Pond', 'preDesign/modern_koi_pond.jpg', 'A modern and sleek koi pond design with clean lines and minimalist features.',1),
-('Traditional Koi Pond', 'preDesign/traditional_koi_pond.jpg', 'A traditional koi pond design with natural stone elements and a classic feel.', 1),
-('Zen Garden Pond', 'preDesign/zen_garden_pond.jpg', 'A calming zen-style garden pond featuring natural rocks and a peaceful layout.', 1),
-('Waterfall Koi Pond', 'preDesign/waterfall_koi_pond.jpg', 'A stunning koi pond design with a cascading waterfall and lush greenery.', 1),
-('Raised Koi Pond', 'preDesign/raised_koi_pond.jpg', 'An elevated koi pond design perfect for smaller spaces or urban environments.', 1),
-('Tropical Koi Pond', 'preDesign/tropical_koi_pond.jpg', 'A vibrant and tropical-themed koi pond with colorful plants and dynamic water features.', 1);
+('Modern Koi Pond', 'modern_koi_pond.jpg', 'A modern and sleek koi pond design with clean lines and minimalist features.',1),
+('Traditional Koi Pond', 'traditional_koi_pond.jpg', 'A traditional koi pond design with natural stone elements and a classic feel.', 1),
+('Zen Garden Pond', 'zen_garden_pond.jpg', 'A calming zen-style garden pond featuring natural rocks and a peaceful layout.', 1),
+('Waterfall Koi Pond', 'waterfall_koi_pond.jpg', 'A stunning koi pond design with a cascading waterfall and lush greenery.', 1),
+('Raised Koi Pond', 'raised_koi_pond.jpg', 'An elevated koi pond design perfect for smaller spaces or urban environments.', 1),
+('Tropical Koi Pond', 'tropical_koi_pond.jpg', 'A vibrant and tropical-themed koi pond with colorful plants and dynamic water features.', 1);
 
 
 -- Insert more sample data with completed consultations into Consultant table
@@ -322,33 +322,33 @@ INSERT INTO [Contract] (date_create, file_url, total_price, price_on_concept_des
                         price_on_detail_design, price_on_raw_construction, price_on_complete_construction, 
                         contract_term, contract_status, contract_note, term_id, customer_id, quote_id)
 VALUES
-('2024-10-30', 'contracts/contract1.pdf', 12000.00, 3000.00, 9000.00, 3000.00, 5000.00, 7000.00, 
+('2024-10-30', 'contract1.pdf', 12000.00, 3000.00, 9000.00, 3000.00, 5000.00, 7000.00, 
  'Standard terms', 6, 'Customer accepted the Modern Koi Pond project.', 1, 1, 1),  -- Contract for Project 1
-('2024-11-01', 'contracts/contract2.pdf', 8500.00, 2500.00, 6000.00, 2500.00, 4000.00, 6000.00, 
+('2024-11-01', 'contract2.pdf', 8500.00, 2500.00, 6000.00, 2500.00, 4000.00, 6000.00, 
  'Standard terms', 6, 'Customer accepted the Raised Koi Pond project.', 2, 11, 2),  -- Contract for Project 2
-('2024-11-03', 'contracts/contract3.pdf', 14000.00, 4500.00, 9500.00, 3500.00, 5000.00, 8000.00, 
+('2024-11-03', 'contract3.pdf', 14000.00, 4500.00, 9500.00, 3500.00, 5000.00, 8000.00, 
  'Premium terms', 6, 'Customer accepted the Tropical Koi Pond project.', 3, 16, 3),  -- Contract for Project 3
-('2024-11-05', 'contracts/contract4.pdf', 10200.00, 3500.00, 6700.00, 3200.00, 4500.00, 7500.00, 
+('2024-11-05', 'contract4.pdf', 10200.00, 3500.00, 6700.00, 3200.00, 4500.00, 7500.00, 
  'Standard terms', 6, 'Customer accepted the Zen Garden Pond project.', 4, 6, 4),  -- Contract for Project 4
-('2024-11-07', 'contracts/contract5.pdf', 6000.00, 2000.00, 4000.00, 1500.00, 3500.00, 5000.00, 
+('2024-11-07', 'contract5.pdf', 6000.00, 2000.00, 4000.00, 1500.00, 3500.00, 5000.00, 
  'Basic terms', 6, 'Customer accepted the Compact Koi Pond project.', 1, 21, 5),  -- Contract for Project 5
-('2024-11-09', 'contracts/contract6.pdf', 18000.00, 5000.00, 13000.00, 5000.00, 7000.00, 11000.00, 
+('2024-11-09', 'contract6.pdf', 18000.00, 5000.00, 13000.00, 5000.00, 7000.00, 11000.00, 
  'Luxury terms', 6, 'Customer accepted the Luxury Modern Koi Pond project.', 3, 26, 6),  -- Contract for Project 6
-('2024-11-11', 'contracts/contract7.pdf', 20000.00, 6000.00, 14000.00, 5000.00, 9000.00, 15000.00, 
+('2024-11-11', 'contract7.pdf', 20000.00, 6000.00, 14000.00, 5000.00, 9000.00, 15000.00, 
  'Premium terms', 6, 'Customer accepted the Advanced Koi Pond project.', 4, 31, 7),  -- Contract for Project 7
-('2024-11-13', 'contracts/contract8.pdf', 15000.00, 5000.00, 10000.00, 4000.00, 6000.00, 9000.00, 
+('2024-11-13', 'contract8.pdf', 15000.00, 5000.00, 10000.00, 4000.00, 6000.00, 9000.00, 
  'Standard terms', 6, 'Customer accepted the Tropical Koi Pond Installation.', 2, 1, 8),  -- Contract for Project 8
-('2024-11-15', 'contracts/contract9.pdf', 7000.00, 2000.00, 5000.00, 2500.00, 4000.00, 6000.00, 
+('2024-11-15', 'contract9.pdf', 7000.00, 2000.00, 5000.00, 2500.00, 4000.00, 6000.00, 
  'Basic terms', 6, 'Customer accepted the Compact Urban Koi Pond project.', 1, 6, 9),  -- Contract for Project 9
-('2024-11-17', 'contracts/contract10.pdf', 12000.00, 3000.00, 9000.00, 3000.00, 5000.00, 7000.00, 
+('2024-11-17', 'contract10.pdf', 12000.00, 3000.00, 9000.00, 3000.00, 5000.00, 7000.00, 
  'Standard terms', 6, 'Customer accepted the Zen Pond project.', 1, 16, 10),  -- Contract for Zen Pond
-('2024-11-19', 'contracts/contract11.pdf', 18000.00, 4000.00, 14000.00, 4000.00, 8000.00, 12000.00, 
+('2024-11-19', 'contract11.pdf', 18000.00, 4000.00, 14000.00, 4000.00, 8000.00, 12000.00, 
  'Luxury terms', 6, 'Customer accepted the Luxury Koi Pond project.', 4, 11, 11),  -- Contract for Luxury Pond
-('2024-11-21', 'contracts/contract12.pdf', 9000.00, 2500.00, 6500.00, 2000.00, 4000.00, 6000.00, 
+('2024-11-21', 'contract12.pdf', 9000.00, 2500.00, 6500.00, 2000.00, 4000.00, 6000.00, 
  'Standard terms', 6, 'Customer accepted the Minimalist Zen Pond project.', 1, 21, 12),  -- Contract for Minimalist Zen Pond
-('2024-11-23', 'contracts/contract13.pdf', 21000.00, 5500.00, 15500.00, 5000.00, 9500.00, 14500.00, 
+('2024-11-23', 'contract13.pdf', 21000.00, 5500.00, 15500.00, 5000.00, 9500.00, 14500.00, 
  'Premium terms', 6, 'Customer accepted the Advanced Zen Pond project.', 3, 26, 13),
- ('2024-11-25', 'contracts/contract14.pdf', 8000.00, 2000.00, 6000.00, 2000.00, 4000.00, 6000.00, 
+ ('2024-11-25', 'contract14.pdf', 8000.00, 2000.00, 6000.00, 2000.00, 4000.00, 6000.00, 
  'Basic terms', 6, 'Customer accepted the Compact Pond project.', 2, 31, 14);  -- Contract for Compact Pond
 
 
@@ -357,23 +357,23 @@ VALUES
 INSERT INTO Project (project_name, address, style, description, date_start, date_end, project_status, img_url, stage, is_shareable, contract_id)
 VALUES 
 ('Modern Koi Pond', '123 Garden Ave, Cityville', 'Modern', 'A modern koi pond with a waterfall feature.', 
- '2024-11-01', '2024-12-01', 1, 'projects/modern_koi_pond.jpg', 1, 1, 1), -- Contract 1
+ '2024-11-01', '2024-12-01', 1, 'modern_koi_pond.jpg', 1, 1, 1), -- Contract 1
 ('Raised Koi Pond', '456 Urban St, Metropolis', 'Urban', 'Raised koi pond designed for a compact urban space.', 
- '2024-11-03', '2024-12-10', 2, 'projects/raised_koi_pond.jpg', 2, 0, 2), -- Contract 2
+ '2024-11-03', '2024-12-10', 2, 'raised_koi_pond.jpg', 2, 0, 2), -- Contract 2
 ('Tropical Koi Pond', '789 Beachside Blvd, Seaview', 'Tropical', 'Tropical-themed koi pond with vibrant plants.', 
- '2024-11-05', '2024-12-15', 3, 'projects/tropical_koi_pond.jpg', 5, 1, 3), -- Contract 3
+ '2024-11-05', '2024-12-15', 3, 'tropical_koi_pond.jpg', 5, 1, 3), -- Contract 3
 ('Zen Garden Koi Pond', '123 Zen Ln, Hillside', 'Zen', 'A minimalist zen garden koi pond with peaceful elements.', 
- '2024-11-07', '2024-12-20', 3, 'projects/zen_garden_koi_pond.jpg', 5, 1, 4), -- Contract 4
+ '2024-11-07', '2024-12-20', 3, 'zen_garden_koi_pond.jpg', 5, 1, 4), -- Contract 4
 ('Compact Koi Pond', '456 City Rd, Downtown', 'Compact', 'Small koi pond with integrated lighting.', 
- '2024-11-09', '2024-12-25', 2, 'projects/compact_koi_pond.jpg', 2, 0, 5), -- Contract 5
+ '2024-11-09', '2024-12-25', 2, 'compact_koi_pond.jpg', 2, 0, 5), -- Contract 5
 ('Luxury Modern Koi Pond', '789 Sunset Blvd, Westside', 'Luxury', 'A luxury koi pond with high-end water features.', 
- '2024-11-11', '2024-12-30', 1, 'projects/luxury_modern_koi_pond.jpg', 2, 1, 6), -- Contract 6
+ '2024-11-11', '2024-12-30', 1, 'luxury_modern_koi_pond.jpg', 2, 1, 6), -- Contract 6
 ('Advanced Koi Pond', '321 Future St, Silicon Valley', 'Advanced', 'A high-tech koi pond with the latest filtration systems.', 
- '2024-11-13', '2024-12-25', 3, 'projects/advanced_koi_pond.jpg', 5, 1, 7), -- Contract 7
+ '2024-11-13', '2024-12-25', 3, 'advanced_koi_pond.jpg', 5, 1, 7), -- Contract 7
 ('Tropical Koi Pond Installation', '987 Ocean Dr, Palm Beach', 'Tropical', 'A tropical koi pond with lush landscaping.', 
- '2024-11-15', '2024-12-28', 4, 'projects/tropical_installation.jpg', 4, 0, 8), -- Contract 8
+ '2024-11-15', '2024-12-28', 4, 'tropical_installation.jpg', 4, 0, 8), -- Contract 8
 ('Compact Urban Koi Pond', '789 Urban St, New City', 'Compact', 'A compact koi pond with modern aesthetics.', 
- '2024-11-17', '2024-12-30', 1, 'projects/urban_koi_pond.jpg', 1, 1, 9); -- Contract 9
+ '2024-11-17', '2024-12-30', 1, 'urban_koi_pond.jpg', 1, 1, 9); -- Contract 9
 
 
 
@@ -395,49 +395,49 @@ VALUES
 INSERT INTO Design_Stage (design_stage_name, design_stage_status, design_stage_price, summary_file, design_id)
 VALUES
 -- Modern Koi Pond Design (Pending stages)
-('Conceptual Design', 1, 2500.00, 'summary/conceptual_modern.pdf', 1),  -- Pending
-('Detail Design', 1, 3000.00, 'summary/detail_modern.pdf', 1),  -- Pending
-('Construction Design', 1, 3500.00, 'summary/construction_modern.pdf', 1),  -- Pending
+('Conceptual Design', 1, 2500.00, 'conceptual_modern.pdf', 1),  -- Pending
+('Detail Design', 1, 3000.00, 'detail_modern.pdf', 1),  -- Pending
+('Construction Design', 1, 3500.00, 'construction_modern.pdf', 1),  -- Pending
 
 -- Raised Koi Pond Design (Canceled, but stage status is 'Pending' due to cancellation)
-('Conceptual Design', 1, 1800.00, 'summary/conceptual_raised.pdf', 2),  -- Pending
-('Detail Design', 1, 2500.00, 'summary/detail_raised.pdf', 2),  -- Pending
-('Construction Design', 1, 3000.00, 'summary/construction_raised.pdf', 2),  -- Pending
+('Conceptual Design', 1, 1800.00, 'conceptual_raised.pdf', 2),  -- Pending
+('Detail Design', 1, 2500.00, 'detail_raised.pdf', 2),  -- Pending
+('Construction Design', 1, 3000.00, 'construction_raised.pdf', 2),  -- Pending
 
 -- Tropical Koi Pond Design (All stages are Approved)
-('Conceptual Design', 4, 2000.00, 'summary/conceptual_tropical.pdf', 3),  -- Approved
-('Detail Design', 4, 2500.00, 'summary/detail_tropical.pdf', 3),  -- Approved
-('Construction Design', 4, 3000.00, 'summary/construction_tropical.pdf', 3),  -- Approved
+('Conceptual Design', 4, 2000.00, 'conceptual_tropical.pdf', 3),  -- Approved
+('Detail Design', 4, 2500.00, 'detail_tropical.pdf', 3),  -- Approved
+('Construction Design', 4, 3000.00, 'construction_tropical.pdf', 3),  -- Approved
 
 -- Zen Garden Koi Pond Design (All stages are Approved)
-('Conceptual Design', 4, 2500.00, 'summary/conceptual_zen.pdf', 4),  -- Approved
-('Detail Design', 4, 3000.00, 'summary/detail_zen.pdf', 4),  -- Approved
-('Construction Design', 4, 3500.00, 'summary/construction_zen.pdf', 4),  -- Approved
+('Conceptual Design', 4, 2500.00, 'conceptual_zen.pdf', 4),  -- Approved
+('Detail Design', 4, 3000.00, 'detail_zen.pdf', 4),  -- Approved
+('Construction Design', 4, 3500.00, 'construction_zen.pdf', 4),  -- Approved
 
 -- Compact Koi Pond Design (All stages are Approved)
-('Conceptual Design', 4, 1500.00, 'summary/conceptual_compact.pdf', 5),  -- Approved
-('Detail Design', 4, 2000.00, 'summary/detail_compact.pdf', 5),  -- Approved
-('Construction Design', 4, 2500.00, 'summary/construction_compact.pdf', 5),  -- Approved
+('Conceptual Design', 4, 1500.00, 'conceptual_compact.pdf', 5),  -- Approved
+('Detail Design', 4, 2000.00, 'detail_compact.pdf', 5),  -- Approved
+('Construction Design', 4, 2500.00, 'construction_compact.pdf', 5),  -- Approved
 
 -- Luxury Modern Koi Pond Design (All stages are Approved)
-('Conceptual Design', 4, 3500.00, 'summary/conceptual_luxury.pdf', 6),  -- Approved
-('Detail Design', 4, 4500.00, 'summary/detail_luxury.pdf', 6),  -- Approved
-('Construction Design', 4, 5000.00, 'summary/construction_luxury.pdf', 6),  -- Approved
+('Conceptual Design', 4, 3500.00, 'conceptual_luxury.pdf', 6),  -- Approved
+('Detail Design', 4, 4500.00, 'detail_luxury.pdf', 6),  -- Approved
+('Construction Design', 4, 5000.00, 'construction_luxury.pdf', 6),  -- Approved
 
 -- Advanced Koi Pond Design (Conceptual is Processing, others are Pending)
-('Conceptual Design', 4, 4000.00, 'summary/conceptual_advanced.pdf', 7),  -- Processing
-('Detail Design', 4, 5000.00, 'summary/detail_advanced.pdf', 7),  -- Pending
-('Construction Design', 4, 6000.00, 'summary/construction_advanced.pdf', 7),  -- Pending
+('Conceptual Design', 4, 4000.00, 'conceptual_advanced.pdf', 7),  -- Processing
+('Detail Design', 4, 5000.00, 'detail_advanced.pdf', 7),  -- Pending
+('Construction Design', 4, 6000.00, 'construction_advanced.pdf', 7),  -- Pending
 
 -- Tropical Koi Pond Installation (All stages are Approved)
-('Conceptual Design', 4, 2500.00, 'summary/conceptual_tropical_installation.pdf', 8),  -- Approved
-('Detail Design', 4, 3500.00, 'summary/detail_tropical_installation.pdf', 8),  -- Approved
-('Construction Design', 4, 4000.00, 'summary/construction_tropical_installation.pdf', 8),  -- Approved
+('Conceptual Design', 4, 2500.00, 'conceptual_tropical_installation.pdf', 8),  -- Approved
+('Detail Design', 4, 3500.00, 'detail_tropical_installation.pdf', 8),  -- Approved
+('Construction Design', 4, 4000.00, 'construction_tropical_installation.pdf', 8),  -- Approved
 
 -- Urban Koi Pond Design (Conceptual is Processing, others are Pending)
-('Conceptual Design', 2, 1500.00, 'summary/conceptual_urban.pdf', 9),  -- Processing
-('Detail Design', 1, 2000.00, 'summary/detail_urban.pdf', 9),  -- Pending
-('Construction Design', 1, 2500.00, 'summary/construction_urban.pdf', 9);  -- Pending
+('Conceptual Design', 2, 1500.00, 'conceptual_urban.pdf', 9),  -- Processing
+('Detail Design', 1, 2000.00, 'detail_urban.pdf', 9),  -- Pending
+('Construction Design', 1, 2500.00, 'construction_urban.pdf', 9);  -- Pending
 
 
 -- Conceptual Design (Pending, pay at the end)
@@ -640,60 +640,60 @@ VALUES
 -- Modern Koi Pond Design (Project 1)
 INSERT INTO Blue_Print (title, img_url, date_create, description, blue_print_status, design_stage_id)
 VALUES
-('Conceptual Blueprint - Modern Koi Pond', 'blueprints/modern_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for modern koi pond.', 0, 1),  -- Rejected
-('Detail Blueprint - Modern Koi Pond', 'blueprints/modern_detail.jpg', '2024-10-05', 'Detailed blueprint for modern koi pond.', 0, 2),  -- Rejected
-('Construction Blueprint - Modern Koi Pond', 'blueprints/modern_construction.jpg', '2024-10-10', 'Construction blueprint for modern koi pond.', 0, 3);  -- Rejected
+('Conceptual Blueprint - Modern Koi Pond', 'modern_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for modern koi pond.', 0, 1),  -- Rejected
+('Detail Blueprint - Modern Koi Pond', 'modern_detail.jpg', '2024-10-05', 'Detailed blueprint for modern koi pond.', 0, 2),  -- Rejected
+('Construction Blueprint - Modern Koi Pond', 'modern_construction.jpg', '2024-10-10', 'Construction blueprint for modern koi pond.', 0, 3);  -- Rejected
 
 -- Raised Koi Pond Design (Project 2 - Canceled, no blueprints needed)
 
 -- Tropical Koi Pond Design (Project 3)
 INSERT INTO Blue_Print (title, img_url, date_create, description, blue_print_status, design_stage_id)
 VALUES
-('Conceptual Blueprint - Tropical Koi Pond', 'blueprints/tropical_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for tropical koi pond.', 1, 7),  -- Approved
-('Detail Blueprint - Tropical Koi Pond', 'blueprints/tropical_detail.jpg', '2024-10-05', 'Detailed blueprint for tropical koi pond.', 1, 8),  -- Approved
-('Construction Blueprint - Tropical Koi Pond', 'blueprints/tropical_construction.jpg', '2024-10-10', 'Construction blueprint for tropical koi pond.', 1, 9);  -- Approved
+('Conceptual Blueprint - Tropical Koi Pond', 'tropical_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for tropical koi pond.', 1, 7),  -- Approved
+('Detail Blueprint - Tropical Koi Pond', 'tropical_detail.jpg', '2024-10-05', 'Detailed blueprint for tropical koi pond.', 1, 8),  -- Approved
+('Construction Blueprint - Tropical Koi Pond', 'tropical_construction.jpg', '2024-10-10', 'Construction blueprint for tropical koi pond.', 1, 9);  -- Approved
 
 -- Zen Garden Koi Pond Design (Project 4)
 INSERT INTO Blue_Print (title, img_url, date_create, description, blue_print_status, design_stage_id)
 VALUES
-('Conceptual Blueprint - Zen Garden Koi Pond', 'blueprints/zen_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for zen garden koi pond.', 1, 10),  -- Approved
-('Detail Blueprint - Zen Garden Koi Pond', 'blueprints/zen_detail.jpg', '2024-10-05', 'Detailed blueprint for zen garden koi pond.', 1, 11),  -- Approved
-('Construction Blueprint - Zen Garden Koi Pond', 'blueprints/zen_construction.jpg', '2024-10-10', 'Construction blueprint for zen garden koi pond.', 1, 12);  -- Approved
+('Conceptual Blueprint - Zen Garden Koi Pond', 'zen_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for zen garden koi pond.', 1, 10),  -- Approved
+('Detail Blueprint - Zen Garden Koi Pond', 'zen_detail.jpg', '2024-10-05', 'Detailed blueprint for zen garden koi pond.', 1, 11),  -- Approved
+('Construction Blueprint - Zen Garden Koi Pond', 'zen_construction.jpg', '2024-10-10', 'Construction blueprint for zen garden koi pond.', 1, 12);  -- Approved
 
 -- Compact Koi Pond Design (Project 5)
 INSERT INTO Blue_Print (title, img_url, date_create, description, blue_print_status, design_stage_id)
 VALUES
-('Conceptual Blueprint - Compact Koi Pond', 'blueprints/compact_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for compact koi pond.', 1, 13),  -- Approved
-('Detail Blueprint - Compact Koi Pond', 'blueprints/compact_detail.jpg', '2024-10-05', 'Detailed blueprint for compact koi pond.', 1, 14),  -- Approved
-('Construction Blueprint - Compact Koi Pond', 'blueprints/compact_construction.jpg', '2024-10-10', 'Construction blueprint for compact koi pond.', 1, 15);  -- Approved
+('Conceptual Blueprint - Compact Koi Pond', 'compact_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for compact koi pond.', 1, 13),  -- Approved
+('Detail Blueprint - Compact Koi Pond', 'compact_detail.jpg', '2024-10-05', 'Detailed blueprint for compact koi pond.', 1, 14),  -- Approved
+('Construction Blueprint - Compact Koi Pond', 'compact_construction.jpg', '2024-10-10', 'Construction blueprint for compact koi pond.', 1, 15);  -- Approved
 
 -- Luxury Modern Koi Pond Design (Project 6)
 INSERT INTO Blue_Print (title, img_url, date_create, description, blue_print_status, design_stage_id)
 VALUES
-('Conceptual Blueprint - Luxury Koi Pond', 'blueprints/luxury_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for luxury koi pond.', 1, 16),  -- Approved
-('Detail Blueprint - Luxury Koi Pond', 'blueprints/luxury_detail.jpg', '2024-10-05', 'Detailed blueprint for luxury koi pond.', 1, 17),  -- Approved
-('Construction Blueprint - Luxury Koi Pond', 'blueprints/luxury_construction.jpg', '2024-10-10', 'Construction blueprint for luxury koi pond.', 1, 18);  -- Approved
+('Conceptual Blueprint - Luxury Koi Pond', 'luxury_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for luxury koi pond.', 1, 16),  -- Approved
+('Detail Blueprint - Luxury Koi Pond', 'luxury_detail.jpg', '2024-10-05', 'Detailed blueprint for luxury koi pond.', 1, 17),  -- Approved
+('Construction Blueprint - Luxury Koi Pond', 'luxury_construction.jpg', '2024-10-10', 'Construction blueprint for luxury koi pond.', 1, 18);  -- Approved
 
 -- Advanced Koi Pond Design (Project 7 - Processing)
 INSERT INTO Blue_Print (title, img_url, date_create, description, blue_print_status, design_stage_id)
 VALUES
-('Conceptual Blueprint - Advanced Koi Pond', 'blueprints/advanced_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for advanced koi pond.', 1, 19),   -- Approved
-('Detail Blueprint - Advanced Koi Pond', 'blueprints/advanced_detail.jpg', '2024-10-05', 'Detailed blueprint for advanced koi pond.', 1, 20),   -- Approved
-('Construction Blueprint - Advanced Koi Pond', 'blueprints/advanced_construction.jpg', '2024-10-10', 'Construction blueprint for advanced koi pond.', 1, 21);   -- Approved
+('Conceptual Blueprint - Advanced Koi Pond', 'advanced_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for advanced koi pond.', 1, 19),   -- Approved
+('Detail Blueprint - Advanced Koi Pond', 'advanced_detail.jpg', '2024-10-05', 'Detailed blueprint for advanced koi pond.', 1, 20),   -- Approved
+('Construction Blueprint - Advanced Koi Pond', 'advanced_construction.jpg', '2024-10-10', 'Construction blueprint for advanced koi pond.', 1, 21);   -- Approved
 
 -- Tropical Koi Pond Installation (Project 8)
 INSERT INTO Blue_Print (title, img_url, date_create, description, blue_print_status, design_stage_id)
 VALUES
-('Conceptual Blueprint - Tropical Installation', 'blueprints/tropical_installation_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for tropical pond installation.', 1, 22),  -- Approved
-('Detail Blueprint - Tropical Installation', 'blueprints/tropical_installation_detail.jpg', '2024-10-05', 'Detailed blueprint for tropical pond installation.', 1, 23),  -- Approved
-('Construction Blueprint - Tropical Installation', 'blueprints/tropical_installation_construction.jpg', '2024-10-10', 'Construction blueprint for tropical pond installation.', 1, 24);  -- Approved
+('Conceptual Blueprint - Tropical Installation', 'tropical_installation_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for tropical pond installation.', 1, 22),  -- Approved
+('Detail Blueprint - Tropical Installation', 'tropical_installation_detail.jpg', '2024-10-05', 'Detailed blueprint for tropical pond installation.', 1, 23),  -- Approved
+('Construction Blueprint - Tropical Installation', 'tropical_installation_construction.jpg', '2024-10-10', 'Construction blueprint for tropical pond installation.', 1, 24);  -- Approved
 
 -- Urban Koi Pond Design (Project 9 - Processing)
 INSERT INTO Blue_Print (title, img_url, date_create, description, blue_print_status, design_stage_id)
 VALUES
-('Conceptual Blueprint - Urban Koi Pond', 'blueprints/urban_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for urban koi pond.', 1, 25),   -- Approved
-('Detail Blueprint - Urban Koi Pond', 'blueprints/urban_detail.jpg', '2024-10-05', 'Detailed blueprint for urban koi pond.', 1, 26),   -- Approved
-('Construction Blueprint - Urban Koi Pond', 'blueprints/urban_construction.jpg', '2024-10-10', 'Construction blueprint for urban koi pond.', 1, 27);   -- Approved
+('Conceptual Blueprint - Urban Koi Pond', 'urban_conceptual.jpg', '2024-10-01', 'Conceptual blueprint for urban koi pond.', 1, 25),   -- Approved
+('Detail Blueprint - Urban Koi Pond', 'urban_detail.jpg', '2024-10-05', 'Detailed blueprint for urban koi pond.', 1, 26),   -- Approved
+('Construction Blueprint - Urban Koi Pond', 'urban_construction.jpg', '2024-10-10', 'Construction blueprint for urban koi pond.', 1, 27);   -- Approved
 
 
 -- Insert data into Construction table for each project where design is completed or in progress
