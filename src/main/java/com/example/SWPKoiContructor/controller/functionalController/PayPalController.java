@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -105,7 +106,8 @@ public class PayPalController {
     public String successForConstruction(@RequestParam("paymentId") String paymentId,
                                          @RequestParam("PayerID") String payerId,
                                          @RequestParam("detailId") int detailId,
-                                         @RequestParam("constructionId") int constructionId) {
+                                         @RequestParam("constructionId") int constructionId,
+                                         RedirectAttributes redirectAttributes) {
         try {
             // Execute PayPal payment
             Payment payment = payPalService.executePayment(paymentId, payerId);
@@ -115,6 +117,7 @@ public class PayPalController {
                 constructionStageDetailService.updateConstructionStageDetailStatus(detailId, 4);
 
                 // Redirect to construction page
+                redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
                 return "redirect:/customer/project/construction/" + constructionId;
             }
         } catch (PayPalRESTException e) {
@@ -129,7 +132,8 @@ public class PayPalController {
     public String successForDesign(@RequestParam("paymentId") String paymentId,
                                    @RequestParam("PayerID") String payerId,
                                    @RequestParam("detailId") int detailId,
-                                   @RequestParam("designId") int designId) {
+                                   @RequestParam("designId") int designId,
+                                   RedirectAttributes redirectAttributes) {
         try {
             // Execute PayPal payment
             Payment payment = payPalService.executePayment(paymentId, payerId);
@@ -137,7 +141,7 @@ public class PayPalController {
             if (payment.getState().equals("approved")) {
                 // Update design stage detail status to 'Completed' (status 4)
                 designStageDetailService.updateDesignStageDetailStatus(detailId, 4);
-
+                redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
                 // Redirect to design page
                 return "redirect:/customer/project/design/" + designId;
             }

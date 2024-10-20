@@ -1,8 +1,3 @@
-<%-- 
-    Document   : serviceQuoteManage
-    Created on : Oct 13, 2024, 11:09:51 PM
-    Author     : HP
---%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -12,7 +7,9 @@
     <title>Contract Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
     <style>
         /* Custom styles to enhance UI performance */
         body {

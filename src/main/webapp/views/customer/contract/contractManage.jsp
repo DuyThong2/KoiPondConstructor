@@ -16,6 +16,9 @@
         .form-control{
             font-size: 1.9rem;
         }
+        .d-flex{
+            margin-top: 0px
+        }
         @media (min-width: 992px) {
             .view-account .content-panel {
                 min-height: 800px;

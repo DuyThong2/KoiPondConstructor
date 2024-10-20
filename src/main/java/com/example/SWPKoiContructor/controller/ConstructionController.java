@@ -129,7 +129,7 @@ public class ConstructionController {
                     .anyMatch(constructionStaff -> constructionStaff.getStaff().getId() == user.getId());
 
             if (!isAssignedToConstruction) {
-                redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this project.");
+                redirectAttributes.addFlashAttribute("error", "You do not have permission to access this project.");
                 return "redirect:/error/error-403"; // Redirect to error page
             }
 
@@ -184,16 +184,16 @@ public class ConstructionController {
             @RequestParam int constructionId,
             RedirectAttributes redirectAttributes) {
         if (detailId == null || newStatus == null) {
-            redirectAttributes.addFlashAttribute("message", "Missing required parameters.");
+            redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
             return "redirect:/staff/updateStatus/constructionStage/" + constructionStageId + "?constructionId=" + constructionId;
         }
         try {
             // Update the construction stage detail status
             constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
-            redirectAttributes.addFlashAttribute("message", "Status updated successfully!");
+            redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "Failed to update status: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
 
         // Redirect back to the construction stage details page
@@ -217,7 +217,7 @@ public class ConstructionController {
 
         // If the user is not assigned to the construction, redirect to the error page
         if (!isAssignedToConstruction) {
-            redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this project.");
+            redirectAttributes.addFlashAttribute("error", "You do not have permission to access this project.");
             return "redirect:/error/error-403"; // Redirect to an error page
         }
 
@@ -339,7 +339,7 @@ public class ConstructionController {
         comment.setDatePost(Calendar.getInstance());
 
         commentService.saveComment(comment);
-        redirectAttributes.addFlashAttribute("message", "Feedback has been submitted successfully!");
+        redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
         return "redirect:/customer/project/construction/" + constructionId;
     }
 
@@ -354,12 +354,12 @@ public class ConstructionController {
         Comment comment = commentService.getCommentById(commentId);
 
         if (comment == null || comment.getCustomer().getId() != customer.getId()) {
-            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
             return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
         }
 
         commentService.deleteComment(commentId);
-        redirectAttributes.addFlashAttribute("message", "Comment deleted successfully.");
+        redirectAttributes.addFlashAttribute("success", "Comment deleted successfully.");
         return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
     }
 
@@ -375,13 +375,13 @@ public class ConstructionController {
         Comment comment = commentService.getCommentById(commentId);
 
         if (comment == null || comment.getCustomer().getId() != customer.getId()) {
-            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
             return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
         }
 
         comment.setCommentContent(commentContent);
         commentService.saveComment(comment);
-        redirectAttributes.addFlashAttribute("message", "Comment updated successfully.");
+        redirectAttributes.addFlashAttribute("success", "Comment updated successfully.");
         return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
     }
 
@@ -403,7 +403,7 @@ public class ConstructionController {
         comment.setDatePost(Calendar.getInstance());
 
         commentService.saveComment(comment);
-        redirectAttributes.addFlashAttribute("message", "Feedback has been submitted successfully!");
+        redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
         return "redirect:/constructor/construction/" + constructionId;
     }
 
@@ -417,11 +417,11 @@ public class ConstructionController {
 
         Comment comment = commentService.getCommentById(commentId);
         if (comment == null || comment.getStaff().getId() != staff.getId()) {
-            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
             return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
         }
         commentService.deleteComment(commentId);
-        redirectAttributes.addFlashAttribute("message", "Comment deleted successfully.");
+        redirectAttributes.addFlashAttribute("success", "Comment deleted successfully.");
         return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
     }
 
@@ -437,13 +437,13 @@ public class ConstructionController {
         Comment comment = commentService.getCommentById(commentId);
 
         if (comment == null || comment.getStaff().getId() != staff.getId()) {
-            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
             return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
         }
 
         comment.setCommentContent(commentContent);
         commentService.saveComment(comment);
-        redirectAttributes.addFlashAttribute("message", "Comment updated successfully.");
+        redirectAttributes.addFlashAttribute("success", "Comment updated successfully.");
         return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
     }
 

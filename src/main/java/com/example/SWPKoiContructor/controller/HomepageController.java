@@ -1,12 +1,8 @@
 package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.*;
-import com.example.SWPKoiContructor.services.BlogService;
-import com.example.SWPKoiContructor.services.CustomerService;
-import com.example.SWPKoiContructor.services.PreDesignService;
-import com.example.SWPKoiContructor.services.ProjectService;
-import com.example.SWPKoiContructor.services.ServiceService;
-import com.example.SWPKoiContructor.services.StaffService;
+import com.example.SWPKoiContructor.services.*;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,14 +23,18 @@ public class HomepageController {
     private StaffService staffService;
     private CustomerService customerService;
     private ServiceService serviceService;
+    private ParcelService parcelService;
+    private TermService termService;
 
-    public HomepageController(ProjectService projectService, PreDesignService preDesignService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService) {
+    public HomepageController(ProjectService projectService, PreDesignService preDesignService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService, ParcelService parcelService, TermService termService) {
         this.projectService = projectService;
         this.preDesignService = preDesignService;
         this.blogService = blogService;
         this.staffService = staffService;
         this.customerService = customerService;
         this.serviceService = serviceService;
+        this.parcelService = parcelService;
+        this.termService = termService;
     }
 
     @GetMapping("")
@@ -195,7 +195,10 @@ public class HomepageController {
 
     @GetMapping("/home/packages")
     public String getPackets(Model model) {
-
+        List<Parcel> parcels = parcelService.viewParcelActiveList();
+        List<Term> terms = termService.getAllTemplateTerm();
+        model.addAttribute("terms", terms);
+        model.addAttribute("parcels", parcels);
         return "customer/mainPage/pricingPackage";
 
     }
