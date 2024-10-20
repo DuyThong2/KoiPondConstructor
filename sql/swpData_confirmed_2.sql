@@ -405,3 +405,15 @@ CREATE TABLE Feedback (
 	FOREIGN KEY (contract_id) REFERENCES contract(Contract_id),
 	FOREIGN KEY (service_quotes_id) REFERENCES Service_Quotes(service_quotes_id)
 )
+
+CREATE TABLE Notification (
+    notification_id int primary key identity(1,1),
+    receiver_id int NOT NULL,
+    message NVARCHAR(255) NOT NULL,
+    is_read bit not null default 0,
+    related_id int, --to know the id of the related table
+    from_table varchar(50), -- to know the table related to the context of the notification
+    create_at_date DATETIME DEFAULT GETDATE(),
+    foreign key(receiver_id) references Users(id),
+)
+

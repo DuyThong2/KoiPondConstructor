@@ -695,6 +695,22 @@ VALUES
 ('Detail Blueprint - Urban Koi Pond', 'blueprints/urban_detail.jpg', '2024-10-05', 'Detailed blueprint for urban koi pond.', 1, 26),   -- Approved
 ('Construction Blueprint - Urban Koi Pond', 'blueprints/urban_construction.jpg', '2024-10-10', 'Construction blueprint for urban koi pond.', 1, 27);   -- Approved
 
+-- Insert notifications for managers about new consultation requests
+INSERT INTO Notification (receiver_id, receiver_type, message, is_read, related_id, from_table, create_at_date)
+VALUES
+(NULL, 'manager', 'New consultation request from Customer John Doe for a koi pond project.', 0, 1, 'Consultant', '2024-10-01 09:30:00'),
+(NULL, 'manager', 'Follow-up consultation requested by Customer Jane Smith for their existing pond.', 0, 2, 'Consultant', '2024-10-02 14:15:00'),
+(NULL, 'manager', 'Urgent consultation needed: Customer Robert Johnson reports pond filtration issues.', 0, 3, 'Consultant', '2024-10-03 11:45:00'),
+(NULL, 'manager', 'Customer Emily Davis requests consultation for pond expansion project.', 0, 4, 'Consultant', '2024-10-04 16:00:00'),
+(NULL, 'manager', 'New consultation request: Customer Michael Brown seeks advice on koi health.', 0, 5, 'Consultant', '2024-10-05 10:30:00'),
+(NULL, 'manager', 'Customer Linda Green needs consultation on upgrading pond lighting system.', 0, 6, 'Consultant', '2024-10-06 13:20:00'),
+(NULL, 'manager', 'Consultation request from Customer Steve White regarding seasonal pond maintenance.', 0, 7, 'Consultant', '2024-10-07 15:45:00'),
+(NULL, 'manager', 'Customer John Doe requests additional consultation on design options.', 0, 8, 'Consultant', '2024-10-08 09:00:00'),
+(NULL, 'manager', 'Urgent: Customer Jane Smith reports water quality issues, consultation needed.', 0, 9, 'Consultant', '2024-10-09 11:30:00'),
+(NULL, 'manager', 'New consultation request: Customer Robert Johnson inquires about koi breeding.', 0, 10, 'Consultant', '2024-10-10 14:00:00');
+
+-- You can add more notifications as needed
+
 
 -- Insert data into Construction table for each project where design is completed or in progress
 INSERT INTO Construction (construction_name, construction_status, project_id)
