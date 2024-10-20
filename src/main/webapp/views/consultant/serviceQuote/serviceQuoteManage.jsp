@@ -17,12 +17,13 @@
         }
 
         h2 {
-            font-weight: bold;
-            color: #007bff;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
+                    font-weight: bold;
+                    border-bottom: 2px solid #343a40;
+                    padding-bottom: 10px;
+                    margin-bottom: 20px;
+                    width: 95%;
+                    margin-left: 5px;
+                }
 
         /* Table styling */
         table.table {

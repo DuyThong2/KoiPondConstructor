@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -214,5 +215,7 @@ public class Consultant {
         this.serviceQuotes = serviceQuotes;
     }
 
-    
+    public Date getConsultantDateTimeAsDate() {
+        return this.consultantDateTime != null ? this.consultantDateTime.getTime() : null;
+    }
 }

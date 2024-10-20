@@ -106,7 +106,7 @@
 
                                     <div class="filter-card">
                                         <!-- Sort and Search Form -->
-                                        <form method="get" action="/customer/serviceQuote">
+                                        <form method="get" action="${pageContext.request.contextPath}/customer/serviceQuote">
                                             <div class="form-row align-items-center d-flex justify-content-between">
                                                 <!-- Sort By -->
                                                 <div class="col-auto">
@@ -158,6 +158,7 @@
                                                 <th>Name</th>
                                                 <th>Area</th>
                                                 <th>Total Price</th>
+                                                <th>Point Used</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                                 <th>View Detail</th>
@@ -171,6 +172,7 @@
                                                     <td>${serviceQuote.serviceQuotesName}</td>
                                                     <td>${serviceQuote.serviceQuotesArea} m²</td>
                                                     <td>${serviceQuote.serviceQuotesTotalPrice}</td>
+                                                    <td>${serviceQuote.usedPoint}</td>
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
@@ -185,6 +187,9 @@
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
                                                                 <span class="badge badge-danger badge-status">Cancel</span>
                                                             </c:when>
+                                                            <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
+                                                                <span class="badge badge-success badge-status">Complete</span>
+                                                            </c:when>
                                                         </c:choose>
                                                     </td>
                                                     <td>
@@ -192,19 +197,19 @@
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
                                                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
                                                                         onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                                        document.getElementById('acceptForm').status.value = '4';">Approve
+                                                                                document.getElementById('acceptForm').status.value = '4';">Approve
                                                                 </button>
 
                                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                                                         onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                                        document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
-                                                                        document.getElementById('declineForm').status.value = '5';">Reject
+                                                                                document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
+                                                                                document.getElementById('declineForm').status.value = '5';">Reject
                                                                 </button>
                                                             </c:when>                                                           
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
                                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
                                                                         onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                                        document.getElementById('acceptForm').status.value = '7';">Cancel
+                                                                                document.getElementById('acceptForm').status.value = '7';">Cancel
                                                                 </button>
                                                             </c:when>                                                           
                                                         </c:choose>
@@ -219,30 +224,31 @@
 
                                                 <!-- Expandable/Collapsible Row -->
                                                 <tr id="details${serviceQuote.serviceQuotesId}" class="collapse">
-                                                    <td colspan="7"> 
+                                                    <td colspan="8"> 
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr class="table-info">
-                                                                    <th>Name</th>
-                                                                    <th>Description</th>
-                                                                    <th>Price</th>
+                                                                    <th>Service Name</th>
+                                                                    <th>Service Description</th>
+                                                                    <th>Service Price</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <!-- Check if the service is available -->
-                                                                <c:if test="${serviceQuote.service != null}">
+                                                                <c:forEach items="${serviceQuote.service}" var="service">
                                                                     <tr>
-                                                                        <td>${serviceQuote.service.serviceName}</td>
-                                                                        <td>${serviceQuote.service.serviceDescription}</td>
-                                                                        <td></td> <!-- Add the price if needed -->
+                                                                        <td>${service.serviceName}</td>
+                                                                        <td>${service.serviceDescription}</td>
+                                                                        <td>
+                                                                            <c:set var="priceDisplayed" value="false" />
+                                                                            <c:forEach var="servicePrice" items="${service.servicePrice}">
+                                                                                <c:if test="${service.serviceId == servicePrice.service.serviceId and priceDisplayed == false}"> 
+                                                                                    ${servicePrice.value * serviceQuote.serviceQuotesArea}
+                                                                                    <c:set var="priceDisplayed" value="true" />
+                                                                                </c:if>
+                                                                            </c:forEach>
+                                                                        </td>
                                                                     </tr>
-                                                                </c:if>
-                                                                <!-- If no service is available -->
-                                                                <c:if test="${serviceQuote.service == null}">
-                                                                    <tr>
-                                                                        <td colspan="3">No Service available</td>
-                                                                    </tr>
-                                                                </c:if>
+                                                                </c:forEach>    
                                                             </tbody>
                                                         </table>
                                                     </td>
@@ -288,7 +294,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="declineForm" action="/customer/serviceQuote/saveStatus" method="post">
+                                        <form id="declineForm" action="${pageContext.request.contextPath}/customer/serviceQuote/saveStatus" method="post">
                                             <input type="hidden" name="id" value="">
                                             <input type="hidden" name="status" value="">
                                             <input type="hidden" name="toUserId" value="">
@@ -318,7 +324,7 @@
                                     </div>
                                     <div class="modal-body">
                                         Are you sure you want to continue?
-                                        <form id="acceptForm" action="/customer/serviceQuote/saveStatus" method="post">
+                                        <form id="acceptForm" action="${pageContext.request.contextPath}/customer/serviceQuote/saveStatus" method="post">
                                             <input type="hidden" name="id" value="">
                                             <input type="hidden" name="status" value="">
                                         </form>
