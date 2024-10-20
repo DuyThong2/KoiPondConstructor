@@ -9,13 +9,14 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
+
     <style>
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        h2 {
+        .title {
             font-weight: bold;
             color: #007bff;
             border-bottom: 2px solid #007bff;
@@ -139,7 +140,7 @@
 
         <!-- Main Content -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
-            <h2>Design Details</h2>
+            <h2 class="title">Design Details</h2>
 
             <!-- Design Stages Table -->
             <table class="table table-striped table-bordered mt-3">
@@ -304,8 +305,82 @@
                 </tbody>
             </table>
         </main>
+
+        <!-- Popup cho success -->
+        <div id="successPopup" class="popup-background">
+            <div class="popup-box success">
+                <i class="fas fa-check-circle"></i> <!-- Icon success -->
+                <h2 class="success">Success!</h2>
+                <p>${success}</p>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <!-- Popup cho error -->
+        <div id="errorPopup" class="popup-background">
+            <div class="popup-box error">
+                <i class="fas fa-exclamation-circle"></i> <!-- Icon lỗi -->
+                <h2 class="error">Error!</h2>
+                <p>${error}</p>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+
+        <script>
+            // Hiển thị popup thành công
+            function showSuccessPopup() {
+                const successPopup = document.getElementById('successPopup');
+                successPopup.classList.add('show');
+                const popupBox = successPopup.querySelector('.popup-box');
+                setTimeout(() => {
+                    popupBox.classList.add('show');
+                }, 10); // Delay nhỏ để trigger animation
+            }
+
+            // Hiển thị popup lỗi
+            function showErrorPopup() {
+                const errorPopup = document.getElementById('errorPopup');
+                errorPopup.classList.add('show');
+                const popupBox = errorPopup.querySelector('.popup-box');
+                setTimeout(() => {
+                    popupBox.classList.add('show');
+                }, 10); // Delay nhỏ để trigger animation
+            }
+
+            // Đóng popup
+            function closePopup() {
+                const popups = document.querySelectorAll('.popup-background.show');
+                popups.forEach(popup => {
+                    const popupBox = popup.querySelector('.popup-box');
+                    popupBox.classList.remove('show');
+                    setTimeout(() => {
+                        popup.classList.remove('show');
+                    }, 300); // Delay để ẩn popup mềm mại hơn
+                });
+            }
+
+        </script>
+
+        <c:if test="${not empty success}">
+            <script>
+                showSuccessPopup();  // Hiển thị popup thành công
+            </script>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <script>
+                showErrorPopup();  // Hiển thị popup lỗi
+            </script>
+        </c:if>
+
+
     </div>
 </div>
+
+
+
+
 
 <script>
     function toggleBlueprint(stageId) {
@@ -317,11 +392,7 @@
         return confirm("Do you confirm the customer completed the payment?");
     }
 </script>
-<c:if test="${not empty message}">
-    <script>
-        alert("${message}");
-    </script>
-</c:if>
+
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

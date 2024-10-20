@@ -12,15 +12,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <%@include file="cssTemplate.jsp"%>
     <link href="<c:url value='/css/profile.css'/>" rel="stylesheet">
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
     <style>
 
         .modal {
             opacity: 1 !important; /* Đảm bảo modal không bị trong suốt */
-        }
-        .btn-update{
-            padding: 15px;
-            font-size: 13px;
-            border-radius: 15px;
         }
         @media (min-width: 992px) {
             .view-account .content-panel {
@@ -37,6 +33,132 @@
             }
         }
 
+        .btn-update {
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none; /* Remove borders */
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-update:hover {
+            background-color: #00509d;
+            box-shadow: 0 6px 14px rgba(0, 80, 157, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-change-password {
+            background-color: #28a745;
+            color: white;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            box-shadow: 0 4px 10px rgba(40, 167, 69, 0.2);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-change-password:hover {
+            background-color: #1e7e34;
+            box-shadow: 0 6px 14px rgba(30, 126, 52, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-forgot-password {
+            background-color: #ffc107;
+            color: black;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: none;
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-forgot-password:hover {
+            background-color: #e0a800;
+            box-shadow: 0 6px 14px rgba(224, 168, 0, 0.4);
+            transform: translateY(-2px);
+        }
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+            background-color: #f9f9f9; /* Softer background color */
+        }
+
+        .modal-header {
+            border-top-left-radius: 10px; /* Rounded top left corner */
+            border-top-right-radius: 10px; /* Rounded top right corner */
+        }
+
+        .modal-title {
+            font-size: 2rem;
+        }
+
+        /* Buttons Styling */
+        .modal-footer {
+            border-top: none; /* Remove the top border */
+            display: flex;
+        }
+
+        .modal-footer .btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Change Password Button */
+        .btn-dark {
+            background-color: #000000;
+            color: white;
+            border: none;
+        }
+
+        .btn-dark:hover {
+            background-color: #6c757d;
+        }
+        .btn-img{
+            background-color: #3e3838;
+            color: white;
+            border: none;
+            border-radius: 9px;
+            padding: 8px 15px;
+        }
+        .btn-img:hover {
+            background-color: #6c757d;
+            color: white;
+        }
+        /* Focus States */
+        .form-control:focus {
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Glow effect on focus */
+            border-color: #007bff; /* Border color on focus */
+        }
+
+        /* Icon Size */
+        .fas.fa-eye, .fas.fa-eye-slash {
+            font-size: 1.2rem;
+        }
+
+        /* Improved layout for small screens */
+        @media (max-width: 576px) {
+            .modal-content {
+                border-radius: 0;
+            }
+        }
+        .password-field input {
+            padding-right: 40px;
+            font-size: 20px;
+            border-radius: 14px;
+        }
     </style>
 </head>
 <%@include file="homePageNavbar.jsp"%>
@@ -103,7 +225,7 @@
 
                                 <div class="form-inline col-md-10 col-sm-9 col-xs-12">
                                     <input type="file" name="file" class="file-uploader pull-left" accept="image/*"/>
-                                    <button type="submit"  class="btn btn-secondary btn-img pull-left">Update Image</button>
+                                    <button type="submit"  class="btn btn-img pull-left">Update Image</button>
                                 </div>
                             </div>
                         </form>
@@ -133,9 +255,15 @@
                             <!-- Nút Update Profile -->
                             <div class="form-group" style="margin-top: 30px">
                                 <div class="col-md-10 col-sm-9 col-xs-12 col-md-push-2 col-sm-push-3 col-xs-push-0">
-                                    <button class="btn btn-primary btn-update" type="submit">Update Profile</button>
-                                    <a class="btn btn-sm btn-default-alt btn-change-password btn-update" data-toggle="modal" data-target="#changePasswordModal">Change Password</a>
-                                    <a class="btn btn-sm btn-default-alt btn-forgot-password btn-update" href="${pageContext.request.contextPath}/forgot-password">Forgot Password</a>
+                                    <!-- Update Profile Button -->
+                                    <button class="btn btn-update" type="submit">Update Profile</button>
+
+                                    <!-- Change Password Button -->
+                                    <a class="btn btn-sm btn-change-password" data-toggle="modal" data-target="#changePasswordModal">Change Password</a>
+
+                                    <!-- Forgot Password Button -->
+                                    <a class="btn btn-sm btn-forgot-password" href="${pageContext.request.contextPath}/forgot-password">Forgot Password</a>
+
                                 </div>
                             </div>
                         </form>
@@ -169,6 +297,68 @@
                 </div>
             </div>
         </section>
+        <!-- Popup cho success -->
+        <div id="successPopup" class="popup-background">
+            <div class="popup-box success">
+                <i class="fas fa-check-circle"></i> <!-- Icon success -->
+                <h2 class="success">Success!</h2>
+                <p>${success}</p>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <!-- Popup cho error -->
+        <div id="errorPopup" class="popup-background">
+            <div class="popup-box error">
+                <i class="fas fa-exclamation-circle"></i> <!-- Icon lỗi -->
+                <h2 class="error">Error!</h2>
+                <p>${error}</p>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+
+        <script>
+            function showSuccessPopup() {
+                const successPopup = document.getElementById('successPopup');
+                successPopup.classList.add('show');
+                const popupBox = successPopup.querySelector('.popup-box');
+                setTimeout(() => {
+                    popupBox.classList.add('show');}, 10);
+            }
+
+            function showErrorPopup() {
+                const errorPopup = document.getElementById('errorPopup');
+                errorPopup.classList.add('show');
+                const popupBox = errorPopup.querySelector('.popup-box');
+                setTimeout(() => {
+                    popupBox.classList.add('show');}, 10);
+            }
+
+            function closePopup() {
+                const popups = document.querySelectorAll('.popup-background.show');
+                popups.forEach(popup => {
+                    const popupBox = popup.querySelector('.popup-box');
+                    popupBox.classList.remove('show');
+                    setTimeout(() => {
+                        popup.classList.remove('show');}, 300);
+                });
+            }
+
+        </script>
+
+        <c:if test="${not empty success}">
+            <script>
+                showSuccessPopup();
+            </script>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <script>
+                showErrorPopup();
+            </script>
+        </c:if>
+
     </div>
 </div>
 
@@ -196,7 +386,7 @@
                     <div class="form-group password-wrapper">
                         <label for="newPassword">New Password</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" required minlength="8">
                             <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i class="fas fa-eye toggle-password" onclick="togglePassword('newPassword')"></i>
@@ -207,7 +397,7 @@
                     <div class="form-group password-wrapper">
                         <label for="confirmPassword">Confirm New Password</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required minlength="8">
                             <div class="input-group-append">
                                         <span class="input-group-text">
                                             <i class="fas fa-eye toggle-password" onclick="togglePassword('confirmPassword')"></i>
@@ -217,11 +407,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Change Password</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-dark">Change Password</button>
                 </div>
             </form>
         </div>
+
     </div>
 </div>
 
@@ -248,11 +439,7 @@
 
 <%@include file="footer.jsp"%>
 <%@include file="scriptTemplate.jsp"%>
-<c:if test="${not empty message}">
-    <script>
-        alert("${message}");
-    </script>
-</c:if>
+
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript"></script>

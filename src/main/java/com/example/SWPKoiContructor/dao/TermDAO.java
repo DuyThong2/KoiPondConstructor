@@ -27,6 +27,7 @@ public class TermDAO {
         return query.getResultList();
     }
 
+
     // Search terms by description
     public List<Term> searchByDescription(String description, int page, int size, String sortBy, String sortDirection, Boolean isDisabled) {
         StringBuilder jpql = new StringBuilder("SELECT t FROM Term t WHERE t.description LIKE :description");

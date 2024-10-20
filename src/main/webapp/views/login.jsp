@@ -10,8 +10,11 @@
     <title>Login Page</title>
     <!-- style css -->
     <link rel="stylesheet" type="text/css"  href="<c:url value='/css/login.css'/>">
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
     <!-- boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' type="text/css"  rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
     <style>
         /* Add style for the error message popup */
         .popup-error {
@@ -91,8 +94,69 @@
             </a>
         </div>
     </form>
+
+</div>
+<div id="successPopup" class="popup-background">
+    <div class="popup-box success">
+        <i class="fas fa-check-circle"></i> <!-- Icon success -->
+        <h2 class="success">Success!</h2>
+        <p>${success}</p>
+        <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
 </div>
 
+<!-- Popup for error -->
+<div id="errorPopup" class="popup-background">
+    <div class="popup-box error">
+        <i class="fas fa-exclamation-circle"></i> <!-- Icon error -->
+        <h2 class="error">Error!</h2>
+        <p>${error}</p>
+        <button class="close-btn" onclick="closePopup()">Close</button>
+    </div>
+</div>
+
+<script>
+    function showSuccessPopup() {
+        const successPopup = document.getElementById('successPopup');
+        successPopup.classList.add('show');
+        const popupBox = successPopup.querySelector('.popup-box');
+        setTimeout(() => {
+            popupBox.classList.add('show');
+        }, 10);
+    }
+
+    function showErrorPopup() {
+        const errorPopup = document.getElementById('errorPopup');
+        errorPopup.classList.add('show');
+        const popupBox = errorPopup.querySelector('.popup-box');
+        setTimeout(() => {
+            popupBox.classList.add('show');
+        }, 10);
+    }
+
+    function closePopup() {
+        const popups = document.querySelectorAll('.popup-background.show');
+        popups.forEach(popup => {
+            const popupBox = popup.querySelector('.popup-box');
+            popupBox.classList.remove('show');
+            setTimeout(() => {
+                popup.classList.remove('show');
+            }, 300);
+        });
+    }
+</script>
+
+<c:if test="${not empty success}">
+    <script>
+        showSuccessPopup();
+    </script>
+</c:if>
+
+<c:if test="${not empty error}">
+    <script>
+        showErrorPopup();
+    </script>
+</c:if>
 <!-- Error Message Section -->
 <c:if test="${message != null}">
     <div class="popup-error">

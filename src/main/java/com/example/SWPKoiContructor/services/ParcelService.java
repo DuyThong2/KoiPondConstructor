@@ -8,6 +8,7 @@ package com.example.SWPKoiContructor.services;
 import com.example.SWPKoiContructor.dao.ParcelDAO;
 import com.example.SWPKoiContructor.entities.Parcel;
 import java.util.List;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class ParcelService {
     public List<Parcel> viewParcelList(){
         return parcelDAO.viewParcelList();
     }
-    
+    public List<Parcel> viewParcelActiveList() { return  parcelDAO.viewParcelActiveList(); }
     //--------------------------------------------- VIEW PARCEL LIST SORT FILTER  ----------------------------------------------------
     public List<Parcel> viewParcelListOrderSort(int page, int size, String sortBy, String sortDirection){
         return parcelDAO.viewParcelListByOrderSort(page, size, sortBy, sortDirection);

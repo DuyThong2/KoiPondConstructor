@@ -63,7 +63,7 @@
                                     <li><a href="${pageContext.request.contextPath}/home/projects">Best Design</a></li>
                                     <li><a href="${pageContext.request.contextPath}/home/services">Services</a></li>
                                     <li><a href="${pageContext.request.contextPath}/home/blogs">Blog</a></li>
-                                    <li><a href="#pricing">Pricing</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/packages">Pricing</a></li>
 
                                     <li><a href="${pageContext.request.contextPath}/customer/projects/">Your Project</a></li>
                                 </ul>
