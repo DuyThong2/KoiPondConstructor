@@ -9,9 +9,8 @@
         <title>Service Quote Details</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <!-- FontAwesome Icons -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-        <!-- Custom Styles -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
             body {
                 background-color: #f7f9fc;
@@ -127,8 +126,9 @@
     </head>
     <body>
         <div class="container-fluid mt-5">
+            <jsp:include page="../consultantNav.jsp"/>                <!-- Include Navbar -->
+
             <div class="row">
-                <!-- Include Navbar -->
 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <!-- Contract Details Section -->
@@ -243,7 +243,7 @@
                                     </c:otherwise>
                                 </c:choose>
                             </div>
-                            
+
                             <div class="section-card">
                                 <h4 class="section-header"><i class="fas fa-user"></i> Associated Customer</h4>
                                 <c:if test="${not empty serviceQuote.customer}">
@@ -266,9 +266,9 @@
                                     <p class="text-muted">No customer is associated with this contract.</p>
                                 </c:if>
                             </div>
-                            
+
                         </div>
-                       
+
 
                         <!-- Project and Customer Details Section -->
                         <div class="col-md-6">

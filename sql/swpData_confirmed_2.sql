@@ -5,7 +5,6 @@ use swp391121
 go
 
 
---cái nào ko có chú thích như bit thì cứ 0; 1.
 -- 1. Authorities
 
 CREATE TABLE Users (

@@ -14,9 +14,9 @@
         <title>Service Quote Details Manager</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <!-- FontAwesome Icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-        <!-- Custom Styles -->
+        <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
         <style>
             body {
                 background-color: #f7f9fc;
@@ -336,13 +336,13 @@
                                 <div class="">
                                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
                                             onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                            document.getElementById('acceptForm').status.value = '2';">Approve
+                                                    document.getElementById('acceptForm').status.value = '2';">Approve
                                     </button>
 
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                             onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                            document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
-                                            document.getElementById('declineForm').status.value = '3';">Reject
+                                                    document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
+                                                    document.getElementById('declineForm').status.value = '3';">Reject
                                     </button>
                                 </div>
                             </c:when>
@@ -360,14 +360,14 @@
                                 <div class="">
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                             onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                            document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
-                                            document.getElementById('declineForm').status.value = '7';">Cancel
+                                                    document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
+                                                    document.getElementById('declineForm').status.value = '7';">Cancel
                                     </button>
 
                                     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                             onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                            document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
-                                            document.getElementById('declineForm').status.value = '3';">Continue Quotation
+                                                    document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
+                                                    document.getElementById('declineForm').status.value = '3';">Continue Quotation
                                     </button>
                                 </div>
                             </c:when>

@@ -6,7 +6,9 @@
     <title>Contract Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
     <style>
         /* Custom styles to enhance UI performance */
         body {
@@ -260,7 +262,7 @@
                 <c:if test="${currentPage < totalPages - 1}">
                     <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&gt;</a>
                 </c:if>
-                <c:if test="${currentPage == totalPages - 1}">
+                <c:if test="${currentPage >= totalPages - 1}">
                     <button class="btn btn-primary" disabled>&gt;</button>
                 </c:if>
             </div>

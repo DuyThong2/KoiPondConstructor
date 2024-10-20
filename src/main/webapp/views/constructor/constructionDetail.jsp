@@ -10,6 +10,7 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
+        <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
         <style>
             .left-column {
                 width: 33%;
@@ -168,17 +169,62 @@
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             }
-            .comment{
-                margin: 10px;
-                padding: 10px 10px;
-                width: 400px;
+            .comment {
+                position: relative;
+                padding: 10px 40px 25px 10px; /* Adjust padding for dropdown and content */
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                background-color: #fff;
+                margin-bottom: 15px;
             }
+
+            .comment .dropdown {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
+
+            .comment .dropdown .btn-link {
+                font-size: 2rem;
+                color: #343a40;
+                padding: 0;
+            }
+
+            .comment .dropdown-menu {
+                font-size: 1.3rem;
+                padding: 5px;
+                min-width: 90px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+            .comment .dropdown-item {
+                padding: 10px 15px;
+                transition: background-color 0.3s ease;
+            }
+
+            .comment .dropdown-item:hover {
+                background-color: #f1f1f1;
+                border-radius: 5px;
+            }
+
+            .dropdown-toggle::after {
+                display: none;
+            }
+
             .feedback-content {
-                max-height: 300px; /* Điều chỉnh chiều cao theo ý muốn */
-                overflow-y: auto;  /* Hiển thị thanh cuộn dọc */
-                padding-right: 10px; /* Để không bị che nội dung bởi thanh cuộn */
+                max-height: 300px;
+                overflow-y: auto;
+                padding-right: 10px;
+            }
+
+            /* Style for save and cancel buttons */
+            .btn-sm {
+                padding: 7px 15px;
+                font-size: 1rem;
+                border-radius: 8px;
+            }
+            p{
+                font-size: 1.2rem;
             }
         </style>
         <script>
@@ -208,47 +254,45 @@
                     </div>
 
                     <!-- Feedback Section-->
+
                     <div class="feedback-section">
                         <h5 class="text-success " style="font-weight: bold">Box Chat:</h5>
                         <div class="feedback-content">
                             <c:forEach var="comment" items="${comments}">
                                 <div class="feedback-item">
-                                    <div class="d-flex justify-content-between">
-                                        <div class="comment">
-                                            <div id="comment-content-${comment.commentId}">
-                                                <c:if test="${comment.customer != null}">
-                                                    <p><strong>Customer: ${comment.customer.name}</strong></p>
-                                                </c:if>
+                                    <div class="comment">
+                                        <div id="comment-content-${comment.commentId}">
+                                            <c:if test="${comment.customer != null}">
+                                                <p><strong>Customer: ${comment.customer.name}</strong></p>
+                                            </c:if>
 
-                                                <c:if test="${comment.staff != null}">
-                                                    <p><strong>Staff: ${comment.staff.name}</strong></p>
-                                                </c:if>
-                                                <p class="text-muted small mb-0"><fmt:formatDate value="${comment.datePost.time}" pattern="dd-MM-yyyy HH:mm"/></p>
-                                                <p class="mb-2"> ${comment.commentContent}</p>
-                                            </div>
-
-                                            <!-- Hiển thị textarea để chỉnh sửa khi nhấn nút Edit -->
-                                            <div id="edit-section-${comment.commentId}" style="display: none;">
-                                                <form action="${pageContext.request.contextPath}/staff/feedback/update" method="POST">
-                                                    <input type="hidden" name="commentId" value="${comment.commentId}">
-                                                    <textarea name="newContent" class="form-control mb-2">${comment.commentContent}</textarea>
-                                                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                                                    <button type="button" class="btn btn-secondary btn-sm" onclick="cancelEdit(${comment.commentId})">Cancel</button>
-                                                </form>
-                                            </div>
+                                            <c:if test="${comment.staff != null}">
+                                                <p><strong>Staff: ${comment.staff.name}</strong></p>
+                                            </c:if>
+                                            <p class="text-muted small" style="font-size: 17px"><fmt:formatDate value="${comment.datePost.time}" pattern="dd-MM-yyyy HH:mm"/></p>
+                                            <p class="mb-2"> ${comment.commentContent}</p>
                                         </div>
 
-                                        <!-- Nút ba chấm ... -->
+                                        <!-- Edit form -->
+                                        <div id="edit-section-${comment.commentId}" style="display: none;">
+                                            <form action="${pageContext.request.contextPath}/staff/feedback/update" method="POST">
+                                                <input type="hidden" name="commentId" value="${comment.commentId}">
+                                                <textarea name="newContent" class="form-control mb-2" style="font-size: 1.2rem">${comment.commentContent}</textarea>
+                                                <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                                <button type="button" class="btn btn-secondary btn-sm" onclick="cancelEdit(${comment.commentId})">Cancel</button>
+                                            </form>
+                                        </div>
+
+                                        <!-- Dropdown button (three dots) inside the comment box -->
                                         <c:if test="${sessionScope.user.id == comment.staff.id}">
                                             <div class="dropdown">
                                                 <button class="btn btn-link text-dark dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     ...
                                                 </button>
                                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                                    <!-- Nút Edit -->
+                                                    <!-- Edit button -->
                                                     <button type="button" class="dropdown-item" onclick="editComment(${comment.commentId})">Edit</button>
-
-                                                    <!-- Nút Delete -->
+                                                    <!-- Delete button -->
                                                     <form action="${pageContext.request.contextPath}/staff/feedback/delete" method="POST" onsubmit="return confirm('Are you sure you want to delete this comment?');">
                                                         <input type="hidden" name="commentId" value="${comment.commentId}">
                                                         <button type="submit" class="dropdown-item text-danger">Delete</button>
@@ -292,20 +336,21 @@
                                             <span class="badge badge-secondary badge-status">Canceled</span>
                                         </c:when>
                                         <c:when test="${stage.constructionStageStatus == 4}">
-                                            <span class="badge badge-success badge-status">Accepted</span>
+                                            <span class="badge badge-success badge-status">Completed</span>
                                         </c:when>
                                     </c:choose>
                                 </p>
                                 <p><strong>Price:</strong> ${stage.constructionStagePrice}</p>
 
-                                <a href="${pageContext.request.contextPath}/staff/updateStatus/constructionStage/${stage.constructionStageId}?constructionId=${constructionId}" class="btn btn-info">Update Status</a>
-
+                                <c:if test="${stage.constructionStageStatus != 4}"> 
+                                    <a href="${pageContext.request.contextPath}/staff/updateStatus/constructionStage/${stage.constructionStageId}?constructionId=${constructionId}" class="btn btn-info">Update Status</a>
+                                </c:if>
                             </div>
                         </div>
 
                         <!-- Pass the stage status to the buttons via data attributes -->
                         <script>
-                    document.querySelector(`[data-stage='${stage.constructionStageName}']`).setAttribute('data-status', '${stage.constructionStageStatus}');
+                            document.querySelector(`[data-stage='${stage.constructionStageName}']`).setAttribute('data-status', '${stage.constructionStageStatus}');
                         </script>
                     </c:forEach>
                 </div>
@@ -323,6 +368,67 @@
                     <button type="submit" class="btn btn-primary" style="padding: 10px; font-size: 15px">Send Feedback</button>
                 </div>
             </form>
+            <!-- Popup cho success -->
+            <div id="successPopup" class="popup-background">
+                <div class="popup-box success">
+                    <i class="fas fa-check-circle"></i> <!-- Icon success -->
+                    <h2 class="success">Success!</h2>
+                    <p>${success}</p>
+                    <button class="close-btn" onclick="closePopup()">Close</button>
+                </div>
+            </div>
+
+            <!-- Popup cho error -->
+            <div id="errorPopup" class="popup-background">
+                <div class="popup-box error">
+                    <i class="fas fa-exclamation-circle"></i> <!-- Icon lỗi -->
+                    <h2 class="error">Error!</h2>
+                    <p>${error}</p>
+                    <button class="close-btn" onclick="closePopup()">Close</button>
+                </div>
+            </div>
+
+
+            <script>
+                function showSuccessPopup() {
+                    const successPopup = document.getElementById('successPopup');
+                    successPopup.classList.add('show');
+                    const popupBox = successPopup.querySelector('.popup-box');
+                    setTimeout(() => {
+                        popupBox.classList.add('show');}, 10);
+                }
+
+                function showErrorPopup() {
+                    const errorPopup = document.getElementById('errorPopup');
+                    errorPopup.classList.add('show');
+                    const popupBox = errorPopup.querySelector('.popup-box');
+                    setTimeout(() => {
+                        popupBox.classList.add('show');}, 10);
+                }
+
+                function closePopup() {
+                    const popups = document.querySelectorAll('.popup-background.show');
+                    popups.forEach(popup => {
+                        const popupBox = popup.querySelector('.popup-box');
+                        popupBox.classList.remove('show');
+                        setTimeout(() => {
+                            popup.classList.remove('show');}, 300);
+                    });
+                }
+
+            </script>
+
+            <c:if test="${not empty success}">
+                <script>
+                    showSuccessPopup();
+                </script>
+            </c:if>
+
+            <c:if test="${not empty error}">
+                <script>
+                    showErrorPopup();
+                </script>
+            </c:if>
 
         </div>
 

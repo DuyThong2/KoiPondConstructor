@@ -7,6 +7,9 @@
         <title>Create Quote</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <!-- FontAwesome Icons -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+        <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
             .quote-info {
                 background-color: #f8f9fa;
@@ -43,6 +46,7 @@
     <body>
 
         <div class="container mt-5">
+            <jsp:include page="../consultantNav.jsp"/>
             <div class="row">
                 <!-- Left Column for Customer Information -->
                 <div class="col-md-4">
@@ -81,7 +85,7 @@
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="area">Area (m²):</label>
+                            <label for="area">Area (mï¿½):</label>
                             <form:input type ="number" path="quotesArea" id="area" step="0.01" class="form-control" />
                         </div>
 
@@ -135,8 +139,8 @@
                                     <tr>
                                         <th style="width: 20%;">Package Name</th>
                                         <th style="width: 20%;">Description</th>
-                                        <th style="width: 15%;">Design Price per m²</th>
-                                        <th style="width: 15%;">Construction Price per m²</th>
+                                        <th style="width: 15%;">Design Price per mï¿½</th>
+                                        <th style="width: 15%;">Construction Price per mï¿½</th>
                                         <th style="width: 10%;">Status</th>
                                         <th style="width: 10%;">Select</th>
                                     </tr>

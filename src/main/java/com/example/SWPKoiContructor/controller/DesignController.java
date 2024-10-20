@@ -51,13 +51,18 @@ public class DesignController {
     @GetMapping("/manager/design")
     public String getListDesignWithCustomerName(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size) {
-        List<Design> list = designService.getListDesignWithSortedAndPaginated(page, size);
-        int totalPage = designService.getTotalOfAllDesigns(size);
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(required = false) Integer statusFilter, 
+            @RequestParam(required = false) String searchName) {
+
+        List<Design> list = designService.getListDesignWithSortedAndPaginated(page, size, statusFilter, searchName);
+        int totalPage = designService.getTotalOfAllDesigns(size, statusFilter, searchName);
 
         model.addAttribute("designList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPage);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);
         return "manager/design/designManage";
     }
 
@@ -68,12 +73,12 @@ public class DesignController {
             model.addAttribute("design", design);
             return "manager/design/designDetail";
         }else{
-            return "redirect:/manager/design";
+            return "redirect:/error/error-403";
         }
         
     }
 
-    @PostMapping("/manager/completePayment/")
+    @PostMapping("/manager/updatePayment")
     public String completePayment(@RequestParam(required = false) Integer detailId,
             @RequestParam(required = false) Integer newStatus,
             @RequestParam int designStageId,
@@ -98,18 +103,23 @@ public class DesignController {
     public String listContractsByDesigner(Model model,
             HttpSession session,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "6") int size) {
+            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(required = false) Integer statusFilter,
+            @RequestParam(required = false) String searchName) {
+
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }
 
-        List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size);
-        int totalPages = designService.getTotalPagesByDesigner(user.getId(), size);
+        List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size, statusFilter, searchName);
+        int totalPages = designService.getTotalPagesByDesigner(user.getId(), size, statusFilter, searchName);
 
         model.addAttribute("designs", designs);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);
         return "designer/designerManage";
     }
 
@@ -199,7 +209,7 @@ public class DesignController {
         String uploadedFilePath = fileUtility.handleFileUpload(file, FileUtility.DESIGN_BLUEPRINT_DIR);
 
         if(uploadedFilePath == null){
-            redirectAttributes.addFlashAttribute("message", "Choose file to uploads!");
+            redirectAttributes.addFlashAttribute("error", "Choose file to uploads!");
             return "redirect:/designer/manage/blueprint/" + designStageId;
         }
         BluePrint blueprint = new BluePrint();
@@ -209,14 +219,15 @@ public class DesignController {
         blueprint.setDateCreate(new Date());
 
         bluePrintService.saveBluePrint(blueprint);
-
+        redirectAttributes.addFlashAttribute("success", "Upload Successfully!");
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
 
     @PostMapping("/updateSummary/")
     public String updateSummaryFile(
             @RequestParam("designStageId") int designStageId,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) {
         DesignStage designStage = designStageService.getDesignStageById(designStageId);
 
         // Handle file upload
@@ -225,7 +236,7 @@ public class DesignController {
         // Update the design stage with the new summary file path
         designStage.setSummaryFile(uploadedFilePath);
         designStageService.updateDesignStage(designStage);
-
+        redirectAttributes.addFlashAttribute("success", "Upload Success!!");
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
 
@@ -237,7 +248,7 @@ public class DesignController {
         BluePrint bluePrint = bluePrintService.getBluePrintById(bluePrintId);
         fileUtility.deleteFile(bluePrint.getImgUrl(), FileUtility.DESIGN_BLUEPRINT_DIR);
         bluePrintService.deleteBluePrint(bluePrintId);
-        redirectAttributes.addFlashAttribute("message", "Delete Success!!");
+        redirectAttributes.addFlashAttribute("success", "Delete Success!!");
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
 //========================================End Design BluePrints=================================//
@@ -278,15 +289,15 @@ public class DesignController {
 
         DesignStageDetail detail = designStageDetailService.getDesignStageDetailById(detailId);
         if(detail.getStatus() == newStatus || detail.getStatus() > newStatus) {
-            redirectAttributes.addFlashAttribute("message", "Progress is also updated!");
+            redirectAttributes.addFlashAttribute("error", "Progress is also updated!");
             return "redirect:/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
         }
 
         try {
             designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
-            redirectAttributes.addFlashAttribute("message", "Status updated successfully!");
+            redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Failed to update status!!");
+            redirectAttributes.addFlashAttribute("error", "Failed to update status!!");
         }
         return "redirect:/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
     }
@@ -345,7 +356,7 @@ public class DesignController {
                 blueprint.setBluePrintStatus(3);
                 bluePrintService.saveBluePrint(blueprint);
             }
-            redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+            redirectAttributes.addFlashAttribute("success", "Updated successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
@@ -391,8 +402,11 @@ public class DesignController {
             redirectAttributes.addFlashAttribute("message", "Please login to submit feedback.");
             return "redirect:/login";
         }
+        if(blueprintsId == null || blueprintsId.isEmpty()){
+            redirectAttributes.addFlashAttribute("error", "Please login to submit feedback.");
+            return "redirect:/error/error-403";
+        }
 
-        if (blueprintsId != null && !blueprintsId.isEmpty()) {
             for (Integer bluePrintId : blueprintsId) {
                 BluePrint bluePrint = bluePrintService.getBluePrintById(bluePrintId);
                 bluePrint.setBluePrintStatus(2);
@@ -405,9 +419,7 @@ public class DesignController {
                 // Lưu comment cho các blueprint đã chọn
                 commentService.saveComment(blueprintComment);
             }
-        }
-
-        redirectAttributes.addFlashAttribute("message", "Feedback has been submitted successfully!");
+        redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
         return "redirect:/customer/project/design/blueprint/" + designStageId;
     }
 

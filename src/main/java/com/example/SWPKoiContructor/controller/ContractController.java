@@ -69,7 +69,7 @@ public class ContractController {
     @GetMapping("/manager/contract")
     public String listContracts(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "dateCreate") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection,
             @RequestParam(required = false) Integer statusFilter,
@@ -106,22 +106,31 @@ public class ContractController {
     }
 
     @GetMapping("/consultant/contract")
-    public String listContractsByConsultant(Model model,
-            HttpSession session,
+    public String listContracts(Model model,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size,
             @RequestParam(defaultValue = "dateCreate") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDirection) {
-        // Fetch paginated contracts using the service
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            // Redirect to login page or show an error if the user is not logged in
-            return "redirect:/login";  // Adjust as needed for your project
-        }
-        List<Contract> contracts = contractService.getContractListOfConsultant(user.getId(), page, size, sortBy, sortDirection);
+            @RequestParam(defaultValue = "asc") String sortDirection,
+            @RequestParam(required = false) Integer statusFilter,
+            @RequestParam(required = false) String searchName,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate,
+            HttpSession session) {
 
-        // Fetch the total number of contracts for pagination
-        int totalContracts = contractService.countContracts(false, user.getId());
+        // Get the consultant's ID from the session (assuming it's stored there)
+        User user = (User) session.getAttribute("user");
+        int consultantId = user.getId();
+
+        List<Contract> contracts;
+        long totalContracts;
+
+        // Apply filtering based on the status, name, date range, and sort parameters
+        contracts = contractService.getContractListOfConsultant(
+                consultantId, page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
+
+        totalContracts = contractService.countFilteredContractsForConsultant(
+                consultantId, statusFilter, searchName, fromDate, toDate);
+
         int totalPages = (int) Math.ceil((double) totalContracts / size);
 
         // Add attributes to the model for JSP rendering
@@ -130,6 +139,10 @@ public class ContractController {
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);
+        model.addAttribute("fromDate", fromDate);
+        model.addAttribute("toDate", toDate);
 
         return "consultant/contract/contractManage";  // JSP page to display the contract list
     }
@@ -137,7 +150,7 @@ public class ContractController {
     @GetMapping("/customer/contract")
     public String listContractsByCustomer(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "4") int size,
+            @RequestParam(defaultValue = "8") int size,
             @RequestParam(defaultValue = "dateCreate") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection,
             HttpSession session) {
@@ -145,10 +158,11 @@ public class ContractController {
         User user = (User) session.getAttribute("user");
         System.out.println(user.getId());
         List<Contract> contracts = contractService.getContractListOfCustomer(user.getId(), page, size, sortBy, sortDirection);
-
+        contracts.forEach(System.out::println);
         // Fetch the total number of contracts for pagination
         long totalContracts = contractService.countContracts(true, user.getId());
         int totalPages = (int) Math.ceil((double) totalContracts / size);
+        System.out.println("total page : " + totalPages);
 
         // Add attributes to the model for JSP rendering
         model.addAttribute("contracts", contracts);
@@ -284,7 +298,7 @@ public class ContractController {
     public String saveUpdatedContractByConsultant(@ModelAttribute("contract") Contract contract,
             @RequestParam("file") MultipartFile file) {
         String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
-         if (fileURL != null) {
+        if (fileURL != null) {
             contract.setFileURL(fileURL);
         }
         contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
