@@ -1,9 +1,3 @@
-<%-- 
-    Document   : serviceQuoteDetail
-    Created on : Oct 13, 2024, 11:31:35 PM
-    Author     : HP
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
@@ -14,9 +8,9 @@
     <title>Service Quote Details Manager</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <!-- Custom Styles -->
+    <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
     <style>
         body {
             background-color: #f7f9fc;
