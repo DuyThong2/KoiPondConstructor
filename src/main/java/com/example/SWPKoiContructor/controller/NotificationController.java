@@ -1,4 +1,5 @@
 package com.example.SWPKoiContructor.controller;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.SWPKoiContructor.services.NotificationService;
@@ -18,6 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class NotificationController {
      @Autowired
      private NotificationService notificationService;
+
+     private final SimpMessagingTemplate simpMessagingTemplate;
+
+     public NotificationController(SimpMessagingTemplate simpMessagingTemplate) {
+          this.simpMessagingTemplate = simpMessagingTemplate;
+     }
+
      @GetMapping("/{receiverId}")
      public ResponseEntity<List<Notification>> getNotificationByReceiverId(@PathVariable(name="receiverId") int receiverId) {
          try {
@@ -52,5 +60,10 @@ public class NotificationController {
                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Test failed: " + e.getMessage());
           }
+     }
+     @PostMapping("/notify")
+     public void sendNotification(Notification notification) {
+          // Send notification to all subscribed clients
+          simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
      }
 }

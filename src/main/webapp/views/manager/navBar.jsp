@@ -184,14 +184,15 @@
             </a>
 
             <!-- Dropdown for Notifications -->
-            <div class="dropdown" >
+            <div class="dropdown">
                 <a class="icon-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-bell"></i>
                     <!-- Badge for unread notifications -->
                     <span class="badge-note badge-danger" id="notificationCount">0</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown" style="width: 700px;overflow-y: auto; ">
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown"
+                    style="width: 700px;overflow-y: auto; ">
                     <h6 class="dropdown-header">Notifications</h6>
                     <!-- New notifications will be dynamically inserted here -->
                     <div id="notificationItems">
@@ -313,74 +314,126 @@
 
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script>
-    $(document).ready(function () {
-        // Function to fetch new notifications for manager
-        function fetchNotifications() {
-            $.ajax({
-                url: '/api/notifications/new/manage', // Assuming the URL is correct
-                method: 'POST',
-                success: function (data) {
-                    console.log(data);
-                    if (data && data.length > 0) {
-                        updateNotificationDropdown(data);
-                        updateNotificationCount(data.length);
-                    } else {
-                        updateNotificationDropdown([]); // No new notifications
-                        updateNotificationCount(0);
-                    }
-                },
-                error: function (err) {
-                    console.error("Failed to fetch notifications:", err);
+
+    // Function to fetch new notifications for manager
+    function fetchNotifications() {
+        $.ajax({
+            url: '/api/notifications/new/manage', // Assuming the URL is correct
+            method: 'POST',
+            success: function (data) {
+                console.log(data);
+                if (data && data.length > 0) {
+                    updateNotificationDropdown(data);
+                    updateNotificationCount(data.length);
+                } else {
+                    updateNotificationDropdown([]); // No new notifications
+                    updateNotificationCount(0);
                 }
-            });
-        }
+            },
+            error: function (err) {
+                console.error("Failed to fetch notifications:", err);
+            }
+        });
+    }
 
-        // Update the notification dropdown with new notifications
-        function updateNotificationDropdown(notifications) {
-            const dropdown = $('#notificationItems');
-            dropdown.empty(); // Clear the dropdown content
+    // Update the notification dropdown with new notifications
+    function updateNotificationDropdown(notifications) {
+        const dropdown = $('#notificationItems');
+        dropdown.empty(); // Clear the dropdown content
 
-            if (notifications.length > 0) {
-                notifications.forEach(function (notification) {
+        if (notifications.length > 0) {
+            notifications.forEach(function (notification) {
                 console.log(notification.message, notification.createdAt); // Ensure these values are valid
 
                 // Use default values if data is empty or missing
                 const message = notification.message || "No message";
                 const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown time";
 
-                const notificationHtml =    
+                const notificationHtml =
                     '<p class="dropdown-item" >' +
                     '<strong>' + message + '</strong><br>' +
                     '<small>' + timeAgo + '</small>' +
-                    '</p>'; 
-           
-                    dropdown.append(notificationHtml);
-                });
-            } else {
-                dropdown.append('<a class="dropdown-item" href="#">No new notifications</a>');
-            }
+                    '</p>';
+
+                dropdown.append(notificationHtml);
+            });
+        } else {
+            dropdown.append('<a class="dropdown-item" href="#">No new notifications</a>');
         }
+    }
 
-        // Update the notification count in the badge
-        function updateNotificationCount(count) {
-            const notificationCount = $('#notificationCount');
-            notificationCount.text(count);
+    // Update the notification count in the badge
+    function updateNotificationCount(count) {
+        const notificationCount = $('#notificationCount');
+        notificationCount.text(count);
 
-            // Hide the badge if no notifications
-            if (count === 0) {
-                notificationCount.hide();
-            } else {
-                notificationCount.show();
-            }
+        // Hide the badge if no notifications
+        if (count === 0) {
+            notificationCount.hide();
+        } else {
+            notificationCount.show();
         }
+    }
 
-        // Helper function to format the time into a human-readable format
-        function formatTime(dateTime) {
+    // Helper function to format the time into a human-readable format
+
+    // Poll for new notifications every 10 seconds
+
+
+    var stompClient = null;
+
+    function connectWebSocket() {
+        var socket = new SockJS("/ws-notifications");
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/notifications', function (notification) {
+                console.log("Received notification: ", notification.body);
+
+                showNotification(JSON.parse(notification.body));
+                updateNotificationCountDisplay();
+            }, function (error) {
+                console.log('WebSocket connection error:', error);
+            });
+
+            socket.onclose = function (event) {
+                console.log('WebSocket closed unexpectedly:', event);
+            };
+        });
+
+  
+    }
+    function showNotification(notification) {
+        const message = notification.message || "No message"; //default value 
+        const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown Time";
+        const notificationHtml =
+            '<a class="dropdown-item" href="/details/' + notification.relatedId + '?type=' + notification.fromTable + '">' +
+            '<strong>' + message + '</strong><br>' +
+            '<small>' + timeAgo + '</small>' +
+            '</a>';
+        $('#notificationItems').prepend(notificationHtml);
+    }
+    function updateNotificationCountDisplay() {
+        var existingNotificationCount = $('#notificationItems .dropdown-item').length - 1;
+
+        // Calculate the total notification count
+        var totalNotificationCount = existingNotificationCount;
+        $('#notificationCount').text(totalNotificationCount);
+        $('#notificationCount').show();
+        // Show or hide the badge based on the count
+
+    }
+
+
+    function formatTime(dateTime) {
         const date = new Date(dateTime);
         const now = new Date();
         const diffTime = Math.abs(now - date);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         // If less than a day ago, show hours and minutes
         if (diffDays < 1) {
@@ -389,9 +442,9 @@
         // If more than a day ago, show the date
         return date.toLocaleDateString();
     }
-
-        // Poll for new notifications every 10 seconds
-        setInterval(fetchNotifications, 5000);
+    $(document).ready(function () {
+        connectWebSocket();
+        fetchNotifications();
     });
 
 </script>
