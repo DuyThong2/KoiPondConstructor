@@ -7,6 +7,7 @@ package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Consultant;
 import com.example.SWPKoiContructor.entities.Staff;
+import com.example.SWPKoiContructor.entities.User;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -135,5 +136,57 @@ public class ConsultantDAO {
         consultant.setStaff(staff);
         consultant.setConsultantStatus(2);
         return consultant;
+    }
+    
+    public List<Consultant> getFilteredConsultantCustomer(int page, int size, String sortBy, String sortDirection,
+            Integer statusFilter, User customer){
+        StringBuilder queryStr = new StringBuilder("SELECT c FROM Consultant c WHERE 1=1 AND c.customer.id = :id");
+
+        // Dynamic query construction
+        if (statusFilter != null) {
+            queryStr.append(" AND c.consultantStatus = :statusFilter");
+        }           
+        // Sorting
+        queryStr.append(" ORDER BY c.").append(sortBy).append(" ").append(sortDirection);
+
+        // Creating the query
+        TypedQuery<Consultant> query = entityManager.createQuery(queryStr.toString(), Consultant.class);
+
+        // Setting parameters dynamically
+        query.setParameter("id", customer.getId());
+        if (statusFilter != null) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+
+        // Pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getResultList();
+    }
+    
+    public long countFilteredConsultantCustomer(int page, int size, String sortBy, String sortDirection,
+            Integer statusFilter, User customer){
+        StringBuilder queryStr = new StringBuilder("SELECT COUNT(c) FROM Consultant c WHERE 1=1 AND c.customer.id = :id");
+
+        // Dynamic query construction
+        if (statusFilter != null) {
+            queryStr.append(" AND c.consultantStatus = :statusFilter");
+        }           
+        
+        // Creating the query
+        TypedQuery<Long> query = entityManager.createQuery(queryStr.toString(), Long.class);
+
+        // Setting parameters dynamically
+        query.setParameter("id", customer.getId());
+        if (statusFilter != null) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+
+        // Pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getSingleResult();
     }
 }

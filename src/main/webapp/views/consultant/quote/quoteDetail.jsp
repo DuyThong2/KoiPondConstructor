@@ -109,7 +109,7 @@
             <c:choose>
                 <c:when test="${quotes.quotesStatus == 1}">
                     <div class="">
-                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="post" class="d-inline">
+                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="get" class="d-inline">
                             <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                             <button type="submit" class="btn btn-info">Edit Quotes</button>
                         </form>
@@ -120,7 +120,7 @@
                         <div class="alert alert-danger" role="alert">
                             <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                         </div>
-                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="post" class="d-inline">
+                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="get" class="d-inline">
                             <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                             <button type="submit" class="btn btn-info">Edit Quotes</button>
                         </form>
@@ -139,7 +139,7 @@
                         <div class="alert alert-danger" role="alert">
                             <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                         </div>
-                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="post" class="d-inline">
+                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="get" class="d-inline">
                             <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                             <button type="submit" class="btn btn-info">Edit Quotes</button>
                         </form>

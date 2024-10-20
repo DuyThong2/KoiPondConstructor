@@ -155,7 +155,7 @@ CREATE TABLE Quotes (
     quotes_total_price DECIMAL(10, 2),
     quotes_area DECIMAL(10, 2),
     quotes_date DATE,
-    quotes_status INT,  --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel
+    quotes_status INT,  --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel, 8. Finished
 	quotes_design_cost DECIMAL(10, 2),
     quotes_construction_cost DECIMAL(10, 2),
     customer_id INT,
@@ -307,7 +307,8 @@ CREATE TABLE Service_Quotes (
     service_quotes_area DECIMAL(10, 2),
     service_quotes_date DATETIME,
     service_quotes_status INT,  --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel
-    customer_id INT,
+    used_point INT,
+	customer_id INT,
     consultant_id int,
     staff_id INT,		
     FOREIGN KEY (customer_id) REFERENCES Customers(id),

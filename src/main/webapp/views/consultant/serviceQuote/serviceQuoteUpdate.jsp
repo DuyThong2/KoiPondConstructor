@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Update Service Quote</title>
+        <title>Create Service Quote</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <style>
@@ -25,16 +25,9 @@
             .customer-info {
                 text-align: center;
             }
-            .modal-dialog.modal-lg {
-                max-width: 90%;
-            }
-            .table th, .table td {
-                vertical-align: middle;
-                padding: 8px;
-            }
-            .table thead th {
-                text-align: center;
-                background-color: #f8f9fa;
+            .modal-body {
+                max-height: 400px;
+                overflow-y: auto;
             }
         </style>
     </head>
@@ -42,163 +35,268 @@
 
         <div class="container mt-5">
             <div class="row">
-                <!-- Right Column for Service Quote Update Form -->
-                <div class="col-md-12">
+                <!-- Left Column for Customer Information -->
+                <div class="col-md-4">
+                    <div class="quote-info">
+                        <h4>Customer Information</h4>
+                        <!-- Customer Avatar -->
+                        <div class="customer-info">
+                            <img src="" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                            <p><strong>${customer.name}</strong></p>
+                        </div>
+                        <!-- Customer Information -->
+                        <p><strong>Phone:</strong> ${customer.phone}</p>
+                        <p><strong>Email:</strong> ${customer.email}</p>
+                        <p><strong>Content:</strong> ${consultant.consultantContent}</p>
+                        <p><strong>Point:</strong> ${totalPoint}</p>
+                    </div>
+                </div>
+
+                <!-- Right Column for Contract Creation Form -->
+                <div class="col-md-8">
                     <h2 class="mb-4">Update Service Quote</h2>
 
-                    <form:form action="${pageContext.request.contextPath}/consultant/serviceQuote/saveUpdate" modelAttribute="serviceQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true" onsubmit="return validateForm()">
+                    <!-- Bind the form to the "contract" object -->
+                    <form:form action="${pageContext.request.contextPath}/consultant/serviceQuote/save" modelAttribute="serviceQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="serviceQuotesId" value="${serviceQuote.serviceQuotesId}"/>
                         <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
                         <form:hidden path="customer.id" value="${customer.id}" />
                         <form:hidden path="staff.id" value="${staff.id}" />
 
-                        <!-- Quote Name -->
+                        <!-- Hidden input to store selected service IDs -->
+                        <input type="hidden" id="selectedServiceIds" name="serviceIds" />
+
+                        <!-- Quotes Name -->
                         <div class="form-group">
-                            <label for="serviceQuotesName">Quote Name:</label>
-                            <form:input path="serviceQuotesName" id="serviceQuotesName" class="form-control" value="${serviceQuote.serviceQuotesName}" />
+                            <label for="serviceQuotesName">Service Quote Name:</label>
+                            <form:input path="serviceQuotesName" id="serviceQuotesName" class="form-control" required="true" />
                         </div>
 
-                        <!-- Quote Content -->
+                        <!-- Quotes Content -->
                         <div class="form-group">
-                            <label for="serviceQuotesContent">Quote Content:</label>
-                            <form:input path="serviceQuotesContent" id="serviceQuotesContent" class="form-control" value="${serviceQuote.serviceQuotesContent}" />
+                            <label for="serviceQuotesContent">Service Quote Content:</label>
+                            <form:input path="serviceQuotesContent" id="serviceQuotesContent" class="form-control" required="true" />
                         </div>
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="serviceQuotesArea">Area (m²):</label>
-                            <form:input path="serviceQuotesArea" id="serviceQuotesArea" step="0.01" class="form-control" value="${serviceQuote.serviceQuotesArea}" />
+                            <label for="serviceQuotesArea">Area ():</label>
+                            <form:input path="serviceQuotesArea" id="serviceQuotesArea" step="0.01" class="form-control" required="true" />
                         </div>
 
-                        <!-- Service Selection -->
+                        <!-- Current Services -->
+                        <div class="services-container">
+                            <label>Current Services:</label>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Service Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <c:forEach items="${serviceQuote.service}" var="service">
+                                        <tr>
+                                            <td>${service.serviceName}</td>
+                                        </tr>
+                                    </c:forEach>    
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="services-container">
+                            <label>New Services:</label>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Service Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="currentServicesList">
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Button to Open Service Selection Modal -->
                         <div class="form-group">
-                            <label for="service">Select Service:</label>
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#serviceModal">
-                                Choose Service
-                            </button>
-                            <input type="hidden" id="selectedServiceId" name="service.serviceId" value="${serviceQuote.service.serviceId}" required />
-                            <input type="text" id="selectedServiceName" name="serviceName" value="${serviceQuote.service.serviceName}" readonly class="form-control" />
+                            <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#serviceModal">Add Service</button>
                         </div>
 
                         <!-- Total Price (Read-Only, auto-calculated) -->
                         <div class="form-group">
                             <label for="serviceQuotesTotalPrice">Total Price:</label>
-                            <form:input path="serviceQuotesTotalPrice" id="serviceQuotesTotalPrice" class="form-control" readonly="readonly" value="${serviceQuote.serviceQuotesTotalPrice}" />
+                            <form:input path="serviceQuotesTotalPrice" id="serviceQuotesTotalPrice" class="form-control" readonly="readonly" />
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Update Quote</button>
+                        <!-- Hidden input to store points used -->
+                        <input type="hidden" id="pointsUsed" name="pointsUsed" value="0" />
+
+                        <div class="form-group">
+                            <input type="checkbox" id="subtractPoints" onchange="updateCostsBasedOnParcel()"
+                                   ${serviceQuote.usedPoint != null? 'checked':''}/>
+                            <label for="subtractPoints">Use Customer Points (${totalPoint})</label>
+                        </div>
+
+                        <!-- Display Points Used and Remaining Points -->
+                        <p><strong>Points Used:</strong> <span id="pointsUsedDisplay">0</span></p>
+                        <p><strong>Remaining Points:</strong> <span id="remainingPoints">${totalPoint}</span></p>
+
+                        <!-- Button to Auto Calculate Costs -->
+                        <div class="form-group">
+                            <button type="button" class="btn btn-warning" onclick="updateCostsBasedOnParcel()">Auto Adjust Costs</button>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Create Service Quote</button>
                     </form:form>
                 </div>
             </div>
 
-            <!-- Service Selection Modal -->
-            <!-- Service Selection Modal -->
+            <!-- Modal for Service Selection -->
             <div class="modal fade" id="serviceModal" tabindex="-1" role="dialog" aria-labelledby="serviceModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="serviceModalLabel">Select Service</h5>
+                            <h5 class="modal-title" id="serviceModalLabel">Select Services</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <!-- Table to display all services -->
-                            <table class="table table-bordered table-striped">
-                                <thead class="thead-light">
+                            <table class="table table-bordered">
+                                <thead>
                                     <tr>
                                         <th>Service Name</th>
-                                        <th>Description</th>
-                                        <th>Image</th>
-                                        <th>Status</th>
-                                        <th>Price per Square Meter</th>
+                                        <th>Service Price Per Square</th>
                                         <th>Select</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <c:forEach var="service" items="${serviceList}">
-                                        <c:if test="${service.serviceStatus}">
-                                            <tr>
-                                                <td>${service.serviceName}</td>
-                                                <td>${service.serviceDescription}</td>
-                                                <td class="text-center">
-                                                    <img src="${service.serviceImgUrl}" alt="${service.serviceName}" style="max-width: 100px;" class="img-fluid"/>
-                                                </td>
-                                                <td class="text-center">Active</td>
-                                                <td>
-                                                    <c:forEach var="price" items="${service.servicePrice}">
-                                                        <c:if test="${price.servicePriceStatus}">
-                                                            ${price.priceValue}
-                                                            <c:break/>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                </td>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-sm btn-primary" onclick="selectService(${service.serviceId}, '${service.serviceName}', ${price.priceValue})">
-                                                        Select
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </c:if>
+                                    <c:forEach var="service" items="${services}">
+                                        <tr>
+                                            <td>
+                                                <label for="service-${service.serviceId}">${service.serviceName}</label>
+                                            </td>
+                                            <td>
+                                                <c:set var="priceDisplayed" value="false" />
+                                                <c:forEach var="servicePrice" items="${service.servicePrice}">
+                                                    <c:if test="${service.serviceId == servicePrice.service.serviceId and priceDisplayed == false}">
+                                                        <label id="service-price-${service.serviceId}">${servicePrice.value}</label>
+                                                        <c:set var="priceValue" value="${servicePrice.value}" />
+                                                        <c:set var="priceDisplayed" value="true" />
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                            <td>
+                                                <!-- Checkbox with service ID. Marked checked if service is already selected -->
+                                                <input type="checkbox" 
+                                                       value="${service.serviceId}" 
+                                                       id="service-${service.serviceId}"
+                                                       onchange="updateServiceList(this, '${service.serviceName}', '${service.serviceId}', '${priceValue}')" />
+                                            </td>
+                                        </tr>
                                     </c:forEach>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <div class="form-group">
+                            <button type="button" class="btn btn-warning" onclick="updateCostsBasedOnParcel()">Auto Adjust Costs</button>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- JavaScript for Adding Services -->
+            <script>               
+                function updateServiceList(checkbox, serviceName, serviceId, servicePricePerSquare) {
+                    const servicesList = document.getElementById('currentServicesList');
+                    const selectedServiceIds = document.getElementById('selectedServiceIds');
 
-            <!-- JavaScript for handling service selection and validation -->
-            <script>
-                let selectedServicePricePerSquareMeter = 0;
+                    // Split the existing IDs into an array
+                    let currentServiceIds = selectedServiceIds.value ? selectedServiceIds.value.split(',') : [];
 
-                function selectService(serviceId, serviceName, pricePerSquareMeter) {
-                    document.getElementById('selectedServiceId').value = serviceId;
-                    document.getElementById('selectedServiceName').value = serviceName;
-                    selectedServicePricePerSquareMeter = pricePerSquareMeter;
+                    if (checkbox.checked) {
+                        // Create a new table row for the selected service if not already added
+                        if (!currentServiceIds.includes(serviceId)) {
+                            const newRow = document.createElement('tr');
+                            newRow.setAttribute('data-service-id', serviceId); // Store the service ID as a data attribute
+                            newRow.setAttribute('data-price', servicePricePerSquare); // Store the service price as a data attribute
 
-                    calculateCosts();
-                    $('#serviceModal').modal('hide');
-                }
+                            const newCell = document.createElement('td');
+                            newCell.textContent = serviceName;
+                            newRow.appendChild(newCell);
 
-                function calculateCosts() {
-                    const area = parseFloat(document.getElementById('serviceQuotesArea').value) || 0;
-                    const totalPrice = area * selectedServicePricePerSquareMeter;
+                            servicesList.appendChild(newRow);
 
-                    document.getElementById('serviceQuotesTotalPrice').value = totalPrice.toFixed(2);
-                }
-
-                function validateForm() {
-                    const area = parseFloat(document.getElementById('serviceQuotesArea').value) || 0;
-                    const totalPrice = parseFloat(document.getElementById('serviceQuotesTotalPrice').value) || 0;
-                    const serviceId = document.getElementById('selectedServiceId').value;
-
-                    if (!serviceId) {
-                        alert('Please select a service before submitting the form.');
-                        return false;
+                            // Add the service ID to the array and update the hidden input
+                            currentServiceIds.push(serviceId);
+                        }
+                    } else {
+                        // Remove the service if it is unchecked
+                        const rows = servicesList.getElementsByTagName('tr');
+                        for (let i = 0; i < rows.length; i++) {
+                            if (rows[i].getAttribute('data-service-id') === serviceId) {
+                                servicesList.removeChild(rows[i]);
+                                break;
+                            }
+                        }
+                        // Remove the service ID from the array
+                        currentServiceIds = currentServiceIds.filter(id => id !== serviceId);
                     }
 
-                    if (area <= 0) {
-                        alert('Area must be greater than 0.');
-                        return false;
-                    }
-
-                    if (totalPrice <= 0) {
-                        alert('Total price must be greater than 0.');
-                        return false;
-                    }
-
-                    return true;
+                    // Update the hidden input value with the selected service IDs
+                    selectedServiceIds.value = currentServiceIds.join(',');
                 }
 
-                // Automatically adjust costs every second
-                setInterval(function () {
-                    calculateCosts();
-                }, 1000);
+                function updateCostsBasedOnParcel() {
+                    const area = parseFloat(document.getElementById('serviceQuotesArea').value); // Get the area input
+                    const servicesList = document.getElementById('currentServicesList'); // Get the selected services list
+                    const rows = servicesList.getElementsByTagName('tr'); // Rows for selected services
+                    let totalCost = 0; // Initialize total cost
+
+                    if (isNaN(area) || area <= 0) {
+                        alert('Please enter a valid area');
+                        return;
+                    }
+
+                    // Loop through each selected service and calculate the cost
+                    for (let i = 0; i < rows.length; i++) {
+                        const pricePerSquare = parseFloat(rows[i].getAttribute('data-price')); // Assuming you store price as a data attribute on the row
+
+                        if (!isNaN(pricePerSquare)) {
+                            totalCost += pricePerSquare * area; // Calculate and sum the cost for each service
+                        } else {
+                            console.error(`Invalid price for service`);
+                        }
+                    }
+
+                    // Subtract the customer's points if the checkbox is checked
+                    const subtractPointsCheckbox = document.getElementById('subtractPoints');
+                    const customerPoints = parseInt("${totalPoint}", 10); // Ensure points are treated as an integer
+                    let pointsUsed = 0;
+                    let remainingPoints = customerPoints;
+
+                    if (subtractPointsCheckbox.checked && !isNaN(customerPoints)) {
+                        // If total cost is less than or equal to available points, use total cost as points
+                        if (totalCost <= customerPoints) {
+                            pointsUsed = Math.floor(totalCost); // Use integer value for points
+                        } else {
+                            // Otherwise, use all available points
+                            pointsUsed = customerPoints;
+                        }
+                        remainingPoints = customerPoints - pointsUsed; // Calculate remaining points
+                    }
+
+                    // Update the hidden input with the points used (as integer)
+                    document.getElementById('pointsUsed').value = pointsUsed;
+
+                    // Update the points used and remaining points display
+                    document.getElementById('pointsUsedDisplay').textContent = pointsUsed;
+                    document.getElementById('remainingPoints').textContent = remainingPoints;
+
+                    // Update the total price field with the calculated value
+                    document.getElementById('serviceQuotesTotalPrice').value = totalCost.toFixed(2); // Keep the total price intact
+                }
+
             </script>
 
         </div>

@@ -1,10 +1,17 @@
+<%-- 
+    Document   : consultantManage
+    Created on : Oct 20, 2024, 2:15:13 PM
+    Author     : HP
+--%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
      <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+        <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
           <!DOCTYPE html>
           <html>
 
           <head>
-               <title>My Service</title>
+               <title>My Consultant</title>
                <%@include file="../cssTemplate.jsp" %>
                     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
                          rel="stylesheet" />
@@ -191,7 +198,7 @@
                                                                       style="font-size: 16px"><span
                                                                            class="fa fa-user"></span> Profile</a>
                                                             </li>
-                                                            <li>
+                                                            <li class="active">
                                                                  <a href="${pageContext.request.contextPath}/customer/consultant"
                                                                       style="font-size: 16px">
                                                                       <span class="bi bi-briefcase"></span> My
@@ -215,7 +222,7 @@
                                                                       <i class="bi bi-file-earmark-text"></i> Quotes</a>
                                                             </li>
                                                           
-                                                            <li class="active">
+                                                            <li>
                                                                  <a href="${pageContext.request.contextPath}/customer/serviceDetails/"
                                                                       style="font-size: 16px">
                                                                       <span class="bi bi-bar-chart-line"></span>
@@ -229,11 +236,11 @@
 
                                              <div class="row">
                                                   <main role="main" class="col-md-9 ml-sm-auto col-lg-10 mt-4">
-                                                       <h2 class="mb-4">Service Detail List</h2>
+                                                       <h2 class="mb-4">Consultant List</h2>
 
                                                        <!-- Filter Card -->
                                                        <div class="filter-card">
-                                                            <form method="get" action="${pageContext.request.contextPath}/customer/serviceDetails">
+                                                            <form method="get" action="${pageContext.request.contextPath}/customer/consultant">
                                                                  <div class="form-row align-items-center">
                                                                       <!-- Sort By -->
                                                                       <div class="col-auto">
@@ -241,34 +248,31 @@
                                                                            <select name="sortBy" id="sortBy"
                                                                                 class="form-control"
                                                                                 size="padding: 20px">
-                                                                                <option value="serviceDetailStatus"
-                                                                                     ${sortBy=='serviceDetailStatus'
-                                                                                     ? 'selected' : '' }>Service Detail
-                                                                                     Status
+                                                                                <option value="consultantDateTime"
+                                                                                     ${sortBy=='consultantDateTime'
+                                                                                     ? 'selected' : '' }>Consultant Date
                                                                                 </option>
-                                                                                <option value="price" ${sortBy=='price'
-                                                                                     ? 'selected' : '' }>Price</option>
-                                                                                <option value="dateRegister"
-                                                                                     ${sortBy=='dateRegister'
+                                                                                <option value="consultantType" ${sortBy=='consultantType'
+                                                                                     ? 'selected' : '' }>Consultant Type
+                                                                                </option>
+                                                                                <option value="consultantStatus"
+                                                                                     ${sortBy=='consultantStatus'
                                                                                      ? 'selected' : '' }>
-                                                                                     Date Registered
+                                                                                     Consultant Status
                                                                                 </option>
-                                                                                <option value="rating"
-                                                                                     ${sortBy=='rating' ? 'selected'
-                                                                                     : '' }>Rating</option>
                                                                            </select>
                                                                       </div>
 
                                                                       <!-- Sort Direction -->
                                                                       <div class="col-auto">
-                                                                           <label for="sortType">Type:</label>
-                                                                           <select name="sortType" id="sortType"
+                                                                           <label for="sortDirection">Sort Direction: </label>
+                                                                           <select name="sortDirection" id="sortDirection"
                                                                                 class="form-control"
                                                                                 size="padding: 20px">
-                                                                                <option value="asc" ${sortType=='asc'
+                                                                                <option value="asc" ${sortDirection=='asc'
                                                                                      ? 'selected' : '' }>Ascending
                                                                                 </option>
-                                                                                <option value="desc" ${sortType=='desc'
+                                                                                <option value="desc" ${sortDirection=='desc'
                                                                                      ? 'selected' : '' }>Descending
                                                                                 </option>
                                                                            </select>
@@ -281,22 +285,23 @@
                                                                                 class="form-control"
                                                                                 size="padding: 20px">
                                                                                 <option value="" ${statusFilter==null
-                                                                                     ? 'selected' : '' }>All</option>
+                                                                                     ? 'selected' : '' }>All
+                                                                                </option>
                                                                                 <option value="1" ${statusFilter==1
                                                                                      ? 'selected' : '' }>Pending
                                                                                 </option>
                                                                                 <option value="2" ${statusFilter==2
-                                                                                     ? 'selected' : '' }>In Progress
+                                                                                     ? 'selected' : '' }>Staff Assigned
                                                                                 </option>
                                                                                 <option value="3" ${statusFilter==3
-                                                                                     ? 'selected' : '' }>Completed
+                                                                                     ? 'selected' : '' }>In-Progress
                                                                                 </option>
                                                                                 <option value="4" ${statusFilter==4
-                                                                                     ? 'selected' : '' }>Requesting
-                                                                                     Cancel</option>
+                                                                                     ? 'selected' : '' }>Completed
+                                                                                </option>
                                                                                 <option value="5" ${statusFilter==5
-                                                                                     ? 'selected' : '' }>
-                                                                                     Cancelled</option>
+                                                                                     ? 'selected' : '' }>Cancel
+                                                                                </option>
                                                                            </select>
                                                                       </div>
 
@@ -315,66 +320,76 @@
                                                        <table class="table table-bordered table-hover mt-3">
                                                             <thead class="thead-dark">
                                                                  <tr>
-                                                                      <th>Service ID</th>
-                                                                      <th>Service Name</th>
-                                                                      <th>Pricing</th>
-                                                                      <th>Date Register</th>
-                                                                      <th>Status</th>
-                                                                      <th>More</th>
+                                                                      <th>Consultant ID</th>
+                                                                      <th>Date</th>
+                                                                      <th>Consultant Type</th>
+                                                                      <th>Consultant Status</th>
+                                                                      <th>Staff Assigned Name</th>
+                                                                      <th>Action</th>
                                                                  </tr>
                                                             </thead>
                                                             <tbody>
-                                                                 <c:forEach var="service" items="${serviceDetailsList}">
+                                                                 <c:forEach var="consultant" items="${consultant}">
                                                                       <!-- Main Service Row -->
                                                                       <tr>
-                                                                           <td>${service.id}</td>
-                                                                           <td>${service.service.serviceName}</td>
-                                                                           <td>${service.price}</td>
-                                                                           <td>${service.dateRegister}</td>
-
+                                                                           <td>${consultant.consultantId}</td>
+                                                                           <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                                                           <td>${consultant.consultantType}</td>
                                                                            <td>
                                                                                 <c:choose>
                                                                                      <c:when
-                                                                                          test="${service.serviceDetailStatus == 1}">
+                                                                                          test="${consultant.consultantStatus == 1}">
                                                                                           <span
-                                                                                               class="badge badge-secondary">Planning</span>
+                                                                                               class="badge badge-secondary">Pending</span>
                                                                                      </c:when>
                                                                                      <c:when
-                                                                                          test="${service.serviceDetailStatus == 2}">
+                                                                                          test="${consultant.consultantStatus == 2}">
                                                                                           <span
-                                                                                               class="badge badge-primary">Processing</span>
+                                                                                               class="badge badge-primary">Staff Assigned</span>
                                                                                      </c:when>
                                                                                      <c:when
-                                                                                          test="${service.serviceDetailStatus == 3}">
+                                                                                          test="${consultant.consultantStatus == 3}">
                                                                                           <span
-                                                                                               class="badge badge-success">Complete</span>
+                                                                                               class="badge badge-success">In-Progress</span>
                                                                                      </c:when>
                                                                                      <c:when
-                                                                                          test="${service.serviceDetailStatus == 4}">
+                                                                                          test="${consultant.consultantStatus == 4}">
                                                                                           <span
-                                                                                               class="badge badge-warning">Requesting
-                                                                                               Cancel</span>
+                                                                                               class="badge badge-warning">Complete</span>
+                                                                                          
                                                                                      </c:when>
                                                                                      <c:when
-                                                                                          test="${service.serviceDetailStatus == 5}">
+                                                                                          test="${consultant.consultantStatus == 5}">
                                                                                           <span
                                                                                                class="badge badge-danger">Canceled</span>
                                                                                      </c:when>
                                                                                 </c:choose>
                                                                            </td>
                                                                            <td>
-                                                                                <a href="${pageContext.request.contextPath}/customer/serviceDetail/${service.id}"
-                                                                                     class="btn btn-default btn-info">Details</a>
+                                                                               <c:choose> 
+                                                                                   <c:when test="${consultant.staff != null}"> ${consultant.staff.name}</c:when>
+                                                                                   <c:otherwise>No Staff Available Yet</c:otherwise>
+                                                                               </c:choose>
+                                                                               
+                                                                           </td>
+                                                                           <td>
+                                                                               <c:if test="${consultant.consultantStatus < 4}">
+                                                                                   <form method="get" action="${pageContext.request.contextPath}/customer/consultant/updateStatus">
+                                                                                       <input type="hidden" name="consultantId" value="${consultant.consultantId}">
+                                                                                       <input type="hidden" name="statusId" value="${5}">
+                                                                                       <button type="submit" class="btn btn-danger">Cancel</button>
+                                                                                   </form>
+                                                                               </c:if>
                                                                            </td>
                                                                       </tr>
 
                                                                       <!-- Collapsible Row for Customer and Staff Information -->
 
                                                                  </c:forEach>
-                                                                 <c:if test="${empty serviceDetailsList}">
+                                                                 <c:if test="${empty consultant}">
                                                                       <tr>
                                                                            <td colspan="6" class="text-center">No
-                                                                                services available
+                                                                                Consultant Available
                                                                            </td>
                                                                       </tr>
                                                                  </c:if>

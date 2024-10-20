@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.controller;
 
+import com.example.SWPKoiContructor.dto.ServiceDTO;
 import com.example.SWPKoiContructor.entities.Consultant;
 import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Feedback;
@@ -14,6 +15,7 @@ import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.ConsultantService;
 import com.example.SWPKoiContructor.services.FeedbackService;
+import com.example.SWPKoiContructor.services.LoyaltyPointService;
 import com.example.SWPKoiContructor.services.ServiceQuoteService;
 import com.example.SWPKoiContructor.services.ServiceService;
 import com.example.SWPKoiContructor.services.UserService;
@@ -21,6 +23,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -45,14 +48,18 @@ public class ServiceQuoteController {
     private ConsultantService consultantService;
     private UserService userService;
     private FeedbackService feedbackService;
+    private LoyaltyPointService loyaltyPointService;
 
-    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService) {
+    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService, LoyaltyPointService loyaltyPointService) {
         this.serviceQuoteService = serviceQuoteService;
         this.serviceService = serviceService;
         this.consultantService = consultantService;
         this.userService = userService;
         this.feedbackService = feedbackService;
+        this.loyaltyPointService = loyaltyPointService;
     }
+    
+    
 
     //----------------------------------- MANAGER SECTION ----------------------------------------------
     @GetMapping("/manager/serviceQuote/detail/{id}")
@@ -192,6 +199,8 @@ public class ServiceQuoteController {
             model.addAttribute("services", services);
             User user = (User) session.getAttribute("user");
             model.addAttribute("staff", user);
+            long totalPoint = loyaltyPointService.TotalPoints(consultant.getCustomer().getId());
+            model.addAttribute("totalPoint", totalPoint);
             return "consultant/serviceQuote/serviceQuoteCreate";
         }
         model.addAttribute("newServiceQuote", newServiceQuotes);
@@ -200,10 +209,12 @@ public class ServiceQuoteController {
 
     @PostMapping("/consultant/serviceQuote/save")
     public String saveServiceQuote(@ModelAttribute("newServiceQuote") ServiceQuotes newServiceQuotes,
-            @RequestParam("serviceIds") List<Integer> serviceIds) {
+            @RequestParam("serviceIds") List<Integer> serviceIds,
+            @RequestParam("pointsUsed") String pointUsed) {
         List<Service> serviceList = new ArrayList<>();
         newServiceQuotes.setServiceQuotesStatus(1);
         newServiceQuotes.setServiceQuotesDate(new Date());
+        newServiceQuotes.setUsedPoint(Integer.parseInt(pointUsed));
         for (int id : serviceIds) {
             Service service = serviceService.getServiceById(id);
             if (service != null) { // Check if the service exists
@@ -216,25 +227,45 @@ public class ServiceQuoteController {
     }
 
     @GetMapping("/consultant/serviceQuote/update")
-    public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuoteId, Model model, HttpSession session) {
-        ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
-        Staff staff = (Staff) session.getAttribute("user");
-        if (serviceQuote != null && serviceQuote.isServiceQuoteBelongToStaff(staff, serviceQuote)) {
-            model.addAttribute("consultant", serviceQuote.getConsultant());
-            model.addAttribute("customer", serviceQuote.getCustomer());
-            model.addAttribute("serviceQuote", serviceQuote);
-            model.addAttribute("service", serviceService.getServiceList(20));
-            User user = (User) session.getAttribute("user");
-            model.addAttribute("staff", user);
-            return "consultant/serviceQuote/serviceQuoteUpdate";
-        }
-        return "redirect:/consultant/serviceQuote/detail/" + serviceQuoteId;
+public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuoteId, Model model, HttpSession session) {
+    ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
+    Staff staff = (Staff) session.getAttribute("user");
+    
+    if (serviceQuote != null && serviceQuote.isServiceQuoteBelongToStaff(staff, serviceQuote)) {
+        model.addAttribute("consultant", serviceQuote.getConsultant());
+        model.addAttribute("customer", serviceQuote.getCustomer());
+        model.addAttribute("serviceQuote", serviceQuote);
+        
+        // List of all available services
+        model.addAttribute("services", serviceService.getServiceList(20));
+                
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("staff", user);
+        long totalPoint = loyaltyPointService.TotalPoints(serviceQuote.getCustomer().getId());
+        model.addAttribute("totalPoint", totalPoint);
+        
+        return "consultant/serviceQuote/serviceQuoteUpdate";
     }
+    
+    return "redirect:/consultant/serviceQuote/detail/" + serviceQuoteId;
+}
+
 
     @PostMapping("/consultant/serviceQuote/saveUpdate")
-    public String saveUpdateServiceQuote(@ModelAttribute("serviceQuote") ServiceQuotes serviceQuote) {
+    public String saveUpdateServiceQuote(@ModelAttribute("serviceQuote") ServiceQuotes serviceQuote,
+                                        @RequestParam("serviceIds") List<Integer> serviceIds,
+                                        @RequestParam("pointsUsed") String pointUsed) {
+        List<Service> serviceList = new ArrayList<>();
         serviceQuote.setServiceQuotesStatus(1);
         serviceQuote.setServiceQuotesDate(new Date());
+        serviceQuote.setUsedPoint(Integer.parseInt(pointUsed));
+        for (int id : serviceIds) {
+            Service service = serviceService.getServiceById(id);
+            if (service != null) { // Check if the service exists
+                serviceList.add(service);
+            }
+        }
+        serviceQuote.setService(serviceList);
         serviceQuote = serviceQuoteService.saveNewServiceQuote(serviceQuote);
         return "redirect:/consultant/serviceQuote/detail/" + serviceQuote.getServiceQuotesId();
     }
@@ -290,8 +321,7 @@ public class ServiceQuoteController {
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("fromDate", fromDate);  // Add fromDate to model
-        model.addAttribute("toDate", toDate);  // Add toDate to model
-
+        model.addAttribute("toDate", toDate);  // Add toDate to model       
         return "customer/serviceQuote/serviceQuoteManage";  // JSP page to display the contract list
     }
 

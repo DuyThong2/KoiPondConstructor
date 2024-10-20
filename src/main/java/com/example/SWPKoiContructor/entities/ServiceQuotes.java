@@ -53,6 +53,9 @@ public class ServiceQuotes {
     @Column(name = "service_quotes_status")
     private int serviceQuotesStatus;
     
+    @Column(name = "used_point")
+    private int usedPoint;
+    
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -151,6 +154,15 @@ public class ServiceQuotes {
     public void setServiceQuotesStatus(int serviceQuotesStatus) {
         this.serviceQuotesStatus = serviceQuotesStatus;
     }
+
+    public int getUsedPoint() {
+        return usedPoint;
+    }
+
+    public void setUsedPoint(int usedPoint) {
+        this.usedPoint = usedPoint;
+    }
+    
 
     public Customer getCustomer() {
         return customer;
