@@ -59,7 +59,7 @@ public class Contract {
     
     private String contractNote;
     
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "term_id")
     private Term term;
 
