@@ -16,7 +16,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.8); /* Hiệu ứng zoom nhỏ ban đầu */
-    width: 350px;
+    width: 500px;
     padding: 25px;
     background-color: #fff;
     border-radius: 12px;
@@ -47,7 +47,7 @@
 
 /* Nội dung text */
 .popup-box p {
-    font-size: 16px;
+    font-size: 2rem;
     margin-bottom: 20px;
     color: #333;
 }
@@ -101,6 +101,35 @@
     color: #dc3545; /* Icon cho lỗi */
 }
 
+/* Popup thông báo (message) */
+.popup-box.message {
+    border-top: 8px solid #17a2b8; /* Đường viền trên màu xanh dương */
+}
+
+/* Biểu tượng cho popup message */
+.popup-box.message i {
+    color: #17a2b8; /* Icon màu xanh dương cho message */
+}
+
+/* Button close cho popup message */
+.popup-box.message .close-btn {
+    background-color: #17a2b8; /* Màu xanh dương cho button đóng */
+}
+
+.popup-box.message .close-btn:hover {
+    background-color: #138496; /* Màu xanh đậm hơn khi hover */
+}
+
+/* Nội dung text cho popup message */
+.popup-box.message p {
+    color: #333;
+}
+
+/* Hiệu ứng bounce cho icon của message */
+.popup-box.message i {
+    animation: bounce 0.5s;
+}
+
 /* Hiệu ứng fade in */
 @keyframes fadeIn {
     from {
@@ -120,14 +149,21 @@
         transform: translateY(-10px);
     }
 }
-h2{
+
+h2 {
     font-weight: bold;
     padding-bottom: 10px;
     margin-bottom: 20px;
 }
-.success{
+
+.success {
     border-bottom: 2px solid #28a745;
 }
-.error{
+
+.error {
     border-bottom: 2px solid #dc3545;
+}
+
+.message {
+    border-bottom: 2px solid #17a2b8;
 }

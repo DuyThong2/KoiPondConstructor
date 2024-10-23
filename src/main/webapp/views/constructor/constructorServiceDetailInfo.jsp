@@ -111,7 +111,7 @@
     <body>
 
         <div class="container">
-            <%@include file="navbarConsultruction.jsp" %>
+            <%@include file="navbarConstruction.jsp" %>
             <main role="main" class="mt-4 container">
                 <div class="info-section">
                     <!-- Customer Information -->

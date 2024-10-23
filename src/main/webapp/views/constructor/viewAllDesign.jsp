@@ -142,7 +142,7 @@
 
     <body>
         <div class="container">
-            <%@include file="navbarConsultruction.jsp" %>
+            <%@include file="navbarConstruction.jsp" %>
 
             <div class="container-fluid mt-3">
                 <!-- Page Header with Back Button -->

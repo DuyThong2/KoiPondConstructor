@@ -204,6 +204,9 @@ public class DesignController {
         }
 
         DesignStage designStage = designStageService.getDesignStageById(designStageId);
+        if (designStage == null) {
+            return "redirect:/error/error-500";
+        }
         boolean isAssignedToDesign = designStage.getDesign().getStaff().stream().anyMatch(
                 staff -> staff.getId() == user.getId());
 

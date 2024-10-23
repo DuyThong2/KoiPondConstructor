@@ -12,9 +12,10 @@
     <head>
         <title>Admin Dashboard - Services</title>
         <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              rel="stylesheet">
-
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+        <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
         <style>
             /* Custom styles for the sidebar */
             .sidebar {
@@ -39,7 +40,7 @@
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                margin-bottom: 30px;
+                margin:0 0 30px 10px;
             }
 
             h2 {
@@ -53,7 +54,7 @@
             .modal-body {
                 overflow-y: auto;
                 max-height: calc(100vh - 150px);
-                /* Ensures 
+                /* Ensures
             the modal is scrollable when it overflows */
             }
 
@@ -68,7 +69,7 @@
             }
         </style>
     </head>
-
+    <div style="height:6vh;"></div>
     <body>
 
         <div class="container-fluid">
@@ -577,6 +578,7 @@
                     </div>
                 </div>
             </div>
+            <div style="height:6vh;"></div>
         </div>
 
         <script>
@@ -767,14 +769,10 @@
                 }
             }
         </script>
-        <!-- Bootstrap JS and dependencies -->
-        <!-- Load jQuery -->
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
         <!-- Load Bootstrap -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
         <!-- Load CKEditor -->
         <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
     </body>
