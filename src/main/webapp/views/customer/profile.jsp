@@ -201,50 +201,8 @@
             <div class="view-account">
                 <section class="module">
                     <div class="module-inner">
-                        <div class="side-bar">
-                            <div class="user-info">
-                                <img class="img-profile img-circle img-responsive center-block"
-                                     src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt />
-                                <ul class="meta list list-unstyled">
-                                    <li class="name">
-                                        ${user.name}
-                                        <br>
-                                        <label class="label label-info">Customer</label>
-                                    </li>
-                                    <li class="email">
-                                        <a href="#"><span>${user.email}</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <nav class="side-menu">
-                                <ul class="nav">
-                                    <li class="active">
-                                        <a href="${pageContext.request.contextPath}/customer/profile"><span class="fa fa-user"></span> Profile</a>
-                                    </li>
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/customer/consultant">
-                                            <span class="bi bi-briefcase"></span> My Consultant</a>
-                                    </li>
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/customer/contract">
-                                            <span class="fas fa-file-contract"></span> My Contract</a>
-                                    </li>
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/customer/projects/">
-                                            <span class="fas fa-project-diagram"></span> My Project</a>
-                                    </li>
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/customer/quote">
-                                            <i class="bi bi-file-earmark-text"></i>Quotes</a>
-                                    </li>
-                                    <li>
-                                        <a href="${pageContext.request.contextPath}/customer/serviceDetails">
-                                            <span class="bi bi-bar-chart-line"></span> Service</a>
-
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
+                        <%--User navbar--%>
+                        <%@include file="navbarUser.jsp"%>
 
                         <div class="content-panel">
                             <h2 class="title">
@@ -324,7 +282,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-2 col-sm-3 col-xs-12 control-label">Loyalty Points: </label>
+                                        <label class="col-md-2 col-sm-3 col-xs-12 control-label">Points: </label>
                                         <div class="col-md-10 col-sm-9 col-xs-12">
                                             <input type="text" value="${totalPoint} points" readonly />
                                         </div>
@@ -335,70 +293,8 @@
                         </div>
                     </div>
                 </section>
-                <!-- Popup cho success -->
-                <div id="successPopup" class="popup-background">
-                    <div class="popup-box success">
-                        <i class="fas fa-check-circle"></i> <!-- Icon success -->
-                        <h2 class="success">Success!</h2>
-                        <p>${success}</p>
-                        <button class="close-btn" onclick="closePopup()">Close</button>
-                    </div>
-                </div>
-
-                <!-- Popup cho error -->
-                <div id="errorPopup" class="popup-background">
-                    <div class="popup-box error">
-                        <i class="fas fa-exclamation-circle"></i> <!-- Icon lỗi -->
-                        <h2 class="error">Error!</h2>
-                        <p>${error}</p>
-                        <button class="close-btn" onclick="closePopup()">Close</button>
-                    </div>
-                </div>
-
-
-                <script>
-                    function showSuccessPopup() {
-                        const successPopup = document.getElementById('successPopup');
-                        successPopup.classList.add('show');
-                        const popupBox = successPopup.querySelector('.popup-box');
-                        setTimeout(() => {
-                            popupBox.classList.add('show');
-                        }, 10);
-                    }
-
-                    function showErrorPopup() {
-                        const errorPopup = document.getElementById('errorPopup');
-                        errorPopup.classList.add('show');
-                        const popupBox = errorPopup.querySelector('.popup-box');
-                        setTimeout(() => {
-                            popupBox.classList.add('show');
-                        }, 10);
-                    }
-
-                    function closePopup() {
-                        const popups = document.querySelectorAll('.popup-background.show');
-                        popups.forEach(popup => {
-                            const popupBox = popup.querySelector('.popup-box');
-                            popupBox.classList.remove('show');
-                            setTimeout(() => {
-                                popup.classList.remove('show');
-                            }, 300);
-                        });
-                    }
-
-                </script>
-
-                <c:if test="${not empty success}">
-                    <script>
-                        showSuccessPopup();
-                    </script>
-                </c:if>
-
-                <c:if test="${not empty error}">
-                    <script>
-                        showErrorPopup();
-                    </script>
-                </c:if>
+              <!-- Popup -->
+                <%@include file="../popup.jsp"%>
 
             </div>
             <%@include file="spacing.jsp"%>
