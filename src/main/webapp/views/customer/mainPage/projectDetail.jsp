@@ -19,6 +19,9 @@
     <%@include file="../cssCustom.jsp"%>
 
     <style>
+        .d-flex{
+            margin-top: 0;
+        }
         .sidebar {
             width: 300px;
             background-color: #FFC107;

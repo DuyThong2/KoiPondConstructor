@@ -17,12 +17,6 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
         <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
         <style>
-            /* Custom styles for the sidebar */
-            .sidebar {
-                height: 100vh;
-                background-color: #343a40;
-                color: white;
-            }
 
             .sidebar a {
                 color: white;
@@ -37,10 +31,11 @@
 
             .filter-card {
                 background-color: #ffffff;
+
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                margin-bottom: 30px;
+                margin: 0 0 30px 20px;
             }
 
             h2 {
@@ -69,7 +64,7 @@
             }
         </style>
     </head>
-
+    <div style="height:5vh;"></div>
     <body>
 
         <div class="container-fluid">

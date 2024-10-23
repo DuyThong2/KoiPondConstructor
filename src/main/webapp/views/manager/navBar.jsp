@@ -101,6 +101,9 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/staff/blogs"><i class="bi bi-newspaper"></i> Blog</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/manager/serviceQuote"><i class="bi bi-bar-chart-line"></i> Service Quotes</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#"><i class="bi bi-bar-chart-line"></i> Reports</a>
                     </li>
                 </ul>

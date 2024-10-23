@@ -18,8 +18,10 @@
     <%@include file="../cssCustom.jsp"%>
 
     <style>
-        /* Container for portfolio items */
-        /* Container for portfolio items */
+        .d-flex{
+            margin-top: 0;
+        }
+
         .portfolio-wrap {
             display: flex;
             justify-content: center; /* Center horizontally */
