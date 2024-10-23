@@ -1,8 +1,3 @@
-<%-- 
-    Document   : serviceQuoteManage
-    Created on : Oct 16, 2024, 7:55:09 PM
-    Author     : HP
---%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -12,10 +7,12 @@
     <head>
         <title>Service Quote Manage Customer</title>
         <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+        <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <%@include file="../cssTemplate.jsp"%>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+        <%@include file="../cssCustom.jsp"%>
         <style>
             .content-panel {
                 width: 100%;
@@ -39,6 +36,89 @@
             .collapse td {
                 padding: 10px !important;
             }
+
+            h2 {
+                color: #2c3e50;
+                font-weight: bold;
+                margin-bottom: 20px;
+                font-size: 3.5rem;
+            }
+
+            .filter-card {
+                background-color: #ffffff;
+                padding: 20px 30px;
+                border-radius: 15px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .filter-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .filter-card label {
+                font-weight: bold;
+                color: #343a40;
+                font-size: 16px;
+            }
+
+            .filter-card .form-control {
+                border-radius: 10px;
+                border: 1px solid #ced4da;
+                padding: 10px;
+                font-size: 18px;
+                transition: box-shadow 0.3s ease;
+            }
+
+            .filter-card .form-control:focus {
+                box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+                border-color: #007bff;
+            }
+
+            .filter-card button {
+                background-color: #007bff;
+                border: none;
+                color: white;
+                margin-top: 3rem;
+                padding: 15px 20px;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+
+            .filter-card button:hover {
+                background-color: #0056b3;
+                color: #ffffff;
+            }
+            /* Table Styling */
+            .table {
+                margin-top: 20px;
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 19px;
+                background-color: #fff;
+            }
+
+            .table thead th {
+                background-color: #2c3e50;
+                color: white;
+                padding: 10px;
+                text-align: left;
+                border-bottom: 2px solid #ddd;
+            }
+
+            .table tbody td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .table tbody tr:hover {
+                background-color: #f2f2f2;
+            }
+
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>
@@ -46,57 +126,13 @@
     <body>
         <div class="container-fluid">
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
-            <div class="container">
+            <div class="container mt-5">
                 <div class="view-account">
                     <section class="module">
                         <div class="module-inner">
-                            <div class="side-bar">
-                                <div class="user-info">
-                                    <img
-                                        class="img-profile img-circle img-responsive center-block"
-                                        src="${user.getShowingImg(user.imgURL)}"
-                                        alt />
-                                    <ul class="meta list list-unstyled">
-                                        <li class="name">
-                                            ${user.name}
-                                            <br />
-                                            <label class="label label-info">Customer</label>
-                                        </li>
-                                        <li class="email">
-                                            <a href="#"><span>${user.email}</span></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <nav class="side-menu">
-                                    <ul class="nav">
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/profile"
-                                               ><span class="fa fa-user"></span> Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/contract">
-                                                <span class="fas fa-file-contract"></span> My Contract</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/projects/">
-                                                <span class="fas fa-project-diagram"></span> My Project</a>
-                                        </li>
-                                        <li class="nav-item dropdown">
-                                            <a href="#" class="nav-link dropdown-toggle active" id="quoteDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <span class="bi bi-bar-chart-line"></span> Quotes
-                                            </a>
-                                            <div class="dropdown-menu" aria-labelledby="quoteDropdown">
-                                                <a class="dropdown-item" href="${pageContext.request.contextPath}/customer/quote">Construction Quote</a>
-                                                <a class="dropdown-item" href="${pageContext.request.contextPath}/customer/serviceQuote">Service Quotes</a>
-                                            </div>
-                                        </li>                                                                              
-                                        <li>
-                                            <a href="#"><span class="bi bi-bar-chart-line"></span> Service</a>
-                                        </li>
+                            <%--User navbar--%>
+                            <%@include file="../navbarUser.jsp"%>
 
-                                    </ul>
-                                </nav>
-                            </div>
                             <div class="content-panel">
 
 
@@ -107,11 +143,11 @@
                                     <div class="filter-card">
                                         <!-- Sort and Search Form -->
                                         <form method="get" action="${pageContext.request.contextPath}/customer/serviceQuote">
-                                            <div class="form-row align-items-center d-flex justify-content-between">
+                                            <div class="row align-items-center d-flex justify-content-between">
                                                 <!-- Sort By -->
                                                 <div class="col-auto">
                                                     <label for="sortBy">Sort by:</label>
-                                                    <select name="sortBy" id="sortBy" class="form-control">
+                                                    <select name="sortBy" id="sortBy" class="form-control" size="padding: 20px;">
                                                         <option value="serviceQuotesDate" ${sortBy == 'serviceQuotesDate' ? 'selected' : ''}>Date Created</option>
                                                         <option value="serviceQuotesArea" ${sortBy == 'serviceQuotesArea' ? 'selected' : ''}>Area</option>
                                                         <option value="serviceQuotesTotalPrice" ${sortBy == 'serviceQuotesTotalPrice' ? 'selected' : ''}>Total Price</option>                                        
@@ -121,7 +157,7 @@
                                                 <!-- Sort Direction -->
                                                 <div class="col-auto">
                                                     <label for="sortDirection">Direction:</label>
-                                                    <select name="sortDirection" id="sortDirection" class="form-control">
+                                                    <select name="sortDirection" id="sortDirection" class="form-control" size="padding: 20px;">
                                                         <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
                                                         <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
                                                     </select>
@@ -142,7 +178,7 @@
 
                                                 <!-- Apply Button -->
                                                 <div class="col-auto">
-                                                    <button type="submit" class="btn btn-primary" style="margin-top: 2rem">Apply</button>
+                                                    <button type="submit" class="btn btn-primary" style="margin-top: 3rem">Apply</button>
                                                 </div>
                                             </div>
                                         </form>

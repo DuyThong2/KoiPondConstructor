@@ -16,7 +16,7 @@
 
     <!-- CSS here -->
     <%@include file="../cssTemplate.jsp"%>
-
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
 </head>
 
 <body class="body-1">
@@ -247,6 +247,9 @@
             </div>
         </div>
     </section>
+
+    <!-- Popup cho success -->
+    <%@include file="../../popup.jsp"%>
     <!-- Banner area end -->
 
     <!-- planning-execute area start -->

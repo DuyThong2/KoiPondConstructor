@@ -22,7 +22,7 @@
 
     <body>
         <div class="container">
-            <%@include file="navbarConsultruction.jsp" %>
+            <%@include file="navbarConstruction.jsp" %>
             
             <div class="filter-card">
                 <form method="get" action="${pageContext.request.contextPath}/constructor/manage">
