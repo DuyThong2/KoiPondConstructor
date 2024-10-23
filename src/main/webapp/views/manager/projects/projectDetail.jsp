@@ -183,7 +183,7 @@
                                         <c:choose>
                                             <c:when
                                                     test="${designClass == 'btn-success' || designClass == 'btn-warning'}">
-                                                <a href="${pageContext.request.contextPath}/manager/design/viewDetail/${project.design.designId}">
+                                                <a href="${pageContext.request.contextPath}/manager/design/detail/${project.design.designId}">
                                                     <button type="button"
                                                             class="btn stage-button btn-md btn-block px-3 ${designClass}">
                                                         Design
@@ -207,7 +207,7 @@
                                             <c:when
                                                     test="${constructionClass == 'btn-success' || constructionClass == 'btn-warning'}">
                                                 <a
-                                                        href="${pageContext.request.contextPath}/manager/construction/viewDetail/${project.construction.constructionId}">
+                                                        href="${pageContext.request.contextPath}/manager/construction/detail/${project.construction.constructionId}">
                                                     <button type="button" class="btn stage-button btn-md btn-block px-3 ${constructionClass}">
                                                         Construction
                                                     </button>

@@ -53,7 +53,8 @@ public class ServiceDetailController {
 
         // Fetch service details with or without status filtering
         if (statusFilter != null) {
-            list = serviceDetailService.getPaginationServiceDetailListByStatus(page, size, sortBy, sortType, statusFilter);
+            list = serviceDetailService.getPaginationServiceDetailListByStatus(page, size, sortBy, sortType,
+                    statusFilter);
             serviceDetailNum = serviceDetailService.countServiceDetailFilter(statusFilter);
         } else {
             list = serviceDetailService.getPaginationServiceDetailList(page, size, sortBy, sortType);
@@ -102,8 +103,8 @@ public class ServiceDetailController {
             if (serviceQuotes != null) {
                 for (Service i : serviceQuotes.getService()) {
                     ServiceDetail newServiceDetail = new ServiceDetail();
-                    for(ServicePrice p : i.getServicePrice()){
-                        if(p.getService().getServiceId() == i.getServiceId()){
+                    for (ServicePrice p : i.getServicePrice()) {
+                        if (p.getService().getServiceId() == i.getServiceId()) {
                             newServiceDetail.setPrice(p.getValue());
                             break;
                         }
@@ -115,7 +116,7 @@ public class ServiceDetailController {
                     newServiceDetail.setCustomer(serviceQuotes.getCustomer());
                     newServiceDetail = serviceDetailService.createServiceDetail(newServiceDetail);
                 }
-                if(!serviceQuotes.isIsPayAfter()){
+                if (!serviceQuotes.isIsPayAfter()) {
                     serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, 9);
                 }
             }
@@ -157,11 +158,14 @@ public class ServiceDetailController {
         departments.add("construction");
 
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
-            availableStaff = staffService.getAllStaffSortedForServiceDetail(serviceDetailId, currentPage, size, departments);
+            availableStaff = staffService.getAllStaffSortedForServiceDetail(serviceDetailId, currentPage, size,
+                    departments);
             totalStaff = staffService.countTotalStaffByDepartmentsForServiceDetail(serviceDetailId, departments);
         } else {
-            availableStaff = staffService.searchStaffByNameSortedForProject(searchTerm.trim(), serviceDetailId, currentPage, size, departments);
-            totalStaff = staffService.countTotalStaffByDepartmentsSearchForServiceDetail(searchTerm.trim(), serviceDetailId, departments);
+            availableStaff = staffService.searchStaffByNameSortedForProject(searchTerm.trim(), serviceDetailId,
+                    currentPage, size, departments);
+            totalStaff = staffService.countTotalStaffByDepartmentsSearchForServiceDetail(searchTerm.trim(),
+                    serviceDetailId, departments);
         }
 
         // Calculate total number of pages for pagination
@@ -191,7 +195,8 @@ public class ServiceDetailController {
             ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
 
             if (serviceDetail != null && staff != null) {
-                if (serviceDetail.getServiceDetailStatus() == 3 || serviceDetail.getServiceDetailStatus() == 4 || serviceDetail.getServiceDetailStatus() == 5) {
+                if (serviceDetail.getServiceDetailStatus() == 3 || serviceDetail.getServiceDetailStatus() == 4
+                        || serviceDetail.getServiceDetailStatus() == 5) {
                     model.addAttribute("errorMessage", "Can't assign staff");
                     return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
                 }
@@ -232,7 +237,8 @@ public class ServiceDetailController {
             ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
 
             // Validate that the service detail and staff assignment exist
-            if (serviceDetail != null && serviceDetail.getStaff() != null && serviceDetail.getStaff().getId() == staffId) {
+            if (serviceDetail != null && serviceDetail.getStaff() != null
+                    && serviceDetail.getStaff().getId() == staffId) {
                 serviceDetail.setStaff(null); // Remove staff
                 if (serviceDetail.getServiceDetailStatus() == 2) {
                     serviceDetail.setServiceDetailStatus(1); // Set status to Processing (2)
@@ -267,7 +273,8 @@ public class ServiceDetailController {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Service Detail not found.");
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating status: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error updating status: " + e.getMessage());
         }
     }
 
@@ -344,15 +351,18 @@ public class ServiceDetailController {
     public ResponseEntity<String> acceptCancelRequest(@RequestParam("serviceDetailId") int serviceDetailId) {
         try {
             // Update the service detail status to 5 (Canceled)
-            ServiceDetail serviceDetail = serviceDetailService.updateServiceDetailStatus(serviceDetailId, 5);  // 5 for "Canceled"
+            ServiceDetail serviceDetail = serviceDetailService.updateServiceDetailStatus(serviceDetailId, 5); // 5 for
+                                                                                                              // "Canceled"
 
             if (serviceDetail != null) {
                 return ResponseEntity.ok("{\"status\":\"success\"}");
             } else {
-                return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Could not update status to Canceled\"}");
+                return ResponseEntity.badRequest()
+                        .body("{\"status\":\"error\",\"message\":\"Could not update status to Canceled\"}");
             }
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred while accepting the cancellation request\"}");
+            return ResponseEntity.status(500).body(
+                    "{\"status\":\"error\",\"message\":\"An error occurred while accepting the cancellation request\"}");
         }
     }
 
@@ -363,10 +373,12 @@ public class ServiceDetailController {
             if (serviceDetail != null) {
                 return ResponseEntity.ok("{\"status\":\"success\"}");
             } else {
-                return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Could not update status to Canceled\"}");
+                return ResponseEntity.badRequest()
+                        .body("{\"status\":\"error\",\"message\":\"Could not update status to Canceled\"}");
             }
         } catch (Exception e) {
-            return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred while accepting the cancellation request\"}");
+            return ResponseEntity.status(500).body(
+                    "{\"status\":\"error\",\"message\":\"An error occurred while accepting the cancellation request\"}");
         }
     }
 
@@ -390,8 +402,7 @@ public class ServiceDetailController {
             @RequestParam("serviceDetailId") int serviceDetailId,
             @RequestParam("rating") int rating,
             @RequestParam("feedback") String feedback,
-            Model model
-    ) {
+            Model model) {
         // Fetch the service detail entity by its ID
         ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
 
@@ -405,6 +416,21 @@ public class ServiceDetailController {
 
         // Redirect or load the page where feedback was submitted
         return "redirect:/customer/serviceDetail/" + serviceDetailId;
+    }
+
+    @GetMapping("/construction/serviceDetail/getCancelMessage")
+    @ResponseBody
+    public String getCancelMessage(@RequestParam int serviceDetailId) {
+        try {
+            ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
+            if (serviceDetail != null && serviceDetail.getServiceCancelMessage() != null) {
+                return serviceDetail.getServiceCancelMessage() + "@serviceDetailManage.jsp";
+            } else {
+                return "No cancellation message found.@serviceDetailManage.jsp";
+            }
+        } catch (Exception e) {
+            return "Error retrieving cancellation message: " + e.getMessage() + "@serviceDetailManage.jsp";
+        }
     }
 
 }

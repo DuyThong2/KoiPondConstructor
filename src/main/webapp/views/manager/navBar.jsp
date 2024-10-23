@@ -170,7 +170,7 @@
             notifications.forEach(function (notification) {
                 const message = notification.message || "No message";
                 const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown Time";
-                const viewDetailLink = "${pageContext.request.contextPath}/manager/" + notification.fromTable.toLowerCase() + "/detail/" + notification.relatedId;
+                const viewDetailLink = "${pageContext.request.contextPath}/manager/" + notification.fromTable + "/detail/" + notification.relatedId;
                 const notificationHtml =
                     '<a class="dropdown-item current-notification" href="' + viewDetailLink + '" ' +
                 'data-notification-id="' + notification.id + '" ' +
@@ -217,7 +217,7 @@
         $(".no-notification").remove();  // Remove the "no notification" message
         const message = notification.message || "No message";
         const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown Time";
-        const viewDetailLink = "${pageContext.request.contextPath}/manager/" + notification.fromTable.toLowerCase() + "/detail/" + notification.relatedId;
+        const viewDetailLink = "${pageContext.request.contextPath}/manager/" + notification.fromTable + "/detail/" + notification.relatedId;
         const notificationHtml =
             '<a class="dropdown-item new-notification" href="' + viewDetailLink + '" ' +
             'data-notification-id="' + notification.id + '" ' +

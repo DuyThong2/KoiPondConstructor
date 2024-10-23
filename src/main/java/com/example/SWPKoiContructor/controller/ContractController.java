@@ -20,6 +20,7 @@ import com.example.SWPKoiContructor.services.FeedbackService;
 import com.example.SWPKoiContructor.services.QuoteService;
 import com.example.SWPKoiContructor.services.StaffService;
 import com.example.SWPKoiContructor.services.UserService;
+import com.example.SWPKoiContructor.services.NotificationService;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import java.time.LocalDate;
 import java.util.Date;
@@ -35,6 +36,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -52,9 +54,11 @@ public class ContractController {
     private ContractDAO contractDAO;
     private UserService userService;
     private FeedbackService feedbackService;
+    
+    private NotificationService notificationService;
 
     public ContractController(ContractService contractService, TermService termService, CustomerService customerService,
-            StaffService staffService, QuoteService quotesService, ContractDAO contractDAO, UserService userService, FeedbackService feedbackService, FileUtility fileUtility) {
+            StaffService staffService, QuoteService quotesService, ContractDAO contractDAO, UserService userService, FeedbackService feedbackService, FileUtility fileUtility, NotificationService notificationService  ) {
         this.contractService = contractService;
         this.termService = termService;
         this.customerService = customerService;
@@ -64,6 +68,7 @@ public class ContractController {
         this.userService = userService;
         this.feedbackService = feedbackService;
         this.fileUtility = fileUtility;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/manager/contract")
@@ -267,8 +272,7 @@ public class ContractController {
     @PostMapping("/consultant/contract/create")
     public String saveContract(@ModelAttribute("contract") Contract contract,
             @RequestParam("file") MultipartFile file,
-            @RequestParam("termOption") String termOption
-    ) {
+            @RequestParam("termOption") String termOption) {
 
         // Handle file upload
         String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
@@ -314,6 +318,9 @@ public class ContractController {
         // Set the term to the contract if a term was determined
         // Save the contract entity with the term properly handled
         contract = contractService.createContract(contract);
+
+        // Create notification for the new contract
+        notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId());
 
         return "redirect:/consultant/contract/viewDetail/" + contract.getContractId();
     }
@@ -445,14 +452,31 @@ public class ContractController {
         // Save the contract entity with the updated term
         contract = contractService.createContract(contract);
 
-        return "redirect:/manager/contract/viewDetail/" + contract.getContractId();
+        return "redirect:/manager/contract/detail/" + contract.getContractId();
     }
 
     @PostMapping("/customer/contract/editStatus")
     public String editStatusByCustomer(@RequestParam("id") int contractId, @RequestParam("status") int status) {
         Contract contract = contractService.changeStatusContract(status, contractId);
+        
+        // Create notification for the status change
+        String statusDescription = getStatusDescription(status);
+        notificationService.createContractStatusNotification(contract.getCustomer().getName(), contractId, statusDescription);
+        
         return "redirect:/customer/contract/viewDetail/" + contractId;
+    }
 
+    // Helper method to get status description
+    private String getStatusDescription(int status) {
+        switch (status) {
+            case 1: return "Pending";
+            case 2: return "Approved";
+            case 3: return "Rejected by Customer";
+            case 4: return "Rejected by Manager";
+            case 5: return "Canceled";
+            case 6: return "Accepted";
+            default: return "Unknown";
+        }
     }
 
     @PostMapping("/customer/contract/editStatusAndFeedback")
@@ -473,7 +497,7 @@ public class ContractController {
     @PostMapping("/manager/contract/editStatus")
     public String editStatusByManager(@RequestParam("id") int contractId, @RequestParam("status") int status) {
         Contract contract = contractService.changeStatusContract(status, contractId);
-        return "redirect:/manager/contract/viewDetail/" + contractId;
+        return "redirect:/manager/contract/detail/" + contractId;
 
     }
 
@@ -488,7 +512,7 @@ public class ContractController {
         User toUser = userService.getUserById(toUserId);
         Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, contract);
         newFeedback = feedbackService.saveFeedback(newFeedback);
-        return "redirect:/manager/contract/viewDetail/" + contractId;
+        return "redirect:/manager/contract/detail/" + contractId;
 
     }
 

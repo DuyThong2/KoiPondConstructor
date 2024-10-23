@@ -44,7 +44,7 @@ public class ProjectController {
     public String ProjectList(Model model,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "status") String sortBy,
+            @RequestParam(defaultValue = "dateStart") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType,
             @RequestParam(required = false) Integer statusFilter,
             @RequestParam(required = false) Integer stageFilter) {
@@ -127,7 +127,8 @@ public class ProjectController {
             project.setDateStart(Utility.localDateToUtilDate(localDate));
             project.setStatus(1);
             project.setStage(1);
-            project.setContent(new Content());
+            Content content = new Content();
+            project.setContent(content);
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);
             return "redirect:/manager/projects/detail/" + newlyCreatedProject.getProjectId();

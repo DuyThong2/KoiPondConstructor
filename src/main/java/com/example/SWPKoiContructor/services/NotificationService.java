@@ -8,7 +8,10 @@ import com.example.SWPKoiContructor.entities.Notification;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
+import java.time.LocalDateTime;
 import java.util.List;
+import com.example.SWPKoiContructor.entities.ServiceDetail;
+
 @Service
 public class NotificationService {
      @Autowired
@@ -84,12 +87,12 @@ public class NotificationService {
      }
 
      @Transactional
-     public void createQuoteNotification(String customerName, int consultantId) {
+     public void createNotification(String customerName, int relatedId, String fromTable) {
           Notification notification = new Notification();
-          notification.setMessage("New quote created for customer: " + customerName);
-          notification.setRelatedId(consultantId);
+          notification.setMessage("New " + fromTable + " created for customer: " + customerName);
+          notification.setRelatedId(relatedId);
           notification.setReceiverType("manager");
-          notification.setFromTable("quote");
+          notification.setFromTable(fromTable);
           notification.setCreatedAt(LocalDateTime.now());
           notification.setRead(false);
           
@@ -97,5 +100,47 @@ public class NotificationService {
           
           // Broadcast notification to /topic/notifications
           simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
+     }
+
+     @Transactional
+     public void createQuoteNotification(String customerName, int quoteId) {
+          createNotification(customerName, quoteId, "quote");
+     }
+
+     @Transactional
+     public void createContractNotification(String customerName, int contractId) {
+          createNotification(customerName, contractId, "contract");
+     }
+
+     @Transactional
+     public void createContractStatusNotification(String customerName, int contractId, String statusDescription) {
+          Notification notification = new Notification();
+          notification.setMessage("Contract status updated by " + customerName + ": " + statusDescription);
+          notification.setRelatedId(contractId);
+          notification.setReceiverType("manager");
+          notification.setFromTable("contract");
+          notification.setCreatedAt(LocalDateTime.now());
+          notification.setRead(false);
+          
+          notificationDAO.saveNotification(notification);
+          
+          // Broadcast notification to /topic/notifications
+          simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
+     }
+
+     @Transactional
+     public void createCancelRequestNotification(ServiceDetail serviceDetail, String notificationMessage) {
+         Notification notification = new Notification();
+         notification.setMessage(notificationMessage);
+         notification.setRelatedId(serviceDetail.getId());
+         notification.setReceiverType("manager");
+         notification.setFromTable("serviceDetail");
+         notification.setCreatedAt(LocalDateTime.now());
+         notification.setRead(false);
+         
+         notificationDAO.saveNotification(notification);
+         
+         // Broadcast notification to /topic/notifications
+         simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
      }
 }

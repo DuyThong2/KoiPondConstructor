@@ -55,12 +55,16 @@ public class ServiceDetail {
     @JoinColumn(name = "staff_id")
     private Staff staff;
     
+
+    @Column(name = "service_cancel_message")
+    private String serviceCancelMessage;
+
     @ManyToOne
     @JoinColumn(name = "service_quotes_id")
     private ServiceQuotes serviceQuotes;
 
-    public ServiceDetail(int id, Double price, Date dateRegister, Integer rating, Integer serviceDetailStatus, String feedback, Service service, Customer customer, Staff staff,Date feedbackDate) {
-        this.id = id;
+    public ServiceDetail(int id, Double price, Date dateRegister, Integer rating, Integer serviceDetailStatus, String feedback, Service service, Customer customer, Staff staff,Date feedbackDate, String serviceCancelMessage) {
+        this.id = id;       
         this.price = price;
         this.dateRegister = dateRegister;
         this.rating = rating;
@@ -70,6 +74,7 @@ public class ServiceDetail {
         this.customer = customer;
         this.staff = staff;
         this.feedbackDate= feedbackDate;
+        this.serviceCancelMessage = serviceCancelMessage;
     }
 
     public ServiceDetail() {
@@ -164,5 +169,11 @@ public class ServiceDetail {
         this.serviceQuotes = serviceQuotes;
     }
     
-    
+    public String getServiceCancelMessage() {
+        return serviceCancelMessage;
+    }
+
+    public void setServiceCancelMessage(String serviceCancelMessage) {
+        this.serviceCancelMessage = serviceCancelMessage;
+    }
 }

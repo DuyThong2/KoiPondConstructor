@@ -10,11 +10,8 @@ import com.example.SWPKoiContructor.entities.Feedback;
 import com.example.SWPKoiContructor.entities.Parcel;
 import com.example.SWPKoiContructor.entities.Quotes;
 import com.example.SWPKoiContructor.entities.User;
-import com.example.SWPKoiContructor.services.ConsultantService;
-import com.example.SWPKoiContructor.services.FeedbackService;
-import com.example.SWPKoiContructor.services.ParcelService;
-import com.example.SWPKoiContructor.services.QuoteService;
-import com.example.SWPKoiContructor.services.UserService;
+import com.example.SWPKoiContructor.services.*;
+
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -40,14 +37,15 @@ public class QuoteController {
     private UserService userService;
     private FeedbackService feedbackService;
 
-    
+    private NotificationService notificationService;
 
-    public QuoteController(QuoteService quoteService, ConsultantService consultantService, ParcelService parcelService, UserService userService, FeedbackService feedbackService) {
+    public QuoteController(QuoteService quoteService, ConsultantService consultantService, ParcelService parcelService, UserService userService, FeedbackService feedbackService,NotificationService notificationService) {
         this.quoteService = quoteService;
         this.consultantService = consultantService;
         this.parcelService = parcelService;
         this.userService = userService;
         this.feedbackService = feedbackService;
+        this.notificationService= notificationService;
     }
 
     //-------------------------------------  CUSTOMER SITE  ---------------------------------------------
@@ -259,7 +257,7 @@ public class QuoteController {
         newQuote.setQuotesDate(new Date());
         newQuote = quoteService.saveQuotes(newQuote);
         Consultant consultant = newQuote.getConsultant();
-        notificationService.createQuoteNotification(consultant.getConsultantCustomerName(),);
+        notificationService.createQuoteNotification(consultant.getConsultantCustomerName(),newQuote.getQuotesId());
         return "redirect:/consultant/quote";
     }
 

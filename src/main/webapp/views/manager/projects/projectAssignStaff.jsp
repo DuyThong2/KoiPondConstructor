@@ -10,8 +10,8 @@
         <title>Project and Customer Information</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-        <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+                <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
         <style>
             body {
                 background-color: #f8f9fa;
@@ -253,20 +253,11 @@
                                        value="${(project.stage > 2) ? 'btn-success' : (project.stage == 2) ? 'btn-warning' : 'btn-secondary'}" />
                                 <div class="col text-center mb-2">
                                     <c:choose>
-                                        <c:when
-                                            test="${designClass == 'btn-success' || designClass == 'btn-warning'}">
-                                            <a href="${pageContext.request.contextPath}/manager/design/viewDetail/${project.design.designId}">
-                                                <button type="button"
-                                                        class="btn stage-button btn-md btn-block px-3 ${designClass}">
-                                                    Design
-                                                </button>
-                                            </a>
+                                        <c:when test="${designClass == 'btn-success' || designClass == 'btn-warning'}">
+                                            <a href="${pageContext.request.contextPath}/manager/design/detail/${project.design.designId}"><button type="button" class="btn stage-button btn-md btn-block px-3 ${designClass}">Design <i class="fas fa-external-link-alt ml-2"></i></button></a>
                                         </c:when>
                                         <c:otherwise>
-                                            <button type="button"
-                                                    class="btn stage-button btn-md btn-block px-3 ${designClass}">
-                                                Design
-                                            </button>
+                                            <button type="button" class="btn stage-button btn-md btn-block px-3 ${designClass}">Design</button>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
@@ -275,21 +266,11 @@
                                        value="${(project.stage > 3) ? 'btn-success' : (project.stage == 3) ? 'btn-warning' : 'btn-secondary'}" />
                                 <div class="col text-center mb-2">
                                     <c:choose>
-                                        <c:when
-                                            test="${constructionClass == 'btn-success' || constructionClass == 'btn-warning'}">
-                                            <a
-                                                href="${pageContext.request.contextPath}/manager/construction/viewDetail/${project.construction.constructionId}">
-                                                <button type="button"
-                                                        class="btn stage-button btn-md btn-block px-3 ${constructionClass}">
-                                                    Construction
-                                                </button>
-                                            </a>
+                                        <c:when test="${constructionClass == 'btn-success' || constructionClass == 'btn-warning'}">
+                                            <a href="${pageContext.request.contextPath}/manager/construction/detail/${project.construction.constructionId}"><button type="button" class="btn stage-button btn-md btn-block px-3 ${constructionClass}">Construction <i class="fas fa-external-link-alt ml-2"></i></button></a>
                                         </c:when>
                                         <c:otherwise>
-                                            <button type="button"
-                                                    class="btn stage-button btn-md btn-block px-3 ${constructionClass}">
-                                                Construction
-                                            </button>
+                                            <button type="button" class="btn stage-button btn-md btn-block px-3 ${constructionClass}">Construction</button>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
@@ -373,8 +354,8 @@
                                                                             onclick="confirmDelete(${staff.id}, ${project.projectId}, 'design')">&times;</button>
                                                                 </c:if>
 
-                                                                <button type="button"
-                                                                        class="btn btn-info mb-2">Detail</button>
+                                                                <a type="button"
+                                                                        class="btn btn-info mb-2" href="${pageContext.request.contextPath}/manager/design/detail/${project.design.designId}">Detail</a>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -438,8 +419,8 @@
                                                                             aria-label="Close"
                                                                             onclick="confirmDelete(${staff.id}, ${project.projectId}, 'construction')">&times;</button>
                                                                 </c:if>
-                                                                <button type="button"
-                                                                        class="btn btn-info mb-2">Detail</button>
+                                                                <a type="button"
+                                                                        class="btn btn-info mb-2" href="${pageContext.request.contextPath}/manager/construction/detail/${project.construction.constructionId}" >Detail</a>
                                                             </div>
                                                         </div>
                                                     </div>

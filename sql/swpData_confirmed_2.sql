@@ -340,6 +340,7 @@ CREATE TABLE Service_Detail (
     customer_id INT,                  -- Links to the customer giving feedback
     staff_id INT,
 	service_quotes_id INT,
+    service_cancel_message NVARCHAR(MAX),
     FOREIGN KEY (service_id) REFERENCES Service(service_id),
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
     FOREIGN KEY (staff_id) REFERENCES Staffs(id),
