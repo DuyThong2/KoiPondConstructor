@@ -188,7 +188,7 @@
                         </td>
                         <td>
                             <a class="btn btn-info"
-                               href="${pageContext.request.contextPath}/manager/projects/details/${project.projectId}">Details</a>
+                               href="${pageContext.request.contextPath}/manager/projects/detail/${project.projectId}">Details</a>
                             <a href="${pageContext.request.contextPath}/manager/projects/assign/${project.projectId}"
                                class="btn btn-warning">Manage</a>
 
@@ -263,7 +263,7 @@
                                     </td>
                                     <td colspan="4">
                                         <button class="btn btn-info"
-                                                onclick="window.location.href = '${pageContext.request.contextPath}/manager/design/viewDetail/${project.design.designId}'">Design
+                                                onclick="window.location.href = '${pageContext.request.contextPath}/manager/design/detail/${project.design.designId}'">Design
                                             Details</button>
                                         <a href="${pageContext.request.contextPath}/manager/projects/assign/${project.projectId}"
                                            class="btn btn-warning">Assign Staff</a>
@@ -338,7 +338,7 @@
                                     </td>
                                     <td colspan="4">
                                         <button class="btn btn-info"
-                                                onclick="window.location.href = '${pageContext.request.contextPath}/manager/construction/viewDetail/${project.construction.constructionId}'">Construction
+                                                onclick="window.location.href = '${pageContext.request.contextPath}/manager/construction/detail/${project.construction.constructionId}'">Construction
                                             Details</button>
                                         <a href="${pageContext.request.contextPath}/manager/projects/assign/${project.projectId}"
                                            class="btn btn-warning">Assign Staff</a>

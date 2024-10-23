@@ -75,7 +75,7 @@ public class ServiceDetailController {
 
     // Show detailed information about a specific service detail
 
-    @GetMapping("/manager/serviceDetails/{serviceDetailId}")
+    @GetMapping("/manager/serviceDetail/detail/{serviceDetailId}")
     public String showServiceDetail(
             @PathVariable("serviceDetailId") int serviceDetailId, Model model) {
         ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
@@ -300,7 +300,6 @@ public class ServiceDetailController {
         List<ServiceDetail> serviceDetailList = serviceDetailService.getPaginationServiceDetailListByCustomerId(
                 customer.getId(), page, size, sortBy, sortType);
         long serviceDetailNum = serviceDetailService.countServiceDetailsByCustomerId(customer.getId());
-        System.out.println("VAI CACHUONG" +serviceDetailNum);
 
         // Calculate total number of pages
         long totalPage = (long) Math.ceil((double) serviceDetailNum / size);

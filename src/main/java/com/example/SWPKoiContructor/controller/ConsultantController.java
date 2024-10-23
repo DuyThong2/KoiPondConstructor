@@ -38,17 +38,16 @@ public class ConsultantController {
     private CustomerService customerService;
     private NotificationService notificationService;
 
-    private final SimpMessagingTemplate simpMessagingTemplate;
 
     public ConsultantController(ConsultantService consultantService,
                                 StaffService staffService,
                                 CustomerService customerService,
-                                SimpMessagingTemplate simpMessagingTemplate,
+
                                 NotificationService notificationService) {
         this.consultantService = consultantService;
         this.staffService = staffService;
         this.customerService = customerService;
-        this.simpMessagingTemplate = simpMessagingTemplate;
+
         this.notificationService =notificationService;
     }
 
@@ -202,21 +201,11 @@ public class ConsultantController {
         newConsultant = consultantService.createConsultant(newConsultant);
 
         // Call the private method to handle notification
-        sendConsultantCreationNotification(newConsultant);
+        notificationService.sendConsultantCreationNotification(newConsultant);
 
         return "redirect:/";
     }
 
     // Private method to send notification
-    private void sendConsultantCreationNotification(Consultant newConsultant) {
-        Notification notification = new Notification();
-        notification.setMessage("New consultant created: " + newConsultant.getConsultantCustomerName());
-        notification.setRelatedId(newConsultant.getConsultantId());  // Assuming getConsultantId() exists
-        notification.setReceiverType("manager"); // Assuming manager is notified
-        notification.setFromTable("consultant");
-        notification.setCreatedAt(java.time.LocalDateTime.now());
-        notificationService.saveNotification(notification);
-        // Broadcast notification to /topic/notifications
-        simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
-    }
+
 }

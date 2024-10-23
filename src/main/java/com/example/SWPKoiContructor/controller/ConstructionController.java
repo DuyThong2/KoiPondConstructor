@@ -49,7 +49,7 @@ public class ConstructionController {
 
     }
 
-    @GetMapping("/manager/construction/viewDetail/{id}")
+    @GetMapping("/manager/construction/detail/{id}")
     public String viewConstructionStage(Model model, @PathVariable("id") int id) {
         Construction construction = constructionService.getConstructionById(id);
 

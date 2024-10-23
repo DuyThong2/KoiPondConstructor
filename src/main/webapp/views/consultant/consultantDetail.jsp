@@ -122,7 +122,7 @@
                 </c:when>
                 <c:when test="${consultant.consultantStatus == 4 && empty consultant.quotes}">
                     <div class="">
-                        <form action="${pageContext.request.contextPath}/consultant/quote/createNewQuotes" method="post" class="d-inline">
+                        <form action="${pageContext.request.contextPath}/consultant/quote/createNewQuotes" method="get" class="d-inline">
                             <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
                             <button type="submit" class="btn btn-success">Create New Quote</button>
                         </form>

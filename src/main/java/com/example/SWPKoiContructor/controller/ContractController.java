@@ -160,7 +160,7 @@ public class ContractController {
         return "customer/contract/contractManage";  // JSP page to display the contract list
     }
 
-    @GetMapping("/manager/contract/viewDetail/{id}")
+    @GetMapping("/manager/contract/detail/{id}")
     public String viewDetailContract(Model model, @PathVariable("id") int id, HttpSession session) {
         Contract contract = contractService.getContractById(id);
         if (contract != null) {

@@ -6,14 +6,17 @@ import com.example.SWPKoiContructor.entities.Notification; // Add this import
 import java.util.List;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class NotificationDAO {
     @PersistenceContext
     private EntityManager entityManager;
+
     public NotificationDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
     public void saveNotification(Notification notification) {
         if (notification == null) {
             throw new IllegalArgumentException("Notification cannot be null");
@@ -61,12 +64,14 @@ public class NotificationDAO {
         typedQuery.setParameter("receiverId", receiverId);
         return typedQuery.getSingleResult();
     }
+
     public List<Notification> getNewNotificationsForManager() {
         String query = "SELECT n FROM Notification n WHERE LOWER(n.receiverType) = :receiverType AND n.isRead = false ORDER BY n.createdAt DESC";
         TypedQuery<Notification> typedQuery = entityManager.createQuery(query, Notification.class);
         typedQuery.setParameter("receiverType", "manager"); // Corrected parameter name
         return typedQuery.getResultList();
     }
+
     public long getUnreadNotificationsCountManager() {
         String query = "SELECT COUNT(n) FROM Notification n WHERE LOWER(n.receiverType) = :receiverType AND n.isRead = false ORDER BY n.createdAt DESC";
         TypedQuery<Long> typedQuery = entityManager.createQuery(query, Long.class);
@@ -77,5 +82,17 @@ public class NotificationDAO {
         return typedQuery.getSingleResult();
     }
 
-}
+    public Notification getNotificationById(int id) {
+        return entityManager.find(Notification.class, id);
+    }
 
+    public void updateNotification(Notification notification) {
+        entityManager.merge(notification);
+    }
+
+    @Transactional
+    public void markAllAsRead() {
+        String hql = "UPDATE Notification n SET n.isRead = true WHERE n.receiverType = 'manager' AND n.isRead = false";
+        entityManager.createQuery(hql).executeUpdate();
+    }
+}

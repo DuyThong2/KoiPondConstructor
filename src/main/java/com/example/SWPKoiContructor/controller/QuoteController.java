@@ -40,6 +40,8 @@ public class QuoteController {
     private UserService userService;
     private FeedbackService feedbackService;
 
+    
+
     public QuoteController(QuoteService quoteService, ConsultantService consultantService, ParcelService parcelService, UserService userService, FeedbackService feedbackService) {
         this.quoteService = quoteService;
         this.consultantService = consultantService;
@@ -234,7 +236,7 @@ public class QuoteController {
         return "redirect:/consultant/quote/detail/" + quoteId;
     }
 
-    @PostMapping("consultant/quote/createNewQuotes")
+    @GetMapping("consultant/quote/createNewQuotes")
     public String createNewQuote(@RequestParam("consultantId") int consultantId, Model model, HttpSession session) {
         Quotes newQuote = new Quotes();
         Consultant consultant = consultantService.getConsultantById(consultantId);

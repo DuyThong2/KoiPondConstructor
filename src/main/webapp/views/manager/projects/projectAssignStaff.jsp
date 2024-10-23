@@ -98,13 +98,11 @@
     <body>
         <!-- Sidebar -->
         <%@include file="../navBar.jsp" %>
-
         <!-- Main Content -->
         <div class="container">
             <header>
                 <h2>Assign Staffs</h2>
             </header>
-
             <div class="row info-section">
                 <!-- Customer Information Card -->
                 <div class="col-md-4">
@@ -120,7 +118,6 @@
                             <p><strong>Email:</strong> ${customer.email}</p>
                         </div>
                     </div>
-
                     <!-- Project Information Card (Left Column) Below Customer Information -->
                     <div class="info-box">
                         <h4>Project Information</h4>
@@ -230,7 +227,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="col-md-8">
                     <div class="info-box">
                         <div class="row justify-content-center">
@@ -240,7 +236,6 @@
                         </div>
                         <div class="container-fluid">
                             <div class="row justify-content-between">
-
                                 <!-- Planning Stage -->
                                 <c:set var="planningClass"
                                        value="${(project.stage > 1) ? 'btn-success' : (project.stage == 1) ? 'btn-warning' : 'btn-secondary'}" />
@@ -250,8 +245,6 @@
                                         Planning
                                     </button>
                                 </div>
-
-                                <!-- Design Stage -->
                                 <!-- Design Stage -->
                                 <c:set var="designClass"
                                        value="${(project.stage > 2) ? 'btn-success' : (project.stage == 2) ? 'btn-warning' : 'btn-secondary'}" />
@@ -274,7 +267,6 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
-
                                 <!-- Construction Stage -->
                                 <c:set var="constructionClass"
                                        value="${(project.stage > 3) ? 'btn-success' : (project.stage == 3) ? 'btn-warning' : 'btn-secondary'}" />
@@ -298,8 +290,6 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
-
-
                                 <!-- Maintenance Stage -->
                                 <c:set var="maintenanceClass"
                                        value="${(project.stage > 4) ? 'btn-success' : (project.stage == 4) ? 'btn-warning' : 'btn-secondary'}" />
@@ -321,7 +311,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                     <div class="info-box">
                         <div class="content-box">
@@ -342,20 +331,9 @@
                             <div id="staff-card-section">
                                 <!-- Designer Row -->
                                 <div class="row hover-row mb-4">
-
                                     <div class="col-12">
                                         <h5>Designer Staff</h5>
                                     </div>
-
-
-
-                                    <!-- <div class="col-6 text-right">
-                                    <button type="button" id="assignDesignerButton"
-                                        class="btn btn-success assign-button" data-toggle="modal"
-                                            data-target="#assignDesignerModal" data-project-id="${project.projectId}">
-                                        Assign Staff
-                                    </button>
-                                </div> -->
                                     <div class="row w-100 justify-content-center">
                                         <input type="hidden" id="designStaffAssigned"
                                                value="${empty designerStaff ? 'false' : 'true'}" />
@@ -471,11 +449,6 @@
                                 </div>
                             </div>
                             <!-- Search and Assign Staff Section -->
-                            <!-- Search and Assign Staff Section -->
-                            <!-- Search and Assign Staff Section -->
-
-                            <!-- Staff Table -->
-                            <!-- Search and Assign Staff Section -->
                             <c:if test="${project.status!=3 && project.status!=4}">
                                 <div class="search-section container mt-4">
                                     <h2>Search and Assign Staff</h2>
@@ -571,14 +544,7 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
-
-
                                     </div>
-
-
-
-
-
                                     <!-- Search Section -->
                                     <div class="modal fade" id="assignDesignerModal" tabindex="-1" role="dialog"
                                          aria-labelledby="assignDesignerModalLabel" aria-hidden="true">
@@ -675,10 +641,6 @@
                                 </div>
                             </c:if>
                         </div>
-
-                        <!-- Search Section -->
-
-
                         <!-- Update Confirmation Modal -->
                         <div class="modal fade" id="updateStageModal" tabindex="-1" role="dialog"
                              aria-labelledby="updateStageModalLabel" aria-hidden="true">
@@ -753,29 +715,6 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Notification Modal -->
-                        <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog"
-                             aria-labelledby="notificationModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="notificationModalLabel">Notification</h5>
-                                        <button type="button" class="close" data-dismiss="modal"
-                                                aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body" id="notificationModalBody">
-                                        <!-- Message will be dynamically inserted here -->
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary"
-                                                data-dismiss="modal">OK</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Confirmation Modal for Assigning Staff -->
                         <!-- Confirmation Modal for Assigning Staff -->
                         <div class="modal fade" id="assignStaffConfirmationModal" tabindex="-1" role="dialog"
                              aria-labelledby="assignStaffConfirmationModalLabel" aria-hidden="true">
@@ -927,50 +866,7 @@
                                                         }
                                                     }
                                                     //FUNCTION TO OPEN POPUP SEARCH
-                                                    $(document).ready(function () {
-                                                        $('#assignDesignerButton').on('click', function () {
-                                                            $.ajax({
-                                                                url: '${pageContext.request.contextPath}/getDesignerStaff',
-                                                                method: 'GET',
-                                                                success: function (response) {
-                                                                    $('#designerResults').empty();
-                                                                    response.forEach(function (staff) {
-                                                                        $('#designerResults').append(`
-                    <tr>
-                        <td>${staff.name}</td>
-                        <td><button type="button" class="btn btn-primary" onclick="assignStaff(${staff.id}, 'designer')">Assign</button></td>
-                    </tr>
-                `);
-                                                                    });
-                                                                },
-                                                                error: function (xhr, status, error) {
-                                                                    console.error('Failed to fetch designer staff: ', error);
-                                                                }
-                                                            });
-                                                        });
-
-                                                        $('#assignConstructionButton').on('click', function () {
-                                                            $.ajax({
-                                                                url: '${pageContext.request.contextPath}/getConstructionStaff',
-                                                                method: 'GET',
-                                                                success: function (response) {
-                                                                    $('#constructionResults').empty();
-                                                                    response.forEach(function (staff) {
-                                                                        $('#constructionResults').append(`
-                    <tr>
-                        <td>${staff.name}</td>
-                        <td><button type="button" class="btn btn-primary" onclick="assignStaff(${staff.id}, 'construction')">Assign</button></td>
-                    </tr>
-                `);
-                                                                    });
-                                                                },
-                                                                error: function (xhr, status, error) {
-                                                                    console.error('Failed to fetch construction staff:', error);
-                                                                }
-                                                            });
-                                                        });
-                                                    });
-
+                                                  
                                                     function showConfirmationModal(projectId, action) {
                                                         // Based on action (share or cancel), update modal content
                                                         if (action === 'share') {

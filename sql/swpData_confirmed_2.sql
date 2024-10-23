@@ -408,7 +408,8 @@ CREATE TABLE Feedback (
 
 CREATE TABLE Notification (
     notification_id int primary key identity(1,1),
-    receiver_id int NOT NULL,
+    receiver_id int,
+    receiver_type NVARCHAR(55),
     message NVARCHAR(255) NOT NULL,
     is_read bit not null default 0,
     related_id int, --to know the id of the related table

@@ -68,7 +68,7 @@
                                 </c:when>
                             </c:choose>
                         </td>
-                        <td><a href="${pageContext.request.contextPath}/manager/design/viewDetail/${designs.designId}" class="btn btn-info">View Details</a></td>
+                        <td><a href="${pageContext.request.contextPath}/manager/design/detail/${designs.designId}" class="btn btn-info">View Details</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>

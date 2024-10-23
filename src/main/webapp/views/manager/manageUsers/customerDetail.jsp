@@ -146,7 +146,7 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <form action="${pageContext.request.contextPath}/manager/projects/details/${project.projectId}" method="GET" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/manager/projects/detail/${project.projectId}" method="GET" class="d-inline">
                                         <button type="submit" class="btn btn-info">
                                             <i class="fas fa-eye icon-btn"></i> Details
                                         </button>
@@ -181,7 +181,7 @@
                                 <td>${detail.service.serviceName}</td>
                                 <td>${detail.service.serviceDescription}</td>
                                 <td>
-                                    <form action="${pageContext.request.contextPath}/manager/serviceDetails/${detail.id}" method="GET" class="d-inline">
+                                    <form action="${pageContext.request.contextPath}/manager/serviceDetail/detail/${detail.id}" method="GET" class="d-inline">
                                         <button type="submit" class="btn btn-info">
                                             <i class="fas fa-eye icon-btn"></i> Details
                                         </button>

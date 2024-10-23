@@ -160,7 +160,7 @@
                                                 </c:choose>
                                             </td>
                                             <td class="d-flex flex-column">
-                                                <a href="${pageContext.request.contextPath}/manager/serviceDetails/${service.id}"
+                                                <a href="${pageContext.request.contextPath}/manager/serviceDetail/detail/${service.id}"
                                                     class="btn btn-info">Details</a>
                                                 <c:if test="${service.serviceDetailStatus == 4}">
                                                     <!-- View Request Button -->

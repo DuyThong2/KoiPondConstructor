@@ -173,6 +173,40 @@
             display: none;
             /* Ẩn mũi tên */
         }
+
+        .new-notification {
+            background-color: #f69f8c;
+            /* Light blue background */
+            border-left: 4px solid #fa8267;
+            /* Blue left border */
+        }
+        .current-notification {
+            background-color: #e6f7ff;
+            /* Light blue background */
+            border-left: 4px solid #1890ff;
+            /* Blue left border */
+        }
+
+        .dropdown-item {
+            border-bottom: 1.5px solid #e0e0e0;
+            padding: 10px 15px;
+        }
+
+
+
+       
+
+
+
+        .dropdown-item .notification-header {
+            color: red;
+            font-weight: bold;
+        }
+
+        .custom-notification-header {
+            font-size: 1.5rem;
+            /* Adjust this value as needed */
+        }
     </style>
 </head>
 
@@ -192,14 +226,15 @@
                     <span class="badge-note badge-danger" id="notificationCount">0</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown"
-                    style="width: 700px;overflow-y: auto; ">
-                    <h6 class="dropdown-header">Notifications</h6>
+                    style="width: 500px;overflow-y: auto; ">
+                    <div class="d-flex justify-content-between align-items-center px-3 py-2">
+                        <h3 class="dropdown-header h3 text-danger custom-notification-header mb-0">Notifications</h3>
+                        <button class="btn btn-sm btn-outline-primary" onclick="markAllAsRead()">Mark All as Read</button>
+                    </div>
                     <!-- New notifications will be dynamically inserted here -->
                     <div id="notificationItems">
-                        <a class="dropdown-item" href="#">No new notifications</a>
+                        <a class="dropdown-item no-notification" href="#">No new notifications</a>
                     </div>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">See All Notifications</a>
                 </div>
             </div>
 
@@ -310,19 +345,16 @@
                     class="fas fa-sign-out-alt"></i> Logout</a>
         </div>
     </aside>
-
-
 </body>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script>
-
     // Function to fetch new notifications for manager
     function fetchNotifications() {
         $.ajax({
-            url: '/api/notifications/new/manage', // Assuming the URL is correct
+            url: '${pageContext.request.contextPath}/api/notifications/new/manage',
             method: 'POST',
             success: function (data) {
                 console.log(data);
@@ -330,7 +362,7 @@
                     updateNotificationDropdown(data);
                     updateNotificationCount(data.length);
                 } else {
-                    updateNotificationDropdown([]); // No new notifications
+                    updateNotificationDropdown([]);
                     updateNotificationCount(0);
                 }
             },
@@ -340,94 +372,83 @@
         });
     }
 
-    // Update the notification dropdown with new notifications
     function updateNotificationDropdown(notifications) {
         const dropdown = $('#notificationItems');
-        dropdown.empty(); // Clear the dropdown content
+        dropdown.empty();
 
         if (notifications.length > 0) {
             notifications.forEach(function (notification) {
-                console.log(notification.message, notification.createdAt); // Ensure these values are valid
-
-                // Use default values if data is empty or missing
                 const message = notification.message || "No message";
-                const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown time";
-
+                const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown Time";
+                const viewDetailLink = "${pageContext.request.contextPath}/manager/" + notification.fromTable.toLowerCase() + "/detail/" + notification.relatedId;
                 const notificationHtml =
-                    '<p class="dropdown-item" >' +
-                    '<strong>' + message + '</strong><br>' +
-                    '<small>' + timeAgo + '</small>' +
-                    '</p>';
-
+                    '<a class="dropdown-item current-notification" href="' + viewDetailLink + '" ' +
+                'data-notification-id="' + notification.id + '" ' +
+                'onclick="markAsReadAndNavigate(event, this)">' +
+                '<strong>' + message + '</strong><br>' +
+                '<small>' + timeAgo + '</small>' +
+                '</a>';
                 dropdown.append(notificationHtml);
             });
         } else {
-            dropdown.append('<a class="dropdown-item" href="#">No new notifications</a>');
+            dropdown.append('<a class="dropdown-item no-notification" href="#">No new notifications</a>');
         }
     }
 
-    // Update the notification count in the badge
     function updateNotificationCount(count) {
         const notificationCount = $('#notificationCount');
         notificationCount.text(count);
-
-        // Hide the badge if no notifications
-        if (count === 0) {
-            notificationCount.hide();
-        } else {
-            notificationCount.show();
-        }
+        notificationCount.toggle(count > 0);
     }
 
-    // Helper function to format the time into a human-readable format
-
-    // Poll for new notifications every 10 seconds
-
-
     var stompClient = null;
-
     function connectWebSocket() {
-        var socket = new SockJS("/ws-notifications");
+        var socket = new SockJS("${pageContext.request.contextPath}/ws-notifications");
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/notifications', function (notification) {
                 console.log("Received notification: ", notification.body);
-
-                showNotification(JSON.parse(notification.body));
+                showNotificationWebSocket(JSON.parse(notification.body));
                 updateNotificationCountDisplay();
-            }, function (error) {
-                console.log('WebSocket connection error:', error);
             });
-
-            socket.onclose = function (event) {
-                console.log('WebSocket closed unexpectedly:', event);
-            };
+        }, function (error) {
+            console.log('WebSocket connection error:', error);
+            setTimeout(connectWebSocket, 5000); // Retry connection after 5 seconds
         });
 
-  
+        socket.onclose = function (event) {
+            console.log('WebSocket closed unexpectedly:', event);
+            setTimeout(connectWebSocket, 5000); // Retry connection after 5 seconds
+        };
     }
-    function showNotification(notification) {
-        const message = notification.message || "No message"; //default value 
+
+    function showNotificationWebSocket(notification) {
+        $(".no-notification").remove();  // Remove the "no notification" message
+        const message = notification.message || "No message";
         const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown Time";
+        const viewDetailLink = "${pageContext.request.contextPath}/manager/" + notification.fromTable.toLowerCase() + "/detail/" + notification.relatedId;
         const notificationHtml =
-            '<a class="dropdown-item" href="/details/' + notification.relatedId + '?type=' + notification.fromTable + '">' +
+            '<a class="dropdown-item new-notification" href="' + viewDetailLink + '" ' +
+            'data-notification-id="' + notification.id + '" ' +
+            'onclick="markAsReadAndNavigate(event, this)">' +
             '<strong>' + message + '</strong><br>' +
             '<small>' + timeAgo + '</small>' +
             '</a>';
         $('#notificationItems').prepend(notificationHtml);
+
+        setTimeout(function () {
+            $('#notificationItems .new-notification').first().removeClass('new-notification').addClass('current-notification');
+        }, 10000);
     }
+
     function updateNotificationCountDisplay() {
-        var existingNotificationCount = $('#notificationItems .dropdown-item').length - 1;
-
-        // Calculate the total notification count
+        var existingNotificationCount = $('#notificationItems .dropdown-item').length;
         var totalNotificationCount = existingNotificationCount;
-        $('#notificationCount').text(totalNotificationCount);
-        $('#notificationCount').show();
-        // Show or hide the badge based on the count
 
+        console.log(totalNotificationCount);
+        $('#notificationCount').text(totalNotificationCount).toggle(totalNotificationCount > 0);
     }
-
 
     function formatTime(dateTime) {
         const date = new Date(dateTime);
@@ -435,18 +456,47 @@
         const diffTime = Math.abs(now - date);
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-        // If less than a day ago, show hours and minutes
         if (diffDays < 1) {
             return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
-        // If more than a day ago, show the date
         return date.toLocaleDateString();
     }
+
     $(document).ready(function () {
         connectWebSocket();
         fetchNotifications();
     });
-
+    function markAsReadAndNavigate(event, element) {
+        event.preventDefault();
+        const notificationId = element.getAttribute("data-notification-id");
+        const href = $(element).attr('href');
+        $.ajax({
+            url: '${pageContext.request.contextPath}/api/notifications/update/' + notificationId,
+            method: 'PUT',
+            success: function(response) {
+                console.log("Notification marked as read");
+                window.location.href = href;
+            },
+            error: function(xhr, status, error) {
+                console.log("Error marking notification as read:", error);
+                window.location.href = href;
+            }
+        });
+    }
+    function markAllAsRead() {
+        $.ajax({
+            url: '${pageContext.request.contextPath}/api/notifications/markAllAsRead',
+            method: 'PUT',
+            success: function(response) {
+                console.log("All notifications marked as read");
+                $('#notificationItems .current-notification .new-notification').remove();
+                updateNotificationCount(0);
+            },
+            error: function(xhr, status, error) {
+                console.log("Error marking all notifications as read:", error);
+            }
+        });
+    }
 </script>
 
 </html>
