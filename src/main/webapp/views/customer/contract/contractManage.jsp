@@ -326,10 +326,14 @@
                                     <span class="page-indicator"><strong>${currentPage + 1}</strong> / <strong>${totalPages}</strong></span>
 
                                     <!-- Next Button -->
-                                    <c:if test="${currentPage < totalPages - 1}">
+
+
+                                    <c:if test="${currentPage < totalPages -1}">
                                         <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}"class="btn btn-custom">&gt;</a>
                                     </c:if>
-                                    <c:if test="${currentPage == totalPages - 1}">
+                                    <c:if test="${currentPage >= totalPages -1}">
+
+
                                         <button class="btn btn-custom" disabled>&gt;</button>
                                     </c:if>
                                 </div>

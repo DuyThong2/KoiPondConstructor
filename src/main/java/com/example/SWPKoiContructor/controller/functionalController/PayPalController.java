@@ -1,21 +1,23 @@
 package com.example.SWPKoiContructor.controller.functionalController;
 
-
 import com.example.SWPKoiContructor.entities.Customer;
+import com.example.SWPKoiContructor.entities.PaymentHistory;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.services.ConstructionStageDetailService;
 import com.example.SWPKoiContructor.services.CustomerService;
 import com.example.SWPKoiContructor.services.DesignStageDetailService;
 import com.example.SWPKoiContructor.services.LoyaltyPointService;
+import com.example.SWPKoiContructor.services.PaymentHistoryService;
 import com.example.SWPKoiContructor.services.ServiceQuoteService;
 import com.example.SWPKoiContructor.services.functionalService.PayPalService;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.servlet.view.RedirectView;
+
+
 
 @Controller
 @RequestMapping("/paypal")
@@ -41,6 +45,9 @@ public class PayPalController {
 
     @Autowired
     private DesignStageDetailService designStageDetailService;
+    
+    @Autowired
+    private PaymentHistoryService paymentHistoryService;
     
     @Autowired
     private ServiceQuoteService serviceQuoteService;
@@ -150,11 +157,12 @@ public class PayPalController {
         return new RedirectView(cancelUrl);
     }
 
-    @GetMapping("/success/construction")
+     @GetMapping("/success/construction")
     public String successForConstruction(@RequestParam("paymentId") String paymentId,
                                          @RequestParam("PayerID") String payerId,
                                          @RequestParam("detailId") int detailId,
                                          @RequestParam("constructionId") int constructionId,
+                                         HttpSession session,
                                          RedirectAttributes redirectAttributes) {
         try {
             // Execute PayPal payment
@@ -163,6 +171,19 @@ public class PayPalController {
             if (payment.getState().equals("approved")) {
                 // Update construction stage detail status to 'Completed' (status 4)
                 constructionStageDetailService.updateConstructionStageDetailStatus(detailId, 4);
+
+                // Retrieve the Customer from the session
+                Customer customer = (Customer) session.getAttribute("user");
+
+                // Create a new PaymentHistory record
+                PaymentHistory paymentHistory = new PaymentHistory();
+                paymentHistory.setCustomer(customer);
+                BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(payment.getTransactions().get(0).getAmount().getTotal()));
+                paymentHistory.setAmount(amount);
+                paymentHistory.setPaymentDate(LocalDateTime.now());
+                paymentHistory.setPaymentMethod("PayPal");
+                paymentHistory.setDescription("Payment of "+amount+" for construction stage by "+ customer.getName());
+                paymentHistoryService.createPayment(paymentHistory);
 
                 // Redirect to construction page
                 redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
@@ -181,6 +202,7 @@ public class PayPalController {
                                    @RequestParam("PayerID") String payerId,
                                    @RequestParam("detailId") int detailId,
                                    @RequestParam("designId") int designId,
+                                   HttpSession session,
                                    RedirectAttributes redirectAttributes) {
         try {
             // Execute PayPal payment
@@ -189,8 +211,22 @@ public class PayPalController {
             if (payment.getState().equals("approved")) {
                 // Update design stage detail status to 'Completed' (status 4)
                 designStageDetailService.updateDesignStageDetailStatus(detailId, 4);
-                redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
+
+                // Retrieve the Customer from the session
+                Customer customer = (Customer) session.getAttribute("user");
+
+                // Create a new PaymentHistory record
+                PaymentHistory paymentHistory = new PaymentHistory();
+                paymentHistory.setCustomer(customer);
+                BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(payment.getTransactions().get(0).getAmount().getTotal()));
+                paymentHistory.setAmount(amount);
+                paymentHistory.setPaymentDate(LocalDateTime.now());
+                paymentHistory.setPaymentMethod("PayPal");
+                paymentHistory.setDescription("Payment of "+amount+" for design stage by "+ customer.getName());
+                paymentHistoryService.createPayment(paymentHistory);
+
                 // Redirect to design page
+                redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
                 return "redirect:/customer/project/design/" + designId;
             }
         } catch (PayPalRESTException e) {
