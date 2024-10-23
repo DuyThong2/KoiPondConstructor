@@ -161,24 +161,8 @@ public class ConsultantController {
     
     
     
-    //CUSTOMER SITE
-    @GetMapping("/customer/consultant/create")
-    public String createNewConsultant(Model model, HttpSession session){
-        Consultant newConsultant = new Consultant();
-        model.addAttribute("newConsultant", newConsultant);
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("customer", user);       
-        return "customer/consultant/consultantCreate";
-    }
-    
-    @PostMapping("/customer/consultant/save")
-    public String saveConsultant(@ModelAttribute("newConsultant")Consultant newConsultant){
-        newConsultant.setConsultantDateTime(Calendar.getInstance());
-        newConsultant.setConsultantStatus(1);
-        newConsultant = consultantService.createConsultant(newConsultant);
-        return "redirect:/customer/consultant/create";
-    }
 
+    //CUSTOMER SITE
 
     @PostMapping("/save")
     public String saveConsultantInWeb(@RequestParam("name") String name,
@@ -197,7 +181,15 @@ public class ConsultantController {
         newConsultant.setConsultantDateTime(Calendar.getInstance());
         newConsultant.setConsultantStatus(1);
 
+
         // Save the consultant
+
+        User user = (User) session.getAttribute("user");
+        if(user != null){
+            Customer cus = customerService.getCustomerById(user.getId());
+            newConsultant.setCustomer(cus);
+        }
+
         newConsultant = consultantService.createConsultant(newConsultant);
 
         // Call the private method to handle notification
@@ -206,6 +198,54 @@ public class ConsultantController {
         return "redirect:/";
     }
 
-    // Private method to send notification
 
+
+
+    @GetMapping("/customer/consultant")
+    public String listFilteredServiceQuoteCustomer(Model model, HttpSession session,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(defaultValue = "consultantDateTime") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDirection,
+            @RequestParam(required = false) Integer statusFilter){
+        User customer = (User) session.getAttribute("user");
+        List<Consultant> consultants;
+        long totalConsultant;
+
+        // Apply filtering based on the name, date range, and status
+        consultants = consultantService.getConsultantListOrderByAndSortCustomer(page, size, sortBy, sortDirection, statusFilter, customer);
+        totalConsultant = consultantService.countConsultantListOrderByAndSortCustomer(page, size, sortBy, sortDirection, statusFilter, customer);
+
+        int totalPages = (int) Math.ceil((double) totalConsultant / size);
+
+        if (page > totalPages) {
+            page = (int) totalPages;
+        } else if (page < 1) {
+            page = 1;
+
+        }
+        page = Math.max(page, 1);
+
+        // Add attributes to the model for JSP rendering
+        model.addAttribute("consultant", consultants);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPage", totalPages);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("statusFilter", statusFilter);
+
+        return "customer/consultant/consultantManage";  // JSP page to display the contract list
+    }
+
+    @GetMapping("/customer/consultant/updateStatus")
+    public String updateConsultantStatusCustomer(@RequestParam("consultantId")int consultantId,
+                                                 @RequestParam("statusId")int statusId, Model model, HttpSession session){
+        User customer = (User) session.getAttribute("user");
+        Consultant check = consultantService.getConsultantById(consultantId);
+        if(check != null && check.getCustomer().getId() == customer.getId()){
+            check = consultantService.updateConsultantStatus(consultantId, statusId);
+        }
+        return "redirect:/customer/consultant";
+
+    }
 }

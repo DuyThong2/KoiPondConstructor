@@ -4,12 +4,13 @@ import com.example.SWPKoiContructor.entities.*;
 
 import com.example.SWPKoiContructor.services.*;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,27 +27,63 @@ public class ConstructionController {
     private ConstructionService constructionService;
     private ConstructionStageService constructionStageService;
     private ConstructionStageDetailService constructionStageDetailService;
-
+    private DesignService designService;
+    private PaymentHistoryService paymentHistoryService;
     private ServiceDetailService serviceDetailService;
-    public ConstructionController(ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService,ServiceDetailService serviceDetailService) {
+
+
+
+    public ConstructionController(DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService) {
+        this.designService = designService;
         this.constructionService = constructionService;
         this.constructionStageService = ConstructionStageService;
         this.constructionStageDetailService = ConstructionStageDetailService;
         this.commentService = commentService;
         this.serviceDetailService = serviceDetailService;
+        this.paymentHistoryService = paymentHistoryService;
     }
 
     @GetMapping("/manager/construction")
     public String getListConstructionByCusName(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size) {
-        List<Construction> list = constructionService.getListConstructionByCustomerName(page, size);
-        int totalPages = constructionService.getTotalPage(size);
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(required = false) Integer statusFilter,
+            @RequestParam(required = false) String searchName) {
+        // Fetch all constructions with optional filters
+        List<Construction> list = constructionService.getListConstruction(null, page, size, statusFilter, searchName);
+        int totalPages = constructionService.getTotalPages(null, size, statusFilter, searchName);
+
         model.addAttribute("constructionList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
-        return "manager/construction/constructionManage";
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);
 
+        return "manager/construction/constructionManage";
+    }
+
+    @GetMapping("/constructor/manage")
+    public String listConstructionsByStaff(Model model, HttpSession session,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(required = false) Integer statusFilter,
+            @RequestParam(required = false) String searchName) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        // Fetch constructions filtered by the logged-in user's ID, status, and search name
+        List<Construction> constructions = constructionService.getListConstruction(user.getId(), page, size, statusFilter, searchName);
+        int totalPages = constructionService.getTotalPages(user.getId(), size, statusFilter, searchName);
+
+        model.addAttribute("constructions", constructions);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);
+
+        return "constructor/constructionManage";
     }
 
     @GetMapping("/manager/construction/detail/{id}")
@@ -83,27 +120,6 @@ public class ConstructionController {
         }
     }
 
-    @GetMapping("/constructor/manage")
-    public String listConstructionsByStaff(Model model, HttpSession session,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "1") int size) {
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            return "redirect:/login";
-        }
-
-        // Get paginated and sorted list of constructions by staffId
-        List<Construction> constructions = constructionService.getSortedAndPaginatedByStaff(user.getId(), page, size);
-        int totalPages = constructionService.getTotalPagesByStaff(user.getId(), size);
-
-        // Add data to the model to pass to the JSP
-        model.addAttribute("constructions", constructions);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", totalPages);
-
-        return "constructor/constructionManage"; // Return the view for managing constructions
-    }
-
     @GetMapping("/constructor/construction/{id}")
     public String constructionDetail(@PathVariable("id") int id, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
@@ -119,7 +135,7 @@ public class ConstructionController {
                     .anyMatch(constructionStaff -> constructionStaff.getStaff().getId() == user.getId());
 
             if (!isAssignedToConstruction) {
-                redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this project.");
+                redirectAttributes.addFlashAttribute("error", "You do not have permission to access this project.");
                 return "redirect:/error/error-403"; // Redirect to error page
             }
 
@@ -174,16 +190,39 @@ public class ConstructionController {
             @RequestParam int constructionId,
             RedirectAttributes redirectAttributes) {
         if (detailId == null || newStatus == null) {
-            redirectAttributes.addFlashAttribute("message", "Missing required parameters.");
+            redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
             return "redirect:/staff/updateStatus/constructionStage/" + constructionStageId + "?constructionId=" + constructionId;
         }
+
         try {
             // Update the construction stage detail status
-            constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
-            redirectAttributes.addFlashAttribute("message", "Status updated successfully!");
+            ConstructionStageDetail updatedDetail = constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
+
+            // Check if the updated detail is related to a payment and the new status is set to 4 (Completed)
+            if (updatedDetail != null
+                    && "Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())
+                    && newStatus == 4) {
+
+                // Step 1: Retrieve the Project ID from the constructionId
+                Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
+                BigDecimal amount = BigDecimal.valueOf(updatedDetail.getConstructionStage().getConstructionStagePrice());
+                // Step 4: Create a new PaymentHistory record using the streamlined constructor
+                PaymentHistory paymentHistory = new PaymentHistory(
+                        customer,
+                        amount, // Replace with the actual amount from the detail
+                        "Manual", // Indicate that this payment is manual or any relevant method
+                        "Payment for " +updatedDetail.getConstructionStage().getConstructionStageName()  +" of " + customer.getName()
+                );
+
+                // Save the payment history
+                paymentHistoryService.createPayment(paymentHistory);
+                redirectAttributes.addFlashAttribute("success", "Status updated and payment recorded successfully!");
+            } else {
+                redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("message", "Failed to update status: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
 
         // Redirect back to the construction stage details page
@@ -207,7 +246,7 @@ public class ConstructionController {
 
         // If the user is not assigned to the construction, redirect to the error page
         if (!isAssignedToConstruction) {
-            redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this project.");
+            redirectAttributes.addFlashAttribute("error", "You do not have permission to access this project.");
             return "redirect:/error/error-403"; // Redirect to an error page
         }
 
@@ -236,30 +275,30 @@ public class ConstructionController {
         }
 
         Construction construction = constructionService.getConstructionById(id);
-        if(construction != null){
+        if (construction != null) {
             Project project = construction.getProject();
 
-        Customer customer = project.getContract().getCustomer();
-        if (customer == null || customer.getId() != user.getId()) {
-            return "redirect:/error/error-403";
-        }
+            Customer customer = project.getContract().getCustomer();
+            if (customer == null || customer.getId() != user.getId()) {
+                return "redirect:/error/error-403";
+            }
 
-        List<Comment> comments = commentService.getCommentByConstructionId(id);
-        model.addAttribute("comments", comments);
+            List<Comment> comments = commentService.getCommentByConstructionId(id);
+            model.addAttribute("comments", comments);
 
-        Contract contract = project.getContract();
-        Quotes quote = contract.getQuote();
-        model.addAttribute("construction", construction);
-        model.addAttribute("project", project);
-        model.addAttribute("quote", quote);
-        List<ConstructionStage> designStages = constructionStageService.getListConstructionStage(id);
-        model.addAttribute("constructionStages", designStages);
+            Contract contract = project.getContract();
+            Quotes quote = contract.getQuote();
+            model.addAttribute("construction", construction);
+            model.addAttribute("project", project);
+            model.addAttribute("quote", quote);
+            List<ConstructionStage> designStages = constructionStageService.getListConstructionStage(id);
+            model.addAttribute("constructionStages", designStages);
 
-        return "customer/construction/processOfConstruction";
-        }else{
+            return "customer/construction/processOfConstruction";
+        } else {
             return "redirect:/customer/projects/";
         }
-        
+
     }
 
     // Method to approve the inspection stage
@@ -311,7 +350,6 @@ public class ConstructionController {
         return "redirect:/customer/project/construction/" + constructionId;
     }
 
-
     @PostMapping("/customer/feedback/send")
     public String submitFeedbackByCustomer(
             @RequestParam("feedback") String feedbackContent,
@@ -319,8 +357,9 @@ public class ConstructionController {
             HttpSession session, RedirectAttributes redirectAttributes) {
 
         Customer customer = (Customer) session.getAttribute("user");
-        if (customer == null)
+        if (customer == null) {
             return "redirect:/login";
+        }
 
         Comment comment = new Comment();
         comment.setCommentContent(feedbackContent);
@@ -329,47 +368,49 @@ public class ConstructionController {
         comment.setDatePost(Calendar.getInstance());
 
         commentService.saveComment(comment);
-        redirectAttributes.addFlashAttribute("message", "Feedback has been submitted successfully!");
+        redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
         return "redirect:/customer/project/construction/" + constructionId;
     }
 
     @PostMapping("/customer/feedback/delete")
     public String deleteCommentByCustomer(@RequestParam("commentId") int commentId,
-                                HttpSession session, RedirectAttributes redirectAttributes) {
+            HttpSession session, RedirectAttributes redirectAttributes) {
         Customer customer = (Customer) session.getAttribute("user");
-        if (customer == null)
+        if (customer == null) {
             return "redirect:/login";
+        }
 
         Comment comment = commentService.getCommentById(commentId);
 
         if (comment == null || comment.getCustomer().getId() != customer.getId()) {
-            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
             return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
         }
 
         commentService.deleteComment(commentId);
-        redirectAttributes.addFlashAttribute("message", "Comment deleted successfully.");
+        redirectAttributes.addFlashAttribute("success", "Comment deleted successfully.");
         return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
     }
 
     @PostMapping("/customer/feedback/update")
     public String updateCommentByCustomer(@RequestParam("commentId") int commentId,
-                                    @RequestParam("newContent") String commentContent,
-                                    HttpSession session, RedirectAttributes redirectAttributes) {
+            @RequestParam("newContent") String commentContent,
+            HttpSession session, RedirectAttributes redirectAttributes) {
         Customer customer = (Customer) session.getAttribute("user");
-        if (customer == null)
+        if (customer == null) {
             return "redirect:/login";
+        }
 
         Comment comment = commentService.getCommentById(commentId);
 
         if (comment == null || comment.getCustomer().getId() != customer.getId()) {
-            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
             return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
         }
 
         comment.setCommentContent(commentContent);
         commentService.saveComment(comment);
-        redirectAttributes.addFlashAttribute("message", "Comment updated successfully.");
+        redirectAttributes.addFlashAttribute("success", "Comment updated successfully.");
         return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
     }
 
@@ -380,8 +421,9 @@ public class ConstructionController {
             HttpSession session, RedirectAttributes redirectAttributes) {
 
         Staff staff = (Staff) session.getAttribute("user");
-        if (staff == null)
+        if (staff == null) {
             return "redirect:/login";
+        }
 
         Comment comment = new Comment();
         comment.setCommentContent(feedbackContent);
@@ -390,48 +432,49 @@ public class ConstructionController {
         comment.setDatePost(Calendar.getInstance());
 
         commentService.saveComment(comment);
-        redirectAttributes.addFlashAttribute("message", "Feedback has been submitted successfully!");
+        redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
         return "redirect:/constructor/construction/" + constructionId;
     }
 
     @PostMapping("/staff/feedback/delete")
     public String deleteCommentByStaff(@RequestParam("commentId") int commentId,
-                                HttpSession session, RedirectAttributes redirectAttributes) {
+            HttpSession session, RedirectAttributes redirectAttributes) {
         Staff staff = (Staff) session.getAttribute("user");
-        if (staff == null)
+        if (staff == null) {
             return "redirect:/login";
+        }
 
         Comment comment = commentService.getCommentById(commentId);
         if (comment == null || comment.getStaff().getId() != staff.getId()) {
-            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
             return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
         }
         commentService.deleteComment(commentId);
-        redirectAttributes.addFlashAttribute("message", "Comment deleted successfully.");
+        redirectAttributes.addFlashAttribute("success", "Comment deleted successfully.");
         return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
     }
 
     @PostMapping("/staff/feedback/update")
     public String updateCommentByStaff(@RequestParam("commentId") int commentId,
-                                    @RequestParam("newContent") String commentContent,
-                                    HttpSession session, RedirectAttributes redirectAttributes) {
+            @RequestParam("newContent") String commentContent,
+            HttpSession session, RedirectAttributes redirectAttributes) {
         Staff staff = (Staff) session.getAttribute("user");
-        if (staff == null)
+        if (staff == null) {
             return "redirect:/login";
+        }
 
         Comment comment = commentService.getCommentById(commentId);
 
         if (comment == null || comment.getStaff().getId() != staff.getId()) {
-            redirectAttributes.addFlashAttribute("message", "You do not have permission to edit this comment.");
+            redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
             return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
         }
 
         comment.setCommentContent(commentContent);
         commentService.saveComment(comment);
-        redirectAttributes.addFlashAttribute("message", "Comment updated successfully.");
+        redirectAttributes.addFlashAttribute("success", "Comment updated successfully.");
         return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
     }
-
 
     @GetMapping("/constructor/serviceDetailManage/")
     public String constructionServiceDetailManagePage(
@@ -494,7 +537,7 @@ public class ConstructionController {
         if (serviceDetail == null) {
             return "redirect:/constructor/serviceDetailManage/";
         }
-        if(serviceDetail.getStaff().getId()!=staff.getId()){
+        if (serviceDetail.getStaff().getId() != staff.getId()) {
             return "redirect:/constructor/serviceDetailManage/";
         }
 
@@ -508,9 +551,9 @@ public class ConstructionController {
         // Retrieve comments/feedback related to the service
 //        List<Comment> comments = serviceDetailService.getCommentsByServiceDetailId(serviceDetailId);
 //        model.addAttribute("comments", comments);
-
         return "constructor/constructorServiceDetailInfo"; // Path to the JSP page
     }
+
     @PostMapping("construction/serviceDetail/update")
     public ResponseEntity<String> updateServiceDetailStatus(@RequestParam("serviceDetailId") int serviceDetailId) {
         try {
@@ -552,6 +595,22 @@ public class ConstructionController {
             // Return error JSON string with 500 Internal Server Error status
             return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred during cancellation\"}");
         }
+    }
+
+    @GetMapping("/constructor/manage/viewDetail/viewDesign/{projectId}")
+    public String manageBlueprint(@PathVariable("projectId") int designStageId,
+                                  Model model, HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        if (user == null)
+            return "redirect:/login";
+        Design design = designService.getDesignById(designStageId);
+        List<DesignStage> designStage = design.getDesignStage();
+
+        model.addAttribute("design", design);
+        model.addAttribute("designStage", designStage);
+
+        return "constructor/viewAllDesign";
     }
 
 }

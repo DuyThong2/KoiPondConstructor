@@ -133,6 +133,11 @@
                     </c:choose>
                 </p>
             </div>
+            <div class="info-item">
+                <a href="${pageContext.request.contextPath}/constructor/manage/viewDetail/viewDesign/${construction.project.projectId}" class="btn btn-info">
+                    <i class="fas fa-file-alt"></i> View All Design
+                </a>
+            </div>
         </div>
     </div>
 </div>

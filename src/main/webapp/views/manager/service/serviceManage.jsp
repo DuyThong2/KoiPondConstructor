@@ -14,58 +14,10 @@
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
               rel="stylesheet">
-
+              <link href="/css/manager/navbar.css" rel="stylesheet">
         <style>
             /* Custom styles for the sidebar */
-            .sidebar {
-                height: 100vh;
-                background-color: #343a40;
-                color: white;
-            }
-
-            .sidebar a {
-                color: white;
-                display: block;
-                padding: 10px;
-                text-decoration: none;
-            }
-
-            .sidebar a:hover {
-                background-color: #495057;
-            }
-
-            .filter-card {
-                background-color: #ffffff;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                margin-bottom: 30px;
-            }
-
-            h2 {
-                font-weight: bold;
-                color: #007bff;
-                border-bottom: 2px solid #007bff;
-                padding-bottom: 10px;
-                margin-bottom: 20px;
-            }
-
-            .modal-body {
-                overflow-y: auto;
-                max-height: calc(100vh - 150px);
-                /* Ensures 
-            the modal is scrollable when it overflows */
-            }
-
-            .cke_dialog {
-                z-index: 1051 !important;
-                /* Adjust as needed */
-            }
-
-            .collapse {
-                transition: height 0.5s ease-in-out;
-                /* Adjust for smoother transition if needed */
-            }
+           
         </style>
     </head>
 

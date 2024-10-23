@@ -8,6 +8,8 @@
     <title>Contract Details</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .section-header {
             margin-bottom: 20px;
@@ -34,6 +36,7 @@
 </head>
 <body>
 <div class="container mt-5">
+    <jsp:include page="../consultantNav.jsp"/>
     <div class="row">
         <!-- Consultant Details Section (70%) -->
         <div class="col-md-8 consultant-section">
@@ -109,7 +112,7 @@
             <c:choose>
                 <c:when test="${quotes.quotesStatus == 1}">
                     <div class="">
-                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="post" class="d-inline">
+                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="get" class="d-inline">
                             <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                             <button type="submit" class="btn btn-info">Edit Quotes</button>
                         </form>
@@ -120,7 +123,7 @@
                         <div class="alert alert-danger" role="alert">
                             <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                         </div>
-                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="post" class="d-inline">
+                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="get" class="d-inline">
                             <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                             <button type="submit" class="btn btn-info">Edit Quotes</button>
                         </form>
@@ -139,7 +142,7 @@
                         <div class="alert alert-danger" role="alert">
                             <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                         </div>
-                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="post" class="d-inline">
+                        <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="get" class="d-inline">
                             <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                             <button type="submit" class="btn btn-info">Edit Quotes</button>
                         </form>

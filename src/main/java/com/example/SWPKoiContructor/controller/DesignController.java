@@ -7,6 +7,7 @@ import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Design;
 import com.example.SWPKoiContructor.entities.DesignStage;
 import com.example.SWPKoiContructor.entities.DesignStageDetail;
+import com.example.SWPKoiContructor.entities.PaymentHistory;
 import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Quotes;
 import com.example.SWPKoiContructor.entities.User;
@@ -15,7 +16,9 @@ import com.example.SWPKoiContructor.services.DesignStageDetailService;
 import com.example.SWPKoiContructor.services.DesignStageService;
 import com.example.SWPKoiContructor.services.BluePrintService;
 import com.example.SWPKoiContructor.services.CommentService;
+import com.example.SWPKoiContructor.services.PaymentHistoryService;
 import com.example.SWPKoiContructor.utils.FileUtility;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -38,42 +41,49 @@ public class DesignController {
     private BluePrintService bluePrintService;
     private DesignStageDetailService designStageDetailService;
     private CommentService commentService;
+    private PaymentHistoryService paymentHistoryService;
 
-    public DesignController(DesignService designService, DesignStageService designStageService, BluePrintService bluePrintService, DesignStageDetailService designStageDetailService, CommentService commentService,FileUtility fileUtility) {
+    public DesignController(DesignService designService, DesignStageService designStageService, BluePrintService bluePrintService, DesignStageDetailService designStageDetailService, CommentService commentService, FileUtility fileUtility, PaymentHistoryService paymentHistoryService) {
         this.designService = designService;
         this.designStageService = designStageService;
         this.bluePrintService = bluePrintService;
         this.designStageDetailService = designStageDetailService;
         this.commentService = commentService;
         this.fileUtility = fileUtility;
+        this.paymentHistoryService = paymentHistoryService;
     }
 
     @GetMapping("/manager/design")
     public String getListDesignWithCustomerName(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size) {
-        List<Design> list = designService.getListDesignWithSortedAndPaginated(page, size);
-        int totalPage = designService.getTotalOfAllDesigns(size);
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(required = false) Integer statusFilter,
+            @RequestParam(required = false) String searchName) {
+
+        List<Design> list = designService.getListDesignWithSortedAndPaginated(page, size, statusFilter, searchName);
+        int totalPage = designService.getTotalOfAllDesigns(size, statusFilter, searchName);
 
         model.addAttribute("designList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPage);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);
         return "manager/design/designManage";
     }
 
     @GetMapping("/manager/design/detail/{id}")
     public String viewDetailDetail(Model model, @PathVariable("id") int id) {
         Design design = designService.getDesignById(id);
-        if(design != null){
+        if (design != null) {
             model.addAttribute("design", design);
             return "manager/design/designDetail";
-        }else{
-            return "redirect:/manager/design";
+        } else {
+            return "redirect:/error/error-403";
         }
-        
+
     }
 
-    @PostMapping("/manager/completePayment/")
+    @PostMapping("/manager/updatePayment")
     public String completePayment(@RequestParam(required = false) Integer detailId,
             @RequestParam(required = false) Integer newStatus,
             @RequestParam int designStageId,
@@ -85,7 +95,20 @@ public class DesignController {
             return "redirect:/manager/design/viewDetail/" + designId;
         }
         try {
-            designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
+            DesignStageDetail updatedDetail = designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
+            Customer customer = updatedDetail.getDesignStage().getDesign().getProject().getContract().getCustomer();
+                BigDecimal amount = BigDecimal.valueOf(updatedDetail.getDesignStage().getDesignStagePrice());
+
+                // Create a new PaymentHistory record using the streamlined constructor
+                PaymentHistory paymentHistory = new PaymentHistory(
+                        customer,
+                        amount, // Amount from the detail
+                        "Manual", // Indicate that this payment is manual or any relevant method
+                        "Payment for " + updatedDetail.getDesignStage().getDesignStageName() +"of "+ customer.getName()
+                );
+
+                // Save the payment history
+                paymentHistoryService.createPayment(paymentHistory);
             redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
@@ -98,32 +121,39 @@ public class DesignController {
     public String listContractsByDesigner(Model model,
             HttpSession session,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "6") int size) {
+            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(required = false) Integer statusFilter,
+            @RequestParam(required = false) String searchName) {
+
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return "redirect:/login";
         }
 
-        List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size);
-        int totalPages = designService.getTotalPagesByDesigner(user.getId(), size);
+        List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size, statusFilter, searchName);
+        int totalPages = designService.getTotalPagesByDesigner(user.getId(), size, statusFilter, searchName);
 
         model.addAttribute("designs", designs);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName", searchName);
         return "designer/designerManage";
     }
 
-    @GetMapping("/designer/manage/viewDetail/{id}")
+    @GetMapping("/designer/manage/viewProjectDetail/{id}")
     public String designProject(@PathVariable("id") int id, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
-        if (user == null)
+        if (user == null) {
             return "redirect:/login";
+        }
 
         Design design = designService.getDesignById(id);
         boolean isAssignedToDesign = designService.isAssignedToDesign(id, user.getId());
-        if (design == null || !isAssignedToDesign)
+        if (design == null || !isAssignedToDesign) {
             return "redirect:/error/error-403";
+        }
 
         Project project = design.getProject();
         Contract contract = project.getContract();
@@ -147,8 +177,9 @@ public class DesignController {
         Design design = designService.getDesignById(designId);
 
         boolean isAssignedToDesign = designService.isAssignedToDesign(designId, user.getId());
-        if (design == null || !isAssignedToDesign)
+        if (design == null || !isAssignedToDesign) {
             return "redirect:/error/error-403";
+        }
 
         Project project = design.getProject();
         model.addAttribute("design", design);
@@ -168,15 +199,17 @@ public class DesignController {
             Model model, HttpSession session) {
 
         User user = (User) session.getAttribute("user");
-        if (user == null)
+        if (user == null) {
             return "redirect:/login";
+        }
 
         DesignStage designStage = designStageService.getDesignStageById(designStageId);
         boolean isAssignedToDesign = designStage.getDesign().getStaff().stream().anyMatch(
                 staff -> staff.getId() == user.getId());
 
-        if (!isAssignedToDesign)
+        if (!isAssignedToDesign) {
             return "redirect:/error/error-403";
+        }
 
         List<BluePrint> allBlueprints = bluePrintService.findByDesignStageId(designStageId);
         model.addAttribute("allBlueprints", allBlueprints);
@@ -198,8 +231,8 @@ public class DesignController {
 
         String uploadedFilePath = fileUtility.handleFileUpload(file, FileUtility.DESIGN_BLUEPRINT_DIR);
 
-        if(uploadedFilePath == null){
-            redirectAttributes.addFlashAttribute("message", "Choose file to uploads!");
+        if (uploadedFilePath == null) {
+            redirectAttributes.addFlashAttribute("error", "Choose file to uploads!");
             return "redirect:/designer/manage/blueprint/" + designStageId;
         }
         BluePrint blueprint = new BluePrint();
@@ -209,14 +242,15 @@ public class DesignController {
         blueprint.setDateCreate(new Date());
 
         bluePrintService.saveBluePrint(blueprint);
-
+        redirectAttributes.addFlashAttribute("success", "Upload Successfully!");
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
 
     @PostMapping("/updateSummary/")
     public String updateSummaryFile(
             @RequestParam("designStageId") int designStageId,
-            @RequestParam("file") MultipartFile file) {
+            @RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes) {
         DesignStage designStage = designStageService.getDesignStageById(designStageId);
 
         // Handle file upload
@@ -225,7 +259,7 @@ public class DesignController {
         // Update the design stage with the new summary file path
         designStage.setSummaryFile(uploadedFilePath);
         designStageService.updateDesignStage(designStage);
-
+        redirectAttributes.addFlashAttribute("success", "Upload Success!!");
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
 
@@ -237,7 +271,7 @@ public class DesignController {
         BluePrint bluePrint = bluePrintService.getBluePrintById(bluePrintId);
         fileUtility.deleteFile(bluePrint.getImgUrl(), FileUtility.DESIGN_BLUEPRINT_DIR);
         bluePrintService.deleteBluePrint(bluePrintId);
-        redirectAttributes.addFlashAttribute("message", "Delete Success!!");
+        redirectAttributes.addFlashAttribute("success", "Delete Success!!");
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
 //========================================End Design BluePrints=================================//
@@ -246,30 +280,35 @@ public class DesignController {
     //update stage of design detail page
     @GetMapping("/designer/updateStatus/designStage/{designStageId}")
     public String listDesignStageDetails(@PathVariable("designStageId") int designStageId,
-                                         Model model, @RequestParam int designId, HttpSession session) {
+            Model model, @RequestParam int designId, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null)
+        if (user == null) {
             return "redirect:/login";
+        }
 
         Design design = designService.getDesignById(designId);
-        if (design == null)
+        if (design == null) {
             return "redirect:/error/error-403";
+        }
 
-        boolean isAssignedToDesign  = designService.isAssignedToDesign(designId, user.getId());
+        boolean isAssignedToDesign = designService.isAssignedToDesign(designId, user.getId());
 
-        if (!isAssignedToDesign)
+        if (!isAssignedToDesign) {
             return "redirect:/error/error-403";
+        }
 
         List<DesignStageDetail> details = designStageDetailService.getDesignStageDetailOfDesignStageId(designStageId);
-        if (details == null || details.isEmpty())
+        if (details == null || details.isEmpty()) {
             return "redirect:/error/error-403";
+        }
 
         model.addAttribute("designId", designId);
         model.addAttribute("details", details);
         model.addAttribute("designStageId", designStageId);
         return "designer/completeTask";
     }
-
+    
+    
     @PostMapping("/designStageDetail/updateStatus")
     public String updateStatus(@RequestParam(required = false) int detailId,
                                @RequestParam(required = false) int newStatus,
@@ -278,20 +317,20 @@ public class DesignController {
 
         DesignStageDetail detail = designStageDetailService.getDesignStageDetailById(detailId);
         if(detail.getStatus() == newStatus || detail.getStatus() > newStatus) {
-            redirectAttributes.addFlashAttribute("message", "Progress is also updated!");
+            redirectAttributes.addFlashAttribute("error", "Progress is also updated!");
             return "redirect:/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
         }
 
         try {
             designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
-            redirectAttributes.addFlashAttribute("message", "Status updated successfully!");
+            redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "Failed to update status!!");
+            redirectAttributes.addFlashAttribute("error", "Failed to update status!!");
         }
         return "redirect:/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
     }
-//===============================End Update Status Design Detail=====================================//
 
+//===============================End Update Status Design Detail=====================================//
 //====================================End for Designer======================================
     @GetMapping("/customer/project/design/{id}")
     public String customerViewDesign(@PathVariable("id") int id, Model model,
@@ -302,27 +341,27 @@ public class DesignController {
         }
 
         Design design = designService.getDesignById(id);
-        if (design != null){
+        if (design != null) {
             Project project = design.getProject();
 
-        Customer customer = project.getContract().getCustomer();
-        if (customer == null || customer.getId() != user.getId()) {
-            return "redirect:/error/error-403";
-        }
+            Customer customer = project.getContract().getCustomer();
+            if (customer == null || customer.getId() != user.getId()) {
+                return "redirect:/error/error-403";
+            }
 
-        Contract contract = project.getContract();
-        Quotes quote = contract.getQuote();
-        model.addAttribute("design", design);
-        model.addAttribute("project", project);
-        model.addAttribute("quote", quote);
-        List<DesignStage> designStages = designStageService.getDesignStageByDesignId(id);
-        model.addAttribute("designStages", designStages);
+            Contract contract = project.getContract();
+            Quotes quote = contract.getQuote();
+            model.addAttribute("design", design);
+            model.addAttribute("project", project);
+            model.addAttribute("quote", quote);
+            List<DesignStage> designStages = designStageService.getDesignStageByDesignId(id);
+            model.addAttribute("designStages", designStages);
 
-        return "customer/design/processOfDesign";
-        }else{
+            return "customer/design/processOfDesign";
+        } else {
             return "redirect:/customer/projects/";
         }
-        
+
     }
 
     @PostMapping("/customer/designStageDetail/updateStatus/")
@@ -345,7 +384,7 @@ public class DesignController {
                 blueprint.setBluePrintStatus(3);
                 bluePrintService.saveBluePrint(blueprint);
             }
-            redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+            redirectAttributes.addFlashAttribute("success", "Updated successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
@@ -392,22 +431,25 @@ public class DesignController {
             return "redirect:/login";
         }
 
-        if (blueprintsId != null && !blueprintsId.isEmpty()) {
-            for (Integer bluePrintId : blueprintsId) {
-                BluePrint bluePrint = bluePrintService.getBluePrintById(bluePrintId);
-                bluePrint.setBluePrintStatus(2);
-                // Tạo comment cho mỗi bluePrint
-                Comment blueprintComment = new Comment();
-                blueprintComment.setCommentContent(feedbackContent);
-                blueprintComment.setBluePrint(bluePrint);
-                blueprintComment.setCustomer(customer);
-                blueprintComment.setDatePost(Calendar.getInstance());
-                // Lưu comment cho các blueprint đã chọn
-                commentService.saveComment(blueprintComment);
-            }
+        if(blueprintsId == null || blueprintsId.isEmpty()){
+            redirectAttributes.addFlashAttribute("error", "Please choose image to submit feedback.");
+            return "redirect:/customer/project/design/blueprint/" + designStageId;
+
         }
 
-        redirectAttributes.addFlashAttribute("message", "Feedback has been submitted successfully!");
+        for (Integer bluePrintId : blueprintsId) {
+            BluePrint bluePrint = bluePrintService.getBluePrintById(bluePrintId);
+            bluePrint.setBluePrintStatus(2);
+            // Tạo comment cho mỗi bluePrint
+            Comment blueprintComment = new Comment();
+            blueprintComment.setCommentContent(feedbackContent);
+            blueprintComment.setBluePrint(bluePrint);
+            blueprintComment.setCustomer(customer);
+            blueprintComment.setDatePost(Calendar.getInstance());
+            // Lưu comment cho các blueprint đã chọn
+            commentService.saveComment(blueprintComment);
+        }
+        redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
         return "redirect:/customer/project/design/blueprint/" + designStageId;
     }
 

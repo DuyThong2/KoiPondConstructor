@@ -10,6 +10,7 @@
     <!-- Use Bootstrap 4.3.1 from CDN -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <%@include file="../cssTemplate.jsp"%>
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
 
     <style>
         body {
@@ -157,13 +158,6 @@
             margin: 10px;
             float: right;
         }
-        .feedback-section {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            margin-top: 30px;
-        }
 
         .feedback-section h3 {
             font-size: 2.7rem;
@@ -175,25 +169,86 @@
             font-size: 15px;
         }
         .feedback-section {
-            margin-top: 20px;
+            margin-top: 25px;
             background-color: #f8f9fa;
             padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .comment{
-            margin: 10px;
-            padding: 10px 10px;
-            width: 400px;
+        .comment {
+            position: relative; /* Đặt vị trí tương đối cho comment */
+            padding: 10px 40px 30px 10px; /* Thêm padding cho khoảng trống chứa nút ... */
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            background-color: #fff; /* Nền trắng cho comment */
+            margin-bottom: 15px;
         }
+        /* Dropdown sẽ được đặt ở góc trên bên phải */
+        .comment .dropdown {
+            position: absolute;
+            top: 10px; /* Căn lên trên 10px */
+            right: 10px; /* Căn sang phải 10px */
+        }
+
+        /* Tăng kích thước font cho nút ba chấm */
+        .comment .dropdown .btn-link {
+            font-size: 2rem; /* Kích thước vừa phải cho nút */
+            padding: 0; /* Loại bỏ padding không cần thiết */
+            color: #343a40; /* Màu sắc của nút */
+        }
+
+        /* Chỉnh kích thước các item trong menu dropdown */
+        .comment .dropdown-menu {
+            font-size: 1.3rem; /* Tăng kích thước chữ trong menu */
+            padding: 5px; /* Tăng khoảng cách giữa các item */
+            min-width: 90px; /* Đặt chiều rộng tối thiểu */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm shadow để tạo chiều sâu */
+        }
+
+        /* Khoảng cách giữa các phần tử */
+        .comment .dropdown-item {
+            padding: 10px 15px; /* Khoảng cách hợp lý */
+            transition: background-color 0.3s ease; /* Hiệu ứng khi hover */
+        }
+
+        /* Hiệu ứng hover cho dropdown items */
+        .comment .dropdown-item:hover {
+            background-color: #f1f1f1; /* Màu nền khi hover */
+            border-radius: 5px; /* Thêm bo tròn cho menu item */
+        }
+
+        /* Tăng kích thước nút ba chấm */
+        .comment .dropdown .btn-link {
+            font-size: 2.5rem; /* Kích thước lớn hơn cho nút ... */
+            color: #333; /* Màu tối để dễ nhìn */
+            padding: 0;
+            transition: color 0.3s;
+        }
+
+        /* Thêm hiệu ứng hover cho nút ba chấm */
+        .comment .dropdown .btn-link:hover {
+            color: #007bff; /* Màu xanh khi hover */
+        }
+
+        /* Điều chỉnh khoảng cách của menu dropdown */
+        .comment .dropdown-menu {
+            margin-top: 5px; /* Khoảng cách giữa nút và menu */
+            min-width: 80px; /* Đặt kích thước tối thiểu cho menu */
+        }
+
         .feedback-content {
             max-height: 300px; /* Điều chỉnh chiều cao theo ý muốn */
             overflow-y: auto;  /* Hiển thị thanh cuộn dọc */
             padding-right: 10px; /* Để không bị che nội dung bởi thanh cuộn */
         }
-
+        .dropdown-toggle::after {
+            display: none; /* Ẩn mũi tên */
+        }
+        .btn-sm{
+            padding: 8px 15px;
+            font-size: 1.3rem;
+            border-radius: 8px;
+        }
     </style>
     <script>
         function createPayPalButton(detailId, constructionStageId, constructionId, amount, targetId) {
@@ -277,7 +332,7 @@
     <div class="row">
         <div class="col-md-4 left-column">
             <div class="img-box">
-                <img src="/uploads/${construction.project.imgURL}" alt="Construction Image">
+                <img src="${construction.project.getShowingImg(construction.project.imgURL)}" alt="Construction Image">
             </div>
             <!-- Project Description -->
             <div class="project-description">
@@ -303,30 +358,28 @@
                 <div class="feedback-content">
                     <c:forEach var="comment" items="${comments}">
                         <div class="feedback-item">
-                            <div class="d-flex justify-content-between">
-                                <div class="comment">
-                                    <!-- Hiển thị nội dung comment hoặc textarea nếu đang edit -->
-                                    <div id="comment-content-${comment.commentId}">
-                                        <c:if test="${comment.customer != null}">
-                                            <p><strong>Customer: ${comment.customer.name}</strong></p>
-                                        </c:if>
+                            <div class="comment">
+                                <!-- Hiển thị nội dung comment hoặc textarea nếu đang edit -->
+                                <div id="comment-content-${comment.commentId}">
+                                    <c:if test="${comment.customer != null}">
+                                        <p><strong>Customer: ${comment.customer.name}</strong></p>
+                                    </c:if>
 
-                                        <c:if test="${comment.staff != null}">
-                                            <p><strong>Staff: ${comment.staff.name}</strong></p>
-                                        </c:if>
-                                        <p class="text-muted small mb-0"><fmt:formatDate value="${comment.datePost.time}" pattern="dd-MM-yyyy HH:mm"/></p>
-                                        <p class="mb-2"> ${comment.commentContent}</p>
-                                    </div>
+                                    <c:if test="${comment.staff != null}">
+                                        <p><strong>Staff: ${comment.staff.name}</strong></p>
+                                    </c:if>
+                                    <p class="text-muted small mb-0"><fmt:formatDate value="${comment.datePost.time}" pattern="dd-MM-yyyy HH:mm"/></p>
+                                    <p class="mb-2"> ${comment.commentContent}</p>
+                                </div>
 
-                                    <!-- Hiển thị textarea để chỉnh sửa khi nhấn nút Edit -->
-                                    <div id="edit-section-${comment.commentId}" style="display: none;">
-                                        <form action="${pageContext.request.contextPath}/customer/feedback/update" method="POST">
-                                            <input type="hidden" name="commentId" value="${comment.commentId}">
-                                            <textarea name="newContent" class="form-control mb-2">${comment.commentContent}</textarea>
-                                            <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                                            <button type="button" class="btn btn-secondary btn-sm" onclick="cancelEdit(${comment.commentId})">Cancel</button>
-                                        </form>
-                                    </div>
+                                <!-- Hiển thị textarea để chỉnh sửa khi nhấn nút Edit -->
+                                <div id="edit-section-${comment.commentId}" style="display: none;">
+                                    <form action="${pageContext.request.contextPath}/customer/feedback/update" method="POST">
+                                        <input type="hidden" name="commentId" value="${comment.commentId}">
+                                        <textarea name="newContent" class="form-control mb-2">${comment.commentContent}</textarea>
+                                        <button type="submit" class="btn btn-primary btn-sm" style="font-size: 1.5rem;">Save</button>
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="cancelEdit(${comment.commentId})">Cancel</button>
+                                    </form>
                                 </div>
 
                                 <!-- Nút ba chấm ... -->
@@ -347,6 +400,8 @@
                                         </div>
                                     </div>
                                 </c:if>
+
+
                             </div>
                         </div>
                     </c:forEach>
@@ -487,6 +542,72 @@
                 <button type="submit" class="btn btn-primary" style="padding: 10px; font-size: 15px">Send Feedback</button>
             </div>
         </form>
+
+        <!-- Popup cho success -->
+        <div id="successPopup" class="popup-background">
+            <div class="popup-box success">
+                <i class="fas fa-check-circle"></i> <!-- Icon success -->
+                <h2 class="success">Success!</h2>
+                <p>${success}</p>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <!-- Popup cho error -->
+        <div id="errorPopup" class="popup-background">
+            <div class="popup-box error">
+                <i class="fas fa-exclamation-circle"></i>
+                <h2 class="error">Error!</h2>
+                <p>${error}</p>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+
+        <script>
+            function showSuccessPopup() {
+                const successPopup = document.getElementById('successPopup');
+                successPopup.classList.add('show');
+                const popupBox = successPopup.querySelector('.popup-box');
+                setTimeout(() => {
+                    popupBox.classList.add('show');}, 10);
+            }
+
+            function showErrorPopup() {
+                const errorPopup = document.getElementById('errorPopup');
+                errorPopup.classList.add('show');
+                const popupBox = errorPopup.querySelector('.popup-box');
+                setTimeout(() => {
+                    popupBox.classList.add('show');}, 10);
+            }
+
+            function closePopup() {
+                const popups = document.querySelectorAll('.popup-background.show');
+                popups.forEach(popup => {
+                    const popupBox = popup.querySelector('.popup-box');
+                    popupBox.classList.remove('show');
+                    setTimeout(() => {
+                        popup.classList.remove('show');}, 300);
+                });
+            }
+
+            function confirmStatusChange() {
+                return confirm("Do you want to complete this phase design?");
+            }
+        </script>
+
+        <c:if test="${not empty success}">
+            <script>
+                showSuccessPopup();
+            </script>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <script>
+                showErrorPopup();
+            </script>
+        </c:if>
+
     </div>
 </div>
 

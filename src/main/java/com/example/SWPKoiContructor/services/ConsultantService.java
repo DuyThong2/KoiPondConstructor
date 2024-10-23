@@ -8,6 +8,7 @@ package com.example.SWPKoiContructor.services;
 import com.example.SWPKoiContructor.dao.ConsultantDAO;
 import com.example.SWPKoiContructor.entities.Consultant;
 import com.example.SWPKoiContructor.entities.Staff;
+import com.example.SWPKoiContructor.entities.User;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,13 @@ public class ConsultantService {
         return consultantDAO.countConsultant();
     }
     
-    
+     public List<Consultant> getConsultantListOrderByAndSortCustomer(int page, int size, String sortBy, String sortDirection, Integer status, User customer){
+        return consultantDAO.getFilteredConsultantCustomer(page, size, sortBy, sortDirection, status, customer);
+    }
+     
+    public long countConsultantListOrderByAndSortCustomer(int page, int size, String sortBy, String sortDirection, Integer status, User customer){
+        return consultantDAO.countFilteredConsultantCustomer(page, size, sortBy, sortDirection, status, customer);
+    }
     
     //CONSULTANT DETAIL    
     public Consultant getConsultantById(int id){

@@ -1,7 +1,18 @@
+
+
 <header class="mb-4">
     <div class="nav d-flex justify-content-between align-items-center">
         <a href="${pageContext.request.contextPath}/consultant/viewConsultantList" class="nav-link">
-            <i class="fas fa-project-diagram"></i> My Projects
+            <i class="fas fa-user-tie"></i> Consultant
+        </a>
+        <a href="${pageContext.request.contextPath}/consultant/contract" class="nav-link">
+            <i class="fas fa-file-contract"></i> Contract
+        </a>
+        <a href="${pageContext.request.contextPath}/consultant/quote" class="nav-link">
+            <i class="fas fa-quote-left"></i> Quote
+        </a>
+        <a href="${pageContext.request.contextPath}/consultant/serviceQuote" class="nav-link">
+            <i class="fas fa-tools"></i> Service Quote
         </a>
         <div class="nav-item-group d-flex align-items-center">
             <div class="dropdown">

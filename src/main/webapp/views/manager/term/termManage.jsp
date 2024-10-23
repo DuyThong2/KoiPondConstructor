@@ -6,7 +6,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Term Management</title>
         <!-- Bootstrap CSS -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+        <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
         <style>
             .table th, .table td {
                 vertical-align: middle;
@@ -25,65 +28,100 @@
                 background-color: #f9f9f9;
                 padding: 20px;
             }
+
+
+            .filter-card {
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+            }
+            h2 {
+                font-weight: bold;
+                color: #007bff;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+            .btn{
+                font-size: 0.9rem;
+                padding: 10px;
+                border-radius: 8px;
+            }
+            .btn-filter{
+                margin-top: 1.6rem;
+                font-size: 1.1rem;
+            }
+            .table-responsive{
+                width: 98%;
+                border-radius: 10px;
+            }
         </style>
     </head>
     <body>
-        <div class="container mt-5">
+        <div class="container-fluid mt-5">
             <div class="row">
                 <!-- Sidebar -->
                 <%@include file="../navBar.jsp" %>
 
                 <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-11 px-4 mt-4">
-                    <h2 class="text-center mb-4">Term Management</h2>
-
-                    <!-- Insert New Term Button -->
-                    <div class="mb-4 text-right">
-                        <a href="${pageContext.request.contextPath}/manager/termCreate" class="btn btn-success">Add New Term</a>
-                    </div>
+                <main role="main" class="col-md-10 ml-sm-auto col-lg-10 mt-4">
+                    <h2 class="mb-4">Term Management</h2>
+                    <div class="row">
 
                     <!-- Filter, Sort, and Search Form -->
-                    <form method="get" action="${pageContext.request.contextPath}/manager/terms" class="form-inline justify-content-center row">
-                        <!-- Search by description -->
-                        <div class="form-group col-12 col-md-4 mb-2">
-                            <label for="searchDescription" class="mr-2">Search by Description:</label>
-                            <input type="text" class="form-control" name="searchDescription" id="searchDescription" value="${searchDescription}" placeholder="Enter description">
-                        </div>
+                        <div class="filter-card col-md-11">
+                            <!-- Filter Form from Parcel Manager Styled for Term Management -->
+                            <form method="get" action="${pageContext.request.contextPath}/manager/terms" class="row">
+                                <!-- Search by description -->
+                                <div class="form-group col-12 col-md-3">
+                                    <label for="searchDescription">Search by Description:</label>
+                                    <input type="text" class="form-control" name="searchDescription" id="searchDescription" value="${searchDescription}" placeholder="Enter description">
+                                </div>
 
-                        <!-- Filter by status -->
-                        <div class="form-group col-12 col-md-3 mb-2">
-                            <label for="termStatusFilter" class="mr-2">Filter by Status:</label>
-                            <select name="termStatusFilter" id="termStatusFilter" class="form-control">
-                                <option value="">All</option>
-                                <option value="false" ${termStatusFilter == false ? 'selected' : ''}>Enabled</option>
-                                <option value="true" ${termStatusFilter == true ? 'selected' : ''}>Disabled</option>
-                            </select>
-                        </div>
+                                <!-- Filter by status -->
+                                <div class="form-group col-12 col-md-2">
+                                    <label for="termStatusFilter">Filter by Status:</label>
+                                    <select name="termStatusFilter" id="termStatusFilter" class="form-control">
+                                        <option value="">All</option>
+                                        <option value="false" ${termStatusFilter == false ? 'selected' : ''}>Enabled</option>
+                                        <option value="true" ${termStatusFilter == true ? 'selected' : ''}>Disabled</option>
+                                    </select>
+                                </div>
 
-                        <!-- Sorting options -->
-                        <div class="form-group col-12 col-md-3 mb-2">
-                            <label for="sortBy" class="mr-2">Sort by:</label>
-                            <select name="sortBy" id="sortBy" class="form-control">
-                                <option value="percentOnDesign1" ${sortBy == 'percentOnDesign1' ? 'selected' : ''}>Percent on Design Stage 1</option>
-                                <option value="percentOnDesign2" ${sortBy == 'percentOnDesign2' ? 'selected' : ''}>Percent on Design Stage 2</option>
-                                <option value="percentOnConstruct1" ${sortBy == 'percentOnConstruct1' ? 'selected' : ''}>Percent on Construction Stage 1</option>
-                                <!-- Add more sorting options as necessary -->
-                            </select>
-                        </div>
+                                <!-- Sorting options -->
+                                <div class="form-group col-12 col-md-2">
+                                    <label for="sortBy">Sort by:</label>
+                                    <select name="sortBy" id="sortBy" class="form-control">
+                                        <option value="percentOnDesign1" ${sortBy == 'percentOnDesign1' ? 'selected' : ''}>Percent on Design Stage 1</option>
+                                        <option value="percentOnDesign2" ${sortBy == 'percentOnDesign2' ? 'selected' : ''}>Percent on Design Stage 2</option>
+                                        <!-- Add more sorting options as needed -->
+                                    </select>
+                                </div>
 
-                        <div class="form-group col-12 col-md-2 mb-2">
-                            <label for="sortDirection" class="mr-2">Order:</label>
-                            <select name="sortDirection" id="sortDirection" class="form-control">
-                                <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
-                                <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
-                            </select>
-                        </div>
+                                <!-- Sorting order (ascending/descending) -->
+                                <div class="form-group col-12 col-md-2">
+                                    <label for="sortDirection">Order:</label>
+                                    <select name="sortDirection" id="sortDirection" class="form-control">
+                                        <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
+                                        <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
+                                    </select>
+                                </div>
 
-                        <div class="col-12 text-center">
-                            <button type="submit" class="btn btn-primary">Apply Filter and Sort</button>
-                        </div>
-                    </form>
+                                <!-- Submit Button -->
+                                <div class="col-12 text-center col-md-1">
+                                    <button type="submit" class="btn-filter btn btn-primary">Apply</button>
+                                </div>
 
+                                <!-- Insert New Term Button -->
+                                <div class="text-right col-md-2">
+                                    <a href="${pageContext.request.contextPath}/manager/termCreate" class="btn-filter btn btn-success">Add New Term</a>
+                                </div>
+
+                            </form>
+                        </div>
 
                     <br/>
 
@@ -122,28 +160,38 @@
                                         </td>
                                     </tr>
                                     <!-- Row for displaying term details dynamically -->
-                                    <tr id="details-row-${term.termId}" class="details-row">
+                                    <tr id="details-row-${term.termId}" class="collapse">
                                         <td colspan="5">
-                                            <div class="card">
-                                                <div class="card-header">
-                                                    Term ID: ${term.termId}
-                                                </div>
-                                                <div class="card-body">
-                                                    <!-- Details for each term -->
-                                                    <h5 class="card-title">Description: ${term.description}</h5>
-                                                    <p class="card-text"><strong>Template:</strong> <c:if test="${term.isTemplate}">Yes</c:if><c:if test="${!term.isTemplate}">No</c:if></p>
-                                                    <p class="card-text"><strong>Follow Contract:</strong> <c:if test="${term.followContract}">Yes</c:if><c:if test="${!term.followContract}">No</c:if></p>
-                                                    <p class="card-text"><strong>Percent on Design Stage 1:</strong> ${term.percentOnDesign1}%</p>
-                                                    <p class="card-text"><strong>Percent on Design Stage 2:</strong> ${term.percentOnDesign2}%</p>
-                                                    <p class="card-text"><strong>Percent on Design Stage 3:</strong> ${term.percentOnDesign3}%</p>
-                                                    <p class="card-text"><strong>Percent on Construction Stage 1:</strong> ${term.percentOnConstruct1}%</p>
-                                                    <p class="card-text"><strong>Percent on Construction Stage 2:</strong> ${term.percentOnConstruct2}%</p>
-                                                    <p class="card-text"><strong>Pay on Start of Design:</strong> <c:if test="${term.payOnStartOfDesign}">Yes</c:if><c:if test="${!term.payOnStartOfDesign}">No</c:if></p>
-                                                    <p class="card-text"><strong>Pay on Start of Construction:</strong> <c:if test="${term.payOnStartOfConstruction}">Yes</c:if><c:if test="${!term.payOnStartOfConstruction}">No</c:if></p>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead class="thead-light">
+                                                    <tr>
+
+                                                        <th>Design Stage 1</th>
+                                                        <th>Design Stage 2</th>
+                                                        <th>Design Stage 3</th>
+                                                        <th>Construction Stage 1</th>
+                                                        <th>Construction Stage 2</th>
+                                                        <th>Pay on Start of Design</th>
+                                                        <th>Pay on Start of Construction</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+
+                                                        <td>${term.percentOnDesign1}%</td>
+                                                        <td>${term.percentOnDesign2}%</td>
+                                                        <td>${term.percentOnDesign3}%</td>
+                                                        <td>${term.percentOnConstruct1}%</td>
+                                                        <td>${term.percentOnConstruct2}%</td>
+                                                        <td><c:if test="${term.payOnStartOfDesign}">Yes</c:if><c:if test="${!term.payOnStartOfDesign}">No</c:if></td>
+                                                        <td><c:if test="${term.payOnStartOfConstruction}">Yes</c:if><c:if test="${!term.payOnStartOfConstruction}">No</c:if></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </c:forEach>
                             </tbody>
                         </table>
@@ -175,6 +223,7 @@
                             </c:if>
                         </ul>
                     </nav>
+                    </div>
                 </main>
             </div>
         </div>

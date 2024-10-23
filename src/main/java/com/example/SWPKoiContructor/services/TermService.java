@@ -55,4 +55,6 @@ public class TermService {
     public Term findTermById(int id){
         return termDAO.findById(id);
     }
+
+    
 }

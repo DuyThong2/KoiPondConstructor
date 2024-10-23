@@ -10,7 +10,7 @@
     <!-- Sử dụng Bootstrap 4.3.1 từ CDN -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <%@include file="../cssTemplate.jsp"%>
-
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -170,6 +170,10 @@
         button.btn-info:hover {
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Thêm đổ bóng khi hover */
             transform: translateY(-2px); /* Di chuyển nhẹ nút khi hover */
+        }
+        .btn{
+            padding: 10px 25px;
+            font-size: 1.5rem;
         }
     </style>
 </head>
@@ -348,6 +352,69 @@
                 </script>
             </c:forEach>
         </div>
+
+        <!-- Popup cho success -->
+        <div id="successPopup" class="popup-background">
+            <div class="popup-box success">
+                <i class="fas fa-check-circle"></i> <!-- Icon success -->
+                <h2 class="success">Success!</h2>
+                <p>${success}</p>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <!-- Popup cho error -->
+        <div id="errorPopup" class="popup-background">
+            <div class="popup-box error">
+                <i class="fas fa-exclamation-circle"></i> <!-- Icon lỗi -->
+                <h2 class="error">Error!</h2>
+                <p>${error}</p>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+
+        <script>
+            function showSuccessPopup() {
+                const successPopup = document.getElementById('successPopup');
+                successPopup.classList.add('show');
+                const popupBox = successPopup.querySelector('.popup-box');
+                setTimeout(() => {
+                    popupBox.classList.add('show');}, 10);
+            }
+
+            function showErrorPopup() {
+                const errorPopup = document.getElementById('errorPopup');
+                errorPopup.classList.add('show');
+                const popupBox = errorPopup.querySelector('.popup-box');
+                setTimeout(() => {
+                    popupBox.classList.add('show');}, 10);
+            }
+
+            function closePopup() {
+                const popups = document.querySelectorAll('.popup-background.show');
+                popups.forEach(popup => {
+                    const popupBox = popup.querySelector('.popup-box');
+                    popupBox.classList.remove('show');
+                    setTimeout(() => {
+                        popup.classList.remove('show');}, 300);
+                });
+            }
+
+        </script>
+
+        <c:if test="${not empty success}">
+            <script>
+                showSuccessPopup();
+            </script>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <script>
+                showErrorPopup();
+            </script>
+        </c:if>
+
     </div>
 </div>
 

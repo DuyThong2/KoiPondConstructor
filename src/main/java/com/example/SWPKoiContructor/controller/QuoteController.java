@@ -161,7 +161,7 @@ public class QuoteController {
     }
 
     //----------------------------  CONSULTANT SITE  ----------------------------------------
-    @GetMapping("consultant/quote")
+    @GetMapping("/consultant/quote")
     public String getQuoteListByStaffId(Model model, HttpSession session,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size,
@@ -258,18 +258,24 @@ public class QuoteController {
         newQuote.setQuotesStatus(1);
         newQuote.setQuotesDate(new Date());
         newQuote = quoteService.saveQuotes(newQuote);
+        Consultant consultant = newQuote.getConsultant();
+        notificationService.createQuoteNotification(consultant.getConsultantCustomerName(),);
         return "redirect:/consultant/quote";
     }
 
-    @PostMapping("consultant/quote/updateQuote")
-    public String updateQuoteById(@RequestParam("quoteId") int quoteId, Model model) {
+    @GetMapping("consultant/quote/updateQuote")
+    public String updateQuoteById(@RequestParam("quoteId") int quoteId, Model model, HttpSession session) {
+        User staff = (User) session.getAttribute("user");
         Quotes quotes = quoteService.getQuoteById(quoteId);
-        model.addAttribute("newQuote", quotes);
-        model.addAttribute("customer", quotes.getCustomer());
-        model.addAttribute("staff", quotes.getStaff());
-        model.addAttribute("consultant", quotes.getConsultant());
-        model.addAttribute("parcelList", parcelService.viewParcelList());
-        return "consultant/quote/quoteEdit";
+        if(quotes != null && quotes.getStaff().getId() == staff.getId()){
+            model.addAttribute("newQuote", quotes);
+            model.addAttribute("customer", quotes.getCustomer());
+            model.addAttribute("staff", quotes.getStaff());
+            model.addAttribute("consultant", quotes.getConsultant());
+            model.addAttribute("parcelList", parcelService.viewParcelList());
+            return "consultant/quote/quoteEdit";
+        }
+        return "redirect:/consultant/quote";
     }
 
     @PostMapping("consultant/quote/saveUpdateQuote")

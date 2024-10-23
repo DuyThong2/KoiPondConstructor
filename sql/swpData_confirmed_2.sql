@@ -5,7 +5,6 @@ use swp391121
 go
 
 
---cái nào ko có chú thích như bit thì cứ 0; 1.
 -- 1. Authorities
 
 CREATE TABLE Users (
@@ -155,7 +154,7 @@ CREATE TABLE Quotes (
     quotes_total_price DECIMAL(10, 2),
     quotes_area DECIMAL(10, 2),
     quotes_date DATE,
-    quotes_status INT,  --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel
+    quotes_status INT,  --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel, 8. Finished
 	quotes_design_cost DECIMAL(10, 2),
     quotes_construction_cost DECIMAL(10, 2),
     customer_id INT,
@@ -307,7 +306,9 @@ CREATE TABLE Service_Quotes (
     service_quotes_area DECIMAL(10, 2),
     service_quotes_date DATETIME,
     service_quotes_status INT,  --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel
-    customer_id INT,
+    used_point INT,             --5.refused(customer),6.refused(by staff),7. cancel, 8.payment process, 9.complete
+	is_pay_after BIT,
+	customer_id INT,
     consultant_id int,
     staff_id INT,		
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
@@ -338,9 +339,11 @@ CREATE TABLE Service_Detail (
     service_id INT,
     customer_id INT,                  -- Links to the customer giving feedback
     staff_id INT,
+	service_quotes_id INT,
     FOREIGN KEY (service_id) REFERENCES Service(service_id),
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
-    FOREIGN KEY (staff_id) REFERENCES Staffs(id)
+    FOREIGN KEY (staff_id) REFERENCES Staffs(id),
+	FOREIGN KEY (service_quotes_id) REFERENCES Service_Quotes(service_quotes_id),
 );
 --26. Service_Feedback
 
@@ -406,6 +409,7 @@ CREATE TABLE Feedback (
 	FOREIGN KEY (service_quotes_id) REFERENCES Service_Quotes(service_quotes_id)
 )
 
+
 CREATE TABLE Notification (
     notification_id int primary key identity(1,1),
     receiver_id int,
@@ -417,4 +421,15 @@ CREATE TABLE Notification (
     create_at_date DATETIME DEFAULT GETDATE(),
     foreign key(receiver_id) references Users(id),
 )
+
+
+CREATE TABLE payment_history (
+    payment_id UNIQUEIDENTIFIER PRIMARY KEY DEFAULT NEWID(), -- Generates a unique UUID for each payment
+    customer_id INT, -- Foreign key referencing the customer
+    amount DECIMAL(10, 2), -- Payment amount
+    payment_date DATETIME , -- Date of the payment
+	description nvarchar(200),
+    payment_method VARCHAR(50), -- Method of payment (e.g., 'Credit Card', 'PayPal')
+    FOREIGN KEY (customer_id) REFERENCES Customers(id)
+);
 

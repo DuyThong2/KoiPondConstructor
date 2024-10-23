@@ -8,14 +8,17 @@
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
+    <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
+
     <style>
         body {
             background-color: #f8f9fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        h2 {
+        .title {
             font-weight: bold;
             color: #007bff;
             border-bottom: 2px solid #007bff;
@@ -139,7 +142,7 @@
 
         <!-- Main Content -->
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
-            <h2>Design Details</h2>
+            <h2 class="title">Design Details</h2>
 
             <!-- Design Stages Table -->
             <table class="table table-striped table-bordered mt-3">
@@ -150,6 +153,7 @@
                     <th>Status</th>
                     <th>Description</th>
                     <th>Summary File</th>
+                    <th style="width: 250px">Payment Process</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -195,23 +199,61 @@
                             </c:if>
                         </td>
                         <td>
-                            <c:forEach var="detail" items="${stage.designDetail}">
-                                <c:if test="${detail.name == 'Payment' && detail.status == 2}">
-                                    <form action="${pageContext.request.contextPath}/manager/completePayment/" method="post" onsubmit="return confirmStatusChange();">
-                                        <input type="hidden" name="detailId" value="${detail.id}">
-                                        <input type="hidden" name="newStatus" value="4">
-                                        <input type="hidden" name="designStageId" value="${stage.designStageId}">
-                                        <input type="hidden" name="designId" value="${design.designId}">
-                                        <button type="submit" class="btn btn-success btn-custom">Complete Payment</button>
-                                    </form>
-                                </c:if>
-                            </c:forEach>
+                            <c:set var="allPreviousCompleted" value="true" />
+
+                        <c:forEach var="detail" items="${stage.designDetail}">
+
+                            <c:if test="${detail.status != 4 && detail.name != 'Payment'}">
+                                <c:set var="allPreviousCompleted" value="false" />
+                            </c:if>
+
+                            <c:if test="${detail.name == 'Payment' && allPreviousCompleted}">
+
+                                <form action="${pageContext.request.contextPath}/manager/updatePayment" method="post" onsubmit="return confirmStatusChange();" class="form-inline">
+                                    <input type="hidden" name="detailId" value="${detail.id}">
+                                    <input type="hidden" name="designStageId" value="${stage.designStageId}">
+                                    <input type="hidden" name="designId" value="${design.designId}">
+
+                                    <div class="action-buttons d-flex align-items-center mt-2">
+
+                                        <select class="form-control select-status text-center mr-2" name="newStatus" required
+                                            ${stage.designStageStatus != 2 || detail.status == 4 ? 'disabled' : ''}>
+                                            <c:choose>
+
+                                                <c:when test="${detail.status == 1}">
+                                                    <option value="1" ${detail.status == 1 ? 'selected' : ''}>Pending</option>
+                                                    <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
+                                                    <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
+                                                </c:when>
+
+                                                <c:when test="${detail.status == 2}">
+                                                    <option value="2" ${detail.status == 2 ? 'selected' : ''}>Processing</option>
+                                                    <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
+                                                </c:when>
+
+                                                <c:when test="${detail.status == 4}">
+                                                    <option value="4" ${detail.status == 4 ? 'selected' : ''}>Completed</option>
+                                                </c:when>
+                                            </c:choose>
+                                        </select>
+
+                                        <button type="submit" class="btn btn-primary ml-2"
+                                            ${stage.designStageStatus != 2 || detail.status == 4 ? 'disabled' : ''}>
+                                            Update
+                                        </button>
+                                    </div>
+                                </form>
+                            </c:if>
+                        </c:forEach>
+                    </td>
+
+                        <td>
                             <button class="btn btn-info btn-custom" onclick="toggleBlueprint(${stage.designStageId})">View</button>
                         </td>
                     </tr>
                     <!-- Blueprint Details -->
                     <tr class="blueprint-row" id="blueprint-row-${stage.designStageId}" style="display: none;">
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="blueprint-details">
                                 <table class="table table-bordered">
                                     <div class="detail-name-bar  ">
@@ -265,8 +307,82 @@
                 </tbody>
             </table>
         </main>
+
+        <!-- Popup cho success -->
+        <div id="successPopup" class="popup-background">
+            <div class="popup-box success">
+                <i class="fas fa-check-circle"></i> <!-- Icon success -->
+                <h2 class="success">Success!</h2>
+                <p>${success}</p>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+        <!-- Popup cho error -->
+        <div id="errorPopup" class="popup-background">
+            <div class="popup-box error">
+                <i class="fas fa-exclamation-circle"></i> <!-- Icon lỗi -->
+                <h2 class="error">Error!</h2>
+                <p>${error}</p>
+                <button class="close-btn" onclick="closePopup()">Close</button>
+            </div>
+        </div>
+
+
+        <script>
+            // Hiển thị popup thành công
+            function showSuccessPopup() {
+                const successPopup = document.getElementById('successPopup');
+                successPopup.classList.add('show');
+                const popupBox = successPopup.querySelector('.popup-box');
+                setTimeout(() => {
+                    popupBox.classList.add('show');
+                }, 10); // Delay nhỏ để trigger animation
+            }
+
+            // Hiển thị popup lỗi
+            function showErrorPopup() {
+                const errorPopup = document.getElementById('errorPopup');
+                errorPopup.classList.add('show');
+                const popupBox = errorPopup.querySelector('.popup-box');
+                setTimeout(() => {
+                    popupBox.classList.add('show');
+                }, 10); // Delay nhỏ để trigger animation
+            }
+
+            // Đóng popup
+            function closePopup() {
+                const popups = document.querySelectorAll('.popup-background.show');
+                popups.forEach(popup => {
+                    const popupBox = popup.querySelector('.popup-box');
+                    popupBox.classList.remove('show');
+                    setTimeout(() => {
+                        popup.classList.remove('show');
+                    }, 300); // Delay để ẩn popup mềm mại hơn
+                });
+            }
+
+        </script>
+
+        <c:if test="${not empty success}">
+            <script>
+                showSuccessPopup();  // Hiển thị popup thành công
+            </script>
+        </c:if>
+
+        <c:if test="${not empty error}">
+            <script>
+                showErrorPopup();  // Hiển thị popup lỗi
+            </script>
+        </c:if>
+
+
     </div>
 </div>
+
+
+
+
 
 <script>
     function toggleBlueprint(stageId) {

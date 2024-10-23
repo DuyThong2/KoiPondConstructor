@@ -9,7 +9,7 @@
     <title>View Blueprints</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <%@include file="../cssTemplate.jsp"%>
-
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
     <style>
         body {
             background-color: #f4f4f9;
@@ -110,6 +110,29 @@
         .alert {
             margin-top: 20px;
         }
+        .blueprint-gallery .col-md-4 {
+            margin-bottom: 30px;
+        }
+
+        .blueprint-gallery .card {
+            width: 350px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .blueprint-gallery .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .blueprint-gallery .card-img-top {
+            height: 220px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
     </style>
 </head>
 <%@include file="../homePageNavbar.jsp"%>
@@ -126,12 +149,13 @@
         <h3>Existing Blueprints</h3>
         <form id="feedbackForm" action="${pageContext.request.contextPath}/feedback/send/" method="post">
             <input type="hidden" name="designStageId" value="${designStage.designStageId}">
+            <div class="blueprint-gallery">
             <div class="row">
                 <c:forEach var="blueprint" items="${blueprints}">
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <a href="/uploads/${blueprint.imgUrl}" target="_blank">
-                                <img class="card-img-top" src="/uploads/${blueprint.imgUrl}" alt="Blueprint Image">
+                            <a href="${blueprint.getShowingImg(blueprint.imgUrl)}" target="_blank">
+                                <img class="card-img-top" src="${blueprint.getShowingImg(blueprint.imgUrl)}" alt="Blueprint Image">
                             </a>
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="blueprintsId" value="${blueprint.bluePrintId}">
@@ -144,7 +168,7 @@
                     </div>
                 </c:forEach>
             </div>
-
+            </div>
             <!-- Feedback Section -->
             <div class="feedback-section">
                 <h3>Feedback</h3>
@@ -155,12 +179,68 @@
                 <button type="submit" class="btn btn-primary" style="padding: 10px; font-size: 15px">Send Feedback</button>
             </div>
 
-            <!-- Notifications -->
-            <c:if test="${not empty message}">
+            <!-- Popup cho success -->
+            <div id="successPopup" class="popup-background">
+                <div class="popup-box success">
+                    <i class="fas fa-check-circle"></i> <!-- Icon success -->
+                    <h2 class="success">Success!</h2>
+                    <p>${success}</p>
+                    <button class="close-btn" onclick="closePopup()">Close</button>
+                </div>
+            </div>
+
+            <!-- Popup cho error -->
+            <div id="errorPopup" class="popup-background">
+                <div class="popup-box error">
+                    <i class="fas fa-exclamation-circle"></i> <!-- Icon lỗi -->
+                    <h2 class="error">Error!</h2>
+                    <p>${error}</p>
+                    <button class="close-btn" onclick="closePopup()">Close</button>
+                </div>
+            </div>
+
+
+            <script>
+                function showSuccessPopup() {
+                    const successPopup = document.getElementById('successPopup');
+                    successPopup.classList.add('show');
+                    const popupBox = successPopup.querySelector('.popup-box');
+                    setTimeout(() => {
+                        popupBox.classList.add('show');}, 10);
+                }
+
+                function showErrorPopup() {
+                    const errorPopup = document.getElementById('errorPopup');
+                    errorPopup.classList.add('show');
+                    const popupBox = errorPopup.querySelector('.popup-box');
+                    setTimeout(() => {
+                        popupBox.classList.add('show');}, 10);
+                }
+
+                function closePopup() {
+                    const popups = document.querySelectorAll('.popup-background.show');
+                    popups.forEach(popup => {
+                        const popupBox = popup.querySelector('.popup-box');
+                        popupBox.classList.remove('show');
+                        setTimeout(() => {
+                            popup.classList.remove('show');}, 300);
+                    });
+                }
+
+            </script>
+
+            <c:if test="${not empty success}">
                 <script>
-                    alert("${message}");
+                    showSuccessPopup();
                 </script>
             </c:if>
+
+            <c:if test="${not empty error}">
+                <script>
+                    showErrorPopup();
+                </script>
+            </c:if>
+
         </form>
     </div>
 </div>

@@ -30,7 +30,10 @@ public class ParcelDAO {
         TypedQuery<Parcel> tq = entityManager.createQuery("SELECT p FROM Parcel p", Parcel.class);
         return tq.getResultList();
     }
-
+    public List<Parcel> viewParcelActiveList() {
+        TypedQuery<Parcel> tq = entityManager.createQuery("SELECT p FROM Parcel p where p.package_status = 1", Parcel.class);
+        return tq.getResultList();
+    }
     //---------------------------------------------- VIEW PARCEL MANAGER HAVE SORT FILTER ----------------------------------------------------    
     public List<Parcel> viewParcelListByOrderSort(int page, int size, String sortBy, String sortDirection) {
         TypedQuery<Parcel> tq = entityManager.createQuery("SELECT p FROM Parcel p ORDER BY " + sortBy + " " + sortDirection, Parcel.class);

@@ -16,20 +16,93 @@ public class ConstructionDAO {
         this.entityManager = entityManager;
     }
 
-    public List<Construction> getListConstructionWithCustomerName(int page, int size) {
-        TypedQuery<Construction> query = entityManager.createQuery(
-                "SELECT c FROM Construction c ORDER BY c.constructionStatus ASC",Construction.class);
-        query.setFirstResult(size * page);
+    public List<Construction> getPaginatedConstructions(Integer staffId, int page, int size, Integer statusFilter, String searchName) {
+        // Build the base JPQL query
+        StringBuilder jpql = new StringBuilder("SELECT c FROM Construction c");
+
+        boolean hasStaffFilter = staffId != null;
+        boolean hasStatusFilter = statusFilter != null;
+        boolean hasSearchName = searchName != null && !searchName.isEmpty();
+
+        // Include JOIN only if filtering by staffId
+        if (hasStaffFilter) {
+            jpql.append(" JOIN c.constructionStaffs cs WHERE cs.staff.id = :staffId");
+        } else {
+            jpql.append(" WHERE 1=1");
+        }
+
+        // Add dynamic conditions for status and name search
+        if (hasStatusFilter) {
+            jpql.append(" AND c.constructionStatus = :statusFilter");
+        }
+
+        if (hasSearchName) {
+            jpql.append(" AND LOWER(c.constructionName) LIKE LOWER(:searchName)");
+        }
+
+        jpql.append(" ORDER BY c.constructionStatus ASC");
+
+        TypedQuery<Construction> query = entityManager.createQuery(jpql.toString(), Construction.class);
+
+        // Set parameters dynamically
+        if (hasStaffFilter) {
+            query.setParameter("staffId", staffId);
+        }
+
+        if (hasStatusFilter) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+
+        if (hasSearchName) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
+
+        query.setFirstResult(page * size);
         query.setMaxResults(size);
+
         return query.getResultList();
     }
-    
-        public long countAllConstructions() {
-        String jpql = "SELECT COUNT(c) FROM Construction c JOIN c.constructionStaffs cs ";
-        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+
+    // Count the total number of constructions, with optional filtering by staffId, status, and search by name
+    public long countConstructions(Integer staffId, Integer statusFilter, String searchName) {
+        StringBuilder jpql = new StringBuilder("SELECT COUNT(c) FROM Construction c JOIN c.constructionStaffs cs WHERE 1=1");
+
+        boolean hasStaffFilter = staffId != null;
+        boolean hasStatusFilter = statusFilter != null;
+        boolean hasSearchName = searchName != null && !searchName.isEmpty();
+
+        // Building dynamic query conditions
+        if (hasStaffFilter) {
+            jpql.append(" AND cs.staff.id = :staffId");
+        }
+
+        if (hasStatusFilter) {
+            jpql.append(" AND c.constructionStatus = :statusFilter");
+        }
+
+        if (hasSearchName) {
+            jpql.append(" AND LOWER(c.constructionName) LIKE LOWER(:searchName)");
+        }
+
+        TypedQuery<Long> query = entityManager.createQuery(jpql.toString(), Long.class);
+
+        // Setting parameters dynamically
+        if (hasStaffFilter) {
+            query.setParameter("staffId", staffId);
+        }
+
+        if (hasStatusFilter) {
+            query.setParameter("statusFilter", statusFilter);
+        }
+
+        if (hasSearchName) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
+
         return query.getSingleResult();
     }
-    
+
+    // Method to get a construction by its ID
     public Construction getConstructionById(int id) {
         try {
             TypedQuery<Construction> construct = entityManager.createQuery(
@@ -39,36 +112,11 @@ public class ConstructionDAO {
         } catch (NoResultException e) {
             return null;
         }
-
     }
 
+    // Method to update a construction entity
     public Construction updateConstruction(Construction construction) {
         return entityManager.merge(construction);
-    }
-
-    // Fetch sorted and paginated constructions by staffId
-    public List<Construction> getSortedAndPaginatedByStaff(int staffId, int page, int size) {
-        String jpql = "SELECT c FROM Construction c "
-                + "JOIN c.constructionStaffs cs "
-                + "JOIN cs.staff s "
-                + "WHERE s.id = :staffId "
-                + "ORDER BY c.constructionStatus ASC";
-        TypedQuery<Construction> query = entityManager.createQuery(jpql, Construction.class);
-        query.setParameter("staffId", staffId);
-        query.setFirstResult(page * size); // Start at the correct row
-        query.setMaxResults(size); // Limit the number of results
-        return query.getResultList();
-    }
-
-    // Count the total number of constructions by staffId
-    public long countConstructionsByStaff(int staffId) {
-        String jpql = "SELECT COUNT(c) FROM Construction c "
-                + "JOIN c.constructionStaffs cs "
-                + "JOIN cs.staff s "
-                + "WHERE s.id = :staffId";
-        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
-        query.setParameter("staffId", staffId);
-        return query.getSingleResult();
     }
 
     public List<Construction> getconstructionByStaffId(int staffId) {
@@ -94,6 +142,7 @@ public class ConstructionDAO {
         // Nếu kết quả là null (không có điểm), trả về 0
         return result != null ? result : 0L;
     }
+
     public long countConstructionsInCompleteByStaffId(int staffId) {
         String jpql = "SELECT COUNT(c) FROM Construction c "
                 + "JOIN c.constructionStaffs cs "
