@@ -6,18 +6,15 @@
 package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.dao.CustomerDAO;
-import com.example.SWPKoiContructor.entities.Consultant;
-import com.example.SWPKoiContructor.entities.Customer;
-import com.example.SWPKoiContructor.entities.Staff;
-import com.example.SWPKoiContructor.entities.User;
-import com.example.SWPKoiContructor.services.ConsultantService;
-import com.example.SWPKoiContructor.services.CustomerService;
-import com.example.SWPKoiContructor.services.StaffService;
-import com.example.SWPKoiContructor.services.UserService;
+import com.example.SWPKoiContructor.entities.*;
+import com.example.SWPKoiContructor.services.*;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+
+import org.joda.time.LocalDateTime;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +23,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import static org.joda.time.LocalDateTime.now;
 
 /**
  *
@@ -37,12 +36,20 @@ public class ConsultantController {
     private ConsultantService consultantService;
     private StaffService staffService;
     private CustomerService customerService;
-    
+    private NotificationService notificationService;
 
-    public ConsultantController(ConsultantService consultantService, StaffService staffService, CustomerService customerService) {
+    private final SimpMessagingTemplate simpMessagingTemplate;
+
+    public ConsultantController(ConsultantService consultantService,
+                                StaffService staffService,
+                                CustomerService customerService,
+                                SimpMessagingTemplate simpMessagingTemplate,
+                                NotificationService notificationService) {
         this.consultantService = consultantService;
         this.staffService = staffService;
         this.customerService = customerService;
+        this.simpMessagingTemplate = simpMessagingTemplate;
+        this.notificationService =notificationService;
     }
 
         
@@ -155,15 +162,17 @@ public class ConsultantController {
     
     
     
+
     //CUSTOMER SITE        
+
     @PostMapping("/save")
-    public String saveConsultantInWeb(@RequestParam("name")String name,
-                                      @RequestParam("phone")String phone,
-                                      @RequestParam("email")String email,
-                                      @RequestParam("content")String content,
-                                      @RequestParam("type")String type,
-                                      @RequestParam(name = "preDesign", required = false )Integer preDesignId,
-                                      HttpSession session){
+    public String saveConsultantInWeb(@RequestParam("name") String name,
+                                      @RequestParam("phone") String phone,
+                                      @RequestParam("email") String email,
+                                      @RequestParam("content") String content,
+                                      @RequestParam("type") String type,
+                                      HttpSession session) {
+
         Consultant newConsultant = new Consultant();
         newConsultant.setConsultantCustomerName(name);
         newConsultant.setConsultantPhone(phone);
@@ -172,13 +181,36 @@ public class ConsultantController {
         newConsultant.setConsultantType(type);
         newConsultant.setConsultantDateTime(Calendar.getInstance());
         newConsultant.setConsultantStatus(1);
+
+
+        // Save the consultant
+
         User user = (User) session.getAttribute("user");       
         if(user != null){
             Customer cus = customerService.getCustomerById(user.getId());
             newConsultant.setCustomer(cus);
         }
+
         newConsultant = consultantService.createConsultant(newConsultant);
+
+        // Call the private method to handle notification
+        sendConsultantCreationNotification(newConsultant);
+
         return "redirect:/";
+    }
+
+
+    // Private method to send notification
+    private void sendConsultantCreationNotification(Consultant newConsultant) {
+        Notification notification = new Notification();
+        notification.setMessage("New consultant created: " + newConsultant.getConsultantCustomerName());
+        notification.setRelatedId(newConsultant.getConsultantId());  // Assuming getConsultantId() exists
+        notification.setReceiverType("manager"); // Assuming manager is notified
+        notification.setFromTable("consultant");
+        notification.setCreatedAt(java.time.LocalDateTime.now());
+        notificationService.saveNotification(notification);
+        // Broadcast notification to /topic/notifications
+        simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
     }
     
     @GetMapping("/customer/consultant")
@@ -226,5 +258,6 @@ public class ConsultantController {
             check = consultantService.updateConsultantStatus(consultantId, statusId);           
         }        
         return "redirect:/customer/consultant";
+
     }
 }

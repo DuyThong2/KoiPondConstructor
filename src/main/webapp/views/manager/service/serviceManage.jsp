@@ -12,11 +12,16 @@
     <head>
         <title>Admin Dashboard - Services</title>
         <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-        <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              rel="stylesheet">
+
         <style>
+            /* Custom styles for the sidebar */
+            .sidebar {
+                height: 100vh;
+                background-color: #343a40;
+                color: white;
+            }
 
             .sidebar a {
                 color: white;
@@ -31,11 +36,10 @@
 
             .filter-card {
                 background-color: #ffffff;
-
                 padding: 20px;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                margin: 0 0 30px 20px;
+                margin-bottom: 30px;
             }
 
             h2 {
@@ -64,7 +68,7 @@
             }
         </style>
     </head>
-    <div style="height:5vh;"></div>
+
     <body>
 
         <div class="container-fluid">

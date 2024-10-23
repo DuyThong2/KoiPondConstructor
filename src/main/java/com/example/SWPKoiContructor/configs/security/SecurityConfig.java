@@ -37,6 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .
                 csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/api/notifications/test/manage").permitAll()
+                .antMatchers("/api/notifications/new/manage").permitAll()
+
                 .antMatchers("/customer/**").hasRole("CUSTOMER") // Only customers can access /customer/*
                 .antMatchers("/manager/**").hasRole("MANAGER") // Only managers can access /manager/*
                 .antMatchers("/consultant/**").hasRole("CONSULTANT")
