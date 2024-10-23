@@ -1,7 +1,9 @@
 package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Customer;
+import com.example.SWPKoiContructor.entities.Service;
 import com.example.SWPKoiContructor.entities.ServiceDetail;
+import com.example.SWPKoiContructor.entities.ServicePrice;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.services.ProjectService;
@@ -29,7 +31,7 @@ public class ServiceDetailController {
 
     @Autowired
     private StaffService staffService;
-    
+
     @Autowired
     private ServiceQuoteService serviceQuoteService;
 
@@ -74,7 +76,6 @@ public class ServiceDetailController {
     }
 
     // Show detailed information about a specific service detail
-
     @GetMapping("/manager/serviceDetails/{serviceDetailId}")
     public String showServiceDetail(
             @PathVariable("serviceDetailId") int serviceDetailId, Model model) {
@@ -92,24 +93,37 @@ public class ServiceDetailController {
 
         return "manager/service/serviceDetailInfo"; // JSP page to show service detail information
     }
-    
+
     @PostMapping("/manager/serviceDetails/create")
-    public String createNewServiceDetail(@RequestParam("serviceQuoteId")int serviceQuoteId, Model model){
-        try{
-        ServiceQuotes serviceQuotes = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
-        ServiceDetail newServiceDetail = new ServiceDetail();
-        newServiceDetail.setPrice(serviceQuotes.getServiceQuotesTotalPrice());
-        newServiceDetail.setDateRegister(new Date());
-        newServiceDetail.setServiceDetailStatus(1);
-       
-        newServiceDetail.setCustomer(serviceQuotes.getCustomer());
-        newServiceDetail = serviceDetailService.createServiceDetail(newServiceDetail);
-        return "redirect:/manager/serviceDetails";
-        }catch(Exception e){
+    public String createNewServiceDetail(@RequestParam("serviceQuoteId") int serviceQuoteId, Model model) {
+        try {
+            ServiceQuotes serviceQuotes = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
+            if (serviceQuotes != null) {
+                for (Service i : serviceQuotes.getService()) {
+                    ServiceDetail newServiceDetail = new ServiceDetail();
+                    for(ServicePrice p : i.getServicePrice()){
+                        if(p.getService().getServiceId() == i.getServiceId()){
+                            newServiceDetail.setPrice(p.getValue());
+                            break;
+                        }
+                    }
+                    newServiceDetail.setServiceQuotes(serviceQuotes);
+                    newServiceDetail.setDateRegister(new Date());
+                    newServiceDetail.setServiceDetailStatus(1);
+                    newServiceDetail.setService(i);
+                    newServiceDetail.setCustomer(serviceQuotes.getCustomer());
+                    newServiceDetail = serviceDetailService.createServiceDetail(newServiceDetail);
+                }
+                if(!serviceQuotes.isIsPayAfter()){
+                    serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, 9);
+                }
+            }
+
+            return "redirect:/manager/serviceDetails";
+        } catch (Exception e) {
             return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
         }
     }
-
 
     // Display page for assigning construction staff to a service detail
     @GetMapping("/manager/serviceDetails/assign/{serviceDetailId}")
@@ -157,14 +171,12 @@ public class ServiceDetailController {
         model.addAttribute("constructionStaff", constructionStaff);
         model.addAttribute("availableStaff", availableStaff);
         model.addAttribute("searchTerm", searchTerm);
-        model.addAttribute("totalPage", totalPage==0?1:totalPage);
+        model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("size", size);
 
         return "manager/service/serviceAssignStaff"; // JSP page to show the available staff for assignment
     }
-
-
 
     // Handle staff assignment to a service detail
     @PostMapping("/manager/serviceDetails/assignStaff")
@@ -178,16 +190,16 @@ public class ServiceDetailController {
             ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
 
             if (serviceDetail != null && staff != null) {
-                if(serviceDetail.getServiceDetailStatus()==3 || serviceDetail.getServiceDetailStatus()==4 || serviceDetail.getServiceDetailStatus()==5) {
+                if (serviceDetail.getServiceDetailStatus() == 3 || serviceDetail.getServiceDetailStatus() == 4 || serviceDetail.getServiceDetailStatus() == 5) {
                     model.addAttribute("errorMessage", "Can't assign staff");
                     return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
                 }
-                    if(serviceDetail.getStaff()!=null){
-                        model.addAttribute("errorMessage", "Staff have been already assigned");
-                        return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
-                    }
+                if (serviceDetail.getStaff() != null) {
+                    model.addAttribute("errorMessage", "Staff have been already assigned");
+                    return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
+                }
 
-                if(serviceDetail.getStaff()!=null){
+                if (serviceDetail.getStaff() != null) {
                     model.addAttribute("errorMessage", "Staff have been already assigned");
                     return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
                 }
@@ -257,6 +269,7 @@ public class ServiceDetailController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating status: " + e.getMessage());
         }
     }
+
     @PostMapping("/manager/serviceDetails/assignStaffAjax")
     @ResponseBody
     public ResponseEntity<Staff> assignConstructionStaffAjax(
@@ -278,6 +291,7 @@ public class ServiceDetailController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
     @GetMapping("/customer/serviceDetails")
     public String serviceDetailListCustomer(
             HttpSession session,
@@ -300,7 +314,7 @@ public class ServiceDetailController {
         List<ServiceDetail> serviceDetailList = serviceDetailService.getPaginationServiceDetailListByCustomerId(
                 customer.getId(), page, size, sortBy, sortType);
         long serviceDetailNum = serviceDetailService.countServiceDetailsByCustomerId(customer.getId());
-        System.out.println("VAI CACHUONG" +serviceDetailNum);
+        System.out.println("VAI CACHUONG" + serviceDetailNum);
 
         // Calculate total number of pages
         long totalPage = (long) Math.ceil((double) serviceDetailNum / size);
@@ -321,10 +335,11 @@ public class ServiceDetailController {
         model.addAttribute("sortType", sortType);
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("serviceDetailsList", serviceDetailList);
-        System.out.println("Hello:" + (totalPage*10));
+        System.out.println("Hello:" + (totalPage * 10));
 
         return "/customer/serviceDetail/serviceDetailPage"; // Path to your JSP page for customer service details
     }
+
     @PostMapping("/construction/serviceDetail/acceptCancelRequest")
     public ResponseEntity<String> acceptCancelRequest(@RequestParam("serviceDetailId") int serviceDetailId) {
         try {
@@ -340,33 +355,36 @@ public class ServiceDetailController {
             return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred while accepting the cancellation request\"}");
         }
     }
+
     @PostMapping("/construction/serviceDetail/denyCancelRequest")
-    public ResponseEntity<String> cancelCancelRequest(@RequestParam("serviceDetailId") int serviceDetailId){
-        try{
-            ServiceDetail serviceDetail= serviceDetailService.updateServiceDetailStatus(serviceDetailId,2);
+    public ResponseEntity<String> cancelCancelRequest(@RequestParam("serviceDetailId") int serviceDetailId) {
+        try {
+            ServiceDetail serviceDetail = serviceDetailService.updateServiceDetailStatus(serviceDetailId, 2);
             if (serviceDetail != null) {
                 return ResponseEntity.ok("{\"status\":\"success\"}");
             } else {
                 return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Could not update status to Canceled\"}");
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred while accepting the cancellation request\"}");
         }
     }
+
     @GetMapping("/customer/serviceDetail/{id}")
-    public String customerServiceDetailInfo(Model model,@PathVariable("id") int id,HttpSession session){
-        Customer customer = (Customer)session.getAttribute("user");
-        if(customer==null){
+    public String customerServiceDetailInfo(Model model, @PathVariable("id") int id, HttpSession session) {
+        Customer customer = (Customer) session.getAttribute("user");
+        if (customer == null) {
             return "redirect:/login";
         }
         ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(id);
-        if(serviceDetail==null||serviceDetail.getCustomer().getId()!= customer.getId()){
+        if (serviceDetail == null || serviceDetail.getCustomer().getId() != customer.getId()) {
             return "redirect:/customer/serviceDetails";
         }
-        model.addAttribute("serviceDetail",serviceDetail);
+        model.addAttribute("serviceDetail", serviceDetail);
 
         return "/customer/serviceDetail/serviceDetailInfo";
     }
+
     @PostMapping("/customer/serviceDetail/feedback")
     public String submitFeedback(
             @RequestParam("serviceDetailId") int serviceDetailId,

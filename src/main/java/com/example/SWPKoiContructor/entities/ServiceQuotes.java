@@ -53,6 +53,12 @@ public class ServiceQuotes {
     @Column(name = "service_quotes_status")
     private int serviceQuotesStatus;
     
+    @Column(name = "used_point")
+    private int usedPoint;
+    
+    @Column(name = "is_pay_after")
+    private boolean isPayAfter;
+            
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
@@ -76,6 +82,9 @@ public class ServiceQuotes {
     @OneToMany(mappedBy = "serviceQuotes")
     private List<Feedback> feedback;
 
+    @OneToMany(mappedBy = "serviceQuotes")
+    private List<ServiceDetail> serviceDetails;
+    
     public ServiceQuotes() {
     }
 
@@ -152,6 +161,24 @@ public class ServiceQuotes {
         this.serviceQuotesStatus = serviceQuotesStatus;
     }
 
+    public int getUsedPoint() {
+        return usedPoint;
+    }
+
+    public void setUsedPoint(int usedPoint) {
+        this.usedPoint = usedPoint;
+    }
+
+    public boolean isIsPayAfter() {
+        return isPayAfter;
+    }
+
+    public void setIsPayAfter(boolean isPayAfter) {
+        this.isPayAfter = isPayAfter;
+    }
+    
+    
+
     public Customer getCustomer() {
         return customer;
     }
@@ -193,6 +220,16 @@ public class ServiceQuotes {
     public void setFeedback(List<Feedback> feedback) {
         this.feedback = feedback;
     }
+
+    public List<ServiceDetail> getServiceDetails() {
+        return serviceDetails;
+    }
+
+    public void setServiceDetails(List<ServiceDetail> serviceDetails) {
+        this.serviceDetails = serviceDetails;
+    }
+    
+    
            
     public boolean isServiceQuoteBelongToStaff(Staff staff, ServiceQuotes serviceQuotes){
         if(staff == null || serviceQuotes == null)
@@ -200,4 +237,27 @@ public class ServiceQuotes {
         return serviceQuotes.getStaff() != null && serviceQuotes.getStaff().getId() == staff.getId();
     }
     
+    public boolean isServiceDetailOfQuoteFinished() {
+    // Check if the serviceDetails list is null or empty
+    if (serviceDetails == null || serviceDetails.isEmpty()) {
+        return false;
+    }
+    
+    // Define a constant for the "finished" status
+    final int FINISHED_STATUS = 3;
+    
+    // Loop through each service detail and check its status
+    for (ServiceDetail serviceDetail : serviceDetails) {
+        if (serviceDetail.getServiceDetailStatus() == null || 
+            serviceDetail.getServiceDetailStatus() != FINISHED_STATUS) {
+            return false; // Return false if any detail is not finished
+        }
+    }
+    
+    return true; // All service details are finished
+    }
+    
+    public boolean isFree() {
+    return serviceQuotesTotalPrice == usedPoint;
+}
 }

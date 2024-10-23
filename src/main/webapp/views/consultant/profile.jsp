@@ -8,7 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
@@ -151,6 +152,47 @@
         .password-field .toggle-password {
             margin-top: 16px;
         }
+        .modal-header {
+            border-top-left-radius: 10px; /* Rounded top left corner */
+            border-top-right-radius: 10px; /* Rounded top right corner */
+            background-color: #0b0b0b;
+            justify-content: center;
+        }
+        .modal-title{
+            color: white;
+            text-align: center;
+            font-weight: bold;
+        }
+        .password-field input {
+            padding-right: 40px;
+            font-size: 18px;
+            border-radius: 14px;
+        }
+        .btn-dark {
+            background-color: #000000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 25px;
+        }
+
+        .btn-dark:hover {
+            background-color: #6c757d;
+        }
+        .btn-danger {
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            border-radius: 25px;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background-color: #e75f6c;
+        }
+
     </style>
 </head>
 <body>
@@ -260,6 +302,70 @@
             </div>
         </div>
     </div>
+
+    <!-- Popup cho success -->
+    <div id="successPopup" class="popup-background">
+        <div class="popup-box success">
+            <i class="fas fa-check-circle"></i> <!-- Icon success -->
+            <h2 class="success">Success!</h2>
+            <p>${success}</p>
+            <button class="close-btn" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+    <!-- Popup cho error -->
+    <div id="errorPopup" class="popup-background">
+        <div class="popup-box error">
+            <i class="fas fa-exclamation-circle"></i> <!-- Icon lỗi -->
+            <h2 class="error">Error!</h2>
+            <p>${error}</p>
+            <button class="close-btn" onclick="closePopup()">Close</button>
+        </div>
+    </div>
+
+
+    <script>
+        function showSuccessPopup() {
+            const successPopup = document.getElementById('successPopup');
+            successPopup.classList.add('show');
+            const popupBox = successPopup.querySelector('.popup-box');
+            setTimeout(() => {
+                popupBox.classList.add('show');}, 10);
+        }
+
+        function showErrorPopup() {
+            const errorPopup = document.getElementById('errorPopup');
+            errorPopup.classList.add('show');
+            const popupBox = errorPopup.querySelector('.popup-box');
+            setTimeout(() => {
+                popupBox.classList.add('show');}, 10);
+        }
+
+        function closePopup() {
+            const popups = document.querySelectorAll('.popup-background.show');
+            popups.forEach(popup => {
+                const popupBox = popup.querySelector('.popup-box');
+                popupBox.classList.remove('show');
+                setTimeout(() => {
+                    popup.classList.remove('show');}, 300);
+            });
+        }
+
+    </script>
+
+    <c:if test="${not empty success}">
+        <script>
+            showSuccessPopup();
+        </script>
+    </c:if>
+
+    <c:if test="${not empty error}">
+        <script>
+            showErrorPopup();
+        </script>
+    </c:if>
+
+
 </div>
 
 <!-- Modal Change Password -->
@@ -289,8 +395,8 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Change Password</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-dark">Change Password</button>
                     </div>
                 </form>
             </div>

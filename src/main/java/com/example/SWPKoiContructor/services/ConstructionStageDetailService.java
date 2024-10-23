@@ -27,17 +27,19 @@ public class ConstructionStageDetailService {
     }
 
     @Transactional
-    public void updateConstructionStageDetailStatus(int constructionStageDetailId, int newStatus) {
+    public ConstructionStageDetail updateConstructionStageDetailStatus(int constructionStageDetailId, int newStatus) {
+        ConstructionStageDetail result = null;
         // Step 1: Update ConstructionStageDetail status
         ConstructionStageDetail constructionStageDetail = constructionStageDetailDao.getConstructionStageDetailByConstructionStageDetailId(constructionStageDetailId);
         if (constructionStageDetail != null) {
             System.out.println(constructionStageDetail.getConstructionStageDetailDescription() + constructionStageDetail.getConstructionStageDetailId());
             constructionStageDetail.setConstructionStageDetailStatus(newStatus);
-            constructionStageDetailDao.updateConstructionStageDetail(constructionStageDetail);
+            result = constructionStageDetailDao.updateConstructionStageDetail(constructionStageDetail);
 
             // Step 2: Propagate changes to ConstructionStage
             constructionStageService.propagateStatusToConstructionStage(constructionStageDetail.getConstructionStage().getConstructionStageId());
         }
+        return result;
 
     }
 

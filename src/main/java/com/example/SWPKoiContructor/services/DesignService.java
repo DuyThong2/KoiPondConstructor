@@ -10,9 +10,6 @@ import com.example.SWPKoiContructor.entities.Project;
 import java.util.List;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.persistence.TypedQuery;
 
 @Service
 public class DesignService {
@@ -30,12 +27,12 @@ public class DesignService {
         this.constructionService = constructionService;
     }
 
-    public List<Design> getListDesignWithSortedAndPaginated(int page, int size) {
-        return designDao.getListDesignWithSortedAndPaginated(page, size);
+    public List<Design> getListDesignWithSortedAndPaginated(int page, int size, Integer status, String name) {
+        return designDao.getListDesignWithSortedAndPaginated(page, size, status, name);
     }
 
-    public int getTotalOfAllDesigns(int size) {
-        long totalDesign = designDao.countAllDesigns();
+    public int getTotalOfAllDesigns(int size, Integer status, String name) {
+        long totalDesign = designDao.countAllDesigns(status, name);
         return (int) Math.ceil((double) totalDesign / size);
     }
 
@@ -43,14 +40,12 @@ public class DesignService {
         return designDao.getDesignById(id);
     }
 
-    // Hàm lấy danh sách các thiết kế đã phân trang
-    public List<Design> getSortedAndPaginatedByDesigner(int staffId, int page, int size) {
-        return designDao.getSortedAndPaginatedByDesigner(staffId, page, size);
+    public List<Design> getSortedAndPaginatedByDesigner(int staffId, int page, int size, Integer status, String name) {
+        return designDao.getSortedAndPaginatedByDesigner(staffId, page, size, status, name);
     }
-
     // Hàm đếm tổng số thiết kế để tính tổng số trang
-    public int getTotalPagesByDesigner(int staffId, int size) {
-        long totalDesigns = designDao.countDesignsByStaff(staffId);
+    public int getTotalPagesByDesigner(int staffId, int size, Integer status, String name) {
+        long totalDesigns = designDao.countDesignsByStaffWithFilter(staffId, status, name);
         return (int) Math.ceil((double) totalDesigns / size); // Tính tổng số trang
     }
 

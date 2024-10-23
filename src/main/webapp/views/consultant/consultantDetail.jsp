@@ -8,7 +8,7 @@
     <title>Contract Details</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         .section-header {
@@ -37,6 +37,7 @@
 <body>
 <div class="container mt-5">
     <jsp:include page="consultantNav.jsp"/>
+
     <div class="row">
 
 
@@ -122,7 +123,7 @@
                 </c:when>
                 <c:when test="${consultant.consultantStatus == 4 && empty consultant.quotes}">
                     <div class="">
-                        <form action="${pageContext.request.contextPath}/consultant/quote/createNewQuotes" method="post" class="d-inline">
+                        <form action="${pageContext.request.contextPath}/consultant/quote/createNewQuotes" method="get" class="d-inline">
                             <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
                             <button type="submit" class="btn btn-success">Create New Quote</button>
                         </form>

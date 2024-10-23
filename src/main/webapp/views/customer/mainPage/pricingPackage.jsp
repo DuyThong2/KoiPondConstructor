@@ -19,68 +19,169 @@
     <%@include file="../cssCustom.jsp"%>
 
     <style>
-        .sidebar {
-            width: 300px;
-            background-color: #FFC107;
-            padding: 20px;
-            border-radius: 10px;
+        .d-flex{
+            margin-top: 0;
         }
 
-        .sidebar table {
-            width: 100%;
+        /* Styling for the section headers */
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
         }
 
-        .sidebar table td {
-            padding: 8px;
-            vertical-align: top;
-        }
-
-        .sidebar h5 {
-            font-size: 16px;
+        .section-title h2 {
+            font-size: 2.8em;
             font-weight: bold;
-            margin: 0;
-            white-space: nowrap; /* Ensure the label doesn't break into a new line */
+            margin-bottom: 10px;
+            color: #ff5733; /* Accent color */
         }
 
-        .sidebar .entry-date,
-        .sidebar .entry-client,
-        .sidebar .entry-duration,
-        .sidebar .entry-category,
-        .sidebar .entry-tags {
-            font-size: 1.1em;
-            color: #000;
+        .section-title p {
+            font-size: 1.6em;
+            color: #666;
         }
 
-        .sidebar .portfolio-meta-icon {
-            font-size: 1.5em;
-            margin-right: 10px;
-            color: #000;
-        }
-
-        .sidebar .social-icons a {
-            margin-right: 5px;
-            color: #fff;
-            font-size: 1.5em;
-            display: inline-block;
-        }
-
-        .single-portfolio-wrap {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .content {
-            width: 65%; /* Adjust to control the width of the content section */
-            margin-right: 30px; /* Space between content and sidebar */
-        }
-
-        .sidebar {
-            width: 30%; /* Adjust to control the width of the sidebar */
-            background-color: #FFC107;
-            padding: 20px;
+        /* Centering and styling for images */
+        .img-fluid-custom {
+            max-width: 100%;
+            height: auto;
             border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds shadow */
+            margin-bottom: 20px;
         }
-        @media screen and (max-width: 768px) {
+
+        /* Custom CSS for pricing table */
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 1.1em;
+            text-align: center;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .pricing-table th, .pricing-table td {
+            padding: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .pricing-table th {
+            background-color: #ff5733;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .pricing-table td {
+            background-color: #f9f9f9;
+        }
+
+        .pricing-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Style for project scope list */
+        .custom-list {
+            list-style-type: none;
+            padding-left: 0;
+            font-size: 1.3em;
+            color: #555;
+        }
+
+        .custom-list li {
+            padding: 10px 0;
+            margin: 5px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .custom-list li:before {
+            content: "\2714"; /* Checkmark icon */
+            position: absolute;
+            left: 0;
+            color: #ff5733; /* Accent color */
+        }
+
+        /* Section spacing */
+        section {
+            padding: 50px 0;
+        }
+
+        /* Card styling */
+        .service-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .service-card h3 {
+            color: #ff5733;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: #555;
+        }/* Container for the process grid */
+        /* Container for the process grid */
+        .process-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px; /* Increase gap for better spacing */
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        /* Individual process item styling */
+        .process-item {
+            background-color: #ffffff; /* Pure white for cleaner look */
+            border: 1px solid #ececec; /* Lighter border color */
+            padding: 30px; /* More padding for spaciousness */
+            border-radius: 15px; /* Increased border-radius for softer edges */
+            flex: 0 1 calc(33.333% - 30px); /* Adjust width */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* Softer shadow for more elegance */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effect */
+            position: relative;
+        }
+
+        .process-item:hover {
+            transform: translateY(-10px); /* Subtle hover effect */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1); /* Increase shadow on hover */
+        }
+
+        /* Number styling for each process */
+        .process-number {
+            font-size: 3.5em; /* Slightly larger font */
+            color: #ffac33;
+            font-weight: bold;
+            margin-bottom: 20px; /* More space below the number */
+        }
+
+        /* Process title and paragraph styling */
+        .process-item h4 {
+            font-size: 1.6em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .process-item p {
+            font-size: 1.2em; /* Slightly larger paragraph text */
+            color: #666;
+            margin-bottom: 20px; /* More spacing below paragraphs */
+        }
+
+        @media (max-width: 480px) {
+            .process-item {
+                flex: 0 1 100%;
+            }
+        }
+        @media (max-width: 768px) {
             .single-portfolio-wrap {
                 flex-direction: column; /* Stack the content and sidebar vertically */
             }
@@ -90,8 +191,34 @@
                 margin-top: 20px;
                 margin-right: 0;
             }
+
+            .section-title h2 {
+                font-size: 2.2em;
+            }
+
+            .process-item {
+                flex: 0 1 calc(50% - 30px);
+            }
         }
 
+        @media (max-width: 480px) {
+            .process-item {
+                flex: 0 1 100%; /* One item per row for mobile */
+                padding: 20px; /* Reduce padding for smaller screens */
+            }
+
+            .process-number {
+                font-size: 3em; /* Smaller number font for mobile */
+            }
+
+            .process-item h4 {
+                font-size: 1.4em;
+            }
+
+            .process-item p {
+                font-size: 1.1em;
+            }
+        }
     </style>
 </head>
 
@@ -251,218 +378,204 @@
 
 <!-- Header area start -->
 <%@include file="../homePageNavbar.jsp" %>
-<!-- Header area end -->
-<div class="page-title-wrap typo-white">
-    <div class="page-title-wrap-inner section-bg-img" data-bg="images/bg/page-title-bg.jpg">
-        <span class="black-overlay"></span>
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <div class="page-title-inner">
-                        <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="index.html" class="theme-color">Home</a>
-                            <span class="current">Project</span>
-                        </div>
-                        <h1 class="page-title mb-0">${project.projectName}</h1>
+
+<main>
+    <section id="services"
+             class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+        <div class="container rr-shape-p-c_1">
+            <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+                <div></div>
+            </div>
+            <div class="service__shape-2 rr-shape-p-s_1 rr-upDown">
+                <div></div>
+            </div>
+            <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+                <div class="col-md-6">
+                    <div class="section__title-wrapper text-center text-xl-start">
+                                <span class="section__subtitle justify-content-start mb-13"><span data-width="40px" class="left-separetor">
+
+                                </span>Pricing</span>
+                        <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                            data-cursor="-opaque">Pricing and Service Quotation
+                        </h2>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div style="height:100px">
+    </section>
+    <!-- Pricing Section -->
+    <section id="services" class="service bg-light">
+        <div class="container">
+            <div class="section-title">
+                <h2>Pricing and Service Quotation</h2>
+                <p>Details of pricing and koi pond construction services</p>
+            </div>
 
-</div>
-<main style="margin-bottom: 100px">
-    <div class="row mb-minus-30">
-        <div class="col-xl-4 col-md-6">
-            <div class="pricing__card overflow-hidden mb-30 wow clip-t-b" data-background="assets/imgs/pricing/bottom-shape.png">
-                <div class="pricing__card-image mb-40"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/home.png" alt=""></div>
-                <h4 class="pricing__card-title rr-fw-sbold"><span>Basic</span></h4>
-                <div class="pricing__card-price mb-30 pb-30">
-                    <h2 data-yearly='<span class="price">$199.<span>00</span></span>
-                                <span class="month-year">PER YEARLY</span>' data-monthly='<span class="price">$99.<span>00</span></span>
-                                <span class="month-year">PER MONTH</span>' class="d-flex flex-column">
-                        <span class="price">$99.<span>00</span></span>
-                        <span class="month-year">PER MONTH</span>
-                    </h2>
+            <div class="row">
+                <div class="col-md-12 d-flex justify-content-center align-items-center">
+                    <img src="${pageContext.request.contextPath}/assets/imgs/service_quotation.jpg" alt="Quotation Image" class="img-fluid-custom">
                 </div>
-
-                <div class="pricing__card-body mb-40">
-                    <ul>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Construction Hourly Rate
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Remodel Or Home Addition
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Limitless Concepts
-                        </li>
-                        <li class="not_included">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Architectural Plans
-                        </li>
-                        <li class="not_included">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Economic Market Survey
-                        </li>
-                    </ul>
+                <div class="col-md-9 mx-auto mt-4 text-center">
+                    <p style="font-size: 2rem">If you are in need of garden landscape design and construction, koi pond installation, or vertical garden solutions but are unsure about pricing and investment costs, don't worry! Explore the detailed and competitive price list from SGL Vietnam now.</p>
                 </div>
-
-                <a href="index.html" class="rr-btn rr-btn__transparent">
-                            <span class="btn-wrap">
-                                <span class="text-one">Purchase Now</span>
-                                <span class="text-two">Purchase Now</span>
-                            </span>
-                </a>
             </div>
         </div>
-        <div class="col-xl-4 col-md-6">
-            <div class="pricing__card pricing__card-standard overflow-hidden mb-30 wow clip-t-b" data-background="assets/imgs/pricing/bottom-shape__white.png">
-                <div class="pricing__card-image mb-40"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/home.png" alt=""></div>
-                <h4 class="pricing__card-title rr-fw-sbold"><span>Premium</span></h4>
-                <div class="pricing__card-price mb-30 pb-30">
-                    <h2 data-yearly='<span class="price">$215.<span>00</span></span>
-                                <span class="month-year">PER YEARLY</span>' data-monthly='<span class="price">$115.<span>00</span></span>
-                                <span class="month-year">PER MONTH</span>' class="d-flex flex-column">
-                        <span class="price">$115.<span>00</span></span>
-                        <span class="month-year">PER MONTH</span>
-                    </h2>
-                </div>
+    </section>
 
-                <div class="pricing__card-body mb-40">
-                    <ul>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Construction Hourly Rate
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Remodel Or Home Addition
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Limitless Concepts
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Architectural Plans
-                        </li>
-                        <li class="not_included">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Economic Market Survey
-                        </li>
-                    </ul>
-                </div>
+    <!-- Pricing Table Section -->
+    <section class="bg-white">
+        <div class="container">
+            <div class="section-title">
+                <h2>Koi Pond Design and Construction Pricing</h2>
+            </div>
+            <table class="pricing-table">
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Name</th>
+                    <th>Design Price ($/m<sup>2</sup>)</th>
+                    <th>Construction Price ($/m<sup>2</sup>)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:set var="count" value="0"/>
+                <c:forEach var="parcel" items="${parcels}">
+                    <c:set var="count" value="${count + 1}"/>
+                    <tr>
+                        <td>${count}</td>
+                        <td>${parcel.packageName}</td>
+                        <td>${parcel.designOnSquareRoot}/m<sup>2</sup></td>
+                        <td>${parcel.constructionPriceOnSquareRoot}/m<sup>2</sup></td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-                <a href="index.html" class="rr-btn">
-                            <span class="btn-wrap">
-                                <span class="text-one">Purchase Now</span>
-                                <span class="text-two">Purchase Now</span>
-                            </span>
-                </a>
+    <!-- Project Scope Section -->
+    <section class="bg-light">
+        <div class="container">
+            <div class="section-title">
+                <h2>Project Scope</h2>
+            </div>
+            <h4>Design Work Includes:</h4>
+            <ul class="custom-list">
+                <li>Concept Design</li>
+                <li>Detailed 3D Design</li>
+                <li>Construction Detailing</li>
+            </ul>
+            <h4>Construction Work Includes:</h4>
+            <ul class="custom-list">
+                <li>Concrete pouring, waterproofing for pond walls, pond base, and filter chamber</li>
+                <li>M&E work for garden electrical and water systems</li>
+                <li>Filter system installation and artistic stone edging</li>
+                <li>Installation of Japanese stone lamps</li>
+                <li>Wooden deck for filter chamber</li>
+                <li>Artistic garden shrub and flower arrangement</li>
+                <li>Medium-sized trees installation</li>
+            </ul>
+
+            <div class="text-center" style="margin-top: 5rem">
+                <img src="${pageContext.request.contextPath}/assets/imgs/ban-ve-3d-ho-ca-koi.jpg" alt="Koi Pond Project" class="img-fluid-custom">
+            </div>
+            <p class="mt-2 text-center" style="font-size: 1.7rem">This is the 3D design drawing of the koi fish pond project.</p>
+
+
+            <div class="text-center">
+                <img src="${pageContext.request.contextPath}/assets/imgs/ho-ca-koi.jpg" alt="Koi Pond Project" class="img-fluid-custom">
+            </div>
+            <p class="mt-2 text-center" style="font-size: 1.7rem">HappiKoi team working on waterproofing for a koi pond project in Ho Chi Minh City</p>
+        </div>
+
+    </section>
+
+    <!-- Payment Terms Section -->
+    <section class="bg-white">
+        <div class="container">
+            <div class="section-title">
+                <h2>Payment Term Stages</h2>
+            </div>
+            <table class="pricing-table">
+                <thead>
+                <tr>
+                    <th>No.</th>
+                    <th>Design Stage 1</th>
+                    <th>Design Stage 2</th>
+                    <th>Design Stage 3</th>
+                    <th>Construction Stage 1</th>
+                    <th>Construction Stage 2</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:set var="count" value="0"/>
+                <c:forEach var="term" items="${terms}">
+                    <c:set var="count" value="${count + 1}"/>
+                    <tr>
+                        <td>${count}</td>
+                        <td>${term.percentOnDesign1}%</td>
+                        <td>${term.percentOnDesign2}%</td>
+                        <td>${term.percentOnDesign3}%</td>
+                        <td>${term.percentOnConstruct1}%</td>
+                        <td>${term.percentOnConstruct2}%</td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+
+
+    <section class="bg-light">
+        <div class="container">
+            <div class="section-title">
+                <h2>Service Implementation Process at Happikoi</h2>
+            </div>
+
+            <div class="process-grid">
+                <div class="process-item">
+                    <div class="process-number">1</div>
+                    <h4>Receive Customer Request</h4>
+                    <p>We receive and record information about your garden landscape design and koi pond construction needs.</p>
+                       </div>
+
+                <div class="process-item">
+                    <div class="process-number">2</div>
+                    <h4>On-Site Survey</h4>
+                    <p>Our team conducts an on-site survey to assess the area and ensure accuracy in the design and construction phases.</p>
+                           </div>
+
+                <div class="process-item">
+                    <div class="process-number">3</div>
+                    <h4>Design Proposal</h4>
+                    <p>We propose a preliminary design that reflects natural elements, aesthetics, and your personal preferences.</p>
+                        </div>
+
+                <div class="process-item">
+                    <div class="process-number">4</div>
+                    <h4>Quote Submission</h4>
+                    <p>We provide a detailed quotation based on the project scope, including all design and construction costs.</p>
+                       </div>
+
+                <div class="process-item">
+                    <div class="process-number">5</div>
+                    <h4>Design Finalization</h4>
+                    <p>Once the quote is approved, the design is finalized in 3D, giving you a full visualization of the project.</p>
+                     </div>
+
+                <div class="process-item">
+                    <div class="process-number">6</div>
+                    <h4>Construction and Supervision</h4>
+                    <p>We begin construction and supervise the project to ensure it meets design specifications and quality standards.</p>
+                    </div>
             </div>
         </div>
-        <div class="col-xl-4 col-md-6">
-            <div class="pricing__card overflow-hidden mb-30 wow clip-t-b" data-background="assets/imgs/pricing/bottom-shape.png">
-                <div class="pricing__card-image mb-40"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/home.png" alt=""></div>
-                <h4 class="pricing__card-title rr-fw-sbold"><span>Premium</span></h4>
-                <div class="pricing__card-price mb-30 pb-30">
-                    <h2 data-yearly='<span class="price">$299.<span>00</span></span>
-                                <span class="month-year">PER YEARLY</span>' data-monthly='<span class="price">$199.<span>00</span></span>
-                                <span class="month-year">PER MONTH</span>' class="d-flex flex-column">
-                        <span class="price">$199.<span>00</span></span>
-                        <span class="month-year">PER MONTH</span>
-                    </h2>
-                </div>
+    </section>
 
-                <div class="pricing__card-body mb-40">
-                    <ul>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Construction Hourly Rate
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Remodel Or Home Addition
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Limitless Concepts
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Architectural Plans
-                        </li>
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            Economic Market Survey
-                        </li>
-                    </ul>
-                </div>
-
-                <a href="index.html" class="rr-btn rr-btn__transparent">
-                            <span class="btn-wrap">
-                                <span class="text-one">Purchase Now</span>
-                                <span class="text-two">Purchase Now</span>
-                            </span>
-                </a>
-            </div>
-        </div>
-    </div>
 </main>
 
 
-<!-- Footer area start -->
 
 <%@include file="../footer.jsp" %>
 <!-- Footer area end -->

@@ -34,12 +34,13 @@ public class ConstructionService {
         this.projectService = projectService;
     }
 
-    public List<Construction> getListConstructionByCustomerName(int page, int size) {
-        return constructionDAO.getListConstructionWithCustomerName(page, size);
+    public List<Construction> getListConstruction(Integer staffId, int page, int size, Integer statusFilter, String searchName) {
+        return constructionDAO.getPaginatedConstructions(staffId, page, size, statusFilter, searchName);
     }
 
-    public int getTotalPage(int size) {
-        long totalRecords = constructionDAO.countAllConstructions();
+    // Method to get total pages with optional filtering by staffId, status, and search by name
+    public int getTotalPages(Integer staffId, int size, Integer statusFilter, String searchName) {
+        long totalRecords = constructionDAO.countConstructions(staffId, statusFilter, searchName);
         return (int) Math.ceil((double) totalRecords / size);
     }
 
@@ -51,15 +52,7 @@ public class ConstructionService {
         return constructionDAO.updateConstruction(construction);
     }
 
-    public List<Construction> getSortedAndPaginatedByStaff(int staffId, int page, int size) {
-        return constructionDAO.getSortedAndPaginatedByStaff(staffId, page, size);
-    }
-
-    // Get total number of pages by staff
-    public int getTotalPagesByStaff(int staffId, int size) {
-        long totalRecords = constructionDAO.countConstructionsByStaff(staffId);
-        return (int) Math.ceil((double) totalRecords / size);
-    }
+    
 
     protected void propagateStatusToConstruction(int constructionId) {
         Construction construction = constructionDAO.getConstructionById(constructionId);
@@ -91,7 +84,7 @@ public class ConstructionService {
         return constructionDAO.getconstructionByStaffId(staffId);
     }
     public long countConstructionsByStaff(int staffId) {
-        return constructionDAO.countConstructionsByStaff(staffId);
+        return constructionDAO.countConstructions(staffId,null,null);
     }
     public long countConstructionsInProcessByStaffId(int staffId) {
         return constructionDAO.countConstructionsInProcessByStaffId(staffId);

@@ -10,7 +10,57 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <style>
+            .filter-card {
+                background-color: #ffffff;
+                padding: 20px 30px;
+                border-radius: 15px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
 
+            .filter-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .filter-card label {
+                font-weight: bold;
+                color: #343a40;
+                font-size: 16px;
+            }
+
+            .filter-card .form-control {
+                border-radius: 10px;
+                border: 1px solid #ced4da;
+                padding: 10px;
+                font-size: 18px;
+                transition: box-shadow 0.3s ease;
+            }
+
+            .filter-card .form-control:focus {
+                box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+                border-color: #007bff;
+            }
+
+            .filter-card button {
+                background-color: #007bff;
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+
+            .filter-card button:hover {
+                background-color: #0056b3;
+                color: #ffffff;
+            }
+
+        </style>
     </head>
 
     <body>
@@ -18,6 +68,34 @@
         <div class="container">
             <%@include file="navbarDesign.jsp" %>
 
+            <div class="filter-card">
+                <form method="get" action="${pageContext.request.contextPath}/designer/manage">
+                    <div class="form-row align-items-center">
+                        <!-- Search by Design Name -->
+                        <div class="col-auto">
+                            <label for="searchName">Search by Design Name:</label>
+                            <input type="text" name="searchName" id="searchName" value="${searchName}" class="form-control" placeholder="Enter design name">
+                        </div>
+
+                        <!-- Filter by Status -->
+                        <div class="col-auto">
+                            <label for="statusFilter">Filter by Status:</label>
+                            <select name="statusFilter" id="statusFilter" class="form-control">
+                                <option value="" ${statusFilter == null ? 'selected' : ''}>All Status</option>
+                                <option value="1" ${statusFilter == 1 ? 'selected' : ''}>Pending</option>
+                                <option value="2" ${statusFilter == 2 ? 'selected' : ''}>Processing</option>
+                                <option value="3" ${statusFilter == 3 ? 'selected' : ''}>Completed</option>
+                                <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Canceled</option>
+                            </select>
+                        </div>
+
+                        <input type="hidden" name="page" value="${currentPage}">
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary btn-sort" style="margin-top: 28px; padding: 10px 18px">Search & Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
 
             <div class="table-responsive">
                 <table class="table table-bordered table-striped text-center">
@@ -53,7 +131,7 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/designer/manage/viewDetail/${designs.designId}" class="btn btn-info">Detail</a>
+                                    <a href="${pageContext.request.contextPath}/designer/manage/viewProjectDetail/${designs.designId}" class="btn btn-info">Detail</a>
                                     <c:if test="${designs.status != 4}">
                                         <a href="${pageContext.request.contextPath}/designer/design/${designs.designId}" class="btn btn-secondary">To Design</a>
                                     </c:if>

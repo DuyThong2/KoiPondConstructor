@@ -4,10 +4,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Contract Management</title>
+    <title>Service quote staff Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
     <style>
         /* Custom styles to enhance UI performance */
         body {
@@ -16,12 +17,13 @@
         }
 
         h2 {
-            font-weight: bold;
-            color: #007bff;
-            border-bottom: 2px solid #007bff;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
+                    font-weight: bold;
+                    border-bottom: 2px solid #343a40;
+                    padding-bottom: 10px;
+                    margin-bottom: 20px;
+                    width: 95%;
+                    margin-left: 5px;
+                }
 
         /* Table styling */
         table.table {
@@ -122,12 +124,11 @@
     </style>
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <!-- Include the Navbar -->
+<div class="container">
+    <%@include file="../consultantNav.jsp"%>
 
         <!-- Main content -->
-        <main role="main" class="col-md-12 col-lg-9 mx-auto px-4 mt-4">
+
             <h2 class="mb-4">Service Quote List</h2>
 
             <div class="filter-card">
@@ -162,10 +163,12 @@
                                 <option value="1" ${statusFilter == 1 ? 'selected' : ''}>Pending</option>
                                 <option value="2" ${statusFilter == 2 ? 'selected' : ''}>Approved By Manager</option>
                                 <option value="3" ${statusFilter == 3 ? 'selected' : ''}>Rejected (Manager)</option>
-                                <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Approved By Customer</option>
+                                <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Approved (Awaiting Payment)</option>
                                 <option value="5" ${statusFilter == 5 ? 'selected' : ''}>Rejected (Customer)</option>
                                 <option value="6" ${statusFilter == 6 ? 'selected' : ''}>Rejected (Staff)</option>
-                                <option value="7" ${statusFilter == 7 ? 'selected' : ''}>Cancel</option>
+                                <option value="7" ${statusFilter == 7 ? 'selected' : ''}>Canceled</option>
+                                <option value="8" ${statusFilter == 8 ? 'selected' : ''}>Paid</option>
+                                <option value="9" ${statusFilter == 9 ? 'selected' : ''}>Completed</option>
                             </select>
                         </div>
 
@@ -229,7 +232,7 @@
                                     <span class="badge badge-warning badge-status">Rejected (Manager)</span>
                                 </c:when>
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                    <span class="badge badge-success badge-status">Approved By Customer</span>
+                                    <span class="badge badge-warning badge-status">${serviceQuote.isPayAfter? 'Service In-Progress':'Awaiting Payment'}</span>
                                 </c:when>
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
                                     <span class="badge badge-warning badge-status">Rejected (Customer)</span>
@@ -238,7 +241,13 @@
                                     <span class="badge badge-warning badge-status">Rejected (Staff)</span>
                                 </c:when>
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
-                                    <span class="badge badge-danger badge-status">Cancel</span>
+                                    <span class="badge badge-danger badge-status">Canceled</span>
+                                </c:when>
+                                <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
+                                    <span class="badge badge-success badge-status">Paid</span>
+                                </c:when>
+                                <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
+                                    <span class="badge badge-success badge-status">Completed</span>
                                 </c:when>
                             </c:choose>
                         </td>
@@ -269,9 +278,9 @@
                     <button class="btn btn-primary" disabled>&gt;</button>
                 </c:if>
             </div>
-        </main>
+
     </div>
-</div>
+
 
 <!-- Bootstrap JS and dependencies -->
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

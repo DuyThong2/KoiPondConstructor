@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(ResourceNotExistException.class)
     public String handleResourceNotFound(ResourceNotExistException ex, Model model){
-         model.addAttribute("errorMessage", ex.getMessage());
+        model.addAttribute("errorMessage", ex.getMessage());
         return "error/error-404";
     }
     

@@ -28,16 +28,18 @@ public class DesignStageDetailService {
      return designStageDetailDao.getDesignStageDetailById(designStageDetailId);
     }
     @Transactional
-    public void updateDesignStageDetailStatus(int designStageDetailId, int newStatus) {
+    public DesignStageDetail updateDesignStageDetailStatus(int designStageDetailId, int newStatus) {
         // Step 1: Update DesignStageDetail status
         DesignStageDetail designStageDetail = designStageDetailDao.getDesignStageDetailById(designStageDetailId);
+        DesignStageDetail result = null;
         if (designStageDetail != null) {
             designStageDetail.setStatus(newStatus);
-            designStageDetailDao.updateDesignStageDetail(designStageDetail);
+            result = designStageDetailDao.updateDesignStageDetail(designStageDetail);
 
             // Step 2: Propagate changes to DesignStage
             designStageService.propagateStatusToDesignStage(designStageDetail.getDesignStage().getDesignStageId());
         }
+        return result;
 
     }
 

@@ -68,20 +68,20 @@ public class UserController {
                                   @RequestParam("file") MultipartFile file,
                                   RedirectAttributes redirectAttributes, HttpSession session) {
         if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Choose a file to upload!");
+            redirectAttributes.addFlashAttribute("error", "Choose a file to upload!");
             return "redirect:/customer/profile";
         }
 
         Customer customer = customerService.getCustomerById(id);
         if (customer == null) {
-            redirectAttributes.addFlashAttribute("message", "Customer not found!");
+            redirectAttributes.addFlashAttribute("error", "Customer not found!");
             return "redirect:/customer/profile";
         }
 
         try {
             String uploadedFilePath = fileUtility.handleFileUpload(file, FileUtility.USER_DIR);
             if (uploadedFilePath == null) {
-                redirectAttributes.addFlashAttribute("message", "Failed to upload file.");
+                redirectAttributes.addFlashAttribute("error", "Failed to upload file.");
                 return "redirect:/customer/profile";
             }
 
@@ -89,9 +89,9 @@ public class UserController {
             customerService.updateCustomer(customer);
             //update session to upload new image
             session.setAttribute("user", customer);
-            redirectAttributes.addFlashAttribute("message", "File uploaded successfully!");
+            redirectAttributes.addFlashAttribute("success", "File uploaded successfully!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "An error occurred while uploading the file.");
+            redirectAttributes.addFlashAttribute("error", "An error occurred while uploading the file.");
         }
 
         return "redirect:/customer/profile";
@@ -106,7 +106,7 @@ public class UserController {
 
         Customer customer = customerService.getCustomerById(id);
         if (customer == null) {
-            redirectAttributes.addFlashAttribute("message", "Customer not found!");
+            redirectAttributes.addFlashAttribute("error", "Customer not found!");
             return "redirect:/login";
         }
             customer.setName(name);
@@ -114,7 +114,7 @@ public class UserController {
             customerService.updateCustomer(customer);
             //update session to upload new image
             session.setAttribute("user", customer);
-            redirectAttributes.addFlashAttribute("message", "Update successfully!");
+            redirectAttributes.addFlashAttribute("success", "Update successfully!");
         return "redirect:/customer/profile";
     }
 
@@ -127,11 +127,11 @@ public class UserController {
 
         Customer customer = customerService.getCustomerById(id);
         if (customer == null) {
-            redirectAttributes.addFlashAttribute("message", "You must be login!");
+            redirectAttributes.addFlashAttribute("error", "You must be login!");
             return "redirect:/login";
         }
         if(!passwordEncoder.matches(currentPassword, customer.getPassword()) || !newPassword.equals(confirmPassword)) {
-            redirectAttributes.addFlashAttribute("message", "Passwords do not match or do not correct!");
+            redirectAttributes.addFlashAttribute("error", "Passwords do not match or do not correct!");
             return "redirect:/customer/profile";
         }
 
@@ -139,7 +139,7 @@ public class UserController {
         customerService.updateCustomer(customer);
         //clear session
         SecurityContextHolder.clearContext();
-        redirectAttributes.addFlashAttribute("message", "Password changed successfully! Let's Login Again!");
+        redirectAttributes.addFlashAttribute("success", "Password changed successfully! Let's Login Again!");
         return "redirect:/login";
     }
 
@@ -171,7 +171,7 @@ public class UserController {
                                   RedirectAttributes redirectAttributes, HttpSession session) {
         Staff staff = staffService.getStaffById(id);
         if (file.isEmpty()) {
-            redirectAttributes.addFlashAttribute("message", "Choose a file to upload!");
+            redirectAttributes.addFlashAttribute("error", "Choose a file to upload!");
             if(staff.getDepartment().equalsIgnoreCase("Design"))
                 return "redirect:/designer/profile";
             if(staff.getDepartment().equalsIgnoreCase("Consulting"))
@@ -186,7 +186,7 @@ public class UserController {
         try {
             String uploadedFilePath = fileUtility.handleFileUpload(file, FileUtility.USER_DIR);
             if (uploadedFilePath == null) {
-                redirectAttributes.addFlashAttribute("message", "Failed to upload file.");
+                redirectAttributes.addFlashAttribute("error", "Failed to upload file.");
                 if(staff.getDepartment().equalsIgnoreCase("Design"))
                     return "redirect:/designer/profile";
                 if(staff.getDepartment().equalsIgnoreCase("Consulting"))
@@ -200,7 +200,7 @@ public class UserController {
 
             // update session to upload new image
             session.setAttribute("user", staff);
-            redirectAttributes.addFlashAttribute("message", "File uploaded successfully!");
+            redirectAttributes.addFlashAttribute("success", "File uploaded successfully!");
 
             if(staff.getDepartment().equalsIgnoreCase("Design"))
                 return "redirect:/designer/profile";
@@ -210,9 +210,8 @@ public class UserController {
                 return "redirect:/constructor/profile";
 
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message", "An error occurred while uploading the file.");
+            redirectAttributes.addFlashAttribute("error", "An error occurred while uploading the file.");
         }
-
         return "redirect:/login";
     }
 
@@ -225,11 +224,11 @@ public class UserController {
 
         Staff staff = staffService.getStaffById(id);
         if (staff == null) {
-            redirectAttributes.addFlashAttribute("message", "You must be login!");
+            redirectAttributes.addFlashAttribute("error", "You must be login!");
             return "redirect:/login";
         }
         if(!passwordEncoder.matches(currentPassword, staff.getPassword()) || !newPassword.equals(confirmPassword)) {
-            redirectAttributes.addFlashAttribute("message", "Passwords do not match or do not correct!");
+            redirectAttributes.addFlashAttribute("error", "Passwords do not match or do not correct!");
             if(staff.getDepartment().equalsIgnoreCase("Design"))
                 return "redirect:/designer/profile";
             if(staff.getDepartment().equalsIgnoreCase("Consulting"))
@@ -242,7 +241,7 @@ public class UserController {
         staffService.updateStaff(staff);
         //clear session
         SecurityContextHolder.clearContext();
-        redirectAttributes.addFlashAttribute("message", "Password changed successfully! Let's Login Again!");
+        redirectAttributes.addFlashAttribute("success", "Password changed successfully! Let's Login Again!");
         return "redirect:/login";
     }
 
@@ -254,7 +253,7 @@ public class UserController {
 
         Staff staff = staffService.getStaffById(id);
         if (staff == null) {
-            redirectAttributes.addFlashAttribute("message", "Customer not found!");
+            redirectAttributes.addFlashAttribute("error", "Customer not found!");
             return "redirect:/login";
         }
         staff.setName(name);
@@ -262,7 +261,7 @@ public class UserController {
         staffService.updateStaff(staff);
         //update session to upload new image
         session.setAttribute("user", staff);
-        redirectAttributes.addFlashAttribute("message", "Update successfully!");
+        redirectAttributes.addFlashAttribute("success", "Update successfully!");
         if(staff.getDepartment().equalsIgnoreCase("Design"))
             return "redirect:/designer/profile";
         if(staff.getDepartment().equalsIgnoreCase("Consulting"))

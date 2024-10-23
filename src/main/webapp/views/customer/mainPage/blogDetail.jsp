@@ -21,6 +21,9 @@
     <%@include file="../cssCustom.jsp"%>
 
     <style>
+        .d-flex{
+            margin-top: 0;
+        }
         .author-container {
             display: flex;
             align-items: center;

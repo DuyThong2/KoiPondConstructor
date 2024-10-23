@@ -54,6 +54,10 @@ public class ServiceDetail {
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
+    
+    @ManyToOne
+    @JoinColumn(name = "service_quotes_id")
+    private ServiceQuotes serviceQuotes;
 
     public ServiceDetail(int id, Double price, Date dateRegister, Integer rating, Integer serviceDetailStatus, String feedback, Service service, Customer customer, Staff staff,Date feedbackDate) {
         this.id = id;
@@ -151,4 +155,14 @@ public class ServiceDetail {
     public void setStaff(Staff staff) {
         this.staff = staff;
     }
+
+    public ServiceQuotes getServiceQuotes() {
+        return serviceQuotes;
+    }
+
+    public void setServiceQuotes(ServiceQuotes serviceQuotes) {
+        this.serviceQuotes = serviceQuotes;
+    }
+    
+    
 }

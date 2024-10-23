@@ -5,7 +5,9 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -63,8 +65,8 @@ public class Term {
     @Column(name="term_status")
     private boolean termStatus;
     
-    @OneToMany(mappedBy = "term")
-    private List<Contract> contract;
+    @OneToMany(mappedBy = "term", cascade = CascadeType.PERSIST)
+    private List<Contract> contract = new ArrayList<>();
 
     public Term(int termId, double percentOnDesign1, double percentOnDesign2, double percentOnDesign3, double percentOnConstruct1, double percentOnConstruct2, boolean payOnStartOfDesign, boolean payOnStartOfConstruction, String description, boolean isTemplate, boolean followContract, boolean termStatus, List<Contract> contract) {
         this.termId = termId;
@@ -189,6 +191,11 @@ public class Term {
 
     public void setTermStatus(boolean termStatus) {
         this.termStatus = termStatus;
+    }
+    
+    public void addContract(Contract contract){
+        this.contract.add(contract);
+        contract.setTerm(this);
     }
 
     

@@ -10,10 +10,9 @@
                 <title>Staff Details</title>
                 <!-- Bootstrap CSS -->
                 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-                <!-- FontAwesome Icons -->
-                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-                    rel="stylesheet">
-                <!-- Custom Styles -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+                <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
                 <style>
                     body {
                         background-color: #f7f9fc;
