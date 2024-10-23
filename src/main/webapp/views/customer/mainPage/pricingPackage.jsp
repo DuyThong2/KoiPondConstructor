@@ -19,67 +19,10 @@
     <%@include file="../cssCustom.jsp"%>
 
     <style>
-        .sidebar {
-            width: 300px;
-            background-color: #FFC107;
-            padding: 20px;
-            border-radius: 10px;
+        .d-flex{
+            margin-top: 0;
         }
 
-        .sidebar table {
-            width: 100%;
-        }
-
-        .sidebar table td {
-            padding: 8px;
-            vertical-align: top;
-        }
-
-        .sidebar h5 {
-            font-size: 16px;
-            font-weight: bold;
-            margin: 0;
-            white-space: nowrap; /* Ensure the label doesn't break into a new line */
-        }
-
-        .sidebar .entry-date,
-        .sidebar .entry-client,
-        .sidebar .entry-duration,
-        .sidebar .entry-category,
-        .sidebar .entry-tags {
-            font-size: 1.1em;
-            color: #000;
-        }
-
-        .sidebar .portfolio-meta-icon {
-            font-size: 1.5em;
-            margin-right: 10px;
-            color: #000;
-        }
-
-        .sidebar .social-icons a {
-            margin-right: 5px;
-            color: #fff;
-            font-size: 1.5em;
-            display: inline-block;
-        }
-
-        .single-portfolio-wrap {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .content {
-            width: 65%; /* Adjust to control the width of the content section */
-            margin-right: 30px; /* Space between content and sidebar */
-        }
-
-        .sidebar {
-            width: 30%; /* Adjust to control the width of the sidebar */
-            background-color: #FFC107;
-            padding: 20px;
-            border-radius: 10px;
-        }
         /* Styling for the section headers */
         .section-title {
             text-align: center;
@@ -551,7 +494,7 @@
     <section class="bg-white">
         <div class="container">
             <div class="section-title">
-                <h2>Payment Stages</h2>
+                <h2>Payment Term Stages</h2>
             </div>
             <table class="pricing-table">
                 <thead>

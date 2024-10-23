@@ -69,5 +69,5 @@ public class ServiceQuoteService {
     public ServiceQuotes saveNewServiceQuote(ServiceQuotes serviceQuotes){
         return serviceQuoteDAO.saveServiceQuotes(serviceQuotes);
     }
-    
+       
 }

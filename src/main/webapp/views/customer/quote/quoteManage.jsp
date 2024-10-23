@@ -13,35 +13,14 @@
         <%@include file="../cssTemplate.jsp"%>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
         <style>
-            /* Custom styles for the sidebar */
-            .sidebar {
-                height: 100vh;
-                background-color: #343a40;
-                color: white;
+            .content-panel {
+                background: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
             }
-            .sidebar a {
-                color: white;
-                display: block;
-                padding: 10px;
-                text-decoration: none;
-            }
-            .sidebar a:hover {
-                background-color: #495057;
-            }
-            @media (min-width: 992px) {
-                .view-account .content-panel {
-                    min-height: 800px;
-                    border-left: 1px solid #f3f3f7;
-                    margin-left: 250px;
-                }
-                .view-account .side-bar .side-menu .nav > li > a {
-                    display: block;
-                    color: #9499a3;
-                    padding: 13px 15px;
-                    padding-left: 30px;
-                    width: 250px;
-                }
-            }
+
             .view-account .side-bar .user-info .meta li span {
                 width: 140px;
                 margin-right: 5px;
@@ -50,12 +29,77 @@
             body{
                 background: #f9f9fb;
             }
+            /* Table Styling */
+            .table {
+                margin-top: 20px;
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 19px;
+                background-color: #fff;
+            }
+
+            .table thead th {
+                background-color: #2c3e50;
+                color: white;
+                padding: 10px;
+                text-align: left;
+                border-bottom: 2px solid #ddd;
+            }
+
+            .table tbody td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .table tbody tr:hover {
+                background-color: #f2f2f2;
+            }
+            .badge-warning{
+                background-color: #ffc107 ;
+            }
+            .badge-success{
+                background-color: #28a745;
+            }
+            .badge-danger{
+                background-color: #dc3545;
+            }
+            .badge-secondary{
+                background-color: #6c757d;
+            }
+            h2 {
+                color: #2c3e50;
+                font-weight: bold;
+                margin-bottom: 20px;
+                font-size: 3.5rem;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>
 
     <body>
-        <div class="container-fluid">
+
+        <section id="services"
+                 class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+            <div class="container rr-shape-p-c_1">
+                <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+                    <div></div>
+                </div>
+
+                <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+                    <div class="col-md-6">
+                        <div class="section__title-wrapper text-center text-xl-start">
+                            <span class="section__subtitle justify-content-start mb-13"><span data-width="40px"
+                                                                                              class="left-separetor"></span>Yourself</span>
+                            <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                                data-cursor="-opaque">Information
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="container-fluid mt-5">
             <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" />
             <div class="container">
                 <div class="view-account">
@@ -95,7 +139,8 @@
                                                 <span class="fas fa-project-diagram"></span> My Project</a>
                                         </li>
                                         <li  class="active">
-                                            <a href="${pageContext.request.contextPath}/customer/quote"><span class="bi bi-bar-chart-line"></span> Quotes</a>
+                                            <a href="${pageContext.request.contextPath}/customer/quote">
+                                                <i class="bi bi-file-earmark-text"></i> Quotes</a>
                                         </li>
                                         <li>
                                             <a href="${pageContext.request.contextPath}/customer/serviceDetails/"><span class="bi bi-bar-chart-line"></span> Service</a>
@@ -108,10 +153,9 @@
 
 
                                 <!-- Main content -->
-                                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-                                    <h2 class="mb-4">Quote List</h2>
-                                    <table class="table table-bordered table-hover">
-                                        <thead class="thead-dark">
+                                    <h2>Quote List</h2>
+                                    <table class="table table-bordered table-hover mt-5">
+                                        <thead>
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Quote Name</th>
@@ -162,7 +206,7 @@
                                                                         onclick="document.getElementById('acceptForm').quoteId.value = '${quote.quotesId}';">Accept</button>
                                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                                                         onclick="document.getElementById('declineForm').quoteId.value = '${quote.quotesId}';
-                                                                    document.getElementById('declineForm').toUserId.value = '${quote.staff.id}';">Decline</button>
+                                                                                document.getElementById('declineForm').toUserId.value = '${quote.staff.id}';">Decline</button>
                                                             </c:when>
                                                         </c:choose>
                                                     </td>
@@ -192,7 +236,6 @@
                                             <button class="btn btn-primary" disabled>Next</button>
                                         </c:if>
                                     </div>
-                                </main>
 
                             </div>
                         </div>
@@ -259,9 +302,9 @@
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+        </div>
     </body>
-    <%@include file="../spacing.jsp"%>
+    <div style="height:10vh;"></div>
 
     <%@include file="../footer.jsp"%>
     <%@include file="../scriptTemplate.jsp"%>

@@ -54,6 +54,8 @@ public class PaymentHistoryController {
                 toDate != null ? toDate.atTime(LocalTime.MAX) : null,
                 null, userRole
         );
+        
+        
 
         model.addAttribute("payments", payments);
         model.addAttribute("currentPage", page);

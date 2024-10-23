@@ -289,5 +289,5 @@ public class ServiceQuoteDAO {
         ServiceQuotes serviceQuotes = getServiceQuoteById(serviceQuoteId);
         serviceQuotes.setServiceQuotesStatus(serviceQuoteStatus);
         return serviceQuotes;
-    }
+    }   
 }

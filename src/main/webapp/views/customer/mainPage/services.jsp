@@ -17,7 +17,129 @@
     <%@include file="../cssTemplate.jsp"%>
     <%@include file="../cssCustom.jsp"%>
 
+    <style>
+        .d-flex{
+            margin-top: 0;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
 
+        .section-title h2 {
+            font-size: 2.8em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ff5733; /* Accent color */
+        }
+        .section-title p {
+            font-size: 1.6em;
+            color: #666;
+        }
+        /* Section spacing */
+        section {
+            padding: 50px 0;
+        }
+
+        .service-card h3 {
+            color: #ff5733;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .process-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px; /* Increase gap for better spacing */
+            justify-content: center;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        /* Individual process item styling */
+        .process-item {
+            background-color: #ffffff; /* Pure white for cleaner look */
+            border: 1px solid #ececec; /* Lighter border color */
+            padding: 30px; /* More padding for spaciousness */
+            border-radius: 15px; /* Increased border-radius for softer edges */
+            flex: 0 1 calc(33.333% - 30px); /* Adjust width */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); /* Softer shadow for more elegance */
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Add hover effect */
+            position: relative;
+        }
+
+        .process-item:hover {
+            transform: translateY(-10px); /* Subtle hover effect */
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1); /* Increase shadow on hover */
+        }
+
+        /* Number styling for each process */
+        .process-number {
+            font-size: 3.5em; /* Slightly larger font */
+            color: #ffac33;
+            font-weight: bold;
+            margin-bottom: 20px; /* More space below the number */
+        }
+
+        /* Process title and paragraph styling */
+        .process-item h4 {
+            font-size: 1.6em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .process-item p {
+            font-size: 1.2em; /* Slightly larger paragraph text */
+            color: #666;
+            margin-bottom: 20px; /* More spacing below paragraphs */
+        }
+
+        @media (max-width: 480px) {
+            .process-item {
+                flex: 0 1 100%;
+            }
+        }
+
+
+        @media (max-width: 768px) {
+            .isotope-item {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .blog-thumb img {
+                width: 100%;
+                height: auto;
+            }
+
+            .section-title h2 {
+                font-size: 2.2em;
+            }
+
+            .process-item {
+                flex: 0 1 calc(50% - 30px);
+            }
+        }
+        @media (max-width: 480px) {
+            .process-item {
+                flex: 0 1 100%; /* One item per row for mobile */
+                padding: 20px; /* Reduce padding for smaller screens */
+            }
+
+            .process-number {
+                font-size: 3em; /* Smaller number font for mobile */
+            }
+
+            .process-item h4 {
+                font-size: 1.4em;
+            }
+
+            .process-item p {
+                font-size: 1.1em;
+            }
+        }
+    </style>
 </head>
 
 <body class="body-1">
@@ -252,6 +374,52 @@
         </c:if>
     </div>
 
+
+    <section class="bg-light">
+        <div class="container">
+            <div class="section-title">
+                <h2>Service Implementation Process at Happikoi</h2>
+            </div>
+
+            <div class="process-grid">
+                <div class="process-item">
+                    <div class="process-number">1</div>
+                    <h4>Receive Customer Request</h4>
+                    <p>We receive and record information about your garden landscape design and koi pond construction needs.</p>
+                </div>
+
+                <div class="process-item">
+                    <div class="process-number">2</div>
+                    <h4>On-Site Survey</h4>
+                    <p>Our team conducts an on-site survey to assess the area and ensure accuracy in the design and construction phases.</p>
+                </div>
+
+                <div class="process-item">
+                    <div class="process-number">3</div>
+                    <h4>Design Proposal</h4>
+                    <p>We propose a preliminary design that reflects natural elements, aesthetics, and your personal preferences.</p>
+                </div>
+
+                <div class="process-item">
+                    <div class="process-number">4</div>
+                    <h4>Quote Submission</h4>
+                    <p>We provide a detailed quotation based on the project scope, including all design and construction costs.</p>
+                </div>
+
+                <div class="process-item">
+                    <div class="process-number">5</div>
+                    <h4>Design Finalization</h4>
+                    <p>Once the quote is approved, the design is finalized in 3D, giving you a full visualization of the project.</p>
+                </div>
+
+                <div class="process-item">
+                    <div class="process-number">6</div>
+                    <h4>Construction and Supervision</h4>
+                    <p>We begin construction and supervise the project to ensure it meets design specifications and quality standards.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
 

@@ -167,7 +167,7 @@
                                             <span class="badge badge-warning badge-status">Rejected (Manager)</span>
                                         </c:when>
                                         <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                            <span class="badge badge-success badge-status">Approved By Customer</span>
+                                            <span class="badge badge-warning badge-status">${serviceQuote.isPayAfter? 'Service In-Progress':'Awaiting Payment'}</span>
                                         </c:when>
                                         <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
                                             <span class="badge badge-warning badge-status">Rejected (Customer)</span>
@@ -176,10 +176,13 @@
                                             <span class="badge badge-warning badge-status">Rejected (Staff)</span>
                                         </c:when>
                                         <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
-                                            <span class="badge badge-danger badge-status">Cancel</span>
+                                            <span class="badge badge-danger badge-status">Canceled</span>
                                         </c:when>
                                         <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
-                                            <span class="badge badge-success badge-status">Complete</span>
+                                            <span class="badge badge-success badge-status">Paid</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
+                                            <span class="badge badge-success badge-status">Completed</span>
                                         </c:when>
                                     </c:choose>
                                 </td>
@@ -191,6 +194,10 @@
                             <tr>
                                 <th>Service Quote Total Price</th>
                                 <td>${serviceQuote.serviceQuotesTotalPrice}</td>
+                            </tr>
+                            <tr>
+                                <th>Payment method</th>
+                                <td>${serviceQuote.isPayAfter? 'Post Paid':'Pre Paid'}</td>
                             </tr>
                             <tr>
                                 <th>Service Quote Used Point</th>
@@ -337,11 +344,6 @@
                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" >
                                         <button type="submit" class="btn btn-info">Edit Service Quotes</button>
                                     </form>
-                                </div>
-                            </c:when>
-                            <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                <div class="">
-
                                 </div>
                             </c:when>
                             <c:when test="${serviceQuote.serviceQuotesStatus == 5}">

@@ -306,7 +306,8 @@ CREATE TABLE Service_Quotes (
     service_quotes_area DECIMAL(10, 2),
     service_quotes_date DATETIME,
     service_quotes_status INT,  --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel
-    used_point INT,
+    used_point INT,             --5.refused(customer),6.refused(by staff),7. cancel, 8.payment process, 9.complete
+	is_pay_after BIT,
 	customer_id INT,
     consultant_id int,
     staff_id INT,		
@@ -338,9 +339,11 @@ CREATE TABLE Service_Detail (
     service_id INT,
     customer_id INT,                  -- Links to the customer giving feedback
     staff_id INT,
+	service_quotes_id INT,
     FOREIGN KEY (service_id) REFERENCES Service(service_id),
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
-    FOREIGN KEY (staff_id) REFERENCES Staffs(id)
+    FOREIGN KEY (staff_id) REFERENCES Staffs(id),
+	FOREIGN KEY (service_quotes_id) REFERENCES Service_Quotes(service_quotes_id),
 );
 --26. Service_Feedback
 

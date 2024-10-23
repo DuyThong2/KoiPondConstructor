@@ -107,13 +107,16 @@ public class ServiceDetailController {
                             break;
                         }
                     }
+                    newServiceDetail.setServiceQuotes(serviceQuotes);
                     newServiceDetail.setDateRegister(new Date());
                     newServiceDetail.setServiceDetailStatus(1);
                     newServiceDetail.setService(i);
                     newServiceDetail.setCustomer(serviceQuotes.getCustomer());
                     newServiceDetail = serviceDetailService.createServiceDetail(newServiceDetail);
                 }
-                serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, 8);
+                if(!serviceQuotes.isIsPayAfter()){
+                    serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, 9);
+                }
             }
 
             return "redirect:/manager/serviceDetails";

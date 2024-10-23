@@ -141,7 +141,7 @@ public class DesignController {
         return "designer/designerManage";
     }
 
-    @GetMapping("/designer/manage/viewDetail/{id}")
+    @GetMapping("/designer/manage/viewProjectDetail/{id}")
     public String designProject(@PathVariable("id") int id, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
@@ -430,9 +430,11 @@ public class DesignController {
             redirectAttributes.addFlashAttribute("message", "Please login to submit feedback.");
             return "redirect:/login";
         }
-        if (blueprintsId == null || blueprintsId.isEmpty()) {
-            redirectAttributes.addFlashAttribute("error", "Please login to submit feedback.");
-            return "redirect:/error/error-403";
+
+        if(blueprintsId == null || blueprintsId.isEmpty()){
+            redirectAttributes.addFlashAttribute("error", "Please choose image to submit feedback.");
+            return "redirect:/customer/project/design/blueprint/" + designStageId;
+
         }
 
         for (Integer bluePrintId : blueprintsId) {
