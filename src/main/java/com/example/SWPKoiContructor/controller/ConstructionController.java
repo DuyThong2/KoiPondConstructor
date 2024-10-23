@@ -4,12 +4,13 @@ import com.example.SWPKoiContructor.entities.*;
 
 import com.example.SWPKoiContructor.services.*;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpSession;
-
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,15 +27,16 @@ public class ConstructionController {
     private ConstructionService constructionService;
     private ConstructionStageService constructionStageService;
     private ConstructionStageDetailService constructionStageDetailService;
-
+    private PaymentHistoryService paymentHistoryService;
     private ServiceDetailService serviceDetailService;
 
-    public ConstructionController(ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService) {
+    public ConstructionController(ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService, PaymentHistoryService paymentHistoryService) {
         this.constructionService = constructionService;
         this.constructionStageService = ConstructionStageService;
         this.constructionStageDetailService = ConstructionStageDetailService;
         this.commentService = commentService;
         this.serviceDetailService = serviceDetailService;
+        this.paymentHistoryService = paymentHistoryService;
     }
 
     @GetMapping("/manager/construction")
@@ -187,10 +189,33 @@ public class ConstructionController {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
             return "redirect:/staff/updateStatus/constructionStage/" + constructionStageId + "?constructionId=" + constructionId;
         }
+
         try {
             // Update the construction stage detail status
-            constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
-            redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+            ConstructionStageDetail updatedDetail = constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
+
+            // Check if the updated detail is related to a payment and the new status is set to 4 (Completed)
+            if (updatedDetail != null
+                    && "Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())
+                    && newStatus == 4) {
+
+                // Step 1: Retrieve the Project ID from the constructionId
+                Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
+                BigDecimal amount = BigDecimal.valueOf(updatedDetail.getConstructionStage().getConstructionStagePrice());
+                // Step 4: Create a new PaymentHistory record using the streamlined constructor
+                PaymentHistory paymentHistory = new PaymentHistory(
+                        customer,
+                        amount, // Replace with the actual amount from the detail
+                        "Manual", // Indicate that this payment is manual or any relevant method
+                        "Payment for " +updatedDetail.getConstructionStage().getConstructionStageName()  +" of " + customer.getName()
+                );
+
+                // Save the payment history
+                paymentHistoryService.createPayment(paymentHistory);
+                redirectAttributes.addFlashAttribute("success", "Status updated and payment recorded successfully!");
+            } else {
+                redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
