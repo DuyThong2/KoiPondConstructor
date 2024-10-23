@@ -94,9 +94,11 @@ public class DesignController {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
             return "redirect:/manager/design/viewDetail/" + designId;
         }
-        try {
-            DesignStageDetail updatedDetail = designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
-            Customer customer = updatedDetail.getDesignStage().getDesign().getProject().getContract().getCustomer();
+
+        if (newStatus == 4) {
+            try {
+                DesignStageDetail updatedDetail = designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
+                Customer customer = updatedDetail.getDesignStage().getDesign().getProject().getContract().getCustomer();
                 BigDecimal amount = BigDecimal.valueOf(updatedDetail.getDesignStage().getDesignStagePrice());
 
                 // Create a new PaymentHistory record using the streamlined constructor
@@ -104,15 +106,17 @@ public class DesignController {
                         customer,
                         amount, // Amount from the detail
                         "Manual", // Indicate that this payment is manual or any relevant method
-                        "Payment for " + updatedDetail.getDesignStage().getDesignStageName() +"of "+ customer.getName()
+                        "Payment for " + updatedDetail.getDesignStage().getDesignStageName() + "of " + customer.getName()
                 );
 
                 // Save the payment history
                 paymentHistoryService.createPayment(paymentHistory);
-            redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
+                redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+            } catch (Exception e) {
+                redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
+            }
         }
+
         return "redirect:/manager/design/viewDetail/" + designId;
     }
 //=========================Designer Controller====================================//
@@ -307,16 +311,15 @@ public class DesignController {
         model.addAttribute("designStageId", designStageId);
         return "designer/completeTask";
     }
-    
-    
+
     @PostMapping("/designStageDetail/updateStatus")
     public String updateStatus(@RequestParam(required = false) int detailId,
-                               @RequestParam(required = false) int newStatus,
-                               @RequestParam int designStageId, @RequestParam int designId,
-                               RedirectAttributes redirectAttributes) {
+            @RequestParam(required = false) int newStatus,
+            @RequestParam int designStageId, @RequestParam int designId,
+            RedirectAttributes redirectAttributes) {
 
         DesignStageDetail detail = designStageDetailService.getDesignStageDetailById(detailId);
-        if(detail.getStatus() == newStatus || detail.getStatus() > newStatus) {
+        if (detail.getStatus() == newStatus || detail.getStatus() > newStatus) {
             redirectAttributes.addFlashAttribute("error", "Progress is also updated!");
             return "redirect:/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
         }
@@ -431,7 +434,7 @@ public class DesignController {
             return "redirect:/login";
         }
 
-        if(blueprintsId == null || blueprintsId.isEmpty()){
+        if (blueprintsId == null || blueprintsId.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Please choose image to submit feedback.");
             return "redirect:/customer/project/design/blueprint/" + designStageId;
 

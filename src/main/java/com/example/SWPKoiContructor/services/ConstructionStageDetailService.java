@@ -32,7 +32,6 @@ public class ConstructionStageDetailService {
         // Step 1: Update ConstructionStageDetail status
         ConstructionStageDetail constructionStageDetail = constructionStageDetailDao.getConstructionStageDetailByConstructionStageDetailId(constructionStageDetailId);
         if (constructionStageDetail != null) {
-            System.out.println(constructionStageDetail.getConstructionStageDetailDescription() + constructionStageDetail.getConstructionStageDetailId());
             constructionStageDetail.setConstructionStageDetailStatus(newStatus);
             result = constructionStageDetailDao.updateConstructionStageDetail(constructionStageDetail);
 
