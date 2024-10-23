@@ -138,7 +138,7 @@
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card h-100">
                                     <!-- Adjusted Image Height -->
-                                    <img src="${blog.staff.getShowingImg(blog.staff.imgURL)}" class="card-img-top" alt="Blog Image" style="height: 250px; object-fit: cover;">
+                                    <img src="${blog.getShowingImg(blog.imgUrl)}" class="card-img-top" alt="Blog Image" style="height: 250px; object-fit: cover;">
 
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">${blog.name}</h5>
