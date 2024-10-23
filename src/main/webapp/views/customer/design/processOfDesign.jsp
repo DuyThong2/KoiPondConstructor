@@ -353,19 +353,6 @@
             </c:forEach>
         </div>
 
-        <!-- Update Summary File Section -->
-        <div class="upload-section">
-            <h3>Update Summary File</h3>
-            <form action="${pageContext.request.contextPath}/updateSummary/" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="designStageId" value="${designStage.designStageId}">
-                <div class="form-group">
-                    <label for="summaryFile">Choose Summary File</label>
-                    <input type="file" class="form-control-file" id="summaryFile" name="file" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Update Summary File</button>
-            </form>
-        </div>
-
         <!-- Popup cho success -->
         <div id="successPopup" class="popup-background">
             <div class="popup-box success">

@@ -26,10 +26,11 @@ public class ConstructionController {
     private ConstructionService constructionService;
     private ConstructionStageService constructionStageService;
     private ConstructionStageDetailService constructionStageDetailService;
-
+    private DesignService designService;
     private ServiceDetailService serviceDetailService;
 
-    public ConstructionController(ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService) {
+    public ConstructionController(DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService) {
+        this.designService = designService;
         this.constructionService = constructionService;
         this.constructionStageService = ConstructionStageService;
         this.constructionStageDetailService = ConstructionStageDetailService;
@@ -566,6 +567,22 @@ public class ConstructionController {
             // Return error JSON string with 500 Internal Server Error status
             return ResponseEntity.status(500).body("{\"status\":\"error\",\"message\":\"An error occurred during cancellation\"}");
         }
+    }
+
+    @GetMapping("/constructor/manage/viewDetail/viewDesign/{projectId}")
+    public String manageBlueprint(@PathVariable("projectId") int designStageId,
+                                  Model model, HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        if (user == null)
+            return "redirect:/login";
+        Design design = designService.getDesignById(designStageId);
+        List<DesignStage> designStage = design.getDesignStage();
+
+        model.addAttribute("design", design);
+        model.addAttribute("designStage", designStage);
+
+        return "constructor/viewAllDesign";
     }
 
 }

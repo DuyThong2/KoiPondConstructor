@@ -12,52 +12,52 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <style>
             .filter-card {
-                background-color: #ffffff; /* Màu nền trắng */
-                padding: 20px 30px; /* Thêm khoảng cách cho nội dung */
-                border-radius: 15px; /* Bo tròn các góc */
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Hiệu ứng đổ bóng nhẹ */
-                margin-bottom: 30px; /* Thêm khoảng cách phía dưới */
-                transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hiệu ứng khi hover */
+                background-color: #ffffff;
+                padding: 20px 30px;
+                border-radius: 15px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
             }
 
             .filter-card:hover {
-                transform: translateY(-5px); /* Di chuyển lên nhẹ khi hover */
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Tăng độ đổ bóng khi hover */
+                transform: translateY(-5px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
             }
 
             .filter-card label {
                 font-weight: bold;
-                color: #343a40; /* Màu chữ cho tiêu đề */
-                font-size: 16px; /* Tăng kích thước chữ */
+                color: #343a40;
+                font-size: 16px;
             }
 
             .filter-card .form-control {
-                border-radius: 10px; /* Bo tròn góc của các input */
-                border: 1px solid #ced4da; /* Màu viền nhạt */
+                border-radius: 10px;
+                border: 1px solid #ced4da;
                 padding: 10px;
                 font-size: 18px;
-                transition: box-shadow 0.3s ease; /* Hiệu ứng khi input được focus */
+                transition: box-shadow 0.3s ease;
             }
 
             .filter-card .form-control:focus {
-                box-shadow: 0 0 8px rgba(0, 123, 255, 0.5); /* Hiệu ứng đổ bóng khi focus */
-                border-color: #007bff; /* Màu viền khi focus */
+                box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+                border-color: #007bff;
             }
 
             .filter-card button {
-                background-color: #007bff; /* Màu nền cho nút */
+                background-color: #007bff;
                 border: none;
                 color: white;
                 padding: 10px 20px;
-                border-radius: 10px; /* Bo tròn góc của nút */
+                border-radius: 10px;
                 font-size: 16px;
                 font-weight: bold;
-                transition: background-color 0.3s ease; /* Hiệu ứng khi hover */
+                transition: background-color 0.3s ease;
             }
 
             .filter-card button:hover {
-                background-color: #0056b3; /* Màu nền khi hover */
-                color: #ffffff; /* Màu chữ khi hover */
+                background-color: #0056b3;
+                color: #ffffff;
             }
 
         </style>
@@ -131,7 +131,7 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/designer/manage/viewDetail/${designs.designId}" class="btn btn-info">Detail</a>
+                                    <a href="${pageContext.request.contextPath}/designer/manage/viewProjectDetail/${designs.designId}" class="btn btn-info">Detail</a>
                                     <c:if test="${designs.status != 4}">
                                         <a href="${pageContext.request.contextPath}/designer/design/${designs.designId}" class="btn btn-secondary">To Design</a>
                                     </c:if>

@@ -110,6 +110,28 @@
         .alert {
             margin-top: 20px;
         }
+        .blueprint-gallery .col-md-4 {
+            margin-bottom: 30px;
+        }
+
+        .blueprint-gallery .card {
+            width: 350px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .blueprint-gallery .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .blueprint-gallery .card-img-top {
+            height: 220px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
 
     </style>
 </head>
@@ -127,6 +149,7 @@
         <h3>Existing Blueprints</h3>
         <form id="feedbackForm" action="${pageContext.request.contextPath}/feedback/send/" method="post">
             <input type="hidden" name="designStageId" value="${designStage.designStageId}">
+            <div class="blueprint-gallery">
             <div class="row">
                 <c:forEach var="blueprint" items="${blueprints}">
                     <div class="col-md-4">
@@ -145,7 +168,7 @@
                     </div>
                 </c:forEach>
             </div>
-
+            </div>
             <!-- Feedback Section -->
             <div class="feedback-section">
                 <h3>Feedback</h3>

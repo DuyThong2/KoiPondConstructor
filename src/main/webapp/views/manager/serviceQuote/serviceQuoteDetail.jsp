@@ -1,9 +1,3 @@
-<%-- 
-    Document   : serviceQuoteDetail
-    Created on : Oct 13, 2024, 11:31:35 PM
-    Author     : HP
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>

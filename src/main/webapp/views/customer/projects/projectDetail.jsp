@@ -11,77 +11,43 @@
         <meta name="description" content="Ribuild - Construction Company HTML5 Template">
         <meta name="author" content="ahmmedsabbirbd">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- Place favicon.ico in the root directory -->
-        <link rel="shortcut icon" type="image/x-icon" href="<c:url value='/assets/imgs/favicon.svg' />">
-        <!-- CSS here -->
-        <link rel="stylesheet" href="<c:url value='/assets/css/vendor/bootstrap.min.css' />">
-        <link rel="stylesheet" href="<c:url value='/assets/css/vendor/animate.min.css' />">
-        <link rel="stylesheet" href="<c:url value='/assets/css/plugins/swiper.min.css' />">
-        <link rel="stylesheet" href="<c:url value='/assets/css/vendor/magnific-popup.css' />">
-        <link rel="stylesheet" href="<c:url value='/assets/css/vendor/fontawesome-pro.css' />">
-        <link rel="stylesheet" href="<c:url value='/assets/css/vendor/spacing.css' />">
-        <link rel="stylesheet" href="<c:url value='/assets/css/plugins/odometer-theme-default.css' />">
-        <link rel="stylesheet" href="<c:url value='/assets/css/plugins/carouselTicker.css' />">
-        <link rel="stylesheet" href="<c:url value='/assets/css/main.css' />">
+
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+        <%@include file="../cssTemplate.jsp" %>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
         <style>
-            .card-active {
-                background-color: #28a745;
-                /* Green for active stage */
-                color: #FFFFFF !important;
-                /* Force text to be white for readability */
-            }
+
 
             .card-active p,
             .card-active span,
             .card-active i {
                 color: #FFFFFF !important;
-                /* Ensure all child elements also have white text */
-            }
-
-            /* Success stage: border green, text remains default */
-            .card-success {
-                background-color: #FFFFFF;
-                /* White background */
-                border: 2px solid #28a745;
-                /* Green border */
-                color: #28a745;
-                /* Text color should match the success theme */
             }
 
             .card-success p,
             .card-success span,
             .card-success i {
                 color: #28a745 !important;
-                /* Ensure all child elements match the success color */
             }
 
-            /* White stage: default styles */
             .card-white {
                 background-color: #FFFFFF;
                 /* White background */
                 border: 2px solid #df2453;
-                /* Default border color (use your theme color here) */
                 color: #000000;
-                /* Black text */
             }
 
             .card-white p,
             .card-white span,
             .card-white i {
                 color: #000000;
-                /* Ensure all child elements have black text */
             }
 
             .customer-button-large {
                 padding: 15px 30px;
-                /* Example padding to make buttons larger */
                 font-size: 1.2rem;
-                /* Example font size */
                 font-weight: bold;
-                /* Make text bold for better readability */
             }
             .btn-md{
                 font-weight: 600;
@@ -102,7 +68,7 @@
             .form-control{
                 font-size: 1.9rem;
             }
-            @media (min-width: 992px) {
+            @media (min-width: 1201px) {
                 .view-account .content-panel {
                     min-height: 800px;
                     border-left: 1px solid #f3f3f7;
@@ -115,66 +81,37 @@
                     padding-left: 30px;
                     width: 250px;
                 }
+                .current-project-details, .done-project {
+                    width: 790px;
+                }
+            }
+            @media (min-width: 768px) and  (max-width: 1200px){
+                .current-project-details, .done-project {
+                    width: 550px;
+                }
             }
             .view-account .side-bar .user-info .meta li span {
                 width: 140px;
                 margin-right: 5px;
                 text-align: center;
             }
-            body{
-                background: #f9f9fb;
+
+            .content-panel {
+                background: #ffffff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 20px;
+            }
+            h2 {
+                color: #2c3e50;
+                font-weight: bold;
+                margin-bottom: 20px;
+                font-size: 3.5rem;
             }
         </style>
     </head>
     <body>
-
-        <!--[if lte IE 9]>
-        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
-        <!-- preloader start -->
-        <!-- style 1 -->
-        <!-- <div id="preloader" data-preloader="active" data-loaded="doted">
-        <div class="preloader-close">x</div>
-        <div class="sk-three-bounce">
-        <div class="sk-child sk-bounce1"></div>
-        <div class="sk-child sk-bounce2"></div>
-        <div class="sk-child sk-bounce3"></div>
-        </div>
-        </div> -->
-        <!-- style 2 -->
-        <!-- <div class="preloader" data-preloader="deactive" data-loaded="progress">
-        <div class="preloader-close">x</div>
-        <div class="wrapper w-100 text-center">
-        <div id="progress-bar" class="preloader-text" data-text="RIBUILD"></div>
-        <div class="progress-bar">
-        <div class="progress"></div>
-        </div>
-        </div>
-        </div> -->
-        <!-- preloader end -->
-
-        <!-- preloader start -->
-        <!-- <div class="loading-form">
-        <div class="sk-three-bounce">
-        <div class="sk-child sk-bounce1"></div>
-        <div class="sk-child sk-bounce2"></div>
-        <div class="sk-child sk-bounce3"></div>
-        </div>
-        </div> -->
-        <!-- preloader end -->
-
-        <!-- Backtotop start -->
-        <!-- <div id="scroll-percentage">
-        <span id="scroll-percentage-value"></span>
-        </div> -->
-        <!-- Backtotop end -->
-
-        <!-- cursorAnimation start -->
-        <div class="cursor-wrapper relative">
-            <div class="cursor"></div>
-            <div class="cursor-follower"></div>
-        </div>
-        <!-- cursorAnimation end -->
 
         <!-- search popup start -->
         <div class="search__popup">
@@ -299,9 +236,7 @@
                     <div class="service__shape-1 rr-shape-p-s_1 leftRight">
                         <div></div>
                     </div>
-                    <div class="service__shape-2 rr-shape-p-s_1 rr-upDown">
-                        <div></div>
-                    </div>
+
                     <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
                         <div class="col-md-6">
                             <div class="section__title-wrapper text-center text-xl-start">
@@ -358,7 +293,8 @@
                                                     <span class="fas fa-project-diagram"></span> My Project</a>
                                             </li>
                                             <li>
-                                                <a href="${pageContext.request.contextPath}/customer/quote"><span class="bi bi-bar-chart-line"></span> Quotes</a>
+                                                <a href="${pageContext.request.contextPath}/customer/quote">
+                                                    <i class="bi bi-file-earmark-text"></i> Quotes</a>
                                             </li>
                                             <li>
                                                 <a href="${pageContext.request.contextPath}/customer/serviceDetails/"><span class="bi bi-bar-chart-line"></span> Service</a>

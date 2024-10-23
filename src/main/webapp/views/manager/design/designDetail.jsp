@@ -253,7 +253,7 @@
                     </tr>
                     <!-- Blueprint Details -->
                     <tr class="blueprint-row" id="blueprint-row-${stage.designStageId}" style="display: none;">
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="blueprint-details">
                                 <table class="table table-bordered">
                                     <div class="detail-name-bar  ">
