@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Contract Management</title>
+    <title>Service quote staff Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -163,10 +163,12 @@
                                 <option value="1" ${statusFilter == 1 ? 'selected' : ''}>Pending</option>
                                 <option value="2" ${statusFilter == 2 ? 'selected' : ''}>Approved By Manager</option>
                                 <option value="3" ${statusFilter == 3 ? 'selected' : ''}>Rejected (Manager)</option>
-                                <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Approved By Customer</option>
+                                <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Approved (Awaiting Payment)</option>
                                 <option value="5" ${statusFilter == 5 ? 'selected' : ''}>Rejected (Customer)</option>
                                 <option value="6" ${statusFilter == 6 ? 'selected' : ''}>Rejected (Staff)</option>
-                                <option value="7" ${statusFilter == 7 ? 'selected' : ''}>Cancel</option>
+                                <option value="7" ${statusFilter == 7 ? 'selected' : ''}>Canceled</option>
+                                <option value="8" ${statusFilter == 8 ? 'selected' : ''}>Paid</option>
+                                <option value="9" ${statusFilter == 9 ? 'selected' : ''}>Completed</option>
                             </select>
                         </div>
 
@@ -230,7 +232,7 @@
                                     <span class="badge badge-warning badge-status">Rejected (Manager)</span>
                                 </c:when>
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                    <span class="badge badge-success badge-status">Approved By Customer</span>
+                                    <span class="badge badge-warning badge-status">${serviceQuote.isPayAfter? 'Service In-Progress':'Awaiting Payment'}</span>
                                 </c:when>
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
                                     <span class="badge badge-warning badge-status">Rejected (Customer)</span>
@@ -239,7 +241,13 @@
                                     <span class="badge badge-warning badge-status">Rejected (Staff)</span>
                                 </c:when>
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
-                                    <span class="badge badge-danger badge-status">Cancel</span>
+                                    <span class="badge badge-danger badge-status">Canceled</span>
+                                </c:when>
+                                <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
+                                    <span class="badge badge-success badge-status">Paid</span>
+                                </c:when>
+                                <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
+                                    <span class="badge badge-success badge-status">Completed</span>
                                 </c:when>
                             </c:choose>
                         </td>

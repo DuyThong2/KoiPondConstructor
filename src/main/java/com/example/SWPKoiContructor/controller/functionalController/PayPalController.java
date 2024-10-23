@@ -1,13 +1,19 @@
 package com.example.SWPKoiContructor.controller.functionalController;
 
 
+import com.example.SWPKoiContructor.entities.Customer;
+import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.services.ConstructionStageDetailService;
+import com.example.SWPKoiContructor.services.CustomerService;
 import com.example.SWPKoiContructor.services.DesignStageDetailService;
+import com.example.SWPKoiContructor.services.LoyaltyPointService;
+import com.example.SWPKoiContructor.services.ServiceQuoteService;
 import com.example.SWPKoiContructor.services.functionalService.PayPalService;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -35,6 +41,15 @@ public class PayPalController {
 
     @Autowired
     private DesignStageDetailService designStageDetailService;
+    
+    @Autowired
+    private ServiceQuoteService serviceQuoteService;
+    
+    @Autowired
+    private LoyaltyPointService loyaltyPointService;
+    
+    @Autowired
+    private CustomerService customerService;
 
     @PostMapping("/pay/construction")
     public RedirectView payForConstruction(HttpServletRequest request, 
@@ -101,6 +116,39 @@ public class PayPalController {
 
         return new RedirectView(cancelUrl);
     }
+    
+    @PostMapping("/pay/serviceQuote")
+    public RedirectView payForServiceQuote(HttpServletRequest request, 
+                                           @RequestParam("amount") double amount,
+                                           @RequestParam("point")double point,
+                                           @RequestParam("serviceQuoteId") int serviceQuoteId) {
+        // Dynamically build the base URL
+        String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+                                                    .replacePath(null)
+                                                    .build()
+                                                    .toUriString();
+        double afterPoint = amount - point;
+        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/serviceQuote";
+        String successUrl = baseUrl + contexPath + "/paypal/success/serviceQuote?serviceQuoteId=" + serviceQuoteId + "&point=" + point;
+
+        try {
+            // Create PayPal payment for Construction
+            Payment payment = payPalService.createPayment(
+                    afterPoint, "USD", "paypal", "sale", "Payment for Service Quote", cancelUrl, successUrl);
+
+            // Redirect to PayPal approval URL
+            for (Links link : payment.getLinks()) {
+                if (link.getRel().equals("approval_url")) {
+                    return new RedirectView(link.getHref());
+                }
+            }
+        } catch (PayPalRESTException e) {
+            e.printStackTrace();
+            return new RedirectView("/paypal/error?message=Payment failed. Please try again.");
+        }
+
+        return new RedirectView(cancelUrl);
+    }
 
     @GetMapping("/success/construction")
     public String successForConstruction(@RequestParam("paymentId") String paymentId,
@@ -152,6 +200,32 @@ public class PayPalController {
         // Redirect to error page if payment fails
         return "redirect:/error/error-500";
     }
+    
+    @GetMapping("/success/serviceQuote")
+    public String successForServiceQuote(@RequestParam("paymentId") String paymentId,
+                                   @RequestParam("PayerID") String payerId,
+                                   @RequestParam("point") double point,
+                                   @RequestParam("serviceQuoteId") int serviceQuoteId,
+                                   RedirectAttributes redirectAttributes, HttpSession session) {
+        try {
+            // Execute PayPal payment
+            Payment payment = payPalService.executePayment(paymentId, payerId);
+
+            if (payment.getState().equals("approved")) {
+                // Update design stage detail status to 'Completed' (status 4)
+                ServiceQuotes sq = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, 8);
+                Double gg = loyaltyPointService.useLoyaltyPoints(sq.getCustomer(), point);
+                redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
+                // Redirect to design page
+                return "redirect:/customer/serviceQuote";
+            }
+        } catch (PayPalRESTException e) {
+            e.printStackTrace();
+        }
+
+        // Redirect to error page if payment fails
+        return "redirect:/error/error-500";
+    }
 
     @GetMapping("/cancel/construction/{id}")
     public String cancelForConstruction(@PathVariable("id") int constructionId) {
@@ -161,5 +235,10 @@ public class PayPalController {
     @GetMapping("/cancel/design/{id}")
     public String cancelForDesign(@PathVariable("id") int designId) {
         return "redirect:/customer/project/design/" + designId;
+    }
+    
+    @GetMapping("/cancel/serviceQuote/{id}")
+    public String cancelForServiceQuote(@PathVariable("id") int serviceQuote) {
+        return "redirect:/customer/serviceQuote";
     }
 }

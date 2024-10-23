@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Contract Details</title>
+        <title>Service Quote Manage Customer</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
@@ -158,6 +158,7 @@
                                                 <th>Name</th>
                                                 <th>Area</th>
                                                 <th>Total Price</th>
+                                                <th>Payment Method</th>
                                                 <th>Point Used</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
@@ -172,23 +173,27 @@
                                                     <td>${serviceQuote.serviceQuotesName}</td>
                                                     <td>${serviceQuote.serviceQuotesArea} m²</td>
                                                     <td>${serviceQuote.serviceQuotesTotalPrice}</td>
+                                                    <td>${serviceQuote.isPayAfter? 'Post Paid':'Pre Paid'}</td>
                                                     <td>${serviceQuote.usedPoint}</td>
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
-                                                                <span class="badge badge-success badge-status">Pending</span>
+                                                                <span class="badge badge-warning badge-status">Pending</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                                                <span class="badge badge-success badge-status">Approved By Customer</span>
+                                                                <span class="badge badge-warning badge-status">${serviceQuote.isPayAfter? 'Service In-Progress':'Awaiting Payment'}</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
                                                                 <span class="badge badge-warning badge-status">Rejected (Customer)</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
-                                                                <span class="badge badge-danger badge-status">Cancel</span>
+                                                                <span class="badge badge-danger badge-status">Canceled</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
-                                                                <span class="badge badge-success badge-status">Complete</span>
+                                                                <span class="badge badge-success badge-status">Paid</span>
+                                                            </c:when>
+                                                            <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
+                                                                <span class="badge badge-success badge-status">Completed</span>
                                                             </c:when>
                                                         </c:choose>
                                                     </td>
@@ -211,7 +216,23 @@
                                                                         onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                                                 document.getElementById('acceptForm').status.value = '7';">Cancel
                                                                 </button>
-                                                            </c:when>                                                           
+                                                            </c:when>
+                                                            <c:when test="${serviceQuote.serviceQuotesStatus == 4 && !serviceQuote.isPayAfter}">
+                                                                <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post">
+                                                                    <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
+                                                                    <input type="hidden" name="amount" value="${serviceQuote.serviceQuotesTotalPrice}" />
+                                                                    <input type="hidden" name="point" value="${serviceQuote.usedPoint}" />
+                                                                    <button type="submit" class="btn btn-info">Pay with PayPal</button>
+                                                                </form>                                                               
+                                                            </c:when>
+                                                            <c:when test="${serviceQuote.isPayAfter && serviceQuote.isServiceDetailOfQuoteFinished() && serviceQuote.serviceQuotesStatus == 4 }"> 
+                                                                <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post" style="display:inline-block;">
+                                                                    <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
+                                                                    <input type="hidden" name="amount" value="${serviceQuote.serviceQuotesTotalPrice}" />
+                                                                    <input type="hidden" name="point" value="${serviceQuote.usedPoint}" />
+                                                                    <button type="submit" class="btn btn-info">Pay with PayPal</button>
+                                                                </form>
+                                                            </c:when>
                                                         </c:choose>
 
                                                     </td>
@@ -224,7 +245,7 @@
 
                                                 <!-- Expandable/Collapsible Row -->
                                                 <tr id="details${serviceQuote.serviceQuotesId}" class="collapse">
-                                                    <td colspan="8"> 
+                                                    <td colspan="9"> 
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr class="table-info">

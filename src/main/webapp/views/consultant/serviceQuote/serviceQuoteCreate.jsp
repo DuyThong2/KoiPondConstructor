@@ -114,6 +114,11 @@
                             <form:input path="serviceQuotesTotalPrice" id="serviceQuotesTotalPrice" class="form-control" readonly="readonly" />
                         </div>
 
+                        <div class="form-group">
+                            <form:checkbox path="isPayAfter" id="isPayAfter"/> 
+                            <label for="isPayAfter">Postpaid</label> 
+                        </div>
+
                         <!-- Hidden input to store points used -->
                         <input type="hidden" id="pointsUsed" name="pointsUsed" value="0" />
 
