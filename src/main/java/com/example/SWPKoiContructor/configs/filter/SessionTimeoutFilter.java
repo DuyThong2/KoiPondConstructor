@@ -1,5 +1,6 @@
 package com.example.SWPKoiContructor.configs.filter;
 
+import com.example.SWPKoiContructor.entities.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -34,17 +35,24 @@ public class SessionTimeoutFilter implements javax.servlet.Filter {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String requestURI = httpRequest.getRequestURI();
         // Check if the session is invalid or if the user is not authenticated
-        if (requestURI.startsWith("/customer/") || requestURI.startsWith("/manager/") || 
-            requestURI.startsWith("/consultant/") || requestURI.startsWith("/designer/") ||
-            requestURI.startsWith("/constructor/") || requestURI.startsWith("/staff/")) {
+        if (requestURI.startsWith("/customer/") || requestURI.startsWith("/manager/")
+                || requestURI.startsWith("/consultant/") || requestURI.startsWith("/designer/")
+                || requestURI.startsWith("/constructor/") || requestURI.startsWith("/staff/")) {
 
             // Check if the session is invalid or if the user is not authenticated
-
-            if (session == null || session.getAttribute("user") == null || auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            if (session == null || (User) session.getAttribute("user") == null || auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
 
                 // Clear the security context (remove authentication and authorization)
                 SecurityContextHolder.clearContext();
-               
+
+                // Redirect to the login page if the session has expired or the user is not authenticated
+                httpResponse.sendRedirect("/login?expired=true");
+                return;
+            }
+
+            User user = (User) session.getAttribute("user");
+            if (!user.isEnabled()) {
+                SecurityContextHolder.clearContext();
 
                 // Redirect to the login page if the session has expired or the user is not authenticated
                 httpResponse.sendRedirect("/login?expired=true");

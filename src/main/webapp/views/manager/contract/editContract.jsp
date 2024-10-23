@@ -518,7 +518,7 @@
                             }
                         });
 
-        // Function to prevent negative values in input fields
+                        // Function to prevent negative values in input fields
                         function validateFields() {
                             let fields = ['conceptDesign', 'detailDesign', 'constructionDesign', 'rawConstruction', 'completeConstruction', 'totalDesignCost', 'totalConstructionCost', 'totalPrice'];
                             let isValid = true; // Assume valid unless we find an invalid field
@@ -539,6 +539,19 @@
                             return isValid;
                         }
 
+                        document.querySelectorAll('input[type="number"]').forEach(input => {
+                            input.addEventListener('input', function () {
+                                // Remove any characters that are not digits or dots (allowing decimal numbers)
+                                this.value = this.value.replace(/[^0-9.]/g, '');
+                            });
+
+                            input.addEventListener('blur', function () {
+                                // Prevent negative values by setting any negative number to zero
+                                if (parseFloat(this.value) < 0) {
+                                    this.value = 0;
+                                }
+                            });
+                        });
 
                         document.querySelector('form').addEventListener('submit', function (event) {
                             const termOption = document.querySelector('input[name="termOption"]:checked');

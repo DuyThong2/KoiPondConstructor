@@ -137,7 +137,7 @@
 
                     <div class="filter-card">
                         <!-- Sort and Search Form -->
-                        <form method="get" action="${pageContext.request.contextPath}/consultant/serviceQuote">
+                        <form method="get" action="${pageContext.request.contextPath}/manager/serviceQuote">
                             <div class="form-row align-items-center d-flex justify-content-between">
                                 <!-- Sort By -->
                                 <div class="col-auto">

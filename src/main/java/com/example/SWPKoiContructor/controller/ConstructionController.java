@@ -33,7 +33,7 @@ public class ConstructionController {
 
 
 
-    public ConstructionController(DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService) {
+    public ConstructionController(PaymentHistoryService paymentHistoryService,DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService) {
         this.designService = designService;
         this.constructionService = constructionService;
         this.constructionStageService = ConstructionStageService;
@@ -197,12 +197,12 @@ public class ConstructionController {
         try {
             // Update the construction stage detail status
             ConstructionStageDetail updatedDetail = constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
-
+            System.out.println("here asdddddddddddddddddd");
             // Check if the updated detail is related to a payment and the new status is set to 4 (Completed)
             if (updatedDetail != null
                     && "Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())
                     && newStatus == 4) {
-
+                System.out.println("got it inside !!!!!!!!!!!!!!!!1");
                 // Step 1: Retrieve the Project ID from the constructionId
                 Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
                 BigDecimal amount = BigDecimal.valueOf(updatedDetail.getConstructionStage().getConstructionStagePrice());

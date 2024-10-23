@@ -121,7 +121,7 @@ public class ConsultantController {
     @GetMapping("/consultant/viewConsultantList")
     public String getConsultantListByStaffId(Model model, HttpSession session,
                                             @RequestParam(defaultValue = "0")int page,
-                                            @RequestParam(defaultValue = "8")int size,
+                                            @RequestParam(defaultValue = "2")int size,
                                             @RequestParam(defaultValue = "consultantDateTime")String sortBy,
                                             @RequestParam(defaultValue = "asc")String sortDirection,
                                             @RequestParam(required = false)Integer statusFilter){
