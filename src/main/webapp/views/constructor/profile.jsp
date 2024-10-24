@@ -203,7 +203,7 @@
         <div class="col-md-3">
             <div class="side-bar">
                 <div class="user-info text-center">
-                    <img class="img-profile img-circle img-responsive center-block" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}"
+                    <img class="img-profile img-circle img-responsive center-block" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}"
                          alt="User Avatar" width="150" />
                     <h4>${user.name}</h4>
                     <label class="badge badge-info">Constructor</label>

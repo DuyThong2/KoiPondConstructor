@@ -47,7 +47,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class AccountRelatedController {
 
     
-    private String contexPath="";
+    @Value("${server.servlet.context-path}")
+    private String contexPath;
     
     private CustomerService customerService;
     private UserService userService;

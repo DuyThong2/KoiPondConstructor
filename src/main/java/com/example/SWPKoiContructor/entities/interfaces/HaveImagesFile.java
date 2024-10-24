@@ -11,10 +11,12 @@ package com.example.SWPKoiContructor.entities.interfaces;
  */
 public interface HaveImagesFile {
     
-    default String getShowingImg(String imgUrl) {
-        // Assuming the base S3 URL remains the same
+     default String getShowingImg(String imgUrl) {
+        
+        String bucketName = "happikoi";
+        String region = "ap-southeast-1";
         if(imgUrl != null){
-            return "https://koiconstructionbucket.s3.ap-northeast-1.amazonaws.com/" + imgUrl;
+            return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName,region,imgUrl);
         }else{
             return null;
         }

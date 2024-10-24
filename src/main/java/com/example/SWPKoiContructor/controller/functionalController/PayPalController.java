@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +36,8 @@ import org.springframework.web.servlet.view.RedirectView;
 public class PayPalController {
 
     
-    private String contexPath="";
+    @Value("${server.servlet.context-path}")
+    private String contexPath;
 
     @Autowired
     private PayPalService payPalService;

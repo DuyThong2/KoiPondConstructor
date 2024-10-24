@@ -26,6 +26,8 @@ import java.util.Set;
 
 @Component
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
+    
+    private final String contextPath = "/SWPKoiConstructor";
 
     @Autowired
     private CustomerService customerService;
@@ -61,11 +63,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 // Set the new authentication token in the SecurityContext
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                response.sendRedirect("/customer/projects/");
+                response.sendRedirect(contextPath+"/customer/projects/");
                 return;
             } else {
                 request.setAttribute("message", "your account have been disabled");
-                response.sendRedirect("/");
+                response.sendRedirect(contextPath+"/");
                 return;
             }
             // Create a new authentication token with the customer role
@@ -89,11 +91,11 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
                 String redirectURL = getRedirectURLBasedOnRole(staff);
-                response.sendRedirect(redirectURL);
+                response.sendRedirect(contextPath+redirectURL);
                 return;
             } else {
                 request.setAttribute("message", "your account have been disabled");
-                response.sendRedirect("/");
+                response.sendRedirect(contextPath+"/");
                 return;
             }
             // Assign roles based on the staff department
@@ -119,7 +121,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             // Set the new authentication token in the SecurityContext
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
-            response.sendRedirect("/customer/projects/");
+            response.sendRedirect(contextPath+"/customer/projects/");
         }
     }
 

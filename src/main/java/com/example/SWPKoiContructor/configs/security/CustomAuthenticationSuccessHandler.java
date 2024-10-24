@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    private final String contextPath = "/SWPKoiConstructor";
 
     private final CustomerService customerService;
     private final StaffService staffService;
@@ -36,7 +37,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         Customer customer = customerService.getCustomerByEmail(email);
         if (customer != null) {
             session.setAttribute("user", customer);  // Store customer in session
-            response.sendRedirect("/customer/projects/");  // Redirect to customer home page
+            response.sendRedirect(contextPath+"/customer/projects/");  // Redirect to customer home page
             return;
         }
 
@@ -47,7 +48,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             session.setAttribute("user", staff);  // Store staff in session
             String redirectURL = getRedirectURLBasedOnRole(staff);
 
-            response.sendRedirect(redirectURL);
+            response.sendRedirect(contextPath+redirectURL);
             return;
         }
 
