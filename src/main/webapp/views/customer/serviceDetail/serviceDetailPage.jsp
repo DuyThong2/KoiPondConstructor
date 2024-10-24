@@ -152,6 +152,9 @@
             .badge-primary{
                 background-color: #0d6efd;
             }
+            .d-flex{
+                margin-top: 0;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp" %>
