@@ -94,8 +94,8 @@
 <script>
     CKEDITOR.replace('content', {
         extraPlugins: 'uploadimage,image2',
-        filebrowserImageUploadUrl: '/base64/uploadImage',
-        uploadUrl: '/base64/uploadImage',
+        filebrowserImageUploadUrl: '${pageContext.request.contextPath}/base64/uploadImage',
+        uploadUrl: '${pageContext.request.contextPath}/base64/uploadImage',
         height: 500,
         image2_disableResizer: false
     });
