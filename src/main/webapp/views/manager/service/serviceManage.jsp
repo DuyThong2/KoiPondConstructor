@@ -175,7 +175,7 @@
                                         <div class="form-group">
                                             <label for="file">Upload Image</label>
                                             <input type="file" id="file" name="file"
-                                                   class="form-control-file" required>
+                                                   class="form-control-file" accept="image/*" required>
                                         </div>
                                         <!-- Content Information -->
 
@@ -305,7 +305,7 @@
 
                                         <div class="form-group">
                                             <label for="file">Upload Image</label>
-                                            <input type="file" id="file" name="file"
+                                            <input type="file" accept="image/*" id="file" name="file"
                                                    class="form-control-file">
                                         </div>
 

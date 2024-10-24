@@ -4,6 +4,7 @@ import com.example.SWPKoiContructor.entities.PaymentHistory;
 import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.PaymentHistoryService;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class PaymentHistoryController {
     @GetMapping("/manager/payment")
     public String listManagerPayments(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "2") int size,
             @RequestParam(defaultValue = "paymentDate") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection,
             @RequestParam(required = false) String paymentMethod,
@@ -43,10 +44,15 @@ public class PaymentHistoryController {
         User user = (User) session.getAttribute("user");
         String userRole = user.getAuthority().getAuthority();
 
-        if (!"ROLE_MANAGER".equals(userRole)) {
-            return "redirect:/access-denied"; // Redirect to an error page if the user is not a manager.
+        int totalPage = (int) Math.ceil((double) paymentHistoryService.countFilteredPayments(
+                paymentMethod, searchDescription,
+                fromDate != null ? fromDate.atStartOfDay() : null,
+                toDate != null ? toDate.atTime(LocalTime.MAX) : null,
+                null, userRole)
+                / size);
+        if(page > totalPage){
+            page = 0;
         }
-
         List<PaymentHistory> payments = paymentHistoryService.getFilteredPayments(
                 page, size, sortBy, sortDirection,
                 paymentMethod, searchDescription,
@@ -54,12 +60,13 @@ public class PaymentHistoryController {
                 toDate != null ? toDate.atTime(LocalTime.MAX) : null,
                 null, userRole
         );
-        
-        
 
+        
+        model.addAttribute("totalPages", totalPage);
         model.addAttribute("payments", payments);
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
+
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("paymentMethod", paymentMethod);
@@ -74,7 +81,7 @@ public class PaymentHistoryController {
     @GetMapping("/customer/payment")
     public String listCustomerPayments(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "2") int size,
             @RequestParam(defaultValue = "paymentDate") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection,
             @RequestParam(required = false) String paymentMethod,
@@ -84,14 +91,29 @@ public class PaymentHistoryController {
             Model model,
             HttpSession session
     ) {
+        // Trim the parameters to remove leading or trailing spaces
+        sortBy = sortBy.trim();
+        sortDirection = sortDirection.trim();
+        if (searchDescription != null) {
+            searchDescription = searchDescription.trim();
+        }
+        if (paymentMethod != null) {
+            paymentMethod = paymentMethod.trim();
+        }
+
         User user = (User) session.getAttribute("user");
         String userRole = user.getAuthority().getAuthority();
         Integer customerId = user.getId();
-
-        if (!"ROLE_CUSTOMER".equals(userRole)) {
-            return "redirect:/access-denied"; // Redirect to an error page if the user is not a customer.
+        int totalPage = (int) Math.ceil((double) paymentHistoryService.countFilteredPayments(
+                paymentMethod, searchDescription,
+                fromDate != null ? fromDate.atStartOfDay() : null,
+                toDate != null ? toDate.atTime(LocalTime.MAX) : null,
+                null, userRole
+        ) / size);
+        if(page > totalPage){
+            page = 0;
         }
-
+        // Fetch filtered payments
         List<PaymentHistory> payments = paymentHistoryService.getFilteredPayments(
                 page, size, sortBy, sortDirection,
                 paymentMethod, searchDescription,
@@ -100,6 +122,8 @@ public class PaymentHistoryController {
                 customerId, userRole
         );
 
+        
+        model.addAttribute("totalPages", totalPage);
         model.addAttribute("payments", payments);
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);

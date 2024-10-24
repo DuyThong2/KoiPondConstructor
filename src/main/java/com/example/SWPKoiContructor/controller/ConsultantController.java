@@ -73,7 +73,9 @@ public class ConsultantController {
             totalConsultants = consultantService.countConsultant();
         }
         int totalPages = (int) Math.ceil((double) totalConsultants / size);
-        
+        if(page > totalPages){
+            page = 0;
+        }
         model.addAttribute("consultants", consultants);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -121,7 +123,7 @@ public class ConsultantController {
     @GetMapping("/consultant/viewConsultantList")
     public String getConsultantListByStaffId(Model model, HttpSession session,
                                             @RequestParam(defaultValue = "0")int page,
-                                            @RequestParam(defaultValue = "2")int size,
+                                            @RequestParam(defaultValue = "8")int size,
                                             @RequestParam(defaultValue = "consultantDateTime")String sortBy,
                                             @RequestParam(defaultValue = "asc")String sortDirection,
                                             @RequestParam(required = false)Integer statusFilter){
@@ -137,7 +139,9 @@ public class ConsultantController {
             totalConsultants = consultantService.countConsultantByStaffId(user.getId());
         }
         int totalPages = (int) Math.ceil((double) totalConsultants / size);
-        
+        if(page > totalPages){
+            page = 0;
+        }
         model.addAttribute("consultants", consultants);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -232,7 +236,7 @@ public class ConsultantController {
         int totalPages = (int) Math.ceil((double) totalConsultant / size);
         
         if (page > totalPages) {
-            page = (int) totalPages;
+            page = (int) totalPages-1;
         } else if (page < 1) {
             page = 1;
 

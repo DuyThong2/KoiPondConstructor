@@ -159,48 +159,48 @@
 
                                 <!-- Sort Form -->
                                 <div class="filter-card">
-                                <form method="get" action="${pageContext.request.contextPath}/customer/payment">
-                                    <div class="row align-items-center">
-                                        <!-- Sort By and Direction -->
-                                        <div class="col-auto">
-                                            <label for="sortBy">Sort by:</label>
-                                            <select name="sortBy" id="sortBy" class="form-control" size="padding: 20px">
-                                                <option value="paymentDate" ${sortBy == 'paymentDate' ? 'selected' : ''}>Payment Date</option>
-                                                <option value="amount" ${sortBy == 'amount' ? 'selected' : ''}>Amount</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-auto">
-                                            <label for="sortDirection">Direction:</label>
-                                            <select name="sortDirection" id="sortDirection" class="form-control" size="padding: 20px">
-                                                <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
-                                                <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
-                                            </select>
-                                        </div>
+                                    <form method="get" action="${pageContext.request.contextPath}/customer/payment">
+                                        <div class="row align-items-center">
+                                            <!-- Sort By and Direction -->
+                                            <div class="col-auto">
+                                                <label for="sortBy">Sort by:</label>
+                                                <select name="sortBy" id="sortBy" class="form-control" size="padding: 20px">
+                                                    <option value="paymentDate" ${sortBy == 'paymentDate' ? 'selected' : ''}>Payment Date</option>
+                                                    <option value="amount" ${sortBy == 'amount' ? 'selected' : ''}>Amount</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label for="sortDirection">Direction:</label>
+                                                <select name="sortDirection" id="sortDirection" class="form-control" size="padding: 20px">
+                                                    <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
+                                                    <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
+                                                </select>
+                                            </div>
 
-                                        <!-- Search by Description -->
-                                        <div class="col-auto">
-                                            <label for="searchDescription">Description:</label>
-                                            <input type="text" name="searchDescription" id="searchDescription" class="form-control"
-                                                   placeholder="Search by description" value="${searchDescription}">
-                                        </div>
+                                            <!-- Search by Description -->
+                                            <div class="col-auto">
+                                                <label for="searchDescription">Description:</label>
+                                                <input type="text" name="searchDescription" id="searchDescription" class="form-control"
+                                                       placeholder="Search by description" value="${searchDescription}">
+                                            </div>
 
-                                        <!-- Date Range Filters -->
-                                        <div class="col-auto">
-                                            <label for="fromDate">From Date:</label>
-                                            <input type="date" name="fromDate" id="fromDate" class="form-control" value="${fromDate}">
-                                        </div>
-                                        <div class="col-auto">
-                                            <label for="toDate">To Date:</label>
-                                            <input type="date" name="toDate" id="toDate" class="form-control" value="${toDate}">
-                                        </div>
+                                            <!-- Date Range Filters -->
+                                            <div class="col-auto">
+                                                <label for="fromDate">From Date:</label>
+                                                <input type="date" name="fromDate" id="fromDate" class="form-control" value="${fromDate}">
+                                            </div>
+                                            <div class="col-auto">
+                                                <label for="toDate">To Date:</label>
+                                                <input type="date" name="toDate" id="toDate" class="form-control" value="${toDate}">
+                                            </div>
 
-                                        <!-- Hidden Page Parameter and Submit Button -->
-                                        <input type="hidden" name="page" value="${currentPage}">
-                                        <div class="col-auto">
-                                            <button type="submit" class="btn btn-primary btn-default" style="margin-top: 3rem">Search & Sort</button>
+                                            <!-- Hidden Page Parameter and Submit Button -->
+                                            <input type="hidden" name="page" value="${currentPage}">
+                                            <div class="col-auto">
+                                                <button type="submit" class="btn btn-primary btn-default" style="margin-top: 3rem">Search & Sort</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
                                 </div>
 
                                 <!-- Table for payments -->
@@ -233,32 +233,24 @@
                                 <div class="d-flex align-items-center mt-4">
                                     <!-- Previous Button -->
                                     <c:if test="${currentPage > 0}">
-                                        <a href="?page=${currentPage - 1}
-                                           &sortBy=${sortBy}
-                                           &sortDirection=${sortDirection}
-                                           &searchDescription=${searchDescription}
-                                           &fromDate=${fromDate}
-                                           &toDate=${toDate}" 
-                                           class="btn btn-custom">&lt;</a>
+                                        <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchDescription=${searchDescription}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-custom">&lt;</a>
                                     </c:if>
                                     <c:if test="${currentPage == 0}">
                                         <button class="btn btn-custom" disabled>&lt;</button>
                                     </c:if>
 
                                     <!-- Page Indicator -->
-                                    <span class="page-indicator"><strong>${currentPage + 1}</strong> / <strong>${totalPages + 1}</strong></span>
+                                    <span class="page-indicator"><strong>${currentPage + 1}</strong> / <strong>${totalPages}</strong></span>
 
                                     <!-- Next Button -->
-                                    <c:if test="${currentPage < totalPages - 1}">
-                                        <a href="?page=${currentPage + 1}
-                                           &sortBy=${sortBy}
-                                           &sortDirection=${sortDirection}
-                                           &searchDescription=${searchDescription}
-                                           &fromDate=${fromDate}
-                                           &toDate=${toDate}" 
-                                           class="btn btn-custom">&gt;</a>
+
+
+                                    <c:if test="${currentPage < totalPages -1}">
+                                        <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchDescription=${searchDescription}&fromDate=${fromDate}&toDate=${toDate}"class="btn btn-custom">&gt;</a>
                                     </c:if>
-                                    <c:if test="${currentPage >= totalPages - 1}">
+                                    <c:if test="${currentPage >= totalPages -1}">
+
+
                                         <button class="btn btn-custom" disabled>&gt;</button>
                                     </c:if>
                                 </div>
@@ -269,8 +261,19 @@
                 </section>
             </div>
         </div>
+        <script>
+            document.querySelector('form').addEventListener('submit', function () {
+                this.querySelectorAll('input, select').forEach(function (input) {
+                    input.value = input.value.trim();
+                });
+            });
+        </script>
+
+
     </body>
+
     <%@include file="../spacing.jsp"%>
     <%@include file="../footer.jsp"%>
     <%@include file="../scriptTemplate.jsp"%>
 </html>
+

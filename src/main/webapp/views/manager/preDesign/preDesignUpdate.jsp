@@ -137,7 +137,7 @@
                 <!-- Image Upload -->
                 <div class="form-group">
                     <label for="file">Upload Image</label>
-                    <input type="file" id="file" name="file" class="form-control-file">
+                    <input type="file" accept="image/*" id="file" name="file" class="form-control-file">
                 </div>
 
                 <!-- Submit Button -->

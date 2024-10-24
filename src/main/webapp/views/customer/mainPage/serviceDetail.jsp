@@ -276,7 +276,7 @@
 
                                         <!-- Form -->
                                         <form class="banner-3__from" action="${pageContext.request.contextPath}/save" method="POST">
-                                            <h4>Need Construction Help?</h4>
+                                            <h4>Need Serivce Help?</h4>
                                             <p>We are always here to help you at any time, </p>
                                             <div class="row">
                                                 <div class="col-12">
@@ -294,14 +294,7 @@
                                                         <input name="phone" id="phone" type="text" placeholder="Phone number">
                                                     </div>
                                                 </div>
-                                                <div class="col-12">
-                                                    <div class="banner-3__form-input-select d-flex flex-column">
-                                                        <select name="type" id="subject" style="display: none;">
-                                                            <option value="">Type 1- Construction</option>
-                                                            <option value="order">Type 2 - Maintenance</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
+                                                <input type="hidden" name="type" value="Service"/>
                                                 <div class="col-12">
                                                     <div class="banner-3__form-input">
                                                         <textarea name="content" id="textarea" placeholder="Message"></textarea>
