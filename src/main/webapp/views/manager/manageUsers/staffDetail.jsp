@@ -148,13 +148,16 @@
                                                                     <span class="badge badge-secondary">Pending</span>
                                                                 </c:when>
                                                                 <c:when test="${design.project.status == 2}">
-                                                                    <span class="badge badge-primary">In Progress</span>
+                                                                    <span class="badge badge-primary">Processing</span>
                                                                 </c:when>
                                                                 <c:when test="${design.project.status == 3}">
                                                                     <span class="badge badge-success">Completed</span>
                                                                 </c:when>
                                                                 <c:when test="${design.project.status == 4}">
-                                                                    <span class="badge badge-warning">Cancelled</span>
+                                                                    <span class="badge badge-danger">Cancelled</span>
+                                                                </c:when>
+                                                                <c:when test="${design.project.status == 5}">
+                                                                    <span class="badge badge-warning">Request Cancel</span>
                                                                 </c:when>
                                                             </c:choose>
                                                         </td>
@@ -199,13 +202,16 @@
                                                                     <span class="badge badge-secondary">Pending</span>
                                                                 </c:when>
                                                                 <c:when test="${construction.project.status == 2}">
-                                                                    <span class="badge badge-primary">In Progress</span>
+                                                                    <span class="badge badge-primary">Processing</span>
                                                                 </c:when>
                                                                 <c:when test="${construction.project.status == 3}">
                                                                     <span class="badge badge-success">Completed</span>
                                                                 </c:when>
                                                                 <c:when test="${construction.project.status == 4}">
-                                                                    <span class="badge badge-warning">Cancelled</span>
+                                                                    <span class="badge badge-danger">Cancelled</span>
+                                                                </c:when>
+                                                                <c:when test="${construction.project.status == 5}">
+                                                                    <span class="badge badge-warning">Request Cancel</span>
                                                                 </c:when>
                                                             </c:choose>
                                                         </td>

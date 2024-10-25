@@ -284,6 +284,7 @@
                                         <form id="acceptForm" action="${pageContext.request.contextPath}/customer/quote/updateStatus" method="post">
                                             <input type="hidden" name="quoteId" value="">
                                             <input type="hidden" name="statusId" value="4">
+                                            
                                         </form>
                                     </div>
                                     <div class="modal-footer">

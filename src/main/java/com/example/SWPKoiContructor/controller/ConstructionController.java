@@ -589,7 +589,7 @@ public class ConstructionController {
                 serviceDetailService.updateServiceDetail(serviceDetail);
                 // Create notification for cancel request
                 String notificationMessage = "Cancel Request From " + serviceDetail.getStaff().getName() + ": " + cancelMessage;
-                notificationService.createCancelRequestNotification(serviceDetail, notificationMessage);
+                notificationService.createCancelRequestNotification(serviceDetail.getId(), notificationMessage,"serviceDetail");
 
                 // Return success JSON string wrapped in ResponseEntity with 200 OK
                 return ResponseEntity.ok("{\"status\":\"success\"}");

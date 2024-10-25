@@ -485,7 +485,7 @@
                                                             <h2 class="section-title text-dark">Current Project</h2>
                                                             <c:forEach var="project" items="${currentProjects}">
                                                                 <div class="card current-project-details p-4 shadow-sm mb-4" 
-                                                                     onclick="window.location.href='${pageContext.request.contextPath}/customer/projects/details/${project.projectId}'" 
+                                                                     onclick="window.location.href='${pageContext.request.contextPath}/customer/projects/detail/${project.projectId}'" 
                                                                      style="cursor: pointer;">
                                                                     <div class="row">
                                                                         <div class="col-md-4">
@@ -593,7 +593,7 @@
                                                             <h2 class="section-title text-dark">Done Projects</h2>
                                                             <c:forEach var="project" items="${doneProjects}">
                                                                 <div class="card done-project p-4 shadow-sm mb-4" 
-                                                                     onclick="window.location.href='${pageContext.request.contextPath}/customer/projects/details/${project.projectId}'" 
+                                                                     onclick="window.location.href='${pageContext.request.contextPath}/customer/projects/detail/${project.projectId}'" 
                                                                      style="cursor: pointer;">
                                                                     <div class="row">
                                                                         <div class="col-md-4">

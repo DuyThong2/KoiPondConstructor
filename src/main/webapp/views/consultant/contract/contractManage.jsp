@@ -145,7 +145,7 @@
                                 </c:choose>
                             </td>
                             <td>${contract.contractNote}</td>
-                            <td><a href="${pageContext.request.contextPath}/consultant/contract/viewDetail/${contract.contractId}" class="btn btn-info">View</a></td>
+                            <td><a href="${pageContext.request.contextPath}/consultant/contract/detail/${contract.contractId}" class="btn btn-info">View</a></td>
                         </tr>
                     </c:forEach>
                 </tbody>
@@ -175,8 +175,7 @@
         </div>
 
         <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </body>
 </html>

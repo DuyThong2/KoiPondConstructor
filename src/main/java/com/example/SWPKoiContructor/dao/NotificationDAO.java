@@ -25,14 +25,14 @@ public class NotificationDAO {
     }
 
     public List<Notification> getNotificationsForManager() {
-        String query = "SELECT n FROM Notification n WHERE LOWER(n.receiverType) = :receiverType ORDER BY n.createdAt DESC";
+        String query = "SELECT n FROM Notification n WHERE LOWER(n.receiverType) = :receiverType and n.isRead=0 ORDER BY n.createdAt DESC";
         TypedQuery<Notification> typedQuery = entityManager.createQuery(query, Notification.class);
         typedQuery.setParameter("receiverType", "manager"); // Corrected parameter name
         return typedQuery.getResultList();
     }
 
     public List<Notification> getNotificationsByReceiverId(int receiverId) {
-        String query = "SELECT n FROM Notification n WHERE n.receiver.id = :receiverId  ORDER BY n.createdAt DESC";
+        String query = "SELECT n FROM Notification n WHERE n.receiverId = :receiverId and n.isRead=0 ORDER BY n.createdAt DESC";
         TypedQuery<Notification> typedQuery = entityManager.createQuery(query, Notification.class);
         typedQuery.setParameter("receiverId", receiverId);
         return typedQuery.getResultList();
@@ -59,7 +59,7 @@ public class NotificationDAO {
     }
 
     public long getUnreadNotificationsCount(int receiverId) {
-        String query = "Select Count(n) from Notification n where n.receiver.id =:receiverId and n.isRead=0 Order By n.createdAt DESC";
+        String query = "Select Count(n) from Notification n where n.receiverId =:receiverId and n.isRead=0 Order By n.createdAt DESC";
         TypedQuery<Long> typedQuery = entityManager.createQuery(query, Long.class);
         typedQuery.setParameter("receiverId", receiverId);
         return typedQuery.getSingleResult();
@@ -93,6 +93,13 @@ public class NotificationDAO {
     @Transactional
     public void markAllAsRead() {
         String hql = "UPDATE Notification n SET n.isRead = true WHERE n.receiverType = 'manager' AND n.isRead = false";
+        entityManager.createQuery(hql).executeUpdate();
+    }
+
+    public void markAllAsReadForReceiver(int receiverId) {
+        String hql = "UPDATE Notification n SET n.isRead = true WHERE n.receiverId="+receiverId+"AND n.isRead = false";
+
+
         entityManager.createQuery(hql).executeUpdate();
     }
 }

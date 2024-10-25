@@ -101,12 +101,11 @@ public class ConsultantController {
     public String updateConsultantStaff(@RequestParam("id")int id, @RequestParam("staffId")int staffId,Model model){
         Staff consultantStaff = staffService.getStaffById(staffId);
         Consultant consultant = consultantService.updateConsultantStaff(id, consultantStaff);
+        String messageNotification = "You have been assigned to consultant of Customer:"+ consultant.getConsultantCustomerName();
+        notificationService.assignStaffNotification(consultantStaff.getId(),consultant.getConsultantId(),"consultantStaff","consultant",messageNotification);
+        // Push the notification via WebSocket
         return "redirect:/manager/consultant/detail/" + id;
     }
-    
-    
-    
-    
     //CONSULTANT SITE
 //    @GetMapping("/consultant/viewConsultantList")
 //    public String getConsultantListByStaffId(Model model, HttpSession session){      
@@ -146,7 +145,7 @@ public class ConsultantController {
         return "consultant/consultantManage";
     }
     
-    @GetMapping("/consultant/viewConsultantDetail/{id}")
+    @GetMapping("/consultant/consultant/detail/{id}")
     public String getConsultantDetail(@PathVariable("id")int consultantId, Model model){
         Consultant consultant = consultantService.getConsultantById(consultantId);
         model.addAttribute("consultant", consultant);
@@ -156,7 +155,7 @@ public class ConsultantController {
     @GetMapping("/consultant/viewConsultantDetail/updateStatus")
     public String updateConsultantStatus(@RequestParam("consultantId")int consultantId, @RequestParam("statusId")int statusId, Model model){
         Consultant consultant = consultantService.updateConsultantStatus(consultantId, statusId);
-        return "redirect:/consultant/viewConsultantDetail/" + consultantId;
+        return "redirect:/consultant/consultant/detail/" + consultantId;
     }
     
     

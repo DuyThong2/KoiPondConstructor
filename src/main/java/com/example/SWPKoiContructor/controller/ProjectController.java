@@ -29,14 +29,16 @@ public class ProjectController {
     private ProjectService projectService;
     private ContractService contractService;
     private StaffService staffService;
-
+    private NotificationService notificationService;
     public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService,
-            StaffService staffService, DesignService designService, CustomerService customerService) {
+            StaffService staffService, DesignService designService, CustomerService customerService,
+            NotificationService notificationService) {
         this.fileUtility = fileUtility;
         this.projectService = projectService;
         this.contractService = contractService;
         this.staffService = staffService;
         this.customerService = customerService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/manager/projects")
@@ -445,7 +447,7 @@ public class ProjectController {
         Project project = projectService.getProjectById(projectId);
 
         // Check if the project exists and belongs to the logged-in customer
-        if (project == null || project.getContract().getCustomer().getId() != customer.getId()) {
+        if (project == null || !project.isProjectBelongToCustomer(project, customer)) {
             redirectAttributes.addFlashAttribute("errorMessage",
                     "Project not found or you don't have permission to view it.");
             return "redirect:/customer/projects/";
@@ -453,13 +455,45 @@ public class ProjectController {
 
         // Decode the project content if it exists
 
-
         // Add attributes to the model
         model.addAttribute("project", project);
-        model.addAttribute("decodedContent");
+        // model.addAttribute("decodedContent");
         model.addAttribute("customer", customer);
 
         // Return the view name
         return "customer/projects/projectDetail";
+    }
+
+    @PostMapping("/customer/project/cancelRequest")
+    public ResponseEntity<String> cancelProjectRequest(
+            @RequestParam("projectId") int projectId,
+            @RequestParam("cancelMessage") String cancelMessage) {
+        try {
+            // Attempt to update the project status to "Request Cancel"
+            Project project = projectService.getProjectById(projectId);
+
+            if (project != null) {
+                // Assuming you have a method to set cancel message and update status
+                project.setCancelMessage(cancelMessage);
+                project.setStatus(5); // Assuming 5 is the status code for "Request Cancel"
+                projectService.updateProject(project);
+
+                // Create notification for cancel request
+                String notificationMessage = "Cancel Request From " + project.getContract().getCustomer().getName() + ": "
+                        + cancelMessage;
+                notificationService.createCancelRequestNotification(project.getProjectId(), notificationMessage,"projects");
+                // Return success JSON string wrapped in ResponseEntity with 200 OK
+                return ResponseEntity.ok("{\"status\":\"success\"}");
+            } else {
+                return ResponseEntity.badRequest().body(
+                        "{\"status\":\"error\",\"message\":\"Could not update project status to Request Cancel\"}");
+            }
+        } catch (Exception e) {
+            // Log the exception for debugging
+            e.printStackTrace();
+            // Return error JSON string with 500 Internal Server Error status
+            return ResponseEntity.status(500)
+                    .body("{\"status\":\"error\",\"message\":\"An error occurred during cancellation request\"}");
+        }
     }
 }

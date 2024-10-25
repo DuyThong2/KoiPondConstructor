@@ -11,9 +11,9 @@ public class Notification {
     @Column(name = "notification_id")
     private int id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver_id", nullable = true)
-    private User receiver;
+
+    @Column(name ="receiver_id")
+    private Integer receiverId;
 
     @Column(nullable = false)
     private String message;
@@ -44,14 +44,14 @@ public class Notification {
     // Constructor with fields
 
 
-    public Notification(int id, User receiver, String message, String receiverType,  Integer relatedId, String fromTable) {
+    public Notification(int id, Integer receiverId, String message, String receiverType,  Integer relatedId, String fromTable) {
         this.id = id;
-        this.receiver = receiver;
+        this.receiverId = receiverId;
         this.message = message;
         this.receiverType = receiverType;
         this.isRead = false;
         this.relatedId = relatedId;
-        this.fromTable = fromTable;
+        this.fromTable = fromTable.toLowerCase();
         this.createdAt = LocalDateTime.now();
     }
 
@@ -60,16 +60,16 @@ public class Notification {
         return id;
     }
 
-    public void setIdd(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public User getReceiver() {
-        return receiver;
+    public Integer getReceiverId() {
+        return receiverId;
     }
 
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
+    public void setReceiverId(int receiverId) {
+        this.receiverId = receiverId;
     }
 
     public String getMessage() {
@@ -103,17 +103,16 @@ public class Notification {
     }
 
     public String getFromTable() {
-        return fromTable;
+        return fromTable.toLowerCase();
     }
 
     public void setFromTable(String fromTable) {
-        this.fromTable = fromTable;
+        this.fromTable = fromTable.toLowerCase();
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }

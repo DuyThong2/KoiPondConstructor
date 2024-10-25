@@ -199,11 +199,12 @@ CREATE TABLE Project (
     description NVARCHAR(255),
     date_start DATE,
     date_end DATE,
-    project_status INT,		-- 1:Pending ; 2:Proccessing; 3: completed/ 4: Canceled 5: manager reject; 6: customer reject 7: both reject
+    project_status INT,		-- 1:Pending ; 2:Proccessing; 3: completed/ 4: Cancel 5: request cancel
     img_url NVARCHAR(255),
     stage INT, -- 1: Planning; 2: Design; 3: Construction; 4:Maintance; 5: Finish
 	is_shareable bit, --accept; reject  
 	contract_id int foreign key references [Contract](contract_id)
+    project_cancel_message NVARCHAR(max)
 );
 
 -- 7. Design

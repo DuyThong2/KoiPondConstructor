@@ -203,7 +203,7 @@ public class ContractController {
 
     }
 
-    @GetMapping("/consultant/contract/viewDetail/{id}")
+    @GetMapping("/consultant/contract/detail/{id}")
     public String viewDetailContractByConsultant(Model model, @PathVariable("id") int id, HttpSession session) {
         Contract contract = contractService.getContractById(id);
         Staff staff = (Staff) session.getAttribute("user");
@@ -322,7 +322,7 @@ public class ContractController {
         // Create notification for the new contract
         notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId());
 
-        return "redirect:/consultant/contract/viewDetail/" + contract.getContractId();
+        return "redirect:/consultant/contract/detail/" + contract.getContractId();
     }
 
     @GetMapping("/consultant/contract/edit")
@@ -388,7 +388,7 @@ public class ContractController {
         // Save the contract entity with the updated term
         contract = contractService.createContract(contract);
 
-        return "redirect:/consultant/contract/viewDetail/" + contract.getContractId();
+        return "redirect:/consultant/contract/detail/" + contract.getContractId();
     }
 
     @GetMapping("/manager/contract/edit")
@@ -463,7 +463,7 @@ public class ContractController {
         String statusDescription = getStatusDescription(status);
         notificationService.createContractStatusNotification(contract.getCustomer().getName(), contractId, statusDescription);
         
-        return "redirect:/customer/contract/viewDetail/" + contractId;
+        return "redirect:/customer/contract/detail/" + contractId;
     }
 
     // Helper method to get status description
@@ -490,14 +490,25 @@ public class ContractController {
         User toUser = userService.getUserById(toUserId);
         Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, contract);
         newFeedback = feedbackService.saveFeedback(newFeedback);
-        return "redirect:/customer/contract/viewDetail/" + contractId;
+        return "redirect:/customer/contract/detail/" + contractId;
 
     }
 
     @PostMapping("/manager/contract/editStatus")
     public String editStatusByManager(@RequestParam("id") int contractId, @RequestParam("status") int status) {
         Contract contract = contractService.changeStatusContract(status, contractId);
-        return "redirect:/manager/contract/detail/" + contractId;
+        Staff staff = contract.getQuote().getStaff();
+        String statusString = "";
+        if(status==2)
+            statusString= "Accepted";
+        else if(status==4)
+            statusString="Rejected";
+        if(status==5)
+            statusString="Cancelled";
+        notificationService.changeNotificationToConsultant(staff.getId(), contract.getCustomer().getName(),contractId, status, "Manager","contract",statusString);
+
+
+            return "redirect:/manager/contract/detail/" + contractId;
 
     }
 
@@ -512,6 +523,16 @@ public class ContractController {
         User toUser = userService.getUserById(toUserId);
         Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, contract);
         newFeedback = feedbackService.saveFeedback(newFeedback);
+        Staff staff = contract.getQuote().getStaff();
+        String statusString = "";
+        if(status==2)
+            statusString= "Accepted";
+        else if(status==4)
+            statusString="Rejected";
+        if(status==5)
+            statusString="Cancelled";
+        notificationService.changeNotificationToConsultant(staff.getId(), contract.getCustomer().getName(),contractId, status, "Manager","contract",statusString);
+
         return "redirect:/manager/contract/detail/" + contractId;
 
     }
@@ -519,7 +540,7 @@ public class ContractController {
     @PostMapping("/consultant/contract/editStatus")
     public String editStatusByConsultant(@RequestParam("id") int contractId, @RequestParam("status") int status) {
         Contract contract = contractService.changeStatusContract(status, contractId);
-        return "redirect:/consultant/contract/viewDetail/" + contractId;
+        return "redirect:/consultant/contract/detail/" + contractId;
 
     }
 

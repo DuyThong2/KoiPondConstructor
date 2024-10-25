@@ -1,3 +1,5 @@
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 <header>
     <div id="header-sticky" class="header__area header-3">
         <div class="header__top d-none d-xl-block color-pink" style="background-color:rgba(rgba(255, 27, 80, 0.847), green, blue, alpha)">
@@ -64,8 +66,8 @@
                                     <li><a href="${pageContext.request.contextPath}/home/services">Services</a></li>
                                     <li><a href="${pageContext.request.contextPath}/home/blogs">Blog</a></li>
                                     <li><a href="${pageContext.request.contextPath}/home/packages">Pricing</a></li>
-
                                     <li><a href="${pageContext.request.contextPath}/customer/projects/">Your Project</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/contactUs">Contact Us</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -94,7 +96,11 @@
                                             </a>
                                         </c:when>
                                         <c:otherwise>
+
                                             <div class="d-flex justify-content-center align-items-center">
+
+                                                <!-- Notification Dropdown -->
+                                               <%@include file="notification.jsp"%>
                                                 <a href="${pageContext.request.contextPath}/customer/profile">
                                                     <i class="fas fa-user profile-icon rounded-circle me-3"
                                                        style="font-size: 3rem; color: var(--rr-theme-white);"></i></a>

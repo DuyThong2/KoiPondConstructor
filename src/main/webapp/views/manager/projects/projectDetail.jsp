@@ -308,8 +308,7 @@
                                                                     class="badge badge-secondary badge-custom">Pending</span>
                                                 </c:when>
                                                 <c:when test="${project.status == 2}">
-                                                            <span class="badge badge-primary badge-custom">In
-                                                                Progress</span>
+                                                            <span class="badge badge-primary badge-custom">Processing</span>
                                                 </c:when>
                                                 <c:when test="${project.status == 3}">
                                                             <span
@@ -318,6 +317,10 @@
                                                 <c:when test="${project.status == 4}">
                                                             <span
                                                                     class="badge badge-danger badge-custom">Cancelled</span>
+                                                </c:when>
+                                                <c:when test="${project.status == 5}">
+                                                            <span
+                                                                    class="badge badge-warning badge-custom">Request Cancel</span>
                                                 </c:when>
                                             </c:choose>
                                         </td>

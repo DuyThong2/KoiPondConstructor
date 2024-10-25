@@ -22,7 +22,7 @@ public class NotificationAPI {
           this.simpMessagingTemplate = simpMessagingTemplate;
      }
 
-     @GetMapping("/{receiverId}")
+     @PostMapping("/{receiverId}")
      public ResponseEntity<List<Notification>> getNotificationByReceiverId(
                @PathVariable(name = "receiverId") int receiverId) {
           try {
@@ -85,6 +85,16 @@ public class NotificationAPI {
           } catch (Exception e) {
                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                          .body("Error updating notifications: " + e.getMessage());
+          }
+     }
+     @PutMapping("/markAllAsRead/{id}")
+     public ResponseEntity<String> markAllAsReadForReceiver(@PathVariable int id) {
+          try {
+               notificationService.markAllAsReadForReceiver(id);
+               return ResponseEntity.ok("All notifications marked as read");
+          } catch (Exception e) {
+               return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                       .body("Error updating notifications: " + e.getMessage());
           }
      }
 }

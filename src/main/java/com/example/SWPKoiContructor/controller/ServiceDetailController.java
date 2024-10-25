@@ -414,7 +414,7 @@ public class ServiceDetailController {
         // Save the updated service detail
         serviceDetailService.updateServiceDetail(serviceDetail);
 
-        // Redirect or load the page where feedback was submitted
+        // Redirect or load th page where feedback was submitted
         return "redirect:/customer/serviceDetail/" + serviceDetailId;
     }
 

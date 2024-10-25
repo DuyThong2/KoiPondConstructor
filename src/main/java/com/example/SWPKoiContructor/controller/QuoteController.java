@@ -7,6 +7,7 @@ package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Consultant;
 import com.example.SWPKoiContructor.entities.Feedback;
+import com.example.SWPKoiContructor.entities.Notification;
 import com.example.SWPKoiContructor.entities.Parcel;
 import com.example.SWPKoiContructor.entities.Quotes;
 import com.example.SWPKoiContructor.entities.User;
@@ -60,6 +61,9 @@ public class QuoteController {
     @PostMapping("/customer/quote/updateStatus")
     public String customerUpdateQuoteStatus(@RequestParam("quoteId") int quoteId, @RequestParam("statusId") int statusId, Model model, HttpSession session) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
+       String statusString=statusId==3?"Accepted":"Rejected";
+
+        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Customer","quote",statusString);
         return "redirect:/customer/quote";
     }
 
@@ -135,6 +139,8 @@ public class QuoteController {
     @PostMapping("/manager/quote/detail/updateStatus")
     public String managerUpdateQuoteStatus(@RequestParam("quoteId") int quoteId, @RequestParam("statusId") int statusId, Model model) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
+        String statusString= statusId==2?"Accepted":"Rejected";
+        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Manager","quote",statusString);
         return "redirect:/manager/quote/detail/" + quoteId;
     }
 
@@ -151,6 +157,8 @@ public class QuoteController {
             User toUser = userService.getUserById(toUserId);
             Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, quotes);
             newFeedback = feedbackService.saveFeedback(newFeedback);
+            String statusString= statusId==2?"Accepted":"Rejected";
+            notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Manager","quote",statusString);
             return "redirect:/manager/quote/detail/" + quoteId;
         }catch(Exception e){
             return "redirect:/manager/quote/detail/" + quoteId;
