@@ -14,7 +14,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private String contexPath = "/SWPKoiConstructor";
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint(contexPath+"/ws-notifications").withSockJS();
+        registry.addEndpoint("/ws-notifications").setAllowedOrigins("http://happikoi.com").withSockJS();
     }
 
     @Override
