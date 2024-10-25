@@ -39,17 +39,16 @@ public class ConsultantController {
     private CustomerService customerService;
     private NotificationService notificationService;
 
-    private final SimpMessagingTemplate simpMessagingTemplate;
 
     public ConsultantController(ConsultantService consultantService,
                                 StaffService staffService,
                                 CustomerService customerService,
-                                SimpMessagingTemplate simpMessagingTemplate,
+
                                 NotificationService notificationService) {
         this.consultantService = consultantService;
         this.staffService = staffService;
         this.customerService = customerService;
-        this.simpMessagingTemplate = simpMessagingTemplate;
+
         this.notificationService =notificationService;
     }
 
@@ -105,12 +104,11 @@ public class ConsultantController {
     public String updateConsultantStaff(@RequestParam("id")int id, @RequestParam("staffId")int staffId,Model model){
         Staff consultantStaff = staffService.getStaffById(staffId);
         Consultant consultant = consultantService.updateConsultantStaff(id, consultantStaff);
+        String messageNotification = "You have been assigned to consultant of Customer:"+ consultant.getConsultantCustomerName();
+        notificationService.assignStaffNotification(consultantStaff.getId(),consultant.getConsultantId(),"consultantStaff","consultant",messageNotification);
+        // Push the notification via WebSocket
         return "redirect:/manager/consultant/detail/" + id;
     }
-    
-    
-    
-    
     //CONSULTANT SITE
 //    @GetMapping("/consultant/viewConsultantList")
 //    public String getConsultantListByStaffId(Model model, HttpSession session){      
@@ -152,7 +150,7 @@ public class ConsultantController {
         return "consultant/consultantManage";
     }
     
-    @GetMapping("/consultant/viewConsultantDetail/{id}")
+    @GetMapping("/consultant/consultant/detail/{id}")
     public String getConsultantDetail(@PathVariable("id")int consultantId, Model model){
         Consultant consultant = consultantService.getConsultantById(consultantId);
         model.addAttribute("consultant", consultant);
@@ -162,13 +160,13 @@ public class ConsultantController {
     @GetMapping("/consultant/viewConsultantDetail/updateStatus")
     public String updateConsultantStatus(@RequestParam("consultantId")int consultantId, @RequestParam("statusId")int statusId, Model model){
         Consultant consultant = consultantService.updateConsultantStatus(consultantId, statusId);
-        return "redirect:/consultant/viewConsultantDetail/" + consultantId;
+        return "redirect:/consultant/consultant/detail/" + consultantId;
     }
     
     
     
 
-    //CUSTOMER SITE        
+    //CUSTOMER SITE
 
     @PostMapping("/save")
     public String saveConsultantInWeb(@RequestParam("name") String name,
@@ -190,7 +188,7 @@ public class ConsultantController {
 
         // Save the consultant
 
-        User user = (User) session.getAttribute("user");       
+        User user = (User) session.getAttribute("user");
         if(user != null){
             Customer cus = customerService.getCustomerById(user.getId());
             newConsultant.setCustomer(cus);
@@ -199,25 +197,14 @@ public class ConsultantController {
         newConsultant = consultantService.createConsultant(newConsultant);
         redirectAttributes.addFlashAttribute("success", "Consultant created successfully! ");
         // Call the private method to handle notification
-        sendConsultantCreationNotification(newConsultant);
+        notificationService.sendConsultantCreationNotification(newConsultant);
 
         return "redirect:/";
     }
 
 
-    // Private method to send notification
-    private void sendConsultantCreationNotification(Consultant newConsultant) {
-        Notification notification = new Notification();
-        notification.setMessage("New consultant created: " + newConsultant.getConsultantCustomerName());
-        notification.setRelatedId(newConsultant.getConsultantId());  // Assuming getConsultantId() exists
-        notification.setReceiverType("manager"); // Assuming manager is notified
-        notification.setFromTable("consultant");
-        notification.setCreatedAt(java.time.LocalDateTime.now());
-        notificationService.saveNotification(notification);
-        // Broadcast notification to /topic/notifications
-        simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
-    }
-    
+
+
     @GetMapping("/customer/consultant")
     public String listFilteredServiceQuoteCustomer(Model model, HttpSession session,
             @RequestParam(defaultValue = "0") int page,
@@ -225,16 +212,16 @@ public class ConsultantController {
             @RequestParam(defaultValue = "consultantDateTime") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection,
             @RequestParam(required = false) Integer statusFilter){
-        User customer = (User) session.getAttribute("user");      
+        User customer = (User) session.getAttribute("user");
         List<Consultant> consultants;
         long totalConsultant;
-        
+
         // Apply filtering based on the name, date range, and status
         consultants = consultantService.getConsultantListOrderByAndSortCustomer(page, size, sortBy, sortDirection, statusFilter, customer);
         totalConsultant = consultantService.countConsultantListOrderByAndSortCustomer(page, size, sortBy, sortDirection, statusFilter, customer);
 
         int totalPages = (int) Math.ceil((double) totalConsultant / size);
-        
+
         if (page > totalPages) {
             page = (int) totalPages-1;
         } else if (page < 1) {
@@ -249,19 +236,19 @@ public class ConsultantController {
         model.addAttribute("totalPage", totalPages);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDirection", sortDirection);
-        model.addAttribute("statusFilter", statusFilter);        
+        model.addAttribute("statusFilter", statusFilter);
 
         return "customer/consultant/consultantManage";  // JSP page to display the contract list
     }
-    
+
     @GetMapping("/customer/consultant/updateStatus")
-    public String updateConsultantStatusCustomer(@RequestParam("consultantId")int consultantId, 
+    public String updateConsultantStatusCustomer(@RequestParam("consultantId")int consultantId,
                                                  @RequestParam("statusId")int statusId, Model model, HttpSession session){
         User customer = (User) session.getAttribute("user");
         Consultant check = consultantService.getConsultantById(consultantId);
         if(check != null && check.getCustomer().getId() == customer.getId()){
-            check = consultantService.updateConsultantStatus(consultantId, statusId);           
-        }        
+            check = consultantService.updateConsultantStatus(consultantId, statusId);
+        }
         return "redirect:/customer/consultant";
 
     }

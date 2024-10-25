@@ -121,6 +121,15 @@
                                                   <td>${serviceDetail.price}</td>
                                              </tr>
                                         </table>
+                                        <!-- Add View Request button for status 4 (Requesting Cancel) -->
+                                        <c:if test="${serviceDetail.serviceDetailStatus == 4}">
+                                             <button id="viewRequestBtn-${serviceDetail.id}" type="button"
+                                                     class="btn btn-danger btn-md mt-4"
+                                                      onclick="showModal(${serviceDetail.id})";> 
+                                                  View Request
+                                             </button>
+                                             
+                                        </c:if>
                                    </div>
 
                                    <div class="row">
@@ -204,8 +213,122 @@
                </div>
 
                <!-- Bootstrap JS and dependencies -->
+               <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
                <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+               <!-- Add this modal at the end of the body -->
+               <div class="modal fade" id="viewRequestModal" tabindex="-1" role="dialog"
+                    aria-labelledby="viewRequestModalLabel" aria-hidden="true" data-service-id="">
+                    <div class="modal-dialog" role="document">
+                         <div class="modal-content">
+                              <div class="modal-header">
+                                   <h5 class="modal-title" id="viewRequestModalLabel">Cancellation Request</h5>
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                   </button>
+                              </div>
+                              <div class="modal-body">
+                                   <p><strong>Reason for Cancellation:</strong></p>
+                                   <p id="cancellationReason"></p>
+                              </div>
+                              <div class="modal-footer">
+                                   <button type="button" class="btn btn-success" onclick="acceptRequest();">
+                                        Accept Request
+                                   </button>
+                                   <button type="button" class="btn btn-danger" onclick="denyRequest();">
+                                        Deny Request
+                                   </button>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <!-- Notification Modal -->
+               <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                         <div class="modal-content">
+                              <div class="modal-header">
+                                   <h5 class="modal-title" id="notificationModalLabel">Notification</h5>
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                   </button>
+                              </div>
+                              <div class="modal-body" id="notificationModalBody">
+                                   <!-- Notification message will be inserted here -->
+                              </div>
+                              <div class="modal-footer">
+                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               </div>
+               <!-- Add this script at the end of the file -->
+               <script>
+                    var serviceId = ${serviceDetail.id};
+                    var serviceCancelMessage = "${serviceDetail.serviceCancelMessage}";
+                    console.log(serviceId);
+                    function showModal(serviceId) {
+                         $('#viewRequestModal').attr('data-service-id', serviceId);
+                         $('#cancellationReason').text(serviceCancelMessage);
+                         $('#viewRequestModal').modal('show');
+                    }
+
+                    function acceptRequest() {
+                         var serviceId = $('#viewRequestModal').attr('data-service-id');
+                         $.ajax({
+                              url: '${pageContext.request.contextPath}/construction/serviceDetail/acceptCancelRequest',
+                              method: 'POST',
+                              data: {
+                                   serviceDetailId: serviceId
+                              },
+                              success: function (response) {
+                                   // Update the status badge to "Canceled"
+                                   $('.badge').removeClass('badge-warning').addClass('badge-danger').text('Canceled');
+                                   $('#viewRequestModal').modal('hide');
+                                   // Show success message
+                                   showNotification('Cancellation request accepted successfully!');
+                                   // Hide the "View Request" button
+                                   $('#viewRequestBtn-' + serviceId).hide();
+                              },
+                              error: function (xhr, status, error) {
+                                   showNotification('An error occurred while accepting the cancellation request.');
+                              }
+                         });
+                    }
+
+                    function denyRequest() {
+                         var serviceId = $('#viewRequestModal').attr('data-service-id');
+                         $.ajax({
+                              url: '${pageContext.request.contextPath}/construction/serviceDetail/denyCancelRequest',
+                              method: 'POST',
+                              data: {
+                                   serviceDetailId: serviceId
+                              },
+                              success: function (response) {
+                                   // Update the status badge to "Processing"
+                                   $('.badge').removeClass('badge-warning').addClass('badge-primary').text('Processing');
+                                   $('#viewRequestModal').modal('hide');
+                                   // Show success message
+                                   showNotification('Cancellation request denied successfully!');
+                                   // Hide the "View Request" button
+                                   $('#viewRequestBtn-' + serviceId).hide();
+                              },
+                              error: function (xhr, status, error) {
+                                   showNotification('An error occurred while denying the cancellation request.');
+                              }
+                         });
+                    }
+
+                    function showNotification(message) {
+                         $('#notificationModalBody').text(message);
+                         $('#notificationModal').modal('show');
+                    }
+               </script>
+
+               <!-- Notification Modal -->
+
+
           </body>
 
           </html>

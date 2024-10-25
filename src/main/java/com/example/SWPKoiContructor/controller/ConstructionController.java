@@ -31,7 +31,9 @@ public class ConstructionController {
     private PaymentHistoryService paymentHistoryService;
     private ServiceDetailService serviceDetailService;
 
-    public ConstructionController(PaymentHistoryService paymentHistoryService, DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService) {
+    private NotificationService notificationService;
+
+    public ConstructionController(DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService, NotificationService notificationService) {
         this.designService = designService;
         this.constructionService = constructionService;
         this.constructionStageService = ConstructionStageService;
@@ -39,6 +41,7 @@ public class ConstructionController {
         this.commentService = commentService;
         this.serviceDetailService = serviceDetailService;
         this.paymentHistoryService = paymentHistoryService;
+        this.notificationService = notificationService; 
     }
 
     @GetMapping("/manager/construction")
@@ -90,7 +93,7 @@ public class ConstructionController {
         return "constructor/constructionManage";
     }
 
-    @GetMapping("/manager/construction/viewDetail/{id}")
+    @GetMapping("/manager/construction/detail/{id}")
     public String viewConstructionStage(Model model, @PathVariable("id") int id) {
         Construction construction = constructionService.getConstructionById(id);
 
@@ -582,17 +585,21 @@ public class ConstructionController {
             @RequestParam("serviceDetailId") int serviceDetailId,
             @RequestParam("cancelMessage") String cancelMessage) {
         try {
+            
             // Attempt to update the service detail status to 4 (Canceled)
-            ServiceDetail serviceDetail = serviceDetailService.updateServiceDetailStatus(serviceDetailId, 4);  // 4 for "Canceled" status
-
+            ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId); 
+          // 4 for "Canceled" status
             if (serviceDetail != null) {
-                // Optionally, you may want to save the cancellation message
-//                serviceDetailService.saveCancellationMessage(serviceDetailId, cancelMessage);
+                serviceDetail.setServiceCancelMessage(cancelMessage);
+                serviceDetail.setServiceDetailStatus(4);
+                serviceDetailService.updateServiceDetail(serviceDetail);
+                // Create notification for cancel request
+                String notificationMessage = "Cancel Request From " + serviceDetail.getStaff().getName() + ": " + cancelMessage;
+                notificationService.createCancelRequestNotification(serviceDetail.getId(), notificationMessage,"serviceDetail");
 
                 // Return success JSON string wrapped in ResponseEntity with 200 OK
                 return ResponseEntity.ok("{\"status\":\"success\"}");
             } else {
-                // Return error JSON string with 400 Bad Request status
                 return ResponseEntity.badRequest().body("{\"status\":\"error\",\"message\":\"Could not update status to Canceled\"}");
             }
         } catch (Exception e) {

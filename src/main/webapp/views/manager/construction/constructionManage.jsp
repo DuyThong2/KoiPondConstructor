@@ -95,7 +95,7 @@
                                 </c:when>
                             </c:choose>
                         </td>
-                        <td><a href="${pageContext.request.contextPath}/manager/construction/viewDetail/${construction.constructionId}" class="btn btn-info">Click Here</a></td>
+                        <td><a href="${pageContext.request.contextPath}/manager/construction/detail/${construction.constructionId}" class="btn btn-info">Click Here</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>

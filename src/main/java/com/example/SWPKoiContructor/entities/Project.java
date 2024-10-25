@@ -41,6 +41,9 @@ public class Project implements HaveImagesFile{
 
     private String description;
 
+    @Column(name="project_cancel_message")
+    private String cancelMessage;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "date_start")
     private Date dateStart;
@@ -73,7 +76,7 @@ public class Project implements HaveImagesFile{
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Design design;
 
-    public Project(String projectName, String address, String style, String description, Date dateStart, Date dateEnd, int status, String imgURL, int stage, boolean isSharedAble) {
+    public Project(String projectName, String address, String style, String description, Date dateStart, Date dateEnd, int status, String imgURL, int stage, boolean isSharedAble,String cancelMessage) {
         this.projectName = projectName;
         this.address = address;
         this.style = style;
@@ -82,7 +85,7 @@ public class Project implements HaveImagesFile{
         this.dateEnd = dateEnd;
         this.status = status;
         this.imgURL = imgURL;
-        
+        this.cancelMessage=cancelMessage;
         this.stage = stage;
         this.isSharedAble = isSharedAble;
     }
@@ -242,4 +245,19 @@ public class Project implements HaveImagesFile{
         return false;
     }
 
+    public String getCancelMessage() {
+        return cancelMessage;
+    }
+
+    public void setCancelMessage(String cancelMessage) {
+        this.cancelMessage = cancelMessage;
+    }
+
+    public boolean isSharedAble() {
+        return isSharedAble;
+    }
+
+    public void setSharedAble(boolean sharedAble) {
+        isSharedAble = sharedAble;
+    }
 }

@@ -29,13 +29,16 @@ public class ProjectController {
     private ProjectService projectService;
     private ContractService contractService;
     private StaffService staffService;
-
-    public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService, StaffService staffService, DesignService designService, CustomerService customerService) {
+    private NotificationService notificationService;
+    public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService,
+            StaffService staffService, DesignService designService, CustomerService customerService,
+            NotificationService notificationService) {
         this.fileUtility = fileUtility;
         this.projectService = projectService;
         this.contractService = contractService;
         this.staffService = staffService;
         this.customerService = customerService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/manager/projects")
@@ -43,14 +46,15 @@ public class ProjectController {
     public String ProjectList(Model model,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "status") String sortBy,
+            @RequestParam(defaultValue = "dateStart") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType,
             @RequestParam(required = false) Integer statusFilter,
             @RequestParam(required = false) Integer stageFilter) {
         List<Project> list;
         long projectNum;
         if (stageFilter != null || statusFilter != null) {
-            list = projectService.getPaginationProjectListByStatusAndStage(page, size, sortBy, sortType, statusFilter, stageFilter);
+            list = projectService.getPaginationProjectListByStatusAndStage(page, size, sortBy, sortType, statusFilter,
+                    stageFilter);
             projectNum = projectService.countProjectFilter(statusFilter, stageFilter);
         } else {
             list = projectService.getPaginationProjectList(page, size, sortBy, sortType);
@@ -78,7 +82,7 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("/manager/projects/details/{id}")
+    @GetMapping("/manager/projects/detail/{id}")
     public String projectDetail(@PathVariable("id") int id, Model model) {
         Project project = projectService.getProjectById(id);
         if (project != null) {
@@ -133,7 +137,8 @@ public class ProjectController {
             project.setContent(content);
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);
-            return "redirect:/manager/projects/details/" + newlyCreatedProject.getProjectId();
+            notificationService.createProjectNotification(project.getContract().getCustomer().getName(),project.getProjectId(),project.getContract().getCustomer().getId());
+            return "redirect:/manager/projects/detail/" + newlyCreatedProject.getProjectId();
         } else {
             return "redirect:/manager/contracts";
         }
@@ -174,7 +179,8 @@ public class ProjectController {
             availableStaff = staffService.getAllStaffSortedForProject(id, currentPage, size, departments);
             totalStaff = staffService.countTotalStaffByDepartmentsForProject(id, departments);
         } else {
-            availableStaff = staffService.searchStaffByNameSortedForProject(searchTerm.trim(), id, currentPage, size, departments);
+            availableStaff = staffService.searchStaffByNameSortedForProject(searchTerm.trim(), id, currentPage, size,
+                    departments);
             totalStaff = staffService.countTotalStaffByDepartmentsSearchForProject(searchTerm.trim(), id, departments);
         }
 
@@ -188,7 +194,7 @@ public class ProjectController {
         model.addAttribute("customer", customer);
         model.addAttribute("availableStaff", availableStaff);
         model.addAttribute("searchTerm", searchTerm);
-        model.addAttribute("totalPage", totalPage==0?1:totalPage);
+        model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("size", size);
 
@@ -211,11 +217,14 @@ public class ProjectController {
         List<Staff> staffList;
 
         try {
-            // If searchTerm is empty or null, fetch all staff members for 'design' or 'construction' departments.
+            // If searchTerm is empty or null, fetch all staff members for 'design' or
+            // 'construction' departments.
             if (searchTerm == null || searchTerm.trim().isEmpty()) {
-                staffList = staffService.getAllStaff();  // Ensure that getAllStaff() fetches only Design and Construction staff.
+                staffList = staffService.getAllStaff(); // Ensure that getAllStaff() fetches only Design and
+                                                        // Construction staff.
             } else {
-                // Fetch staff members that match the search query for 'design' or 'construction' departments.
+                // Fetch staff members that match the search query for 'design' or
+                // 'construction' departments.
                 staffList = staffService.searchStaffByName(searchTerm.trim());
             }
 
@@ -269,17 +278,20 @@ public class ProjectController {
 
                 List<Staff> designerStaff = project.getDesign().getStaff();
                 if (!designerStaff.remove(staff)) {
-                    throw new IllegalArgumentException("Staff with ID " + staffId + " is not assigned as a designer for the project.");
+                    throw new IllegalArgumentException(
+                            "Staff with ID " + staffId + " is not assigned as a designer for the project.");
                 }
 
             } else if (role.equalsIgnoreCase("construction")) {
                 if (project.getConstruction() == null) {
-                    throw new IllegalArgumentException("Project with ID " + projectId + " has no construction component.");
+                    throw new IllegalArgumentException(
+                            "Project with ID " + projectId + " has no construction component.");
                 }
 
                 List<Staff> constructionStaff = project.getConstruction().getStaff();
                 if (!constructionStaff.remove(staff)) {
-                    throw new IllegalArgumentException("Staff with ID " + staffId + " is not assigned as a construction staff for the project.");
+                    throw new IllegalArgumentException(
+                            "Staff with ID " + staffId + " is not assigned as a construction staff for the project.");
                 }
 
             } else {
@@ -298,7 +310,7 @@ public class ProjectController {
     }
 
     @GetMapping("/customer/projects/")
-    public String customerProjectPage(Model model, HttpSession session, RedirectAttributes redirectAttributes){
+    public String customerProjectPage(Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 
         Customer customer = (Customer) session.getAttribute("user");
         if (customer == null) {
@@ -306,11 +318,12 @@ public class ProjectController {
             return "redirect:/login";
         }
         List<Project> currentProjects = projectService.getActiveCustomerProjectsById(customer.getId());
-        List<Project> completeAndCancelProjects = projectService.getCompleteAndCancelCustomerProjectsById(customer.getId());
+        List<Project> completeAndCancelProjects = projectService
+                .getCompleteAndCancelCustomerProjectsById(customer.getId());
         model.addAttribute("currentProjects", currentProjects);
         model.addAttribute("doneProjects", completeAndCancelProjects);
         model.addAttribute("Customer", customer);
-        return "customer/projects/projectDetail";
+        return "customer/projects/projectManage";
     }
 
     @PostMapping("/manager/projects/shareProject")
@@ -356,59 +369,57 @@ public class ProjectController {
         }
     }
 
-
-
     @PostMapping("/manager/projects/update")
     public String updateProject(@RequestParam("projectId") int id,
-                                @RequestParam("currentSite") String site,
-                                @RequestParam("projectName") String name,
-                                @RequestParam("projectAddress") String address,
-                                @RequestParam("projectStyle") String style,
-                                @RequestParam("projectDescription") String description,
+            @RequestParam("currentSite") String site,
+            @RequestParam("projectName") String name,
+            @RequestParam("projectAddress") String address,
+            @RequestParam("projectStyle") String style,
+            @RequestParam("projectDescription") String description,
 
-                                @RequestParam("projectImage")MultipartFile file,
-    RedirectAttributes redirectAttributes){
-        String returnSite="";
-        if(site.equalsIgnoreCase("projectDetailSite")){
-            returnSite = "redirect:/manager/projects/details/"+ id;
-        }else if(site.equalsIgnoreCase("projectManageSite")){
-            returnSite="redirect:/manager/projects/manage/";
+            @RequestParam("projectImage") MultipartFile file,
+            RedirectAttributes redirectAttributes) {
+        String returnSite = "";
+        if (site.equalsIgnoreCase("projectDetailSite")) {
+            returnSite = "redirect:/manager/projects/detail/" + id;
+        } else if (site.equalsIgnoreCase("projectManageSite")) {
+            returnSite = "redirect:/manager/projects/manage/";
         }
-        try{
+        try {
             Project project = projectService.getProjectById(id);
-            if(project!=null){
+            if (project != null) {
                 project.setProjectName(name);
                 project.setAddress(address);
                 project.setStyle(style);
                 project.setDescription(description);
-                String imgUrl ="";
-                if(file!=null){
-                     imgUrl= fileUtility.handleFileUpload(file,FileUtility.PROJECT_DIR);
+                String imgUrl = "";
+                if (file != null) {
+                    imgUrl = fileUtility.handleFileUpload(file, FileUtility.PROJECT_DIR);
                 }
                 project.setImgURL(imgUrl);
                 projectService.updateProject(project);
-                redirectAttributes.addFlashAttribute("message","Project Updated Successfully");
+                redirectAttributes.addFlashAttribute("message", "Project Updated Successfully");
                 return returnSite;
             }
-        }catch(Exception e){
-            redirectAttributes.addFlashAttribute("error","Project Update Failed");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Project Update Failed");
             return returnSite;
         }
         return returnSite;
     }
 
-
     @GetMapping("/manager/projectContent/updateDetail/{id}")
-    public String updateProjectContentPage(Model model, @PathVariable int id){
+    public String updateProjectContentPage(Model model, @PathVariable int id) {
         Project project = projectService.getProjectWithContent(id);
-        model.addAttribute("project",project);
+        model.addAttribute("project", project);
         return "/manager/projects/updateProjectContent";
     }
+
     @PostMapping("/manager/projectContent/update/")
     public String updateServiceContent(@RequestParam int projectId,
-                                       @RequestParam("content") String content,
-                                       RedirectAttributes redirectAttributes){
-        try{
+            @RequestParam("content") String content,
+            RedirectAttributes redirectAttributes) {
+        try {
             Project existingProject = projectService.getProjectWithContent(projectId);
             if (existingProject == null) {
                 // If the service doesn't exist, add an error message and redirect
@@ -416,10 +427,10 @@ public class ProjectController {
                 return "redirect:/manager/projects/";
             }
             existingProject.getContent().setContent(content);
-//            existingProject.setServiceStatus(true);
+            // existingProject.setServiceStatus(true);
             projectService.updateProject(existingProject);
             redirectAttributes.addFlashAttribute("message", "Project content updated successfully.");
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             redirectAttributes.addFlashAttribute("error", "Error updating Project content: " + e.getMessage());
             return "redirect:/manager/projects";
@@ -427,6 +438,67 @@ public class ProjectController {
         return "redirect:/manager/projects";
     }
 
+    @GetMapping("/customer/projects/detail/{id}")
+    public String customerProjectDetailPage(Model model, @PathVariable("id") int projectId, HttpSession session,
+            RedirectAttributes redirectAttributes) {
+        // Get the logged-in customer from the session
+        Customer customer = (Customer) session.getAttribute("user");
+        if (customer == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Please login to view project details.");
+            return "redirect:/login";
+        }
 
+        // Fetch the project
+        Project project = projectService.getProjectById(projectId);
+
+        // Check if the project exists and belongs to the logged-in customer
+        if (project == null || !project.isProjectBelongToCustomer(project, customer)) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Project not found or you don't have permission to view it.");
+            return "redirect:/customer/projects/";
+        }
+
+        // Decode the project content if it exists
+
+        // Add attributes to the model
+        model.addAttribute("project", project);
+        // model.addAttribute("decodedContent");
+        model.addAttribute("customer", customer);
+
+        // Return the view name
+        return "customer/projects/projectDetail";
+    }
+
+    @PostMapping("/customer/project/cancelRequest")
+    public ResponseEntity<String> cancelProjectRequest(
+            @RequestParam("projectId") int projectId,
+            @RequestParam("cancelMessage") String cancelMessage) {
+        try {
+            // Attempt to update the project status to "Request Cancel"
+            Project project = projectService.getProjectById(projectId);
+
+            if (project != null) {
+                // Assuming you have a method to set cancel message and update status
+                project.setCancelMessage(cancelMessage);
+                project.setStatus(5); // Assuming 5 is the status code for "Request Cancel"
+                projectService.updateProject(project);
+
+                // Create notification for cancel request
+                String notificationMessage = "Cancel Request From " + project.getContract().getCustomer().getName() + ": "
+                        + cancelMessage;
+                notificationService.createCancelRequestNotification(project.getProjectId(), notificationMessage,"projects");
+                // Return success JSON string wrapped in ResponseEntity with 200 OK
+                return ResponseEntity.ok("{\"status\":\"success\"}");
+            } else {
+                return ResponseEntity.badRequest().body(
+                        "{\"status\":\"error\",\"message\":\"Could not update project status to Request Cancel\"}");
+            }
+        } catch (Exception e) {
+            // Log the exception for debugging
+            e.printStackTrace();
+            // Return error JSON string with 500 Internal Server Error status
+            return ResponseEntity.status(500)
+                    .body("{\"status\":\"error\",\"message\":\"An error occurred during cancellation request\"}");
+        }
+    }
 }
-
