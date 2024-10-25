@@ -140,7 +140,9 @@
             .table tbody tr:hover {
                 background-color: #f2f2f2;
             }
-
+            .d-flex{
+                margin-top: 0;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>

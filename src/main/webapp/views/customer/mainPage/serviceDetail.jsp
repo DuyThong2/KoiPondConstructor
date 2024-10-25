@@ -63,7 +63,15 @@
             .d-flex{
                 margin-top: 0;
             }
-
+        select{
+            background-color: #f5f5f5;
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            position: relative;
+        }
     </style>
 </head>
 
@@ -276,7 +284,7 @@
 
                                         <!-- Form -->
                                         <form class="banner-3__from" action="${pageContext.request.contextPath}/save" method="POST">
-                                            <h4>Need Serivce Help?</h4>
+                                            <h4>Need Construction Help?</h4>
                                             <p>We are always here to help you at any time, </p>
                                             <div class="row">
                                                 <div class="col-12">
@@ -294,7 +302,15 @@
                                                         <input name="phone" id="phone" type="text" placeholder="Phone number">
                                                     </div>
                                                 </div>
-                                                <input type="hidden" name="type" value="Service"/>
+                                                <div class="col-12">
+
+                                                        <select id="services" name="type" required>
+                                                            <option value="" disabled selected>Select Service Type</option>
+                                                            <option value="Construction">Construction</option>
+                                                            <option value="Service">Service</option>
+                                                        </select>
+
+                                                </div>
                                                 <div class="col-12">
                                                     <div class="banner-3__form-input">
                                                         <textarea name="content" id="textarea" placeholder="Message"></textarea>

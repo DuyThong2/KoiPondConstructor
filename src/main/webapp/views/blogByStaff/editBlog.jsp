@@ -5,31 +5,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Update Project Content</title>
-    <!-- Bootstrap 4.3.1 CSS -->
+    <title>Create New Blog</title>
+    <!-- Bootstrap 5 CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
+
     <style>
         body {
             background-color: #f8f9fa;
             font-family: 'Arial', sans-serif;
-        }
-        .container {
-            margin-top: 50px;
-            max-width: 800px;
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
         h1 {
             text-align: center;
             color: #007bff;
             margin-bottom: 30px;
             font-weight: bold;
-            border-bottom: 2px solid #007bff;
         }
         label {
             font-weight: bold;
@@ -63,43 +55,82 @@
 </head>
 <div style="height:6vh;"></div>
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <%@include file="../navBar.jsp" %>
-        <!-- Main content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
-            <h1>Update Project Content</h1>
-            <form method="post" enctype="multipart/form-data" modelAttribute="project" action="${pageContext.request.contextPath}/manager/projectContent/update/">
-                <!-- Hidden field for Project ID -->
-                <input type="hidden" name="projectId" value="${project.projectId}">
+<div class="container">
+    <c:if test="${sessionScope.user.authority.authority == 'ROLE_CONSULTANT'}">
+        <%@include file="../consultant/consultantNav.jsp" %>
+    </c:if>
+    <c:if test="${sessionScope.user.authority.authority == 'ROLE_DESIGNER'}">
+        <%@include file="../designer/navbarDesign.jsp" %>
+    </c:if>
+    <c:if test="${sessionScope.user.authority.authority == 'ROLE_CONSTRUCTOR'}">
+        <%@include file="../constructor/navbarConstruction.jsp" %>
+    </c:if>
+    <div class="container">
 
-                <!-- Project Content -->
+
+        <!-- Main content -->
+
+            <h1>Create New Blog</h1>
+
+            <form:form method="post" enctype="multipart/form-data" modelAttribute="blog" action="${pageContext.request.contextPath}/staff/blog/update">
+
+                <form:hidden path="id" value="${blog.id}"/>
+                <form:hidden path="imgUrl" value="${blog.getShowingImg(blog.imgUrl)}"/>
+                <form:hidden path="introContent.id" value="${blog.introContent.id}"/>
+                <!-- Blog Title -->
                 <div class="form-group">
-                    <label for="content">Project Content</label>
+                    <label for="title">Blog Title</label>
+                    <form:input path="name" class="form-control" value="${blog.name}" placeholder="Enter blog title" required ="required"/>
+                    <form:errors path="name" cssClass="text-danger"/>
+                </div>
+
+                <!-- Blog Description -->
+                <div class="form-group">
+                    <label for="description">Blog Description</label>
+                    <form:textarea path="description" class="form-control" placeholder="Enter blog description" rows="4" required="required"/>
+                    <form:errors path="description" cssClass="text-danger"/>
+                </div>
+
+                <!-- Blog Content -->
+                <div class="form-group">
+                    <label for="content">Blog Content</label>
+
                     <textarea id="content" name="content" class="form-control" rows="6" required>
-                        ${project.content.content}
+
+                            ${blog.introContent.content}
                     </textarea>
                 </div>
 
+                <!-- Blog Image Upload -->
+                <div class="form-group">
+                    <label for="file">Upload Image</label>
+                    <input type="file" id="file" name="file" class="form-control-file">
+                </div>
+
+                <!-- Blog Status -->
+
+
                 <!-- Submit Button -->
                 <div class="form-group btn-submit">
-                    <button type="submit" class="btn btn-primary">Update Project Content</button>
+                    <button type="submit" class="btn btn-primary">Create Blog</button>
                 </div>
-            </form>
-        </main>
-    </div>
-    <div style="height:6vh;"></div>
-</div>
+            </form:form>
 
+    </div>
+</div>
+<div style="height:6vh;"></div>
 <!-- CKEditor Integration -->
-<script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
+<script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script> <!-- Ensure image2 plugin is enabled -->
 <script>
     CKEDITOR.replace('content', {
-        extraPlugins: 'uploadimage,image2',
-        filebrowserImageUploadUrl: '${pageContext.request.contextPath}/base64/uploadImage',
-        uploadUrl: '${pageContext.request.contextPath}/base64/uploadImage',
+        extraPlugins: 'uploadimage,image2', // Enable image2 plugin for resizing
+        filebrowserImageUploadUrl: '/base64/uploadImage', // Your image upload URL
+        uploadUrl: '/base64/uploadImage', // Server-side image upload handler URL
         height: 500,
-        image2_disableResizer: false
+
+        // Enable image resizing features
+        image2_disableResizer: false, // Allows manual resizing in the editor
+
         on: {
             paste: function (evt) {
                 var editor = evt.editor;
@@ -153,9 +184,12 @@
     });
 </script>
 
-<!-- Bootstrap 4.3.1 JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+
+
+<!-- jQuery, Bootstrap JS, and Chart.js -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 </body>
 </html>
