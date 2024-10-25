@@ -73,7 +73,7 @@ public class DesignController {
         return "manager/design/designManage";
     }
 
-    @GetMapping("/manager/design/viewDetail/{id}")
+    @GetMapping("/manager/design/detail/{id}")
     public String viewDetailDetail(Model model, @PathVariable("id") int id) {
         Design design = designService.getDesignById(id);
         if (design != null) {

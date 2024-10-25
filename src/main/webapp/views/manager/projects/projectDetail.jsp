@@ -183,7 +183,7 @@
                                         <c:choose>
                                             <c:when
                                                     test="${designClass == 'btn-success' || designClass == 'btn-warning'}">
-                                                <a href="${pageContext.request.contextPath}/manager/design/viewDetail/${project.design.designId}">
+                                                <a href="${pageContext.request.contextPath}/manager/design/detail/${project.design.designId}">
                                                     <button type="button"
                                                             class="btn stage-button btn-md btn-block px-3 ${designClass}">
                                                         Design
@@ -207,7 +207,7 @@
                                             <c:when
                                                     test="${constructionClass == 'btn-success' || constructionClass == 'btn-warning'}">
                                                 <a
-                                                        href="${pageContext.request.contextPath}/manager/construction/viewDetail/${project.construction.constructionId}">
+                                                        href="${pageContext.request.contextPath}/manager/construction/detail/${project.construction.constructionId}">
                                                     <button type="button" class="btn stage-button btn-md btn-block px-3 ${constructionClass}">
                                                         Construction
                                                     </button>
@@ -308,8 +308,7 @@
                                                                     class="badge badge-secondary badge-custom">Pending</span>
                                                 </c:when>
                                                 <c:when test="${project.status == 2}">
-                                                            <span class="badge badge-primary badge-custom">In
-                                                                Progress</span>
+                                                            <span class="badge badge-primary badge-custom">Processing</span>
                                                 </c:when>
                                                 <c:when test="${project.status == 3}">
                                                             <span
@@ -318,6 +317,10 @@
                                                 <c:when test="${project.status == 4}">
                                                             <span
                                                                     class="badge badge-danger badge-custom">Cancelled</span>
+                                                </c:when>
+                                                <c:when test="${project.status == 5}">
+                                                            <span
+                                                                    class="badge badge-warning badge-custom">Request Cancel</span>
                                                 </c:when>
                                             </c:choose>
                                         </td>

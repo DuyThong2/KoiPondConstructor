@@ -7,14 +7,12 @@ package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Consultant;
 import com.example.SWPKoiContructor.entities.Feedback;
+import com.example.SWPKoiContructor.entities.Notification;
 import com.example.SWPKoiContructor.entities.Parcel;
 import com.example.SWPKoiContructor.entities.Quotes;
 import com.example.SWPKoiContructor.entities.User;
-import com.example.SWPKoiContructor.services.ConsultantService;
-import com.example.SWPKoiContructor.services.FeedbackService;
-import com.example.SWPKoiContructor.services.ParcelService;
-import com.example.SWPKoiContructor.services.QuoteService;
-import com.example.SWPKoiContructor.services.UserService;
+import com.example.SWPKoiContructor.services.*;
+
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -40,12 +38,15 @@ public class QuoteController {
     private UserService userService;
     private FeedbackService feedbackService;
 
-    public QuoteController(QuoteService quoteService, ConsultantService consultantService, ParcelService parcelService, UserService userService, FeedbackService feedbackService) {
+    private NotificationService notificationService;
+
+    public QuoteController(QuoteService quoteService, ConsultantService consultantService, ParcelService parcelService, UserService userService, FeedbackService feedbackService,NotificationService notificationService) {
         this.quoteService = quoteService;
         this.consultantService = consultantService;
         this.parcelService = parcelService;
         this.userService = userService;
         this.feedbackService = feedbackService;
+        this.notificationService= notificationService;
     }
 
     //-------------------------------------  CUSTOMER SITE  ---------------------------------------------
@@ -60,6 +61,9 @@ public class QuoteController {
     @PostMapping("/customer/quote/updateStatus")
     public String customerUpdateQuoteStatus(@RequestParam("quoteId") int quoteId, @RequestParam("statusId") int statusId, Model model, HttpSession session) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
+       String statusString=statusId==3?"Accepted":"Rejected";
+
+        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Customer","quote",statusString);
         return "redirect:/customer/quote";
     }
 
@@ -137,6 +141,8 @@ public class QuoteController {
     @PostMapping("/manager/quote/detail/updateStatus")
     public String managerUpdateQuoteStatus(@RequestParam("quoteId") int quoteId, @RequestParam("statusId") int statusId, Model model) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
+        String statusString= statusId==2?"Accepted":"Rejected";
+        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Manager","quote",statusString);
         return "redirect:/manager/quote/detail/" + quoteId;
     }
 
@@ -153,6 +159,8 @@ public class QuoteController {
             User toUser = userService.getUserById(toUserId);
             Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, quotes);
             newFeedback = feedbackService.saveFeedback(newFeedback);
+            String statusString= statusId==2?"Accepted":"Rejected";
+            notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Manager","quote",statusString);
             return "redirect:/manager/quote/detail/" + quoteId;
         } catch (Exception e) {
             return "redirect:/manager/quote/detail/" + quoteId;
@@ -268,6 +276,8 @@ public class QuoteController {
         newQuote.setQuotesStatus(1);
         newQuote.setQuotesDate(new Date());
         newQuote = quoteService.saveQuotes(newQuote);
+        Consultant consultant = newQuote.getConsultant();
+        notificationService.createQuoteNotification(consultant.getConsultantCustomerName(),newQuote.getQuotesId(),newQuote.getCustomer().getId());
         return "redirect:/consultant/quote";
     }
 

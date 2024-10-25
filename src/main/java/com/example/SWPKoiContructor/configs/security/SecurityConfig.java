@@ -39,6 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/notifications/test/manage").permitAll()
                 .antMatchers("/api/notifications/new/manage").permitAll()
+                .antMatchers("/api/notifications/2").permitAll()
+                .antMatchers("/api/notifications/update/35").permitAll()
 
                 .antMatchers("/customer/**").hasRole("CUSTOMER") // Only customers can access /customer/*
                 .antMatchers("/manager/**").hasRole("MANAGER") // Only managers can access /manager/*

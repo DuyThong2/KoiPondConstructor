@@ -6,14 +6,17 @@ import com.example.SWPKoiContructor.entities.Notification; // Add this import
 import java.util.List;
 import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class NotificationDAO {
     @PersistenceContext
     private EntityManager entityManager;
+
     public NotificationDAO(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
     public void saveNotification(Notification notification) {
         if (notification == null) {
             throw new IllegalArgumentException("Notification cannot be null");
@@ -22,14 +25,14 @@ public class NotificationDAO {
     }
 
     public List<Notification> getNotificationsForManager() {
-        String query = "SELECT n FROM Notification n WHERE LOWER(n.receiverType) = :receiverType ORDER BY n.createdAt DESC";
+        String query = "SELECT n FROM Notification n WHERE LOWER(n.receiverType) = :receiverType and n.isRead=0 ORDER BY n.createdAt DESC";
         TypedQuery<Notification> typedQuery = entityManager.createQuery(query, Notification.class);
         typedQuery.setParameter("receiverType", "manager"); // Corrected parameter name
         return typedQuery.getResultList();
     }
 
     public List<Notification> getNotificationsByReceiverId(int receiverId) {
-        String query = "SELECT n FROM Notification n WHERE n.receiver.id = :receiverId  ORDER BY n.createdAt DESC";
+        String query = "SELECT n FROM Notification n WHERE n.receiverId = :receiverId and n.isRead=0 ORDER BY n.createdAt DESC";
         TypedQuery<Notification> typedQuery = entityManager.createQuery(query, Notification.class);
         typedQuery.setParameter("receiverId", receiverId);
         return typedQuery.getResultList();
@@ -56,17 +59,19 @@ public class NotificationDAO {
     }
 
     public long getUnreadNotificationsCount(int receiverId) {
-        String query = "Select Count(n) from Notification n where n.receiver.id =:receiverId and n.isRead=0 Order By n.createdAt DESC";
+        String query = "Select Count(n) from Notification n where n.receiverId =:receiverId and n.isRead=0 Order By n.createdAt DESC";
         TypedQuery<Long> typedQuery = entityManager.createQuery(query, Long.class);
         typedQuery.setParameter("receiverId", receiverId);
         return typedQuery.getSingleResult();
     }
+
     public List<Notification> getNewNotificationsForManager() {
         String query = "SELECT n FROM Notification n WHERE LOWER(n.receiverType) = :receiverType AND n.isRead = false ORDER BY n.createdAt DESC";
         TypedQuery<Notification> typedQuery = entityManager.createQuery(query, Notification.class);
         typedQuery.setParameter("receiverType", "manager"); // Corrected parameter name
         return typedQuery.getResultList();
     }
+
     public long getUnreadNotificationsCountManager() {
         String query = "SELECT COUNT(n) FROM Notification n WHERE LOWER(n.receiverType) = :receiverType AND n.isRead = false ORDER BY n.createdAt DESC";
         TypedQuery<Long> typedQuery = entityManager.createQuery(query, Long.class);
@@ -77,5 +82,24 @@ public class NotificationDAO {
         return typedQuery.getSingleResult();
     }
 
-}
+    public Notification getNotificationById(int id) {
+        return entityManager.find(Notification.class, id);
+    }
 
+    public void updateNotification(Notification notification) {
+        entityManager.merge(notification);
+    }
+
+    @Transactional
+    public void markAllAsRead() {
+        String hql = "UPDATE Notification n SET n.isRead = true WHERE n.receiverType = 'manager' AND n.isRead = false";
+        entityManager.createQuery(hql).executeUpdate();
+    }
+
+    public void markAllAsReadForReceiver(int receiverId) {
+        String hql = "UPDATE Notification n SET n.isRead = true WHERE n.receiverId="+receiverId+"AND n.isRead = false";
+
+
+        entityManager.createQuery(hql).executeUpdate();
+    }
+}

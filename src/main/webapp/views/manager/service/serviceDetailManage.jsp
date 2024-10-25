@@ -163,13 +163,14 @@
                                                 </c:choose>
                                             </td>
                                             <td class="d-flex flex-column">
-                                                <a href="${pageContext.request.contextPath}/manager/serviceDetails/${service.id}"
+                                                <a href="${pageContext.request.contextPath}/manager/serviceDetail/detail/${service.id}"
                                                     class="btn btn-info">Details</a>
                                                 <c:if test="${service.serviceDetailStatus == 4}">
                                                     <!-- View Request Button -->
                                                     <button id="viewRequestBtn-${service.id}" type="button"
                                                         class="btn btn-danger btn-md mt-4"
-                                                        onclick="showModal(${service.id}, event);">
+                                                        data-cancel-message="${service.serviceCancelMessage}"
+                                                        onclick="showModal(${service.id}, event,this)">
                                                         View Request
                                                     </button>
                                                 </c:if>
@@ -324,7 +325,7 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <p><strong>Reason for Cancellation:</strong></p>
+                                        <p id="cancelMessage"><strong>Reason for Cancellation:</strong></p>
                                     </div>
                                     <div class="modal-footer">
                                         <!-- Accept Request Button -->
@@ -367,7 +368,14 @@
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
                 <script>
                     var currentDetailsRow = null;
-
+                
+                    function showModal(serviceId,event,button) {
+                        event.stopPropagation();
+                        $('#viewRequestModal').attr('data-service-id', serviceId);
+                        console.log(button.getAttribute('data-cancel-message'));
+                        $('#cancelMessage').text(button.getAttribute('data-cancel-message'));
+                        $('#viewRequestModal').modal('show');
+                    }
                     function toggleDetails(serviceId) {
                         var detailsRow = document.getElementById("details-" + serviceId);
 
@@ -384,15 +392,7 @@
                     };
                     // Use event delegation to handle the 'Accept Request' button clicks
                     // Show the modal for the specific service
-                    function showModal(serviceId, event) {
-                        console.log("hello1")
-                        // Prevent the row's click event from triggering
-                        event.stopPropagation();
-                        $('#viewRequestModal').attr('data-service-id', serviceId);
-                        // Show the modal for the specific service ID
-                        $('#viewRequestModal').modal('show');
-                    };
-
+                  
                     // Accept the cancellation request for the specific service
                     function acceptRequest() {
 
