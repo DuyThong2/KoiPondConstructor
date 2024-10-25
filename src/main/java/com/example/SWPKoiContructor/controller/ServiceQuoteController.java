@@ -95,11 +95,14 @@ public class ServiceQuoteController {
         long totalServiceQuotes;
 
         // Apply filtering based on the name, date range, and status
-        serviceQuoteses = serviceQuoteService.getFilteredServiceQuoteManager(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
         totalServiceQuotes = serviceQuoteService.countFilteredServiceQuoteManager(statusFilter, searchName, fromDate, toDate);
 
         int totalPages = (int) Math.ceil((double) totalServiceQuotes / size);
-
+        if(page > totalPages){
+            page = 0;
+        }
+        serviceQuoteses = serviceQuoteService.getFilteredServiceQuoteManager(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
+        
         // Add attributes to the model for JSP rendering
         model.addAttribute("serviceQuote", serviceQuoteses);
         model.addAttribute("currentPage", page);

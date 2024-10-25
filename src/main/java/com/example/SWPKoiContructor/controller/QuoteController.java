@@ -96,7 +96,9 @@ public class QuoteController {
             totalQuote = quoteService.countQuote();
         }
         int totalPages = (int) Math.ceil((double) totalQuote / size);
-
+        if (page > totalPages) {
+            page = 0;
+        }
         model.addAttribute("quoteList", quoteList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -152,7 +154,7 @@ public class QuoteController {
             Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, quotes);
             newFeedback = feedbackService.saveFeedback(newFeedback);
             return "redirect:/manager/quote/detail/" + quoteId;
-        }catch(Exception e){
+        } catch (Exception e) {
             return "redirect:/manager/quote/detail/" + quoteId;
         }
 
@@ -169,15 +171,25 @@ public class QuoteController {
         User user = (User) session.getAttribute("user");
         List<Quotes> quoteList;
         long totalQuote;
-
+        int totalPages;
         if (statusFilter != null) {
-            quoteList = quoteService.getQuoteListByOrderSortFilterStaffId(user.getId(), page, size, sortBy, sortDirection, statusFilter);
             totalQuote = quoteService.countQuoteOfStaffByStatus(user.getId(), statusFilter);
+            totalPages = (int) Math.ceil((double) totalQuote / size);
+            if (page > totalPages) {
+                page = 0;
+            }
+            quoteList = quoteService.getQuoteListByOrderSortFilterStaffId(user.getId(), page, size, sortBy, sortDirection, statusFilter);
+
         } else {
-            quoteList = quoteService.getQuoteListByOrderSortStaffId(user.getId(), page, size, sortBy, sortDirection);
             totalQuote = quoteService.countQuoteOfStaffId(user.getId());
+            totalPages = (int) Math.ceil((double) totalQuote / size);
+            if (page > totalPages) {
+                page = 0;
+                
+
+            }
+            quoteList = quoteService.getQuoteListByOrderSortStaffId(user.getId(), page, size, sortBy, sortDirection);
         }
-        int totalPages = (int) Math.ceil((double) totalQuote / size);
 
         model.addAttribute("quoteList", quoteList);
         model.addAttribute("currentPage", page);
@@ -263,7 +275,7 @@ public class QuoteController {
     public String updateQuoteById(@RequestParam("quoteId") int quoteId, Model model, HttpSession session) {
         User staff = (User) session.getAttribute("user");
         Quotes quotes = quoteService.getQuoteById(quoteId);
-        if(quotes != null && quotes.getStaff().getId() == staff.getId()){
+        if (quotes != null && quotes.getStaff().getId() == staff.getId()) {
             model.addAttribute("newQuote", quotes);
             model.addAttribute("customer", quotes.getCustomer());
             model.addAttribute("staff", quotes.getStaff());

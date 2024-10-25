@@ -203,4 +203,12 @@ public class HomepageController {
 
     }
 
+    @GetMapping("/home/contactUs")
+    public String contactUs(Model model) {
+        return "customer/mainPage/contactUs";
+    }
+    @GetMapping("/home/privatePolicy")
+    public String privatePolicy(Model model) {
+        return "customer/mainPage/privatePolicy";
+    }
 }

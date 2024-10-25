@@ -1,7 +1,7 @@
 <header>
     <div id="header-sticky" class="header__area header-3">
         <div class="header__top d-none d-xl-block color-pink" style="background-color:rgba(rgba(255, 27, 80, 0.847), green, blue, alpha)">
-            <div class="container">
+            <div style="padding: 0 20px">
                 <div class="row g-24">
                     <div class="col-xl-5">
                         <ul class="header__top-menu d-flex ">
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div style="padding: 0 20px">
             <div class="mega__menu-wrapper p-relative">
                 <div class="header__main">
                     <div class="header__logo">
@@ -60,12 +60,12 @@
                             <nav id="mobile-menu">
                                 <ul>
                                     <li><a href="${pageContext.request.contextPath}/">Home</a></li>
-                                    <li><a href="${pageContext.request.contextPath}/home/projects">Best Design</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/projects">Projects</a></li>
                                     <li><a href="${pageContext.request.contextPath}/home/services">Services</a></li>
                                     <li><a href="${pageContext.request.contextPath}/home/blogs">Blog</a></li>
                                     <li><a href="${pageContext.request.contextPath}/home/packages">Pricing</a></li>
-
-                                    <li><a href="${pageContext.request.contextPath}/customer/projects/">Your Project</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/preDesign">Design Template</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/contactUs">Contact Us</a></li>
                                 </ul>
                             </nav>
                         </div>
@@ -94,10 +94,50 @@
                                             </a>
                                         </c:when>
                                         <c:otherwise>
+
                                             <div class="d-flex justify-content-center align-items-center">
-                                                <a href="${pageContext.request.contextPath}/customer/profile">
-                                                    <i class="fas fa-user profile-icon rounded-circle me-3"
-                                                       style="font-size: 3rem; color: var(--rr-theme-white);"></i></a>
+
+                                                <!-- Notification Dropdown -->
+                                                <div class="dropdown" style="margin:10px 30px  0 0">
+                                                    <a class="nav-link dropdown-toggle icon-link" href="#" id="notificationDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 22px">
+                                                        <i class="fas fa-bell"></i>
+                                                        <span class="badge-note">3</span>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown">
+                                                        <h6 class="dropdown-header">Notifications</h6>
+                                                        <a class="dropdown-item" href="#">Notification 1</a>
+                                                        <a class="dropdown-item" href="#">Notification 2</a>
+                                                        <a class="dropdown-item" href="#">Notification 3</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#">See All Notifications</a>
+                                                    </div>
+                                                </div>
+
+
+
+
+                                                <c:if test="${sessionScope.user.authority.authority == 'ROLE_CUSTOMER'}">
+                                                    <a href="${pageContext.request.contextPath}/customer/profile">
+                                                        <i class="fas fa-user profile-icon rounded-circle me-3"
+                                                           style="font-size: 3rem; color: var(--rr-theme-white);"></i></a>
+                                                </c:if>
+                                                <c:if test="${sessionScope.user.authority.authority == 'ROLE_CONSULTANT'}">
+                                                    <a href="${pageContext.request.contextPath}/consultant/profile">
+                                                        <i class="fas fa-user profile-icon rounded-circle me-3"
+                                                           style="font-size: 3rem; color: var(--rr-theme-white);"></i></a>
+                                                </c:if>
+                                                <c:if test="${sessionScope.user.authority.authority == 'ROLE_DESIGNER'}">
+                                                    <a href="${pageContext.request.contextPath}/designer/profile">
+                                                        <i class="fas fa-user profile-icon rounded-circle me-3"
+                                                           style="font-size: 3rem; color: var(--rr-theme-white);"></i></a>
+                                                </c:if>
+                                                <c:if test="${sessionScope.user.authority.authority == 'ROLE_CONSTRUCTOR'}">
+                                                    <a href="${pageContext.request.contextPath}/constructor/profile">
+                                                        <i class="fas fa-user profile-icon rounded-circle me-3"
+                                                           style="font-size: 3rem; color: var(--rr-theme-white);"></i></a>
+                                                </c:if>
+
+
                                             </div>
                                             <a href="${pageContext.request.contextPath}/logout" class="rr-btn__header ml-15" style="background-color:black;">
                                                 <span class="btn-wrap">
@@ -125,3 +165,5 @@
         </div>
     </div>
 </header>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>

@@ -69,7 +69,7 @@ public class PayPalController {
                                                     .build()
                                                     .toUriString();
 
-        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/construction";
+        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/construction/"+ constructionId;
         String successUrl = baseUrl + contexPath + "/paypal/success/construction?detailId=" + detailId + "&constructionId=" + constructionId;
 
         try {
@@ -102,7 +102,7 @@ public class PayPalController {
                                                     .build()
                                                     .toUriString();
 
-        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/design";
+        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/design/"+ designId;
         String successUrl = baseUrl + contexPath + "/paypal/success/design?detailId=" + detailId + "&designId=" + designId;
 
         try {
@@ -135,7 +135,7 @@ public class PayPalController {
                                                     .build()
                                                     .toUriString();
         double afterPoint = amount - point;
-        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/serviceQuote";
+        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/serviceQuote/"+ serviceQuoteId ;
         String successUrl = baseUrl + contexPath + "/paypal/success/serviceQuote?serviceQuoteId=" + serviceQuoteId + "&point=" + point;
 
         try {

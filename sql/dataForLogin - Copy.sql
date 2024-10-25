@@ -76,8 +76,8 @@ INSERT INTO authorities (user_id, authority) VALUES
 
 -- Adjusted Insert for Service table (without service_content)
 INSERT INTO Service (service_name, service_description, service_status) 
-VALUES 
-('Flash Cleaning', 'Immediate cleaning of the koi pond without further services.', 1), 
+VALUES
+('Flash Cleaning', 'Immediate cleaning of the koi pond without further services.', 1),
 ('Routine Cleaning Package', 'Regular cleaning every 2-3 months.', 1), 
 ('Deep Cleaning Service', 'Thorough cleaning of the pond including algae removal and filter cleaning.', 1), 
 ('Algae Control Cleaning', 'Specialized cleaning for ponds with algae issues.', 1), 

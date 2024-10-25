@@ -137,16 +137,17 @@
 
                 </div>
             </div>
-        </main>
-        <!-- Footer Section with Back Button -->
-        <div class="blog-footer">
+            <div class="blog-footer">
             <a href="${pageContext.request.contextPath}/manager/preDesign" class="btn btn-outline-secondary">Back to Pre Design List</a>
             <a href="${pageContext.request.contextPath}/manager/preDesign/update/${preDesign.preDesignId}" class="btn btn-outline-info">Update</a>
         </div>
+
+        </main>
+        <!-- Footer Section with Back Button -->
+
     </div>
 </div>
 <!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

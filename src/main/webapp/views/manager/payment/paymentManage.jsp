@@ -149,6 +149,13 @@
                                     <input type="date" name="toDate" id="toDate" class="form-control" value="${toDate}">
                                 </div>
 
+                                <!-- Include the customerId for filtering if necessary -->
+                                <div class="col-auto">
+                                    <label for="customerId">Customer ID:</label>
+                                    <input type="text" name="customerId" id="customerId" class="form-control"
+                                           placeholder="Enter Customer ID" value="${customerId}">
+                                </div>
+
                                 <input type="hidden" name="page" value="${currentPage}">
 
                                 <!-- Apply Button -->
@@ -158,6 +165,7 @@
                             </div>
                         </form>
                     </div>
+
 
                     <!-- Table for payments -->
                     <table class="table table-bordered table-hover mt-3">
@@ -192,7 +200,7 @@
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <!-- Previous Button -->
                         <c:if test="${currentPage > 0}">
-                            <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchDescription=${searchDescription}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&lt;</a>
+                            <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchDescription=${searchDescription}&fromDate=${fromDate}&toDate=${toDate}&customerId=${customerId}" class="btn btn-primary">&lt;</a>
                         </c:if>
                         <c:if test="${currentPage == 0}">
                             <button class="btn btn-primary" disabled>&lt;</button>
@@ -203,18 +211,18 @@
 
                         <!-- Next Button -->
                         <c:if test="${currentPage < totalPages - 1}">
-                            <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchDescription=${searchDescription}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&gt;</a>
+                            <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchDescription=${searchDescription}&fromDate=${fromDate}&toDate=${toDate}&customerId=${customerId}" class="btn btn-primary">&gt;</a>
                         </c:if>
                         <c:if test="${currentPage >= totalPages - 1}">
                             <button class="btn btn-primary" disabled>&gt;</button>
                         </c:if>
                     </div>
+
                 </main>
             </div>
         </div>
 
         <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </body>

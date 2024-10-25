@@ -434,7 +434,7 @@ CREATE TABLE payment_history (
     customer_id INT, -- Foreign key referencing the customer
     amount DECIMAL(10, 2), -- Payment amount
     payment_date DATETIME , -- Date of the payment
-	description nvarchar(200),
+    description nvarchar(200),
     payment_method VARCHAR(50), -- Method of payment (e.g., 'Credit Card', 'PayPal')
     FOREIGN KEY (customer_id) REFERENCES Customers(id)
 );

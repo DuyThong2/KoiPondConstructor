@@ -49,9 +49,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         // Check if the user is a customer
         Customer customer = customerService.getCustomerByEmail(email);
         if (customer != null) {
-            session.setAttribute("user", customer);  // Store customer in session
 
             if (customer.isEnabled()) {
+                session.setAttribute("user", customer);
                 Set<GrantedAuthority> authorities = new HashSet<>();
                 authorities.add(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
 
@@ -61,7 +61,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 // Set the new authentication token in the SecurityContext
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                response.sendRedirect("/customer/contract");
+                response.sendRedirect("/customer/projects/");
                 return;
             } else {
                 request.setAttribute("message", "your account have been disabled");
@@ -75,8 +75,9 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
         // Check if the user is a staff member
         Staff staff = staffService.findStaffByEmail(email);
         if (staff != null) {
-            session.setAttribute("user", staff);  // Store staff in session
+              // Store staff in session
             if (staff.isEnabled()) {
+                session.setAttribute("user", staff);
                 Set<GrantedAuthority> authorities = new HashSet<>();
                 String role = mapDepartmentToRole(staff.getDepartment());
                 authorities.add(new SimpleGrantedAuthority(role));
@@ -105,8 +106,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             customerDTO.setEmail(email);
             customerDTO.setPassword("$2a$12$F45V9kx4zG.6gT/KGf9X7eYq01sfqzmiDt1m6EMKQnJ7IXvI56i7W");
             customerDTO.setEnabled(true);
-            customerService.registerCustomer(customerDTO);
-            session.setAttribute("user", customerDTO.mapDTOToCustomer(customerDTO));
+            Customer customerNew = customerService.registerCustomer(customerDTO);
+            session.setAttribute("user", customerNew);
 
             // Create a new authentication token with the customer role
             Set<GrantedAuthority> authorities = new HashSet<>();
@@ -118,7 +119,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             // Set the new authentication token in the SecurityContext
             SecurityContextHolder.getContext().setAuthentication(authToken);
 
-            response.sendRedirect("/customer/contract");
+            response.sendRedirect("/customer/projects/");
         }
     }
 

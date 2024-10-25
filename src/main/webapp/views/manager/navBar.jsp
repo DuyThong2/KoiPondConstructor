@@ -122,12 +122,17 @@
                             class="bi bi-box"></i> Package</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/staff/blogs"><i
-                            class="bi bi-newspaper"></i> Blog</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/staff/blogs">
+                        <i class="bi bi-newspaper"></i> Blog</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/manager/payment">
+                        <i class="fa fa-money-bill-wave"></i> Payment History</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="bi bi-bar-chart-line"></i> Reports</a>
                 </li>
+
             </ul>
         </nav>
 
@@ -148,7 +153,7 @@
     // Function to fetch new notifications for manager
     function fetchNotifications() {
         $.ajax({
-            url: '/api/notifications/new/manage', // Assuming the URL is correct
+            url: '${pageContext.request.contextPath}/api/notifications/new/manage', // Assuming the URL is correct
             method: 'POST',
             success: function (data) {
                 console.log(data);
@@ -213,7 +218,7 @@
     var stompClient = null;
 
     function connectWebSocket() {
-        var socket = new SockJS("/ws-notifications");
+        var socket = new SockJS("${pageContext.request.contextPath}/ws-notifications");
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);

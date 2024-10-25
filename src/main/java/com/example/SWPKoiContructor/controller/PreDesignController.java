@@ -29,7 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Controller
 public class PreDesignController {
-    
+
     private PreDesignService preDesignService;
     @Autowired
     private ParcelService parcelService;
@@ -39,7 +39,7 @@ public class PreDesignController {
         this.preDesignService = preDesignService;
         this.fileUtility = fileUtility;
     }
-        
+
     @GetMapping("/manager/preDesign")
     public String getFilteredPreDesignList(Model model,
             @RequestParam(defaultValue = "0") int page,
@@ -47,21 +47,29 @@ public class PreDesignController {
             @RequestParam(defaultValue = "preDesignId") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection,
             @RequestParam(required = false) Boolean statusFilter,
-            @RequestParam(required = false) String searchName){
-        
+            @RequestParam(required = false) String searchName) {
+
         List<PreDesign> preDesignList;
         long totalPreDesign;
-        
-        if(statusFilter != null || searchName != null){
-            preDesignList = preDesignService.getFilteredPredesignList(page, size, sortBy, sortDirection, statusFilter, searchName);
+        int totalPages = 0;
+
+        if (statusFilter != null || searchName != null) {
             totalPreDesign = preDesignService.countFilteredPredesignList(statusFilter, searchName);
-        }else{
-            preDesignList = preDesignService.getPreDesignList(page, size, sortBy, sortDirection);
+            totalPages = (int) Math.ceil((double) totalPreDesign / size);
+            if (page > totalPages) {
+                page = 0;
+            }
+            preDesignList = preDesignService.getFilteredPredesignList(page, size, sortBy, sortDirection, statusFilter, searchName);
+
+        } else {
             totalPreDesign = preDesignService.countPreDesignList();
+            totalPages = (int) Math.ceil((double) totalPreDesign / size);
+            if (page > totalPages) {
+                page = 0;
+            }
+            preDesignList = preDesignService.getPreDesignList(page, size, sortBy, sortDirection);
         }
-        
-        int totalPages = (int) Math.ceil((double) totalPreDesign / size);
-        
+
         model.addAttribute("preDesign", preDesignList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -71,46 +79,46 @@ public class PreDesignController {
         model.addAttribute("searchName", searchName);
         return "manager/preDesign/preDesignManage";
     }
-    
+
     @GetMapping("/manager/preDesign/detail/{id}")
-    public String getDetailPreDesign(@PathVariable("id")int preDesignId, Model model){
+    public String getDetailPreDesign(@PathVariable("id") int preDesignId, Model model) {
         PreDesign preDesign = preDesignService.getPredesignById(preDesignId);
         model.addAttribute("preDesign", preDesign);
         return "/manager/preDesign/preDesignDetail";
     }
-    
+
     @GetMapping("/manager/preDesign/create")
-    public String createNewPreDesign(Model model){
+    public String createNewPreDesign(Model model) {
         PreDesign preDesign = new PreDesign();
         List<Parcel> parcels = parcelService.viewParcelActiveList();
         model.addAttribute("preDesign", preDesign);
         model.addAttribute("parcelList", parcels);
         return "manager/preDesign/preDesignCreate";
     }
-    
+
     @GetMapping("/manager/preDesign/update/{id}")
-    public String updatePreDesign(@PathVariable("id")int preDesignId,Model model){
+    public String updatePreDesign(@PathVariable("id") int preDesignId, Model model) {
         PreDesign preDesign = preDesignService.getPredesignById(preDesignId);
         List<Parcel> parcels = parcelService.viewParcelActiveList();
         model.addAttribute("preDesign", preDesign);
         model.addAttribute("parcelList", parcels);
         return "manager/preDesign/preDesignUpdate";
     }
-    
+
     @PostMapping("/manager/preDesign/save")
-    public String saveNewPreDesign(@ModelAttribute("preDesign")PreDesign preDesign,
-            @RequestParam("file")MultipartFile file,
-            @RequestParam("content")String content,
-            Model model){
-        try{
-        preDesign.setPreDesignStatus(true);
-        Content newContent = new Content(content);
-        preDesign.addContent(newContent);
-        String imgURL = fileUtility.handleFileUpload(file, FileUtility.BLOG_DIR);
-        preDesign.setPreDesignImgUrl(imgURL);
-        preDesignService.createNewPreDesign(preDesign);
-        return "redirect:/manager/preDesign";
-        }catch (Exception e) {
+    public String saveNewPreDesign(@ModelAttribute("preDesign") PreDesign preDesign,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("content") String content,
+            Model model) {
+        try {
+            preDesign.setPreDesignStatus(true);
+            Content newContent = new Content(content);
+            preDesign.addContent(newContent);
+            String imgURL = fileUtility.handleFileUpload(file, FileUtility.BLOG_DIR);
+            preDesign.setPreDesignImgUrl(imgURL);
+            preDesignService.createNewPreDesign(preDesign);
+            return "redirect:/manager/preDesign";
+        } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "Error uploading image");
 
@@ -118,8 +126,8 @@ public class PreDesignController {
             model.addAttribute("preDesign", preDesign);
             return "manager/preDesign/preDesignCreate";
         }
-    }    
-    
+    }
+
     @PostMapping("/manager/preDesign/saveUpdate")
     public String updateBlog(@ModelAttribute PreDesign preDesign,
             @RequestParam("file") MultipartFile file,
@@ -152,5 +160,5 @@ public class PreDesignController {
             return "redirect:/manager/preDesign";
         }
     }
-    
+
 }

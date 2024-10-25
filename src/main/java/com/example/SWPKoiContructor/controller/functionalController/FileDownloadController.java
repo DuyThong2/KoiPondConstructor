@@ -5,6 +5,7 @@
  */
 package com.example.SWPKoiContructor.controller.functionalController;
 
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.example.SWPKoiContructor.exception.ResourceNotExistException;
 import com.example.SWPKoiContructor.exception.UserErrorSyntaxException;
 import com.example.SWPKoiContructor.services.functionalService.StorageService;
@@ -73,9 +74,16 @@ public class FileDownloadController {
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                     .body(resource);
 
+        } catch (AmazonS3Exception e) {
+            // Check if the error is due to a missing S3 object (NoSuchKey)
+            if ("NoSuchKey".equals(e.getErrorCode())) {
+                throw new ResourceNotExistException("File not found in S3: " + fileName);
+            }
+            // Handle other AmazonS3Exceptions if needed
+            throw new UserErrorSyntaxException("An error occurred while accessing S3");
         } catch (Exception e) {
             e.printStackTrace();
-            throw new UserErrorSyntaxException("An error occurred while downloading the file");
+            throw new UserErrorSyntaxException("An unexpected error occurred while downloading the file");
         }
     }
 

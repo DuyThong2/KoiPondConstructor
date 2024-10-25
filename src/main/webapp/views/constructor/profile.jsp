@@ -11,6 +11,7 @@
     <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
     <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -196,13 +197,13 @@
 </head>
 <body>
 <div class="container">
-    <%@include file="navbarConsultruction.jsp" %>
+    <%@include file="navbarConstruction.jsp" %>
 
     <div class="row">
         <div class="col-md-3">
             <div class="side-bar">
                 <div class="user-info text-center">
-                    <img class="img-profile img-circle img-responsive center-block" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}"
+                    <img class="img-profile img-circle img-responsive center-block" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}"
                          alt="User Avatar" width="150" />
                     <h4>${user.name}</h4>
                     <label class="badge badge-info">Constructor</label>
@@ -288,67 +289,9 @@
             </div>
         </div>
     </div>
-    <!-- Popup cho success -->
-    <div id="successPopup" class="popup-background">
-        <div class="popup-box success">
-            <i class="fas fa-check-circle"></i> <!-- Icon success -->
-            <h2 class="success">Success!</h2>
-            <p>${success}</p>
-            <button class="close-btn" onclick="closePopup()">Close</button>
-        </div>
-    </div>
 
-    <!-- Popup cho error -->
-    <div id="errorPopup" class="popup-background">
-        <div class="popup-box error">
-            <i class="fas fa-exclamation-circle"></i> <!-- Icon lỗi -->
-            <h2 class="error">Error!</h2>
-            <p>${error}</p>
-            <button class="close-btn" onclick="closePopup()">Close</button>
-        </div>
-    </div>
-
-
-    <script>
-        function showSuccessPopup() {
-            const successPopup = document.getElementById('successPopup');
-            successPopup.classList.add('show');
-            const popupBox = successPopup.querySelector('.popup-box');
-            setTimeout(() => {
-                popupBox.classList.add('show');}, 10);
-        }
-
-        function showErrorPopup() {
-            const errorPopup = document.getElementById('errorPopup');
-            errorPopup.classList.add('show');
-            const popupBox = errorPopup.querySelector('.popup-box');
-            setTimeout(() => {
-                popupBox.classList.add('show');}, 10);
-        }
-
-        function closePopup() {
-            const popups = document.querySelectorAll('.popup-background.show');
-            popups.forEach(popup => {
-                const popupBox = popup.querySelector('.popup-box');
-                popupBox.classList.remove('show');
-                setTimeout(() => {
-                    popup.classList.remove('show');}, 300);
-            });
-        }
-
-    </script>
-
-    <c:if test="${not empty success}">
-        <script>
-            showSuccessPopup();
-        </script>
-    </c:if>
-
-    <c:if test="${not empty error}">
-        <script>
-            showErrorPopup();
-        </script>
-    </c:if>
+    <!-- Popup -->
+    <%@include file="../popup.jsp"%>
 
 </div>
 

@@ -601,7 +601,7 @@ a:hover {
 
 @media (min-width: 992px) {
     .view-account .content-panel {
-        min-height: 800px;
+        min-height: 900px;
         border-left: 1px solid #f3f3f7;
         margin-left: 250px;
     }

@@ -137,7 +137,7 @@
 
                     <div class="filter-card">
                         <!-- Sort and Search Form -->
-                        <form method="get" action="${pageContext.request.contextPath}/consultant/serviceQuote">
+                        <form method="get" action="${pageContext.request.contextPath}/manager/serviceQuote">
                             <div class="form-row align-items-center d-flex justify-content-between">
                                 <!-- Sort By -->
                                 <div class="col-auto">
@@ -296,7 +296,6 @@
         </div>
 
         <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </body>

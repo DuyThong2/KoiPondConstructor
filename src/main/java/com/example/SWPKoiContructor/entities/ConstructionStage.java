@@ -156,6 +156,9 @@ public class ConstructionStage {
         constructionStageDetails.add(detail6);
 
         ConstructionStageDetail stagePayment = new ConstructionStageDetail("Payment", constructionStageRaw.getConstructionStagePrice(), "payment for" + constructionStageRaw.constructionStageName, 1);
+        if(constructionStageRaw.getConstructionStagePrice() <= 0){
+            stagePayment.setConstructionStageDetailStatus(4);
+        }
         if (term.isPayOnStartOfConstruction()) {
             constructionStageDetails.add(0, stagePayment);
         } else {
@@ -178,6 +181,9 @@ public class ConstructionStage {
         additionalDetails.add(detail8);
         additionalDetails.add(detail9);
         ConstructionStageDetail stagePayment = new ConstructionStageDetail("Payment", constructionStageComplete.constructionStagePrice, "payment for" + constructionStageComplete.constructionStageName, 1);
+        if(constructionStageComplete.getConstructionStagePrice() <= 0){
+            stagePayment.setConstructionStageDetailStatus(4);
+        }
         if (term.isPayOnStartOfConstruction()) {
             additionalDetails.add(0, stagePayment);
         } else {
