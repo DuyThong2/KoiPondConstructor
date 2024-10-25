@@ -47,7 +47,10 @@ public class Parcel {
     
     @OneToMany(mappedBy = "parcel")
     private List<Quotes> quotes;
-
+    
+    @OneToMany(mappedBy = "parcel")
+    private List<PreDesign> preDesigns;
+    
     public Parcel() {
     }
 
@@ -115,6 +118,14 @@ public class Parcel {
 
     public void setQuotes(List<Quotes> quotes) {
         this.quotes = quotes;
+    }
+
+    public List<PreDesign> getPreDesigns() {
+        return preDesigns;
+    }
+
+    public void setPreDesigns(List<PreDesign> preDesigns) {
+        this.preDesigns = preDesigns;
     }
 
     

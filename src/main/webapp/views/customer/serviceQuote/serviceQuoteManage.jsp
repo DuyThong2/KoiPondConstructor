@@ -158,8 +158,9 @@
                                                 <th>Name</th>
                                                 <th>Area</th>
                                                 <th>Total Price</th>
-                                                <th>Payment Method</th>
                                                 <th>Point Used</th>
+                                                <th>Deposit</th>
+                                                <th>Full Paid</th>
                                                 <th>Status</th>
                                                 <th>Action</th>
                                                 <th>View Detail</th>
@@ -173,15 +174,18 @@
                                                     <td>${serviceQuote.serviceQuotesName}</td>
                                                     <td>${serviceQuote.serviceQuotesArea} m²</td>
                                                     <td>${serviceQuote.serviceQuotesTotalPrice}</td>
-                                                    <td>${serviceQuote.isPayAfter? 'Post Paid':'Pre Paid'}</td>
                                                     <td>${serviceQuote.usedPoint}</td>
+                                                    <td>${(serviceQuote.serviceQuotesTotalPrice / 2) - serviceQuote.calculatePointUsing()}</td>
+                                                    <td>${!serviceQuote.isServiceDetailOfQuoteFinished()? 
+                                                          (serviceQuote.serviceQuotesTotalPrice / 2) : 
+                                                           serviceQuote.calculateTotalPricePayment() - serviceQuote.calculatePointUsing()}</td>
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
                                                                 <span class="badge badge-warning badge-status">Pending</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                                                <span class="badge badge-warning badge-status">${serviceQuote.isPayAfter? 'Service In-Progress':'Awaiting Payment'}</span>
+                                                                <span class="badge badge-warning badge-status">Awaiting payment 1</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
                                                                 <span class="badge badge-warning badge-status">Rejected (Customer)</span>
@@ -190,10 +194,17 @@
                                                                 <span class="badge badge-danger badge-status">Canceled</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
-                                                                <span class="badge badge-success badge-status">Paid</span>
+                                                                <span class="badge badge-success badge-status">Deposit Paid</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
-                                                                <span class="badge badge-success badge-status">Completed</span>
+                                                                <span class="badge badge-success badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
+                                                                                                                 'Awaiting Payment 2':'Service In Progress'}</span>
+                                                            </c:when>
+                                                            <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
+                                                                <span class="badge badge-warning badge-status">Fully Paid</span>
+                                                            </c:when>
+                                                            <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
+                                                                <span class="badge badge-warning badge-status">Completed</span>
                                                             </c:when>
                                                         </c:choose>
                                                     </td>
@@ -217,21 +228,30 @@
                                                                                 document.getElementById('acceptForm').status.value = '7';">Cancel
                                                                 </button>
                                                             </c:when>
-                                                            <c:when test="${serviceQuote.serviceQuotesStatus == 4 && !serviceQuote.isPayAfter}">
-                                                                <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post">
-                                                                    <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
-                                                                    <input type="hidden" name="amount" value="${serviceQuote.serviceQuotesTotalPrice}" />
-                                                                    <input type="hidden" name="point" value="${serviceQuote.usedPoint}" />
-                                                                    <button type="submit" class="btn btn-info">Pay with PayPal</button>
-                                                                </form>                                                               
+                                                            <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
+                                                                <c:if test="${!serviceQuote.isFree()}"> 
+                                                                    <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post">
+                                                                        <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
+                                                                        <input type="hidden" name="amount" value="${serviceQuote.serviceQuotesTotalPrice / 2}" />
+                                                                        <input type="hidden" name="point" value="${serviceQuote.calculatePointUsing()}" />
+                                                                        <button type="submit" class="btn btn-info">Pay Deposit</button>
+                                                                    </form> 
+                                                                </c:if>
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
+                                                                        onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                                                document.getElementById('acceptForm').status.value = '7';">Cancel
+                                                                </button>
                                                             </c:when>
-                                                            <c:when test="${serviceQuote.isPayAfter && serviceQuote.isServiceDetailOfQuoteFinished() && serviceQuote.serviceQuotesStatus == 4 }"> 
-                                                                <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post" style="display:inline-block;">
-                                                                    <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
-                                                                    <input type="hidden" name="amount" value="${serviceQuote.serviceQuotesTotalPrice}" />
-                                                                    <input type="hidden" name="point" value="${serviceQuote.usedPoint}" />
-                                                                    <button type="submit" class="btn btn-info">Pay with PayPal</button>
-                                                                </form>
+                                                            <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
+                                                                <c:if test="${!serviceQuote.isFree() && serviceQuote.isServiceDetailOfQuoteFinished()
+                                                                            && !serviceQuote.isAllServiceFailed()}"> 
+                                                                    <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post">
+                                                                        <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
+                                                                        <input type="hidden" name="amount" value="${serviceQuote.calculateTotalPricePayment()}" />
+                                                                        <input type="hidden" name="point" value="${serviceQuote.calculatePointUsing()}" />
+                                                                        <button type="submit" class="btn btn-info">Pay Full</button>
+                                                                    </form> 
+                                                                </c:if>
                                                             </c:when>
                                                         </c:choose>
 

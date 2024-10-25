@@ -291,9 +291,9 @@
                                 <!-- .portfolio-item -->
                                 <c:forEach var="preDesign" items="${preDesignList}">
                                     <div class="portfolio-item col-lg-4 col-md-4 col-sm-4 col-xs-6">
-                                        <a href="/home/preDesign/${preDesign.preDesignId}">
+                                        <a href="${pageContext.request.contextPath}/home/preDesign/${preDesign.preDesignId}">
                                             <div class="portfolio-thumb">
-                                                <img src="/uploads/${preDesign.preDesignImgUrl}" alt="Project 1">
+                                                <img src="/uploads/${preDesign.preDesignImgUrl}" alt="Pre Design Img">
                                                 <div class="portfolio-info">
                                                     <div class="portfolio-name">${preDesign.preDesignName}</div>
                                                     <div class="portfolio-description">${preDesign.preDesignDescription}</div>

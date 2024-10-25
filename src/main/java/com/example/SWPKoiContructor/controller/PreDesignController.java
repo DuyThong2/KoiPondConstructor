@@ -6,11 +6,14 @@
 package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.Content;
+import com.example.SWPKoiContructor.entities.Parcel;
 import com.example.SWPKoiContructor.entities.PreDesign;
+import com.example.SWPKoiContructor.services.ParcelService;
 import com.example.SWPKoiContructor.services.PreDesignService;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import java.io.File;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +31,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class PreDesignController {
     
     private PreDesignService preDesignService;
+    @Autowired
+    private ParcelService parcelService;
     private FileUtility fileUtility;
 
     public PreDesignController(PreDesignService preDesignService, FileUtility fileUtility) {
@@ -77,14 +82,18 @@ public class PreDesignController {
     @GetMapping("/manager/preDesign/create")
     public String createNewPreDesign(Model model){
         PreDesign preDesign = new PreDesign();
+        List<Parcel> parcels = parcelService.viewParcelActiveList();
         model.addAttribute("preDesign", preDesign);
+        model.addAttribute("parcelList", parcels);
         return "manager/preDesign/preDesignCreate";
     }
     
     @GetMapping("/manager/preDesign/update/{id}")
     public String updatePreDesign(@PathVariable("id")int preDesignId,Model model){
         PreDesign preDesign = preDesignService.getPredesignById(preDesignId);
+        List<Parcel> parcels = parcelService.viewParcelActiveList();
         model.addAttribute("preDesign", preDesign);
+        model.addAttribute("parcelList", parcels);
         return "manager/preDesign/preDesignUpdate";
     }
     
@@ -92,6 +101,7 @@ public class PreDesignController {
     public String saveNewPreDesign(@ModelAttribute("preDesign")PreDesign preDesign,
             @RequestParam("file")MultipartFile file,
             @RequestParam("content")String content,
+            @RequestParam("selectedParcelId")int parcelId,
             Model model){
         try{
         preDesign.setPreDesignStatus(true);
@@ -99,6 +109,7 @@ public class PreDesignController {
         preDesign.addContent(newContent);
         String imgURL = fileUtility.handleFileUpload(file, FileUtility.BLOG_DIR);
         preDesign.setPreDesignImgUrl(imgURL);
+        preDesign.setParcel(parcelService.getParcelById(parcelId));
         preDesignService.createNewPreDesign(preDesign);
         return "redirect:/manager/preDesign";
         }catch (Exception e) {
@@ -115,6 +126,7 @@ public class PreDesignController {
     public String updateBlog(@ModelAttribute PreDesign preDesign,
             @RequestParam("file") MultipartFile file,
             @RequestParam("content") String content, // Get the content from the form
+            @RequestParam("selectedParcelId")int parcelId,
             Model model) {
         try {
             PreDesign originPreDesign = preDesignService.getPredesignById(preDesign.getPreDesignId());
@@ -122,6 +134,7 @@ public class PreDesignController {
                 originPreDesign.setPreDesignName(preDesign.getPreDesignName());
                 originPreDesign.setPreDesignDescription(preDesign.getPreDesignDescription());
                 originPreDesign.setPreDesignStatus(preDesign.isPreDesignStatus());
+                originPreDesign.setParcel(parcelService.getParcelById(parcelId));
                 String imgURL = fileUtility.handleFileUpload(file, FileUtility.BLOG_DIR);
                 if (imgURL != null) {
                     originPreDesign.setPreDesignImgUrl(imgURL);
