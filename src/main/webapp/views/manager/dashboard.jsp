@@ -180,7 +180,7 @@
         <script>
             // Fetch dashboard statistics like quotes, projects, and staff
             $(document).ready(function () {
-                fetch('/api/dashboard/upper-stats')
+                fetch('${pageContext.request.contextPath}/api/dashboard/upper-stats')
                         .then(response => response.json())
                         .then(data => {
                             document.querySelector('.card-text[data-name="quotesPending"]').textContent = data.quotesPending;
@@ -192,7 +192,7 @@
 
                 // Fetch monthly earnings and render a chart
                 const year = new Date().getFullYear(); // Current year
-                fetch(`/api/dashboard/monthly-earnings?year=` + year)
+                fetch(`${pageContext.request.contextPath}/api/dashboard/monthly-earnings?year=` + year)
                         .then(response => response.json())
                         .then(data => {
                             // Generate month labels from 1 to 12
@@ -227,7 +227,7 @@
                         .catch(error => console.error('Error fetching monthly earnings:', error));
 
                 // Fetch service booking percentages and render a pie chart
-                fetch('/api/dashboard/service-booking-percentages')
+                fetch('${pageContext.request.contextPath}/api/dashboard/service-booking-percentages')
                         .then(response => response.json())
                         .then(data => {
                             const serviceNames = Object.keys(data);  // Get the service names
@@ -304,7 +304,7 @@
 
 
 
-                fetch('/api/dashboard/monthly-service-revenue')
+                fetch('${pageContext.request.contextPath}/api/dashboard/monthly-service-revenue')
                         .then(response => response.json())
                         .then(data => {
                             // Extract labels (months) and datasets (revenue per service)
@@ -350,7 +350,7 @@
                 }
 
 
-                fetch('/api/dashboard/service-stats')
+                fetch('${pageContext.request.contextPath}/api/dashboard/service-stats')
                         .then(response => response.json())
                         .then(data => {
                             document.querySelector('span[data-name="totalServicesBooked"]').textContent = data.totalServicesBooked;
@@ -359,7 +359,7 @@
                         .catch(error => console.error('Error fetching service stats:', error));
 
                 // Fetch Project and Contract Stats
-                fetch('/api/dashboard/project-contract-stats')
+                fetch('${pageContext.request.contextPath}/api/dashboard/project-contract-stats')
                         .then(response => response.json())
                         .then(data => {
                             document.querySelector('span[data-name="totalContractsSigned"]').textContent = data.totalContractsSigned;
@@ -372,7 +372,7 @@
                         .catch(error => console.error('Error fetching project and contract stats:', error));
 
                 // Fetch Consultant, Quote, and Contract Stats
-                fetch('/api/dashboard/consultant-quote-contract-stats')
+                fetch('${pageContext.request.contextPath}/api/dashboard/consultant-quote-contract-stats')
                         .then(response => response.json())
                         .then(data => {
                             document.querySelector('span[data-name="totalConsultantsReceived"]').textContent = data.totalConsultantsReceived;

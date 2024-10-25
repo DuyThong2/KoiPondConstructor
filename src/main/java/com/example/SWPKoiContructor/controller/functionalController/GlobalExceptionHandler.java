@@ -52,8 +52,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccountIsExistException.class)
     public String handleDuplicateEmail(AccountIsExistException ex, Model model) {
-        model.addAttribute("errorMessage", ex.getMessage());
-        return "registerCustomer"; // Error page for 400
+        model.addAttribute("message", ex.getMessage());
+        return "login"; // Error page for 400
     }
     
     @ExceptionHandler(ResourceNotExistException.class)

@@ -51,8 +51,8 @@ public class CustomerDAO {
         }
     }
 
-    public void createCustomer(Customer customer) {
-        entityManager.persist(customer);
+    public Customer createCustomer(Customer customer) {
+        return entityManager.merge(customer);
     }
 
     public Customer updateCustomer(Customer customer) {

@@ -47,6 +47,11 @@ public class BlogController {
         if (staff == null) {
             return "redirect:/login";
         }
+        
+        long totalBlogs = blogService.countBlogsByCriteria(name, status, dateFrom, dateTo);
+        if(page > (int) Math.ceil((double) totalBlogs / size)){
+            page = 0;
+        }
         List<Blog> blogs = blogService.getBlogsByCriteria(name, status, dateFrom, dateTo, page, size);
         if (!"Management".equalsIgnoreCase(staff.getDepartment())) {
             blogs = blogs.stream()
@@ -54,8 +59,7 @@ public class BlogController {
                     .collect(Collectors.toList());
         }
 
-        long totalBlogs = blogService.countBlogsByCriteria(name, status, dateFrom, dateTo);
-
+        
         // Add attributes to the model
         model.addAttribute("blogs", blogs);
         model.addAttribute("totalBlogs", totalBlogs);

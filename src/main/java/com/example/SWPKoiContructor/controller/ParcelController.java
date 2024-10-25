@@ -44,7 +44,9 @@ public class ParcelController {
         totalParcel = parcelService.countParcel();
 
         int totalPages = (int) Math.ceil((double) totalParcel / size);
-
+        if(page > totalPages){
+            page = 0;
+        }
         model.addAttribute("parcelList", parcelList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);

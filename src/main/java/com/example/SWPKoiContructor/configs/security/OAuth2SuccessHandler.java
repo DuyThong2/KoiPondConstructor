@@ -106,8 +106,8 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             customerDTO.setEmail(email);
             customerDTO.setPassword("$2a$12$F45V9kx4zG.6gT/KGf9X7eYq01sfqzmiDt1m6EMKQnJ7IXvI56i7W");
             customerDTO.setEnabled(true);
-            customerService.registerCustomer(customerDTO);
-            session.setAttribute("user", customerDTO.mapDTOToCustomer(customerDTO));
+            Customer customerNew = customerService.registerCustomer(customerDTO);
+            session.setAttribute("user", customerNew);
 
             // Create a new authentication token with the customer role
             Set<GrantedAuthority> authorities = new HashSet<>();

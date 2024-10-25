@@ -59,10 +59,12 @@ public class DesignController {
             @RequestParam(defaultValue = "8") int size,
             @RequestParam(required = false) Integer statusFilter,
             @RequestParam(required = false) String searchName) {
-
-        List<Design> list = designService.getListDesignWithSortedAndPaginated(page, size, statusFilter, searchName);
         int totalPage = designService.getTotalOfAllDesigns(size, statusFilter, searchName);
-
+        if (page > totalPage) {
+            page = 0;
+        }
+        List<Design> list = designService.getListDesignWithSortedAndPaginated(page, size, statusFilter, searchName);
+        
         model.addAttribute("designList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPage);
@@ -133,10 +135,12 @@ public class DesignController {
         if (user == null) {
             return "redirect:/login";
         }
-
-        List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size, statusFilter, searchName);
         int totalPages = designService.getTotalPagesByDesigner(user.getId(), size, statusFilter, searchName);
-
+        if (page > totalPages) {
+            page = 0;
+        }
+        List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size, statusFilter, searchName);
+        
         model.addAttribute("designs", designs);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
