@@ -1,3 +1,6 @@
+<meta charset="UTF-8">
+
+
 <footer>
     <section class="footer-2__area-common footer-bg-1 overflow-hidden">
         <div class="container rr-shape-p-c_1">
@@ -9,12 +12,15 @@
                         <div class="footer-2__widget footer-2__widget-item-1">
                             <div class="footer-2__logo mb-35">
                                 <a href="#">
+
                                     <img class="img-fluid" src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                                 </a>
                             </div>
 
                             <div class="footer-2__content mb-25 mb-xs-20">
-                                <p class="mb-0">Officia deserunt mollitia animi, id est laborum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est</p>
+                                <p class="mb-0">
+                                    We specialize in high-quality Koi pond design, construction, and maintenance, ensuring customers enjoy unique designs and seamless project tracking.
+                                </p>
                             </div>
 
                             <div class="footer-2__working">
@@ -22,9 +28,7 @@
                                     <h4>Working Hours</h4>
                                 </div>
                                 <ul class="footer-2__working-list">
-                                    <li>Saturday: 09.00AM – 05.00PM</li>
-                                    <li>Thursday: 09.00AM – 05.00PM</li>
-                                    <li>Friday: Close</li>
+                                    <li>Mon - Sat: 8AM - 6PM</li>
                                 </ul>
                             </div>
                         </div>
@@ -37,12 +41,12 @@
                             </div>
                             <div class="footer-2__link">
                                 <ul>
-                                    <li><a href="about-us.html">About Us</a></li>
-                                    <li><a href="team.html">Our Team</a></li>
-                                    <li><a href="team-details.html">Testimonials</a></li>
-                                    <li><a href="blog.html">Blog Grid</a></li>
-                                    <li><a href="project.html">Projects</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/contactUs">Contact Us</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/projects">Projects</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/preDesign">Design Template</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/services">Service</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/blogs">Blogs</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/packages">Pricing</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -56,12 +60,11 @@
 
                             <div class="footer-2__link">
                                 <ul>
-                                    <li><a href="service-details.html">General Construction</a></li>
-                                    <li><a href="service-details.html">Property Maintenance</a></li>
-                                    <li><a href="service-details.html">Project Managment</a></li>
-                                    <li><a href="service-details.html">Virtual Design & Build</a></li>
-                                    <li><a href="service-details.html">Preconstruction</a></li>
-                                    <li><a href="service-details.html">Terms of use</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/contactUs">Design & Construction of Koi Ponds.</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/services/7">Full Care Package</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/services/6">Koi Care Plus</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/services/2">Routine Cleaning Package</a></li>
+                                    <li><a href="${pageContext.request.contextPath}/home/services">Another Services</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -122,9 +125,10 @@
                 <div class="row align-items-center">
                     <div class="col-xl-4">
                         <div class="footer-2__copyright text-xl-start text-center">
-                            <p class="mb-0">© Copyright <a href="index.html">Ribuild</a> 2024 . All right reserved.</p>
+                            <p class="mb-0"><a href="">Happikoi</a> &copy; 2024 All Rights Reserved.</p>
                         </div>
                     </div>
+
 
                     <div class="col-xl-4">
                         <div class="footer-2__social justify-content-center">
@@ -138,14 +142,15 @@
                                     <path d="M9.11264 7.06225L15.0379 15.5H15.0341L14.4746 14.7169L9.1919 7.32307L9.19189 7.32306L8.55899 6.43729L8.55898 6.43727L4.49503 0.749074L4.34547 0.539738H4.0882H1.92015H0.989979L0.962074 0.5H4.50452L8.48597 6.1699L8.85112 6.6899L8.85114 6.68987L9.11264 7.06225ZM11.4929 15.2982L11.637 15.5H11.4955L7.2824 9.50047L6.91725 8.98049L6.49771 9.45768L1.18538 15.5H1.1054L6.62206 9.22562L6.88187 8.93013L6.65575 8.60813L3.37261 3.93275L6.54913 8.37872L6.54914 8.37873L7.08887 9.13411V9.13445L7.18204 9.26486L11.4929 15.2982ZM14.3732 0.5L9.296 6.27491H9.21598L9.27067 6.2127L14.2932 0.5H14.3732Z" stroke="white"/>
                                 </svg>
                             </a>
-                            <a href="https://www.linkedin.com/">
+                            <a href="https://www.instagram.com/">
                                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M13 1H5C2.79086 1 1 2.79086 1 5V13C1 15.2091 2.79086 17 5 17H13C15.2091 17 17 15.2091 17 13V5C17 2.79086 15.2091 1 13 1Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M12.1999 8.49575C12.2986 9.16155 12.1849 9.84153 11.8749 10.439C11.5649 11.0364 11.0744 11.5209 10.4732 11.8235C9.87195 12.1261 9.19062 12.2314 8.52609 12.1245C7.86156 12.0176 7.24767 11.7038 6.77173 11.2279C6.2958 10.7519 5.98205 10.1381 5.87512 9.47352C5.76819 8.80899 5.87352 8.12767 6.17612 7.52645C6.47873 6.92524 6.96321 6.43475 7.56065 6.12475C8.15809 5.81475 8.83807 5.70102 9.50386 5.79975C10.183 5.90046 10.8117 6.21692 11.2972 6.7024C11.7827 7.18787 12.0992 7.81661 12.1999 8.49575Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M13.3999 4.6001H13.4079" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </a>
-                            <a href="https://www.instagram.com/">
+
+                            <a href="https://www.linkedin.com/">
                                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12.1999 6.05273C13.4729 6.05273 14.6938 6.58506 15.594 7.53262C16.4942 8.48017 16.9999 9.76532 16.9999 11.1054V17.0001H13.7999V11.1054C13.7999 10.6587 13.6313 10.2303 13.3313 9.91445C13.0312 9.5986 12.6242 9.42116 12.1999 9.42116C11.7756 9.42116 11.3686 9.5986 11.0685 9.91445C10.7685 10.2303 10.5999 10.6587 10.5999 11.1054V17.0001H7.3999V11.1054C7.3999 9.76532 7.90562 8.48017 8.80579 7.53262C9.70596 6.58506 10.9269 6.05273 12.1999 6.05273Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     <path d="M4.2 6.89502H1V17.0003H4.2V6.89502Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -158,8 +163,8 @@
                     <div class="col-xl-4">
                         <div class="footer-2__copyright-menu">
                             <ul>
-                                <li><a href="about-us.html">Privacy Policy</a></li>
-                                <li><a href="contact.html">Terms & Conditions</a></li>
+                                <li><a href="${pageContext.request.contextPath}/home/privatePolicy">Privacy Policy</a></li>
+                                <li><a href="#">Terms & Conditions</a></li>
                             </ul>
                         </div>
                     </div>

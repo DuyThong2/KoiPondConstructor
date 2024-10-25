@@ -175,7 +175,7 @@
                                         <div class="form-group">
                                             <label for="file">Upload Image</label>
                                             <input type="file" id="file" name="file"
-                                                   class="form-control-file" required>
+                                                   class="form-control-file" accept="image/*" required>
                                         </div>
                                         <!-- Content Information -->
 
@@ -305,7 +305,7 @@
 
                                         <div class="form-group">
                                             <label for="file">Upload Image</label>
-                                            <input type="file" id="file" name="file"
+                                            <input type="file" accept="image/*" id="file" name="file"
                                                    class="form-control-file">
                                         </div>
 
@@ -622,7 +622,7 @@
                 // Event listener for the "Yes, Change Status" button in the modal
                 $('#confirmChangeStatusBtn').off('click').on('click', function () {
                     $.ajax({
-                        url: '/manager/services/changeStatusAjax',
+                        url: '${pageContext.request.contextPath}/manager/services/changeStatusAjax',
                         type: 'POST',
                         data: {
                             serviceId: selectedServiceId
@@ -695,7 +695,7 @@
                 $('#confirmChangeStatusBtn').one('click', function () {
                     // Trigger the AJAX request after the user confirms
                     $.ajax({
-                        url: '/manager/services/changePriceStatusAjax',
+                        url: '${pageContext.request.contextPath}/manager/services/changePriceStatusAjax',
                         type: 'POST',
                         data: {
                             priceId: changePriceId

@@ -102,7 +102,7 @@
                 <!-- Blog Image Upload -->
                 <div class="form-group">
                     <label for="file">Upload Image</label>
-                    <input type="file" id="file" name="file" class="form-control-file">
+                    <input type="file" id="file" name="file" accept="image/*" class="form-control-file">
                 </div>
 
                 <!-- Blog Status -->
@@ -122,8 +122,8 @@
 <script>
     CKEDITOR.replace('content', {
         extraPlugins: 'uploadimage,image2', // Enable image2 plugin for resizing
-        filebrowserImageUploadUrl: '/base64/uploadImage', // Your image upload URL
-        uploadUrl: '/base64/uploadImage', // Server-side image upload handler URL
+        filebrowserImageUploadUrl: '${pageContext.request.contextPath}/base64/uploadImage', // Your image upload URL
+        uploadUrl: '${pageContext.request.contextPath}/base64/uploadImage', // Server-side image upload handler URL
         height: 500,
 
         // Enable image resizing features

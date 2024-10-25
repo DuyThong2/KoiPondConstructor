@@ -63,7 +63,15 @@
             .d-flex{
                 margin-top: 0;
             }
-
+        select{
+            background-color: #f5f5f5;
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            position: relative;
+        }
     </style>
 </head>
 
@@ -295,12 +303,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-12">
-                                                    <div class="banner-3__form-input-select d-flex flex-column">
-                                                        <select name="type" id="subject" style="display: none;">
-                                                            <option value="">Type 1- Construction</option>
-                                                            <option value="order">Type 2 - Maintenance</option>
+
+                                                        <select id="services" name="type" required>
+                                                            <option value="" disabled selected>Select Service Type</option>
+                                                            <option value="Construction">Construction</option>
+                                                            <option value="Service">Service</option>
                                                         </select>
-                                                    </div>
+
                                                 </div>
                                                 <div class="col-12">
                                                     <div class="banner-3__form-input">

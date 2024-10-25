@@ -31,9 +31,7 @@ public class ConstructionController {
     private PaymentHistoryService paymentHistoryService;
     private ServiceDetailService serviceDetailService;
 
-
-
-    public ConstructionController(PaymentHistoryService paymentHistoryService,DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService) {
+    public ConstructionController(PaymentHistoryService paymentHistoryService, DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService) {
         this.designService = designService;
         this.constructionService = constructionService;
         this.constructionStageService = ConstructionStageService;
@@ -50,9 +48,13 @@ public class ConstructionController {
             @RequestParam(required = false) Integer statusFilter,
             @RequestParam(required = false) String searchName) {
         // Fetch all constructions with optional filters
-        List<Construction> list = constructionService.getListConstruction(null, page, size, statusFilter, searchName);
         int totalPages = constructionService.getTotalPages(null, size, statusFilter, searchName);
 
+        if (page > totalPages) {
+            page = 0;
+        }
+        List<Construction> list = constructionService.getListConstruction(null, page, size, statusFilter, searchName);
+        
         model.addAttribute("constructionList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -72,11 +74,13 @@ public class ConstructionController {
         if (user == null) {
             return "redirect:/login";
         }
-
+        int totalPages = constructionService.getTotalPages(user.getId(), size, statusFilter, searchName);
+        if (page > totalPages) {
+            page = 0;
+        }
         // Fetch constructions filtered by the logged-in user's ID, status, and search name
         List<Construction> constructions = constructionService.getListConstruction(user.getId(), page, size, statusFilter, searchName);
-        int totalPages = constructionService.getTotalPages(user.getId(), size, statusFilter, searchName);
-
+        
         model.addAttribute("constructions", constructions);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -211,7 +215,7 @@ public class ConstructionController {
                         customer,
                         amount, // Replace with the actual amount from the detail
                         "Manual", // Indicate that this payment is manual or any relevant method
-                        "Payment for " +updatedDetail.getConstructionStage().getConstructionStageName()  +" of " + customer.getName()
+                        "Payment for " + updatedDetail.getConstructionStage().getConstructionStageName() + " of " + customer.getName()
                 );
 
                 // Save the payment history
@@ -599,11 +603,12 @@ public class ConstructionController {
 
     @GetMapping("/constructor/manage/viewDetail/viewDesign/{projectId}")
     public String manageBlueprint(@PathVariable("projectId") int designStageId,
-                                  Model model, HttpSession session) {
+            Model model, HttpSession session) {
 
         User user = (User) session.getAttribute("user");
-        if (user == null)
+        if (user == null) {
             return "redirect:/login";
+        }
         Design design = designService.getDesignById(designStageId);
         List<DesignStage> designStage = design.getDesignStage();
 

@@ -454,7 +454,7 @@
                             <!-- Upload Project Image -->
                             <div class="form-group">
                                 <label for="updateProjectImage">Upload Image</label>
-                                <input type="file" id="updateProjectImage" name="projectImage"
+                                <input type="file" id="updateProjectImage" accept="image/*" name="projectImage"
                                        class="form-control-file">
                             </div>
 

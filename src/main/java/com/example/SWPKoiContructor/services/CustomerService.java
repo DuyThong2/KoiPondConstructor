@@ -43,7 +43,7 @@ public class CustomerService {
     }
 
     @Transactional
-    public void registerCustomer(CustomerDTO customerDTO) {
+    public Customer registerCustomer(CustomerDTO customerDTO) {
         // Check if a customer with this email already exists
         if (customerDAO.isCustomerExists(customerDTO.getEmail())) {
             throw new AccountIsExistException("account is existed try to use another email");
@@ -55,7 +55,7 @@ public class CustomerService {
         customer.setPassword(encodedPassword); 
         Authority authority = new Authority("ROLE_CUSTOMER");
         customer.AddAuthorities(authority);
-        customerDAO.createCustomer(customer);
+        return customerDAO.createCustomer(customer);
     }
 
     public Customer getCustomerByEmail(String email){

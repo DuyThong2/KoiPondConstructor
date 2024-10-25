@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
@@ -13,92 +12,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico in the root directory -->
 
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/favicon.svg">
+
+    <link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/assets/imgs/favicon.svg">
     <!-- CSS here -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
     <%@include file="../cssTemplate.jsp"%>
-    <%@include file="../cssCustom.jsp"%>
-
     <style>
-        /* Container for portfolio items */
-        /* Container for portfolio items */
-        .portfolio-wrap {
-            display: flex;
-            justify-content: center; /* Center horizontally */
-            flex-wrap: wrap; /* Allow items to wrap if necessary */
-            gap: 20px; /* Add some space between items */
-        }
+    .content-box {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
 
-        .portfolio-item {
-            width: 360px; /* Fixed width */
-            height: 360px; /* Fixed height */
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            justify-content: center; /* Center content horizontally */
-            align-items: center; /* Center content vertically */
-            margin-bottom: 20px;
-            margin-left: 10px;
-            margin-right: 10px;
-        }
 
-        /* Make the image cover the container while maintaining its aspect ratio */
-        .portfolio-thumb img {
-            width: 360px;
-            height: 360px;
-            object-fit: cover; /* Ensures the image covers the area while maintaining aspect ratio */
-            transition: filter 0.3s ease, transform 0.3s ease;
-        }
+    .content-box h3 {
+        font-size: 1.8em;
+        color: #333;
+        margin-bottom: 10px;
+    }
 
-        /* Hover effect to brighten the image */
-        .portfolio-thumb:hover img {
-            filter: brightness(1.1); /* Increase brightness */
-            transform: scale(1.05); /* Slight zoom on hover */
-        }
+    .content-box p {
+        font-size: 1.3em;
+        line-height: 1.6;
+        color: #555;
+        margin-bottom: 55px;
+    }
 
-        /* Centered project name and description (hidden initially) */
-        .portfolio-info {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            background: rgba(0, 0, 0, 0.5); /* Optional: Add background overlay for readability */
-        }
 
-        /* Show the text when hovering */
-        .portfolio-thumb:hover .portfolio-info {
-            opacity: 1;
-        }
+    .content-box ul {
+        margin: 0;
+        padding-left: 20px;
+    }
 
-        .portfolio-name {
-            font-weight: bold;
-            font-size: 24px;
-            color: #fff;
-        }
 
-        .portfolio-description {
-            font-size: 16px;
-            color: #ccc;
-            font-style: italic;
-        }
+    .content-box ul li {
+        margin-bottom: 10px;
+        position: relative;
+        font-size: 1.3em;
+    }
 
+    .content-box ul li::before {
+        content: '•';
+        color: #007BFF;
+        font-weight: bold;
+        position: absolute;
+        left: -20px;
+        top: 0;
+    }
     </style>
 </head>
 
 <body class="body-1">
 
-<!--[if lte IE 9]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
 <![endif]-->
 
-<!-- preloader start -->
-<!-- style 1 -->
 <div id="preloader" data-preloader="active" data-loaded="doted">
     <div class="preloader-close">x</div>
     <div class="sk-three-bounce">
@@ -108,7 +78,6 @@
     </div>
 </div>
 
-<!-- style 2 -->
 <div class="preloader" data-preloader="deactive" data-loaded="progress">
     <div class="preloader-close">x</div>
     <div class="wrapper w-100 text-center">
@@ -118,9 +87,7 @@
         </div>
     </div>
 </div>
-<!-- preloader end -->
 
-<!-- preloader start -->
 <div class="loading-form">
     <div class="sk-three-bounce">
         <div class="sk-child sk-bounce1"></div>
@@ -128,22 +95,12 @@
         <div class="sk-child sk-bounce3"></div>
     </div>
 </div>
-<!-- preloader end -->
 
-<!-- Backtotop start -->
-<!-- <div id="scroll-percentage">
-    <span id="scroll-percentage-value"></span>
-</div> -->
-<!-- Backtotop end -->
-
-<!-- cursorAnimation start -->
 <div class="cursor-wrapper relative">
     <div class="cursor"></div>
     <div class="cursor-follower"></div>
 </div>
-<!-- cursorAnimation end -->
 
-<!-- search popup start -->
 <div class="search__popup">
     <div class="container">
         <div class="row gx-30">
@@ -152,12 +109,12 @@
                     <div class="search__top d-flex justify-content-between align-items-center">
                         <div class="search__logo">
                             <a href="index.html">
-                                <img src="/assets/imgs/logo/logo-white.svg" alt="img">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                             </a>
                         </div>
                         <div class="search__close">
                             <button type="button" class="search__close-btn search-close-btn">
-                                <s   vg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                                     <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                           stroke-linejoin="round" />
                                     <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -199,7 +156,7 @@
                 <div class="offcanvas__top d-flex justify-content-between align-items-center">
                     <div class="offcanvas__logo">
                         <a href="index.html">
-                            <img src="/assets/imgs/logo/logo-white.svg" alt="logo not found">
+                            <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                         </a>
                     </div>
                     <div class="offcanvas__close">
@@ -241,102 +198,91 @@
         </div>
     </div>
 </div>
-<div class="offcanvas__overlay"></div>
-<div class="offcanvas__overlay-white"></div>
 <!-- Offcanvas area start -->
 
 <!-- Header area start -->
 <%@include file="../homePageNavbar.jsp" %>
-<!-- Header area end -->
-<div class="page-title-wrap typo-white">
-    <div class="page-title-wrap-inner section-bg-img" data-bg="images/bg/page-title-bg.jpg">
-        <span class="black-overlay"></span>
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <div class="page-title-inner">
-                        <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="index.html" class="theme-color">Home</a>
-                            <span class="current">Pre Design</span>
-                        </div>
-                        <h1 class="page-title mb-0">Pre Design</h1>
+
+<main>
+    <section id="services"
+             class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+        <div class="container rr-shape-p-c_1">
+            <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+                <div></div>
+            </div>
+
+            <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+                <div class="col-md-6">
+                    <div class="section__title-wrapper text-center text-xl-start">
+                                <span class="section__subtitle justify-content-start mb-13"><span data-width="40px" class="left-separetor">
+                                </span>Policy</span>
+                        <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                            data-cursor="-opaque">Private Policy
+                        </h2>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<div style="height:100px">
+    </section>
+    <div class="content-box">
+    <div class="container">
 
-</div>
-<main>
-    <div class="content-wrapper pad-none">
-        <div class="content-inner">
-            <!-- Portfolio Section -->
-            <section id="portfolio-section" class="portfolio-section">
-                <div class="container">
-                    <div class="row">
-                        <!-- Col -->
-                        <div class="offset-md-2 col-md-8">
-                            <div class="title-wrap text-center">
-                                <div class="section-title">
-                                    <h2 class="title mb-0">Our Pre Design</h2>
-                                </div>
-                            </div>
-                        </div>
+                <h3>1. Information Collection</h3>
+                <p style="margin: 10px">We collect personal information in various ways:
+                <ul>
+                    <li><strong>Account Information</strong>: When you register for an account, we collect personal information such as your name, email address, phone number, and other necessary details.</li>
+                    <li><strong>Transaction Information</strong>: If you make a purchase, we collect data regarding the transaction, including billing information.</li>
+                    <li><strong>Cookies and Tracking</strong>: We use cookies to enhance the user experience. You can disable cookies through your browser, but this may affect your ability to use certain features of our site.</li>
+                </ul>
+                </p>
 
-                        <!-- Col -->
-                        <div class="col-md-12">
-                            <div class="row portfolio-wrap portfolio-modern">
-                                <!-- .portfolio-item -->
-                                <c:forEach var="preDesign" items="${preDesignList}">
-                                    <div class="portfolio-item col-lg-4 col-md-4 col-sm-4 col-xs-6">
-                                        <a href="${pageContext.request.contextPath}/home/preDesign/${preDesign.preDesignId}">
-                                            <div class="portfolio-thumb">
-                                                <img src="/uploads/${preDesign.preDesignImgUrl}" alt="Pre Design Img">
-                                                <div class="portfolio-info">
-                                                    <div class="portfolio-name">${preDesign.preDesignName}</div>
-                                                    <div class="portfolio-description">${preDesign.preDesignDescription}</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </c:forEach>
+                <h3>2. Use of Information</h3>
+                <p style="margin: 10px">Your personal information is used for the following purposes:
+                <ul>
+                    <li>To provide and maintain services, including processing orders and providing customer support.</li>
+                    <li>To improve the functionality, content, and user experience of our site.</li>
+                    <li>With your consent, to send marketing promotions and updates.</li>
+                </ul>
+                </p>
 
+                <h3>3. Data Security</h3>
+                <p>We employ security measures to protect your personal data from unauthorized access and disclosure. Only authorized personnel have access to this data.</p>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- Portfolio Section End -->
+                <h3>4. Third-Party Disclosure</h3>
+                <p>We do not sell or trade your personal information. However, we may share data with trusted third parties who assist in operating our website.</p>
+
+                <h3>5. Your Rights</h3>
+                <p>You have the right to access, modify, or delete your personal information at any time. Please contact us at happikoi@contructioninc.com to exercise these rights.</p>
+
+                <h3>6. Changes to this Policy</h3>
+                <p>We may update this Privacy Policy periodically. Any changes will be posted on this page, and significant changes may be communicated via email.</p>
+
+                <h3>7. Collection and Storage of Information</h3>
+                <p>We may collect additional information such as your IP address, browser type, and usage patterns while you navigate through our site. This data is gathered for analytic purposes, enabling us to improve our services and optimize user experience.</p>
+
+                <h3>8. Use of Cookies and Web Beacons</h3>
+                <p>We use cookies and web beacons for tracking user preferences, improving user navigation, and customizing advertising content. You can choose to disable cookies through your browser settings, but doing so may limit some features on our site.</p>
+
+                <h3>9. Third-Party Analytics Tools</h3>
+                <p>We partner with third-party analytics providers such as Google Analytics to help monitor our website traffic. These services may collect data such as your IP address, browser type, and pages visited to assist us in understanding how users engage with our site.</p>
+
+                <h3>10. Consent to Transfer</h3>
+                <p>Your information, including personal data, may be transferred to — and maintained on — servers located outside of your city, state, or country. By using our services, you consent to this transfer of data.</p>
+
+                <h3>11. Child Privacy Protection</h3>
+                <p>We do not knowingly collect or solicit personal information from anyone under the age of 13. If we learn that we have inadvertently collected information from a child under 13 without parental consent, we will delete that information as quickly as possible.</p>
+
+                <h3>12. Advertising and Marketing</h3>
+                <p>With your consent, we may send promotional emails or notifications about new products, services, or offers. You can opt-out of receiving marketing communications at any time by contacting us or following the unsubscribe instructions provided in the communication.</p>
+
+                <h3>13. External Links</h3>
+                <p>Our website may contain links to external sites not operated by us. We are not responsible for the content or privacy practices of these external sites, and encourage you to review their privacy policies before engaging with their services.</p>
+
+            </div>
         </div>
-    </div>
-    <div class="d-flex align-items-center mt-4">
-        <!-- Previous Button -->
-        <c:if test="${currentPage > 1}">
-            <a href="?page=${currentPage - 1}" class="btn btn-custom">&lt;</a>
-        </c:if>
-        <c:if test="${currentPage == 1}">
-            <button class="btn btn-custom" disabled>&lt;</button>
-        </c:if>
-
-        <!-- Page Indicator -->
-        <span class="page-indicator">Page <strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
-
-        <!-- Next Button -->
-        <c:if test="${hasMoreServices}">
-            <a href="?page=${currentPage + 1}" class="btn btn-custom">&gt;</a>
-        </c:if>
-        <c:if test="${!hasMoreServices}">
-            <button class="btn btn-custom" disabled>&gt;</button>
-        </c:if>
-    </div>
 
 </main>
 
-
-<!-- Footer area start -->
 
 <%@include file="../footer.jsp" %>
 <!-- Footer area end -->
@@ -347,3 +293,5 @@
 </body>
 
 </html>
+
+

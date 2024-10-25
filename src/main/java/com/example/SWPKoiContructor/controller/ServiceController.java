@@ -55,7 +55,7 @@ public class ServiceController {
 
         long totalPage = (long) Math.ceil(serviceNum / (double) size);
         page = Math.max(page, 1);
-
+        
         model.addAttribute("currentPage", page);
         model.addAttribute("size", size);
         model.addAttribute("sortBy", sortBy);

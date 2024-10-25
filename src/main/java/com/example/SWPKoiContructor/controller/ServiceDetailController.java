@@ -6,6 +6,7 @@ import com.example.SWPKoiContructor.entities.ServiceDetail;
 import com.example.SWPKoiContructor.entities.ServicePrice;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
+import com.example.SWPKoiContructor.services.LoyaltyPointService;
 import com.example.SWPKoiContructor.services.ProjectService;
 import com.example.SWPKoiContructor.services.ServiceDetailService;
 import com.example.SWPKoiContructor.services.ServiceQuoteService;
@@ -37,6 +38,9 @@ public class ServiceDetailController {
 
     @Autowired
     private ProjectService projectService;
+    
+    @Autowired
+    private LoyaltyPointService loyaltyPointService;
 
     // Display list of service details with pagination and optional status filtering
     @GetMapping("/manager/serviceDetails")
@@ -95,7 +99,8 @@ public class ServiceDetailController {
     }
 
     @PostMapping("/manager/serviceDetails/create")
-    public String createNewServiceDetail(@RequestParam("serviceQuoteId") int serviceQuoteId, Model model) {
+    public String createNewServiceDetail(@RequestParam("serviceQuoteId") int serviceQuoteId,
+                                         @RequestParam("statusId") int statusId, Model model) {
         try {
             ServiceQuotes serviceQuotes = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
             if (serviceQuotes != null) {
@@ -103,7 +108,8 @@ public class ServiceDetailController {
                     ServiceDetail newServiceDetail = new ServiceDetail();
                     for(ServicePrice p : i.getServicePrice()){
                         if(p.getService().getServiceId() == i.getServiceId()){
-                            newServiceDetail.setPrice(p.getValue());
+                            double price =(double) p.getValue() * serviceQuotes.getServiceQuotesArea();
+                            newServiceDetail.setPrice(price);
                             break;
                         }
                     }
@@ -114,9 +120,11 @@ public class ServiceDetailController {
                     newServiceDetail.setCustomer(serviceQuotes.getCustomer());
                     newServiceDetail = serviceDetailService.createServiceDetail(newServiceDetail);
                 }
-                if(!serviceQuotes.isIsPayAfter()){
-                    serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, 9);
-                }
+                    if(serviceQuotes.getServiceQuotesStatus() == 4 && serviceQuotes.isFree()) 
+                        loyaltyPointService.useLoyaltyPoints(serviceQuotes.getCustomer(), serviceQuotes.getUsedPoint());
+                    serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
+                    
+                
             }
 
             return "redirect:/manager/serviceDetails";

@@ -10,7 +10,7 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-        <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
+        <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
             /* Custom Styling for better layout */
             body {
@@ -43,29 +43,15 @@
             .form-group {
                 margin-right: 15px;
             }
-
+            /* Adjust button width and alignment */
             .btn.btn-success {
-                font-size: 17px;
-                padding: 10px;
-
-            }
-            .btn.btn-primary{
-                font-size: 17px;
-                padding: 10px;
+                width: 200px;
             }
             /* Adjust pagination for better responsiveness */
             .pagination {
                 justify-content: center;
             }
-            .navbar {
-                background-color: #007bff;
-                padding: 10px 20px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            }
-            .navbar-brand {
-                color: white;
-                font-weight: bold;
-            }
+
             .pagination .page-item .page-link {
                 color: #007bff;
             }
@@ -92,30 +78,32 @@
             /* Card Container for Form */
             .filter-card {
                 background-color: #ffffff;
-                padding: 30px 0 10px 10px;
+                padding: 25px 0 5px 10px;
                 border-radius: 10px;
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 margin-bottom: 30px;
-            }
-            .form-control {
-                border-radius: 10px;
-                padding: 10px;
-                font-size: 19px;
             }
         </style>
     </head>
 
     <body>
-        <div class="container-fluid">
-            <div class="row">
-                <%@include file="../navBar.jsp" %>
+        <div class="container">
+            <c:if test="${sessionScope.user.authority.authority == 'ROLE_CONSULTANT'}">
+                <%@include file="../consultant/consultantNav.jsp" %>
+            </c:if>
+            <c:if test="${sessionScope.user.authority.authority == 'ROLE_DESIGNER'}">
+                <%@include file="../designer/navbarDesign.jsp" %>
+            </c:if>
+            <c:if test="${sessionScope.user.authority.authority == 'ROLE_CONSTRUCTOR'}">
+                <%@include file="../constructor/navbarConstruction.jsp" %>
+            </c:if>
+            <div class="container">
 
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-5">
                     <h1 class="my-4">Blog Management</h1>
 
-
+                    <!-- Button to Create New Blog -->
+                <div class="filter-card">
                     <!-- Search and Filter Form -->
-                    <div class="filter-card">
                     <form action="${pageContext.request.contextPath}/staff/blogs" method="GET" class="d-flex flex-wrap align-items-center justify-content-start gap-3 mb-4">
                         <!-- Search by name -->
                         <div class="form-group mb-0">
@@ -144,17 +132,14 @@
 
                         <!-- Search Button -->
                         <div class="form-group mb-0">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-search"></i> Search</button>
+                            <button type="submit" class="btn btn-primary">Search</button>
                         </div>
-                        <!-- Button to Create New Blog -->
-                        <div>
-                            <a href="${pageContext.request.contextPath}/staff/blog/new" class="btn btn-success">
-                                <i class="fas fa-plus"></i> Create Blog</a>
+                        <div class="form-group mb-0">
+                            <a href="${pageContext.request.contextPath}/staff/blog/new" class="btn btn-success">Create New Blog</a>
                         </div>
-
                     </form>
-                    </div>
+                </div>
+
                     <!-- Blog List -->
                     <div class="row">
                         <c:forEach var="blog" items="${blogs}">
@@ -224,13 +209,14 @@
                             </c:if>
                         </ul>
                     </nav>
-                </main>
+
             </div>
         </div>
 
         <!-- JS and Bootstrap scripts -->
         <script src="${pageContext.request.contextPath}/assets/js/vendor/bootstrap.bundle.min.js"></script>
         <!-- jQuery, Bootstrap JS, and Chart.js -->
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
