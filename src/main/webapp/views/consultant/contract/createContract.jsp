@@ -110,7 +110,7 @@
                         <!-- Total Design Cost (Used for calculation only) -->
                         <div class="form-group">
                             <label for="totalDesignCost">Total Design Cost:</label>
-                            <input type="number" id="totalDesignCost" step="0.01" class="form-control" readonly/>
+                            <input type="number" id="totalDesignCost" step="0.01" class="form-control" value="${quote.quotesDesignCost}" readonly/>
                         </div>
 
                         <!-- Construction Costs -->
@@ -131,7 +131,7 @@
                         <!-- Total Construction Cost (Used for calculation only) -->
                         <div class="form-group">
                             <label for="totalConstructionCost">Total Construction Cost:</label>
-                            <input type="number" id="totalConstructionCost" step="0.01" class="form-control" readonly/>
+                            <input type="number" id="totalConstructionCost" step="0.01" class="form-control" readonly value="${quote.quotesConstructionCost}" />
                         </div>
 
                         <!-- Term Selection Dropdown -->
@@ -312,6 +312,7 @@
 
             <!-- JavaScript for Auto Adjustment and Validation -->
             <script>
+                // Existing Functionality: JavaScript for Auto Adjustment and Validation
                 const maxDesignCost = ${quote.quotesDesignCost};  // Design cost from the Quote
                 const maxConstructionCost = ${quote.quotesConstructionCost};  // Construction cost from the Quote
                 const totalQuotePrice = ${quote.quotesTotalPrice};  // Total price from the Quote
@@ -350,8 +351,6 @@
                     document.getElementById('totalDesignCost').value = maxDesignCost.toFixed(2);
                 }
 
-
-
                 function adjustConstructionCosts() {
                     let raw = parseFloat(document.getElementById('rawConstruction').value) || 0;
                     let complete = parseFloat(document.getElementById('completeConstruction').value) || 0;
@@ -385,18 +384,99 @@
                     document.getElementById('totalPrice').value = totalPrice.toFixed(2);
                 }
 
-                // Prevent form submission if the total price does not match the total quote price
+// Existing Functionality: JavaScript for handling term selection
+                function selectTerm(termId, description) {
+                    document.getElementById('selectedTermId').value = termId; // Set the selected term ID
+                    document.getElementById('term').value = description; // Display the description in the read-only field
+                    $('#termModal').modal('hide'); // Close the modal
+                }
+
+// Existing Functionality: Show/hide term selection and custom term input
+                function showTermSelectionModal() {
+                    document.getElementById('existingTermFields').style.display = 'block';
+                    document.getElementById('customTermFields').style.display = 'none';
+                    $('#termModal').modal('show'); // Show the modal for selecting existing terms
+                }
+
+                function showCustomTermInput() {
+                    document.getElementById('customTermFields').style.display = 'block';
+                    document.getElementById('existingTermFields').style.display = 'none';
+                    document.getElementById('selectedTermId').value = '0'; // Ensure a valid integer value is set
+                    document.getElementById('term').value = ''; // Clear selected term description
+                }
+
+                function setFollowContract() {
+                    document.getElementById('customTermFields').style.display = 'none';
+                    document.getElementById('existingTermFields').style.display = 'none';
+                    document.getElementById('selectedTermId').value = '0'; // Clear selected term ID
+                    document.getElementById('term').value = 'Following contract terms';
+                }
+
+// New Functionality: Prevent special characters and negative values in inputs
+                document.querySelectorAll('input[type="number"]').forEach(input => {
+                    input.addEventListener('input', function () {
+                        // Remove any characters that are not digits or dots (allowing decimal numbers)
+                        this.value = this.value.replace(/[^0-9.]/g, '');
+                    });
+
+                    input.addEventListener('blur', function () {
+                        // Prevent negative values by setting any negative number to zero
+                        if (parseFloat(this.value) < 0) {
+                            this.value = 0;
+                        }
+                    });
+                });
+
+// New Functionality: Validate custom term inputs for negative values
+                function validateCustomTermInputs() {
+                    const customTermFields = [
+                        'percent_on_design1',
+                        'percent_on_design2',
+                        'percent_on_design3',
+                        'percent_on_construct1',
+                        'percent_on_construct2'
+                    ];
+
+                    let isValid = true;
+
+                    customTermFields.forEach(fieldId => {
+                        const field = document.getElementById(fieldId);
+                        const value = parseFloat(field.value);
+
+                        // Check if the value is negative or NaN (if the field is empty)
+                        if (isNaN(value) || value < 0) {
+                            isValid = false;
+                            field.classList.add('is-invalid'); // Add invalid class for styling
+                            alert('Values in custom term fields must be zero or positive.');
+                        } else {
+                            field.classList.remove('is-invalid'); // Remove the invalid class if valid
+                        }
+                    });
+
+                    return isValid;
+                }
+
+// Prevent form submission if validation fails
                 document.querySelector('form').addEventListener('submit', function (event) {
                     const termOption = document.querySelector('input[name="termOption"]:checked');
+
+                    // Check if a term option is selected
                     if (!termOption) {
                         alert('Please select a term option.');
                         event.preventDefault();
                         return;
                     }
 
-                    // Validation for Custom Term Option
+                    // Validate custom term fields if the custom option is selected
                     if (termOption.value === 'custom') {
-                        const totalPercent = parseFloat(document.getElementById('percent_on_design1').value || 0) +
+                        if (!validateCustomTermInputs()) {
+                            event.preventDefault();
+                            return;
+                        }
+
+                        // Validate that the total percentage is between 99% and 100.5%
+                        const totalPercent =
+                                parseFloat(document.getElementById('percent_on_design1').value || 0) +
                                 parseFloat(document.getElementById('percent_on_design2').value || 0) +
                                 parseFloat(document.getElementById('percent_on_design3').value || 0) +
                                 parseFloat(document.getElementById('percent_on_construct1').value || 0) +
@@ -407,19 +487,13 @@
                             event.preventDefault();
                             return;
                         }
-
-                        // No need to check for selected term ID if custom term is chosen
-                        document.getElementById('selectedTermId').value = '0';
                     }
 
-                    // Validation for Existing Term Option
-                    if (termOption.value === 'existing') {
-                        const selectedTermId = document.getElementById('selectedTermId').value;
-                        if (!selectedTermId) {
-                            alert('Please select an existing term.');
-                            event.preventDefault();
-                            return;
-                        }
+                    // Validate for existing term selection if "existing" option is selected
+                    if (termOption.value === 'existing' && !document.getElementById('selectedTermId').value) {
+                        alert('Please select an existing term.');
+                        event.preventDefault();
+                        return;
                     }
 
                     // Ensure the total price matches the quote price
@@ -430,17 +504,36 @@
                         return;
                     }
 
-                    // Validate fields for negative values
+                    // Ensure the total design cost matches the quote's design cost
+                    const totalDesign = parseFloat(document.getElementById('conceptDesign').value || 0) +
+                            parseFloat(document.getElementById('detailDesign').value || 0) +
+                            parseFloat(document.getElementById('constructionDesign').value || 0);
+                    if (totalDesign !== maxDesignCost) {
+                        alert('The total of design costs must match the quoted design cost.');
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // Ensure the total construction cost matches the quote's construction cost
+                    const totalConstruction = parseFloat(document.getElementById('rawConstruction').value || 0) +
+                            parseFloat(document.getElementById('completeConstruction').value || 0);
+                    if (totalConstruction !== maxConstructionCost) {
+                        alert('The total of construction costs must match the quoted construction cost.');
+                        event.preventDefault();
+                        return;
+                    }
+
+                    // Validate all number fields for negative values
                     if (!validateFields()) {
                         event.preventDefault();
                         return;
                     }
                 });
 
-// Function to prevent negative values in input fields
+// Function to prevent negative values in input fields (called during submission)
                 function validateFields() {
                     let fields = ['conceptDesign', 'detailDesign', 'constructionDesign', 'rawConstruction', 'completeConstruction', 'totalDesignCost', 'totalConstructionCost', 'totalPrice'];
-                    let isValid = true; // Assume valid unless we find an invalid field
+                    let isValid = true;
 
                     fields.forEach(function (fieldId) {
                         let field = document.getElementById(fieldId);
@@ -458,58 +551,6 @@
                     return isValid;
                 }
 
-
-                document.querySelector('form').addEventListener('submit', function (event) {
-                    const termOption = document.querySelector('input[name="termOption"]:checked');
-                    if (!termOption) {
-                        alert('Please select a term option.');
-                        event.preventDefault();
-                        return;
-                    }
-
-                    if (termOption.value === 'custom') {
-                        // Validate custom term percentages
-                        const totalPercent = parseFloat(document.getElementById('percent_on_design1').value) +
-                                parseFloat(document.getElementById('percent_on_design2').value) +
-                                parseFloat(document.getElementById('percent_on_design3').value) +
-                                parseFloat(document.getElementById('percent_on_construct1').value) +
-                                parseFloat(document.getElementById('percent_on_construct2').value);
-
-                        if (totalPercent !== 100) {
-                            alert('Total percentage for all stages must equal 100%.');
-                            event.preventDefault();
-                            return;
-                        }
-                    } else if (termOption.value === 'existing' && !document.getElementById('selectedTermId').value) {
-                        alert('Please select an existing term.');
-                        event.preventDefault();
-                        return;
-                    }
-                });
-
-
-
-
-                function showTermSelectionModal() {
-                    document.getElementById('existingTermFields').style.display = 'block';
-                    document.getElementById('customTermFields').style.display = 'none';
-                    $('#termModal').modal('show'); // Show the modal for selecting existing terms
-                }
-
-                function showCustomTermInput() {
-                    document.getElementById('customTermFields').style.display = 'block';
-                    document.getElementById('existingTermFields').style.display = 'none';
-                    document.getElementById('selectedTermId').value = '0'; // Ensure a valid integer value is set
-                    document.getElementById('term').value = ''; // Clear selected term description
-                }
-
-
-                function setFollowContract() {
-                    document.getElementById('customTermFields').style.display = 'none';
-                    document.getElementById('existingTermFields').style.display = 'none';
-                    document.getElementById('selectedTermId').value = '0'; // Clear selected term ID
-                    document.getElementById('term').value = 'Following contract terms';
-                }
             </script>
 
         </div>

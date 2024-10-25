@@ -95,7 +95,9 @@ public class ContractController {
         }
 
         int totalPages = (int) Math.ceil((double) totalContracts / size);
-
+        if (page > totalPages) {
+            page = 0;
+        }
         // Add attributes to the model for JSP rendering
         model.addAttribute("contracts", contracts);
         model.addAttribute("currentPage", page);
@@ -128,15 +130,16 @@ public class ContractController {
 
         List<Contract> contracts;
         long totalContracts;
-
-        // Apply filtering based on the status, name, date range, and sort parameters
-        contracts = contractService.getContractListOfConsultant(
-                consultantId, page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
-
         totalContracts = contractService.countFilteredContractsForConsultant(
                 consultantId, statusFilter, searchName, fromDate, toDate);
 
         int totalPages = (int) Math.ceil((double) totalContracts / size);
+        if (page > totalPages) {
+            page = 0;
+        }
+        // Apply filtering based on the status, name, date range, and sort parameters
+        contracts = contractService.getContractListOfConsultant(
+                consultantId, page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
 
         // Add attributes to the model for JSP rendering
         model.addAttribute("contracts", contracts);
@@ -161,14 +164,15 @@ public class ContractController {
             HttpSession session) {
         // Fetch paginated contracts using the service
         User user = (User) session.getAttribute("user");
-        System.out.println(user.getId());
+        long totalContracts = contractService.countContracts(true, user.getId());
+        int totalPages = (int) Math.ceil((double) totalContracts / size);
+        if (page > totalPages) {
+            page = 0;
+        }
         List<Contract> contracts = contractService.getContractListOfCustomer(user.getId(), page, size, sortBy, sortDirection);
         contracts.forEach(System.out::println);
         // Fetch the total number of contracts for pagination
-        long totalContracts = contractService.countContracts(true, user.getId());
-        int totalPages = (int) Math.ceil((double) totalContracts / size);
-        System.out.println("total page : " + totalPages);
-
+        
         // Add attributes to the model for JSP rendering
         model.addAttribute("contracts", contracts);
         model.addAttribute("currentPage", page);

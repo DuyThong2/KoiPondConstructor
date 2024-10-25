@@ -1,4 +1,5 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -6,7 +7,7 @@
     <meta charset="UTF-8">
     <title>Create New Blog</title>
     <!-- Bootstrap 5 CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
@@ -125,6 +126,21 @@
                     <form:errors path="preDesignDescription" cssClass="form-error"/>
                 </div>
 
+                <div class="form-group">
+                    <label for="preDesignTime">Estimate Time</label>
+                    <form:textarea path="preDesignTime" class="form-control" placeholder="Enter Time" rows="4" required="true"/>
+                    <form:errors path="preDesignTime" cssClass="form-error"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="parcel">Select Parcel:</label>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#parcelModal">
+                        Choose Parcel
+                    </button>
+                    <input type="hidden" id="selectedParcelId" name="parcel.packageId" value="${preDesign.parcel.packageId}" required />
+                    <input type="text" id="selectedParcelName" name="parcelName" value="${preDesign.parcel.packageName}" readonly class="form-control" />
+                </div>
+
                 <!-- Blog Content -->
                 <div class="form-group">
                     <label for="content">Content</label>
@@ -136,7 +152,7 @@
                 <!-- Image Upload -->
                 <div class="form-group">
                     <label for="file">Upload Image</label>
-                    <input type="file" id="file" name="file" class="form-control-file">
+                    <input type="file" accept="image/*" id="file" name="file" class="form-control-file">
                 </div>
 
                 <!-- Submit Button -->
@@ -149,13 +165,69 @@
     </div>
 </div>
 
+<div class="modal fade" id="parcelModal" tabindex="-1" role="dialog" aria-labelledby="parcelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="parcelModalLabel">Select Parcel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Table to display all parcels -->
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th style="width: 20%;">Package Name</th>
+                            <th style="width: 20%;">Description</th>
+                            <th style="width: 15%;">Design Price per m2</th>
+                            <th style="width: 15%;">Construction Price per m2</th>
+                            <th style="width: 10%;">Status</th>
+                            <th style="width: 10%;">Select</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="parcel" items="${parcelList}">
+                            <tr>
+                                <td>${parcel.packageName}</td>
+                                <td>${parcel.packageDescription}</td>
+                                <td class="text-center">${parcel.designOnSquareRoot}</td>
+                                <td class="text-center">${parcel.constructionPriceOnSquareRoot}</td>
+                                <td class="text-center">
+                                    <c:choose>
+                                        <c:when test="${parcel.package_status}">
+                                            Active
+                                        </c:when>
+                                        <c:otherwise>
+                                            Inactive
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="selectParcel(${parcel.packageId}, '${parcel.packageName}', ${parcel.designOnSquareRoot}, ${parcel.constructionPriceOnSquareRoot})">
+                                        Select
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- CKEditor Integration -->
 <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script> <!-- Ensure image2 plugin is enabled -->
 <script>
     CKEDITOR.replace('content', {
         extraPlugins: 'uploadimage,image2', // Enable image2 plugin for resizing
-        filebrowserImageUploadUrl: '/base64/uploadImage', // Your image upload URL
-        uploadUrl: '/base64/uploadImage', // Server-side image upload handler URL
+        filebrowserImageUploadUrl: '${pageContext.request.contextPath}/base64/uploadImage', // Your image upload URL
+        uploadUrl: '${pageContext.request.contextPath}/base64/uploadImage', // Server-side image upload handler URL
         height: 500,
 
         // Enable image resizing features
@@ -212,11 +284,25 @@
             }
         }
     });
+
+    let selectedParcelDetails = {
+                designCostPerSquareMeter: 0,
+                constructionCostPerSquareMeter: 0
+            };
+
+            function selectParcel(packageId, packageName, designCostPerSquareMeter, constructionCostPerSquareMeter) {
+                document.getElementById('selectedParcelId').value = packageId;
+                document.getElementById('selectedParcelName').value = packageName;
+                selectedParcelDetails = {
+                    designCostPerSquareMeter: designCostPerSquareMeter,
+                    constructionCostPerSquareMeter: constructionCostPerSquareMeter
+                };
+                $('#parcelModal').modal('hide');
+            }
 </script>
 
 
 <!-- Bootstrap JS and dependencies -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

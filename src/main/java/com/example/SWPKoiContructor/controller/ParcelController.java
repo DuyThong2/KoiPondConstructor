@@ -33,7 +33,7 @@ public class ParcelController {
     @GetMapping("/manager/parcel")
     public String getParcelList(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(defaultValue = "2") int size,
             @RequestParam(defaultValue = "packageId") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection,
             @RequestParam(required = false) Integer statusFilter) {
@@ -44,7 +44,9 @@ public class ParcelController {
         totalParcel = parcelService.countParcel();
 
         int totalPages = (int) Math.ceil((double) totalParcel / size);
-
+        if(page > totalPages){
+            page = 0;
+        }
         model.addAttribute("parcelList", parcelList);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);

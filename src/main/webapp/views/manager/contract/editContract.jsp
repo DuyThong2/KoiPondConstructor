@@ -167,7 +167,7 @@
                             <p><strong>Customer:</strong> ${quote.customer.name}</p>
                             <p><strong>Total Design Cost:</strong> ${quote.quotesDesignCost}</p>
                             <p><strong>Total Construction Cost:</strong> ${quote.quotesConstructionCost}</p>
-                            <p><strong>Area:</strong> ${quote.quotesArea} m²</p>
+                            <p><strong>Area:</strong> ${quote.quotesArea} mï¿½</p>
                             <p><strong>Total Price:</strong> ${quote.quotesTotalPrice}</p>
                         </div>
                     </div>
@@ -518,7 +518,7 @@
                             }
                         });
 
-        // Function to prevent negative values in input fields
+                        // Function to prevent negative values in input fields
                         function validateFields() {
                             let fields = ['conceptDesign', 'detailDesign', 'constructionDesign', 'rawConstruction', 'completeConstruction', 'totalDesignCost', 'totalConstructionCost', 'totalPrice'];
                             let isValid = true; // Assume valid unless we find an invalid field
@@ -539,6 +539,19 @@
                             return isValid;
                         }
 
+                        document.querySelectorAll('input[type="number"]').forEach(input => {
+                            input.addEventListener('input', function () {
+                                // Remove any characters that are not digits or dots (allowing decimal numbers)
+                                this.value = this.value.replace(/[^0-9.]/g, '');
+                            });
+
+                            input.addEventListener('blur', function () {
+                                // Prevent negative values by setting any negative number to zero
+                                if (parseFloat(this.value) < 0) {
+                                    this.value = 0;
+                                }
+                            });
+                        });
 
                         document.querySelector('form').addEventListener('submit', function (event) {
                             const termOption = document.querySelector('input[name="termOption"]:checked');
@@ -599,7 +612,6 @@
         </div>
 
         <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 

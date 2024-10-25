@@ -10,4 +10,3 @@
 <link rel="stylesheet" href="<c:url value='/assets/css/plugins/carouselTicker.css' />">
 <link rel="stylesheet" href="<c:url value='/assets/css/main.css' />">
 <link href="<c:url value='/css/bell.css'/>" rel="stylesheet">
-

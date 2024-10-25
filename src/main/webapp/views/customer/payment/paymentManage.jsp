@@ -59,6 +59,90 @@
             body{
                 background: #f9f9fb;
             }
+            h2 {
+                color: #2c3e50;
+                font-weight: bold;
+                margin-bottom: 20px;
+                font-size: 3.5rem;
+            }
+
+            .filter-card {
+                background-color: #ffffff;
+                padding: 20px 30px;
+                border-radius: 15px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .filter-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            }
+
+            .filter-card label {
+                font-weight: bold;
+                color: #343a40;
+                font-size: 16px;
+            }
+
+            .filter-card .form-control {
+                border-radius: 10px;
+                border: 1px solid #ced4da;
+                padding: 10px;
+                font-size: 18px;
+                transition: box-shadow 0.3s ease;
+            }
+
+            .filter-card .form-control:focus {
+                box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+                border-color: #007bff;
+            }
+
+            .filter-card button {
+                background-color: #007bff;
+                border: none;
+                color: white;
+                margin-top: 3rem;
+                padding: 15px 20px;
+                border-radius: 10px;
+                font-size: 16px;
+                font-weight: bold;
+                transition: background-color 0.3s ease;
+            }
+
+            .filter-card button:hover {
+                background-color: #0056b3;
+                color: #ffffff;
+            }
+            /* Table Styling */
+            .table {
+                margin-top: 20px;
+                border-collapse: collapse;
+                width: 100%;
+                font-size: 19px;
+                background-color: #fff;
+            }
+
+            .table thead th {
+                background-color: #2c3e50;
+                color: white;
+                padding: 10px;
+                text-align: left;
+                border-bottom: 2px solid #ddd;
+            }
+
+            .table tbody td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .table tbody tr:hover {
+                background-color: #f2f2f2;
+            }
+            .d-flex{
+                margin-top: 0;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>
@@ -68,97 +152,58 @@
             <div class="view-account">
                 <section class="module">
                     <div class="module-inner">
-                        <div class="side-bar">
-                            <div class="user-info">
-                                <img class="img-profile img-circle img-responsive center-block" src="${user.getShowingImg(user.imgURL)}" alt />
-                                <ul class="meta list list-unstyled">
-                                    <li class="name">${user.name}
-                                        <br>
-                                        <label class="label label-info">Customer</label>
-                                    </li>
-                                    <li class="email">
-                                        <a href="#"><span>${user.email}</span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <nav class="side-menu">
-                                <nav class="side-menu">
-                                    <ul class="nav">
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/profile"><span class="fa fa-user"></span> Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/consultant"
-                                               style="font-size: 16px">
-                                                <span class="bi bi-briefcase"></span> My
-                                                Consultant</a>
-                                        </li>
-                                        <li class="active">
-                                            <a href="${pageContext.request.contextPath}/customer/contract">
-                                                <span class="fas fa-file-contract"></span> My Contract</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/projects/">
-                                                <span class="fas fa-project-diagram"></span> My Project</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/quote"><span class="bi bi-bar-chart-line"></span> Quotes</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/serviceDetails/"><span class="bi bi-bar-chart-line"></span> Service</a>
-                                        </li>
-                                    </ul>
-                                </nav>
-                            </nav>
-                        </div>
+                        <%--User navbar--%>
+                        <%@include file="../navbarUser.jsp"%>
+
                         <div class="content-panel">
                             <div class="container">
                                 <h2>Payment History</h2>
 
                                 <!-- Sort Form -->
-                                <form method="get" action="${pageContext.request.contextPath}/customer/payment">
-                                    <div class="form-row align-items-center">
-                                        <!-- Sort By and Direction -->
-                                        <div class="col-auto">
-                                            <label for="sortBy">Sort by:</label>
-                                            <select name="sortBy" id="sortBy" class="form-control">
-                                                <option value="paymentDate" ${sortBy == 'paymentDate' ? 'selected' : ''}>Payment Date</option>
-                                                <option value="amount" ${sortBy == 'amount' ? 'selected' : ''}>Amount</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-auto">
-                                            <label for="sortDirection">Direction:</label>
-                                            <select name="sortDirection" id="sortDirection" class="form-control">
-                                                <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
-                                                <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
-                                            </select>
-                                        </div>
+                                <div class="filter-card">
+                                    <form method="get" action="${pageContext.request.contextPath}/customer/payment">
+                                        <div class="row align-items-center">
+                                            <!-- Sort By and Direction -->
+                                            <div class="col-auto">
+                                                <label for="sortBy">Sort by:</label>
+                                                <select name="sortBy" id="sortBy" class="form-control" size="padding: 20px">
+                                                    <option value="paymentDate" ${sortBy == 'paymentDate' ? 'selected' : ''}>Payment Date</option>
+                                                    <option value="amount" ${sortBy == 'amount' ? 'selected' : ''}>Amount</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label for="sortDirection">Direction:</label>
+                                                <select name="sortDirection" id="sortDirection" class="form-control" size="padding: 20px">
+                                                    <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
+                                                    <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
+                                                </select>
+                                            </div>
 
-                                        <!-- Search by Description -->
-                                        <div class="col-auto">
-                                            <label for="searchDescription">Description:</label>
-                                            <input type="text" name="searchDescription" id="searchDescription" class="form-control"
-                                                   placeholder="Search by description" value="${searchDescription}">
-                                        </div>
+                                            <!-- Search by Description -->
+                                            <div class="col-auto">
+                                                <label for="searchDescription">Description:</label>
+                                                <input type="text" name="searchDescription" id="searchDescription" class="form-control"
+                                                       placeholder="Search by description" value="${searchDescription}">
+                                            </div>
 
-                                        <!-- Date Range Filters -->
-                                        <div class="col-auto">
-                                            <label for="fromDate">From Date:</label>
-                                            <input type="date" name="fromDate" id="fromDate" class="form-control" value="${fromDate}">
-                                        </div>
-                                        <div class="col-auto">
-                                            <label for="toDate">To Date:</label>
-                                            <input type="date" name="toDate" id="toDate" class="form-control" value="${toDate}">
-                                        </div>
+                                            <!-- Date Range Filters -->
+                                            <div class="col-auto">
+                                                <label for="fromDate">From Date:</label>
+                                                <input type="date" name="fromDate" id="fromDate" class="form-control" value="${fromDate}">
+                                            </div>
+                                            <div class="col-auto">
+                                                <label for="toDate">To Date:</label>
+                                                <input type="date" name="toDate" id="toDate" class="form-control" value="${toDate}">
+                                            </div>
 
-                                        <!-- Hidden Page Parameter and Submit Button -->
-                                        <input type="hidden" name="page" value="${currentPage}">
-                                        <div class="col-auto">
-                                            <button type="submit" class="btn btn-primary btn-default mt-2">Search & Sort</button>
+                                            <!-- Hidden Page Parameter and Submit Button -->
+                                            <input type="hidden" name="page" value="${currentPage}">
+                                            <div class="col-auto">
+                                                <button type="submit" class="btn btn-primary btn-default" style="margin-top: 3rem">Search & Sort</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
-
+                                    </form>
+                                </div>
 
                                 <!-- Table for payments -->
                                 <table class="table table-bordered table-hover mt-3">
@@ -190,32 +235,24 @@
                                 <div class="d-flex align-items-center mt-4">
                                     <!-- Previous Button -->
                                     <c:if test="${currentPage > 0}">
-                                        <a href="?page=${currentPage - 1}
-                                           &sortBy=${sortBy}
-                                           &sortDirection=${sortDirection}
-                                           &searchDescription=${searchDescription}
-                                           &fromDate=${fromDate}
-                                           &toDate=${toDate}" 
-                                           class="btn btn-custom">&lt;</a>
+                                        <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchDescription=${searchDescription}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-custom">&lt;</a>
                                     </c:if>
                                     <c:if test="${currentPage == 0}">
                                         <button class="btn btn-custom" disabled>&lt;</button>
                                     </c:if>
 
                                     <!-- Page Indicator -->
-                                    <span class="page-indicator"><strong>${currentPage + 1}</strong> / <strong>${totalPages + 1}</strong></span>
+                                    <span class="page-indicator"><strong>${currentPage + 1}</strong> / <strong>${totalPages}</strong></span>
 
                                     <!-- Next Button -->
-                                    <c:if test="${currentPage < totalPages - 1}">
-                                        <a href="?page=${currentPage + 1}
-                                           &sortBy=${sortBy}
-                                           &sortDirection=${sortDirection}
-                                           &searchDescription=${searchDescription}
-                                           &fromDate=${fromDate}
-                                           &toDate=${toDate}" 
-                                           class="btn btn-custom">&gt;</a>
+
+
+                                    <c:if test="${currentPage < totalPages -1}">
+                                        <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&searchDescription=${searchDescription}&fromDate=${fromDate}&toDate=${toDate}"class="btn btn-custom">&gt;</a>
                                     </c:if>
-                                    <c:if test="${currentPage >= totalPages - 1}">
+                                    <c:if test="${currentPage >= totalPages -1}">
+
+
                                         <button class="btn btn-custom" disabled>&gt;</button>
                                     </c:if>
                                 </div>
@@ -226,8 +263,19 @@
                 </section>
             </div>
         </div>
+        <script>
+            document.querySelector('form').addEventListener('submit', function () {
+                this.querySelectorAll('input, select').forEach(function (input) {
+                    input.value = input.value.trim();
+                });
+            });
+        </script>
+
+
     </body>
+
     <%@include file="../spacing.jsp"%>
     <%@include file="../footer.jsp"%>
     <%@include file="../scriptTemplate.jsp"%>
 </html>
+

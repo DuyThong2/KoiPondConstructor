@@ -69,7 +69,7 @@ public class PayPalController {
                                                     .build()
                                                     .toUriString();
 
-        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/construction";
+        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/construction/"+ constructionId;
         String successUrl = baseUrl + contexPath + "/paypal/success/construction?detailId=" + detailId + "&constructionId=" + constructionId;
 
         try {
@@ -102,7 +102,7 @@ public class PayPalController {
                                                     .build()
                                                     .toUriString();
 
-        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/design";
+        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/design/"+ designId;
         String successUrl = baseUrl + contexPath + "/paypal/success/design?detailId=" + detailId + "&designId=" + designId;
 
         try {
@@ -135,7 +135,7 @@ public class PayPalController {
                                                     .build()
                                                     .toUriString();
         double afterPoint = amount - point;
-        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/serviceQuote";
+        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/serviceQuote/"+ serviceQuoteId ;
         String successUrl = baseUrl + contexPath + "/paypal/success/serviceQuote?serviceQuoteId=" + serviceQuoteId + "&point=" + point;
 
         try {
@@ -249,9 +249,27 @@ public class PayPalController {
 
             if (payment.getState().equals("approved")) {
                 // Update design stage detail status to 'Completed' (status 4)
-                ServiceQuotes sq = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, 8);
+                ServiceQuotes sq = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
+                if(sq.getServiceQuotesStatus() == 9){
+                    sq = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, 10);
+                }else{
+                    sq = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, 8);
+                }
                 Double gg = loyaltyPointService.useLoyaltyPoints(sq.getCustomer(), point);
                 redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
+                
+                // Create a new PaymentHistory record
+                PaymentHistory paymentHistory = new PaymentHistory();
+                paymentHistory.setCustomer(sq.getCustomer());
+                BigDecimal amount = BigDecimal.valueOf(Double.parseDouble(payment.getTransactions().get(0).getAmount().getTotal()));
+                paymentHistory.setAmount(amount);
+                paymentHistory.setPaymentDate(LocalDateTime.now());
+                paymentHistory.setPaymentMethod("PayPal");
+                paymentHistory.setDescription("Payment of "+amount+" for service quote" + sq.getServiceQuotesId() + " by "+ sq.getCustomer().getName());
+                paymentHistoryService.createPayment(paymentHistory);
+                
+                double pointGained = amount.doubleValue();
+                loyaltyPointService.gainLoyaltyPoints(sq.getCustomer(), pointGained);
                 // Redirect to design page
                 return "redirect:/customer/serviceQuote";
             }
@@ -273,8 +291,8 @@ public class PayPalController {
         return "redirect:/customer/project/design/" + designId;
     }
     
-    @GetMapping("/cancel/serviceQuote/{id}")
-    public String cancelForServiceQuote(@PathVariable("id") int serviceQuote) {
+    @GetMapping("/cancel/serviceQuote")
+    public String cancelForServiceQuote() {
         return "redirect:/customer/serviceQuote";
     }
 }

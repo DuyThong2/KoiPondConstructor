@@ -36,7 +36,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         Customer customer = customerService.getCustomerByEmail(email);
         if (customer != null) {
             session.setAttribute("user", customer);  // Store customer in session
-            response.sendRedirect("/customer/contract");  // Redirect to customer home page
+            response.sendRedirect("/customer/projects/");  // Redirect to customer home page
             return;
         }
 

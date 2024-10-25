@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.joda.time.LocalDateTime.now;
 
@@ -71,7 +72,9 @@ public class ConsultantController {
             totalConsultants = consultantService.countConsultant();
         }
         int totalPages = (int) Math.ceil((double) totalConsultants / size);
-        
+        if(page > totalPages){
+            page = 0;
+        }
         model.addAttribute("consultants", consultants);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -134,7 +137,9 @@ public class ConsultantController {
             totalConsultants = consultantService.countConsultantByStaffId(user.getId());
         }
         int totalPages = (int) Math.ceil((double) totalConsultants / size);
-        
+        if(page > totalPages){
+            page = 0;
+        }
         model.addAttribute("consultants", consultants);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -169,7 +174,7 @@ public class ConsultantController {
                                       @RequestParam("email") String email,
                                       @RequestParam("content") String content,
                                       @RequestParam("type") String type,
-                                      HttpSession session) {
+                                      HttpSession session,  RedirectAttributes redirectAttributes) {
 
         Consultant newConsultant = new Consultant();
         newConsultant.setConsultantCustomerName(name);
@@ -190,7 +195,7 @@ public class ConsultantController {
         }
 
         newConsultant = consultantService.createConsultant(newConsultant);
-
+        redirectAttributes.addFlashAttribute("success", "Consultant created successfully! ");
         // Call the private method to handle notification
         notificationService.sendConsultantCreationNotification(newConsultant);
 
@@ -218,7 +223,7 @@ public class ConsultantController {
         int totalPages = (int) Math.ceil((double) totalConsultant / size);
 
         if (page > totalPages) {
-            page = (int) totalPages;
+            page = (int) totalPages-1;
         } else if (page < 1) {
             page = 1;
 

@@ -4,7 +4,7 @@
 <html class="no-js" lang="zxx">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>HappiKoi</title>
     <meta name="description" content="Ribuild - Construction Company HTML5 Template">
@@ -16,7 +16,7 @@
 
     <!-- CSS here -->
     <%@include file="../cssTemplate.jsp"%>
-
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
 </head>
 
 <body class="body-1">
@@ -247,6 +247,9 @@
             </div>
         </div>
     </section>
+
+    <!-- Popup cho success -->
+    <%@include file="../../popup.jsp"%>
     <!-- Banner area end -->
 
     <!-- planning-execute area start -->
@@ -293,8 +296,7 @@
         </div>
     </section>
     <!-- mission area end -->
-
-    <div class="overflow-hidden"> <!--for shape animation-->
+    <div class="overflow-hidden">
         <!-- service area start -->
         <section id="services" class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
             <div class="container rr-shape-p-c_1">
@@ -303,41 +305,41 @@
                 <div class="row mb-60 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
                     <div class="col-xl-6">
                         <div class="section__title-wrapper text-center text-xl-start">
-                            <span class="section__subtitle justify-content-start mb-13"><span data-width="40px" class="left-separetor"></span>Services</span>
-                            <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl" data-cursor="-opaque">The Essence Of Building
-                                <br> Construction Design</h2>
+                        <span class="section__subtitle justify-content-start mb-13">
+                            <span data-width="40px" class="left-separetor"></span>Services</span>
+                            <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                                data-cursor="-opaque">Koi Pond Construction & Maintenance</h2>
                         </div>
                     </div>
                     <div class="col-xl-6">
                         <div class="d-flex flex-column justify-content-xl-end mt-xs-20 mt-sm-20 mt-md-20 mt-lg-20 pl-45 rr-mb-13-hide-xl rr-pl-none-lg justify-content-center text-center text-xl-start">
-                            <p class="m-0 service__content-des rr-br-hidden-xl">At Ribuild, we are more than just a construction company. We are your
-                                <br> partners in turning visions into reality, dedicated to delivering superior quality <br> and exceptional service every step of the way.</p>
+                            <p class="m-0 service__content-des rr-br-hidden-xl" style="font-size: 19px;">At our company, we specialize in building and maintaining beautiful Koi ponds. Whether it's following one of our unique designs or creating a custom pond based on your vision, we turn your dreams into reality.</p>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-12 ">
+                    <div class="col-12">
                         <div class="service__list mb-minus-50" data-fx="8">
-                            <a class="service__list-item d-flex align-items-center mb-50 block__title" >
+                            <a class="service__list-item d-flex align-items-center mb-50 block__title">
                                 <div class="number">01</div>
                                 <div class="text d-flex flex-column">
-                                    <span class="sub-t turn-off-animation-button">Project Planning</span>
-                                    <h4 class="color-white mb-0 title turn-off-animation-button">Project Planning</h4>
+                                    <span class="sub-t turn-off-animation-button">Consultation & Design</span>
+                                    <h4 class="color-white mb-0 title turn-off-animation-button">Discuss Design & Style</h4>
                                 </div>
                             </a>
-                            <a class="service__list-item d-flex align-items-center mb-50 block__title" >
+                            <a class="service__list-item d-flex align-items-center mb-50 block__title">
                                 <div class="number">02</div>
                                 <div class="text d-flex flex-column">
-                                    <span class="sub-t turn-off-animation-button">Highest Standards</span>
-                                    <h4 class="color-white mb-0 title turn-off-animation-button">Industrial Structure</h4>
+                                    <span class="sub-t turn-off-animation-button">Project Execution</span>
+                                    <h4 class="color-white mb-0 title turn-off-animation-button">From Planning to Delivery</h4>
                                 </div>
                             </a>
                             <a class="service__list-item d-flex align-items-center mb-50 block__title">
                                 <div class="number">03</div>
                                 <div class="text d-flex flex-column">
-                                    <span class="sub-t">Project Design</span>
-                                    <h4 class="color-white mb-0 title">Interior Design</h4>
+                                    <span class="sub-t">Maintenance Services</span>
+                                    <h4 class="color-white mb-0 title">Regular & Custom Care</h4>
                                 </div>
                             </a>
                         </div>
@@ -345,10 +347,13 @@
                 </div>
             </div>
         </section>
-        <!-- service area end -->
+
+
+
+    <!-- service area end -->
 
         <section class="service__what-we-do-3__text theme-bg-heading-primary">
-            <h2>CONSTRUCTION</h2>
+            <h2>Design and Construction</h2>
         </section>
 
         <!-- what-we-do-3 area start -->
@@ -356,58 +361,49 @@
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6">
-                        <div class="what-we-do-3__media pr-15 rr-pr-none-xl rr-mb-60-md">
-                            <img src="${pageContext.request.contextPath}/assets/imgs/what-we-do-3/what-we-do.jpg" alt="" class="img-fluid">
+                        <div class="what-we-do-3__media pr-15 rr-pr-none-xl rr-mb-60-md" >
+                            <img src="${pageContext.request.contextPath}/assets/imgs/koipond.webp" alt="" class="img-fluid" >
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="pl-40 rr-pl-none-xl">
                             <div class="section__title-wrapper text-center text-lg-start mb-50 mb-sm-40 mb-xs-35">
                                 <span class="section__subtitle justify-content-start mb-13"><span data-width="40px" class="left-separetor"></span>What We Do</span>
-                                <h2 class="section__title title-animation color-white text-capitalize mb-15 rr-br-hidden-xl" data-cursor="-opaque">Upgrading Your Factory
+                                <h2 class="section__title title-animation color-white text-capitalize mb-15 rr-br-hidden-xl" data-cursor="-opaque">Koi Ponds
                                     <br>
                                     Performance</h2>
-                                <p class="rr-br-hidden-xl what-we-do-3__content-p mb-0">Nulla et ipsum non justo congue consequat. Pellentesque accumsan ante
-                                    <br> non ullamcorper imperdiet. Pellentque habitant morbi tristique senectus <br> netus malesuada fames turpis egestas.</p>
+                                <p class="rr-br-hidden-xl what-we-do-3__content-p mb-0" style="font-size: 20px;">We specialize in designing and constructing Koi ponds
+                                    <br>with unique and aesthetically pleasing styles, ranging from traditional garden ponds to luxurious Japanese-style ponds.
+                                    <br> We ensure to create a vibrant and natural living space for your family.</p>
                             </div>
 
                             <div class="what-we-do-3__list pr-40 rr-pr-none-xl">
-                                <a href="project-details.html">Metal Engineering
+                                <a href="${pageContext.request.contextPath}/home/projects">Successful Projects
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11.2287 0L2.15853 0C1.73187 0 1.38491 0.346892 1.38491 0.773475C1.38491 1.20006 1.73187 1.54695 2.15853 1.54695L9.35794 1.54695L0.226813 10.6786C-0.0756043 10.981 -0.0756043 11.4709 0.226813 11.7732C0.52923 12.0756 1.01919 12.0756 1.32161 11.7732L10.4527 2.64154V9.83954C10.4527 10.2661 10.7997 10.613 11.2264 10.613C11.653 10.613 12 10.2661 12 9.83954V0.773475C12.0023 0.346892 11.6554 0 11.2287 0Z" fill="#F44E19"/>
                                     </svg>
                                 </a>
-                                <a href="project-details.html">Project Planning
+                                <a href="${pageContext.request.contextPath}/home/packages">Get A Quote
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11.2287 0L2.15853 0C1.73187 0 1.38491 0.346892 1.38491 0.773475C1.38491 1.20006 1.73187 1.54695 2.15853 1.54695L9.35794 1.54695L0.226813 10.6786C-0.0756043 10.981 -0.0756043 11.4709 0.226813 11.7732C0.52923 12.0756 1.01919 12.0756 1.32161 11.7732L10.4527 2.64154V9.83954C10.4527 10.2661 10.7997 10.613 11.2264 10.613C11.653 10.613 12 10.2661 12 9.83954V0.773475C12.0023 0.346892 11.6554 0 11.2287 0Z" fill="#F44E19"/>
                                     </svg>
                                 </a>
-                                <a href="project-details.html">Corporate Building
+                                <a href="${pageContext.request.contextPath}/home/projects">Design Template
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11.2287 0L2.15853 0C1.73187 0 1.38491 0.346892 1.38491 0.773475C1.38491 1.20006 1.73187 1.54695 2.15853 1.54695L9.35794 1.54695L0.226813 10.6786C-0.0756043 10.981 -0.0756043 11.4709 0.226813 11.7732C0.52923 12.0756 1.01919 12.0756 1.32161 11.7732L10.4527 2.64154V9.83954C10.4527 10.2661 10.7997 10.613 11.2264 10.613C11.653 10.613 12 10.2661 12 9.83954V0.773475C12.0023 0.346892 11.6554 0 11.2287 0Z" fill="#F44E19"/>
                                     </svg>
                                 </a>
-                                <a href="project-details.html">Budget Planning
+                                <a href="${pageContext.request.contextPath}/home/projects">Contact Us
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11.2287 0L2.15853 0C1.73187 0 1.38491 0.346892 1.38491 0.773475C1.38491 1.20006 1.73187 1.54695 2.15853 1.54695L9.35794 1.54695L0.226813 10.6786C-0.0756043 10.981 -0.0756043 11.4709 0.226813 11.7732C0.52923 12.0756 1.01919 12.0756 1.32161 11.7732L10.4527 2.64154V9.83954C10.4527 10.2661 10.7997 10.613 11.2264 10.613C11.653 10.613 12 10.2661 12 9.83954V0.773475C12.0023 0.346892 11.6554 0 11.2287 0Z" fill="#F44E19"/>
                                     </svg>
                                 </a>
-                                <a href="project-details.html">Industrial Building
+                                <a href="${pageContext.request.contextPath}/home/blogs">Blogs
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11.2287 0L2.15853 0C1.73187 0 1.38491 0.346892 1.38491 0.773475C1.38491 1.20006 1.73187 1.54695 2.15853 1.54695L9.35794 1.54695L0.226813 10.6786C-0.0756043 10.981 -0.0756043 11.4709 0.226813 11.7732C0.52923 12.0756 1.01919 12.0756 1.32161 11.7732L10.4527 2.64154V9.83954C10.4527 10.2661 10.7997 10.613 11.2264 10.613C11.653 10.613 12 10.2661 12 9.83954V0.773475C12.0023 0.346892 11.6554 0 11.2287 0Z" fill="#F44E19"/>
                                     </svg>
                                 </a>
-                                <a href="project-details.html">Interior Design
-                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11.2287 0L2.15853 0C1.73187 0 1.38491 0.346892 1.38491 0.773475C1.38491 1.20006 1.73187 1.54695 2.15853 1.54695L9.35794 1.54695L0.226813 10.6786C-0.0756043 10.981 -0.0756043 11.4709 0.226813 11.7732C0.52923 12.0756 1.01919 12.0756 1.32161 11.7732L10.4527 2.64154V9.83954C10.4527 10.2661 10.7997 10.613 11.2264 10.613C11.653 10.613 12 10.2661 12 9.83954V0.773475C12.0023 0.346892 11.6554 0 11.2287 0Z" fill="#F44E19"/>
-                                    </svg>
-                                </a>
-                                <a href="project-details.html">Metal Works
-                                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M11.2287 0L2.15853 0C1.73187 0 1.38491 0.346892 1.38491 0.773475C1.38491 1.20006 1.73187 1.54695 2.15853 1.54695L9.35794 1.54695L0.226813 10.6786C-0.0756043 10.981 -0.0756043 11.4709 0.226813 11.7732C0.52923 12.0756 1.01919 12.0756 1.32161 11.7732L10.4527 2.64154V9.83954C10.4527 10.2661 10.7997 10.613 11.2264 10.613C11.653 10.613 12 10.2661 12 9.83954V0.773475C12.0023 0.346892 11.6554 0 11.2287 0Z" fill="#F44E19"/>
-                                    </svg>
-                                </a>
-                                <a href="project-details.html">Successful Project
+                                <a href="${pageContext.request.contextPath}/home/services">Book Service Now!
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M11.2287 0L2.15853 0C1.73187 0 1.38491 0.346892 1.38491 0.773475C1.38491 1.20006 1.73187 1.54695 2.15853 1.54695L9.35794 1.54695L0.226813 10.6786C-0.0756043 10.981 -0.0756043 11.4709 0.226813 11.7732C0.52923 12.0756 1.01919 12.0756 1.32161 11.7732L10.4527 2.64154V9.83954C10.4527 10.2661 10.7997 10.613 11.2264 10.613C11.653 10.613 12 10.2661 12 9.83954V0.773475C12.0023 0.346892 11.6554 0 11.2287 0Z" fill="#F44E19"/>
                                     </svg>
@@ -458,28 +454,26 @@
     <!-- our-professional -->
 
     <!-- support area start -->
+    <!-- support area start -->
     <section class="support section-space section-bg-5">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
                     <div class="section__title-wrapper text-center text-lg-start">
                         <span class="section__subtitle justify-content-start mb-13"><span data-width="40px" class="left-separetor"></span>Support</span>
-                        <h2 class="section__title title-animation text-capitalize mb-40 rr-br-hidden-xl" data-cursor="-opaque">Integrated Building Design <br>
-                            For Enhanced Efficiency</h2>
+                        <h2 class="section__title title-animation text-capitalize mb-40 rr-br-hidden-xl" data-cursor="-opaque">Comprehensive Koi Pond Construction & Maintenance Support</h2>
 
                         <div class="support__list mb-minus-30">
                             <div class="support__list-item d-flex mb-30">
                                 <div class="icon"><img src="${pageContext.request.contextPath}/assets/imgs/support/angle-right.svg" alt=""></div>
                                 <div class="text">
-                                    <p class="mb-0 rr-br-hidden-xl text-start">Vivamus eget tristique purus. Mauris rhoncus sem non lorem aliquet varius.
-                                        <br> Aliquam non odio et arcu ullamcorper efficitur.</p>
+                                    <p class="mb-0 rr-br-hidden-xl text-start">Support for Koi pond design and construction from concept to completion, ensuring the highest quality and aesthetics.</p>
                                 </div>
                             </div>
                             <div class="support__list-item d-flex mb-30">
                                 <div class="icon"><img src="${pageContext.request.contextPath}/assets/imgs/support/angle-right.svg" alt=""></div>
                                 <div class="text">
-                                    <p class="mb-0 rr-br-hidden-xl text-start">Suspendisse facilisis dolor id turpis varius malesuada. Morbi egestas libero
-                                        <br> ac consectetur interdum uisque.</p>
+                                    <p class="mb-0 rr-br-hidden-xl text-start">Professional regular maintenance and care services for Koi ponds to ensure lasting beauty and pond health.</p>
                                 </div>
                             </div>
                         </div>
@@ -492,38 +486,38 @@
                                 <div class="accordion-item">
                                     <h5 class="accordion-header" id="headingOne">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            What Are The Charges of Renovation?
+                                            What steps are included in the Koi pond construction process?
                                         </button>
                                     </h5>
                                     <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <p>Our services are designed to help businesses leverage technology to streamline operation’s, improve efficiency.</p>
+                                            <p>The construction process includes: receiving the request, design consultation, quotation preparation, design documentation, construction, and periodic maintenance.</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="accordion-item">
                                     <h5 class="accordion-header" id="headingTwo">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                            What is Project Timing in Construction?
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                            Can customers request custom designs?
                                         </button>
                                     </h5>
-                                    <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <p>Our services are designed to help businesses leverage technology to streamline operation’s, improve efficiency.</p>
+                                            <p>We offer custom designs based on customer requests or our available designs.</p>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="accordion-item">
-                                    <h5 class="accordion-header" id="headingThere">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThere" aria-expanded="true" aria-controls="collapseThere">
-                                            How to contact our Support Team?
+                                    <h5 class="accordion-header" id="headingThree">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                            How can customers contact our support team?
                                         </button>
                                     </h5>
-                                    <div id="collapseThere" class="accordion-collapse collapse" aria-labelledby="headingThere" data-bs-parent="#accordionExample">
+                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <p>Our services are designed to help businesses leverage technology to streamline operation’s, improve efficiency.</p>
+                                            <p>Customers can reach us via hotline, email, or fill out the contact form on the website for prompt assistance.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -531,12 +525,12 @@
                                 <div class="accordion-item">
                                     <h5 class="accordion-header" id="headingFour">
                                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
-                                            How Are Construction Permits Obtained?
+                                            What does the Koi pond maintenance service include?
                                         </button>
                                     </h5>
                                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                                         <div class="accordion-body">
-                                            <p>Our services are designed to help businesses leverage technology to streamline operation’s, improve efficiency.</p>
+                                            <p>We provide cleaning, care, and periodic or on-demand maintenance services to keep ponds healthy and aesthetically pleasing.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -547,296 +541,10 @@
             </div>
         </div>
     </section>
-    <!-- support area end -->
-
-    <!-- recent-works area start -->
-
-    <!-- recent-works area end -->
-
-    <!-- text-slider area start -->
-    <!-- <section class="text-slider text-slider__section-space position-relative theme-bg-primary overflow-hidden">
-        <div class="text-slider__slider carouselTicker carouselTicker-nav">
-            <ul class="carouselTicker__list">
-                <li><h3 data-cursor="-opaque" class="title">GREEN BUILDING</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">REMODELING</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">SERVICES</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">CONSTRUCTION</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">ARCHITECTURE</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">BLUEPRINT</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">INFRASTRUCTURE</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">GREEN BUILDING</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">REMODELING</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">SERVICES</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">CONSTRUCTION</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">ARCHITECTURE</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">BLUEPRINT</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">INFRASTRUCTURE</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">GREEN BUILDING</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">REMODELING</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">SERVICES</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">CONSTRUCTION</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">ARCHITECTURE</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">BLUEPRINT</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">INFRASTRUCTURE</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">GREEN BUILDING</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">REMODELING</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">SERVICES</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">CONSTRUCTION</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">ARCHITECTURE</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">BLUEPRINT</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-                <li><h3 data-cursor="-opaque" class="title">INFRASTRUCTURE</h3></li>
-                <li><h4 class="title bar">//</h4></li>
-            </ul>
-        </div>
-    </section> -->
-    <!-- text-slider area end -->
 
 
 
-    <!-- pricing area start -->
-    <section id="pricing" class="pricing section-space section-bg-1 overflow-hidden">
-        <div class="container rr-shape-p-c_1">
-            <div class="why-choose-us__shape d-none d-lg-block">
-                <div class="pricing__shape-1 rr-shape-p-s_1 rr-upDown"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/shape-1.png" alt="image not found"></div>
-                <div class="pricing__shape-2 rr-shape-p-s_1 rr-downUp"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/shape-2.png" alt="image not found"></div>
-                <div class="pricing__shape-3 rr-shape-p-s_1 rr-upDown"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/shape-3.png" alt="image not found"></div>
-                <div class="pricing__shape-4 rr-shape-p-s_1 rr-upDown"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/shape-4.png" alt="image not found"></div>
-                <div class="pricing__shape-5 rr-shape-p-s_1 rr-downUp"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/shape-5.png" alt="image not found"></div>
-            </div>
-            <div class="row mb-60 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
-                <div class="col-xl-6">
-                    <div class="section__title-wrapper text-center text-xl-start">
-                        <span class="section__subtitle justify-content-start mb-13"><span data-width="40px" class="left-separetor"></span>Pricing Plan</span>
-                        <h2 class="section__title title-animation text-capitalize mb-0 rr-br-hidden-md" data-cursor="-opaque">Choose Right Pricing
-                            <br> Plan For You</h2>
-                    </div>
-                </div>
-                <div class="col-xl-6">
-                    <div class="d-flex justify-content-xl-end mt-xs-25 mt-sm-25 mt-md-25 mt-lg-25 justify-content-center">
-                        <div class="pricing__toggler_button mb-40 d-flex justify-content-center wow fadeIn animated" data-wow-delay=".5s">
-                            <div class="pricing__shape-arrow-down rr-shape-p-s_1 rr-downUp"><img src="/assets/imgs/pricing/arrow-down.png" alt="image not found"></div>
-                            <button class="toggler active" id="monthly-btn">Monthly</button>
-                            <div class="toggle">
-                                <input type="checkbox" id="switcher" class="check">
-                                <b class="b switch"></b>
-                            </div>
-                            <button class="toggler" id="yearly-btn">Yearly</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row mb-minus-30">
-                <div class="col-xl-4 col-md-6">
-                    <div class="pricing__card overflow-hidden mb-30 wow clip-t-b" data-background="/assets/imgs/pricing/bottom-shape.png">
-                        <div class="pricing__card-image mb-40"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/home.png" alt=""></div>
-                        <h4 class="pricing__card-title rr-fw-sbold"><span>Basic</span></h4>
-                        <div class="pricing__card-price mb-30 pb-30">
-                            <h2 data-yearly='<span class="price">$199.<span>00</span></span>
-                                <span class="month-year">PER YEARLY</span>' data-monthly='<span class="price">$99.<span>00</span></span>
-                                <span class="month-year">PER MONTH</span>' class="d-flex flex-column">
-                                <span class="price">$99.<span>00</span></span>
-                                <span class="month-year">PER MONTH</span>
-                            </h2>
-                        </div>
-
-                        <div class="pricing__card-body mb-40">
-                            <ul>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Construction Hourly Rate
-                                </li>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Remodel Or Home Addition
-                                </li>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Limitless Concepts
-                                </li>
-                                <li class="not_included">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Architectural Plans
-                                </li>
-                                <li class="not_included">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Economic Market Survey
-                                </li>
-                            </ul>
-                        </div>
-
-                        <a href="index.html" class="rr-btn rr-btn__transparent">
-                            <span class="btn-wrap">
-                                <span class="text-one turn-off-animation-button">Purchase Now</span>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-6">
-                    <div class="pricing__card pricing__card-standard overflow-hidden mb-30 wow clip-t-b" data-background="/assets/imgs/pricing/bottom-shape__white.png">
-                        <div class="pricing__card-image mb-40"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/home.png" alt=""></div>
-                        <h4 class="pricing__card-title rr-fw-sbold"><span>Premium</span></h4>
-                        <div class="pricing__card-price mb-30 pb-30">
-                            <h2 data-yearly='<span class="price">$215.<span>00</span></span>
-                                <span class="month-year">PER YEARLY</span>' data-monthly='<span class="price">$115.<span>00</span></span>
-                                <span class="month-year">PER MONTH</span>' class="d-flex flex-column">
-                                <span class="price">$115.<span>00</span></span>
-                                <span class="month-year">PER MONTH</span>
-                            </h2>
-                        </div>
-                        <div class="pricing__card-body mb-40">
-                            <ul>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Construction Hourly Rate
-                                </li>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Remodel Or Home Addition
-                                </li>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Limitless Concepts
-                                </li>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Architectural Plans
-                                </li>
-                                <li class="not_included">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Economic Market Survey
-                                </li>
-                            </ul>
-                        </div>
-
-                        <a href="index.html" class="rr-btn">
-                            <span class="btn-wrap">
-                                <span class="text-one turn-off-animation-button">Purchase Now</span>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xl-4 col-md-6">
-                    <div class="pricing__card overflow-hidden mb-30 wow clip-t-b" data-background="/assets/imgs/pricing/bottom-shape.png">
-                        <div class="pricing__card-image mb-40"><img src="${pageContext.request.contextPath}/assets/imgs/pricing/home.png" alt=""></div>
-                        <h4 class="pricing__card-title rr-fw-sbold"><span>Premium</span></h4>
-                        <div class="pricing__card-price mb-30 pb-30">
-                            <h2 data-yearly='<span class="price">$299.<span>00</span></span>
-                                <span class="month-year">PER YEARLY</span>' data-monthly='<span class="price">$199.<span>00</span></span>
-                                <span class="month-year">PER MONTH</span>' class="d-flex flex-column">
-                                <span class="price">$199.<span>00</span></span>
-                                <span class="month-year">PER MONTH</span>
-                            </h2>
-                        </div>
-
-                        <div class="pricing__card-body mb-40">
-                            <ul>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Construction Hourly Rate
-                                </li>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Remodel Or Home Addition
-                                </li>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Limitless Concepts
-                                </li>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Architectural Plans
-                                </li>
-                                <li>
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="10" cy="10" r="10" fill="#F44E19"/>
-                                        <path d="M15 7L8.125 13L5 10.2727" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    Economic Market Survey
-                                </li>
-                            </ul>
-                        </div>
-
-                        <a href="index.html" class="rr-btn rr-btn__transparent">
-                            <span class="btn-wrap">
-                                <span class="text-one turn-off-animation-button">Purchase Now</span>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- pricing area end -->
 
     <!-- blog-2 area start -->
     <section class="blog section-space section-bg-3">
@@ -878,7 +586,7 @@
 
                         <h4 class="blog__item-title mb-25 mb-xs-15 rr-fw-bold text-capitalize"><a href="blog-details.html">${blog.name}</a></h4>
 
-                        <a class="blog__item-readmore" href="blog-details.html">Read More
+                        <a class="blog__item-readmore" href="${pageContext.request.contextPath}/home/blogs/${blog.id}">Read More
                             <svg width="20" height="11" viewBox="0 0 20 11" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M1 5.5L19 5.5" stroke="#6A6A6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M13.75 1L19 5.5L13.75 10" stroke="#6A6A6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -886,16 +594,11 @@
                         </a>
                     </div>
                 </div>
+                </c:forEach>
             </div>
-            </c:forEach>
+        </div>
 
-        </div>
-        </div>
     </section>
-    <!-- blog-2 area end -->
-
-    <!-- cta-3 area start -->
-
 
 </main>
 <!-- Footer area start -->

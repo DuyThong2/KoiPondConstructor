@@ -45,11 +45,14 @@ public class ManageUsersController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size) {
         // Lấy danh sách Customer theo bộ lọc
-        List<Customer> customers = customerService.getFilterListOfCustomer(name, searchEmail, status, page, size);
-
         long totalListOfCustomer = customerService.countFilterCustomer(name, searchEmail, status);
         int totalPages = (int) Math.ceil((double) totalListOfCustomer / size);
+        if(page > totalPages){
+            page = 0;
+        }
+        List<Customer> customers = customerService.getFilterListOfCustomer(name, searchEmail, status, page, size);
 
+        
         model.addAttribute("customers", customers);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);
@@ -89,12 +92,14 @@ public class ManageUsersController {
             @RequestParam(required = false) Boolean status,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "6") int size) {
-
-        List<Staff> staffs = staffService.getFilterListOfStaff(name, searchEmail, department, status, page, size);
-
         long totalListOfCustomer = staffService.countFilterStaff(name, searchEmail, department, status);
         int totalPages = (int) Math.ceil((double) totalListOfCustomer / size);
+        if(page > totalPages){
+            page = 0;
+        }
+        List<Staff> staffs = staffService.getFilterListOfStaff(name, searchEmail, department, status, page, size);
 
+        
         model.addAttribute("staffs", staffs);
         model.addAttribute("totalPages", totalPages);
         model.addAttribute("currentPage", page);

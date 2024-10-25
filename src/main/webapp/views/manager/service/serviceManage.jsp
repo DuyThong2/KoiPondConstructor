@@ -12,15 +12,64 @@
     <head>
         <title>Admin Dashboard - Services</title>
         <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              rel="stylesheet">
-              <link href="/css/manager/navbar.css" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+        <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
         <style>
             /* Custom styles for the sidebar */
-           
+            .sidebar {
+                height: 100vh;
+                background-color: #343a40;
+                color: white;
+            }
+
+            .sidebar a {
+                color: white;
+                display: block;
+                padding: 10px;
+                text-decoration: none;
+            }
+
+            .sidebar a:hover {
+                background-color: #495057;
+            }
+
+            .filter-card {
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin:0 0 30px 10px;
+            }
+
+            h2 {
+                font-weight: bold;
+                color: #007bff;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+            .modal-body {
+                overflow-y: auto;
+                max-height: calc(100vh - 150px);
+                /* Ensures
+            the modal is scrollable when it overflows */
+            }
+
+            .cke_dialog {
+                z-index: 1051 !important;
+                /* Adjust as needed */
+            }
+
+            .collapse {
+                transition: height 0.5s ease-in-out;
+                /* Adjust for smoother transition if needed */
+            }
         </style>
     </head>
-
+    <div style="height:6vh;"></div>
     <body>
 
         <div class="container-fluid">
@@ -126,7 +175,7 @@
                                         <div class="form-group">
                                             <label for="file">Upload Image</label>
                                             <input type="file" id="file" name="file"
-                                                   class="form-control-file" required>
+                                                   class="form-control-file" accept="image/*" required>
                                         </div>
                                         <!-- Content Information -->
 
@@ -256,7 +305,7 @@
 
                                         <div class="form-group">
                                             <label for="file">Upload Image</label>
-                                            <input type="file" id="file" name="file"
+                                            <input type="file" accept="image/*" id="file" name="file"
                                                    class="form-control-file">
                                         </div>
 
@@ -529,6 +578,7 @@
                     </div>
                 </div>
             </div>
+            <div style="height:6vh;"></div>
         </div>
 
         <script>
@@ -572,7 +622,7 @@
                 // Event listener for the "Yes, Change Status" button in the modal
                 $('#confirmChangeStatusBtn').off('click').on('click', function () {
                     $.ajax({
-                        url: '/manager/services/changeStatusAjax',
+                        url: '${pageContext.request.contextPath}/manager/services/changeStatusAjax',
                         type: 'POST',
                         data: {
                             serviceId: selectedServiceId
@@ -645,7 +695,7 @@
                 $('#confirmChangeStatusBtn').one('click', function () {
                     // Trigger the AJAX request after the user confirms
                     $.ajax({
-                        url: '/manager/services/changePriceStatusAjax',
+                        url: '${pageContext.request.contextPath}/manager/services/changePriceStatusAjax',
                         type: 'POST',
                         data: {
                             priceId: changePriceId
@@ -719,14 +769,10 @@
                 }
             }
         </script>
-        <!-- Bootstrap JS and dependencies -->
-        <!-- Load jQuery -->
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
         <!-- Load Bootstrap -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
         <!-- Load CKEditor -->
         <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
     </body>

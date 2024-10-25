@@ -95,8 +95,9 @@
         <%@include file="../navBar.jsp" %>
 
         <!-- Main content -->
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-3">
             <!-- Blog Header -->
+
             <div class="blog-header">
                 <h1>Blog Detail</h1>
                 <p class="text-muted">Explore detailed content of the blog below.</p>
@@ -174,11 +175,12 @@
 
                 </div>
             </div>
+            <div class="blog-footer">
+                <a href="${pageContext.request.contextPath}/staff/blogs" class="btn btn-outline-primary">Back to Blog List</a>
+            </div>
         </main>
         <!-- Footer Section with Back Button -->
-        <div class="blog-footer">
-            <a href="${pageContext.request.contextPath}/staff/blogs" class="btn btn-outline-primary">Back to Blog List</a>
-        </div>
+
     </div>
 </div>
 

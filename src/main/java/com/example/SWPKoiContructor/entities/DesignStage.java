@@ -165,6 +165,9 @@ public class DesignStage {
         list.add(designing);
         list.add(editing);
         DesignStageDetail payment = new DesignStageDetail("Payment","Payment for the "+designStage.getDesignStageName(), 1);
+        if(designStage.getDesignStagePrice() <= 0){
+            payment.setStatus(4);
+        }
         if (term.isPayOnStartOfDesign()){
             list.add(0,payment);
         }else{

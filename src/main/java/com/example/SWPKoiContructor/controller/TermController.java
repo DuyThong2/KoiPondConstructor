@@ -42,16 +42,25 @@ public class TermController {
 
         List<Term> terms;
         long totalTerms;
+        int totalPages;
 
         if (searchDescription != null && !searchDescription.isEmpty()) {
-            terms = termService.searchTermsByDescription(searchDescription, page, size, sortBy, sortDirection, termStatusFilter);
             totalTerms = termService.countTermsByDescription(searchDescription, termStatusFilter);
-        } else {
-            terms = termService.findAllTerms(page, size, sortBy, sortDirection, termStatusFilter);
-            totalTerms = termService.countAllTerms(termStatusFilter);
-        }
+            totalPages = (int) Math.ceil((double) totalTerms / size);
+            if (page > totalPages) {
+                page = 0;
+            }
+            terms = termService.searchTermsByDescription(searchDescription, page, size, sortBy, sortDirection, termStatusFilter);
 
-        int totalPages = (int) Math.ceil((double) totalTerms / size);
+        } else {
+            totalTerms = termService.countAllTerms(termStatusFilter);
+            totalPages = (int) Math.ceil((double) totalTerms / size);
+            if (page > totalPages) {
+                page = 0;
+            }
+            terms = termService.findAllTerms(page, size, sortBy, sortDirection, termStatusFilter);
+
+        }
 
         model.addAttribute("terms", terms);
         model.addAttribute("currentPage", page);
@@ -77,8 +86,8 @@ public class TermController {
 
         return "redirect:/manager/terms";  // Redirect back to the term list after the update
     }
-    
-     @GetMapping("/manager/termCreate")
+
+    @GetMapping("/manager/termCreate")
     public String showTermForm(Model model) {
         // Create an empty Term object to bind the form data
         model.addAttribute("term", new Term());
@@ -94,30 +103,28 @@ public class TermController {
         model.addAttribute("savedTerm", term); // Redirect to a success page or show success message
         return "redirect:/manager/terms";// Make sure you have a corresponding success page (term-success.jsp)
     }
-    
+
     @GetMapping("/manager/updateTerm/{id}")
     public String updateTermForm(Model model, @PathVariable("id") int termId) {
         Term term = termService.findTermById(termId);
-        if (term != null){
-             model.addAttribute("term", term);
+        if (term != null) {
+            model.addAttribute("term", term);
 
-             return "manager/term/termUpdate";
-            
-        }else{
+            return "manager/term/termUpdate";
+
+        } else {
             return "redirect:/manager/terms";// Make sure you have a corresponding success page (term-success.jsp)
         }// Add the saved Term object to the model
-       
+
     }
-    
-    
+
     @PutMapping("/manager/updateTerm")
     public String updateTerm(@ModelAttribute("term") Term term, Model model) {
-        
-        
+
         term.setFollowContract(false);
         term.setTermStatus(true);
         term.setIsTemplate(true);
-        
+
         // Save the Term object to the database
         termService.save(term);
 

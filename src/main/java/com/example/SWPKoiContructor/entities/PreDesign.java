@@ -14,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -42,6 +44,13 @@ public class PreDesign implements HaveImagesFile {
     
     @Column(name = "pre_design_status")
     private boolean preDesignStatus;
+    
+    @Column(name = "pre_design_time")
+    private String preDesignTime;
+    
+    @ManyToOne
+    @JoinColumn(name = "package_id")
+    private Parcel parcel;
     
     @OneToMany(mappedBy = "predesign")
     private List<Consultant> consultant;
@@ -130,6 +139,22 @@ public class PreDesign implements HaveImagesFile {
     public void addContent(Content content){
         this.content = content;
         content.setPreDesign(this);
+    }
+
+    public String getPreDesignTime() {
+        return preDesignTime;
+    }
+
+    public void setPreDesignTime(String preDesignTime) {
+        this.preDesignTime = preDesignTime;
+    }
+
+    public Parcel getParcel() {
+        return parcel;
+    }
+
+    public void setParcel(Parcel parcel) {
+        this.parcel = parcel;
     }
     
     

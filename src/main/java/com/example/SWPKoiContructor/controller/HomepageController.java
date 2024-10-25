@@ -101,9 +101,9 @@ public class HomepageController {
         long totalPreDesign = preDesignService.countPreDesignListOfHomePage();
 
         model.addAttribute("preDesignList", preDesignList);
-        model.addAttribute("currentPage", page + 1); // Incrementing for display purposes (page index starts from 0)
+        model.addAttribute("currentPage", page); // Incrementing for display purposes (page index starts from 0)
         model.addAttribute("totalPages", (int) Math.ceil((double) totalPreDesign / size));
-        model.addAttribute("hasMoreServices", (page + 1) * size < totalPreDesign);
+        model.addAttribute("hasMoreServices", (page) * size < totalPreDesign);
 
         return "customer/mainPage/preDesign";
     }
@@ -112,7 +112,7 @@ public class HomepageController {
     public String getPreDesignDetail(Model model, @PathVariable("id") int id) {
 //        Project project = projectService.getProjectWithContent(id);
         PreDesign preDesign = preDesignService.getPreDesignAndContentById(id);
-        if (preDesign != null && preDesign.isPreDesignStatus() && preDesign.getContent() != null) {
+        if (preDesign != null && preDesign.isPreDesignStatus()) {
 
             model.addAttribute("preDesign", preDesign);
             return "customer/mainPage/preDesignDetail";
@@ -203,4 +203,12 @@ public class HomepageController {
 
     }
 
+    @GetMapping("/home/contactUs")
+    public String contactUs(Model model) {
+        return "customer/mainPage/contactUs";
+    }
+    @GetMapping("/home/privatePolicy")
+    public String privatePolicy(Model model) {
+        return "customer/mainPage/privatePolicy";
+    }
 }

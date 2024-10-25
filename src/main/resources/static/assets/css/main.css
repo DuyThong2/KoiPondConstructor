@@ -13580,19 +13580,19 @@ body .ui-tooltip {
 }
 @media only screen and (min-width: 1600px) and (max-width: 1750px) {
   .service__what-we-do-3__text h2 {
-    font-size: 180px;
+    font-size: 130px;
     line-height: 180px;
   }
 }
 @media only screen and (min-width: 1400px) and (max-width: 1600px) {
   .service__what-we-do-3__text h2 {
-    font-size: 160px;
+    font-size: 120px;
     line-height: 160px;
   }
 }
 @media only screen and (min-width: 1200px) and (max-width: 1399px) {
   .service__what-we-do-3__text h2 {
-    font-size: 150px;
+    font-size: 100px;
     line-height: 150px;
   }
 }

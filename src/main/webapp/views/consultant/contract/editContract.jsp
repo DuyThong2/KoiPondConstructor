@@ -280,6 +280,7 @@
             <!-- JavaScript for Auto Adjustment and Validation -->
             <script>
 
+
                 document.addEventListener('DOMContentLoaded', function () {
                     const termOption = document.querySelector('input[name="termOption"]:checked');
                     if (termOption) {
@@ -302,6 +303,20 @@
                     adjustConstructionCosts();
                     updateTotalPrice();
                 }
+                
+                document.querySelectorAll('input[type="number"]').forEach(input => {
+                    input.addEventListener('input', function () {
+                        // Remove any characters that are not digits or dots (allowing decimal numbers)
+                        this.value = this.value.replace(/[^0-9.]/g, '');
+                    });
+
+                    input.addEventListener('blur', function () {
+                        // Prevent negative values by setting any negative number to zero
+                        if (parseFloat(this.value) < 0) {
+                            this.value = 0;
+                        }
+                    });
+                });
 
                 function adjustDesignCosts() {
                     let concept = parseFloat(document.getElementById('conceptDesign').value) || 0;

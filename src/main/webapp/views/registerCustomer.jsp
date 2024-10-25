@@ -62,7 +62,7 @@
 
 <body onload="showMessagePopup('${message}')">
 <div class="wrapper">
-    <form:form action="register" modelAttribute="customerDTO" method="post" onsubmit="return checkPasswordMatch()">
+    <form:form action="${pageContext.request.contextPath}/register" modelAttribute="customerDTO" method="POST" onsubmit="return checkPasswordMatch()">
         <h1>Register</h1>
 
         <div class="input-box">

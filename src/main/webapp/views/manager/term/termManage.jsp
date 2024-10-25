@@ -95,8 +95,12 @@
                                 <div class="form-group col-12 col-md-2">
                                     <label for="sortBy">Sort by:</label>
                                     <select name="sortBy" id="sortBy" class="form-control">
-                                        <option value="percentOnDesign1" ${sortBy == 'percentOnDesign1' ? 'selected' : ''}>Percent on Design Stage 1</option>
-                                        <option value="percentOnDesign2" ${sortBy == 'percentOnDesign2' ? 'selected' : ''}>Percent on Design Stage 2</option>
+                                        <option value="percentOnDesign1" ${sortBy == 'percentOnDesign1' ? 'selected' : ''}>Percent on conceptual</option>
+                                        <option value="percentOnDesign2" ${sortBy == 'percentOnDesign2' ? 'selected' : ''}>Percent on detail</option>
+                                        <option value="percentOnDesign1" ${sortBy == 'percentOnDesign3' ? 'selected' : ''}>Percent on construction</option>
+                                        <option value="percentOnDesign2" ${sortBy == 'percentOnConstruct1' ? 'selected' : ''}>Percent on raw construction</option>
+                                        <option value="percentOnDesign1" ${sortBy == 'percentOnConstruct2' ? 'selected' : ''}>Percent on complete construction</option>
+                                        
                                         <!-- Add more sorting options as needed -->
                                     </select>
                                 </div>
@@ -229,8 +233,6 @@
         </div>
 
         <!-- Bootstrap JS and dependencies -->
-        <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 

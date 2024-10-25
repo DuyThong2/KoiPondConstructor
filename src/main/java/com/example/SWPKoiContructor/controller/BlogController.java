@@ -47,6 +47,11 @@ public class BlogController {
         if (staff == null) {
             return "redirect:/login";
         }
+        
+        long totalBlogs = blogService.countBlogsByCriteria(name, status, dateFrom, dateTo);
+        if(page > (int) Math.ceil((double) totalBlogs / size)){
+            page = 0;
+        }
         List<Blog> blogs = blogService.getBlogsByCriteria(name, status, dateFrom, dateTo, page, size);
         if (!"Management".equalsIgnoreCase(staff.getDepartment())) {
             blogs = blogs.stream()
@@ -54,8 +59,7 @@ public class BlogController {
                     .collect(Collectors.toList());
         }
 
-        long totalBlogs = blogService.countBlogsByCriteria(name, status, dateFrom, dateTo);
-
+        
         // Add attributes to the model
         model.addAttribute("blogs", blogs);
         model.addAttribute("totalBlogs", totalBlogs);
@@ -63,8 +67,10 @@ public class BlogController {
         model.addAttribute("pageSize", size);
         model.addAttribute("totalPages", (int) Math.ceil((double) totalBlogs / size));
         model.addAttribute("status", status);
+        if(staff.getDepartment().equalsIgnoreCase("Management"))
+            return "manager/blog/blogManage";
 
-        return "manager/blog/blogManage";
+        return "blogByStaff/blogManage";
     }
 
     @GetMapping("/staff/blog/viewDetail/{id}")
@@ -74,9 +80,13 @@ public class BlogController {
         if (staff == null) {
             return "redirect:/login";
         }
-        if (blog != null && (blog.isBlogBelongToAuthor(staff) || "Management".equalsIgnoreCase(staff.getDepartment()))) {
+        if (blog != null && blog.isBlogBelongToAuthor(staff)|| "Management".equalsIgnoreCase(staff.getDepartment())) {
             model.addAttribute("blog", blog);
-            return "/manager/blog/blogDetail";
+            if ("Management".equalsIgnoreCase(staff.getDepartment()))
+                return "manager/blog/blogDetail";
+
+            return "blogByStaff/blogDetail";
+
         } else {
             if ("manager".equalsIgnoreCase(staff.getDepartment())) {
                 return "redirect:/manager/blogs";
@@ -89,9 +99,16 @@ public class BlogController {
     }
 
     @GetMapping("/staff/blog/new")
-    public String createBlogForm(Model model) {
+    public String createBlogForm(Model model, HttpSession session) {
+        Staff staff = (Staff) session.getAttribute("user");
+        if (staff == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("blog", new Blog());
-        return "manager/blog/createBlog"; // JSP page name
+        if ("Management".equalsIgnoreCase(staff.getDepartment()))
+            return "manager/blog/createBlog";
+
+        return "blogByStaff/createBlog";
     }
 
     @PostMapping("/staff/blog/new")
@@ -126,16 +143,19 @@ public class BlogController {
     public String createUpdateForm(Model model, HttpSession session, @PathVariable("id") int blogId) {
         Blog blog = blogService.getBlogWithContentById(blogId);
         Staff staff = (Staff) session.getAttribute("user");
-
+        if (staff == null) {
+            return "redirect:/login";
+        }
         if (blog != null && blog.isBlogBelongToAuthor(staff)) {
             model.addAttribute("blog", blog);
-            return "manager/blog/editBlog";
+            return "blogByStaff/editBlog";
         } else if (blog != null && staff.getDepartment().equalsIgnoreCase("Management")) {
             model.addAttribute("blog", blog);
             return "manager/blog/editBlog";
-        } else {
-            return "redirect:/staff/blogs";
         }
+
+        return "redirect:/staff/blogs";
+
 
     }
 

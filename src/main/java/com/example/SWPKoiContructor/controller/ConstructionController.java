@@ -51,9 +51,13 @@ public class ConstructionController {
             @RequestParam(required = false) Integer statusFilter,
             @RequestParam(required = false) String searchName) {
         // Fetch all constructions with optional filters
-        List<Construction> list = constructionService.getListConstruction(null, page, size, statusFilter, searchName);
         int totalPages = constructionService.getTotalPages(null, size, statusFilter, searchName);
 
+        if (page > totalPages) {
+            page = 0;
+        }
+        List<Construction> list = constructionService.getListConstruction(null, page, size, statusFilter, searchName);
+        
         model.addAttribute("constructionList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -73,11 +77,13 @@ public class ConstructionController {
         if (user == null) {
             return "redirect:/login";
         }
-
+        int totalPages = constructionService.getTotalPages(user.getId(), size, statusFilter, searchName);
+        if (page > totalPages) {
+            page = 0;
+        }
         // Fetch constructions filtered by the logged-in user's ID, status, and search name
         List<Construction> constructions = constructionService.getListConstruction(user.getId(), page, size, statusFilter, searchName);
-        int totalPages = constructionService.getTotalPages(user.getId(), size, statusFilter, searchName);
-
+        
         model.addAttribute("constructions", constructions);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -198,12 +204,12 @@ public class ConstructionController {
         try {
             // Update the construction stage detail status
             ConstructionStageDetail updatedDetail = constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
-
+            System.out.println("here asdddddddddddddddddd");
             // Check if the updated detail is related to a payment and the new status is set to 4 (Completed)
             if (updatedDetail != null
                     && "Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())
                     && newStatus == 4) {
-
+                System.out.println("got it inside !!!!!!!!!!!!!!!!1");
                 // Step 1: Retrieve the Project ID from the constructionId
                 Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
                 BigDecimal amount = BigDecimal.valueOf(updatedDetail.getConstructionStage().getConstructionStagePrice());
@@ -212,7 +218,7 @@ public class ConstructionController {
                         customer,
                         amount, // Replace with the actual amount from the detail
                         "Manual", // Indicate that this payment is manual or any relevant method
-                        "Payment for " +updatedDetail.getConstructionStage().getConstructionStageName()  +" of " + customer.getName()
+                        "Payment for " + updatedDetail.getConstructionStage().getConstructionStageName() + " of " + customer.getName()
                 );
 
                 // Save the payment history
@@ -604,11 +610,12 @@ public class ConstructionController {
 
     @GetMapping("/constructor/manage/viewDetail/viewDesign/{projectId}")
     public String manageBlueprint(@PathVariable("projectId") int designStageId,
-                                  Model model, HttpSession session) {
+            Model model, HttpSession session) {
 
         User user = (User) session.getAttribute("user");
-        if (user == null)
+        if (user == null) {
             return "redirect:/login";
+        }
         Design design = designService.getDesignById(designStageId);
         List<DesignStage> designStage = design.getDesignStage();
 

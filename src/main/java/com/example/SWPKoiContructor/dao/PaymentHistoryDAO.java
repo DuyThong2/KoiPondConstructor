@@ -44,13 +44,13 @@ public class PaymentHistoryDAO {
     String searchDescription, 
     LocalDateTime fromDate, 
     LocalDateTime toDate,
-    Integer customerId,  // ID of the customer to filter, null if manager
+    Integer customerId,  // ID of the customer to filter, can be null
     String userRole  // Role of the user: 'CUSTOMER' or 'MANAGER'
 ) {
     StringBuilder queryStr = new StringBuilder("SELECT p FROM PaymentHistory p WHERE 1=1");
 
-    // Role-based filtering
-    if ("CUSTOMER".equals(userRole) && customerId != null) {
+    // Role-based filtering for customers or specific customer ID if provided
+    if (("ROLE_CUSTOMER".equals(userRole) && customerId != null) || customerId != null) {
         queryStr.append(" AND p.customer.id = :customerId");
     }
 
@@ -75,7 +75,7 @@ public class PaymentHistoryDAO {
     TypedQuery<PaymentHistory> query = entityManager.createQuery(queryStr.toString(), PaymentHistory.class);
 
     // Setting parameters dynamically
-    if ("CUSTOMER".equals(userRole) && customerId != null) {
+    if (("ROLE_CUSTOMER".equals(userRole) && customerId != null) || customerId != null) {
         query.setParameter("customerId", customerId);
     }
     if (paymentMethod != null && !paymentMethod.isEmpty()) {
@@ -97,6 +97,7 @@ public class PaymentHistoryDAO {
 
     return query.getResultList();
 }
+
     
     public long countFilteredPayments(
     String paymentMethod, 
@@ -108,8 +109,8 @@ public class PaymentHistoryDAO {
 ) {
     StringBuilder queryStr = new StringBuilder("SELECT COUNT(p) FROM PaymentHistory p WHERE 1=1");
 
-    // Role-based filtering
-    if ("CUSTOMER".equals(userRole) && customerId != null) {
+    // Role-based filtering for customers or specific customer ID if provided
+    if (("ROLE_CUSTOMER".equals(userRole) && customerId != null) || customerId != null) {
         queryStr.append(" AND p.customer.id = :customerId");
     }
 
@@ -131,7 +132,7 @@ public class PaymentHistoryDAO {
     TypedQuery<Long> query = entityManager.createQuery(queryStr.toString(), Long.class);
 
     // Setting parameters dynamically
-    if ("CUSTOMER".equals(userRole) && customerId != null) {
+    if (("ROLE_CUSTOMER".equals(userRole) && customerId != null) || customerId != null) {
         query.setParameter("customerId", customerId);
     }
     if (paymentMethod != null && !paymentMethod.isEmpty()) {
@@ -149,7 +150,7 @@ public class PaymentHistoryDAO {
 
     return query.getSingleResult();
 }
-    
+
      
     public PaymentHistory createPayment(PaymentHistory payment) {
         entityManager.persist(payment);

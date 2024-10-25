@@ -13,6 +13,9 @@
         <%@include file="../cssTemplate.jsp"%>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
         <style>
+            .modal {
+                opacity: 1 !important;
+            }
             .content-panel {
                 background: #ffffff;
                 padding: 20px;
@@ -105,50 +108,9 @@
                 <div class="view-account">
                     <section class="module">
                         <div class="module-inner">
-                            <div class="side-bar">
-                                <div class="user-info">
-                                    <img class="img-profile img-circle img-responsive center-block"  src="${user.getShowingImg(user.imgURL)}" alt />
-                                    <ul class="meta list list-unstyled">
-                                        <li class="name">${user.name}
-                                            <br>
-                                            <label class="label label-info">Customer</label>
-                                        </li>
-                                        <li class="email">
-                                            <a href="#"><span>${user.email}</span></a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <nav class="side-menu">
-                                    <ul class="nav">
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/profile"
-                                               ><span class="fa fa-user"></span> Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/consultant"
-                                               style="font-size: 16px">
-                                                <span class="bi bi-briefcase"></span> My
-                                                Consultant</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/contract">
-                                                <span class="fas fa-file-contract"></span> My Contract</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/projects/">
-                                                <span class="fas fa-project-diagram"></span> My Project</a>
-                                        </li>
-                                        <li  class="active">
-                                            <a href="${pageContext.request.contextPath}/customer/quote">
-                                                <i class="bi bi-file-earmark-text"></i> Quotes</a>
-                                        </li>
-                                        <li>
-                                            <a href="${pageContext.request.contextPath}/customer/serviceDetails/"><span class="bi bi-bar-chart-line"></span> Service</a>
-                                        </li>
+                            <%--User navbar--%>
+                            <%@include file="../navbarUser.jsp"%>
 
-                                    </ul>
-                                </nav>
-                            </div>
                             <div class="content-panel">
 
 

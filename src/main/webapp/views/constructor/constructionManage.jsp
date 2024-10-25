@@ -9,6 +9,7 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
+        <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
             .filter-card {
                 background-color: #ffffff;
@@ -22,7 +23,7 @@
 
     <body>
         <div class="container">
-            <%@include file="navbarConsultruction.jsp" %>
+            <%@include file="navbarConstruction.jsp" %>
             
             <div class="filter-card">
                 <form method="get" action="${pageContext.request.contextPath}/constructor/manage">

@@ -90,7 +90,10 @@ public class ProjectController {
 
             String decodedContent = "";
             try {
-                String content = project.getContent().getContent().trim();
+                String content = project
+                        .getContent()
+                        .getContent()
+                        .trim();
                 decodedContent = new String(Base64.getDecoder().decode(content));
             } catch (IllegalArgumentException e) {
                 System.out.println("Error decoding Base64: " + e.getMessage());
@@ -129,7 +132,8 @@ public class ProjectController {
             project.setDateStart(Utility.localDateToUtilDate(localDate));
             project.setStatus(1);
             project.setStage(1);
-            Content content = new Content();
+            Content content = new Content("");
+            content.setProject(project);
             project.setContent(content);
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);

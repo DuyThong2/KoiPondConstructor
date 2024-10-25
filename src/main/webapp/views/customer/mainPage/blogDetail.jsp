@@ -45,7 +45,15 @@
             font-size: 0.9rem;
             color: #666;
         }
-
+       select{
+           background-color: #f5f5f5;
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            position: relative;
+        }
     </style>
 
 
@@ -117,7 +125,7 @@
                         </div>
                         <div class="search__close">
                             <button type="button" class="search__close-btn search-close-btn">
-                                <s   vg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                                     <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                           stroke-linejoin="round" />
                                     <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -322,12 +330,13 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <div class="banner-3__form-input-select d-flex flex-column">
-                                        <select name="type" id="subject" style="display: none;">
-                                            <option value="">Type 1- Construction</option>
-                                            <option value="order">Type 2 - Maintenance</option>
+
+                                        <select id="services" name="type" required>
+                                            <option value="" disabled selected>Select Service Type</option>
+                                            <option value="Construction">Construction</option>
+                                            <option value="Service">Service</option>
                                         </select>
-                                    </div>
+
                                 </div>
                                 <div class="col-12">
                                     <div class="banner-3__form-input">
