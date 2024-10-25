@@ -198,15 +198,27 @@ VALUES
 (50.00, 0.00, 0.00, 30.00, 20.00, 1, 1, 'Custom contract-based terms, design upfront', 0, 1);  -- Follow contract, total can vary
 
 update Term set term_status = 1;
--- Insert data into Pre_Design table
-INSERT INTO Pre_Design (pre_design_name, pre_design_img_url, pre_design_description, pre_design_status)
+
+ -- Insert sample data into Package table
+INSERT INTO Package (package_name, construction_price_on_square_root, design_on_square_root, package_description, package_status)
 VALUES
-('Modern Koi Pond', 'modern_koi_pond.jpg', 'A modern and sleek koi pond design with clean lines and minimalist features.',1),
-('Traditional Koi Pond', 'traditional_koi_pond.jpg', 'A traditional koi pond design with natural stone elements and a classic feel.', 1),
-('Zen Garden Pond', 'zen_garden_pond.jpg', 'A calming zen-style garden pond featuring natural rocks and a peaceful layout.', 1),
-('Waterfall Koi Pond', 'waterfall_koi_pond.jpg', 'A stunning koi pond design with a cascading waterfall and lush greenery.', 1),
-('Raised Koi Pond', 'raised_koi_pond.jpg', 'An elevated koi pond design perfect for smaller spaces or urban environments.', 1),
-('Tropical Koi Pond', 'tropical_koi_pond.jpg', 'A vibrant and tropical-themed koi pond with colorful plants and dynamic water features.', 1);
+('Basic Package', 100.00, 50.00, 'Basic construction and design package with minimal features.', 1),  -- Active
+('Standard Package', 150.00, 75.00, 'Standard package offering a balanced approach for construction and design.', 1),  -- Active
+('Premium Package', 200.00, 100.00, 'Premium package with advanced construction features and premium design.', 1),  -- Active
+('Luxury Package', 300.00, 150.00, 'Luxury package for high-end construction and bespoke designs.', 1),  -- Active
+('Economy Package', 80.00, 40.00, 'Affordable construction and design package for budget-conscious clients.', 1),  -- Active
+('Maintenance Package', 50.00, 25.00, 'Package focused on pond maintenance rather than new construction or design.', 0);  -- Disabled
+
+
+-- Insert data into Pre_Design table
+INSERT INTO Pre_Design (pre_design_name, pre_design_img_url, pre_design_description, pre_design_status, pre_design_time, package_id)
+VALUES
+('Modern Koi Pond', 'modern_koi_pond.jpg', 'A modern and sleek koi pond design with clean lines and minimalist features.',1,'1 month', 1),
+('Traditional Koi Pond', 'traditional_koi_pond.jpg', 'A traditional koi pond design with natural stone elements and a classic feel.', 1,'4 month', 2),
+('Zen Garden Pond', 'zen_garden_pond.jpg', 'A calming zen-style garden pond featuring natural rocks and a peaceful layout.', 1,'5 month',3),
+('Waterfall Koi Pond', 'waterfall_koi_pond.jpg', 'A stunning koi pond design with a cascading waterfall and lush greenery.', 1,'7 month',4),
+('Raised Koi Pond', 'raised_koi_pond.jpg', 'An elevated koi pond design perfect for smaller spaces or urban environments.', 1,'6 month',5),
+('Tropical Koi Pond', 'tropical_koi_pond.jpg', 'A vibrant and tropical-themed koi pond with colorful plants and dynamic water features.', 1,'3 month',6);
 
 
 -- Insert more sample data with completed consultations into Consultant table
@@ -265,15 +277,7 @@ VALUES
 
 
 
- -- Insert sample data into Package table
-INSERT INTO Package (package_name, construction_price_on_square_root, design_on_square_root, package_description, package_status)
-VALUES
-('Basic Package', 100.00, 50.00, 'Basic construction and design package with minimal features.', 1),  -- Active
-('Standard Package', 150.00, 75.00, 'Standard package offering a balanced approach for construction and design.', 1),  -- Active
-('Premium Package', 200.00, 100.00, 'Premium package with advanced construction features and premium design.', 1),  -- Active
-('Luxury Package', 300.00, 150.00, 'Luxury package for high-end construction and bespoke designs.', 1),  -- Active
-('Economy Package', 80.00, 40.00, 'Affordable construction and design package for budget-conscious clients.', 1),  -- Active
-('Maintenance Package', 50.00, 25.00, 'Package focused on pond maintenance rather than new construction or design.', 0);  -- Disabled
+
 
 
 -- Insert additional data into Quotes table, emphasizing quotes accepted by customers

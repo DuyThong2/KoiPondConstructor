@@ -55,6 +55,10 @@
                             class="bi bi-file-earmark-text"></i> Quote</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="${pageContext.request.contextPath}/manager/serviceQuote"><i
+                            class="bi bi-file-earmark-text"></i> Service Quote</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/manager/contract"><i
                             class="bi bi-file-earmark"></i> Contracts</a>
                 </li>

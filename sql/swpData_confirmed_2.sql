@@ -107,13 +107,26 @@ CREATE TABLE Term (
     
 );
 
+-- 24. Package
+CREATE TABLE Package (
+    package_id INT PRIMARY KEY IDENTITY(1,1),
+    package_name NVARCHAR(255),
+    construction_price_on_square_root DECIMAL(10, 2),
+    design_on_square_root DECIMAL(10, 2),
+    package_description NVARCHAR(255),
+    package_status bit,  -- acctive // disable
+);
+
 -- 22. Pre_Design
 CREATE TABLE Pre_Design (
     pre_design_id INT PRIMARY KEY IDENTITY(1,1),
     pre_design_name NVARCHAR(255),
     pre_design_img_url NVARCHAR(255),
+	pre_design_time NVARCHAR(50),
     pre_design_description NVARCHAR(255),
-	pre_design_status bit
+	pre_design_status bit,
+	package_id INT,
+	FOREIGN KEY (package_id) REFERENCES Package(package_id)
 );
 
 -- 21. Consultant
@@ -132,19 +145,12 @@ CREATE TABLE Consultant (
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
     FOREIGN KEY (staff_id) REFERENCES Staffs(id),
 	FOREIGN KEY (pre_design_id) REFERENCES Pre_Design(pre_design_id)
+
 );
 
 
 
--- 24. Package
-CREATE TABLE Package (
-    package_id INT PRIMARY KEY IDENTITY(1,1),
-    package_name NVARCHAR(255),
-    construction_price_on_square_root DECIMAL(10, 2),
-    design_on_square_root DECIMAL(10, 2),
-    package_description NVARCHAR(255),
-    package_status bit,  -- acctive // disable
-);
+
 
 -- 23. Quotes
 CREATE TABLE Quotes (
@@ -306,7 +312,7 @@ CREATE TABLE Service_Quotes (
     service_quotes_area DECIMAL(10, 2),
     service_quotes_date DATETIME,
     service_quotes_status INT,  --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel
-    used_point INT,             --5.refused(customer),6.refused(by staff),7. cancel, 8.payment process, 9.complete
+    used_point INT,             --5.refused(customer),6.refused(by staff),7. cancel, 8.deposit paid, 9.complete, 10. Inprogress ,11. complete paid
 	is_pay_after BIT,
 	customer_id INT,
     consultant_id int,

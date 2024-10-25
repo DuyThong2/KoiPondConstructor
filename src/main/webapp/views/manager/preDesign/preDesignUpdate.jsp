@@ -126,6 +126,21 @@
                     <form:errors path="preDesignDescription" cssClass="form-error"/>
                 </div>
 
+                <div class="form-group">
+                    <label for="preDesignTime">Estimate Time</label>
+                    <form:textarea path="preDesignTime" class="form-control" placeholder="Enter Time" rows="4" required="true"/>
+                    <form:errors path="preDesignTime" cssClass="form-error"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="parcel">Select Parcel:</label>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#parcelModal">
+                        Choose Parcel
+                    </button>
+                    <input type="hidden" id="selectedParcelId" name="parcel.packageId" value="${preDesign.parcel.packageId}" required />
+                    <input type="text" id="selectedParcelName" name="parcelName" value="${preDesign.parcel.packageName}" readonly class="form-control" />
+                </div>
+
                 <!-- Blog Content -->
                 <div class="form-group">
                     <label for="content">Content</label>
@@ -147,6 +162,62 @@
             </form:form>
             <div style="height:6vh;"></div>
         </main>
+    </div>
+</div>
+
+<div class="modal fade" id="parcelModal" tabindex="-1" role="dialog" aria-labelledby="parcelModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="parcelModalLabel">Select Parcel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Table to display all parcels -->
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th style="width: 20%;">Package Name</th>
+                            <th style="width: 20%;">Description</th>
+                            <th style="width: 15%;">Design Price per m2</th>
+                            <th style="width: 15%;">Construction Price per m2</th>
+                            <th style="width: 10%;">Status</th>
+                            <th style="width: 10%;">Select</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="parcel" items="${parcelList}">
+                            <tr>
+                                <td>${parcel.packageName}</td>
+                                <td>${parcel.packageDescription}</td>
+                                <td class="text-center">${parcel.designOnSquareRoot}</td>
+                                <td class="text-center">${parcel.constructionPriceOnSquareRoot}</td>
+                                <td class="text-center">
+                                    <c:choose>
+                                        <c:when test="${parcel.package_status}">
+                                            Active
+                                        </c:when>
+                                        <c:otherwise>
+                                            Inactive
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td class="text-center">
+                                    <button type="button" class="btn btn-sm btn-primary" onclick="selectParcel(${parcel.packageId}, '${parcel.packageName}', ${parcel.designOnSquareRoot}, ${parcel.constructionPriceOnSquareRoot})">
+                                        Select
+                                    </button>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -213,6 +284,21 @@
             }
         }
     });
+
+    let selectedParcelDetails = {
+                designCostPerSquareMeter: 0,
+                constructionCostPerSquareMeter: 0
+            };
+
+            function selectParcel(packageId, packageName, designCostPerSquareMeter, constructionCostPerSquareMeter) {
+                document.getElementById('selectedParcelId').value = packageId;
+                document.getElementById('selectedParcelName').value = packageName;
+                selectedParcelDetails = {
+                    designCostPerSquareMeter: designCostPerSquareMeter,
+                    constructionCostPerSquareMeter: constructionCostPerSquareMeter
+                };
+                $('#parcelModal').modal('hide');
+            }
 </script>
 
 

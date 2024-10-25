@@ -9,6 +9,7 @@ import com.example.SWPKoiContructor.dto.ServiceDTO;
 import com.example.SWPKoiContructor.entities.Consultant;
 import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Feedback;
+import com.example.SWPKoiContructor.entities.PaymentHistory;
 import com.example.SWPKoiContructor.entities.Service;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
@@ -16,10 +17,13 @@ import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.ConsultantService;
 import com.example.SWPKoiContructor.services.FeedbackService;
 import com.example.SWPKoiContructor.services.LoyaltyPointService;
+import com.example.SWPKoiContructor.services.PaymentHistoryService;
 import com.example.SWPKoiContructor.services.ServiceQuoteService;
 import com.example.SWPKoiContructor.services.ServiceService;
 import com.example.SWPKoiContructor.services.UserService;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,17 +53,17 @@ public class ServiceQuoteController {
     private UserService userService;
     private FeedbackService feedbackService;
     private LoyaltyPointService loyaltyPointService;
+    private PaymentHistoryService paymentHistoryService;
 
-    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService, LoyaltyPointService loyaltyPointService) {
+    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService, LoyaltyPointService loyaltyPointService, PaymentHistoryService paymentHistoryService) {
         this.serviceQuoteService = serviceQuoteService;
         this.serviceService = serviceService;
         this.consultantService = consultantService;
         this.userService = userService;
         this.feedbackService = feedbackService;
         this.loyaltyPointService = loyaltyPointService;
+        this.paymentHistoryService = paymentHistoryService;
     }
-    
-    
 
     //----------------------------------- MANAGER SECTION ----------------------------------------------
     @GetMapping("/manager/serviceQuote/detail/{id}")
@@ -131,6 +135,27 @@ public class ServiceQuoteController {
             feedback.setServiceQuotes(serviceQuotes);
             feedback = feedbackService.saveFeedback(feedback);
         }
+        return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
+    }
+    
+    @PostMapping("/manager/serviceQuote/savePayment")
+    public String savePayment(@RequestParam("id")int serviceQuoteId,
+                            @RequestParam("status")int statusId,
+                            Model model){
+        ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
+        PaymentHistory paymentHistory = new PaymentHistory();
+                paymentHistory.setCustomer(serviceQuote.getCustomer());
+                BigDecimal amount = BigDecimal.valueOf(serviceQuote.calculateTotalPricePayment() - serviceQuote.calculatePointUsing());
+                paymentHistory.setAmount(amount);
+                paymentHistory.setPaymentDate(LocalDateTime.now());
+                paymentHistory.setPaymentMethod("Manual");
+                paymentHistory.setDescription("Payment of "+amount+" for service quote" + serviceQuote.getServiceQuotesId() + " by "+ serviceQuote.getCustomer().getName() + " using " + serviceQuote.calculatePointUsing());
+                paymentHistoryService.createPayment(paymentHistory);
+                
+                double pointGained = amount.doubleValue();
+                loyaltyPointService.gainLoyaltyPoints(serviceQuote.getCustomer(), pointGained);
+                
+                serviceQuote = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
         return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
     }
 

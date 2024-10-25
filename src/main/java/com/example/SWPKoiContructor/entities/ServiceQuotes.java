@@ -236,28 +236,67 @@ public class ServiceQuotes {
             return false;
         return serviceQuotes.getStaff() != null && serviceQuotes.getStaff().getId() == staff.getId();
     }
+    public boolean isAllServiceFailed(){
+        if (serviceDetails == null || serviceDetails.isEmpty()) {
+            return false;
+        }
+        // Define a constant for the "finished" status
+        final int FAILED_STATUS = 5;
+    
+        // Loop through each service detail and check its status
+        for (ServiceDetail serviceDetail : serviceDetails) {
+            if (serviceDetail.getServiceDetailStatus() == null ||(
+                serviceDetail.getServiceDetailStatus() != FAILED_STATUS)) {
+                return false; // Return false if any detail is not finished
+            }
+        }
+        return true;
+    }
     
     public boolean isServiceDetailOfQuoteFinished() {
-    // Check if the serviceDetails list is null or empty
-    if (serviceDetails == null || serviceDetails.isEmpty()) {
-        return false;
-    }
-    
-    // Define a constant for the "finished" status
-    final int FINISHED_STATUS = 3;
-    
-    // Loop through each service detail and check its status
-    for (ServiceDetail serviceDetail : serviceDetails) {
-        if (serviceDetail.getServiceDetailStatus() == null || 
-            serviceDetail.getServiceDetailStatus() != FINISHED_STATUS) {
-            return false; // Return false if any detail is not finished
+        // Check if the serviceDetails list is null or empty
+        if (serviceDetails == null || serviceDetails.isEmpty()) {
+            return false;
         }
-    }
+        // Define a constant for the "finished" status
+        final int FINISHED_STATUS = 3;
     
-    return true; // All service details are finished
+        // Loop through each service detail and check its status
+        for (ServiceDetail serviceDetail : serviceDetails) {
+            if (serviceDetail.getServiceDetailStatus() == null ||(
+                serviceDetail.getServiceDetailStatus() != FINISHED_STATUS &&
+                serviceDetail.getServiceDetailStatus() != 5)) {
+                return false; // Return false if any detail is not finished
+            }
+        }
+        return true; // All service details are finished
     }
     
     public boolean isFree() {
-    return serviceQuotesTotalPrice == usedPoint;
-}
+        return serviceQuotesTotalPrice == usedPoint;
+    }
+    
+    public double calculateTotalPricePayment(){
+        double priceMustPay = serviceQuotesTotalPrice / 2;
+        if(!serviceDetails.isEmpty()){
+            for (ServiceDetail serviceDetail : serviceDetails) {
+                if (serviceDetail.getServiceDetailStatus() == 5) {
+                    priceMustPay -= serviceDetail.getPrice() / 2;
+                }
+            }
+        }
+        return priceMustPay;
+    }
+    
+    public double calculatePointUsing(){
+        double pointUsing = usedPoint;
+        double pointLeft = 0;
+        if(pointUsing > (serviceQuotesTotalPrice / 2)){
+            pointUsing = (serviceQuotesTotalPrice / 2) - 1;
+            pointLeft = usedPoint - pointUsing;
+        }
+        if(serviceQuotesStatus == 9 && isServiceDetailOfQuoteFinished())
+            return pointLeft;
+        return pointUsing;
+    }
 }
