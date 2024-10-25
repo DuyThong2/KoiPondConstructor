@@ -320,7 +320,7 @@ public class ContractController {
         contract = contractService.createContract(contract);
 
         // Create notification for the new contract
-        notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId());
+        notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId(),contract.getCustomer().getId());
 
         return "redirect:/consultant/contract/detail/" + contract.getContractId();
     }
@@ -387,6 +387,7 @@ public class ContractController {
 
         // Save the contract entity with the updated term
         contract = contractService.createContract(contract);
+        notificationService.createContractNotification(contract.getCustomer().getName(),contract.getContractId(),contract.getCustomer().getId());
 
         return "redirect:/consultant/contract/detail/" + contract.getContractId();
     }

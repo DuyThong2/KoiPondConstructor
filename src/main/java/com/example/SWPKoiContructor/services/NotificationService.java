@@ -86,11 +86,14 @@ public class NotificationService {
      }
 
      @Transactional
-     public void createNotification(String customerName, int relatedId, String fromTable) {
+     public void createNotification(String customerName, int relatedId, String fromTable,Integer receiverId,String receiverType,String message) {
           Notification notification = new Notification();
-          notification.setMessage("New " + fromTable + " created for customer: " + customerName);
+         if(receiverId!=null){
+              notification.setReceiverId(receiverId);
+         }
+          notification.setMessage(message);
           notification.setRelatedId(relatedId);
-          notification.setReceiverType("manager");
+          notification.setReceiverType(receiverType);
           notification.setFromTable(fromTable);
           notification.setCreatedAt(LocalDateTime.now());
           notification.setRead(false);
@@ -98,17 +101,32 @@ public class NotificationService {
           notificationDAO.saveNotification(notification);
 
           // Broadcast notification to /topic/notifications
-          simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
+          if(receiverType.equalsIgnoreCase("manager"))
+               simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
+          else
+               simpMessagingTemplate.convertAndSend("/topic/"+receiverType+"/"+receiverId, notification);
      }
 
      @Transactional
-     public void createQuoteNotification(String customerName, int quoteId) {
-          createNotification(customerName, quoteId, "quote");
+     public void createQuoteNotification(String customerName, int quoteId, Integer customerId) {
+         String messageCustomer = "A New Quote created for Customer: " + customerName;
+         String messageManager = "A New Quote created for you! Check It";
+          
+         createNotification(customerName, quoteId, "quote", null, "manager", messageCustomer);
+         createNotification(customerName, quoteId, "quote", customerId, "customer", messageManager);
      }
 
      @Transactional
-     public void createContractNotification(String customerName, int contractId) {
-          createNotification(customerName, contractId, "contract");
+     public void createContractNotification(String customerName, int contractId, Integer customerId) {
+         String managerMessage = "A New Contract created for Customer: " + customerName;
+         String customerMessage = "A New Contract has been created for you! Please review it.";
+          
+         createNotification(customerName, contractId, "contract", null, "manager", managerMessage);
+         createNotification(customerName, contractId, "contract", customerId, "customer", customerMessage);
+     }
+     public void createProjectNotification(String name, int projectId, int id) {
+          String message="Your project has been created! Please check it";
+          createNotification(name,projectId,"project",id,"customer",message);
      }
 
      @Transactional
@@ -148,7 +166,7 @@ public class NotificationService {
           Notification notification = new Notification();
           notification.setReceiverId(id);
           notification.setMessage(message);
-          notification.setRelatedId(id);
+          notification.setRelatedId(relatedId);
           notification.setReceiverType(staffType);
           notification.setFromTable(table);
           notification.setCreatedAt(LocalDateTime.now());
@@ -178,4 +196,6 @@ public class NotificationService {
           notificationDAO.saveNotification(notification);
           simpMessagingTemplate.convertAndSend("/topic/consultant/" + id, notification);
      }
+
+
 }

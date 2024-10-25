@@ -265,7 +265,7 @@ public class QuoteController {
         newQuote.setQuotesDate(new Date());
         newQuote = quoteService.saveQuotes(newQuote);
         Consultant consultant = newQuote.getConsultant();
-        notificationService.createQuoteNotification(consultant.getConsultantCustomerName(),newQuote.getQuotesId());
+        notificationService.createQuoteNotification(consultant.getConsultantCustomerName(),newQuote.getQuotesId(),newQuote.getCustomer().getId());
         return "redirect:/consultant/quote";
     }
 
