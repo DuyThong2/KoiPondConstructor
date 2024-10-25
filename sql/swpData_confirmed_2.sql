@@ -209,7 +209,7 @@ CREATE TABLE Project (
     img_url NVARCHAR(255),
     stage INT, -- 1: Planning; 2: Design; 3: Construction; 4:Maintance; 5: Finish
 	is_shareable bit, --accept; reject  
-	contract_id int foreign key references [Contract](contract_id)
+	contract_id int foreign key references [Contract](contract_id),
     project_cancel_message NVARCHAR(max)
 );
 

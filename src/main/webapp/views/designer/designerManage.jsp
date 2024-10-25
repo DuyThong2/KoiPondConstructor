@@ -8,10 +8,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Designer Manage</title>
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
         <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
+
         <style>
             .filter-card {
                 background-color: #ffffff;
@@ -66,7 +67,6 @@
     </head>
 
     <body>
-
         <div class="container">
             <%@include file="navbarDesign.jsp" %>
 
@@ -146,31 +146,30 @@
             </div>
 
 
-               <!-- Pagination Controls -->
-        <div class="d-flex justify-content-between align-items-center mt-4">
-            <!-- Previous Button -->
-            <c:if test="${currentPage > 0}">
-                <a href="?page=${currentPage - 1}" class="btn btn-primary">&lt;</a>
-            </c:if>
-            <c:if test="${currentPage == 0}">
-                <button class="btn btn-primary" disabled>&lt;</button>
-            </c:if>
+            <!-- Pagination Controls -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <!-- Previous Button -->
+                <c:if test="${currentPage > 0}">
+                    <a href="?page=${currentPage - 1}" class="btn btn-primary">&lt;</a>
+                </c:if>
+                <c:if test="${currentPage == 0}">
+                    <button class="btn btn-primary" disabled>&lt;</button>
+                </c:if>
 
-            <!-- Page Indicator -->
-            <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
+                <!-- Page Indicator -->
+                <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
 
-            <!-- Next Button -->
-            <c:if test="${currentPage < totalPages - 1}">
-                <a href="?page=${currentPage + 1}" class="btn btn-primary">&gt;</a>
-            </c:if>
-            <c:if test="${currentPage == totalPages - 1}">
-                <button class="btn btn-primary" disabled>&gt;</button>
-            </c:if>
-        </div>
+                <!-- Next Button -->
+                <c:if test="${currentPage < totalPages - 1}">
+                    <a href="?page=${currentPage + 1}" class="btn btn-primary">&gt;</a>
+                </c:if>
+                <c:if test="${currentPage == totalPages - 1}">
+                    <button class="btn btn-primary" disabled>&gt;</button>
+                </c:if>
+            </div>
         </div>
 
         <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 

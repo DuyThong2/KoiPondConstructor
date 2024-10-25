@@ -86,6 +86,7 @@
                     </thead>
                     <tbody>
                         <c:set var="previousComplete" value="true" />
+
                         <c:forEach var="detail" items="${details}">
                         <form action="${pageContext.request.contextPath}/designStageDetail/updateStatus" method="post" onsubmit="return confirmStatusChange();">
                             <tr>
@@ -181,14 +182,13 @@
                 </div>
             </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
         <script>
-                        function confirmStatusChange() {
-                            return confirm("Are you sure you want to change the status?");
-                        }
+            function confirmStatusChange() {
+                return confirm("Are you sure you want to change the status?");
+            }
         </script>
 
     </body>

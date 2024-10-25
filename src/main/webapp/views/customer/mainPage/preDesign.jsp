@@ -87,7 +87,9 @@
             color: #ccc;
             font-style: italic;
         }
-
+        .d-flex{
+            margin: 0;
+        }
     </style>
 </head>
 
@@ -335,15 +337,10 @@
 
 </main>
 
-
-<!-- Footer area start -->
-
 <%@include file="../footer.jsp" %>
-<!-- Footer area end -->
-
-<!-- JS here -->
 <%@include file="../scriptTemplate.jsp"%>
-
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>
