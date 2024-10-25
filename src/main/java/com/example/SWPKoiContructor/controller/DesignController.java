@@ -125,7 +125,7 @@ public class DesignController {
     public String listContractsByDesigner(Model model,
             HttpSession session,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(defaultValue = "8") int size,
             @RequestParam(required = false) Integer statusFilter,
             @RequestParam(required = false) String searchName) {
 

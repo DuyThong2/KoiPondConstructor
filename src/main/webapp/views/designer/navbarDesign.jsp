@@ -5,6 +5,10 @@
         <a href="${pageContext.request.contextPath}/designer/manage" class="nav-link">
             <i class="fas fa-project-diagram"></i> My Projects
         </a>
+
+        <a href="${pageContext.request.contextPath}/staff/blogs" class="nav-link">
+            <i class="bi bi-newspaper"></i>Blogs
+        </a>
     </div>
 
         <div class="d-flex align-items-center position-relative">
@@ -30,7 +34,6 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                     <li><a class="dropdown-item" href="${pageContext.request.contextPath}/designer/profile"><i class="fas fa-user"></i> Profile</a></li>
-                    <li><a class="dropdown-item" href="#"><i class="fas fa-paint-brush"></i> Theme</a></li>
                     <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Help</a></li>
                     <li class="dropdown-divider"></li>
                     <li><a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>

@@ -14,11 +14,6 @@
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet">
         <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
         <style>
-            .row {
-                margin-right: -190px;
-                margin-left: -15px;
-            }
-
             .modal {
                 opacity: 1 !important;
             }

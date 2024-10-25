@@ -118,12 +118,12 @@
                             class="bi bi-box"></i> Package</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/staff/blogs"><i
-                            class="bi bi-newspaper"></i> Blog</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/staff/blogs">
+                        <i class="bi bi-newspaper"></i> Blog</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="${pageContext.request.contextPath}/manager/payment">
-                        <i class="fa fa-money-bill-wave"></i>Payment History</a>
+                        <i class="fa fa-money-bill-wave"></i> Payment History</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#"><i class="bi bi-bar-chart-line"></i> Reports</a>
