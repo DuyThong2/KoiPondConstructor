@@ -1,4 +1,3 @@
-
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -8,58 +7,91 @@
         <meta charset="UTF-8">
         <title>Create New Blog</title>
         <!-- Bootstrap 5 CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
         <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
         <style>
             body {
-            background-color: #f8f9fa;
-            font-family: 'Arial', sans-serif;
-        }
-        .container {
-            margin-top: 50px;
-            max-width: 800px;
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            text-align: center;
-            color: #007bff;
-            margin-bottom: 30px;
-            font-weight: bold;
-            border-bottom: 2px solid #007bff;
-        }
-        label {
-            font-weight: bold;
-        }
-        .form-control {
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-        .form-control-file {
-            margin-bottom: 20px;
-        }
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 18px;
-            width: 100%;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-        .btn-submit {
-            text-align: center;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
+                background-color: #f3f4f6;
+                font-family: 'Poppins', sans-serif;
+                color: #333;
+            }
+
+            .container {
+                margin-top: 50px;
+                width: 80%; /* Adjust width to occupy 80% of the screen */
+                max-width: 600px; /* Set the maximum width for larger screens */
+                background-color: #ffffff;
+                padding: 40px 60px; /* Increased padding on the left and right */
+                border-radius: 8px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                margin-left: auto; /* Center the container */
+                margin-right: auto; /* Center the container */
+            }
+
+            h1 {
+                text-align: center;
+                color: #1e90ff;
+                margin-bottom: 30px;
+                font-weight: bold;
+            }
+
+            label {
+                font-weight: 600;
+                color: #555;
+            }
+
+            .form-control,
+            .form-control-file {
+                padding: 10px;
+                border-radius: 8px;
+                border: 1px solid #ddd;
+                transition: all 0.3s ease;
+            }
+
+            .form-control:focus,
+            .form-control-file:focus {
+                border-color: #1e90ff;
+                box-shadow: 0 0 10px rgba(30, 144, 255, 0.1);
+            }
+
+            .btn-primary {
+                background-color: #1e90ff;
+                border: none;
+                padding: 12px 20px;
+                font-size: 16px;
+                border-radius: 8px;
+                font-weight: bold;
+                transition: all 0.3s ease;
+                width: 100%;
+            }
+
+            .btn-primary:hover {
+                background-color: #4682b4;
+            }
+
+            .btn-submit {
+                text-align: center;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .form-group textarea.form-control {
+                resize: none;
+            }
+
+            .form-error {
+                font-size: 0.9em;
+                color: #ff5a5a;
+            }
+
+            /* Spacing for File Upload */
+            .form-control-file {
+                margin-top: 10px;
+            }
         </style>
     </head>
     <div style="height:6vh;"></div>
@@ -70,7 +102,7 @@
                 <%@ include file="../navBar.jsp" %>
 
                 <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
                     <!-- Page Heading -->
                     <h1>Create New Pre Design</h1>
 
@@ -127,6 +159,7 @@
                 </main>
 
             </div>
+            <div style="height:6vh;"></div>
         </div>
 
         <!-- Parcel Selection Modal -->
@@ -146,8 +179,8 @@
                                 <tr>
                                     <th style="width: 20%;">Package Name</th>
                                     <th style="width: 20%;">Description</th>
-                                    <th style="width: 15%;">Design Price per mï¿½</th>
-                                    <th style="width: 15%;">Construction Price per mï¿½</th>
+                                    <th style="width: 15%;">Design Price per m2</th>
+                                    <th style="width: 15%;">Construction Price per m2</th>
                                     <th style="width: 10%;">Status</th>
                                     <th style="width: 10%;">Select</th>
                                 </tr>
@@ -184,8 +217,7 @@
                     </div>
                 </div>
             </div>
-        </div>        
-
+        </div>
 
         <!-- CKEditor Integration -->
         <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script> <!-- Ensure image2 plugin is enabled -->
@@ -250,27 +282,26 @@
                                                         }
                                                     }
                                                 });
-        </script>
-        <script>
-            let selectedParcelDetails = {
-                designCostPerSquareMeter: 0,
-                constructionCostPerSquareMeter: 0
-            };
-            function selectParcel(packageId, packageName, designCostPerSquareMeter, constructionCostPerSquareMeter) {
-                document.getElementById('selectedParcelId').value = packageId;
-                document.getElementById('selectedParcelName').value = packageName;
-                selectedParcelDetails = {
-                    designCostPerSquareMeter: designCostPerSquareMeter,
-                    constructionCostPerSquareMeter: constructionCostPerSquareMeter
-                };
-               
-                $('#parcelModal').modal('hide');
-            }
+
+                                                let selectedParcelDetails = {
+                                                    designCostPerSquareMeter: 0,
+                                                    constructionCostPerSquareMeter: 0
+                                                };
+                                                function selectParcel(packageId, packageName, designCostPerSquareMeter, constructionCostPerSquareMeter) {
+                                                    document.getElementById('selectedParcelId').value = packageId || 0; // Default to 0 if no ID
+                                                    document.getElementById('selectedParcelName').value = packageName;
+
+                                                    selectedParcelDetails = {
+                                                        designCostPerSquareMeter: designCostPerSquareMeter,
+                                                        constructionCostPerSquareMeter: constructionCostPerSquareMeter
+                                                    };
+
+                                                    $('#parcelModal').modal('hide');
+                                                }
         </script>
 
+
         <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     </body>

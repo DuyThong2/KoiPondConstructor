@@ -101,7 +101,6 @@ public class PreDesignController {
     public String saveNewPreDesign(@ModelAttribute("preDesign")PreDesign preDesign,
             @RequestParam("file")MultipartFile file,
             @RequestParam("content")String content,
-            @RequestParam("selectedParcelId")int parcelId,
             Model model){
         try{
         preDesign.setPreDesignStatus(true);
@@ -109,7 +108,6 @@ public class PreDesignController {
         preDesign.addContent(newContent);
         String imgURL = fileUtility.handleFileUpload(file, FileUtility.BLOG_DIR);
         preDesign.setPreDesignImgUrl(imgURL);
-        preDesign.setParcel(parcelService.getParcelById(parcelId));
         preDesignService.createNewPreDesign(preDesign);
         return "redirect:/manager/preDesign";
         }catch (Exception e) {
@@ -126,7 +124,6 @@ public class PreDesignController {
     public String updateBlog(@ModelAttribute PreDesign preDesign,
             @RequestParam("file") MultipartFile file,
             @RequestParam("content") String content, // Get the content from the form
-            @RequestParam("selectedParcelId")int parcelId,
             Model model) {
         try {
             PreDesign originPreDesign = preDesignService.getPredesignById(preDesign.getPreDesignId());
@@ -134,7 +131,7 @@ public class PreDesignController {
                 originPreDesign.setPreDesignName(preDesign.getPreDesignName());
                 originPreDesign.setPreDesignDescription(preDesign.getPreDesignDescription());
                 originPreDesign.setPreDesignStatus(preDesign.isPreDesignStatus());
-                originPreDesign.setParcel(parcelService.getParcelById(parcelId));
+                originPreDesign.setParcel(preDesign.getParcel());
                 String imgURL = fileUtility.handleFileUpload(file, FileUtility.BLOG_DIR);
                 if (imgURL != null) {
                     originPreDesign.setPreDesignImgUrl(imgURL);
