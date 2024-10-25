@@ -38,6 +38,7 @@ public class PaymentHistoryController {
             @RequestParam(required = false) String searchDescription,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate,
+            @RequestParam(required = false) Integer customerId, 
             Model model,
             HttpSession session
     ) {
@@ -48,7 +49,7 @@ public class PaymentHistoryController {
                 paymentMethod, searchDescription,
                 fromDate != null ? fromDate.atStartOfDay() : null,
                 toDate != null ? toDate.atTime(LocalTime.MAX) : null,
-                null, userRole)
+                customerId, userRole)
                 / size);
         if(page > totalPage){
             page = 0;
@@ -58,7 +59,7 @@ public class PaymentHistoryController {
                 paymentMethod, searchDescription,
                 fromDate != null ? fromDate.atStartOfDay() : null,
                 toDate != null ? toDate.atTime(LocalTime.MAX) : null,
-                null, userRole
+                customerId, userRole
         );
 
         
@@ -66,6 +67,7 @@ public class PaymentHistoryController {
         model.addAttribute("payments", payments);
         model.addAttribute("currentPage", page);
         model.addAttribute("pageSize", size);
+        model.addAttribute("customerId", customerId);  // Pass the customerId back to the view if needed
 
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDirection", sortDirection);
@@ -91,9 +93,7 @@ public class PaymentHistoryController {
             Model model,
             HttpSession session
     ) {
-        // Trim the parameters to remove leading or trailing spaces
-        sortBy = sortBy.trim();
-        sortDirection = sortDirection.trim();
+        
         if (searchDescription != null) {
             searchDescription = searchDescription.trim();
         }
@@ -108,7 +108,7 @@ public class PaymentHistoryController {
                 paymentMethod, searchDescription,
                 fromDate != null ? fromDate.atStartOfDay() : null,
                 toDate != null ? toDate.atTime(LocalTime.MAX) : null,
-                null, userRole
+                customerId, userRole
         ) / size);
         if(page > totalPage){
             page = 0;
