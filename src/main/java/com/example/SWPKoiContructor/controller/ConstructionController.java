@@ -174,7 +174,7 @@ public class ConstructionController {
             return "redirect:/login";
         }
         if (user.getAuthority().getAuthority().equalsIgnoreCase("ROLE_MANAGER")) {
-            return "redirect:/manager/construction/viewDetail/" + constructionId;
+            return "redirect:/manager/construction/detail/" + constructionId;
         }
 
         // Fetch the construction stage details by constructionStageId
@@ -204,7 +204,7 @@ public class ConstructionController {
         try {
             // Update the construction stage detail status
             ConstructionStageDetail updatedDetail = constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
-            System.out.println("here asdddddddddddddddddd");
+            System.out.println("ANH THONG BAKA");
             // Check if the updated detail is related to a payment and the new status is set to 4 (Completed)
             if (updatedDetail != null
                     && "Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())
@@ -220,11 +220,19 @@ public class ConstructionController {
                         "Manual", // Indicate that this payment is manual or any relevant method
                         "Payment for " + updatedDetail.getConstructionStage().getConstructionStageName() + " of " + customer.getName()
                 );
+                notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "We have noticed your payment. Aligator Godzillamatsu");
 
                 // Save the payment history
                 paymentHistoryService.createPayment(paymentHistory);
+
                 redirectAttributes.addFlashAttribute("success", "Status updated and payment recorded successfully!");
-            } else {
+            }else if(newStatus==2&&"Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())){
+                Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
+                notificationService.createNotification(constructionId, "design", customer.getId(), "customer", "You are required to pay for construction stage");
+            }else if(newStatus==2&&"Inspection".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())){
+                Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
+                notificationService.createNotification(constructionId, "design", customer.getId(), "customer", "We need your confirmation on construction site");
+            }else{
                 redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
             }
         } catch (Exception e) {

@@ -3,12 +3,7 @@ package com.example.SWPKoiContructor.controller.functionalController;
 import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.PaymentHistory;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
-import com.example.SWPKoiContructor.services.ConstructionStageDetailService;
-import com.example.SWPKoiContructor.services.CustomerService;
-import com.example.SWPKoiContructor.services.DesignStageDetailService;
-import com.example.SWPKoiContructor.services.LoyaltyPointService;
-import com.example.SWPKoiContructor.services.PaymentHistoryService;
-import com.example.SWPKoiContructor.services.ServiceQuoteService;
+import com.example.SWPKoiContructor.services.*;
 import com.example.SWPKoiContructor.services.functionalService.PayPalService;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
@@ -58,6 +53,7 @@ public class PayPalController {
     @Autowired
     private CustomerService customerService;
 
+    private NotificationService notificationService;
     @PostMapping("/pay/construction")
     public RedirectView payForConstruction(HttpServletRequest request, 
                                            @RequestParam("amount") double amount,
@@ -267,7 +263,8 @@ public class PayPalController {
                 paymentHistory.setPaymentMethod("PayPal");
                 paymentHistory.setDescription("Payment of "+amount+" for service quote" + sq.getServiceQuotesId() + " by "+ sq.getCustomer().getName());
                 paymentHistoryService.createPayment(paymentHistory);
-                
+
+
                 double pointGained = amount.doubleValue();
                 loyaltyPointService.gainLoyaltyPoints(sq.getCustomer(), pointGained);
                 // Redirect to design page

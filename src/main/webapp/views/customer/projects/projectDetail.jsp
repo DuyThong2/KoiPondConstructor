@@ -288,7 +288,7 @@
                                                 <div class="col text-center mb-2">
                                                     <c:choose>
                                                         <c:when test="${currentStage >= 2}">
-                                                            <a href="${pageContext.request.contextPath}/customer/project/design/${project.design.designId}"
+                                                            <a href="${pageContext.request.contextPath}/customer/design/detail/${project.design.designId}"
                                                                 class="btn stage-button btn-md btn-block px-3 ${buttonClass} stage-with-details">
                                                                 Design <i class="fas fa-info-circle"></i>
                                                             </a>
@@ -308,7 +308,7 @@
                                                 <div class="col text-center mb-2">
                                                     <c:choose>
                                                         <c:when test="${currentStage >= 3}">
-                                                            <a href="${pageContext.request.contextPath}/customer/project/construction/${project.construction.constructionId}"
+                                                            <a href="${pageContext.request.contextPath}/customer/construction/detail/${project.construction.constructionId}"
                                                                 class="btn stage-button btn-md btn-block px-3 ${buttonClass} stage-with-details">
                                                                 Construction <i class="fas fa-info-circle"></i>
                                                             </a>
