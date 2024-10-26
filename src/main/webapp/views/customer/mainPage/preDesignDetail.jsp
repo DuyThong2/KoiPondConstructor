@@ -261,7 +261,7 @@
                 <div class="col-md-12">
                     <div class="page-title-inner">
                         <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="index.html" class="theme-color">Home</a>
+                            <a href="${pageContext.request.contextPath}/home/preDesign" class="theme-color">Home</a>
                             <span class="current">Pre Design</span>
                         </div>
                         <h1 class="page-title mb-0">${preDesign.preDesignName}</h1>
@@ -283,7 +283,7 @@
                     <!-- Image -->
                     <div class="zoom-gallery mb-5">
                         <div class="portfolio-thumb">
-                            <img src="/uploads/${preDesign.preDesignImgUrl}" alt="Project Image">
+                            <img src="${preDesign.getShowingImg(preDesign.preDesignImgUrl)}" alt="Project Image">
                         </div>
                     </div>
 

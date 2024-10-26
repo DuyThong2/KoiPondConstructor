@@ -198,7 +198,7 @@ public class ServiceDAO {
     public Service getServiceWithContentById(int id) {
         try {
             TypedQuery<Service> query = entityManager.createQuery(
-                    "SELECT s FROM Service s JOIN FETCH s.content inner join s.servicePrice price where s.serviceId = :id and price.servicePriceStatus= 1", Service.class);
+                    "SELECT s FROM Service s left join s.content inner join s.servicePrice price where s.serviceId = :id and price.servicePriceStatus= 1", Service.class);
             query.setParameter("id", id);
             return query.getSingleResult();
         } catch (NoResultException e) {

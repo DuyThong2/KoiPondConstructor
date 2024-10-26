@@ -199,7 +199,7 @@
                 <div class="col-md-12">
                     <div class="page-title-inner">
                         <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="index.html" class="theme-color">Home</a>
+                            <a href="${pageContext.request.contextPath}/home/services" class="theme-color">Home</a>
                             <span class="current">Services</span>
                         </div>
                         <h1 class="page-title mb-0">${service.serviceName}</h1>
