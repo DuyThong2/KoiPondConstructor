@@ -205,8 +205,14 @@ public class ProjectController {
     @ResponseBody
     public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId) {
         try {
+
             projectService.updateProjectStage(projectId);
+            Project project = projectService.getProjectById(projectId);
+            List<Staff> staffList =new ArrayList<>(project.getDesign().getStaff());
+            staffList.addAll(project.getConstruction().getStaff());
+            notificationService.assignListStaffNotification(staffList,projectId,project.getProjectName());
             return ResponseEntity.ok("Change stage successfully");
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating project stage");
         }
@@ -248,6 +254,11 @@ public class ProjectController {
             Model model) {
         try {
             staffService.assignStaffToProject(staffId, projectId, role);
+            Staff staff = staffService.getStaffById(staffId);
+            Project project= projectService.getProjectById(projectId);
+            if(project.getStatus()>=2){
+                notificationService.assignStaffNotification(staffId,projectId,staff.getDepartment(),"project","You have been assigned to a new Project: "+ project.getProjectName());
+            }
             return "redirect:/manager/projects/assign/" + projectId;
         } catch (Exception e) {
             model.addAttribute("errorMessage", "Error assigning staff to project: " + e.getMessage());
@@ -264,7 +275,7 @@ public class ProjectController {
             Project project = projectService.getProjectById(projectId);
             Staff staff = staffService.getStaffById(staffId);
             if (project.getStatus() == 3 || project.getStatus() == 4) {
-                model.addAttribute("errorMessage", "Can't delete project");
+                model.addAttribute("errorMessage", "Can't delete Staff");
                 return "manager/projects/projectAssignStaff";
             }
             if (staff == null) {
@@ -281,6 +292,9 @@ public class ProjectController {
                     throw new IllegalArgumentException(
                             "Staff with ID " + staffId + " is not assigned as a designer for the project.");
                 }
+                if(project.getStatus()>=2){
+                    notificationService.assignStaffNotification(staffId,projectId,staff.getDepartment(),"project","You have been deleted from project: "+ project.getProjectName());
+                }
 
             } else if (role.equalsIgnoreCase("construction")) {
                 if (project.getConstruction() == null) {
@@ -294,6 +308,9 @@ public class ProjectController {
                             "Staff with ID " + staffId + " is not assigned as a construction staff for the project.");
                 }
 
+                if(project.getStatus()>=2){
+                    notificationService.assignStaffNotification(staffId,projectId,staff.getDepartment(),"project","You have been deleted from project: "+ project.getProjectName());
+                }
             } else {
                 throw new IllegalArgumentException("Invalid role specified: " + role);
             }

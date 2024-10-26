@@ -72,11 +72,6 @@
             setTimeout(connectWebSocket, 5000); // Retry connection after 5 seconds
         });
     }
-
-   
-
-    
-
     function fetchNotifications() {
         $.ajax({
             url: '${pageContext.request.contextPath}/api/notifications/${user.id}',

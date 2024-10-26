@@ -105,7 +105,7 @@ public class ConsultantController {
         Staff consultantStaff = staffService.getStaffById(staffId);
         Consultant consultant = consultantService.updateConsultantStaff(id, consultantStaff);
         String messageNotification = "You have been assigned to consultant of Customer:"+ consultant.getConsultantCustomerName();
-        notificationService.assignStaffNotification(consultantStaff.getId(),consultant.getConsultantId(),"consultantStaff","consultant",messageNotification);
+        notificationService.assignStaffNotification(consultantStaff.getId(),consultant.getConsultantId(),"consultant","consultant",messageNotification);
         // Push the notification via WebSocket
         return "redirect:/manager/consultant/detail/" + id;
     }

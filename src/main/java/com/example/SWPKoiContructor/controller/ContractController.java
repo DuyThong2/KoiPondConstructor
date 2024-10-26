@@ -456,7 +456,8 @@ public class ContractController {
 
         // Save the contract entity with the updated term
         contract = contractService.createContract(contract);
-
+        Customer customer = contract.getCustomer();
+        notificationService.createNotification(contract.getContractId(),"contract",customer.getId(),"customer","Your contract has been updated! Please check it");
         return "redirect:/manager/contract/detail/" + contract.getContractId();
     }
 
@@ -466,6 +467,7 @@ public class ContractController {
         
         // Create notification for the status change
         String statusDescription = getStatusDescription(status);
+        Customer customer = contract.getCustomer();
         notificationService.createContractStatusNotification(contract.getCustomer().getName(), contractId, statusDescription);
         
         return "redirect:/customer/contract/detail/" + contractId;
@@ -495,6 +497,9 @@ public class ContractController {
         User toUser = userService.getUserById(toUserId);
         Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, contract);
         newFeedback = feedbackService.saveFeedback(newFeedback);
+        String statusDescription = getStatusDescription(status);
+        Customer customer = contract.getCustomer();
+        notificationService.createContractStatusNotification(contract.getCustomer().getName(), contractId, statusDescription);
         return "redirect:/customer/contract/detail/" + contractId;
 
     }
@@ -504,8 +509,11 @@ public class ContractController {
         Contract contract = contractService.changeStatusContract(status, contractId);
         Staff staff = contract.getQuote().getStaff();
         String statusString = "";
-        if(status==2)
-            statusString= "Accepted";
+        if(status==2) {
+            statusString = "Accepted";
+            Customer customer= contract.getCustomer();
+            notificationService.createNotification(contractId,"contract",customer.getId(),"customer","You contract has been approved! Please check it!");
+        }
         else if(status==4)
             statusString="Rejected";
         if(status==5)
