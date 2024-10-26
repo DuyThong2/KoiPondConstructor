@@ -231,7 +231,7 @@ public class ContractController {
 
     }
 
-    @GetMapping("/customer/contract/viewDetail/{id}")
+    @GetMapping("/customer/contract/detail/{id}")
     public String viewDetailContractByCustomer(Model model, @PathVariable("id") int id, HttpSession session) {
         Contract contract = contractService.getContractById(id);
         Customer customer = (Customer) session.getAttribute("user");

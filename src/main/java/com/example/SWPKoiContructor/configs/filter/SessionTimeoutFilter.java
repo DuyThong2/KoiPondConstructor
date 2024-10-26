@@ -19,7 +19,8 @@ import java.io.IOException;
 @Component
 @WebFilter("/*") // Intercepts all incoming requests
 public class SessionTimeoutFilter implements javax.servlet.Filter {
-
+    
+    private String contextPath = "";
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         // Initialization logic if needed
@@ -46,7 +47,7 @@ public class SessionTimeoutFilter implements javax.servlet.Filter {
                 SecurityContextHolder.clearContext();
 
                 // Redirect to the login page if the session has expired or the user is not authenticated
-                httpResponse.sendRedirect("/login?expired=true");
+                httpResponse.sendRedirect(contextPath+"/login?expired=true");
                 return;
             }
 
@@ -55,7 +56,7 @@ public class SessionTimeoutFilter implements javax.servlet.Filter {
                 SecurityContextHolder.clearContext();
 
                 // Redirect to the login page if the session has expired or the user is not authenticated
-                httpResponse.sendRedirect("/login?expired=true");
+                httpResponse.sendRedirect(contextPath+"/login?expired=true");
                 return;
             }
         }

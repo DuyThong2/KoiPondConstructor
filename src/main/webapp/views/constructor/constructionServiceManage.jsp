@@ -61,7 +61,7 @@
 
                                              </td>
                                              <td>
-                                                  <a href="${pageContext.request.contextPath}/constructor/serviceDetail/${service.id}"
+                                                  <a href="${pageContext.request.contextPath}/constructor/serviceDetail/detail/${service.id}"
                                                        class="btn btn-warning">Manage</a>
                                              </td>
                                         </tr>

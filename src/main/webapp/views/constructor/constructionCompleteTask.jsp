@@ -196,7 +196,7 @@
                 </table>
 
                 <div class="text-center mt-3">
-                    <a href="${pageContext.request.contextPath}/constructor/construction/${constructionId}"
+                    <a href="${pageContext.request.contextPath}/constructor/construction/detail/${constructionId}"
                        class="btn btn-secondary">Back to Construction</a>
                 </div>
 
