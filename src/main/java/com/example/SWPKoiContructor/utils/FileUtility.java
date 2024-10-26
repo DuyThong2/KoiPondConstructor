@@ -75,7 +75,7 @@ public class FileUtility {
 //    }
     public static final String SERVICE_DIR = ROOT_DIR + "service/";
 
-    private static final ExecutorService executorService = Executors.newFixedThreadPool(10); // Adjust the pool size based on needs
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(3); // Adjust the pool size based on needs
 
     public String handleFileUpload(MultipartFile file, String directory) {
         try {
