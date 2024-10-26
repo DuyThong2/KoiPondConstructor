@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -544,15 +545,53 @@
 
 
 
+<%--    <section class="blog section-space section-bg-3">--%>
+<%--        <div class="container">--%>
+<%--            <div class="row">--%>
+<%--                <div class="col-12">--%>
+<%--                    <div class="section__title-wrapper text-center mb-60 mb-sm-40 mb-xs-35">--%>
+<%--                        <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separator"></span>Trending Topics<span data-width="40px" class="right-separator"></span></span>--%>
+<%--                        <h2 class="section__title title-animation text-capitalize rr-br-hidden-md" data-cursor="-opaque">Latest Articles & Blog Posts</h2>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--            </div>--%>
+
+<%--            <div class="row mb-minus-30">--%>
+<%--                <c:forEach var="blog" items="${blogList}">--%>
+<%--                    <div class="col-lg-4 col-md-6 mb-4">--%>
+<%--                        <div class="blog__item has-box-shadow mb-30" style="border-radius: 8px; overflow: hidden; transition: transform 0.3s;">--%>
+<%--                            <a href="blog-details.html" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">--%>
+<%--                                <img src="${pageContext.request.contextPath}/assets/imgs/blog/blog-1.jpg" alt="image not found" class="img-fluid" style="width: 100%; height: auto; transition: transform 0.3s;">--%>
+<%--                            </a>--%>
+<%--                            <div class="blog__item-text p-4" style="background-color: #ffffff;">--%>
+<%--                                <div class="blog__item-meta mb-10 text-muted d-flex justify-content-between">--%>
+<%--                                    <a href="blog-details.html" class="text-secondary">--%>
+<%--                                        <i class="fas fa-user"></i> By Admin--%>
+<%--                                    </a>--%>
+<%--                                    <a href="blog-details.html" class="text-secondary">--%>
+<%--                                        <i class="fas fa-calendar"></i> ${blog.datePost}--%>
+<%--                                    </a>--%>
+<%--                                </div>--%>
+<%--                                <h4 class="blog__item-title mb-3 text-dark font-weight-bold"><a href="blog-details.html">${blog.name}</a></h4>--%>
+<%--                                <p class="text-muted mb-4">${blog.description}</p>--%>
+<%--                                <a class="btn btn-outline-secondary btn-sm" href="${pageContext.request.contextPath}/home/blogs/${blog.id}">Read More</a>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </div>--%>
+<%--                </c:forEach>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--    </section>--%>
 
 
     <!-- blog-2 area start -->
+
     <section class="blog section-space section-bg-3">
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="section__title-wrapper text-center mb-60 mb-sm-40 mb-xs-35">
-                        <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separetor"></span>Trending Topics<span data-width="40px" class="right-separetor"></span></span>
+                        <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separator"></span>Trending Topics<span data-width="40px" class="right-separator"></span></span>
                         <h2 class="section__title title-animation text-capitalize rr-br-hidden-md" data-cursor="-opaque">Latest Articles & Blog Posts</h2>
                     </div>
                 </div>
@@ -560,54 +599,43 @@
 
             <div class="row mb-minus-30">
                 <c:forEach var="blog" items="${blogList}">
-
-                <div class="col-xl-4 col-lg-6"></div>
-                <div class="blog__item has-box-shadow mb-30">
-                    <a href="blog-details.html" data-cursor-text="View" class="blog__item-media d-block">
-                        <img src="/assets/imgs/blog/blog-1.jpg" alt="image not found" class="img-fluid">
-                    </a>
-                    <div class="blog__item-text">
-                        <div class="blog__item-meta mb-10">
-                            <a href="blog-details.html">
-                                <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M14 14.9999V13.4444C14 12.6192 13.6576 11.8279 13.0481 11.2445C12.4386 10.661 11.612 10.3333 10.75 10.3333H4.25C3.38805 10.3333 2.5614 10.661 1.9519 11.2445C1.34241 11.8279 1 12.6192 1 13.4444V14.9999" stroke="#F44E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M7.5 7.22222C9.29493 7.22222 10.75 5.82933 10.75 4.11111C10.75 2.39289 9.29493 1 7.5 1C5.70507 1 4.25 2.39289 4.25 4.11111C4.25 5.82933 5.70507 7.22222 7.5 7.22222Z" stroke="#F44E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                By Admin</a>
-                            <a href="blog-details.html">
-                                <svg width="15" height="16" viewBox="0 0 15 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M12.5556 2.3999H2.44444C1.6467 2.3999 1 3.0267 1 3.7999V13.5999C1 14.3731 1.6467 14.9999 2.44444 14.9999H12.5556C13.3533 14.9999 14 14.3731 14 13.5999V3.7999C14 3.0267 13.3533 2.3999 12.5556 2.3999Z" stroke="#F44E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M10.3887 1V3.8" stroke="#F44E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M4.61133 1V3.8" stroke="#F44E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                    <path d="M1 6.6001H14" stroke="#F44E19" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                    ${blog.datePost}</a>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="blog__item has-box-shadow mb-30" style="border-radius: 8px; overflow: hidden; transition: transform 0.3s;">
+                            <a href="blog-details.html" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/blog/blog-1.jpg" alt="image not found" class="img-fluid" style="width: 100%; height: auto; transition: transform 0.3s;">
+                            </a>
+                            <div class="blog__item-text p-4" style="background-color: #ffffff;">
+                                <div class="blog__item-meta mb-10 text-muted d-flex justify-content-between">
+                                    <a href="blog-details.html" class="text-secondary">
+                                        <i class="fas fa-user"></i> By Admin
+                                    </a>
+                                    <a href="blog-details.html" class="text-secondary">
+                                        <i class="fas fa-calendar"></i> ${blog.datePost}
+                                    </a>
+                                </div>
+                                <h4 class="blog__item-title mb-3 text-dark font-weight-bold"><a href="blog-details.html">${blog.name}</a></h4>
+                                <p class="text-muted mb-4">${blog.description}</p>
+                                <a class="blog__item-readmore" href="${pageContext.request.contextPath}/home/blogs/${blog.id}">
+                                    <svg width="20" height="11" viewBox="0 0 20 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 5.5L19 5.5" stroke="#6A6A6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M13.75 1L19 5.5L13.75 10" stroke="#6A6A6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>Read More</a>
+                            </div>
                         </div>
-
-                        <h4 class="blog__item-title mb-25 mb-xs-15 rr-fw-bold text-capitalize"><a href="blog-details.html">${blog.name}</a></h4>
-
-                        <a class="blog__item-readmore" href="${pageContext.request.contextPath}/home/blogs/${blog.id}">Read More
-                            <svg width="20" height="11" viewBox="0 0 20 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 5.5L19 5.5" stroke="#6A6A6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                <path d="M13.75 1L19 5.5L13.75 10" stroke="#6A6A6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </a>
                     </div>
-                </div>
                 </c:forEach>
             </div>
         </div>
-
     </section>
 
 </main>
-<!-- Footer area start -->
 
 <%@include file="../footer.jsp" %>
-<!-- Footer area end -->
 
-<!-- JS here -->
 <%@include file="../scriptTemplate.jsp"%>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 
 </body>
 

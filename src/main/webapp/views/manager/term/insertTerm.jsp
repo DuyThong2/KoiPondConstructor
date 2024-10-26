@@ -16,14 +16,7 @@
                 background-color: #f8f9fa;
                 padding-top: 50px;
             }
-            .container {
-                max-width: 1100px;
-                margin: auto;
-                background-color: #ffffff;
-                padding: 30px;
-                border-radius: 10px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            }
+
             h2 {
                 text-align: center;
                 color: #007bff;
@@ -135,10 +128,12 @@
                                     <form:input path="percentOnDesign3" class="form-control" id="percent_on_design3" min="0" max="100" step="0.01" />
                                     <form:errors path="percentOnDesign3" cssClass="text-danger" />
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group custom-checkbox">
+
                                     <label for="pay_on_start_of_design" style="margin-right: 15px">Pay on Start of Design</label>
                                     <form:checkbox path="payOnStartOfDesign" class="custom-control-input" id="pay_on_start_of_design" />
                                     <label class="custom-control-label" for="pay_on_start_of_design">Yes</label>
+
                                 </div>
                             </div>
 
@@ -155,7 +150,7 @@
                                     <form:input path="percentOnConstruct2" class="form-control" id="percent_on_construct2" min="0" max="100" step="0.01" />
                                     <form:errors path="percentOnConstruct2" cssClass="text-danger" />
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group custom-checkbox">
                                     <label for="pay_on_start_of_construction" style="margin-right: 15px">Pay on Start of Construction</label>
                                     <form:checkbox path="payOnStartOfConstruction" class="custom-control-input" id="pay_on_start_of_construction" />
                                     <label class="custom-control-label" for="pay_on_start_of_construction">Yes</label>
