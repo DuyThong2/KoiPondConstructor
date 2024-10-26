@@ -85,8 +85,8 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/constructor/manage/viewDetail/${construction.constructionId}" class="btn btn-info">Detail</a>
-                                    <a href="${pageContext.request.contextPath}/constructor/construction/${construction.constructionId}" class="btn btn-secondary">Manage Stages</a>
+                                    <a href="${pageContext.request.contextPath}/constructor/project/detail/${construction.constructionId}" class="btn btn-info">Detail</a>
+                                    <a href="${pageContext.request.contextPath}/constructor/construction/detail/${construction.constructionId}" class="btn btn-secondary">Manage Stages</a>
                                 </td>
                             </tr>
                         </c:forEach>

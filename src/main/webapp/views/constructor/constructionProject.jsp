@@ -135,7 +135,7 @@
                 </p>
             </div>
             <div class="info-item">
-                <a href="${pageContext.request.contextPath}/constructor/manage/viewDetail/viewDesign/${construction.project.projectId}" class="btn btn-info">
+                <a href="${pageContext.request.contextPath}/constructor/designStage/detail/${construction.project.projectId}" class="btn btn-info">
                     <i class="fas fa-file-alt"></i> View All Design
                 </a>
             </div>
