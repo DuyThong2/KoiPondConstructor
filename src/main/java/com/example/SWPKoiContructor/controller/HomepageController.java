@@ -94,7 +94,7 @@ public class HomepageController {
     }
 
     @GetMapping("/home/preDesign")
-    public String getPreDesignList(@RequestParam(defaultValue = "0") int page,
+    public String getPreDesignList(@RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "6") int size,
             Model model) {
         List<PreDesign> preDesignList = preDesignService.getPreDesignListForHomePage(page, size);
@@ -110,13 +110,11 @@ public class HomepageController {
 
     @GetMapping("/home/preDesign/{id}")
     public String getPreDesignDetail(Model model, @PathVariable("id") int id) {
-//        Project project = projectService.getProjectWithContent(id);
         PreDesign preDesign = preDesignService.getPreDesignAndContentById(id);
-        if (preDesign != null && preDesign.isPreDesignStatus()) {
-
+        if(preDesign != null && preDesign.getContent() != null){
             model.addAttribute("preDesign", preDesign);
             return "customer/mainPage/preDesignDetail";
-        } else {
+        }else{
             return "redirect:/home/preDesign";
         }
 

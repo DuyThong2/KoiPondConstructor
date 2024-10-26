@@ -125,5 +125,14 @@ public class CustomerDAO {
         }
         return query.getSingleResult();
     }
+    
+    public List<Customer> getCustomerDescAndActive(){
+        try{
+        TypedQuery<Customer> tq = entityManager.createQuery("SELECT c FROM Customer c WHERE c.enabled = true ORDER BY c.id Desc", Customer.class);
+        return tq.getResultList();
+        }catch(NoResultException e){
+            return null;
+        }
+    }
 
 }

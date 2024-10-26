@@ -88,7 +88,7 @@ public class PreDesignDAO {
     
     public List<PreDesign> getPreDesignListForHomePage(int page, int size){        
         TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p WHERE p.preDesignStatus = true ORDER BY p.preDesignName ASC", PreDesign.class);
-        tq.setFirstResult(page * size);
+        tq.setFirstResult((page-1) * size);
         tq.setMaxResults(size);
         return tq.getResultList();
     }
@@ -100,6 +100,12 @@ public class PreDesignDAO {
     
     public PreDesign getPreDesignById(int preDesignId){
         TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p WHERE p.preDesignId = :id", PreDesign.class);
+        tq.setParameter("id", preDesignId);
+        return tq.getSingleResult();
+    }
+    
+    public PreDesign getPreDesignHadContent(int preDesignId){
+        TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p JOIN FETCH p.content c where p.preDesignId = :id", PreDesign.class);
         tq.setParameter("id", preDesignId);
         return tq.getSingleResult();
     }
@@ -121,5 +127,11 @@ public class PreDesignDAO {
     
     public PreDesign updatePreDesign(PreDesign preDesign){
         return entityManager.merge(preDesign);
+    }
+    
+    public PreDesign updatePreDesignStatus(int preDesignId, boolean status){
+        PreDesign preDesign = getPreDesignById(preDesignId);
+        preDesign.setPreDesignStatus(status);
+        return preDesign;
     }
 }
