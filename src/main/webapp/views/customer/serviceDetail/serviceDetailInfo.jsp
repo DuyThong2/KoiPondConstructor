@@ -281,7 +281,8 @@
 
                          <!-- JS Scripts -->
                          <%@include file="../scriptTemplate.jsp" %>
-                              <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+                          <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
+                          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
                               <script
                                    src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
                               <script>

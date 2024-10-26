@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
 
 
-<header class="navbar">
+<header class="navbar mb-4">
     <div class="d-flex align-items-center">
 
         <a href="${pageContext.request.contextPath}/consultant/viewConsultantList" class="nav-link">
@@ -16,11 +16,12 @@
         <a href="${pageContext.request.contextPath}/consultant/serviceQuote" class="nav-link">
             <i class="fas fa-tools"></i> Service Quote
         </a>
+    </div>
         <div class="nav-item-group d-flex align-items-center">
             <div class="dropdown">
                 <a class="icon-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-bell" style="font-size: 20px;"></i>
                     <!-- Badge for unread notifications -->
                     <span class="badge-note badge-danger" id="notificationCount">0</span>
                 </a>
@@ -36,6 +37,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="dropdown">
                 <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
@@ -51,26 +53,27 @@
             </div>
         </div>
 
-        <!-- User Profile Dropdown -->
-        <div class="dropdown">
-            <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
-                <span class="ml-2">${user.name}</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="${pageContext.request.contextPath}/consultant/profile"><i class="fas fa-user"></i> Profile</a></li>
-                <li><a class="dropdown-item" href="#"><i class="fas fa-question-circle"></i> Help</a></li>
-                <li class="dropdown-divider"></li>
-                <li><a href="${pageContext.request.contextPath}/logout" class="dropdown-item btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-            </ul>
-        </div>
-    </div>
 </header>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the current URL path
+        var currentPath = window.location.pathname;
+
+        // Get all the nav links
+        var navLinks = document.querySelectorAll('.nav-link');
+
+        // Loop through each link and check if the href matches the current path
+        navLinks.forEach(function (link) {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+            }
+        });
+    });
+
     var consultantId = ${user.id};
     var stompClient = null;
   $(document).ready(function() {

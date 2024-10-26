@@ -127,14 +127,18 @@
                                     <c:choose>
                                         <c:when
                                             test="${detail.constructionStageDetailName == 'Payment' || detail.constructionStageDetailStatus == 4  || !previousCompleted}">
-                                            <span class="status-label">
-                                                 <c:choose>
-                                                    <c:when test="${detail.constructionStageDetailStatus == 1}">
-                                                        Pending</c:when>
-                                                    <c:when test="${detail.constructionStageDetailStatus == 2}">
-                                                        Processing</c:when>
-                                                    <c:when test="${detail.constructionStageDetailStatus == 4}">
-                                                        Completed</c:when>
+                                            <span class="badge
+                                                  <c:choose>
+                                                      <c:when test="${detail.constructionStageDetailStatus == 1}">badge-secondary</c:when>
+                                                      <c:when test="${detail.constructionStageDetailStatus == 2}">badge-primary</c:when>
+                                                      <c:when test="${detail.constructionStageDetailStatus == 3}">badge-danger</c:when>
+                                                      <c:when test="${detail.constructionStageDetailStatus == 4}">badge-success</c:when>
+                                                  </c:choose>">
+                                                <c:choose>
+                                                    <c:when test="${detail.constructionStageDetailStatus == 1}">Pending</c:when>
+                                                    <c:when test="${detail.constructionStageDetailStatus == 2}">Processing</c:when>
+                                                    <c:when test="${detail.constructionStageDetailStatus == 3}">Canceled</c:when>
+                                                    <c:when test="${detail.constructionStageDetailStatus == 4}">Completed</c:when>
                                                 </c:choose>
                                             </span>
                                         </c:when>
@@ -150,12 +154,19 @@
 
 
                                         <c:otherwise>
+                                            <!-- Display select card to choose-->
                                             <select class="form-control text-center" name="newStatus" required>
-                                                
-                                                <option value="2" ${detail.constructionStageDetailStatus==2
-                                                                    ? 'selected' : '' }>Processing</option>
-                                                <option value="4" ${detail.constructionStageDetailStatus==4
-                                                                    ? 'selected' : '' }>Completed</option>
+                                                <c:choose>
+                                                    <c:when test="${detail.constructionStageDetailStatus == 2}">
+                                                        <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
+                                                        <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <option value="1" ${detail.constructionStageDetailStatus == 1 ? 'selected' : ''}>Pending</option>
+                                                        <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
+                                                        <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </select>
                                         </c:otherwise>
                                     </c:choose>
@@ -171,12 +182,12 @@
                                 </td>
                             </tr>
 
-                           
+
                             <!-- Update canUpdateNext to false if this stage is not completed or canceled -->
                             <c:if
                                 test="${detail.constructionStageDetailStatus != 4 && detail.constructionStageDetailStatus != 3}">
                                 <c:set var="canUpdateNext" value="false" />
-                                
+
                             </c:if>
                         </form>
                     </c:forEach>

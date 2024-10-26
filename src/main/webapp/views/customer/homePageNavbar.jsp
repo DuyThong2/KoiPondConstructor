@@ -101,6 +101,7 @@
 
                                                 <!-- Notification Dropdown -->
                                                <%@include file="notification.jsp"%>
+                                                
                                                 <c:if test="${sessionScope.user.authority.authority == 'ROLE_CUSTOMER'}">
                                                     <a href="${pageContext.request.contextPath}/customer/profile">
                                                         <i class="fas fa-user profile-icon rounded-circle me-3"
