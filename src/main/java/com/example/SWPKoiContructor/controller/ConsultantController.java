@@ -99,8 +99,8 @@ public class ConsultantController {
     public String updateConsultantStaff(@RequestParam("id") int id, @RequestParam("staffId") int staffId, Model model) {
         Staff consultantStaff = staffService.getStaffById(staffId);
         Consultant consultant = consultantService.updateConsultantStaff(id, consultantStaff);
-        String messageNotification = "You have been assigned to consultant of Customer:" + consultant.getConsultantCustomerName();
-        notificationService.assignStaffNotification(consultantStaff.getId(), consultant.getConsultantId(), "consultantStaff", "consultant", messageNotification);
+        String messageNotification = "You have been assigned to consultant of Customer:"+ consultant.getConsultantCustomerName();
+        notificationService.assignStaffNotification(consultantStaff.getId(),consultant.getConsultantId(),"consultant","consultant",messageNotification);
         // Push the notification via WebSocket
         return "redirect:/manager/consultant/detail/" + id;
     }

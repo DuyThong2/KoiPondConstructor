@@ -176,7 +176,7 @@
                                 <th>Amount</th>
                                 <th>Payment Method</th>
                                 <th>Description</th>
-                                <th></th>
+                             
                             </tr>
                         </thead>
                         <tbody>
@@ -187,10 +187,7 @@
                                     <td>${payment.amount}</td>
                                     <td>${payment.paymentMethod}</td>
                                     <td>${payment.description}</td>
-                                    <td>
-                                        <a href="${pageContext.request.contextPath}/manager/payment/viewDetail/${payment.paymentId}"
-                                           class="btn btn-info">View</a>
-                                    </td>
+                           
                                 </tr>
                             </c:forEach>
                         </tbody>

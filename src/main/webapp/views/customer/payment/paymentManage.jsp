@@ -8,7 +8,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-        <%@include file="../cssTemplate.jsp"%>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
         <%@include file="../cssTemplate.jsp"%>
         <%@include file="../cssCustom.jsp"%>
@@ -16,12 +15,7 @@
             .form-control{
                 font-size: 1.9rem;
             }
-            @media (min-width: 992px) {
-                .view-account .content-panel {
-                    min-height: 800px;
-                    border-left: 1px solid #f3f3f7;
-                    margin-left: 250px;
-                }
+        
                 .view-account .side-bar .side-menu .nav > li > a {
                     display: block;
                     color: #9499a3;
@@ -213,7 +207,7 @@
                                             <th>Amount</th>
                                             <th>Payment Method</th>
                                             <th>Description</th>
-                                            <th>View Detail</th>
+                                          
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -223,9 +217,7 @@
                                                 <td>${payment.amount}</td>
                                                 <td>${payment.paymentMethod}</td>
                                                 <td>${payment.description}</td>
-                                                <td>
-                                                    <a href="${pageContext.request.contextPath}/payment/${payment.paymentId}" class="btn-default btn btn-info">View</a>
-                                                </td>
+                                            
                                             </tr>
                                         </c:forEach>
                                     </tbody>
@@ -273,7 +265,8 @@
 
 
     </body>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <%@include file="../spacing.jsp"%>
     <%@include file="../footer.jsp"%>
     <%@include file="../scriptTemplate.jsp"%>
