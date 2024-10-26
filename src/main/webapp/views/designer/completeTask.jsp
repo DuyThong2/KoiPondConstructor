@@ -178,7 +178,7 @@
 
 
                 <div class="text-center mt-3">
-                    <a href="${pageContext.request.contextPath}/designer/design/${designId}" class="btn btn-secondary">Back to Design</a>
+                    <a href="${pageContext.request.contextPath}/designer/design/detail/${designId}" class="btn btn-secondary">Back to Design</a>
                 </div>
             </div>
         </div>

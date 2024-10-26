@@ -133,9 +133,9 @@
                                     </c:choose>
                                 </td>
                                 <td>
-                                    <a href="${pageContext.request.contextPath}/designer/manage/viewProjectDetail/${designs.designId}" class="btn btn-info">Detail</a>
+                                    <a href="${pageContext.request.contextPath}/designer/project/detail/${designs.designId}" class="btn btn-info">Detail</a>
                                     <c:if test="${designs.status != 4}">
-                                        <a href="${pageContext.request.contextPath}/designer/design/${designs.designId}" class="btn btn-secondary">To Design</a>
+                                        <a href="${pageContext.request.contextPath}/designer/design/detail/${designs.designId}" class="btn btn-secondary">To Design</a>
                                     </c:if>
                                 </td>
 
