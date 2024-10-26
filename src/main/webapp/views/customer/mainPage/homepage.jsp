@@ -275,15 +275,15 @@
                 <c:forEach var="project" items="${projectList}">
                     <div class="col-xl-4 col-md-6">
                         <div class="team__item mb-30">
-                            <a href="team-details.html" class="team__item-media d-block" data-cursor-text="View">
-                                <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg" alt="image not found" class="img-fluid">
+                            <a href="${pageContext.request.contextPath}/home/projects/${project.projectId}" class="team__item-media d-block" data-cursor-text="View">
+                                <img src="${project.getShowingImg(project.imgURL)}" alt="image not found" class="img-fluid">
                             </a>
 
                             <div class="team__item-text d-flex align-items-center justify-content-between">
 
 
                                 <div class="team__item-text__left">
-                                    <h4 class="team__item-title rr-fw-bold color-white mb-0"><a href="team-details.html">${project.projectName}</a></h4>
+                                    <h4 class="team__item-title rr-fw-bold color-white mb-0"><a href="${pageContext.request.contextPath}/home/projects/${project.projectId}">${project.projectName}</a></h4>
                                     <span class="team__item-subtitle color-white">${project.description}</span>
                                 </div>
                             </div>
@@ -602,7 +602,7 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="blog__item has-box-shadow mb-30" style="border-radius: 8px; overflow: hidden; transition: transform 0.3s;">
                             <a href="blog-details.html" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
-                                <img src="${pageContext.request.contextPath}/assets/imgs/blog/blog-1.jpg" alt="image not found" class="img-fluid" style="width: 100%; height: auto; transition: transform 0.3s;">
+                                <img src="${blog.getShowingImg(blog.imgUrl)}" alt="image not found" class="img-fluid" style="width: 100%; height: auto; transition: transform 0.3s;">
                             </a>
                             <div class="blog__item-text p-4" style="background-color: #ffffff;">
                                 <div class="blog__item-meta mb-10 text-muted d-flex justify-content-between">
@@ -613,7 +613,7 @@
                                         <i class="fas fa-calendar"></i> ${blog.datePost}
                                     </a>
                                 </div>
-                                <h4 class="blog__item-title mb-3 text-dark font-weight-bold"><a href="blog-details.html">${blog.name}</a></h4>
+                                <h4 class="blog__item-title mb-3 text-dark font-weight-bold"><a href="${pageContext.request.contextPath}/home/blogs/${blog.id}">${blog.name}</a></h4>
                                 <p class="text-muted mb-4">${blog.description}</p>
                                 <a class="blog__item-readmore" href="${pageContext.request.contextPath}/home/blogs/${blog.id}">
                                     <svg width="20" height="11" viewBox="0 0 20 11" fill="none" xmlns="http://www.w3.org/2000/svg">

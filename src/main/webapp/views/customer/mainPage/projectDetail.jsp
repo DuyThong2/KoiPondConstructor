@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setLocale value="en_US" />
 <!doctype html>
 <html class="no-js" lang="zxx">
 
@@ -285,7 +287,7 @@
                     <!-- Image -->
                     <div class="zoom-gallery mb-5">
                         <div class="portfolio-thumb">
-                            <img src="/uploads/${project.imgURL}" alt="Project Image">
+                            <img src="${project.getShowingImg(project.imgURL)}" alt="Project Image">
                         </div>
                     </div>
 
@@ -303,19 +305,20 @@
                     <table>
                         <tr>
                             <td><span class="portfolio-meta-icon"><i class="ti-calendar"></i></span></td>
-                            <td><h5>Date</h5></td>
-                            <td class="entry-date">${project.dateEnd}</td>
+                            <td><h5>Date start</h5></td>
+                            <td class="entry-date"><fmt:formatDate value="${project.dateStart}" pattern="dd-MM-yyyy" /></td>
+                        </tr>
+                        <tr>
+                            <td><span class="portfolio-meta-icon"><i class="ti-alarm-clock"></i></span></td>
+                            <td><h5>Date end</h5></td>
+                            <td class="entry-duration"><fmt:formatDate value="${project.dateEnd}" pattern="dd-MM-yyyy" /></td>
                         </tr>
                         <tr>
                             <td><span class="portfolio-meta-icon"><i class="ti-user"></i></span></td>
                             <td><h5>Client</h5></td>
                             <td class="entry-client">${project.contract.customer.name}</td>
                         </tr>
-                        <tr>
-                            <td><span class="portfolio-meta-icon"><i class="ti-alarm-clock"></i></span></td>
-                            <td><h5>Duration</h5></td>
-                            <td class="entry-duration">6 Months</td>
-                        </tr>
+                        
                         <tr>
                             <td><span class="portfolio-meta-icon"><i class="ti-folder"></i></span></td>
                             <td><h5>Category</h5></td>

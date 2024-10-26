@@ -161,10 +161,10 @@ public class HomepageController {
 
         // Parse LocalDate from request parameters
         // Fetch paginated blogs based on criteria
-        List<Blog> blogs = blogService.getBlogsByCriteria(null, 1, null, null, adjustedPage, size);
+        List<Blog> blogs = blogService.getBlogsByCriteria(null, 2, null, null, adjustedPage, size);
 
         // Fetch total count for pagination
-        long totalBlogs = blogService.countBlogsByCriteria(null, 1, null, null);
+        long totalBlogs = blogService.countBlogsByCriteria(null, 2, null, null);
 
         // Calculate total pages and whether there are more blogs for pagination
         int totalPages = (int) Math.ceil((double) totalBlogs / size);
