@@ -260,7 +260,7 @@ public class QuoteController {
             model.addAttribute("consultant", consultant);
             model.addAttribute("customer", consultant.getCustomer());
             model.addAttribute("newQuote", newQuote);
-            List<Parcel> parcelList = parcelService.viewParcelList();
+            List<Parcel> parcelList = parcelService.viewParcelActiveList();
             model.addAttribute("parcelList", parcelList);
             User user = (User) session.getAttribute("user");
             model.addAttribute("staff", user);

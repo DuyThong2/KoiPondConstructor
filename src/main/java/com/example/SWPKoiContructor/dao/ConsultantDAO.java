@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Consultant;
+import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.User;
 import java.util.List;
@@ -139,30 +140,31 @@ public class ConsultantDAO {
     }
     
     public List<Consultant> getFilteredConsultantCustomer(int page, int size, String sortBy, String sortDirection,
-            Integer statusFilter, User customer){
-        StringBuilder queryStr = new StringBuilder("SELECT c FROM Consultant c WHERE 1=1 AND c.customer.id = :id");
+            Integer statusFilter, User customer){       
+            StringBuilder queryStr = new StringBuilder("SELECT c FROM Consultant c WHERE 1=1 AND c.customer.id = :id");
 
-        // Dynamic query construction
-        if (statusFilter != null) {
-            queryStr.append(" AND c.consultantStatus = :statusFilter");
-        }           
-        // Sorting
-        queryStr.append(" ORDER BY c.").append(sortBy).append(" ").append(sortDirection);
+            // Dynamic query construction
+            if (statusFilter != null) {
+                queryStr.append(" AND c.consultantStatus = :statusFilter");
+            }           
+            // Sorting
+            queryStr.append(" ORDER BY c.").append(sortBy).append(" ").append(sortDirection);
 
-        // Creating the query
-        TypedQuery<Consultant> query = entityManager.createQuery(queryStr.toString(), Consultant.class);
+            // Creating the query
+            TypedQuery<Consultant> query = entityManager.createQuery(queryStr.toString(), Consultant.class);
 
-        // Setting parameters dynamically
-        query.setParameter("id", customer.getId());
-        if (statusFilter != null) {
-            query.setParameter("statusFilter", statusFilter);
-        }
+            // Setting parameters dynamically
+            query.setParameter("id", customer.getId());
+            if (statusFilter != null) {
+                query.setParameter("statusFilter", statusFilter);
+            }
 
-        // Pagination
-        query.setFirstResult(page * size);
-        query.setMaxResults(size);
+            // Pagination
+            query.setFirstResult(page * size);
+            query.setMaxResults(size);
 
-        return query.getResultList();
+            return query.getResultList();
+        
     }
     
     public long countFilteredConsultantCustomer(int page, int size, String sortBy, String sortDirection,
@@ -182,11 +184,12 @@ public class ConsultantDAO {
         if (statusFilter != null) {
             query.setParameter("statusFilter", statusFilter);
         }
-
-        // Pagination
-        query.setFirstResult(page * size);
-        query.setMaxResults(size);
-
         return query.getSingleResult();
+    }
+    
+    public Consultant setCustomerForConsultant(int consultantId, Customer customer){
+        Consultant consultant = getConsultantById(consultantId);
+        consultant.setCustomer(customer);
+        return consultant;
     }
 }

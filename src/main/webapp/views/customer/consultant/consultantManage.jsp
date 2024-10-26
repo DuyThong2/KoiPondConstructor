@@ -211,36 +211,19 @@
                                                 <!-- Sort By -->
                                                 <div class="col-auto">
                                                     <label for="sortBy">Sort by:</label>
-                                                    <select name="sortBy" id="sortBy"
-                                                            class="form-control"
-                                                            size="padding: 20px">
-                                                        <option value="consultantDateTime"
-                                                                ${sortBy=='consultantDateTime'
-                                                                  ? 'selected' : '' }>Consultant Date
-                                                        </option>
-                                                        <option value="consultantType" ${sortBy=='consultantType'
-                                                                                         ? 'selected' : '' }>Consultant Type
-                                                        </option>
-                                                        <option value="consultantStatus"
-                                                                ${sortBy=='consultantStatus'
-                                                                  ? 'selected' : '' }>
-                                                            Consultant Status
-                                                        </option>
+                                                    <select name="sortBy" id="sortBy" class="form-control" size="padding: 20px">
+                                                        <option value="consultantDateTime" ${sortBy=='consultantDateTime'? 'selected' : '' }>Consultant Date</option>
+                                                        <option value="consultantType" ${sortBy=='consultantType'? 'selected' : '' }>Consultant Type</option>
+                                                        <option value="consultantStatus" ${sortBy=='consultantStatus'? 'selected' : '' }>Consultant Status</option>
                                                     </select>
                                                 </div>
 
                                                 <!-- Sort Direction -->
                                                 <div class="col-auto">
                                                     <label for="sortDirection">Sort Direction: </label>
-                                                    <select name="sortDirection" id="sortDirection"
-                                                            class="form-control"
-                                                            size="padding: 20px">
-                                                        <option value="asc" ${sortDirection=='asc'
-                                                                              ? 'selected' : '' }>Ascending
-                                                        </option>
-                                                        <option value="desc" ${sortDirection=='desc'
-                                                                               ? 'selected' : '' }>Descending
-                                                        </option>
+                                                    <select name="sortDirection" id="sortDirection" class="form-control" size="padding: 20px">
+                                                        <option value="asc" ${sortDirection=='asc'? 'selected' : '' }>Ascending</option>
+                                                        <option value="desc" ${sortDirection=='desc'? 'selected' : '' }>Descending</option>
                                                     </select>
                                                 </div>
 

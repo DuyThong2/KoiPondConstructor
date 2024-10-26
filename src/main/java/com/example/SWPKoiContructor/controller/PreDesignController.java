@@ -83,8 +83,19 @@ public class PreDesignController {
     @GetMapping("/manager/preDesign/detail/{id}")
     public String getDetailPreDesign(@PathVariable("id") int preDesignId, Model model) {
         PreDesign preDesign = preDesignService.getPredesignById(preDesignId);
-        model.addAttribute("preDesign", preDesign);
-        return "/manager/preDesign/preDesignDetail";
+        if(preDesign != null){
+            model.addAttribute("preDesign", preDesign);
+            return "/manager/preDesign/preDesignDetail";
+        }
+        return "redirect:/manager/preDesign";
+    }
+    
+    @PostMapping("/manager/preDesign/updateStatus")
+    public String updateStatus(@RequestParam("id")int preDesignId,
+                            @RequestParam("status")boolean status,
+                            Model model){
+        PreDesign preDesign = preDesignService.updatePreDesignStatus(preDesignId, status );
+        return "redirect:/manager/preDesign/detail/" + preDesignId;
     }
 
     @GetMapping("/manager/preDesign/create")
