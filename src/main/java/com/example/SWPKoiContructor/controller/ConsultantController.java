@@ -229,15 +229,7 @@ public class ConsultantController {
         totalConsultant = consultantService.countConsultantListOrderByAndSortCustomer(page, size, sortBy, sortDirection, statusFilter, customer);
 
         int totalPages = (int) Math.ceil((double) totalConsultant / size);
-
-        if (page > totalPages) {
-            page = (int) totalPages - 1;
-        } else if (page < 1) {
-            page = 1;
-
-        }
-        page = Math.max(page, 1);
-
+       
         // Add attributes to the model for JSP rendering
         model.addAttribute("consultant", consultants);
         model.addAttribute("currentPage", page);

@@ -324,7 +324,7 @@
                                                         <c:if test="${consultant.consultantStatus < 4}">
                                                             <form method="get" action="${pageContext.request.contextPath}/customer/consultant/updateStatus">
                                                                 <input type="hidden" name="consultantId" value="${consultant.consultantId}">
-                                                                <input type="hidden" name="statusId" value="${5}">
+                                                                <input type="hidden" name="statusId" value="5">
                                                                 <button type="submit" class="btn btn-danger">Cancel</button>
                                                             </form>
                                                         </c:if>
@@ -345,41 +345,25 @@
                                     </table>
                                     <!-- Pagination Controls -->
 
-                                    <div
-                                        class="d-flex  justify-content-between align-items-center mt-4">
-                                        <c:if test="${currentPage != 1}">
-
-                                            <form method="get" action="${pageContext.request.contextPath}/customer/serviceDetails/">
-                                                <button class="btn btn-primary" type="submit"><</button>
-                                                <input type="hidden" name="page" value="${currentPage - 1}">
-                                                <input type="hidden" name="size" value="${size}">
-                                                <input type="hidden" name="sortBy" value="${sortBy}">
-                                                <input type="hidden" name="sortType" value="${sortType}">
-                                                <c:if test="${statusFilter != null}">
-                                                    <input type="hidden" name="statusFilter" value="${statusFilter}">
-                                                </c:if>
-                                            </form>
-
+                                    <!-- Pagination Controls -->
+                                    <div class="d-flex justify-content-between align-items-center mt-4">
+                                        <!-- Previous Button -->
+                                        <c:if test="${currentPage > 0}">
+                                            <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&lt;</a>
+                                        </c:if>
+                                        <c:if test="${currentPage == 0}">
+                                            <button class="btn btn-primary" disabled>&lt;</button>
                                         </c:if>
 
+                                        <!-- Page Indicator -->
+                                        <span>Page <strong>${currentPage + 1}</strong> of <strong>${totalPages}</strong></span>
 
-                                        <span>Page <strong>${currentPage}</strong> of
-                                            <strong>${totalPage}</strong></span>
-
-
-                                        <c:if test="${currentPage != totalPage}">
-
-                                            <form method="get" action="${pageContext.request.contextPath}/customer/serviceDetails/">
-                                                <button class="btn btn-primary" type="submit">></button>
-                                                <input type="hidden" name="page" value="${currentPage + 1}">
-                                                <input type="hidden" name="size" value="${size}">
-                                                <input type="hidden" name="sortBy" value="${sortBy}">
-                                                <input type="hidden" name="sortType" value="${sortType}">
-                                                <c:if test="${statusFilter != null}">
-                                                    <input type="hidden" name="statusFilter" value="${statusFilter}">
-                                                </c:if>
-                                            </form>
-
+                                        <!-- Next Button -->
+                                        <c:if test="${currentPage < totalPages - 1}">
+                                            <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&gt;</a>
+                                        </c:if>
+                                        <c:if test="${currentPage == totalPages - 1}">
+                                            <button class="btn btn-primary" disabled>&gt;</button>
                                         </c:if>
                                     </div>
                                 </main>
