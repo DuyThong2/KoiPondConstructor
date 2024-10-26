@@ -180,6 +180,7 @@
             font-size: 2.8em;
             font-weight: bold;
             margin-bottom: 10px;
+            padding-top: 25px;
             color: #ff5733;
             border-bottom: 3px solid #ff5733;
         }
@@ -229,6 +230,144 @@
             color: #666;
             margin-bottom: 20px;
         }
+        /* Section Styling */
+        .intro {
+            padding: 50px 20px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+
+        /* Headings */
+        .intro h2 {
+            font-size: 2.8em;
+            color: #ff5733;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #ff5733;
+            display: inline-block;
+            padding-bottom: 10px;
+        }
+
+        .intro h4 {
+            font-size: 1.8em;
+            color: #333;
+            margin-top: 30px;
+            font-weight: bold;
+        }
+
+
+        .intro p {
+            font-size: 1.2em;
+            line-height: 1.7;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+
+        .intro img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+
+        .intro ul {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 20px;
+        }
+
+        .intro ul li {
+            font-size: 1.2em;
+            color: #333;
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .intro ul li::before {
+            content: "\f0da";
+            font-family: 'FontAwesome';
+            position: absolute;
+            left: 0;
+            color: #ff5733;
+            font-size: 1.4em;
+        }
+
+        .intro strong {
+            color: #ff5733;
+            font-weight: bold;
+        }
+
+        .intro img {
+            margin: 30px 0;
+        }
+
+        @media (max-width: 768px) {
+            .intro {
+                padding: 30px 10px;
+            }
+
+            .intro h2 {
+                font-size: 2.4em;
+            }
+
+            .intro h4 {
+                font-size: 1.6em;
+            }
+
+            .intro p {
+                font-size: 1.1em;
+            }
+        }
+        ul.links-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        ul.links-list li {
+            margin-bottom: 15px;
+        }
+
+        ul.links-list a {
+            display: inline-block;
+            background-color: #ff5733;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        ul.links-list a:hover {
+            background-color: #333;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .contact-form input, .contact-form textarea, .contact-form button {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .contact-form button {
+            background-color: #ff5733;
+            color: white;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            background-color: #ff471a;
+            transform: scale(1.05);
+        }
+
     </style>
 </head>
 
@@ -390,8 +529,124 @@
         </div>
     </section>
 
-    <!-- Section with bg-light -->
+    <%--Intro Design & Construction Of Koi Ponds.--%>
     <section class="bg-light section-space__top section-space__bottom-80">
+        <div class="container">
+            <div class="section-title">
+                <h2>Design & Construction Of Koi Ponds.</h2>
+                <p>Professional Koi Pond Services for Homes and Businesses</p>
+            </div>
+
+              <section class="intro">
+                <p>
+                    With the elegance, longevity, and stunning colors of Koi fish, it's easy to see why Japanese-style gardens are incomplete without a Koi pond.
+                    Designing a beautiful Koi pond  in the garden not only brings a sense of tranquility, luck, and prosperity but also adds unique aesthetic charm to the homeowner's living space.
+                </p>
+                  <div class="what-we-do-3__media pr-15 rr-pr-none-xl rr-mb-60-md" style="margin:0 0 10px 20px" >
+                      <img src="${pageContext.request.contextPath}/assets/imgs/contactUsPage1.webp" alt="" class="img-fluid" >
+                  </div>
+                  <p style="margin: 0 5px 30px 15px">When building a Koi pond, the space and area of the garden determine unique specifications to enhance the landscape for the homeowner.
+                      Let our company, with a team of engineers experienced in designing and constructing Koi ponds for various large and small projects, bring you a high-quality, unique product.
+                  </p>
+
+                <div class="container" style="margin-bottom: 100px">
+                    <%--===============================================--%>
+                    <h2>Standard Koi Pond Design Guidelines</h2>
+                    <h4>1. Pond Shape</h4>
+                    <p>
+                        The shape of the pond will depend on your personal preference and the overall area of the garden.
+                        If needed, contact a professional service to help you design the Koi pond according to your desires and preferences.
+                    </p>
+                    <div class="what-we-do-3__media pr-15 rr-pr-none-xl rr-mb-60-md" style="margin:0 0 10px 20px" >
+                        <img src="${pageContext.request.contextPath}/assets/imgs/contactUsPage2.webp" alt="" class="img-fluid" >
+                    </div>
+                        <%--===============================================--%>
+                    <h4>2. Pond Location</h4>
+                    <p>
+                        The Koi pond can be placed in various locations, such as outdoors, indoors, on a balcony, or on a rooftop.
+                        Depending on where you want to place the pond, there will be different requirements and construction techniques. It is essential to ensure that the pond meets functional requirements, harmonizes with the landscape, and aligns with Feng Shui principles.
+                    </p>
+                        <%--===============================================--%>
+                    <h4>3. Pond Size</h4>
+                    <p>The size of the Koi pond must meet specific standards: </p>
+                        <ul>
+                        <li>
+                            <strong>Minimum Pond Length: </strong><br>
+                            The Koi pond should be at least 2 meters long to accommodate the necessary systems for the pond.
+                        </li>
+                        <li>
+                            <strong>Minimum Pond Width: </strong><br> The pond width should be between 0.8 and 1 meter,
+                            depending on the pond's length, to ensure a suitable ratio.
+                        </li>
+                        <li>
+                            <strong>Pond Depth: </strong><br> The pond depth depends on
+                            the type of Koi fish being raised, allowing for optimal living conditions.
+                        </li>
+                        </ul>
+
+                    <div class="what-we-do-3__media pr-15 rr-pr-none-xl rr-mb-60-md" style="margin:0 0 10px 20px" >
+                        <img src="${pageContext.request.contextPath}/assets/imgs/contactUsPage3.webp" alt="" class="img-fluid" >
+                    </div>
+                    <p>For more affordable Koi varieties, a pond depth of just 0.6 meters is sufficient. However, for premium Koi varieties,
+                        the depth should range from 0.8 to 1.6 meters to meet their specific requirements.</p>
+                        <%--===============================================--%>
+
+                    <h4>4. Water Level in the Pond</h4>
+                    <p>Each pond location requires a different water level:  </p>
+                        <ul>
+                            <li>
+                                <strong>Indoor Koi Pond:  </strong>Minimum water level of 40 cm
+                            </li>
+                            <li>
+                                <strong>Outdoor Koi Pond  </strong>Minimum water level of 60 cm
+                            </li>
+                        </ul>
+                        <%--===============================================--%>
+                        <h4>5. Water Filtration System and Water Quality</h4>
+                        <p>
+                            In addition to water level, water quality in the pond is crucial.
+                            A standard Koi pond should be equipped with high-quality accessories, such as a 304 stainless steel drum filter,
+                            to ensure clear, algae-free water with no pathogens. The pH should be maintained between 7 and 7.5.
+                            It’s also essential to have a continuous water circulation system to help the Koi stay active and grow well.   </p>
+                        <%--===============================================--%>
+                        <h4>6. Koi Fish</h4>
+                        <p>
+                            Naturally, a Koi pond must contain Koi fish. Depending on your budget, you can choose Japanese or Vietnamese Koi.
+                            However, quality Koi should have distinct and vibrant color patterns, a slender body shape, and, importantly, be free from any pathogens.
+                        </p>
+                </div>
+
+                  <ul class="links-list">
+                      <li >
+                          <a href="${pageContext.request.contextPath}/home/projects" style="padding: 10px 138px;">
+                              <i class="fas fa-check-circle"></i> Completed Projects
+                          </a>
+                      </li>
+                      <li>
+                          <a href="${pageContext.request.contextPath}/home/packages" style="padding: 10px 69px;">
+                              <i class="fas fa-file-invoice-dollar"></i> Detailed Quotations (CLICK HERE)
+                          </a>
+                      </li>
+                      <li>
+                          <a href="${pageContext.request.contextPath}/home/preDesign" style="padding: 10px 20px;">
+                              <i class="fas fa-image"></i> Impressive Koi Pond Design Sample Images
+                          </a>
+                      </li>
+                  </ul>
+
+
+              </section>
+
+
+
+
+
+
+        </div>
+    </section>
+
+    <!-- Section with bg-white -->
+    <section class="bg-white section-space__top section-space__bottom-80">
         <div class="container">
             <div class="contact-container">
                 <!-- Left Content (Contact Info) -->
@@ -454,7 +709,7 @@
     </section>
 
     <!-- Section with bg-white -->
-    <section class="bg-white section-space__top section-space__bottom-80">
+    <section class="bg-light section-space__top section-space__bottom-80">
         <div class="container">
             <div class="section-title">
                 <h2>About Us</h2>
@@ -503,7 +758,7 @@
             </div>
         </div>
     </section>
-    <section class="bg-light">
+    <section class="bg-white">
         <div class="container">
             <div class="section-title">
                 <h2>Service Implementation Process at Happikoi</h2>

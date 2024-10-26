@@ -15,12 +15,7 @@
             .form-control{
                 font-size: 1.9rem;
             }
-            @media (min-width: 992px) {
-                .view-account .content-panel {
-                    min-height: 800px;
-                    border-left: 1px solid #f3f3f7;
-                    margin-left: 250px;
-                }
+        
                 .view-account .side-bar .side-menu .nav > li > a {
                     display: block;
                     color: #9499a3;
@@ -212,7 +207,7 @@
                                             <th>Amount</th>
                                             <th>Payment Method</th>
                                             <th>Description</th>
-                                            <th>View Detail</th>
+                                          
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -222,9 +217,7 @@
                                                 <td>${payment.amount}</td>
                                                 <td>${payment.paymentMethod}</td>
                                                 <td>${payment.description}</td>
-                                                <td>
-                                                    <a href="${pageContext.request.contextPath}/payment/${payment.paymentId}" class="btn-default btn btn-info">View</a>
-                                                </td>
+                                            
                                             </tr>
                                         </c:forEach>
                                     </tbody>

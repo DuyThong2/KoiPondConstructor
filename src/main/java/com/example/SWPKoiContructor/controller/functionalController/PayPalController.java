@@ -227,7 +227,7 @@ public class PayPalController {
 
                 // Redirect to design page
                 redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
-                return "redirect:/customer/project/design/" + designId;
+                return "redirect:/customer/design/detail/" + designId;
             }
         } catch (PayPalRESTException e) {
             e.printStackTrace();
@@ -288,7 +288,7 @@ public class PayPalController {
 
     @GetMapping("/cancel/design/{id}")
     public String cancelForDesign(@PathVariable("id") int designId) {
-        return "redirect:/customer/project/design/" + designId;
+        return "redirect:/customer/design/detail/" + designId;
     }
     
     @GetMapping("/cancel/serviceQuote")

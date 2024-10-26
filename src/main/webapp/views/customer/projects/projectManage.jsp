@@ -415,7 +415,7 @@
                                                                             <div class="col text-center mb-2">
                                                                                 <c:choose>
                                                                                     <c:when test="${currentStage >= 2}">
-                                                                                        <a href="${pageContext.request.contextPath}/customer/project/design/${project.design.designId}"
+                                                                                        <a href="${pageContext.request.contextPath}/customer/design/detail/${project.design.designId}"
                                                                                             class="btn stage-button btn-md btn-block px-3 ${buttonClass} stage-with-details">
                                                                                             Design <i
                                                                                                 class="fas fa-info-circle"></i>
@@ -514,7 +514,7 @@
 
                                                                             <!-- Stage 2: Design -->
                                                                             <div class="col text-center mb-2">
-                                                                                <a href="${pageContext.request.contextPath}/customer/project/design/${project.design.designId}"
+                                                                                <a href="${pageContext.request.contextPath}/customer/design/detail/${project.design.designId}"
                                                                                     class="btn stage-button btn-md btn-block px-3 btn-success stage-with-details">
                                                                                     Design <i
                                                                                         class="fas fa-info-circle"></i>
