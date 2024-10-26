@@ -94,12 +94,12 @@ public class DesignController {
 
         if (detailId == null || newStatus == null) {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
-            return "redirect:/manager/design/viewDetail/" + designId;
+            return "redirect:/manager/design/detail/" + designId;
         }
-
+        DesignStageDetail updatedDetail = designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
+    
         if (newStatus == 4) {
             try {
-                DesignStageDetail updatedDetail = designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
                 Customer customer = updatedDetail.getDesignStage().getDesign().getProject().getContract().getCustomer();
                 BigDecimal amount = BigDecimal.valueOf(updatedDetail.getDesignStage().getDesignStagePrice());
 
@@ -113,13 +113,12 @@ public class DesignController {
 
                 // Save the payment history
                 paymentHistoryService.createPayment(paymentHistory);
-                redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
             }
         }
-
-        return "redirect:/manager/design/viewDetail/" + designId;
+        redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+        return "redirect:/manager/design/detail/" + designId;
     }
 //=========================Designer Controller====================================//
 
@@ -149,7 +148,7 @@ public class DesignController {
         return "designer/designerManage";
     }
 
-    @GetMapping("/designer/manage/viewProjectDetail/{id}")
+    @GetMapping("/designer/project/detail/{id}")
     public String designProject(@PathVariable("id") int id, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
@@ -174,7 +173,7 @@ public class DesignController {
         return "designer/projectDetail";
     }
 
-    @GetMapping("/designer/design/{designId}")
+    @GetMapping("/designer/design/detail/{designId}")
     public String designDetail(@PathVariable("designId") int designId, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
@@ -342,7 +341,7 @@ public class DesignController {
 
 //===============================End Update Status Design Detail=====================================//
 //====================================End for Designer======================================
-    @GetMapping("/customer/project/design/{id}")
+    @GetMapping("/customer/design/detail/{id}")
     public String customerViewDesign(@PathVariable("id") int id, Model model,
             HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -383,7 +382,7 @@ public class DesignController {
 
         if (detailId == null || newStatus == null) {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
-            return "redirect:/customer/project/design/" + designId;
+            return "redirect:/customer/design/detail/" + designId;
         }
 
         List<BluePrint> blueprints = bluePrintService.findByDesignStageId(designStageId);
@@ -398,7 +397,7 @@ public class DesignController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
-        return "redirect:/customer/project/design/" + designId;
+        return "redirect:/customer/design/detail/" + designId;
     }
 
     @GetMapping("/customer/project/design/blueprint/{designStageId}")

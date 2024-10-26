@@ -15,7 +15,7 @@
             <div class="dropdown">
                 <a class="icon-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-bell"></i>
+                    <i class="fas fa-bell" style="font-size: 20px;"></i>
                     <!-- Badge for unread notifications -->
                     <span class="badge-note badge-danger" id="notificationCount">0</span>
                 </a>
@@ -45,7 +45,7 @@
                 </ul>
             </div>
         </div>
-    </div>
+
 </header>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -72,11 +72,6 @@
             setTimeout(connectWebSocket, 5000); // Retry connection after 5 seconds
         });
     }
-
-   
-
-    
-
     function fetchNotifications() {
         $.ajax({
             url: '${pageContext.request.contextPath}/api/notifications/${user.id}',

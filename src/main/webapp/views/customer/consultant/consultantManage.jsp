@@ -395,8 +395,9 @@
         var currentDetailsRow = null;
 
     </script>
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <%@include file="../spacing.jsp" %>
     <%@include file="../footer.jsp" %>
     <%@include file="../scriptTemplate.jsp" %>

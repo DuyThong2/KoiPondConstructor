@@ -127,7 +127,7 @@ public class ConstructionController {
         }
     }
 
-    @GetMapping("/constructor/construction/{id}")
+    @GetMapping("/constructor/construction/detail/{id}")
     public String constructionDetail(@PathVariable("id") int id, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
@@ -236,7 +236,7 @@ public class ConstructionController {
         return "redirect:/staff/updateStatus/constructionStage/" + constructionStageId + "?constructionId=" + constructionId;
     }
 
-    @GetMapping("/constructor/manage/viewDetail/{id}")
+    @GetMapping("/constructor/project/detail/{id}")
     public String constructionProject(@PathVariable("id") int id, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
@@ -272,7 +272,7 @@ public class ConstructionController {
         return "constructor/constructionProject";
     }
 
-    @GetMapping("/customer/project/construction/{id}")
+    @GetMapping("/customer/construction/detail/{id}")
     public String customerViewConstruction(@PathVariable("id") int id, Model model,
             HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -326,7 +326,7 @@ public class ConstructionController {
         }
 
         // Redirect back to the construction stage details page
-        return "redirect:/customer/project/construction/" + constructionId;
+        return "redirect:/customer/construction/detail/" + constructionId;
     }
 
     // Method to reject the inspection stage
@@ -354,7 +354,7 @@ public class ConstructionController {
         }
 
         // Redirect back to the construction stage details page
-        return "redirect:/customer/project/construction/" + constructionId;
+        return "redirect:/customer/construction/detail/" + constructionId;
     }
 
     @PostMapping("/customer/feedback/send")
@@ -376,7 +376,7 @@ public class ConstructionController {
 
         commentService.saveComment(comment);
         redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
-        return "redirect:/customer/project/construction/" + constructionId;
+        return "redirect:/customer/construction/detail/" + constructionId;
     }
 
     @PostMapping("/customer/feedback/delete")
@@ -391,12 +391,12 @@ public class ConstructionController {
 
         if (comment == null || comment.getCustomer().getId() != customer.getId()) {
             redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
-            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+            return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
         }
 
         commentService.deleteComment(commentId);
         redirectAttributes.addFlashAttribute("success", "Comment deleted successfully.");
-        return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+        return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
     }
 
     @PostMapping("/customer/feedback/update")
@@ -412,13 +412,13 @@ public class ConstructionController {
 
         if (comment == null || comment.getCustomer().getId() != customer.getId()) {
             redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
-            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+            return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
         }
 
         comment.setCommentContent(commentContent);
         commentService.saveComment(comment);
         redirectAttributes.addFlashAttribute("success", "Comment updated successfully.");
-        return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+        return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
     }
 
     @PostMapping("/staff/feedback/send")
@@ -440,7 +440,7 @@ public class ConstructionController {
 
         commentService.saveComment(comment);
         redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
-        return "redirect:/constructor/construction/" + constructionId;
+        return "redirect:/constructor/construction/detail/" + constructionId;
     }
 
     @PostMapping("/staff/feedback/delete")
@@ -454,11 +454,11 @@ public class ConstructionController {
         Comment comment = commentService.getCommentById(commentId);
         if (comment == null || comment.getStaff().getId() != staff.getId()) {
             redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
-            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+            return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
         }
         commentService.deleteComment(commentId);
         redirectAttributes.addFlashAttribute("success", "Comment deleted successfully.");
-        return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
+        return "redirect:/constructor/construction/detail/" + comment.getConstruction().getConstructionId();
     }
 
     @PostMapping("/staff/feedback/update")
@@ -474,13 +474,13 @@ public class ConstructionController {
 
         if (comment == null || comment.getStaff().getId() != staff.getId()) {
             redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
-            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+            return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
         }
 
         comment.setCommentContent(commentContent);
         commentService.saveComment(comment);
         redirectAttributes.addFlashAttribute("success", "Comment updated successfully.");
-        return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
+        return "redirect:/constructor/construction/detail/" + comment.getConstruction().getConstructionId();
     }
 
     @GetMapping("/constructor/serviceDetailManage/")
@@ -526,7 +526,7 @@ public class ConstructionController {
         return "constructor/constructionServiceManage"; // JSP page path
     }
 
-    @GetMapping("/constructor/serviceDetail/{serviceDetailId}")
+    @GetMapping("/constructor/serviceDetail/detail/{serviceDetailId}")
     public String getServiceDetail(
             @PathVariable("serviceDetailId") int serviceDetailId,
             Model model,
@@ -608,7 +608,7 @@ public class ConstructionController {
         }
     }
 
-    @GetMapping("/constructor/manage/viewDetail/viewDesign/{projectId}")
+    @GetMapping("/constructor/designStage/detail/{projectId}")
     public String manageBlueprint(@PathVariable("projectId") int designStageId,
             Model model, HttpSession session) {
 

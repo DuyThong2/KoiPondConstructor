@@ -187,7 +187,7 @@ public class PayPalController {
 
                 // Redirect to construction page
                 redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
-                return "redirect:/customer/project/construction/" + constructionId;
+                return "redirect:/customer/construction/detail/" + constructionId;
             }
         } catch (PayPalRESTException e) {
             e.printStackTrace();
@@ -227,7 +227,7 @@ public class PayPalController {
 
                 // Redirect to design page
                 redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
-                return "redirect:/customer/project/design/" + designId;
+                return "redirect:/customer/design/detail/" + designId;
             }
         } catch (PayPalRESTException e) {
             e.printStackTrace();
@@ -283,12 +283,12 @@ public class PayPalController {
 
     @GetMapping("/cancel/construction/{id}")
     public String cancelForConstruction(@PathVariable("id") int constructionId) {
-        return "redirect:/customer/project/construction/" + constructionId;
+        return "redirect:/customer/construction/detail/" + constructionId;
     }
 
     @GetMapping("/cancel/design/{id}")
     public String cancelForDesign(@PathVariable("id") int designId) {
-        return "redirect:/customer/project/design/" + designId;
+        return "redirect:/customer/design/detail/" + designId;
     }
     
     @GetMapping("/cancel/serviceQuote")

@@ -18,49 +18,8 @@
     <%@include file="../cssCustom.jsp"%>
 
     <style>
-        /*             Form input styles
-                    .banner-3__form-input {
-                        margin-bottom: 15px;
-                    }
 
-                    .banner-3__form-input input,
-                    .banner-3__form-input textarea,
-                    .banner-3__form-input select {
-                        width: 100%;
-                        padding: 10px;
-                        border: 1px solid #ccc;
-                        border-radius: 4px;
-                        box-sizing: border-box;  Ensures padding is included in width calculation
-                        background-color: #f9f9f9;
-                    }
-
-                     Fixing dropdown styling
-                    .banner-3__form-input-select select {
-                        appearance: none;
-                        -webkit-appearance: none;
-                        -moz-appearance: none;
-                        background-color: #f9f9f9;
-                        border-radius: 4px;
-                        padding: 10px;
-                        font-size: 16px;
-                    }
-
-                     Adjust button styling
-                    .rr-btn {
-                        padding: 10px 20px;
-                        background-color: #d42a57;
-                        color: white;
-                        border-radius: 4px;
-                        border: none;
-                        cursor: pointer;
-                        width: 100%;
-                    }
-
-                    .rr-btn:hover {
-                        background-color: #b22242;
-                    }*/
-
-            .d-flex{
+        .d-flex{
                 margin-top: 0;
             }
         select{
@@ -240,7 +199,7 @@
                 <div class="col-md-12">
                     <div class="page-title-inner">
                         <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="index.html" class="theme-color">Home</a>
+                            <a href="${pageContext.request.contextPath}/home/services" class="theme-color">Home</a>
                             <span class="current">Services</span>
                         </div>
                         <h1 class="page-title mb-0">${service.serviceName}</h1>
