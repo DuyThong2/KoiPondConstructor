@@ -178,7 +178,6 @@
                                                 dropdown.append('<a class="dropdown-item no-notification" href="#">No new notifications</a>');
                                             }
                                         }
-
                                         function updateNotificationCount(count) {
                                             const notificationCount = $('#notificationCount');
                                             notificationCount.text(count);
