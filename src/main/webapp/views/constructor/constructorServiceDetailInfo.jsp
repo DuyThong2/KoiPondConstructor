@@ -367,7 +367,8 @@
 
                             // Hide confirm button
                             $("#confirmBtn").prop("disabled", true).hide();
-
+                            $('#cancelBtn').prop("disabled", true).hide();
+                            
                             // Hide confirmation modal and show success message
                             $('#confirmationModal').modal('hide');
                             showNotification("Service marked as complete successfully!", true);

@@ -211,6 +211,7 @@ public class ServiceDetailController {
                     serviceDetail.setServiceDetailStatus(2);
                 }
                 serviceDetailService.updateServiceDetail(serviceDetail);
+                notificationService.createNotification(serviceDetailId,"serviceDetail",staffId,"constructor","You have been assigned to new service!");
                 redirectAttributes.addFlashAttribute("successMessage", "Staff assigned successfully.");
                 return "redirect:/manager/serviceDetails/assign/" + serviceDetailId;
             } else {
@@ -413,7 +414,7 @@ public class ServiceDetailController {
         serviceDetailService.updateServiceDetail(serviceDetail);
 
         // Redirect or load th page where feedback was submitted
-        return "redirect:/customer/serviceDetail/detail" + serviceDetailId;
+        return "redirect:/customer/serviceDetail/detail/" + serviceDetailId;
     }
 
     @GetMapping("/construction/serviceDetail/getCancelMessage")
