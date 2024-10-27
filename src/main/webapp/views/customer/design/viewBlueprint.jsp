@@ -160,6 +160,12 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="blueprintsId" value="${blueprint.bluePrintId}">
                             </div>
+                            <div class="form-check">
+                                <c:if test="${blueprint.bluePrintStatus != 3}">
+                                    <input class="form-check-input" type="checkbox" name="blueprintsId" value="${blueprint.bluePrintId}">
+                                </c:if>
+                            </div>
+
                             <div class="card-body">
 
                                 <p><strong>Date Uploaded:</strong> <fmt:formatDate value="${blueprint.dateCreate}" pattern="dd-MM-yyyy"/>.</p>
