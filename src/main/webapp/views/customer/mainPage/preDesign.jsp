@@ -310,7 +310,7 @@
                                     <div class="portfolio-item col-lg-4 col-md-4 col-sm-4 col-xs-6">
                                         <a href="${pageContext.request.contextPath}/home/preDesign/${preDesign.preDesignId}">
                                             <div class="portfolio-thumb">
-                                                <img src="/uploads/${preDesign.preDesignImgUrl}" alt="Template">
+                                                <img src="${preDesign.getShowingImg(preDesign.preDesignImgUrl)}" alt="Template">
                                                 <div class="portfolio-info">
                                                     <div class="portfolio-name">${preDesign.preDesignName}</div>
                                                     <div class="portfolio-description">${preDesign.preDesignDescription}</div>

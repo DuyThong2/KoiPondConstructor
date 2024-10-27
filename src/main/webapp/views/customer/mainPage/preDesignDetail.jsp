@@ -22,14 +22,6 @@
             .d-flex{
                 margin-top: 0;
             }
-            .sidebar {
-                width: 300px;
-                background-color: #FFC107;
-                padding: 20px;
-                border-radius: 10px;
-                flex-shrink: 0; /* Prevent sidebar from stretching */
-            }
-
             .sidebar table {
                 width: 100%;
             }
@@ -43,7 +35,7 @@
                 font-size: 16px;
                 font-weight: bold;
                 margin: 0;
-                white-space: nowrap; /* Ensure the label doesn't break into a new line */
+                white-space: nowrap;
             }
 
             .sidebar .entry-date,
@@ -61,43 +53,38 @@
                 color: #000;
             }
 
-            .sidebar .social-icons a {
-                margin-right: 5px;
-                color: #fff;
-                font-size: 1.5em;
-                display: inline-block;
-            }
-
             .single-portfolio-wrap {
                 display: flex;
                 justify-content: space-between;
-                align-items: flex-start; /* Prevents stretching */
+                align-items: flex-start;
             }
 
             .content {
                 width: 65%;
                 margin-right: 30px;
-                flex-grow: 1; /* Allow content to expand */
+                flex-grow: 1;
             }
 
             .sidebar {
-                width: 30%; /* Adjust to control the width of the sidebar */
-                background-color: #FFC107;
-                padding: 20px;
+                width: 30%;
+                background-color: #ddd;
+                padding: 10px 20px;
                 border-radius: 10px;
+                border: 1px solid #e0e0e0;
             }
-            select{
+
+            select {
                 background-color: #f5f5f5;
                 width: 100%;
                 padding: 15px 20px;
                 border-radius: 5px;
                 border: 1px solid #ccc;
                 font-size: 16px;
-                position: relative;
             }
+
             @media screen and (max-width: 768px) {
                 .single-portfolio-wrap {
-                    flex-direction: column; /* Stack the content and sidebar vertically */
+                    flex-direction: column;
                 }
 
                 .sidebar {
@@ -106,21 +93,18 @@
                     margin-right: 0;
                 }
             }
+
             .form-container {
-                background-color: #fff; /* White background for the form */
+                background-color: #fff;
                 padding: 20px;
                 border-radius: 10px;
-                margin-top: 20px; /* Adjust spacing from the table above if needed */
+                margin-top: 20px;
+                box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
             }
         </style>
     </head>
 
     <body class="body-1">
-
-        <!--[if lte IE 9]>
-        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-        <![endif]-->
-
         <!-- preloader start -->
         <!-- style 1 -->
         <div id="preloader" data-preloader="active" data-loaded="doted">
@@ -154,12 +138,6 @@
         </div>
         <!-- preloader end -->
 
-        <!-- Backtotop start -->
-        <!-- <div id="scroll-percentage">
-            <span id="scroll-percentage-value"></span>
-        </div> -->
-        <!-- Backtotop end -->
-
         <!-- cursorAnimation start -->
         <div class="cursor-wrapper relative">
             <div class="cursor"></div>
@@ -181,7 +159,7 @@
                                 </div>
                                 <div class="search__close">
                                     <button type="button" class="search__close-btn search-close-btn">
-                                        <s   vg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                                             <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                                   stroke-linejoin="round" />
                                             <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -272,130 +250,135 @@
         <!-- Header area start -->
         <%@include file="../homePageNavbar.jsp" %>
         <!-- Header area end -->
-        <div class="page-title-wrap typo-white">
-            <div class="page-title-wrap-inner section-bg-img" data-bg="images/bg/page-title-bg.jpg">
-                <span class="black-overlay"></span>
-                <div class="container">
-                    <div class="row text-center">
-                        <div class="col-md-12">
-                            <div class="page-title-inner">
-                                <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                                    <a href="index.html" class="theme-color">Home</a>
-                                    <span class="current">Design Template</span>
-                                </div>
-                                <h1 class="page-title mb-0">${preDesign.preDesignName}</h1>
-                            </div>
+
+        <section id="services"
+                 class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+            <div class="container rr-shape-p-c_1">
+                <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+                    <div></div>
+                </div>
+
+                <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+                    <div class="col-md-6">
+                        <div class="section__title-wrapper text-center text-xl-start">
+                            <span class="section__subtitle justify-content-start mb-13"><span data-width="40px"
+                                                                                              class="left-separetor">
+
+                            </span> <a href="${pageContext.request.contextPath}/home/preDesign" class="theme-color">Home - Design Template</a></span>
+                            <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                                data-cursor="-opaque">${preDesign.preDesignName}
+                            </h2>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
         <div style="height:100px">
 
         </div>
         <main style="margin-bottom: 100px">
-            <section id="single-portfolio" class="single-portfolio">
-                <div class="container">
-                    <div class="single-portfolio-wrap">
-                        <!-- Main Content Section -->
-                        <div class="content">
-                            <!-- Image -->
-                            <div class="zoom-gallery mb-5">
-                                <div class="portfolio-thumb">
-                                    <img src="/uploads/${preDesign.preDesignImgUrl}" alt="Project Image">
+            <main style="margin-bottom: 100px">
+                <section id="single-portfolio" class="single-portfolio">
+                    <div class="container">
+                        <div class="single-portfolio-wrap">
+                            <!-- Main Content Section -->
+                            <div class="content">
+                                <!-- Image -->
+                                <div class="zoom-gallery mb-5">
+                                    <div class="portfolio-thumb">
+                                        <img src="${preDesign.getShowingImg(preDesign.preDesignImgUrl)}" alternative="${preDesign.preDesignName}"
+                                             style="height:auto; width:850px; object-fit:contain; border-radius: 10px" alt="">
+
+                                    </div>
                                 </div>
+
+                                <!-- Text Content -->
+                                ${preDesign.content.content}
                             </div>
 
-                            <!-- Text Content -->
+                            <!-- Sidebar Section -->
+                            <div class="sidebar col-md-4">
+                                <table  style="border-bottom: 2px solid #15181b">
+                                    <tr>
+                                        <td><span class="portfolio-meta-icon"><i class="ti-calendar"></i></span></td>
+                                        <td><h5>Estimate Time</h5></td>
+                                        <td class="entry-date">${preDesign.preDesignTime}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="portfolio-meta-icon"><i class="ti-user"></i></span></td>
+                                        <td><h5>Package</h5></td>
+                                        <td class="entry-client">${preDesign.parcel.packageName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="portfolio-meta-icon"><i class="ti-alarm-clock"></i></span></td>
+                                        <td><h5>Design Price</h5></td>
+                                        <td class="entry-duration">${preDesign.parcel.designOnSquareRoot}/m2</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="portfolio-meta-icon"><i class="ti-folder"></i></span></td>
+                                        <td><h5>Construction Price</h5></td>
+                                        <td class="entry-category">${preDesign.parcel.constructionPriceOnSquareRoot}/m2</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="portfolio-meta-icon"><i class="ti-tag"></i></span></td>
+                                        <td><h5>Description</h5></td>
+                                        <td class="entry-tags">${preDesign.preDesignDescription}</td>
+                                    </tr>
+                                </table>
 
-                            ${preDesign.content.content}
-
-
-                            <!-- Text Content -->
-
-                        </div>
-
-                        <!-- Sidebar Section -->
-                        <div class="sidebar col-md-4">
-                            <table>
-                                <tr>
-                                    <td><span class="portfolio-meta-icon"><i class="ti-calendar"></i></span></td>
-                                    <td><h5>Estimate Time</h5></td>
-                                    <td class="entry-date">${preDesign.preDesignTime}</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="portfolio-meta-icon"><i class="ti-user"></i></span></td>
-                                    <td><h5>Package</h5></td>
-                                    <td class="entry-client">${preDesign.parcel.packageName}</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="portfolio-meta-icon"><i class="ti-alarm-clock"></i></span></td>
-                                    <td><h5>Design Price</h5></td>
-                                    <td class="entry-duration">${preDesign.parcel.designOnSquareRoot}/m2</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="portfolio-meta-icon"><i class="ti-folder"></i></span></td>
-                                    <td><h5>Construction Price</h5></td>
-                                    <td class="entry-category">${preDesign.parcel.constructionPriceOnSquareRoot}/m2</td>
-                                </tr>
-                                <tr>
-                                    <td><span class="portfolio-meta-icon"><i class="ti-tag"></i></span></td>
-                                    <td><h5>Description</h5></td>
-                                    <td class="entry-tags">${preDesign.preDesignDescription}</td>
-                                </tr>
-                            </table>
-
-                            <!-- Form Section with White Background -->
-                            <div class="form-container">
-                                <form class="banner-3__form" action="${pageContext.request.contextPath}/save" method="POST">
-                                    <input name="preDesignId" id="preDesignId" value="${preDesign.preDesignId}" type="hidden">
-                                    <h4>Need Construction Help?</h4>
-                                    <p>We are always here to help you at any time,</p>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="banner-3__form-input">
-                                                <input name="name" id="lname" type="text" placeholder="Full Name">
+                                <!-- Form Section with White Background -->
+                                <div class="form-container">
+                                    <form class="banner-3__form" action="${pageContext.request.contextPath}/save" method="POST">
+                                        <input name="preDesignId" id="preDesignId" value="${preDesign.preDesignId}" type="hidden">
+                                        <h4>Need Construction Help?</h4>
+                                        <p>We are always here to help you at any time,</p>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="banner-3__form-input">
+                                                    <input name="name" id="lname" type="text" placeholder="Full Name">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="banner-3__form-input">
-                                                <input name="email" id="email" type="email" placeholder="Email Address">
+                                            <div class="col-12">
+                                                <div class="banner-3__form-input">
+                                                    <input name="email" id="email" type="email" placeholder="Email Address">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="banner-3__form-input">
-                                                <input name="phone" id="phone" type="text" placeholder="Phone number">
+                                            <div class="col-12">
+                                                <div class="banner-3__form-input">
+                                                    <input name="phone" id="phone" type="text" placeholder="Phone number">
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <select id="services" name="type" required>
-                                                <option value="" disabled selected>Select Service Type</option>
-                                                <option value="Construction">Construction</option>
-                                                <option value="Service">Service</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="banner-3__form-input">
-                                                <textarea name="content" id="textarea" placeholder="Message"></textarea>
+                                            <div class="col-12">
+                                                <select id="services" name="type" required>
+                                                    <option value="" disabled selected>Select Service Type</option>
+                                                    <option value="Construction">Construction</option>
+                                                    <option value="Service">Service</option>
+                                                </select>
                                             </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="submit" class="rr-btn">
+                                            <div class="col-12">
+                                                <div class="banner-3__form-input">
+                                                    <textarea name="content" id="textarea" placeholder="Message"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button type="submit" class="rr-btn">
                                                 <span class="btn-wrap">
                                                     <span class="text-one">Send Message</span>
                                                 </span>
-                                            </button>
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-            </section>
-        </main>
+                </section>
+            </main>
 
 
-        <!-- Footer area start -->
+
+            <!-- Footer area start -->
 
         <%@include file="../footer.jsp" %>
         <!-- Footer area end -->

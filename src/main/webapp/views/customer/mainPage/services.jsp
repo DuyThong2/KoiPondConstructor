@@ -346,7 +346,7 @@
                             <div class="service-box-wrap service-box-style-1 text-center">
                                 <!-- Service Icon or Image -->
                                 <div class="service-icon mb-3">
-                                    <img src="${pageContext.request.contextPath}/assets/imgs/logo/zoomed_logo_image.png" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
+                                    <img src="${service.serviceImgUrl != null ? service.getShowingImg(service.serviceImgUrl) : "/SWPKoiContructor/assets/imgs/logo/zoomed_logo_image.png"}" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
                                 </div>
                                 <!-- Service Content -->
                                 <h3 class="service-title">${service.serviceName}</h3>

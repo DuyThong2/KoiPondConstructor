@@ -306,7 +306,7 @@
                                     <div class="portfolio-item col-lg-4 col-md-4 col-sm-4 col-xs-6">
                                         <a href="${pageContext.request.contextPath}/home/projects/${project.projectId}">
                                             <div class="portfolio-thumb">
-                                                <img src="/uploads/${project.imgURL}" alt="Project 1">
+                                                <img src="${project.getShowingImg(project.imgURL)}" alt="Project">
                                                 <div class="portfolio-info">
                                                     <div class="portfolio-name">${project.projectName}</div>
                                                     <div class="portfolio-description">${project.description}</div>
