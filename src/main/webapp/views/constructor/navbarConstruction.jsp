@@ -20,7 +20,7 @@
         <div class="dropdown mr-4">
             <a class="icon-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-bell" style="font-size: 20px;"></i>
+                <i class="fas fa-bell" style="font-size: 20px; margin-right: 10px"></i>
                 <!-- Badge for unread notifications -->
                 <span class="badge-note badge-danger" id="notificationCount">0</span>
             </a>

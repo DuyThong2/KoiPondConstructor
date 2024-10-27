@@ -49,28 +49,11 @@
             color: #007bff;
         }
 
-        .drop-zone {
-            border: 2px dashed #007bff;
-            padding: 50px;
-            text-align: center;
-            font-size: 1.2rem;
-            color: #6c757d;
-            border-radius: 10px;
-            transition: border-color 0.3s ease;
-        }
-
-        .drop-zone:hover {
-            border-color: #0056b3;
-        }
 
         .drop-zone input {
             display: none;
         }
 
-        .drop-zone.dragover {
-            border-color: #0056b3;
-            background-color: #e9ecef;
-        }
 
         .preview-container {
             display: flex;
@@ -79,16 +62,6 @@
             align-items: center;
         }
 
-        .preview {
-            border: 1px solid #dee2e6;
-            padding: 10px;
-            border-radius: 5px;
-            width: 30%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
 
         .preview img {
             max-width: 100%;
@@ -214,7 +187,10 @@
                                     <form action="${pageContext.request.contextPath}/delete/blueprint" method="post" onsubmit="return confirmDelete();">
                                         <input type="hidden" name="bluePrintId" value="${blueprint.bluePrintId}">
                                         <input type="hidden" name="designStageId" value="${designStage.designStageId}">
-                                        <button type="submit" class="btn btn-danger" >Delete</button>
+                                        <c:if test="${blueprint.bluePrintStatus != 3}">
+                                            <button type="submit" class="btn btn-danger" >Delete</button>
+                                        </c:if>
+
                                     </form>
                                 </div>
 
@@ -228,6 +204,8 @@
         <div class="blueprint-gallery">
             <h3>Blueprints with Customer Feedback</h3>
             <div class="row">
+            <c:choose>
+                <c:when test="${not empty feedbackBlueprints}">
                 <c:forEach var="blueprint" items="${feedbackBlueprints}">
                     <div class="col-md-4">
                         <div class="card mb-4 shadow-sm blueprint-card">
@@ -251,18 +229,23 @@
                         </div>
                     </div>
                 </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <div class="col-12">
+                        <h3 class="text-muted text-center">There are no blueprints with customer feedback at the moment.</h3>
+                    </div>
+                </c:otherwise>
+            </c:choose>
             </div>
         </div>
 
         <!-- Upload New Blueprint Section -->
+        <c:if test="${designStage.designStageStatus == 1 || designStage.designStageStatus == 2}">
         <div class="upload-section">
             <h3>Upload New Blueprint</h3>
             <form action="${pageContext.request.contextPath}/designer/blueprint/upload/" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="designStageId" value="${designStage.designStageId}">
-                <div class="drop-zone" id="drop-zone">
-                    Drag and drop an image file here or click to upload
                     <input type="file" id="blueprintFile" name="file" accept="image/*">
-                </div>
                 <div class="preview-container" id="preview-container">
                     <!-- Image previews will be displayed here -->
                 </div>
@@ -283,7 +266,7 @@
                 <button type="submit" class="btn btn-primary">Update Summary File</button>
             </form>
         </div>
-
+        </c:if>
         <!-- Popup -->
         <%@include file="../popup.jsp"%>
 
@@ -296,52 +279,6 @@
 </c:if>
 <!-- JS for upload image -->
 <script>
-    // Drag and drop functionality
-    const dropZone = document.getElementById('drop-zone');
-    const fileInput = document.getElementById('blueprintFile');
-    const previewContainer = document.getElementById('preview-container');
-    const progressBar = document.getElementById('progress-bar');
-    const uploadBtn = document.getElementById('upload-btn');
-
-    dropZone.addEventListener('click', () => fileInput.click());
-
-    fileInput.addEventListener('change', updatePreview);
-
-    dropZone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropZone.classList.add('dragover');
-    });
-
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
-
-    dropZone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dragover');
-        fileInput.files = e.dataTransfer.files;
-        updatePreview();
-    });
-
-    function updatePreview() {
-        previewContainer.innerHTML = '';
-        const file = fileInput.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                previewContainer.innerHTML = '<div class="preview"><img src="' + e.target.result + '" /></div>';
-            };
-            reader.readAsDataURL(file);
-        }
-    }
-
-    uploadBtn.addEventListener('click', () => {
-        progressBar.style.width = '50%';
-        setTimeout(() => {
-            progressBar.style.width = '100%';
-        }, 1500);
-    });
-
     function confirmDelete() {
         return confirm("Are you sure you want to delete this blueprint?");
     }

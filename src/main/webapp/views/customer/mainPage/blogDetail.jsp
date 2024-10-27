@@ -54,16 +54,15 @@
             font-size: 16px;
             position: relative;
         }
+        .banner-3__from {
+            padding: 30px 0;
+        }
     </style>
 
 
 </head>
 
 <body class="body-1">
-
-<!--[if lte IE 9]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-<![endif]-->
 
 <!-- preloader start -->
 <!-- style 1 -->
@@ -97,12 +96,6 @@
     </div>
 </div>
 <!-- preloader end -->
-
-<!-- Backtotop start -->
-<!-- <div id="scroll-percentage">
-    <span id="scroll-percentage-value"></span>
-</div> -->
-<!-- Backtotop end -->
 
 <!-- cursorAnimation start -->
 <div class="cursor-wrapper relative">
@@ -215,25 +208,29 @@
 
 <!-- Header area start -->
 <%@include file="../homePageNavbar.jsp" %>
-<!-- Header area end -->
-<div class="page-title-wrap typo-white">
-    <div class="page-title-wrap-inner section-bg-img" data-bg="images/bg/page-title-bg.jpg">
-        <span class="black-overlay"></span>
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <div class="page-title-inner">
-                        <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="${pageContext.request.contextPath}/home/blogs" class="theme-color">Home</a>
-                            <span class="current">Blog</span>
-                        </div>
-                        <h1 class="page-title mb-0">${blog.name}</h1>
-                    </div>
+
+<section id="services"
+         class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+    <div class="container rr-shape-p-c_1">
+        <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+            <div></div>
+        </div>
+
+        <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+            <div class="col-md-6">
+                <div class="section__title-wrapper text-center text-xl-start">
+                            <span class="section__subtitle justify-content-start mb-13"><span data-width="40px"
+                                                                                              class="left-separetor">
+
+                            </span> <a href="${pageContext.request.contextPath}/home/blogs" class="theme-color">Home - Blog</a></span>
+                    <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                        data-cursor="-opaque">Blog Detail
+                    </h2>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 <div style="height:100px">
 
 </div>
@@ -252,7 +249,7 @@
                             <div class="blog-info-wrap">
                                 <!-- blog img -->
                                 <div class="blog-single-img mb-4 pb-2">
-                                    <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg" width="1280" height="852" class="img-fluid b-radius-8" alt="blog-img">
+                                    <img src="${blog.getShowingImg(blog.imgUrl)}" width="1280" height="852" class="img-fluid b-radius-8" alt="blog-img">
                                 </div>
 
                                 <div>
@@ -280,19 +277,17 @@
                     <div class="col-lg-4 ps-5 px-sm-15">
                         <div class="sidebar right-sidebar">
                             <div class="widget">
-                                <h4 class="widget-title">Blog Details</h4>
                                 <div class="author-details" style="border: 1px solid #ddd; padding: 20px; border-radius: 10px; background-color: #f9f9f9;">
                                     <!-- Flex container for image and details -->
                                     <div class="author-container" style="display: flex; align-items: center; margin-bottom: 20px;">
                                         <!-- Author Image -->
                                         <div class="author-img" style="margin-right: 15px;">
-                                            <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg" alt="${blog.staff.name}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" />
+                                            <img src="${blog.staff.imgURL != null ? blog.staff.getShowingImg(blog.staff.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="${blog.staff.name}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" />
                                         </div>
-
                                         <!-- Author Name and Department -->
                                         <div class="author-info">
-                                            <h5 style="margin-bottom: 5px; font-size: 1.2rem; font-weight: bold;">${blog.staff.name}</h5>
-                                            <p style="font-size: 0.9rem; color: #666;">Department: ${blog.staff.department}</p>
+                                            <h4 style="margin-bottom: 5px; font-weight: bold;">${blog.staff.name}</h4>
+                                            <p style="font-size: 1.3rem; color: #666;">Department: ${blog.staff.department}</p>
                                         </div>
                                     </div>
 
