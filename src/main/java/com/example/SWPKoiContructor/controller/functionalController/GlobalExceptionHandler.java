@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 @ControllerAdvice
@@ -67,6 +68,10 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", "Bad request");
         return "error/error-400"; // Error page for 400
     }
-    
-    
+
+    @ExceptionHandler(MultipartException.class)
+    public String handleMultipartException(MultipartException ex, Model model) {
+        model.addAttribute("errorMessage", "The uploaded file or form data exceeded the allowed limit.");
+        return "error/error-400"; // Customize this page as needed
+    }
 }

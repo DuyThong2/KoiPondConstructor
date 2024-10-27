@@ -82,7 +82,7 @@ public class PreDesignController {
 
     @GetMapping("/manager/preDesign/detail/{id}")
     public String getDetailPreDesign(@PathVariable("id") int preDesignId, Model model) {
-        PreDesign preDesign = preDesignService.getPredesignById(preDesignId);
+        PreDesign preDesign = preDesignService.getPreDesignAndContentById(preDesignId);
         if(preDesign != null){
             model.addAttribute("preDesign", preDesign);
             return "/manager/preDesign/preDesignDetail";
@@ -109,7 +109,7 @@ public class PreDesignController {
 
     @GetMapping("/manager/preDesign/update/{id}")
     public String updatePreDesign(@PathVariable("id") int preDesignId, Model model) {
-        PreDesign preDesign = preDesignService.getPredesignById(preDesignId);
+        PreDesign preDesign = preDesignService.getPreDesignAndContentById(preDesignId);
         List<Parcel> parcels = parcelService.viewParcelActiveList();
         model.addAttribute("preDesign", preDesign);
         model.addAttribute("parcelList", parcels);
@@ -145,7 +145,7 @@ public class PreDesignController {
             @RequestParam("content") String content, // Get the content from the form
             Model model) {
         try {
-            PreDesign originPreDesign = preDesignService.getPredesignById(preDesign.getPreDesignId());
+            PreDesign originPreDesign = preDesignService.getPreDesignAndContentById(preDesign.getPreDesignId());
             if (originPreDesign != null) {
                 originPreDesign.setPreDesignName(preDesign.getPreDesignName());
                 originPreDesign.setPreDesignDescription(preDesign.getPreDesignDescription());
@@ -156,7 +156,10 @@ public class PreDesignController {
                     originPreDesign.setPreDesignImgUrl(imgURL);
                 }
 
+                System.out.println("***********+++++++++++++++++****************"+originPreDesign);
                 Content contentUpdated = originPreDesign.getContent();
+
+                System.out.println("***********+++++++++++++++++****************"+contentUpdated);
                 contentUpdated.setContent(content);
                 contentUpdated.setLastUpdatedDate(new java.util.Date());
                 preDesignService.updatePreDesign(originPreDesign);

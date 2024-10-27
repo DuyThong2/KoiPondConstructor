@@ -112,7 +112,7 @@ public class PreDesignDAO {
     
     public PreDesign getPreDesignAndContentById(int preDesignId){
         try{
-        TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p JOIN FETCH p.content c WHERE p.preDesignId = :id", PreDesign.class);
+        TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p LEFT JOIN  p.content c WHERE p.preDesignId = :id", PreDesign.class);
         tq.setParameter("id", preDesignId);
         return tq.getSingleResult();
         }catch (NoResultException e) {
