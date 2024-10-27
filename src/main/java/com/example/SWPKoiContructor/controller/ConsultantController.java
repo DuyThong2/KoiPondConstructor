@@ -12,6 +12,10 @@ import com.example.SWPKoiContructor.utils.FileUtility;
 import java.util.Calendar;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 import org.joda.time.LocalDateTime;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -26,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.joda.time.LocalDateTime.now;
+import org.springframework.validation.BindingResult;
 
 /**
  *
@@ -48,7 +53,7 @@ public class ConsultantController {
         this.notificationService = notificationService;
     }
 
-    //MANAGER SITE   
+    //-------------------------------------  MANAGER SITE -------------------------------------------  
     @GetMapping("/manager/consultant")
     public String getConsultantList(Model model,
             @RequestParam(defaultValue = "0") int page,
@@ -87,12 +92,37 @@ public class ConsultantController {
         return "manager/consultant/consultantDetail";
     }
 
-    @GetMapping("/manager/consultant/viewConsultantStaffList/{id}")
-    public String getConsultantStaffList(@PathVariable("id") int id, Model model) {
-        List<Staff> list = staffService.getStaffListByRole("Consulting");
-        model.addAttribute("consultantStaffList", list);
-        model.addAttribute("consultant", consultantService.getConsultantById(id));
-        return "manager/consultant/addConsultantStaff";
+//    @GetMapping("/manager/consultant/viewConsultantStaffList/{id}")
+//    public String getConsultantStaffList(@PathVariable("id") int id, Model model) {
+//        List<Staff> list = staffService.getStaffListByRole("Consulting");
+//        model.addAttribute("consultantStaffList", list);
+//        model.addAttribute("consultant", consultantService.getConsultantById(id));
+//        return "manager/consultant/addConsultantStaff";
+//    }
+    @GetMapping("/manager/consultant/viewConsultantStaffList")
+    public String getConsultantStaffLists(Model model,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(required = false) String searchName,
+            @RequestParam(name = "consultantId")int consultantId) {
+        List<Staff> staffs;
+        long totalStaff;
+
+
+            staffs = staffService.getAllConsultantStaff(page, size, searchName);
+            totalStaff = staffService.countAllConsultantStaff(page, size, searchName);
+
+            
+        int totalPages = (int) Math.ceil((double) totalStaff / size);
+        if (page > totalPages) {
+            page = 0;
+        }
+        model.addAttribute("staff", staffs);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("searchName", searchName);
+        model.addAttribute("consultantId", consultantId);
+        return "manager/consultant/addStaff";
     }
 
     @PostMapping("/manager/consultant/viewConsultantStaffList/editConsultantStaff")
@@ -104,14 +134,8 @@ public class ConsultantController {
         // Push the notification via WebSocket
         return "redirect:/manager/consultant/detail/" + id;
     }
-    //CONSULTANT SITE
-//    @GetMapping("/consultant/viewConsultantList")
-//    public String getConsultantListByStaffId(Model model, HttpSession session){      
-//        User user = (User) session.getAttribute("user");
-//        List<Consultant> list = consultantService.getConsultantListByStaffId(user.getId());
-//        model.addAttribute("consultantList", list);
-//        return "consultant/consultantManage";
-//    }
+    //--------------------------------------------  CONSULTANT SITE ---------------------------------------------
+
 
     @GetMapping("/consultant/viewConsultantList")
     public String getConsultantListByStaffId(Model model, HttpSession session,
@@ -175,16 +199,35 @@ public class ConsultantController {
         return "redirect:/consultant/consultant/detail/" + consultantId;
     }
 
-    //CUSTOMER SITE
+    //----------------------------------------------  CUSTOMER SITE ------------------------------------------
     @PostMapping("/save")
-    public String saveConsultantInWeb(@RequestParam("name") String name,
-            @RequestParam("phone") String phone,
-            @RequestParam("email") String email,
-            @RequestParam("content") String content,
+    public String saveConsultantInWeb(@NotEmpty @Size(min = 2) @RequestParam("name") String name,
+            @RequestParam("phone")String phone,
+            @RequestParam("email")String email,
+            @RequestParam("content")String content,
             @RequestParam("type") String type,
             @RequestParam(name = "preDesignId", required = false) Integer preDesignId,
             HttpSession session, RedirectAttributes redirectAttributes) {
+        if (name == null || name.length() < 2) {
+            redirectAttributes.addFlashAttribute("error", "Name must be at least 2 characters long.");
+            return "redirect:/"; 
+        }
 
+        else if (phone == null || phone.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Phone number is required.");
+            return "redirect:/";
+        }
+
+        else if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            redirectAttributes.addFlashAttribute("error", "Please provide a valid email address.");
+            return "redirect:/";
+        }
+
+        else if (content == null || content.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Content is required.");
+            return "redirect:/";
+        }
+        
         Consultant newConsultant = new Consultant();
         newConsultant.setConsultantCustomerName(name);
         newConsultant.setConsultantPhone(phone);
@@ -233,7 +276,7 @@ public class ConsultantController {
         // Add attributes to the model for JSP rendering
         model.addAttribute("consultant", consultants);
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPage", totalPages);
+        model.addAttribute("totalPages", totalPages);
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("statusFilter", statusFilter);

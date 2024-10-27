@@ -118,7 +118,9 @@
             .table tbody tr:hover {
                 background-color: #f2f2f2;
             }
-
+            .modal {
+                opacity: 1 !important;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>
@@ -301,7 +303,7 @@
 
                                                 <!-- Expandable/Collapsible Row -->
                                                 <tr id="details${serviceQuote.serviceQuotesId}" class="collapse">
-                                                    <td colspan="9"> 
+                                                    <td colspan="10"> 
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr class="table-info">

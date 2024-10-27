@@ -7,10 +7,12 @@ package com.example.SWPKoiContructor.controller;
 
 import com.example.SWPKoiContructor.entities.*;
 import com.example.SWPKoiContructor.services.*;
+import java.time.LocalDate;
 
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  *
@@ -46,15 +49,40 @@ public class QuoteController {
 
     //-------------------------------------  CUSTOMER SITE  ---------------------------------------------
     @GetMapping("/customer/quote")
-    public String getQuoteListToCusIdAndStatus(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        List<Quotes> quoteList = quoteService.getQuoteListByCusIdAndStatus(user.getId());
-        model.addAttribute("quoteList", quoteList);
-        return "customer/quote/quoteManage";
+    public String listFilteredServiceQuoteCustomer(Model model, HttpSession session, RedirectAttributes redirectAttributes,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(defaultValue = "quotesDate") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDirection,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate fromDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate toDate) {
+
+        User customer = (User) session.getAttribute("user");
+        if (customer == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Please login.");
+            return "redirect:/login";
+        }
+        List<Quotes> quoteses;
+        long totalQuotes;
+
+        quoteses = quoteService.getFilteredQuoteCustomer(page, size, sortBy, sortDirection, fromDate, toDate, customer.getId());
+        totalQuotes = quoteService.countFilteredQuoteCustomer(fromDate, toDate, customer.getId());
+
+        int totalPages = (int) Math.ceil((double) totalQuotes / size);
+
+        // Add attributes to the model for JSP rendering
+        model.addAttribute("Quote", quoteses);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("fromDate", fromDate);  // Add fromDate to model
+        model.addAttribute("toDate", toDate);  // Add toDate to model       
+        return "customer/quote/quoteManage";  // JSP page to display the contract list
     }
 
     @PostMapping("/customer/quote/updateStatus")
-    public String customerUpdateQuoteStatus(@RequestParam("quoteId") int quoteId, @RequestParam("statusId") int statusId, Model model, HttpSession session) {
+    public String customerUpdateQuoteStatus(@RequestParam("id") int quoteId, @RequestParam("status") int statusId, Model model, HttpSession session) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
        String statusString=statusId==4?"Accepted":"Rejected";
         notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Customer","quote",statusString);
@@ -62,8 +90,8 @@ public class QuoteController {
     }
 
     @PostMapping("/customer/quote/updateStatusAndFeedback")
-    public String customerUpdateQuoteStatusAndFeedback(@RequestParam("quoteId") int quoteId,
-            @RequestParam("statusId") int statusId,
+    public String customerUpdateQuoteStatusAndFeedback(@RequestParam("id") int quoteId,
+            @RequestParam("status") int statusId,
             @RequestParam("declineReason") String feedbackContent,
             @RequestParam("toUserId") int toUserId,
             Model model, HttpSession session) {

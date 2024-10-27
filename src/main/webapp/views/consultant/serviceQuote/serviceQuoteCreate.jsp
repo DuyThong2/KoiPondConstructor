@@ -9,7 +9,7 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
-
+        <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
         <style>
             .quote-info {
                 background-color: #f8f9fa;
@@ -31,6 +31,13 @@
             .modal-body {
                 max-height: 400px;
                 overflow-y: auto;
+            }
+            input:invalid {
+                border-color: #dc3545; /* Bootstrap danger color for invalid fields */
+            }
+
+            input:valid {
+                border-color: #28a745; /* Bootstrap success color for valid fields */
             }
         </style>
     </head>
@@ -73,19 +80,22 @@
                         <!-- Quotes Name -->
                         <div class="form-group">
                             <label for="serviceQuotesName">Quote Name:</label>
-                            <form:input path="serviceQuotesName" id="serviceQuotesName" class="form-control" required="true" />
+                            <form:input path="serviceQuotesName" id="serviceQuotesName" class="form-control" required="true" minlength="3" maxlength="50" />
+                            <div class="invalid-feedback">Quote name must be between 3 and 50 characters.</div>
                         </div>
 
                         <!-- Quotes Content -->
                         <div class="form-group">
                             <label for="serviceQuotesContent">Quote Content:</label>
                             <form:input path="serviceQuotesContent" id="serviceQuotesContent" class="form-control" required="true" />
+                            <div class="invalid-feedback">Quote content is required.</div>
                         </div>
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="serviceQuotesArea">Area ():</label>
-                            <form:input path="serviceQuotesArea" id="serviceQuotesArea" step="0.01" class="form-control" required="true" />
+                            <label for="serviceQuotesArea">Area (in square meters):</label>
+                            <form:input path="serviceQuotesArea" id="serviceQuotesArea" class="form-control" type="number" step="0.01" required="true" />
+                            <form:errors path="serviceQuotesArea" cssClass="text-danger" />
                         </div>
 
                         <!-- Current Services -->
@@ -111,12 +121,7 @@
                         <!-- Total Price (Read-Only, auto-calculated) -->
                         <div class="form-group">
                             <label for="serviceQuotesTotalPrice">Total Price:</label>
-                            <form:input path="serviceQuotesTotalPrice" id="serviceQuotesTotalPrice" class="form-control" readonly="readonly" />
-                        </div>
-
-                        <div class="form-group">
-                            <form:checkbox path="isPayAfter" id="isPayAfter"/> 
-                            <label for="isPayAfter">Postpaid</label> 
+                            <form:input path="serviceQuotesTotalPrice" id="serviceQuotesTotalPrice" class="form-control" readonly="true" />
                         </div>
 
                         <!-- Hidden input to store points used -->
@@ -277,14 +282,40 @@
 
                     // Update the total price field with the calculated value
                     document.getElementById('serviceQuotesTotalPrice').value = totalCost.toFixed(2); // Keep the total price intact
+                    (function () {
+                        'use strict';
+                        window.addEventListener('load', function () {
+                            var forms = document.getElementsByClassName('needs-validation');
+                            var validation = Array.prototype.filter.call(forms, function (form) {
+                                form.addEventListener('submit', function (event) {
+                                    if (form.checkValidity() === false) {
+                                        event.preventDefault();
+                                        event.stopPropagation();
+                                    }
+                                    form.classList.add('was-validated');
+                                }, false);
+                            });
+                        }, false);
+                    })();
                 }
-                
-            </script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    const form = document.querySelector('form');
+                    const serviceQuotesArea = document.getElementById('serviceQuotesArea');
 
+                    form.addEventListener('submit', function (event) {
+                        // If the field is empty or invalid, set it to 0.0
+                        if (!serviceQuotesArea.value || isNaN(parseFloat(serviceQuotesArea.value))) {
+                            serviceQuotesArea.value = 0.0;
+                        }
+                    });
+                });
+
+            </script>
+            <%@include file="../../popup.jsp"%>
         </div>
 
         <!-- Bootstrap JS and dependencies -->
-       
+
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     </body>

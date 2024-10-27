@@ -115,6 +115,53 @@ public class StaffDAO {
         TypedQuery<Staff> typedQuery = entityManager.createQuery(query, Staff.class);
         return typedQuery.getResultList();
     }
+    
+    public List<Staff> getAllConsultantStaff(int page, int size, String searchName ){
+         StringBuilder queryStr = new StringBuilder("SELECT s FROM Staff s WHERE LOWER(s.department) = 'consulting'");
+
+        // Dynamic query construction
+        if (searchName != null && !searchName.isEmpty()) {
+            queryStr.append(" AND LOWER(s.name) LIKE :searchName");
+        }
+
+        // Creating the query
+        TypedQuery<Staff> query = entityManager.createQuery(queryStr.toString(), Staff.class);
+
+        // Setting parameters dynamically       
+        
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName.toLowerCase() + "%");
+        }
+        // Pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getResultList();
+    }
+    
+    public long countAllConsultantStaff(int page, int size, String searchName ){
+         StringBuilder queryStr = new StringBuilder("SELECT COUNT(s) FROM Staff s WHERE LOWER(s.department) = 'consulting'");
+
+        // Dynamic query construction
+        if (searchName != null && !searchName.isEmpty()) {
+            queryStr.append(" AND LOWER(s.name) LIKE :searchName");
+        }
+
+        // Creating the query
+        TypedQuery<Long> query = entityManager.createQuery(queryStr.toString(), Long.class);
+
+        // Setting parameters dynamically       
+        
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName.toLowerCase() + "%");
+        }
+        
+
+        return query.getSingleResult();
+    }
+    
+    
+    
     public List<Staff> getAllStaffSortedForProject(int projectId, int currentPage, int size, List<String> departmentFilters) {
         // Get the project by its ID to find the assigned staff
         ProjectDAO projectDAO = new ProjectDAO(entityManager);

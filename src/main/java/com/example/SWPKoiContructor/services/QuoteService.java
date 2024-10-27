@@ -7,6 +7,7 @@ package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.QuoteDAO;
 import com.example.SWPKoiContructor.entities.Quotes;
+import java.time.LocalDate;
 import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,15 @@ public class QuoteService {
     
     public List<Quotes> getQuoteListByCusIdAndStatus(int cusId){
         return quoteDAO.getQuotesListByCusIdAndStatus(cusId);
+    }
+    //---------------------------------------  2 under: CUSTOMER SORT FILTER  -------------------------------------------------
+    public List<Quotes> getFilteredQuoteCustomer(int page, int size, String sortBy, String sortDirection,
+            LocalDate fromDate, LocalDate toDate, int cusId){
+        return quoteDAO.getFilteredQuoteCustomer(page, size, sortBy, sortDirection, fromDate, toDate, cusId);
+    }
+    
+    public long countFilteredQuoteCustomer(LocalDate fromDate, LocalDate toDate, int cusId){
+        return quoteDAO.countFilteredQuoteCustomer(fromDate, toDate, cusId);
     }
     
     //---------------------------------------  4 under: TEST SORT FILTER  -------------------------------------------------

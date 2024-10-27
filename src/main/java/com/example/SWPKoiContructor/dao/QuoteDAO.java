@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Quotes;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -87,6 +88,68 @@ public class QuoteDAO {
         tq.setParameter("staffId", staffId);
         return tq.getSingleResult();
     }
+    //-------------------------------------------------------  CUSTOMER  --------------------------------------------------------------
+    public List<Quotes> getFilteredQuoteCustomer(int page, int size, String sortBy, String sortDirection,
+            LocalDate fromDate, LocalDate toDate, int cusId){
+        StringBuilder queryStr = new StringBuilder("SELECT q FROM Quotes q WHERE 1=1 AND q.customer.id = :id AND (q.quotesStatus = 2 OR q.quotesStatus >= 4)");
+       
+        // Dynamic query construction
+        if (fromDate != null) {
+            queryStr.append(" AND q.quotesDate >= :fromDate");
+        }
+        if (toDate != null) {
+            queryStr.append(" AND q.quotesDate <= :toDate");
+        }
+
+        // Sorting
+        queryStr.append(" ORDER BY q.").append(sortBy).append(" ").append(sortDirection);
+
+        // Creating the query
+        TypedQuery<Quotes> query = entityManager.createQuery(queryStr.toString(), Quotes.class);
+
+        query.setParameter("id", cusId);
+        // Setting parameters dynamically       
+        if (fromDate != null) {
+            query.setParameter("fromDate", java.sql.Date.valueOf(fromDate));  // Convert LocalDate to java.sql.Date
+        }
+        if (toDate != null) {
+            query.setParameter("toDate", java.sql.Date.valueOf(toDate));  // Convert LocalDate to java.sql.Date
+        }
+
+        // Pagination
+        query.setFirstResult(page * size);
+        query.setMaxResults(size);
+
+        return query.getResultList();
+    }
+    
+    public long countFilteredQuoteCustomer(LocalDate fromDate, LocalDate toDate, int cusId){
+        StringBuilder queryStr = new StringBuilder("SELECT COUNT(q) FROM Quotes q WHERE 1=1 AND q.customer.id = :id AND (q.quotesStatus = 2 OR q.quotesStatus >= 4)");
+       
+        // Dynamic query construction
+        if (fromDate != null) {
+            queryStr.append(" AND q.quotesDate >= :fromDate");
+        }
+        if (toDate != null) {
+            queryStr.append(" AND q.quotesDate <= :toDate");
+        }
+
+        // Creating the query
+        TypedQuery<Long> query = entityManager.createQuery(queryStr.toString(), Long.class);
+
+        query.setParameter("id", cusId);
+        // Setting parameters dynamically       
+        if (fromDate != null) {
+            query.setParameter("fromDate", java.sql.Date.valueOf(fromDate));  // Convert LocalDate to java.sql.Date
+        }
+        if (toDate != null) {
+            query.setParameter("toDate", java.sql.Date.valueOf(toDate));  // Convert LocalDate to java.sql.Date
+        }
+
+        return query.getSingleResult();
+    }
+    
+    
 
     //-------------------------------------------------------  OTHER  --------------------------------------------------------------
     public List<Quotes> getQuotesListByStaffId(int staffId) {

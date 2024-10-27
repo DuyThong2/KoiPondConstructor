@@ -59,7 +59,7 @@
                             <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>
                         </tr>
                         <tr>
-                            <th>Contract Status</th>
+                            <th>Consultant Status</th>
                             <td>
                                 <c:choose>
                                     <c:when test="${consultant.consultantStatus == 1}">
@@ -119,7 +119,8 @@
                     <!-- Assign Staff Button -->
                     <c:choose>
                         <c:when test="${consultant.consultantStatus == 1}">
-                            <form action="${pageContext.request.contextPath}/manager/consultant/viewConsultantStaffList/${consultant.consultantId}" method="get" class="d-inline">
+                            <form action="${pageContext.request.contextPath}/manager/consultant/viewConsultantStaffList" method="get" class="d-inline">
+                                <input type="hidden" name="consultantId" value="${consultant.consultantId}">
                                 <button type="submit" class="btn btn-secondary">Assign Staff</button>
                             </form>
                         </c:when>
@@ -131,52 +132,79 @@
                     <!-- Associated Quotes Details -->
                     <div class="quotes-section mb-4">
                         <h4 class="section-header text-primary">Associated Quotes</h4>
-                        <c:if test="${not empty consultant.quotes}">
+                        <c:choose>
+                            <c:when test="${not empty consultant.quotes}">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Quotes ID</th>
+                                        <td>${consultant.quotes.quotesId}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Quotes Name</th>
+                                        <td>${consultant.quotes.quotesName}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Quotes Total Price</th>
+                                        <td>${consultant.quotes.quotesTotalPrice}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Quotes Description</th>
+                                        <td>${consultant.quotes.quotesContent}</td>
+                                    </tr>
+                                </table>
+                            </c:when>
+                            <c:when test="${not empty consultant.serviceQuotes}">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Quotes ID</th>
+                                        <td>${consultant.serviceQuotes.serviceQuotesId}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Quotes Name</th>
+                                        <td>${consultant.serviceQuotes.serviceQuotesName}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Quotes Total Price</th>
+                                        <td>${consultant.serviceQuotes.serviceQuotesTotalPrice}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Quotes Description</th>
+                                        <td>${consultant.serviceQuotes.serviceQuotesContent}</td>
+                                    </tr>
+                                </table>
+                            </c:when>
+                            <c:otherwise>
+                                <p class="text-muted">No Quotes is associated with this consultant.</p>
+                            </c:otherwise>
+                        </c:choose>    
+                    </div>
+
+                    <!-- Associated customer Details -->
+                    <div class="customer-section mb-4">
+                        <h4 class="section-header text-primary">Associated Customer</h4>
+                        <c:if test="${not empty consultant.customer}">
                             <table class="table table-bordered">
                                 <tr>
-                                    <th>Quotes ID</th>
-                                    <td>${consultant.quotes.quotesId}</td>
+                                    <th>Customer ID</th>
+                                    <td>${consultant.customer.id}</td>
                                 </tr>
                                 <tr>
-                                    <th>Quotes Name</th>
-                                    <td>${consultant.quotes.quotesName}</td>
+                                    <th>Customer Name</th>
+                                    <td>${consultant.customer.name}</td>
                                 </tr>
                                 <tr>
-                                    <th>Quotes Total Price</th>
-                                    <td>${consultant.quotes.quotesTotalPrice}</td>
+                                    <th>Customer Email</th>
+                                    <td>${consultant.customer.email}</td>
                                 </tr>
                                 <tr>
-                                    <th>Quotes Description</th>
-                                    <td>${consultant.quotes.quotesContent}</td>
+                                    <th>Customer phone</th>
+                                    <td>${consultant.customer.phone}</td>
                                 </tr>
                             </table>
                         </c:if>
-                        <c:if test="${empty consultant.quotes}">
-                            <p class="text-muted">No Quotes associated with this consultant.</p>
+                        <c:if test="${empty consultant.customer}">
+                            <p>No Customer are associated with this Consultant.</p>
                         </c:if>
-                    </div>
-
-                    <!-- Associated Customer Details -->
-                    <div class="customer-section mb-4">
-                        <h4 class="section-header text-primary">Associated Customer</h4>
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>Customer ID</th>
-                                <td>${consultant.customer.id}</td>
-                            </tr>
-                            <tr>
-                                <th>Customer Name</th>
-                                <td>${consultant.customer.name}</td>
-                            </tr>
-                            <tr>
-                                <th>Customer Email</th>
-                                <td>${consultant.customer.email}</td>
-                            </tr>
-                            <tr>
-                                <th>Customer Phone</th>
-                                <td>${consultant.customer.phone}</td>
-                            </tr>
-                        </table>
                     </div>
 
                     <!-- Associated Pre-Design Details -->
@@ -184,23 +212,24 @@
                         <h4 class="section-header text-primary">Associated Pre-Design</h4>
                         <c:if test="${not empty consultant.predesign}">
                             <table class="table table-hover">
-                                <tr>
-                                    <th>Pre-design Name</th>
-                                    <td>${consultant.predesign.preDesignName}</td>
-                                </tr>
-                                <tr>
-                                    <th>Pre-design Description</th>
-                                    <td>${consultant.predesign.preDesignDescription}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <a href="#" class="btn btn-info">View Pre-Design</a>
-                                    </td>
-                                </tr>
+                                <tbody>
+                                    <tr>
+                                        <th>Pre-Design ID</th>
+                                        <td>${consultant.predesign.preDesignId}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Pre-design Name</th>
+                                        <td>${consultant.predesign.preDesignName}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Pre-design Description</th>
+                                        <td>${consultant.predesign.preDesignDescription}</td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </c:if>
                         <c:if test="${empty consultant.predesign}">
-                            <p>No Pre-Design associated with this Consultant.</p>
+                            <p>No Pre-Design are associated with this Consultant.</p>
                         </c:if>
                     </div>
                 </div>
