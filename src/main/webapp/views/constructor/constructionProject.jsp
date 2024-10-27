@@ -135,7 +135,7 @@
                 </p>
             </div>
             <div class="info-item">
-                <a href="${pageContext.request.contextPath}/constructor/manage/viewDetail/viewDesign/${construction.project.projectId}" class="btn btn-info">
+                <a href="${pageContext.request.contextPath}/constructor/designStage/detail/${construction.project.projectId}" class="btn btn-info">
                     <i class="fas fa-file-alt"></i> View All Design
                 </a>
             </div>
@@ -144,8 +144,6 @@
 </div>
 
 <!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 </body>

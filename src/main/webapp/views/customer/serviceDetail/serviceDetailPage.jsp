@@ -317,7 +317,7 @@
                                                         </c:choose>
                                                     </td>
                                                     <td>
-                                                        <a href="${pageContext.request.contextPath}/customer/serviceDetail/${service.id}"
+                                                        <a href="${pageContext.request.contextPath}/customer/serviceDetail/detail/${service.id}"
                                                            class="btn btn-default btn-info">Details</a>
                                                     </td>
                                                 </tr>
@@ -399,7 +399,8 @@
 
 
     </script>
-
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <%@include file="../spacing.jsp" %>
     <%@include file="../footer.jsp" %>
     <%@include file="../scriptTemplate.jsp" %>

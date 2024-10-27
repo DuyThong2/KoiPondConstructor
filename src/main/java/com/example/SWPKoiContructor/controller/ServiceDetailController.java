@@ -6,11 +6,7 @@ import com.example.SWPKoiContructor.entities.ServiceDetail;
 import com.example.SWPKoiContructor.entities.ServicePrice;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
-import com.example.SWPKoiContructor.services.LoyaltyPointService;
-import com.example.SWPKoiContructor.services.ProjectService;
-import com.example.SWPKoiContructor.services.ServiceDetailService;
-import com.example.SWPKoiContructor.services.ServiceQuoteService;
-import com.example.SWPKoiContructor.services.StaffService;
+import com.example.SWPKoiContructor.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +37,9 @@ public class ServiceDetailController {
     
     @Autowired
     private LoyaltyPointService loyaltyPointService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     // Display list of service details with pagination and optional status filtering
     @GetMapping("/manager/serviceDetails")
@@ -121,14 +120,12 @@ public class ServiceDetailController {
                     newServiceDetail.setService(i);
                     newServiceDetail.setCustomer(serviceQuotes.getCustomer());
                     newServiceDetail = serviceDetailService.createServiceDetail(newServiceDetail);
+                    notificationService.createNotification(newServiceDetail.getId(), "serviceDetail",newServiceDetail.getCustomer().getId(),"customer","Your Service Orders has been started! Please check it!");
                 }
                     if(serviceQuotes.getServiceQuotesStatus() == 4 && serviceQuotes.isFree()) 
                         loyaltyPointService.useLoyaltyPoints(serviceQuotes.getCustomer(), serviceQuotes.getUsedPoint());
                     serviceQuotes = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
-                    
-                
             }
-
             return "redirect:/manager/serviceDetails";
         } catch (Exception e) {
             return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
@@ -390,7 +387,7 @@ public class ServiceDetailController {
         }
     }
 
-    @GetMapping("/customer/serviceDetail/{id}")
+    @GetMapping("/customer/serviceDetail/detail/{id}")
     public String customerServiceDetailInfo(Model model, @PathVariable("id") int id, HttpSession session) {
         Customer customer = (Customer) session.getAttribute("user");
         if (customer == null) {
@@ -423,7 +420,7 @@ public class ServiceDetailController {
         serviceDetailService.updateServiceDetail(serviceDetail);
 
         // Redirect or load th page where feedback was submitted
-        return "redirect:/customer/serviceDetail/" + serviceDetailId;
+        return "redirect:/customer/serviceDetail/detail" + serviceDetailId;
     }
 
     @GetMapping("/construction/serviceDetail/getCancelMessage")

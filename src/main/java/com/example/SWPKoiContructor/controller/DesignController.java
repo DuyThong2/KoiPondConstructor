@@ -1,22 +1,7 @@
 package com.example.SWPKoiContructor.controller;
 
-import com.example.SWPKoiContructor.entities.BluePrint;
-import com.example.SWPKoiContructor.entities.Comment;
-import com.example.SWPKoiContructor.entities.Contract;
-import com.example.SWPKoiContructor.entities.Customer;
-import com.example.SWPKoiContructor.entities.Design;
-import com.example.SWPKoiContructor.entities.DesignStage;
-import com.example.SWPKoiContructor.entities.DesignStageDetail;
-import com.example.SWPKoiContructor.entities.PaymentHistory;
-import com.example.SWPKoiContructor.entities.Project;
-import com.example.SWPKoiContructor.entities.Quotes;
-import com.example.SWPKoiContructor.entities.User;
-import com.example.SWPKoiContructor.services.DesignService;
-import com.example.SWPKoiContructor.services.DesignStageDetailService;
-import com.example.SWPKoiContructor.services.DesignStageService;
-import com.example.SWPKoiContructor.services.BluePrintService;
-import com.example.SWPKoiContructor.services.CommentService;
-import com.example.SWPKoiContructor.services.PaymentHistoryService;
+import com.example.SWPKoiContructor.entities.*;
+import com.example.SWPKoiContructor.services.*;
 import com.example.SWPKoiContructor.utils.FileUtility;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -43,7 +28,9 @@ public class DesignController {
     private CommentService commentService;
     private PaymentHistoryService paymentHistoryService;
 
-    public DesignController(DesignService designService, DesignStageService designStageService, BluePrintService bluePrintService, DesignStageDetailService designStageDetailService, CommentService commentService, FileUtility fileUtility, PaymentHistoryService paymentHistoryService) {
+
+    private NotificationService notificationService;
+    public DesignController(DesignService designService, DesignStageService designStageService, BluePrintService bluePrintService, DesignStageDetailService designStageDetailService, CommentService commentService, FileUtility fileUtility, PaymentHistoryService paymentHistoryService,NotificationService notificationService) {
         this.designService = designService;
         this.designStageService = designStageService;
         this.bluePrintService = bluePrintService;
@@ -51,6 +38,7 @@ public class DesignController {
         this.commentService = commentService;
         this.fileUtility = fileUtility;
         this.paymentHistoryService = paymentHistoryService;
+        this.notificationService=notificationService;
     }
 
     @GetMapping("/manager/design")
@@ -94,12 +82,13 @@ public class DesignController {
 
         if (detailId == null || newStatus == null) {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
-            return "redirect:/manager/design/viewDetail/" + designId;
+            return "redirect:/manager/design/detail/" + designId;
         }
-
+        DesignStageDetail updatedDetail = designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
+    
         if (newStatus == 4) {
+
             try {
-                DesignStageDetail updatedDetail = designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
                 Customer customer = updatedDetail.getDesignStage().getDesign().getProject().getContract().getCustomer();
                 BigDecimal amount = BigDecimal.valueOf(updatedDetail.getDesignStage().getDesignStagePrice());
 
@@ -110,16 +99,21 @@ public class DesignController {
                         "Manual", // Indicate that this payment is manual or any relevant method
                         "Payment for " + updatedDetail.getDesignStage().getDesignStageName() + "of " + customer.getName()
                 );
+                notificationService.createNotification(designId, "design", customer.getId(), "customer", "We have noticed your payment. Aligator Godzillamatsu");
 
                 // Save the payment history
+
                 paymentHistoryService.createPayment(paymentHistory);
-                redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+
             } catch (Exception e) {
                 redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
             }
+        }else if(newStatus==2){
+            Customer customer = updatedDetail.getDesignStage().getDesign().getProject().getContract().getCustomer();
+            notificationService.createNotification(designId, "design", customer.getId(), "customer", "You are required to pay for design stage");
         }
-
-        return "redirect:/manager/design/viewDetail/" + designId;
+        redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+        return "redirect:/manager/design/detail/" + designId;
     }
 //=========================Designer Controller====================================//
 
@@ -149,7 +143,7 @@ public class DesignController {
         return "designer/designerManage";
     }
 
-    @GetMapping("/designer/manage/viewProjectDetail/{id}")
+    @GetMapping("/designer/project/detail/{id}")
     public String designProject(@PathVariable("id") int id, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
@@ -174,7 +168,7 @@ public class DesignController {
         return "designer/projectDetail";
     }
 
-    @GetMapping("/designer/design/{designId}")
+    @GetMapping("/designer/design/detail/{designId}")
     public String designDetail(@PathVariable("designId") int designId, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
@@ -252,7 +246,13 @@ public class DesignController {
         blueprint.setImgUrl(uploadedFilePath);
         blueprint.setDateCreate(new Date());
 
+        Design design =designStage.getDesign();
         bluePrintService.saveBluePrint(blueprint);
+        Customer customer = design.getProject().getContract().getCustomer();
+        int customerId = designService.getCustomerIdByDesignId(designStageId);
+        System.out.println("VAI CA CHUONG");
+        notificationService.createNotification(design.getDesignId(), "design", customerId, "customer", "You are required to pay for design stage");
+        System.out.println("VAI CA L ANH THONG");
         redirectAttributes.addFlashAttribute("success", "Upload Successfully!");
         return "redirect:/designer/manage/blueprint/" + designStageId;
     }
@@ -332,7 +332,15 @@ public class DesignController {
         }
 
         try {
+            Design design = designService.getDesignById(designId);
+            Customer customer =design.getProject().getContract().getCustomer();
+            DesignStageDetail designStageDetail= designStageDetailService.getDesignStageDetailById(detailId);
             designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
+            String message="";
+            if(newStatus==2&&designStageDetail.getName().equalsIgnoreCase("Editing")){
+                message="You can check your blue print now!";
+                notificationService.createNotification(designId, "design", customer.getId(), "customer", message);
+            }
             redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status!!");
@@ -342,7 +350,7 @@ public class DesignController {
 
 //===============================End Update Status Design Detail=====================================//
 //====================================End for Designer======================================
-    @GetMapping("/customer/project/design/{id}")
+    @GetMapping("/customer/design/detail/{id}")
     public String customerViewDesign(@PathVariable("id") int id, Model model,
             HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -383,7 +391,7 @@ public class DesignController {
 
         if (detailId == null || newStatus == null) {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
-            return "redirect:/customer/project/design/" + designId;
+            return "redirect:/customer/design/detail/" + designId;
         }
 
         List<BluePrint> blueprints = bluePrintService.findByDesignStageId(designStageId);
@@ -398,7 +406,7 @@ public class DesignController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
-        return "redirect:/customer/project/design/" + designId;
+        return "redirect:/customer/design/detail/" + designId;
     }
 
     @GetMapping("/customer/project/design/blueprint/{designStageId}")

@@ -1,7 +1,14 @@
+<link href="<c:url value='/css/bell.css'/>" rel="stylesheet">
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
 <div class="dropdown">
     <a class="icon-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="fas fa-bell"></i>
+        <i class="fas fa-bell" style="font-size: 23px; margin: 6px 20px 0 4px"></i>
         <!-- Badge for unread notifications -->
         <span class="badge-note badge-danger" id="notificationCount">0</span>
     </a>
@@ -17,10 +24,7 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.0/dist/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+
 <script>
     var customerId = ${user.id};
     console.log(customerId);
@@ -111,6 +115,8 @@
                 const message = notification.message || "No message";
                 const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown Time";
                 const viewDetailLink = "${pageContext.request.contextPath}/customer/" + notification.fromTable + "/detail/" + notification.relatedId;
+
+                
                 const notificationHtml =
                     '<a class="dropdown-item current-notification" href="' + viewDetailLink + '" ' +
                 'data-notification-id="' + notification.id + '" ' +

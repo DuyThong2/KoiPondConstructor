@@ -5,12 +5,7 @@
  */
 package com.example.SWPKoiContructor.controller;
 
-import com.example.SWPKoiContructor.entities.Consultant;
-import com.example.SWPKoiContructor.entities.Feedback;
-import com.example.SWPKoiContructor.entities.Notification;
-import com.example.SWPKoiContructor.entities.Parcel;
-import com.example.SWPKoiContructor.entities.Quotes;
-import com.example.SWPKoiContructor.entities.User;
+import com.example.SWPKoiContructor.entities.*;
 import com.example.SWPKoiContructor.services.*;
 
 import java.util.Date;
@@ -61,8 +56,7 @@ public class QuoteController {
     @PostMapping("/customer/quote/updateStatus")
     public String customerUpdateQuoteStatus(@RequestParam("quoteId") int quoteId, @RequestParam("statusId") int statusId, Model model, HttpSession session) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
-       String statusString=statusId==3?"Accepted":"Rejected";
-
+       String statusString=statusId==4?"Accepted":"Rejected";
         notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Customer","quote",statusString);
         return "redirect:/customer/quote";
     }
@@ -142,6 +136,10 @@ public class QuoteController {
     public String managerUpdateQuoteStatus(@RequestParam("quoteId") int quoteId, @RequestParam("statusId") int statusId, Model model) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
         String statusString= statusId==2?"Accepted":"Rejected";
+        Customer customer = quotes.getCustomer();
+        if(statusId==2){
+            notificationService.createNotification(quoteId,"quote", customer.getId(),"customer","Your Quote has been Approved! Please check it!");
+        }
         notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Manager","quote",statusString);
         return "redirect:/manager/quote/detail/" + quoteId;
     }
@@ -262,7 +260,7 @@ public class QuoteController {
             model.addAttribute("consultant", consultant);
             model.addAttribute("customer", consultant.getCustomer());
             model.addAttribute("newQuote", newQuote);
-            List<Parcel> parcelList = parcelService.viewParcelList();
+            List<Parcel> parcelList = parcelService.viewParcelActiveList();
             model.addAttribute("parcelList", parcelList);
             User user = (User) session.getAttribute("user");
             model.addAttribute("staff", user);

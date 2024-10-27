@@ -64,4 +64,8 @@ public class PreDesignService {
     public PreDesign getPreDesignAndContentById(int preDesignId){
         return preDesignDAO.getPreDesignAndContentById(preDesignId);
     }
+    @Transactional
+    public PreDesign updatePreDesignStatus(int preDesignId, boolean status){
+        return preDesignDAO.updatePreDesignStatus(preDesignId, status);
+    }
 }

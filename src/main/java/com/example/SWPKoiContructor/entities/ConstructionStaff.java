@@ -21,13 +21,13 @@ public class ConstructionStaff {
     private Construction construction;
 
     @Column(name = "role_in_project")
-    private int roleInProject; // 1: Site Manager, 2: Supervisor, 3: Worker
+    private Integer roleInProject; // 1: Site Manager, 2: Supervisor, 3: Worker
 
     // Default constructor
     public ConstructionStaff() {
     }
 
-    public ConstructionStaff(ConstructionStaffId id, Staff staff, Construction construction, int roleInProject) {
+    public ConstructionStaff(ConstructionStaffId id, Staff staff, Construction construction, Integer roleInProject) {
         this.id = id;
         this.staff = staff;
         this.construction = construction;
@@ -59,7 +59,7 @@ public class ConstructionStaff {
         this.construction = construction;
     }
 
-    public int getRoleInProject() {
+    public Integer getRoleInProject() {
         return roleInProject;
     }
 

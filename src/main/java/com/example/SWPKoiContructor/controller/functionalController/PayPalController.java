@@ -3,12 +3,7 @@ package com.example.SWPKoiContructor.controller.functionalController;
 import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.PaymentHistory;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
-import com.example.SWPKoiContructor.services.ConstructionStageDetailService;
-import com.example.SWPKoiContructor.services.CustomerService;
-import com.example.SWPKoiContructor.services.DesignStageDetailService;
-import com.example.SWPKoiContructor.services.LoyaltyPointService;
-import com.example.SWPKoiContructor.services.PaymentHistoryService;
-import com.example.SWPKoiContructor.services.ServiceQuoteService;
+import com.example.SWPKoiContructor.services.*;
 import com.example.SWPKoiContructor.services.functionalService.PayPalService;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
@@ -60,6 +55,7 @@ public class PayPalController {
     @Autowired
     private CustomerService customerService;
 
+    private NotificationService notificationService;
     @PostMapping("/pay/construction")
     public RedirectView payForConstruction(HttpServletRequest request, 
                                            @RequestParam("amount") double amount,
@@ -189,7 +185,7 @@ public class PayPalController {
 
                 // Redirect to construction page
                 redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
-                return "redirect:/customer/project/construction/" + constructionId;
+                return "redirect:/customer/construction/detail/" + constructionId;
             }
         } catch (PayPalRESTException e) {
             e.printStackTrace();
@@ -229,7 +225,7 @@ public class PayPalController {
 
                 // Redirect to design page
                 redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
-                return "redirect:/customer/project/design/" + designId;
+                return "redirect:/customer/design/detail/" + designId;
             }
         } catch (PayPalRESTException e) {
             e.printStackTrace();
@@ -269,7 +265,8 @@ public class PayPalController {
                 paymentHistory.setPaymentMethod("PayPal");
                 paymentHistory.setDescription("Payment of "+amount+" for service quote" + sq.getServiceQuotesId() + " by "+ sq.getCustomer().getName());
                 paymentHistoryService.createPayment(paymentHistory);
-                
+
+
                 double pointGained = amount.doubleValue();
                 loyaltyPointService.gainLoyaltyPoints(sq.getCustomer(), pointGained);
                 // Redirect to design page
@@ -285,12 +282,12 @@ public class PayPalController {
 
     @GetMapping("/cancel/construction/{id}")
     public String cancelForConstruction(@PathVariable("id") int constructionId) {
-        return "redirect:/customer/project/construction/" + constructionId;
+        return "redirect:/customer/construction/detail/" + constructionId;
     }
 
     @GetMapping("/cancel/design/{id}")
     public String cancelForDesign(@PathVariable("id") int designId) {
-        return "redirect:/customer/project/design/" + designId;
+        return "redirect:/customer/design/detail/" + designId;
     }
     
     @GetMapping("/cancel/serviceQuote")

@@ -264,7 +264,7 @@
                                                     </c:choose>
                                                 </td>
                                                 <td>${contract.contractNote}</td>
-                                                <td><a href="${pageContext.request.contextPath}/customer/contract/viewDetail/${contract.contractId}" class="btn-default btn btn-info">View</a></td>
+                                                <td><a href="${pageContext.request.contextPath}/customer/contract/detail/${contract.contractId}" class="btn-default btn btn-info">View</a></td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>

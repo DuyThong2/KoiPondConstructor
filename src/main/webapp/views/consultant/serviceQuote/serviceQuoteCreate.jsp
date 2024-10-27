@@ -135,58 +135,6 @@
                         <div class="form-group">
                             <button type="button" class="btn btn-warning" onclick="updateCostsBasedOnParcel()">Auto Adjust Costs</button>
                         </div>
-
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function () {
-                                // Attach the event listener to the form after the DOM is loaded
-                                const form = document.querySelector('form');
-
-                                form.addEventListener('submit', function (event) {
-                                    const totalPrice = parseFloat(document.getElementById('serviceQuotesTotalPrice').value);
-                                    const serviceQuotesName = document.getElementById('serviceQuotesName').value.trim();
-                                    const serviceQuotesContent = document.getElementById('serviceQuotesContent').value.trim();
-                                    const area = parseFloat(document.getElementById('serviceQuotesArea').value); // Get the area input
-
-                                    let isValid = true;
-
-                                    // Check if "Service Quote Name" is empty
-                                    if (serviceQuotesName === "") {
-                                        isValid = false;
-                                        alert("Service Quote Name is required.");
-                                    }
-
-                                    // Check if "Service Quote Content" is empty
-                                    if (serviceQuotesContent === "") {
-                                        isValid = false;
-                                        alert("Service Quote Content is required.");
-                                    }
-
-                                    // Check if "Area" is 0 or less
-                                    if (isNaN(area) || area <= 0) {
-                                        isValid = false;
-                                        document.getElementById('areaError').style.display = 'block'; // Show area error message
-                                        alert("Area must be greater than 0.");
-                                    } else {
-                                        document.getElementById('areaError').style.display = 'none'; // Hide area error message
-                                    }
-
-                                    // Check if "Total Price" is 0 or less
-                                    if (isNaN(totalPrice) || totalPrice <= 0) {
-                                        isValid = false;
-                                        document.getElementById('priceError').style.display = 'block'; // Show price error message
-                                        alert("Total price must be greater than 0.");
-                                    } else {
-                                        document.getElementById('priceError').style.display = 'none'; // Hide price error message
-                                    }
-
-                                    // Prevent form submission if validation fails
-                                    if (!isValid) {
-                                        event.preventDefault();  // This should stop the form from submitting
-                                    }
-                                });
-                            });
-                        </script>
-
                         <button type="submit" class="btn btn-primary">Create Service Quote</button>
                     </form:form>
                 </div>
@@ -330,7 +278,7 @@
                     // Update the total price field with the calculated value
                     document.getElementById('serviceQuotesTotalPrice').value = totalCost.toFixed(2); // Keep the total price intact
                 }
-
+                
             </script>
 
         </div>

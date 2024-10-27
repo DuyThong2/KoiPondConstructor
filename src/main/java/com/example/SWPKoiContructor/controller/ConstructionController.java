@@ -41,7 +41,7 @@ public class ConstructionController {
         this.commentService = commentService;
         this.serviceDetailService = serviceDetailService;
         this.paymentHistoryService = paymentHistoryService;
-        this.notificationService = notificationService; 
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/manager/construction")
@@ -57,7 +57,7 @@ public class ConstructionController {
             page = 0;
         }
         List<Construction> list = constructionService.getListConstruction(null, page, size, statusFilter, searchName);
-        
+
         model.addAttribute("constructionList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -83,7 +83,7 @@ public class ConstructionController {
         }
         // Fetch constructions filtered by the logged-in user's ID, status, and search name
         List<Construction> constructions = constructionService.getListConstruction(user.getId(), page, size, statusFilter, searchName);
-        
+
         model.addAttribute("constructions", constructions);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -127,7 +127,7 @@ public class ConstructionController {
         }
     }
 
-    @GetMapping("/constructor/construction/{id}")
+    @GetMapping("/constructor/construction/detail/{id}")
     public String constructionDetail(@PathVariable("id") int id, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
@@ -174,7 +174,7 @@ public class ConstructionController {
             return "redirect:/login";
         }
         if (user.getAuthority().getAuthority().equalsIgnoreCase("ROLE_MANAGER")) {
-            return "redirect:/manager/construction/viewDetail/" + constructionId;
+            return "redirect:/manager/construction/detail/" + constructionId;
         }
 
         // Fetch the construction stage details by constructionStageId
@@ -204,26 +204,35 @@ public class ConstructionController {
         try {
             // Update the construction stage detail status
             ConstructionStageDetail updatedDetail = constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
-            System.out.println("here asdddddddddddddddddd");
+          
             // Check if the updated detail is related to a payment and the new status is set to 4 (Completed)
-            if (updatedDetail != null
-                    && "Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())
-                    && newStatus == 4) {
-                System.out.println("got it inside !!!!!!!!!!!!!!!!1");
-                // Step 1: Retrieve the Project ID from the constructionId
-                Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
-                BigDecimal amount = BigDecimal.valueOf(updatedDetail.getConstructionStage().getConstructionStagePrice());
-                // Step 4: Create a new PaymentHistory record using the streamlined constructor
-                PaymentHistory paymentHistory = new PaymentHistory(
-                        customer,
-                        amount, // Replace with the actual amount from the detail
-                        "Manual", // Indicate that this payment is manual or any relevant method
-                        "Payment for " + updatedDetail.getConstructionStage().getConstructionStageName() + " of " + customer.getName()
-                );
+            if (updatedDetail != null) {
+                if ("Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())
+                        && newStatus == 4) {
+                    
+                    // Step 1: Retrieve the Project ID from the constructionId
+                    Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
+                    BigDecimal amount = BigDecimal.valueOf(updatedDetail.getConstructionStage().getConstructionStagePrice());
+                    // Step 4: Create a new PaymentHistory record using the streamlined constructor
+                    PaymentHistory paymentHistory = new PaymentHistory(
+                            customer,
+                            amount, // Replace with the actual amount from the detail
+                            "Manual", // Indicate that this payment is manual or any relevant method
+                            "Payment for " + updatedDetail.getConstructionStage().getConstructionStageName() + " of " + customer.getName()
+                    );
+                    notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "We have noticed your payment. Aligator Godzillamatsu");
 
-                // Save the payment history
-                paymentHistoryService.createPayment(paymentHistory);
-                redirectAttributes.addFlashAttribute("success", "Status updated and payment recorded successfully!");
+                    // Save the payment history
+                    paymentHistoryService.createPayment(paymentHistory);
+
+                    redirectAttributes.addFlashAttribute("success", "Status updated and payment recorded successfully!");
+                } else if (newStatus == 2 && "Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())) {
+                    Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
+                    notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "You are required to pay for construction stage");
+                } else if (newStatus == 2 && "Inspection".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())) {
+                    Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
+                    notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "We need your confirmation on construction site");
+                }
             } else {
                 redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
             }
@@ -236,7 +245,7 @@ public class ConstructionController {
         return "redirect:/staff/updateStatus/constructionStage/" + constructionStageId + "?constructionId=" + constructionId;
     }
 
-    @GetMapping("/constructor/manage/viewDetail/{id}")
+    @GetMapping("/constructor/project/detail/{id}")
     public String constructionProject(@PathVariable("id") int id, Model model,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
@@ -272,11 +281,10 @@ public class ConstructionController {
         return "constructor/constructionProject";
     }
 
-    @GetMapping("/customer/project/construction/{id}")
+    @GetMapping("/customer/construction/detail/{id}")
     public String customerViewConstruction(@PathVariable("id") int id, Model model,
             HttpSession session) {
         User user = (User) session.getAttribute("user");
-        System.out.println(user);
         if (user == null) {
             return "redirect:/login";
         }
@@ -326,7 +334,7 @@ public class ConstructionController {
         }
 
         // Redirect back to the construction stage details page
-        return "redirect:/customer/project/construction/" + constructionId;
+        return "redirect:/customer/construction/detail/" + constructionId;
     }
 
     // Method to reject the inspection stage
@@ -354,7 +362,7 @@ public class ConstructionController {
         }
 
         // Redirect back to the construction stage details page
-        return "redirect:/customer/project/construction/" + constructionId;
+        return "redirect:/customer/construction/detail/" + constructionId;
     }
 
     @PostMapping("/customer/feedback/send")
@@ -376,7 +384,7 @@ public class ConstructionController {
 
         commentService.saveComment(comment);
         redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
-        return "redirect:/customer/project/construction/" + constructionId;
+        return "redirect:/customer/construction/detail/" + constructionId;
     }
 
     @PostMapping("/customer/feedback/delete")
@@ -391,12 +399,12 @@ public class ConstructionController {
 
         if (comment == null || comment.getCustomer().getId() != customer.getId()) {
             redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
-            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+            return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
         }
 
         commentService.deleteComment(commentId);
         redirectAttributes.addFlashAttribute("success", "Comment deleted successfully.");
-        return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+        return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
     }
 
     @PostMapping("/customer/feedback/update")
@@ -412,13 +420,13 @@ public class ConstructionController {
 
         if (comment == null || comment.getCustomer().getId() != customer.getId()) {
             redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
-            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+            return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
         }
 
         comment.setCommentContent(commentContent);
         commentService.saveComment(comment);
         redirectAttributes.addFlashAttribute("success", "Comment updated successfully.");
-        return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+        return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
     }
 
     @PostMapping("/staff/feedback/send")
@@ -440,7 +448,7 @@ public class ConstructionController {
 
         commentService.saveComment(comment);
         redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
-        return "redirect:/constructor/construction/" + constructionId;
+        return "redirect:/constructor/construction/detail/" + constructionId;
     }
 
     @PostMapping("/staff/feedback/delete")
@@ -454,11 +462,11 @@ public class ConstructionController {
         Comment comment = commentService.getCommentById(commentId);
         if (comment == null || comment.getStaff().getId() != staff.getId()) {
             redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
-            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+            return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
         }
         commentService.deleteComment(commentId);
         redirectAttributes.addFlashAttribute("success", "Comment deleted successfully.");
-        return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
+        return "redirect:/constructor/construction/detail/" + comment.getConstruction().getConstructionId();
     }
 
     @PostMapping("/staff/feedback/update")
@@ -474,13 +482,13 @@ public class ConstructionController {
 
         if (comment == null || comment.getStaff().getId() != staff.getId()) {
             redirectAttributes.addFlashAttribute("error", "You do not have permission to edit this comment.");
-            return "redirect:/customer/project/construction/" + comment.getConstruction().getConstructionId();
+            return "redirect:/customer/construction/detail/" + comment.getConstruction().getConstructionId();
         }
 
         comment.setCommentContent(commentContent);
         commentService.saveComment(comment);
         redirectAttributes.addFlashAttribute("success", "Comment updated successfully.");
-        return "redirect:/constructor/construction/" + comment.getConstruction().getConstructionId();
+        return "redirect:/constructor/construction/detail/" + comment.getConstruction().getConstructionId();
     }
 
     @GetMapping("/constructor/serviceDetailManage/")
@@ -526,7 +534,7 @@ public class ConstructionController {
         return "constructor/constructionServiceManage"; // JSP page path
     }
 
-    @GetMapping("/constructor/serviceDetail/{serviceDetailId}")
+    @GetMapping("/constructor/serviceDetail/detail/{serviceDetailId}")
     public String getServiceDetail(
             @PathVariable("serviceDetailId") int serviceDetailId,
             Model model,
@@ -585,17 +593,17 @@ public class ConstructionController {
             @RequestParam("serviceDetailId") int serviceDetailId,
             @RequestParam("cancelMessage") String cancelMessage) {
         try {
-            
+
             // Attempt to update the service detail status to 4 (Canceled)
-            ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId); 
-          // 4 for "Canceled" status
+            ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
+            // 4 for "Canceled" status
             if (serviceDetail != null) {
                 serviceDetail.setServiceCancelMessage(cancelMessage);
                 serviceDetail.setServiceDetailStatus(4);
                 serviceDetailService.updateServiceDetail(serviceDetail);
                 // Create notification for cancel request
                 String notificationMessage = "Cancel Request From " + serviceDetail.getStaff().getName() + ": " + cancelMessage;
-                notificationService.createCancelRequestNotification(serviceDetail.getId(), notificationMessage,"serviceDetail");
+                notificationService.createCancelRequestNotification(serviceDetail.getId(), notificationMessage, "serviceDetail");
 
                 // Return success JSON string wrapped in ResponseEntity with 200 OK
                 return ResponseEntity.ok("{\"status\":\"success\"}");
@@ -608,7 +616,7 @@ public class ConstructionController {
         }
     }
 
-    @GetMapping("/constructor/manage/viewDetail/viewDesign/{projectId}")
+    @GetMapping("/constructor/designStage/detail/{projectId}")
     public String manageBlueprint(@PathVariable("projectId") int designStageId,
             Model model, HttpSession session) {
 

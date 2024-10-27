@@ -86,47 +86,49 @@ public class NotificationService {
      }
 
      @Transactional
-     public void createNotification(String customerName, int relatedId, String fromTable,Integer receiverId,String receiverType,String message) {
-          Notification notification = new Notification();
-         if(receiverId!=null){
-              notification.setReceiverId(receiverId);
-         }
-          notification.setMessage(message);
-          notification.setRelatedId(relatedId);
-          notification.setReceiverType(receiverType);
-          notification.setFromTable(fromTable);
-          notification.setCreatedAt(LocalDateTime.now());
-          notification.setRead(false);
+     public void createNotification( Integer relatedId, String fromTable,Integer receiverId,String receiverType,String message) {
+          try{
+               Notification notification = new Notification();
+               if(receiverId!=null){
+                    notification.setReceiverId(receiverId);
+               }
+               notification.setMessage(message);
+               if(relatedId!=null){
+                    notification.setRelatedId(relatedId);
+               }
+               notification.setReceiverType(receiverType);
+               notification.setFromTable(fromTable);
+               notification.setCreatedAt(LocalDateTime.now());
+               notification.setRead(false);
 
-          notificationDAO.saveNotification(notification);
+               notificationDAO.saveNotification(notification);
 
-          // Broadcast notification to /topic/notifications
-          if(receiverType.equalsIgnoreCase("manager"))
-               simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
-          else
-               simpMessagingTemplate.convertAndSend("/topic/"+receiverType+"/"+receiverId, notification);
+               // Broadcast notification to /topic/notifications
+               if(receiverType.equalsIgnoreCase("manager"))
+                    simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
+               else
+                    simpMessagingTemplate.convertAndSend("/topic/"+receiverType+"/"+receiverId, notification);
+          }catch(Exception e){
+               e.printStackTrace();
+          }
      }
 
      @Transactional
      public void createQuoteNotification(String customerName, int quoteId, Integer customerId) {
          String messageCustomer = "A New Quote created for Customer: " + customerName;
-         String messageManager = "A New Quote created for you! Check It";
-          
-         createNotification(customerName, quoteId, "quote", null, "manager", messageCustomer);
-         createNotification(customerName, quoteId, "quote", customerId, "customer", messageManager);
+
+         createNotification( quoteId, "quote", null, "manager", messageCustomer);
      }
 
      @Transactional
      public void createContractNotification(String customerName, int contractId, Integer customerId) {
          String managerMessage = "A New Contract created for Customer: " + customerName;
-         String customerMessage = "A New Contract has been created for you! Please review it.";
-          
-         createNotification(customerName, contractId, "contract", null, "manager", managerMessage);
-         createNotification(customerName, contractId, "contract", customerId, "customer", customerMessage);
+
+         createNotification( contractId, "contract", null, "manager", managerMessage);
      }
      public void createProjectNotification(String name, int projectId, int id) {
           String message="Your project has been created! Please check it";
-          createNotification(name,projectId,"project",id,"customer",message);
+          createNotification(projectId,"project",id,"customer",message);
      }
 
      @Transactional
@@ -138,9 +140,7 @@ public class NotificationService {
           notification.setFromTable("contract");
           notification.setCreatedAt(LocalDateTime.now());
           notification.setRead(false);
-
           notificationDAO.saveNotification(notification);
-
           // Broadcast notification to /topic/notifications
           simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
      }
@@ -158,24 +158,36 @@ public class NotificationService {
           // Broadcast notification to /topic/notifications
           simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
      }
-     private void sendNotificationToConsultant(int consultantId, Notification notification) {
-          simpMessagingTemplate.convertAndSend("/topic/consultant/" + consultantId, notification);
-     }
+
      @Transactional
      public void assignStaffNotification(int id, int relatedId, String staffType, String table, String message) {
           Notification notification = new Notification();
           notification.setReceiverId(id);
           notification.setMessage(message);
           notification.setRelatedId(relatedId);
-          notification.setReceiverType(staffType);
+          notification.setReceiverType(returnType(staffType));
           notification.setFromTable(table);
           notification.setCreatedAt(LocalDateTime.now());
           notification.setRead(false);
-
           notificationDAO.saveNotification(notification);
-          simpMessagingTemplate.convertAndSend("/topic/consultant/" + id, notification);
+          simpMessagingTemplate.convertAndSend("/topic/"+returnType(staffType)+"/" + id, notification);
      }
-
+     @Transactional
+     public void assignListStaffNotification(List<Staff> staffList, int projectId,String projectName) {
+          String message="You have been assigned to a new Project: "+projectName;
+          for (Staff staff : staffList) {
+               assignStaffNotification(staff.getId(),projectId,staff.getDepartment(),"project",message);
+          }
+     }
+     private String returnType(String staffType){
+          String returnType="";
+          switch (staffType.toLowerCase()){
+               case "consulting": returnType="consultant"; break;
+               case "design": returnType="designer"; break;
+               case "construction": returnType="constructor"; break;
+          }
+          return returnType;
+     }
      @Transactional
      public void markAllAsReadForReceiver(int id) {
           notificationDAO.markAllAsReadForReceiver(id);
@@ -186,7 +198,6 @@ public class NotificationService {
      public void changeNotificationToConsultant(int id, String customerName, int relatedId, int statusId, String fromWho,String fromTable,String statusString) {
           Notification notification = new Notification();
           notification.setReceiverId(id);
-
           notification.setMessage(fromWho+" " +statusString +" your quote: " + customerName);
           notification.setRelatedId(relatedId);
           notification.setReceiverType("consultant");
@@ -194,8 +205,10 @@ public class NotificationService {
           notification.setCreatedAt(LocalDateTime.now());
           notification.setRead(false);
           notificationDAO.saveNotification(notification);
+
           simpMessagingTemplate.convertAndSend("/topic/consultant/" + id, notification);
      }
+
 
 
 }

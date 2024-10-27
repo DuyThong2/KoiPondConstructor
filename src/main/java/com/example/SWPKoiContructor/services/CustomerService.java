@@ -69,4 +69,8 @@ public class CustomerService {
     public long countFilterCustomer(String name, String email, Boolean status) {
         return customerDAO.countFilterCustomer(name, email, status);
     }
+    
+    public List<Customer> getCustomerListForChoose(){
+        return customerDAO.getCustomerDescAndActive();
+    }
 }

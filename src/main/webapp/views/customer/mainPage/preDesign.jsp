@@ -19,8 +19,10 @@
     <%@include file="../cssCustom.jsp"%>
 
     <style>
-        /* Container for portfolio items */
-        /* Container for portfolio items */
+        .d-flex{
+            margin-top: 0;
+        }
+
         .portfolio-wrap {
             display: flex;
             justify-content: center; /* Center horizontally */
@@ -87,7 +89,9 @@
             color: #ccc;
             font-style: italic;
         }
-
+        .d-flex{
+            margin: 0;
+        }
     </style>
 </head>
 
@@ -152,17 +156,17 @@
                     <div class="search__top d-flex justify-content-between align-items-center">
                         <div class="search__logo">
                             <a href="index.html">
-                                <img src="/assets/imgs/logo/logo-white.svg" alt="img">
+                                <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                             </a>
                         </div>
                         <div class="search__close">
                             <button type="button" class="search__close-btn search-close-btn">
-                                <s   vg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                                     <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                           stroke-linejoin="round" />
                                     <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                           stroke-linejoin="round" />
-                                    </svg>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -199,7 +203,7 @@
                 <div class="offcanvas__top d-flex justify-content-between align-items-center">
                     <div class="offcanvas__logo">
                         <a href="index.html">
-                            <img src="/assets/imgs/logo/logo-white.svg" alt="logo not found">
+                            <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                         </a>
                     </div>
                     <div class="offcanvas__close">
@@ -256,10 +260,10 @@
                 <div class="col-md-12">
                     <div class="page-title-inner">
                         <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="index.html" class="theme-color">Home</a>
+                            <a href="${pageContext.request.contextPath}/" class="theme-color">Home</a>
                             <span class="current">Pre Design</span>
                         </div>
-                        <h1 class="page-title mb-0">Pre Design</h1>
+                        <h1 class="page-title mb-0">Design Template</h1>
                     </div>
                 </div>
             </div>
@@ -280,7 +284,7 @@
                         <div class="offset-md-2 col-md-8">
                             <div class="title-wrap text-center">
                                 <div class="section-title">
-                                    <h2 class="title mb-0">Our Pre Design</h2>
+                                    <h2 class="title mb-0">Our Design Template</h2>
                                 </div>
                             </div>
                         </div>
@@ -293,7 +297,7 @@
                                     <div class="portfolio-item col-lg-4 col-md-4 col-sm-4 col-xs-6">
                                         <a href="${pageContext.request.contextPath}/home/preDesign/${preDesign.preDesignId}">
                                             <div class="portfolio-thumb">
-                                                <img src="/uploads/${preDesign.preDesignImgUrl}" alt="Pre Design Img">
+                                                <img src="/uploads/${preDesign.preDesignImgUrl}" alt="Template">
                                                 <div class="portfolio-info">
                                                     <div class="portfolio-name">${preDesign.preDesignName}</div>
                                                     <div class="portfolio-description">${preDesign.preDesignDescription}</div>
@@ -335,15 +339,10 @@
 
 </main>
 
-
-<!-- Footer area start -->
-
 <%@include file="../footer.jsp" %>
-<!-- Footer area end -->
-
-<!-- JS here -->
 <%@include file="../scriptTemplate.jsp"%>
-
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 
 </html>

@@ -14,13 +14,8 @@ import com.example.SWPKoiContructor.entities.Service;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.User;
-import com.example.SWPKoiContructor.services.ConsultantService;
-import com.example.SWPKoiContructor.services.FeedbackService;
-import com.example.SWPKoiContructor.services.LoyaltyPointService;
-import com.example.SWPKoiContructor.services.PaymentHistoryService;
-import com.example.SWPKoiContructor.services.ServiceQuoteService;
-import com.example.SWPKoiContructor.services.ServiceService;
-import com.example.SWPKoiContructor.services.UserService;
+import com.example.SWPKoiContructor.services.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -55,7 +51,9 @@ public class ServiceQuoteController {
     private LoyaltyPointService loyaltyPointService;
     private PaymentHistoryService paymentHistoryService;
 
-    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService, LoyaltyPointService loyaltyPointService, PaymentHistoryService paymentHistoryService) {
+    private NotificationService notificationService;
+
+    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService, LoyaltyPointService loyaltyPointService, PaymentHistoryService paymentHistoryService,NotificationService notificationService) {
         this.serviceQuoteService = serviceQuoteService;
         this.serviceService = serviceService;
         this.consultantService = consultantService;
@@ -63,6 +61,7 @@ public class ServiceQuoteController {
         this.feedbackService = feedbackService;
         this.loyaltyPointService = loyaltyPointService;
         this.paymentHistoryService = paymentHistoryService;
+        this.notificationService = notificationService;
     }
 
     //----------------------------------- MANAGER SECTION ----------------------------------------------
@@ -135,6 +134,12 @@ public class ServiceQuoteController {
             feedback.setServiceQuotes(serviceQuotes);
             feedback = feedbackService.saveFeedback(feedback);
         }
+        if(statusId==2){
+            notificationService.createNotification(serviceQuoteId,"serviceQuote",serviceQuotes.getCustomer().getId(),"customer","Your service quotes has been created!");
+        }else if(statusId==3){
+            notificationService.createNotification(serviceQuoteId,"serviceQuote",serviceQuotes.getConsultant().getStaff().getId(),"consultant","Your service quotes has been denied by manager! Please edit it");
+
+        }
         return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
     }
     
@@ -151,8 +156,10 @@ public class ServiceQuoteController {
                 paymentHistory.setPaymentMethod("Manual");
                 paymentHistory.setDescription("Payment of "+amount+" for service quote" + serviceQuote.getServiceQuotesId() + " by "+ serviceQuote.getCustomer().getName() + " using " + serviceQuote.calculatePointUsing());
                 paymentHistoryService.createPayment(paymentHistory);
-                
-                double pointGained = amount.doubleValue();
+        System.out.println("ANH THIENNNNNNNNNNNNNNNNNNN");
+                notificationService.createNotification(serviceQuoteId, "serviceQuote", paymentHistory.getCustomer().getId(), "customer", "We have noticed your payment. Aligator Godzillamatsu");
+        System.out.println("ANH THIENNNNNNNNNNNNNNNNN");
+        double pointGained = amount.doubleValue();
                 loyaltyPointService.gainLoyaltyPoints(serviceQuote.getCustomer(), pointGained);
                 
                 serviceQuote = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
@@ -229,6 +236,7 @@ public class ServiceQuoteController {
             model.addAttribute("staff", user);
             long totalPoint = loyaltyPointService.TotalPoints(consultant.getCustomer().getId());
             model.addAttribute("totalPoint", totalPoint);
+
             return "consultant/serviceQuote/serviceQuoteCreate";
         }
         model.addAttribute("newServiceQuote", newServiceQuotes);
@@ -249,8 +257,10 @@ public class ServiceQuoteController {
                 serviceList.add(service);
             }
         }
+
         newServiceQuotes.setService(serviceList);
         newServiceQuotes = serviceQuoteService.saveNewServiceQuote(newServiceQuotes);
+        notificationService.createNotification(newServiceQuotes.getServiceQuotesId(),"serviceQuote",null,"manager","New Service Quote has been created");
         return "redirect:/consultant/serviceQuote";
     }
 
@@ -271,7 +281,7 @@ public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuot
         model.addAttribute("staff", user);
         long totalPoint = loyaltyPointService.TotalPoints(serviceQuote.getCustomer().getId());
         model.addAttribute("totalPoint", totalPoint);
-        
+        notificationService.createNotification(serviceQuoteId,"serviceQuote",null,"manager","Service Quote has been updated");
         return "consultant/serviceQuote/serviceQuoteUpdate";
     }
     
@@ -315,6 +325,9 @@ public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuot
             feedback.setToUser(toUser);
             feedback.setServiceQuotes(serviceQuotes);
             feedback = feedbackService.saveFeedback(feedback);
+            if(statusId==6){
+                notificationService.createNotification(serviceQuoteId,"serviceQuote",null,"manager","Request service Quote has been rejected by Consultant: " + serviceQuotes.getStaff().getName());
+            }
         }
         return "redirect:/consultant/serviceQuote/detail/" + serviceQuoteId;
     }
@@ -371,7 +384,17 @@ public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuot
             feedback.setServiceQuotes(serviceQuotes);
             feedback = feedbackService.saveFeedback(feedback);
         }
+        if(statusId==4){
+            notificationService.createNotification(serviceQuoteId,"serviceQuote",null,"manager","Service quotes has been accepted by Customer: "+serviceQuotes.getCustomer().getName());
+        }else if(statusId==5){
+            notificationService.createNotification(serviceQuoteId,"serviceQuote",serviceQuotes.getConsultant().getStaff().getId(),"consultant","Your service quotes has been denied by customer! Please edit it");
+
+        }
+
         return "redirect:/customer/serviceQuote";
     }
-
+    @GetMapping("/customer/serviceQuote/detail/{id}")
+    public String redirectController(){
+        return "redirect:/customer/serviceQuote";
+    }
 }

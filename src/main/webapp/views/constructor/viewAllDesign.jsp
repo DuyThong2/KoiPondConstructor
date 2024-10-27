@@ -155,6 +155,8 @@
                     <!-- Existing Blueprints Section -->
                     <div class="blueprint-gallery">
                         <div class="row">
+                            <c:choose>
+                            <c:when test="${not empty designStage.bluePrint}">
                             <c:forEach var="blueprint" items="${designStage.bluePrint}">
                                 <div class="col-md-4">
                                     <div class="card">
@@ -170,7 +172,13 @@
                                     </div>
                                 </div>
                             </c:forEach>
-
+                            </c:when>
+                            <c:otherwise>
+                                <div class="col-12 text-center">
+                                    <p class="text-muted" style="font-size: 1.2rem;">Waiting for Designer please!</p>
+                                </div>
+                            </c:otherwise>
+                            </c:choose>
                         </div>
 
 
@@ -202,7 +210,6 @@
 
 
             <!-- Bootstrap JS -->
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
             <script src="https://kit.fontawesome.com/a076d05399.js"></script>
