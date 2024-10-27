@@ -186,6 +186,20 @@
                     designCostPerSquareMeter: 0,
                     constructionCostPerSquareMeter: 0
                 };
+                
+                document.querySelectorAll('input[type="number"]').forEach(input => {
+                            input.addEventListener('input', function () {
+                                // Remove any characters that are not digits or dots (allowing decimal numbers)
+                                this.value = this.value.replace(/[^0-9.]/g, '');
+                            });
+
+                            input.addEventListener('blur', function () {
+                                // Prevent negative values by setting any negative number to zero
+                                if (parseFloat(this.value) < 0) {
+                                    this.value = 0;
+                                }
+                            });
+                        });
 
                 function selectParcel(packageId, packageName, designCostPerSquareMeter, constructionCostPerSquareMeter) {
                     document.getElementById('selectedParcelId').value = packageId;
@@ -209,6 +223,7 @@
                     document.getElementById('constructionCost').value = constructionCost.toFixed(2);
                     document.getElementById('totalPrice').value = totalPrice.toFixed(2);
                 }
+                
 
                 // Validate the form before submission
                 function validateForm() {

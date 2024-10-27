@@ -120,6 +120,8 @@ public class NotificationService {
 
          createNotification( contractId, "contract", null, "manager", managerMessage);
      }
+     
+     @Transactional
      public void createProjectNotification(String name, int projectId, int id) {
           String message="Your project has been created! Please check it";
           createNotification(projectId,"project",id,"customer",message);
