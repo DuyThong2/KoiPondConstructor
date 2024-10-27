@@ -115,6 +115,8 @@
                 const message = notification.message || "No message";
                 const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown Time";
                 const viewDetailLink = "${pageContext.request.contextPath}/customer/" + notification.fromTable + "/detail/" + notification.relatedId;
+
+                
                 const notificationHtml =
                     '<a class="dropdown-item current-notification" href="' + viewDetailLink + '" ' +
                 'data-notification-id="' + notification.id + '" ' +

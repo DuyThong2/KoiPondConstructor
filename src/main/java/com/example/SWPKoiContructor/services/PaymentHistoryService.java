@@ -1,8 +1,10 @@
 package com.example.SWPKoiContructor.services;
 
 import com.example.SWPKoiContructor.dao.PaymentHistoryDAO;
+import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.PaymentHistory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -15,16 +17,20 @@ public class PaymentHistoryService {
 
     private final PaymentHistoryDAO paymentHistoryDAO;
 
+    private NotificationService notificationService;
     @Autowired
-    public PaymentHistoryService(PaymentHistoryDAO paymentHistoryDAO) {
+    public PaymentHistoryService(PaymentHistoryDAO paymentHistoryDAO,@Lazy NotificationService notificationService) {
         this.paymentHistoryDAO = paymentHistoryDAO;
+        this.notificationService = notificationService;
     }
+
 
     @Transactional
     public PaymentHistory createPayment(PaymentHistory payment) {
-        return paymentHistoryDAO.createPayment(payment);
-    }
+        PaymentHistory paymentHistory= paymentHistoryDAO.createPayment(payment);
+        return paymentHistory ;
 
+    }
     @Transactional
     public PaymentHistory updatePayment(PaymentHistory payment) {
         return paymentHistoryDAO.updatePayment(payment);
