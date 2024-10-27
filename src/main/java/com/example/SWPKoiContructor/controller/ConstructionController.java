@@ -41,7 +41,7 @@ public class ConstructionController {
         this.commentService = commentService;
         this.serviceDetailService = serviceDetailService;
         this.paymentHistoryService = paymentHistoryService;
-        this.notificationService = notificationService; 
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/manager/construction")
@@ -57,7 +57,7 @@ public class ConstructionController {
             page = 0;
         }
         List<Construction> list = constructionService.getListConstruction(null, page, size, statusFilter, searchName);
-        
+
         model.addAttribute("constructionList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -83,7 +83,7 @@ public class ConstructionController {
         }
         // Fetch constructions filtered by the logged-in user's ID, status, and search name
         List<Construction> constructions = constructionService.getListConstruction(user.getId(), page, size, statusFilter, searchName);
-        
+
         model.addAttribute("constructions", constructions);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -204,35 +204,34 @@ public class ConstructionController {
         try {
             // Update the construction stage detail status
             ConstructionStageDetail updatedDetail = constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
-            System.out.println("ANH THONG BAKA");
+
             // Check if the updated detail is related to a payment and the new status is set to 4 (Completed)
-            if (updatedDetail != null
-                    && "Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())
-                    && newStatus == 4) {
-                System.out.println("got it inside !!!!!!!!!!!!!!!!1");
-                // Step 1: Retrieve the Project ID from the constructionId
-                Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
-                BigDecimal amount = BigDecimal.valueOf(updatedDetail.getConstructionStage().getConstructionStagePrice());
-                // Step 4: Create a new PaymentHistory record using the streamlined constructor
-                PaymentHistory paymentHistory = new PaymentHistory(
-                        customer,
-                        amount, // Replace with the actual amount from the detail
-                        "Manual", // Indicate that this payment is manual or any relevant method
-                        "Payment for " + updatedDetail.getConstructionStage().getConstructionStageName() + " of " + customer.getName()
-                );
-                notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "We have noticed your payment. Aligator Godzillamatsu");
+            if (updatedDetail != null) {
+                if ("Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())
+                        && newStatus == 4) {
+                    // Step 1: Retrieve the Project ID from the constructionId
+                    Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
+                    BigDecimal amount = BigDecimal.valueOf(updatedDetail.getConstructionStage().getConstructionStagePrice());
+                    // Step 4: Create a new PaymentHistory record using the streamlined constructor
+                    PaymentHistory paymentHistory = new PaymentHistory(
+                            customer,
+                            amount, // Replace with the actual amount from the detail
+                            "Manual", // Indicate that this payment is manual or any relevant method
+                            "Payment for " + updatedDetail.getConstructionStage().getConstructionStageName() + " of " + customer.getName()
+                    );
+                    notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "We have noticed your payment. Aligator Godzillamatsu");
 
-                // Save the payment history
-                paymentHistoryService.createPayment(paymentHistory);
+                    paymentHistoryService.createPayment(paymentHistory);
 
-                redirectAttributes.addFlashAttribute("success", "Status updated and payment recorded successfully!");
-            }else if(newStatus==2&&"Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())){
-                Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
-                notificationService.createNotification(constructionId, "design", customer.getId(), "customer", "You are required to pay for construction stage");
-            }else if(newStatus==2&&"Inspection".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())){
-                Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
-                notificationService.createNotification(constructionId, "design", customer.getId(), "customer", "We need your confirmation on construction site");
-            }else{
+                    redirectAttributes.addFlashAttribute("success", "Status updated and payment recorded successfully!");
+                } else if (newStatus == 2 && "Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())) {
+                    Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
+                    notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "You are required to pay for construction stage");
+                } else if (newStatus == 2 && "Inspection".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())) {
+                    Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
+                    notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "We need your confirmation on construction site");
+                }
+            } else {
                 redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
             }
         } catch (Exception e) {
@@ -593,17 +592,17 @@ public class ConstructionController {
             @RequestParam("serviceDetailId") int serviceDetailId,
             @RequestParam("cancelMessage") String cancelMessage) {
         try {
-            
+
             // Attempt to update the service detail status to 4 (Canceled)
-            ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId); 
-          // 4 for "Canceled" status
+            ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
+            // 4 for "Canceled" status
             if (serviceDetail != null) {
                 serviceDetail.setServiceCancelMessage(cancelMessage);
                 serviceDetail.setServiceDetailStatus(4);
                 serviceDetailService.updateServiceDetail(serviceDetail);
                 // Create notification for cancel request
                 String notificationMessage = "Cancel Request From " + serviceDetail.getStaff().getName() + ": " + cancelMessage;
-                notificationService.createCancelRequestNotification(serviceDetail.getId(), notificationMessage,"serviceDetail");
+                notificationService.createCancelRequestNotification(serviceDetail.getId(), notificationMessage, "serviceDetail");
 
                 // Return success JSON string wrapped in ResponseEntity with 200 OK
                 return ResponseEntity.ok("{\"status\":\"success\"}");
