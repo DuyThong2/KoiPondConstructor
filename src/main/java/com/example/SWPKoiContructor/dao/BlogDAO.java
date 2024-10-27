@@ -18,8 +18,7 @@ public class BlogDAO {
         this.entityManager = entityManager;
     }
 
-    // Retrieve a list of all blogs, ordered by date posted in descending order
-    public List<Blog> getBlogList() {
+    public List<Blog> getBlogList(){
         TypedQuery<Blog> query = entityManager.createQuery("Select b from Blog b where b.status = 2 order by b.datePost desc", Blog.class);
         return query.getResultList();
     }

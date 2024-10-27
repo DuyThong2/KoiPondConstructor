@@ -211,7 +211,7 @@ public class ProjectDAO {
 
     public Project getProjectWithContentById(int id) {
         try {
-            TypedQuery<Project> query = entityManager.createQuery("select p from Project p join fetch p.content c where p.projectId = :id ", Project.class);
+            TypedQuery<Project> query = entityManager.createQuery("select p from Project p left join fetch p.content c where p.projectId = :id ", Project.class);
             query.setParameter("id", id);
             return query.getSingleResult();
         } catch (NoResultException e) {

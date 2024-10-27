@@ -11,6 +11,7 @@
         <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
         <style>
             body {
+                z-index: 2;
                 background-color: #f8f9fa;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }

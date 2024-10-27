@@ -109,7 +109,7 @@ public class PreDesignController {
 
     @GetMapping("/manager/preDesign/update/{id}")
     public String updatePreDesign(@PathVariable("id") int preDesignId, Model model) {
-        PreDesign preDesign = preDesignService.getPreDesignAndContentById(preDesignId);
+        PreDesign preDesign = preDesignService.getPredesignById(preDesignId);
         List<Parcel> parcels = parcelService.viewParcelActiveList();
         model.addAttribute("preDesign", preDesign);
         model.addAttribute("parcelList", parcels);
@@ -156,10 +156,17 @@ public class PreDesignController {
                     originPreDesign.setPreDesignImgUrl(imgURL);
                 }
 
-                System.out.println("***********+++++++++++++++++****************"+originPreDesign);
+                
                 Content contentUpdated = originPreDesign.getContent();
+                
 
-                System.out.println("***********+++++++++++++++++****************"+contentUpdated);
+                if (contentUpdated == null){
+                    contentUpdated = new Content(content);
+                    originPreDesign.addContent(contentUpdated);
+                    preDesignService.updatePreDesign(originPreDesign);
+                    return "redirect:/manager/preDesign/detail/" + originPreDesign.getPreDesignId();
+                }
+
                 contentUpdated.setContent(content);
                 contentUpdated.setLastUpdatedDate(new java.util.Date());
                 preDesignService.updatePreDesign(originPreDesign);
