@@ -31,6 +31,9 @@
             font-size: 16px;
             position: relative;
         }
+        .banner-3__from {
+            background-color: #ddd;
+        }
     </style>
 </head>
 
@@ -72,12 +75,6 @@
     </div>
 </div>
 <!-- preloader end -->
-
-<!-- Backtotop start -->
-<!-- <div id="scroll-percentage">
-    <span id="scroll-percentage-value"></span>
-</div> -->
-<!-- Backtotop end -->
 
 <!-- cursorAnimation start -->
 <div class="cursor-wrapper relative">
@@ -191,24 +188,30 @@
 <!-- Header area start -->
 <%@include file="../homePageNavbar.jsp" %>
 <!-- Header area end -->
-<div class="page-title-wrap typo-white">
-    <div class="page-title-wrap-inner section-bg-img" data-bg="images/bg/page-title-bg.jpg">
-        <span class="black-overlay"></span>
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <div class="page-title-inner">
-                        <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="${pageContext.request.contextPath}/home/services" class="theme-color">Home</a>
-                            <span class="current">Services</span>
-                        </div>
-                        <h1 class="page-title mb-0">${service.serviceName}</h1>
-                    </div>
+
+<section id="services"
+         class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+    <div class="container rr-shape-p-c_1">
+        <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+            <div></div>
+        </div>
+
+        <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+            <div class="col-md-6">
+                <div class="section__title-wrapper text-center text-xl-start">
+                            <span class="section__subtitle justify-content-start mb-13"><span data-width="40px"
+                                                                                              class="left-separetor">
+
+                            </span> <a href="${pageContext.request.contextPath}/home/services" class="theme-color">Home - Service</a></span>
+                    <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                        data-cursor="-opaque">${service.serviceName}
+                    </h2>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
+
 <div style="height:100px">
 
 </div>
@@ -225,19 +228,6 @@
                             <!-- Col -->
                             <div class="col-lg-4 px-3 pe-lg-4">
                                 <div class="service-sidebar-wrap">
-
-                                    <div class="contact-info pad-bottom-30" style="margin-left: 30px">
-                                        <h4 class="sidebar-title mb-3">Contact Info</h4>
-                                        <p class="contact-address mb-1"><span class="event-subtitle"><strong>Address : </strong></span>
-                                            12, Victoria Street, Australia <a class="zegen-popup-gmaps theme-color" href="https://maps.google.com/maps?q=12%2C+Victoria+Street%2C+Australia&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed"><span class="ti-location-pin"></span></a>
-                                        </p>
-                                        <p class="contact-email mb-1"><span class="event-subtitle"><strong>E-mail : </strong></span>
-                                            <a href="mailto:info@zozothemes.com">info@zozothemes.com</a>
-                                        </p>
-                                        <p class="contact-phone mb-0"><span class="event-subtitle"><strong>Phone : </strong></span>
-                                            <a href="tel:+(123) 456-7890">+(123) 456-7890</a>
-                                        </p>
-                                    </div>
 
                                     <div class="contact-wrap">
 
@@ -292,21 +282,9 @@
                             <!-- Sidebar -->
                             <!-- Col -->
                             <div class="col-lg-8 px-3">
-                                <!-- Service img -->
-                                <div class="zoom-gallery mb-4">
-                                    <div class="events-thumb relative">
-                                        <a class="popup-img" href="#" title="Single Portfolio">
-                                            <img src="${pageContext.request.contextPath}/images/services/single/service-single4.jpg" class="img-fluid single-event-img b-radius-10" alt="service-img" />
-                                        </a>
-                                    </div>
-                                </div>
                                 <!-- COntent-->
 
                                 ${service.content.content}
-
-
-
-
 
 
 

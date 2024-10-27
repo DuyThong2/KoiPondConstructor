@@ -102,7 +102,7 @@
                                 </option>
                                 <option value="2" ${statusFilter==2 ? 'selected' : '' }>Processing
                                 </option>
-                                <option value="3" ${statusFilter==3 ? 'selected' : '' }>Accepted
+                                <option value="3" ${statusFilter==3 ? 'selected' : '' }>Completed
                                 </option>
                                 <option value="4" ${statusFilter==4 ? 'selected' : '' }>Cancel
                                 </option>

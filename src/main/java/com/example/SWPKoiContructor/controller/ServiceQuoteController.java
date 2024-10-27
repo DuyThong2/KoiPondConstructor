@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpSession;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -155,8 +156,10 @@ public class ServiceQuoteController {
                 paymentHistory.setPaymentMethod("Manual");
                 paymentHistory.setDescription("Payment of "+amount+" for service quote" + serviceQuote.getServiceQuotesId() + " by "+ serviceQuote.getCustomer().getName() + " using " + serviceQuote.calculatePointUsing());
                 paymentHistoryService.createPayment(paymentHistory);
-                
-                double pointGained = amount.doubleValue();
+        System.out.println("ANH THIENNNNNNNNNNNNNNNNNNN");
+                notificationService.createNotification(serviceQuoteId, "serviceQuote", paymentHistory.getCustomer().getId(), "customer", "We have noticed your payment. Aligator Godzillamatsu");
+        System.out.println("ANH THIENNNNNNNNNNNNNNNNN");
+        double pointGained = amount.doubleValue();
                 loyaltyPointService.gainLoyaltyPoints(serviceQuote.getCustomer(), pointGained);
                 
                 serviceQuote = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
@@ -257,7 +260,7 @@ public class ServiceQuoteController {
 
         newServiceQuotes.setService(serviceList);
         newServiceQuotes = serviceQuoteService.saveNewServiceQuote(newServiceQuotes);
-        notificationService.createNotification(newServiceQuotes.getServiceQuotesId(),"serviceQuotes",null,"manager","New Service Quote has been created");
+        notificationService.createNotification(newServiceQuotes.getServiceQuotesId(),"serviceQuote",null,"manager","New Service Quote has been created");
         return "redirect:/consultant/serviceQuote";
     }
 
@@ -390,5 +393,8 @@ public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuot
 
         return "redirect:/customer/serviceQuote";
     }
-
+    @GetMapping("/customer/serviceQuote/detail/{id}")
+    public String redirectController(){
+        return "redirect:/customer/serviceQuote";
+    }
 }

@@ -18,6 +18,15 @@
     <!-- CSS here -->
     <%@include file="../cssTemplate.jsp"%>
     <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
+    <style>
+        .our-professional__item__content {
+            padding: 5px 20px;
+        }
+        .team__item-media img {
+            width: 500px;
+            height: 300px;
+        }
+    </style>
 </head>
 
 <body class="body-1">
@@ -434,12 +443,12 @@
                 <c:forEach var="staff" items="${staffList}">
                     <div class="col-xl-3 col-md-6">
                         <div class="our-professional__item mb-30">
-                            <a href="team-details.html" class="our-professional__item-media d-block" data-cursor-text="View">
-                                <img src="${pageContext.request.contextPath}/assets/imgs/our-professional/anhthien.jpg" alt="image not found" class="img-fluid">
+                            <a href="#" class="our-professional__item-media d-block" data-cursor-text="View">
+                                <img src="${staff.imgURL != null ? staff.getShowingImg(staff.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="image not found" class="img-fluid">
                             </a>
                             <div class="our-professional__item__content d-flex align-items-center justify-content-center text-center">
                                 <div class="our-professional__item-text">
-                                    <h4 class="our-professional__item-title text-center rr-fw-bold  mb-0"><a href="team-details.html">${staff.name}</a></h4>
+                                    <h4 class="our-professional__item-title text-center rr-fw-bold  mb-0">${staff.name}</h4>
                                     <span class="our-professional__item-subtitle text-center">${staff.department}</span>
                                 </div>
                             </div>
@@ -607,10 +616,10 @@
                             <div class="blog__item-text p-4" style="background-color: #ffffff;">
                                 <div class="blog__item-meta mb-10 text-muted d-flex justify-content-between">
                                     <a href="blog-details.html" class="text-secondary">
-                                        <i class="fas fa-user"></i> By Admin
+                                        <i class="fas fa-user"></i> ${blog.staff.name}
                                     </a>
                                     <a href="blog-details.html" class="text-secondary">
-                                        <i class="fas fa-calendar"></i> ${blog.datePost}
+                                        <i class="fas fa-calendar"></i> <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/>
                                     </a>
                                 </div>
                                 <h4 class="blog__item-title mb-3 text-dark font-weight-bold"><a href="${pageContext.request.contextPath}/home/blogs/${blog.id}">${blog.name}</a></h4>

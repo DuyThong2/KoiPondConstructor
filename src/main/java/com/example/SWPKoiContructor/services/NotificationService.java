@@ -86,25 +86,31 @@ public class NotificationService {
      }
 
      @Transactional
-     public void createNotification( int relatedId, String fromTable,Integer receiverId,String receiverType,String message) {
-          Notification notification = new Notification();
-         if(receiverId!=null){
-              notification.setReceiverId(receiverId);
-         }
-          notification.setMessage(message);
-          notification.setRelatedId(relatedId);
-          notification.setReceiverType(receiverType);
-          notification.setFromTable(fromTable);
-          notification.setCreatedAt(LocalDateTime.now());
-          notification.setRead(false);
+     public void createNotification( Integer relatedId, String fromTable,Integer receiverId,String receiverType,String message) {
+          try{
+               Notification notification = new Notification();
+               if(receiverId!=null){
+                    notification.setReceiverId(receiverId);
+               }
+               notification.setMessage(message);
+               if(relatedId!=null){
+                    notification.setRelatedId(relatedId);
+               }
+               notification.setReceiverType(receiverType);
+               notification.setFromTable(fromTable);
+               notification.setCreatedAt(LocalDateTime.now());
+               notification.setRead(false);
 
-          notificationDAO.saveNotification(notification);
+               notificationDAO.saveNotification(notification);
 
-          // Broadcast notification to /topic/notifications
-          if(receiverType.equalsIgnoreCase("manager"))
-               simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
-          else
-               simpMessagingTemplate.convertAndSend("/topic/"+receiverType+"/"+receiverId, notification);
+               // Broadcast notification to /topic/notifications
+               if(receiverType.equalsIgnoreCase("manager"))
+                    simpMessagingTemplate.convertAndSend("/topic/notifications", notification);
+               else
+                    simpMessagingTemplate.convertAndSend("/topic/"+receiverType+"/"+receiverId, notification);
+          }catch(Exception e){
+               e.printStackTrace();
+          }
      }
 
      @Transactional
@@ -120,6 +126,8 @@ public class NotificationService {
 
          createNotification( contractId, "contract", null, "manager", managerMessage);
      }
+     
+     @Transactional
      public void createProjectNotification(String name, int projectId, int id) {
           String message="Your project has been created! Please check it";
           createNotification(projectId,"project",id,"customer",message);
