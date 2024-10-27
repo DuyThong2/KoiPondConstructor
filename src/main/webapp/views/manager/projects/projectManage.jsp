@@ -194,9 +194,9 @@
                         </td>
                         <td>
                             <a class="btn btn-info"
-                               href="${pageContext.request.contextPath}/manager/projects/detail/${project.projectId}">Details</a>
+                               href="${pageContext.request.contextPath}/manager/projects/detail/${project.projectId}" onclick="event.stopPropagation()">Details</a>
                             <a href="${pageContext.request.contextPath}/manager/projects/assign/${project.projectId}"
-                               class="btn btn-warning">Manage</a>
+                               class="btn btn-warning" onclick="event.stopPropagation()">Manage</a>
 
                         </td>
                     </tr>

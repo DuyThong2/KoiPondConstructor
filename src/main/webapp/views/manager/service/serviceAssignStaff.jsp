@@ -9,7 +9,8 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Customer and Service Information</title>
             <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+            <link rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
             <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
             <style>
@@ -95,6 +96,7 @@
             </style>
         </head>
         <div style="height:5vh;"></div>
+
         <body>
 
             <%@include file="../navBar.jsp" %>
@@ -152,12 +154,12 @@
                                     <c:if test="${serviceDetail.staff != null}">
                                         <div class="col-md-4">
                                             <div class="card">
-                                                <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg" class="staff-img"
-                                                    alt="Staff Image">
+                                                <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg"
+                                                    class="staff-img" alt="Staff Image">
                                                 <div class="card-body text-center">
                                                     <h5 class="card-title">${serviceDetail.staff.name}</h5>
                                                     <c:if
-                                                        test="${serviceDetail.serviceDetailStatus != 3 && serviceDetail.serviceDetailStatus != 5}">
+                                                        test="${serviceDetail.serviceDetailStatus != 3 && serviceDetail.serviceDetailStatus != 5 &&serviceDetail.serviceDetailStatus!=4}">
                                                         <button type="button" class="delete-button" data-toggle="modal"
                                                             data-target="#deleteStaffModal"
                                                             data-staffid="${serviceDetail.staff.id}"
@@ -165,7 +167,8 @@
                                                             &times;
                                                         </button>
                                                     </c:if>
-                                                    <a href="${pageContext.request.contextPath}/manager/manageStaff/detail/${staff.id}" class="btn btn-info">Detail</a>
+                                                    <a href="${pageContext.request.contextPath}/manager/manageStaff/detail/${serviceDetail.staff.id}"
+                                                        class="btn btn-info">Detail</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -189,8 +192,9 @@
                                     <div class="info-box">
                                         <h4>Search and Assign Staff</h4>
                                         <!-- Search Form -->
-                                        <form action="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}" method="GET"
-                                            class="form-inline mb-3">
+                                        <form
+                                            action="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}"
+                                            method="GET" class="form-inline mb-3">
                                             <input type="text" name="searchTerm" class="form-control mr-2"
                                                 placeholder="Search staff by name..." value="${param.searchTerm}">
                                             <button type="submit" class="btn btn-primary">Search</button>
@@ -228,7 +232,8 @@
                                         <!-- Previous Button -->
                                         <c:choose>
                                             <c:when test="${currentPage > 1}">
-                                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}"
+                                                <form
+                                                    action="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}"
                                                     method="GET">
                                                     <button class="btn btn-primary" type="submit">&lt;</button>
                                                     <input type="hidden" name="currentPage" value="${currentPage - 1}">
@@ -250,7 +255,8 @@
                                         <!-- Next Button -->
                                         <c:choose>
                                             <c:when test="${currentPage < totalPage}">
-                                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}"
+                                                <form
+                                                    action="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}"
                                                     method="GET">
                                                     <button class="btn btn-primary" type="submit">&gt;</button>
                                                     <input type="hidden" name="currentPage" value="${currentPage + 1}">
@@ -289,7 +295,8 @@
                                 Are you sure you want to assign <strong id="staffName"></strong> to this service?
                             </div>
                             <div class="modal-footer">
-                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/assignStaff" method="POST">
+                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/assignStaff"
+                                    method="POST">
                                     <input type="hidden" id="staffId" name="staffId">
                                     <input type="hidden" name="serviceDetailId" value="${serviceDetail.id}">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -299,6 +306,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="errorMessageInput" value="${errorMessage}">
                 <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -309,8 +317,8 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                ${errorMessage}
+                            <div class="modal-body" id="errorModalBody">
+                                <!-- Error message will be inserted here -->
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -333,7 +341,8 @@
                                 service?
                             </div>
                             <div class="modal-footer">
-                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/deleteStaff" method="POST">
+                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/deleteStaff"
+                                    method="POST">
                                     <input type="hidden" name="staffId" value="${serviceDetail.staff.id}">
                                     <input type="hidden" name="serviceDetailId" value="${serviceDetail.id}">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -343,6 +352,7 @@
                         </div>
                     </div>
                 </div>
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
@@ -358,7 +368,13 @@
                         $('#deleteStaffId').val(staffId); // Update hidden input with staff ID
                         $('#deleteStaffModal').modal('show'); // Show the modal
                     }
-
+                    $(document).ready(function () {
+                        var errorMessage = $('#errorMessageInput').val();
+                        if (errorMessage && errorMessage.trim() !== '') {
+                            $('#errorModalBody').text(errorMessage);
+                            $('#errorModal').modal('show');
+                        }
+                    });
                 </script>
 
         </body>

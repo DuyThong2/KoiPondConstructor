@@ -96,6 +96,12 @@
                 .badge.status {
                     font-size: 16px;
                 }
+
+                .isbanned {
+                    background-color: #f8d7da;
+                    border-color: #f5c6cb;
+                    opacity: 0.7;
+                }
             </style>
         </head>
         <div style="height:8vh;"></div>
@@ -202,25 +208,29 @@
                                     <c:if test="${project.status!=4}">
                                         <hr>
                                         <div class="row justify-content-around ư">
-                                            <div class="d-flex justify-content-center">
-                                                <input type="hidden" name="projectId" value="${project.projectId}">
+                                            <input type="hidden" name="projectId" value="${project.projectId}">
+                                            <c:if test="${project.status==3}">
+                                                <div class="d-flex justify-content-center">
 
-                                                <c:choose>
-                                                    <c:when test="${project.isSharedAble == true}">
-                                                        <button class="btn btn-danger" id="shareBtn"
-                                                            onclick="showConfirmationModal(${project.projectId}, 'share')">
-                                                            Stop Share
-                                                        </button>
-                                                    </c:when>
-                                                    <c:when test="${project.isSharedAble == false}">
-                                                        <button class="btn btn-primary" id="shareBtn"
-                                                            onclick="showConfirmationModal(${project.projectId}, 'share')">
-                                                            Share Project
-                                                        </button>
-                                                    </c:when>
-                                                </c:choose>
 
-                                            </div>
+                                                    <c:choose>
+                                                        <c:when test="${project.isSharedAble == true}">
+                                                            <button class="btn btn-danger" id="shareBtn"
+                                                                onclick="showConfirmationModal(${project.projectId}, 'share')">
+                                                                Stop Share
+                                                            </button>
+                                                        </c:when>
+                                                        <c:when test="${project.isSharedAble == false}">
+                                                            <button class="btn btn-primary" id="shareBtn"
+                                                                onclick="showConfirmationModal(${project.projectId}, 'share')">
+                                                                Share Project
+                                                            </button>
+                                                        </c:when>
+                                                    </c:choose>
+
+
+                                                </div>
+                                            </c:if>
                                             <!-- Cancel Project Button -->
                                             <c:if test="${project.status!=3}">
                                                 <div class="d-flex justify-content-center ">
@@ -368,7 +378,8 @@
                                                         <c:forEach items="${designerStaff}" var="staff"
                                                             varStatus="status">
                                                             <div class="col-md-3 mb-3 d-flex justify-content-between">
-                                                                <div class="card position-relative">
+                                                                <div
+                                                                    class="card position-relative ${staff.enabled ? '' : 'isbanned'}">
                                                                     <!-- Delete (X) Button -->
 
 
@@ -379,8 +390,10 @@
                                                                     <!-- Card Body -->
                                                                     <div class="card-body text-center">
                                                                         <h5 class="card-title">
-                                                                            <c:out value="${staff.name}" />
+                                                                            ${staff.name}
+
                                                                         </h5>
+
                                                                         <c:if
                                                                             test="${project.status!=3 &&project.status !=4}">
                                                                             <button type="button" class=" delete-button"
@@ -389,7 +402,7 @@
                                                                         </c:if>
 
                                                                         <a type="button" class="btn btn-info mb-2"
-                                                                            href="${pageContext.request.contextPath}/manager/design/detail/${project.design.designId}">Detail</a>
+                                                                            href="${pageContext.request.contextPath}/manager/manageStaff/detail/${staff.id}">Detail</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -435,7 +448,8 @@
                                                         <c:forEach items="${constructionStaff}" var="staff"
                                                             varStatus="status">
                                                             <div class="col-md-3 mb-3 d-flex justify-content-between">
-                                                                <div class="card position-relative">
+                                                                <div
+                                                                    class="card position-relative ${staff.enabled ? '' : 'isbanned'}">
                                                                     <!-- Delete (X) Button -->
 
 
@@ -447,8 +461,10 @@
                                                                     <!-- Card Body -->
                                                                     <div class="card-body text-center">
                                                                         <h5 class="card-title">
-                                                                            <c:out value="${staff.name}" />
+                                                                            ${staff.name}
+
                                                                         </h5>
+
                                                                         <c:if
                                                                             test="${project.status!=3 && project.status!=4}">
                                                                             <button type="button" class=" delete-button"
@@ -456,7 +472,7 @@
                                                                                 onclick="confirmDelete(${staff.id}, ${project.projectId}, 'construction')">&times;</button>
                                                                         </c:if>
                                                                         <a type="button" class="btn btn-info mb-2"
-                                                                            href="${pageContext.request.contextPath}/manager/construction/detail/${project.construction.constructionId}">Detail</a>
+                                                                            href="${pageContext.request.contextPath}/manager/manageStaff/detail/${staff.id}">Detail</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -601,59 +617,61 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
-                                                aria-labelledby="confirmModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="confirmModalLabel"></h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <!-- Modal body will be updated dynamically -->
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Cancel</button>
-                                                            <button type="button" class="btn"
-                                                                id="confirmActionButton"></button>
-                                                            <!-- Reusable button -->
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="modal fade" id="viewRequestModal" tabindex="-1" role="dialog"
-                                                aria-labelledby="viewRequestModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="viewRequestModalLabel">Cancel
-                                                                Request
-                                                                Details</h5>
-                                                            <button type="button" class="close" data-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            
-                                                            <p><strong>Reason for Cancellation from ${project.contract.customer.name}:</strong></p>
-                                                            <p id="cancellationReason">${project.cancelMessage}</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-danger"
-                                                                onclick="cancelProject(${project.projectId})">Confirm Cancel</button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                         </div>
                                     </c:if>
+                                </div>
+                                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="confirmModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="confirmModalLabel"></h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!-- Modal body will be updated dynamically -->
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn" id="confirmActionButton"></button>
+                                                <!-- Reusable button -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="viewRequestModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="viewRequestModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="viewRequestModalLabel">Cancel
+                                                    Request
+                                                    Details</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+
+                                                <p><strong>Reason for Cancellation from
+                                                        ${project.contract.customer.name}:</strong></p>
+                                                <p id="cancellationReason">${project.cancelMessage}</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-danger"
+                                                    onclick="cancelProject(${project.projectId})">Confirm
+                                                    Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <!-- Update Confirmation Modal -->
                                 <div class="modal fade" id="updateStageModal" tabindex="-1" role="dialog"
@@ -890,15 +908,21 @@
                                         $('#viewRequestModal').modal('show');
                                     }
                                     function showConfirmationModal(projectId, action) {
+                                        console.log('showConfirmationModal called with projectId:', projectId, 'action:', action);
+
+                                        // Based on action (share or cancel), update modal content
                                         // Based on action (share or cancel), update modal content
                                         if (action === 'share') {
+                                            console.log("share");
                                             var isShared = $('#shareBadge').hasClass("badge-success");
 
                                             if (isShared) {
+                                                console.log("unshare");
                                                 $('#confirmModalLabel').text('Confirm Unshare');
                                                 $('.modal-body').text('Are you sure you want to stop sharing this project?');
                                                 $('#confirmActionButton').text('Yes, Stop Sharing').removeClass('btn-primary btn-warning').addClass('btn-danger');
                                             } else {
+                                                console.log("share");
                                                 $('#confirmModalLabel').text('Confirm Share');
                                                 $('.modal-body').text('Are you sure you want to share this project?');
                                                 $('#confirmActionButton').text('Yes, Share Project').removeClass('btn-danger btn-warning').addClass('btn-primary');
@@ -921,6 +945,7 @@
 
                                         // Show the confirmation modal
                                         $('#confirmModal').modal('show');
+                                        console.log("show");
                                     }
 
                                     // AJAX function to share the project
@@ -976,7 +1001,7 @@
                                                 $('#confirmModal').modal('hide');
                                                 $('#viewRequestModal').modal('hide');
                                                 showNotification('Success', 'Project has been canceled successfully!', 'success');
-                                                if($('#shareBadge').hasClass('badge-success')){
+                                                if ($('#shareBadge').hasClass('badge-success')) {
                                                     toggleShareButtonState();
                                                 }
                                                 toggleCancelButtonState();
