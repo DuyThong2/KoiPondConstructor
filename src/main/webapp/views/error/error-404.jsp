@@ -8,10 +8,20 @@
     <title>Page Not Found</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <%@include file="../customer/cssTemplate.jsp"%>
-    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
-    <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
-    <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
+
+    <c:choose>
+        <c:when test="${sessionScope.user.authority.authority == 'ROLE_CUSTOMER'}">
+            <%@include file="../customer/cssTemplate.jsp"%>
+        </c:when>
+        <c:when test="${sessionScope.user.authority.authority == 'ROLE_MANAGER'}">
+            <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
+        </c:when>
+        <c:otherwise>
+            <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
+
+        </c:otherwise>
+    </c:choose>
+
     <style>
         .error-container {
             text-align: center;
@@ -64,5 +74,7 @@
     </div>
 
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

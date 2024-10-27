@@ -317,7 +317,7 @@
                                                         </c:choose>
                                                     </td>
                                                     <td>
-                                                        <a href="${pageContext.request.contextPath}/customer/serviceDetail/${service.id}"
+                                                        <a href="${pageContext.request.contextPath}/customer/serviceDetail/detail/${service.id}"
                                                            class="btn btn-default btn-info">Details</a>
                                                     </td>
                                                 </tr>

@@ -28,6 +28,8 @@
         }
 
         .section-title h2 {
+            margin-top: 20px;
+            border-bottom: 2px solid #ff5733;
             font-size: 2.8em;
             font-weight: bold;
             margin-bottom: 10px;
@@ -299,24 +301,29 @@
 <!-- Header area start -->
 <%@include file="../homePageNavbar.jsp" %>
 <!-- Header area end -->
-<div class="page-title-wrap typo-white">
-    <div class="page-title-wrap-inner section-bg-img" data-bg="images/bg/page-title-bg.jpg">
-        <span class="black-overlay"></span>
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <div class="page-title-inner">
-                        <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="${pageContext.request.contextPath}/" class="theme-color">Home</a>
-                            <span class="current">Services</span>
-                        </div>
-                        <h1 class="page-title mb-0">Services</h1>
-                    </div>
+
+<section id="services"
+         class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+    <div class="container rr-shape-p-c_1">
+        <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+            <div></div>
+        </div>
+
+        <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+            <div class="col-md-6">
+                <div class="section__title-wrapper text-center text-xl-start">
+                            <span class="section__subtitle justify-content-start mb-13"><span data-width="40px"
+                                                                                              class="left-separetor">
+
+                            </span> <a href="${pageContext.request.contextPath}/" class="theme-color">Home</a></span>
+                    <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                        data-cursor="-opaque">Services
+                    </h2>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 <main>
     <div class="container">
         <!-- Row -->
@@ -339,7 +346,7 @@
                             <div class="service-box-wrap service-box-style-1 text-center">
                                 <!-- Service Icon or Image -->
                                 <div class="service-icon mb-3">
-                                    <img src="${pageContext.request.contextPath}/assets/imgs/logo/zoomed_logo_image.png" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
+                                    <img src="${service.serviceImgUrl != null ? service.getShowingImg(service.serviceImgUrl) : "/SWPKoiContructor/assets/imgs/logo/zoomed_logo_image.png"}" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
                                 </div>
                                 <!-- Service Content -->
                                 <h3 class="service-title">${service.serviceName}</h3>

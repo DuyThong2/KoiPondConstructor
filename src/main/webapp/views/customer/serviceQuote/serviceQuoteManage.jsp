@@ -152,7 +152,7 @@
                                                     <select name="sortBy" id="sortBy" class="form-control" size="padding: 20px;">
                                                         <option value="serviceQuotesDate" ${sortBy == 'serviceQuotesDate' ? 'selected' : ''}>Date Created</option>
                                                         <option value="serviceQuotesArea" ${sortBy == 'serviceQuotesArea' ? 'selected' : ''}>Area</option>
-                                                        <option value="serviceQuotesTotalPrice" ${sortBy == 'serviceQuotesTotalPrice' ? 'selected' : ''}>Total Price</option>                                        
+                                                        <option value="serviceQuotesTotalPrice" ${sortBy == 'serviceQuotesTotalPrice' ? 'selected' : ''}>Total Price</option>
                                                     </select>
                                                 </div>
 
@@ -214,8 +214,8 @@
                                                     <td>${serviceQuote.serviceQuotesTotalPrice}</td>
                                                     <td>${serviceQuote.usedPoint}</td>
                                                     <td>${(serviceQuote.serviceQuotesTotalPrice / 2) - serviceQuote.calculatePointUsing()}</td>
-                                                    <td>${!serviceQuote.isServiceDetailOfQuoteFinished()? 
-                                                          (serviceQuote.serviceQuotesTotalPrice / 2) : 
+                                                    <td>${!serviceQuote.isServiceDetailOfQuoteFinished()?
+                                                          (serviceQuote.serviceQuotesTotalPrice / 2) :
                                                            serviceQuote.calculateTotalPricePayment() - serviceQuote.calculatePointUsing()}</td>
                                                     <td>
                                                         <c:choose>
@@ -235,7 +235,7 @@
                                                                 <span class="badge badge-success badge-status">Deposit Paid</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
-                                                                <span class="badge badge-success badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
+                                                                <span class="badge badge-success badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()?
                                                                                                                  'Awaiting Payment 2':'Service In Progress'}</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
@@ -259,7 +259,7 @@
                                                                                 document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
                                                                                 document.getElementById('declineForm').status.value = '5';">Reject
                                                                 </button>
-                                                            </c:when>                                                           
+                                                            </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
                                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
                                                                         onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
@@ -267,13 +267,13 @@
                                                                 </button>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                                                <c:if test="${!serviceQuote.isFree()}"> 
+                                                                <c:if test="${!serviceQuote.isFree()}">
                                                                     <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post">
                                                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
                                                                         <input type="hidden" name="amount" value="${serviceQuote.serviceQuotesTotalPrice / 2}" />
                                                                         <input type="hidden" name="point" value="${serviceQuote.calculatePointUsing()}" />
                                                                         <button type="submit" class="btn btn-info">Pay Deposit</button>
-                                                                    </form> 
+                                                                    </form>
                                                                 </c:if>
                                                                 <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
                                                                         onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
@@ -282,13 +282,13 @@
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
                                                                 <c:if test="${!serviceQuote.isFree() && serviceQuote.isServiceDetailOfQuoteFinished()
-                                                                            && !serviceQuote.isAllServiceFailed()}"> 
+                                                                            && !serviceQuote.isAllServiceFailed()}">
                                                                     <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post">
                                                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
                                                                         <input type="hidden" name="amount" value="${serviceQuote.calculateTotalPricePayment()}" />
                                                                         <input type="hidden" name="point" value="${serviceQuote.calculatePointUsing()}" />
                                                                         <button type="submit" class="btn btn-info">Pay Full</button>
-                                                                    </form> 
+                                                                    </form>
                                                                 </c:if>
                                                             </c:when>
                                                         </c:choose>
@@ -303,7 +303,7 @@
 
                                                 <!-- Expandable/Collapsible Row -->
                                                 <tr id="details${serviceQuote.serviceQuotesId}" class="collapse">
-                                                    <td colspan="10"> 
+                                                    <td colspan="10">
                                                         <table class="table table-bordered">
                                                             <thead>
                                                                 <tr class="table-info">
@@ -320,14 +320,14 @@
                                                                         <td>
                                                                             <c:set var="priceDisplayed" value="false" />
                                                                             <c:forEach var="servicePrice" items="${service.servicePrice}">
-                                                                                <c:if test="${service.serviceId == servicePrice.service.serviceId and priceDisplayed == false}"> 
+                                                                                <c:if test="${service.serviceId == servicePrice.service.serviceId and priceDisplayed == false}">
                                                                                     ${servicePrice.value * serviceQuote.serviceQuotesArea}
                                                                                     <c:set var="priceDisplayed" value="true" />
                                                                                 </c:if>
                                                                             </c:forEach>
                                                                         </td>
                                                                     </tr>
-                                                                </c:forEach>    
+                                                                </c:forEach>
                                                             </tbody>
                                                         </table>
                                                     </td>

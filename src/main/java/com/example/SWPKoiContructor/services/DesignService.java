@@ -113,4 +113,7 @@ public class DesignService {
     public List<Design> getProjectsByStaffId(int staffId) {
         return designDao.getProjectsByStaffId(staffId);
     }
+    public int getCustomerIdByDesignId(int designId){
+        return designDao.getCustomerIdByDesignId(designId);
+    }
 }

@@ -11,8 +11,10 @@
         <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
         <style>
             body {
+                z-index: 2;
                 background-color: #f8f9fa;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
             }
             .blog-header {
                 text-align: center;
@@ -80,6 +82,17 @@
                 font-size: 1rem;
                 color: #6c757d;
             }
+            .blog-footer {
+                margin-top: 30px;
+                text-align: center;
+            }
+            .blog-footer a, .blog-footer button {
+                display: inline-block;
+                margin-right: 10px;
+            }
+            .btn{
+                padding: 10px 20px;
+            }
         </style>
     </head>
     <div style="height:6vh;"></div>
@@ -87,7 +100,7 @@
 
         <!-- Pre Design Detail Container -->
         <div class="container mt-5">
-            <div class="row">
+
                 <%@include file="../navBar.jsp" %>
 
                 <!-- Main content -->
@@ -156,14 +169,14 @@
                                 </button>
                             </c:when>
                         </c:choose>
-                        <button href="${pageContext.request.contextPath}/manager/preDesign/update/${preDesign.preDesignId}" class="btn btn-info">Update</button>
+                        <a href="${pageContext.request.contextPath}/manager/preDesign/update/${preDesign.preDesignId}" class="btn btn-info">Update</a>
                     </div>
 
                 </main>
                 <!-- Footer Section with Back Button -->
 
             </div>
-        </div>
+
 
         <!-- Accept Modal -->
         <div class="modal fade" id="acceptModal" tabindex="-1" role="dialog" aria-labelledby="acceptModalLabel" aria-hidden="true">

@@ -287,7 +287,7 @@
                         </div>
                         <div class="search__close">
                             <button type="button" class="search__close-btn search-close-btn">
-                                <s   vg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                                     <path d="M17 1L1 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                                           stroke-linejoin="round" />
                                     <path d="M1 1L17 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -378,24 +378,28 @@
 <!-- Header area start -->
 <%@include file="../homePageNavbar.jsp" %>
 <!-- Header area end -->
-<div class="page-title-wrap typo-white">
-    <div class="page-title-wrap-inner section-bg-img" data-bg="images/bg/page-title-bg.jpg">
-        <span class="black-overlay"></span>
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <div class="page-title-inner">
-                        <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="${pageContext.request.contextPath}/" class="theme-color">Home</a>
-                            <span class="current">Project</span>
-                        </div>
-                        <h1 class="page-title mb-0">Project</h1>
-                    </div>
+<section id="services"
+         class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+    <div class="container rr-shape-p-c_1">
+        <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+            <div></div>
+        </div>
+
+        <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+            <div class="col-md-6">
+                <div class="section__title-wrapper text-center text-xl-start">
+                            <span class="section__subtitle justify-content-start mb-13"><span data-width="40px"
+                                                                                              class="left-separetor">
+
+                            </span> <a href="${pageContext.request.contextPath}/" class="theme-color">Home</a></span>
+                    <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                        data-cursor="-opaque">Blog
+                    </h2>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 <div style="height:100px">
 
 </div>
@@ -414,7 +418,7 @@
                                     <div class="blog-style-1 post-type post-grid">
                                         <div class="blog-inner mb-4">
                                             <div class="blog-thumb relative">
-                                                <img src="${pageContext.request.contextPath}/assets/imgs/mylogo/koi-background.jpg" class="img-fluid" alt="blog-img" />
+                                                <img src="${blog.getShowingImg(blog.imgUrl)}" class="img-fluid" alt="blog-img" />
                                                 <div class="post-date">
                                                     <p> <i class="ti-calendar"></i>
                                                         <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/></p>

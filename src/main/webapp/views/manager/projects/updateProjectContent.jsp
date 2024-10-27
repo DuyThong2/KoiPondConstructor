@@ -95,62 +95,65 @@
 <script src="https://cdn.ckeditor.com/4.16.2/standard-all/ckeditor.js"></script>
 <script>
     CKEDITOR.replace('content', {
-        extraPlugins: 'uploadimage,image2',
-        filebrowserImageUploadUrl: '${pageContext.request.contextPath}/base64/uploadImage',
-        uploadUrl: '${pageContext.request.contextPath}/base64/uploadImage',
-        height: 500,
-        image2_disableResizer: false
-        on: {
-            paste: function (evt) {
-                var editor = evt.editor;
-                var data = evt.data;
+                extraPlugins: 'uploadimage,image2', // Enable image2 plugin for resizing
+                filebrowserImageUploadUrl: '${pageContext.request.contextPath}/base64/uploadImage', // Your image upload URL
+                uploadUrl: '${pageContext.request.contextPath}/base64/uploadImage', // Server-side image upload handler URL
+                height: 500,
 
-                // Check if the pasted data contains an image
-                if (data && data.dataTransfer && data.dataTransfer.getFilesCount()) {
-                    var file = data.dataTransfer.getFile(0);
+                // Enable image resizing features
+                image2_disableResizer: false, // Allows manual resizing in the editor
 
-                    if (file && file.type.indexOf('image') !== -1) {
-                        var reader = new FileReader();
+                on: {
+                    paste: function (evt) {
+                        var editor = evt.editor;
+                        var data = evt.data;
 
-                        // Read the image as data URL
-                        reader.onload = function (e) {
-                            var img = new Image();
-                            img.src = e.target.result;
+                        // Check if the pasted data contains an image
+                        if (data && data.dataTransfer && data.dataTransfer.getFilesCount()) {
+                            var file = data.dataTransfer.getFile(0);
 
-                            img.onload = function () {
-                                // Check if the image is larger than 800px in width
-                                var canvas = document.createElement('canvas');
-                                var maxWidth = 800;
+                            if (file && file.type.indexOf('image') !== -1) {
+                                var reader = new FileReader();
 
-                                if (img.width > maxWidth) {
-                                    var scaleFactor = maxWidth / img.width;
-                                    canvas.width = maxWidth;
-                                    canvas.height = img.height * scaleFactor;
+                                // Read the image as data URL
+                                reader.onload = function (e) {
+                                    var img = new Image();
+                                    img.src = e.target.result;
 
-                                    var ctx = canvas.getContext('2d');
-                                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                                    img.onload = function () {
+                                        // Check if the image is larger than 800px in width
+                                        var canvas = document.createElement('canvas');
+                                        var maxWidth = 800;
 
-                                    // Convert the resized image to Base64
-                                    var resizedDataUrl = canvas.toDataURL(file.type);
+                                        if (img.width > maxWidth) {
+                                            var scaleFactor = maxWidth / img.width;
+                                            canvas.width = maxWidth;
+                                            canvas.height = img.height * scaleFactor;
 
-                                    // Insert the resized image into the editor
-                                    editor.insertHtml('<img src="' + resizedDataUrl + '" width="' + maxWidth + '" />');
-                                } else {
-                                    // If the image is smaller than 800px, insert it as-is
-                                    editor.insertHtml('<img src="' + img.src + '" />');
-                                }
-                            };
-                        };
+                                            var ctx = canvas.getContext('2d');
+                                            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-                        reader.readAsDataURL(file);
+                                            // Convert the resized image to Base64
+                                            var resizedDataUrl = canvas.toDataURL(file.type);
 
-                        // Prevent default paste behavior for images to avoid duplicating content
-                        evt.cancel();
+                                            // Insert the resized image into the editor
+                                            editor.insertHtml('<img src="' + resizedDataUrl + '" width="' + maxWidth + '" />');
+                                        } else {
+                                            // If the image is smaller than 800px, insert it as-is
+                                            editor.insertHtml('<img src="' + img.src + '" />');
+                                        }
+                                    };
+                                };
+
+                                reader.readAsDataURL(file);
+
+                                // Prevent default paste behavior for images to avoid duplicating content
+                                evt.cancel();
+                            }
+                        }
                     }
                 }
-            }
-        }
-    });
+            });
 </script>
 
 <!-- Bootstrap 4.3.1 JS and dependencies -->

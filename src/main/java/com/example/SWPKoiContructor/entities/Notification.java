@@ -51,7 +51,7 @@ public class Notification {
         this.receiverType = receiverType;
         this.isRead = false;
         this.relatedId = relatedId;
-        this.fromTable = fromTable.toLowerCase();
+        this.fromTable = fromTable;
         this.createdAt = LocalDateTime.now();
     }
 
@@ -103,11 +103,11 @@ public class Notification {
     }
 
     public String getFromTable() {
-        return fromTable.toLowerCase();
+        return fromTable;
     }
 
     public void setFromTable(String fromTable) {
-        this.fromTable = fromTable.toLowerCase();
+        this.fromTable = fromTable;
     }
 
     public LocalDateTime getCreatedAt() {

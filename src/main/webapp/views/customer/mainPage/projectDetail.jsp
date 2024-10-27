@@ -24,13 +24,6 @@
         .d-flex{
             margin-top: 0;
         }
-        .sidebar {
-            width: 300px;
-            background-color: #FFC107;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
         .sidebar table {
             width: 100%;
         }
@@ -80,10 +73,11 @@
         }
 
         .sidebar {
-            width: 30%; /* Adjust to control the width of the sidebar */
-            background-color: #FFC107;
-            padding: 20px;
+            width: 30%;
+            background-color: #ddd;
+            padding: 10px 20px;
             border-radius: 10px;
+            border: 1px solid #e0e0e0;
         }
         @media screen and (max-width: 768px) {
             .single-portfolio-wrap {
@@ -101,11 +95,6 @@
 </head>
 
 <body class="body-1">
-
-<!--[if lte IE 9]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-<![endif]-->
-
 <!-- preloader start -->
 <!-- style 1 -->
 <div id="preloader" data-preloader="active" data-loaded="doted">
@@ -138,12 +127,6 @@
     </div>
 </div>
 <!-- preloader end -->
-
-<!-- Backtotop start -->
-<!-- <div id="scroll-percentage">
-    <span id="scroll-percentage-value"></span>
-</div> -->
-<!-- Backtotop end -->
 
 <!-- cursorAnimation start -->
 <div class="cursor-wrapper relative">
@@ -257,24 +240,29 @@
 <!-- Header area start -->
 <%@include file="../homePageNavbar.jsp" %>
 <!-- Header area end -->
-<div class="page-title-wrap typo-white">
-    <div class="page-title-wrap-inner section-bg-img" data-bg="images/bg/page-title-bg.jpg">
-        <span class="black-overlay"></span>
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-12">
-                    <div class="page-title-inner">
-                        <div id="breadcrumb" class="breadcrumb mb-1 mb-lg-2">
-                            <a href="${pageContext.request.contextPath}/home/projects" class="theme-color">Home</a>
-                            <span class="current">Project</span>
-                        </div>
-                        <h1 class="page-title mb-0">${project.projectName}</h1>
-                    </div>
+
+<section id="services"
+         class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+    <div class="container rr-shape-p-c_1">
+        <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+            <div></div>
+        </div>
+
+        <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+            <div class="col-md-6">
+                <div class="section__title-wrapper text-center text-xl-start">
+                            <span class="section__subtitle justify-content-start mb-13"><span data-width="40px"
+                                                                                              class="left-separetor">
+
+                            </span> <a href="${pageContext.request.contextPath}/home/projects" class="theme-color">Home - Project</a></span>
+                    <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                        data-cursor="-opaque">${project.projectName}
+                    </h2>
                 </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 <div style="height:100px">
 
 </div>
@@ -287,7 +275,8 @@
                     <!-- Image -->
                     <div class="zoom-gallery mb-5">
                         <div class="portfolio-thumb">
-                            <img src="${project.getShowingImg(project.imgURL)}" alt="Project Image">
+                            <img src="${project.getShowingImg(project.imgURL)}" alternative="${project.projectName}"
+                                 style="height:auto; width:850px; object-fit:contain; border-radius: 10px" alt="">
                         </div>
                     </div>
 
@@ -301,32 +290,36 @@
                 </div>
 
                 <!-- Sidebar Section -->
-                <div class="sidebar col-md-4">
+                <div class="sidebar col-md-4" style="height: 400px">
                     <table>
                         <tr>
-                            <td><span class="portfolio-meta-icon"><i class="ti-calendar"></i></span></td>
-                            <td><h5>Date start</h5></td>
-                            <td class="entry-date"><fmt:formatDate value="${project.dateStart}" pattern="dd-MM-yyyy" /></td>
-                        </tr>
-                        <tr>
-                            <td><span class="portfolio-meta-icon"><i class="ti-alarm-clock"></i></span></td>
-                            <td><h5>Date end</h5></td>
-                            <td class="entry-duration"><fmt:formatDate value="${project.dateEnd}" pattern="dd-MM-yyyy" /></td>
-                        </tr>
-                        <tr>
                             <td><span class="portfolio-meta-icon"><i class="ti-user"></i></span></td>
-                            <td><h5>Client</h5></td>
+                            <td><h5>Client:</h5></td>
                             <td class="entry-client">${project.contract.customer.name}</td>
                         </tr>
-                        
                         <tr>
                             <td><span class="portfolio-meta-icon"><i class="ti-folder"></i></span></td>
-                            <td><h5>Category</h5></td>
+                            <td><h5>Category:</h5></td>
                             <td class="entry-category">${project.style}</td>
                         </tr>
                         <tr>
+                            <td><span class="portfolio-meta-icon"><i class="ti-folder"></i></span></td>
+                            <td><h5>Total Area:</h5></td>
+                            <td class="entry-category">${project.contract.quote.quotesArea} (m²)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="portfolio-meta-icon"><i class="ti-calendar"></i></span></td>
+                            <td><h5>Date Start:</h5></td>
+                            <td class="entry-date"><fmt:formatDate value="${project.dateStart}" pattern="MMM dd yyyy" /></td>
+                        </tr>
+                        <tr>
+                            <td><span class="portfolio-meta-icon"><i class="ti-alarm-clock"></i></span></td>
+                            <td><h5>Date End:</h5></td>
+                            <td class="entry-duration"><fmt:formatDate value="${project.dateEnd}" pattern="MMM dd yyyy" /></td>
+                        </tr>
+                        <tr>
                             <td><span class="portfolio-meta-icon"><i class="ti-tag"></i></span></td>
-                            <td><h5>description</h5></td>
+                            <td><h5>Description:</h5></td>
                             <td class="entry-tags">${project.description}</td>
                         </tr>
 
