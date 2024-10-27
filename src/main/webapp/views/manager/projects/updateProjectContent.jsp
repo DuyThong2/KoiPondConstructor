@@ -100,56 +100,9 @@
         uploadUrl: '${pageContext.request.contextPath}/base64/uploadImage',
         height: 500,
         image2_disableResizer: false
-        on: {
-            paste: function (evt) {
-                var editor = evt.editor;
-                var data = evt.data;
-
-                // Check if the pasted data contains an image
-                if (data && data.dataTransfer && data.dataTransfer.getFilesCount()) {
-                    var file = data.dataTransfer.getFile(0);
-
-                    if (file && file.type.indexOf('image') !== -1) {
-                        var reader = new FileReader();
-
-                        // Read the image as data URL
-                        reader.onload = function (e) {
-                            var img = new Image();
-                            img.src = e.target.result;
-
-                            img.onload = function () {
-                                // Check if the image is larger than 800px in width
-                                var canvas = document.createElement('canvas');
-                                var maxWidth = 800;
-
-                                if (img.width > maxWidth) {
-                                    var scaleFactor = maxWidth / img.width;
-                                    canvas.width = maxWidth;
-                                    canvas.height = img.height * scaleFactor;
-
-                                    var ctx = canvas.getContext('2d');
-                                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-                                    // Convert the resized image to Base64
-                                    var resizedDataUrl = canvas.toDataURL(file.type);
-
-                                    // Insert the resized image into the editor
-                                    editor.insertHtml('<img src="' + resizedDataUrl + '" width="' + maxWidth + '" />');
-                                } else {
-                                    // If the image is smaller than 800px, insert it as-is
-                                    editor.insertHtml('<img src="' + img.src + '" />');
-                                }
-                            };
-                        };
-
-                        reader.readAsDataURL(file);
-
-                        // Prevent default paste behavior for images to avoid duplicating content
-                        evt.cancel();
-                    }
-                }
-            }
-        }
+      
+            
+        
     });
 </script>
 

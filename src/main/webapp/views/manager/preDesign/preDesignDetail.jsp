@@ -13,6 +13,7 @@
             body {
                 background-color: #f8f9fa;
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+     
             }
             .blog-header {
                 text-align: center;
@@ -91,7 +92,7 @@
                 <%@include file="../navBar.jsp" %>
 
                 <!-- Main content -->
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
                     <!-- Pre Design Header -->
                     <div class="blog-header">
                         <h1>Pre Design Detail</h1>
@@ -156,8 +157,8 @@
                                 </button>
                             </c:when>
                         </c:choose>
-                        <button href="${pageContext.request.contextPath}/manager/preDesign/update/${preDesign.preDesignId}" class="btn btn-info">Update</button>
-                    </div>
+                        <a href="${pageContext.request.contextPath}/manager/preDesign/update/${preDesign.preDesignId}" class="btn btn-info">Update</a>
+                    </div
 
                 </main>
                 <!-- Footer Section with Back Button -->

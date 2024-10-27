@@ -3,71 +3,76 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Bad Request</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <%@include file="../customer/cssTemplate.jsp"%>
-    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
-    <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
-    <link href="<c:url value='/css/designer/designerStyle.css'/>" rel="stylesheet">
-    <style>
-        .error-container {
-            text-align: center;
-            padding: 50px;
-            margin: 50px auto;
-        }
-        .error-container img {
-            max-width: 200px;
-            margin-bottom: 20px;
-        }
-        .error-container h1 {
-            font-size: 3rem;
-            color: #dc3545;
-        }
-        .error-container p {
-            font-size: 1.2rem;
-        }
-        .back-button, .contact-support {
-            margin-top: 20px;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Bad Request</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <c:if test="${sessionScope.user.authority.authority == 'ROLE_CUSTOMER'}">
+            <%@include file="../customer/cssTemplate.jsp"%>
+        </c:if>
+        <c:if test="${sessionScope.user.authority.authority == 'ROLE_MANAGER'}">
+            <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
+        </c:if>
 
-<body>
-<c:if test="${sessionScope.user.authority.authority == 'ROLE_CUSTOMER'}">
-    <%@include file="../customer/homePageNavbar.jsp" %>
-</c:if>
-<c:if test="${sessionScope.user.authority.authority == 'ROLE_CONSULTANT'}">
-    <%@include file="../consultant/consultantNav.jsp" %>
-</c:if>
-<c:if test="${sessionScope.user.authority.authority == 'ROLE_DESIGNER'}">
-    <%@include file="../designer/navbarDesign.jsp" %>
-</c:if>
-<c:if test="${sessionScope.user.authority.authority == 'ROLE_CONSTRUCTOR'}">
-    <%@include file="../constructor/navbarConstruction.jsp" %>
-</c:if>
-<c:if test="${sessionScope.user.authority.authority == 'ROLE_MANAGER'}">
-    <%@include file="../manager/navBar.jsp" %>
-</c:if>
+        <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
 
-<div class="error-container">
-    <img src="${pageContext.request.contextPath}/assets/imgs/400_bad_request_image.png" alt="Access Denied">
-    <h1>400 - Bad Request</h1>
-    <p>The request could not be understood by the server due to malformed syntax.</p>
+        <style>
+            .error-container {
+                text-align: center;
+                padding: 50px;
+                margin: 50px auto;
+            }
+            .error-container img {
+                max-width: 200px;
+                margin-bottom: 20px;
+            }
+            .error-container h1 {
+                font-size: 3rem;
+                color: #dc3545;
+            }
+            .error-container p {
+                font-size: 1.2rem;
+            }
+            .back-button, .contact-support {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
 
-    <div class="alert alert-warning" role="alert">
-        Please check the URL or contact support if the problem persists.
-    </div>
+    <body>
+        <c:if test="${sessionScope.user.authority.authority == 'ROLE_CUSTOMER'}">
+            <%@include file="../customer/homePageNavbar.jsp" %>
+        </c:if>
+        <c:if test="${sessionScope.user.authority.authority == 'ROLE_CONSULTANT'}">
+            <%@include file="../consultant/consultantNav.jsp" %>
+        </c:if>
+        <c:if test="${sessionScope.user.authority.authority == 'ROLE_DESIGNER'}">
+            <%@include file="../designer/navbarDesign.jsp" %>
+        </c:if>
+        <c:if test="${sessionScope.user.authority.authority == 'ROLE_CONSTRUCTOR'}">
+            <%@include file="../constructor/navbarConstruction.jsp" %>
+        </c:if>
+        <c:if test="${sessionScope.user.authority.authority == 'ROLE_MANAGER'}">
+            <%@include file="../manager/navBar.jsp" %>
+        </c:if>
 
-    <div class="contact-support">
-        <a href="/contact-support" class="btn btn-danger">
-            <i class="fas fa-envelope"></i> Contact Support
-        </a>
-    </div>
+        <div class="error-container">
+            <img src="${pageContext.request.contextPath}/assets/imgs/400_bad_request_image.png" alt="Access Denied">
+            <h1>400 - Bad Request</h1>
+            <p>The request could not be understood by the server due to malformed syntax.</p>
 
-</div>
+            <div class="alert alert-warning" role="alert">
+                Please check the URL or contact support if the problem persists.
+            </div>
 
-</body>
+            <div class="contact-support">
+                <a href="/contact-support" class="btn btn-danger">
+                    <i class="fas fa-envelope"></i> Contact Support
+                </a>
+            </div>
+
+        </div>
+
+    </body>
 </html>
