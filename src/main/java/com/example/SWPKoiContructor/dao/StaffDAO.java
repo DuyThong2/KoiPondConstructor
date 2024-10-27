@@ -67,7 +67,6 @@ public class StaffDAO {
         });
         return listStaff;
     }
-
     public Staff createStaff(Staff staff) {
         Staff createStaff = entityManager.merge(staff);
         return createStaff;
@@ -389,7 +388,7 @@ public class StaffDAO {
 
 
     public long countTotalStaffByDepartmentsForProject(Project project, List<String> departments) {
-        String queryStr = "SELECT COUNT(s) FROM Staff s WHERE LOWER(s.department) IN :departments AND LOWER(s.name) NOT IN :names";
+        String queryStr = "SELECT COUNT(s) FROM Staff s WHERE s.enabled = true AND LOWER(s.department) IN :departments AND LOWER(s.name) NOT IN :names";
         List<Staff> staff = new ArrayList<>();
         List<String> staffName ;
         List<String> lowerCaseDepartments =departments.stream().map(String::toLowerCase).collect(Collectors.toList());
@@ -409,7 +408,7 @@ public class StaffDAO {
     }
 
     public long countTotalStaffByDepartmentsSearchForProject(String trim,Project project, List<String> departments) {
-        String queryStr = "SELECT COUNT(s) FROM Staff s WHERE LOWER(s.department) IN :departments AND LOWER(s.name) LIKE :name AND LOWER(s.name) NOT IN :names";
+        String queryStr = "SELECT COUNT(s) FROM Staff s WHERE s.enabled = true AND LOWER(s.department) IN :departments AND LOWER(s.name) LIKE :name AND LOWER(s.name) NOT IN :names";
         List<Staff> staff = new ArrayList<>();
         List<String> staffName ;
         List<String> lowerCaseDepartments =departments.stream().map(String::toLowerCase).collect(Collectors.toList());
@@ -487,13 +486,14 @@ public class StaffDAO {
         }
 
         // Retrieve all staff members
-        String queryStr = "SELECT s FROM Staff s";
+        String queryStr = "SELECT s FROM Staff s WHERE s.enabled = true";
         if (departmentFilters != null && !departmentFilters.isEmpty()) {
-            queryStr += " WHERE LOWER(s.department) IN :departments";
+            queryStr += " AND LOWER(s.department) IN :departments";
         }
         if (assignedStaff != null && !assignedStaff.isEmpty()) {
             queryStr += " AND LOWER(s.name) NOT IN :names";
         }
+
 
         TypedQuery<Staff> query = entityManager.createQuery(queryStr, Staff.class);
         if (departmentFilters != null && !departmentFilters.isEmpty()) {
@@ -529,9 +529,7 @@ public class StaffDAO {
         }
 
         // Build the base query for staff search
-        String jpaQuery = "SELECT s FROM Staff s WHERE LOWER(s.name) LIKE :name";
-
-        // Add department filter if provided (list of departments)
+        String jpaQuery = "SELECT s FROM Staff s WHERE s.enabled = true AND LOWER(s.name) LIKE :name";
         if (departmentFilters != null && !departmentFilters.isEmpty()) {
             jpaQuery += " AND LOWER(s.department) IN (:departments)";
         }

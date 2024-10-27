@@ -148,11 +148,9 @@ public class ServiceDetailController {
             return "redirect:/manager/serviceDetails"; // Redirect if service detail not found
         }
 
+
         // Load the currently assigned construction staff member for this service detail
-        List<Staff> constructionStaff = new ArrayList<>();
-        if (serviceDetail.getStaff() != null) {
-            constructionStaff.add(serviceDetail.getStaff());
-        }
+
 
         // Total number of staff that match the search term (or all staff)
         long totalStaff;
@@ -178,7 +176,6 @@ public class ServiceDetailController {
 
         // Add data to the model
         model.addAttribute("serviceDetail", serviceDetail);
-        model.addAttribute("constructionStaff", constructionStaff);
         model.addAttribute("availableStaff", availableStaff);
         model.addAttribute("searchTerm", searchTerm);
         model.addAttribute("totalPage", totalPage == 0 ? 1 : totalPage);
@@ -193,7 +190,7 @@ public class ServiceDetailController {
     public String assignConstructionStaff(
             @RequestParam("staffId") int staffId,
             @RequestParam("serviceDetailId") int serviceDetailId,
-            Model model) {
+            RedirectAttributes redirectAttributes) {
 
         try {
             Staff staff = staffService.getStaffById(staffId);
@@ -202,32 +199,28 @@ public class ServiceDetailController {
             if (serviceDetail != null && staff != null) {
                 if (serviceDetail.getServiceDetailStatus() == 3 || serviceDetail.getServiceDetailStatus() == 4
                         || serviceDetail.getServiceDetailStatus() == 5) {
-                    model.addAttribute("errorMessage", "Can't assign staff");
-                    return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
+                    redirectAttributes.addFlashAttribute("errorMessage", "Can't assign staff to a completed, cancelled, or requesting cancellation service.");
+                    return "redirect:/manager/serviceDetails/assign/" + serviceDetailId;
                 }
                 if (serviceDetail.getStaff() != null) {
-                    model.addAttribute("errorMessage", "Staff have been already assigned");
-                    return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
+                    redirectAttributes.addFlashAttribute("errorMessage", "Staff have already been assigned to this service.");
+                    return "redirect:/manager/serviceDetails/assign/" + serviceDetailId;
                 }
-
-                if (serviceDetail.getStaff() != null) {
-                    model.addAttribute("errorMessage", "Staff have been already assigned");
-                    return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
-                }
-                serviceDetail.setStaff(staff); // Assign staff to service detail
+                serviceDetail.setStaff(staff);
                 if (serviceDetail.getServiceDetailStatus() == 1) {
-                    serviceDetail.setServiceDetailStatus(2); // Set status to Processing (2)
+                    serviceDetail.setServiceDetailStatus(2);
                 }
-                serviceDetailService.updateServiceDetail(serviceDetail); // Update service detail
+                serviceDetailService.updateServiceDetail(serviceDetail);
+                redirectAttributes.addFlashAttribute("successMessage", "Staff assigned successfully.");
                 return "redirect:/manager/serviceDetails/assign/" + serviceDetailId;
             } else {
-                model.addAttribute("errorMessage", "Invalid Service Detail or Staff.");
-                return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
+                redirectAttributes.addFlashAttribute("errorMessage", "Invalid Service Detail or Staff.");
+                return "redirect:/manager/serviceDetails/assign/" + serviceDetailId;
             }
 
         } catch (Exception e) {
-            model.addAttribute("errorMessage", "Error assigning staff: " + e.getMessage());
-            return "manager/service/assignConstructionStaff"; // Return to the assignment page if error occurs
+            redirectAttributes.addFlashAttribute("errorMessage", "Error assigning staff: " + e.getMessage());
+            return "redirect:/manager/serviceDetails/assign/" + serviceDetailId;
         }
     }
 

@@ -111,13 +111,14 @@ public class ServiceController {
 
             // Add success message to redirect attributes
             redirectAttributes.addFlashAttribute("message", "Service successfully created.");
+            return "redirect:/manager/service/detail"+newService.getServiceId();
         } catch (Exception e) {
             // Add error message to redirect attributes if an error occurs
             redirectAttributes.addFlashAttribute("error", "An error occurred while creating the service: " + e.getMessage());
         }
 
         // Redirect back to the service list page after creation
-        return "redirect:/manager/services";
+        return "redirect:/manager/services/";
     }
 
     @PostMapping("manager/services/changeStatusAjax")
@@ -214,8 +215,11 @@ public class ServiceController {
 
             // Add success message
             redirectAttributes.addFlashAttribute("message", "Service successfully updated.");
+            return "redirect:/manager/service/detail/"+existingService.getServiceId();
+
         } catch (Exception e) {
             // Add error message if an error occurs
+
             redirectAttributes.addFlashAttribute("error", "An error occurred while updating the service: " + e.getMessage());
         }
 
@@ -268,6 +272,18 @@ public class ServiceController {
             return "redirect:/manager/services";
         }
         return "redirect:/manager/services";
+    }
+
+    @GetMapping("/manager/service/detail/{id}")
+    public String serviceInfoPage(Model model,@PathVariable int id,RedirectAttributes redirectAttributes){
+        Service service = serviceService.getServiceById(id);
+        if (service == null) {
+            // If the service doesn't exist, add an error message and redirect
+            redirectAttributes.addFlashAttribute("error", "Service not found.");
+            return "redirect:/manager/services/";
+        }
+        model.addAttribute("service",service);
+        return "/manager/service/serviceInfo";
     }
 
 
