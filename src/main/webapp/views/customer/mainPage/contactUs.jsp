@@ -519,9 +519,9 @@
                 <div class="col-md-6">
                     <div class="section__title-wrapper text-center text-xl-start">
                                 <span class="section__subtitle justify-content-start mb-13"><span data-width="40px" class="left-separetor">
-                                </span>Contact Us</span>
+                                </span><a href="${pageContext.request.contextPath}/" class="theme-color">Contact Us</a></span>
                         <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
-                            data-cursor="-opaque">Contact Us & About Us
+                            data-cursor="-opaque">Contact & About Us
                         </h2>
                     </div>
                 </div>
