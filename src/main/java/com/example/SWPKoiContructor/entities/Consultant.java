@@ -20,6 +20,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Email;
+
 
 
 /**
@@ -55,6 +59,7 @@ public class Consultant {
     private int consultantStatus;
     
     @Column(name = "consultant_email")
+
     private String consultant_email;
     
     @ManyToOne

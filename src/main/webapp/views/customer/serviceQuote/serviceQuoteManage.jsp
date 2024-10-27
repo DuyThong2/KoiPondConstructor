@@ -118,7 +118,9 @@
             .table tbody tr:hover {
                 background-color: #f2f2f2;
             }
-
+            .modal {
+                opacity: 1 !important;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>

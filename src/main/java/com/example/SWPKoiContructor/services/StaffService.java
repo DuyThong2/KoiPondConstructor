@@ -109,7 +109,14 @@ public class StaffService {
         return staffDAO.countStaff();
     }
 
-
+    public List<Staff> getAllConsultantStaff(int page, int size, String searchName){
+        return staffDAO.getAllConsultantStaff(page, size, searchName);
+    }
+    
+    public long countAllConsultantStaff(int page, int size, String searchName ){
+        return staffDAO.countAllConsultantStaff(page, size, searchName);
+    }
+    
     public List<Staff> searchConstructionStaffByName(String trim) {
         return staffDAO.searchConstructionStaffByName(trim);
     }

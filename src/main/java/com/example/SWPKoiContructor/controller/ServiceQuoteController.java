@@ -53,7 +53,7 @@ public class ServiceQuoteController {
 
     private NotificationService notificationService;
 
-    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService, LoyaltyPointService loyaltyPointService, PaymentHistoryService paymentHistoryService,NotificationService notificationService) {
+    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService, LoyaltyPointService loyaltyPointService, PaymentHistoryService paymentHistoryService, NotificationService notificationService) {
         this.serviceQuoteService = serviceQuoteService;
         this.serviceService = serviceService;
         this.consultantService = consultantService;
@@ -97,11 +97,11 @@ public class ServiceQuoteController {
         totalServiceQuotes = serviceQuoteService.countFilteredServiceQuoteManager(statusFilter, searchName, fromDate, toDate);
 
         int totalPages = (int) Math.ceil((double) totalServiceQuotes / size);
-        if(page > totalPages){
+        if (page > totalPages) {
             page = 0;
         }
         serviceQuoteses = serviceQuoteService.getFilteredServiceQuoteManager(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
-        
+
         // Add attributes to the model for JSP rendering
         model.addAttribute("serviceQuote", serviceQuoteses);
         model.addAttribute("currentPage", page);
@@ -134,35 +134,39 @@ public class ServiceQuoteController {
             feedback.setServiceQuotes(serviceQuotes);
             feedback = feedbackService.saveFeedback(feedback);
         }
-        if(statusId==2){
-            notificationService.createNotification(serviceQuoteId,"serviceQuote",serviceQuotes.getCustomer().getId(),"customer","Your service quotes has been created!");
-        }else if(statusId==3){
-            notificationService.createNotification(serviceQuoteId,"serviceQuote",serviceQuotes.getConsultant().getStaff().getId(),"consultant","Your service quotes has been denied by manager! Please edit it");
+        if (statusId == 2) {
+            notificationService.createNotification(serviceQuoteId, "serviceQuote", serviceQuotes.getCustomer().getId(), "customer", "Your service quotes has been created!");
+        } else if (statusId == 3) {
+            notificationService.createNotification(serviceQuoteId, "serviceQuote", serviceQuotes.getConsultant().getStaff().getId(), "consultant", "Your service quotes has been denied by manager! Please edit it");
 
         }
         return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
     }
-    
+
     @PostMapping("/manager/serviceQuote/savePayment")
-    public String savePayment(@RequestParam("id")int serviceQuoteId,
-                            @RequestParam("status")int statusId,
-                            Model model){
+    public String savePayment(@RequestParam("id") int serviceQuoteId,
+            @RequestParam("status") int statusId,
+            Model model) {
         ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
         PaymentHistory paymentHistory = new PaymentHistory();
-                paymentHistory.setCustomer(serviceQuote.getCustomer());
-                BigDecimal amount = BigDecimal.valueOf(serviceQuote.calculateTotalPricePayment() - serviceQuote.calculatePointUsing());
-                paymentHistory.setAmount(amount);
-                paymentHistory.setPaymentDate(LocalDateTime.now());
-                paymentHistory.setPaymentMethod("Manual");
-                paymentHistory.setDescription("Payment of "+amount+" for service quote" + serviceQuote.getServiceQuotesId() + " by "+ serviceQuote.getCustomer().getName() + " using " + serviceQuote.calculatePointUsing());
-                paymentHistoryService.createPayment(paymentHistory);
-        System.out.println("ANH THIENNNNNNNNNNNNNNNNNNN");
-                notificationService.createNotification(serviceQuoteId, "serviceQuote", paymentHistory.getCustomer().getId(), "customer", "We have noticed your payment. Aligator Godzillamatsu");
-        System.out.println("ANH THIENNNNNNNNNNNNNNNNN");
+        paymentHistory.setCustomer(serviceQuote.getCustomer());
+       
+//        BigDecimal amount = BigDecimal.valueOf(serviceQuote.calculateTotalPricePayment() - serviceQuote.calculatePointUsing());
+        BigDecimal totalPrice = BigDecimal.valueOf(serviceQuote.calculateTotalPricePayment());
+        BigDecimal pointsUsed = BigDecimal.valueOf(serviceQuote.calculatePointUsing());
+        BigDecimal amount = totalPrice.subtract(pointsUsed);
+         System.out.println(amount);
+        paymentHistory.setAmount(amount);
+        
+        paymentHistory.setPaymentDate(LocalDateTime.now());
+        paymentHistory.setPaymentMethod("Manual");
+        paymentHistory.setDescription("Payment of " + amount + " for service quote" + serviceQuote.getServiceQuotesId() + " by " + serviceQuote.getCustomer().getName() + " using " + serviceQuote.calculatePointUsing());
+        paymentHistoryService.createPayment(paymentHistory);
+        
         double pointGained = amount.doubleValue();
-                loyaltyPointService.gainLoyaltyPoints(serviceQuote.getCustomer(), pointGained);
-                
-                serviceQuote = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
+        loyaltyPointService.gainLoyaltyPoints(serviceQuote.getCustomer(), pointGained);
+    System.out.println(pointGained);
+        serviceQuote = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
         return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
     }
 
@@ -246,7 +250,13 @@ public class ServiceQuoteController {
     @PostMapping("/consultant/serviceQuote/save")
     public String saveServiceQuote(@ModelAttribute("newServiceQuote") ServiceQuotes newServiceQuotes,
             @RequestParam("serviceIds") List<Integer> serviceIds,
-            @RequestParam("pointsUsed") String pointUsed) {
+            @RequestParam("pointsUsed") String pointUsed,
+            RedirectAttributes redirectAttributes) {
+        
+        String redirectIfWrong = checkValidation(newServiceQuotes, serviceIds, true, redirectAttributes);
+        if(redirectIfWrong != null){
+            return redirectIfWrong;
+        }
         List<Service> serviceList = new ArrayList<>();
         newServiceQuotes.setServiceQuotesStatus(1);
         newServiceQuotes.setServiceQuotesDate(new Date());
@@ -265,34 +275,40 @@ public class ServiceQuoteController {
     }
 
     @GetMapping("/consultant/serviceQuote/update")
-public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuoteId, Model model, HttpSession session) {
-    ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
-    Staff staff = (Staff) session.getAttribute("user");
-    
-    if (serviceQuote != null && serviceQuote.isServiceQuoteBelongToStaff(staff, serviceQuote)) {
-        model.addAttribute("consultant", serviceQuote.getConsultant());
-        model.addAttribute("customer", serviceQuote.getCustomer());
-        model.addAttribute("serviceQuote", serviceQuote);
-        
-        // List of all available services
-        model.addAttribute("services", serviceService.getServiceList(20));
-                
-        User user = (User) session.getAttribute("user");
-        model.addAttribute("staff", user);
-        long totalPoint = loyaltyPointService.TotalPoints(serviceQuote.getCustomer().getId());
-        model.addAttribute("totalPoint", totalPoint);
-        notificationService.createNotification(serviceQuoteId,"serviceQuote",null,"manager","Service Quote has been updated");
-        return "consultant/serviceQuote/serviceQuoteUpdate";
-    }
-    
-    return "redirect:/consultant/serviceQuote/detail/" + serviceQuoteId;
-}
+    public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuoteId, Model model, HttpSession session) {
+        ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
+        Staff staff = (Staff) session.getAttribute("user");
 
+        if (serviceQuote != null && serviceQuote.isServiceQuoteBelongToStaff(staff, serviceQuote)) {
+            model.addAttribute("consultant", serviceQuote.getConsultant());
+            model.addAttribute("customer", serviceQuote.getCustomer());
+            model.addAttribute("serviceQuote", serviceQuote);
+
+            // List of all available services
+            model.addAttribute("services", serviceService.getServiceList(20));
+
+            User user = (User) session.getAttribute("user");
+            model.addAttribute("staff", user);
+            long totalPoint = loyaltyPointService.TotalPoints(serviceQuote.getCustomer().getId());
+            model.addAttribute("totalPoint", totalPoint);
+            notificationService.createNotification(serviceQuoteId, "serviceQuote", null, "manager", "Service Quote has been updated");
+            return "consultant/serviceQuote/serviceQuoteUpdate";
+        }
+
+        return "redirect:/consultant/serviceQuote/detail/" + serviceQuoteId;
+    }
 
     @PostMapping("/consultant/serviceQuote/saveUpdate")
     public String saveUpdateServiceQuote(@ModelAttribute("serviceQuote") ServiceQuotes serviceQuote,
-                                        @RequestParam("serviceIds") List<Integer> serviceIds,
-                                        @RequestParam("pointsUsed") String pointUsed) {
+            @RequestParam("serviceIds") List<Integer> serviceIds,
+            @RequestParam("pointsUsed") String pointUsed,
+            RedirectAttributes redirectAttributes) {
+        
+        String redirectIfWrong = checkValidation(serviceQuote, serviceIds, false, redirectAttributes);
+        if(redirectIfWrong != null){
+            return redirectIfWrong;
+        }
+        
         List<Service> serviceList = new ArrayList<>();
         serviceQuote.setServiceQuotesStatus(1);
         serviceQuote.setServiceQuotesDate(new Date());
@@ -325,11 +341,55 @@ public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuot
             feedback.setToUser(toUser);
             feedback.setServiceQuotes(serviceQuotes);
             feedback = feedbackService.saveFeedback(feedback);
-            if(statusId==6){
-                notificationService.createNotification(serviceQuoteId,"serviceQuote",null,"manager","Request service Quote has been rejected by Consultant: " + serviceQuotes.getStaff().getName());
+            if (statusId == 6) {
+                notificationService.createNotification(serviceQuoteId, "serviceQuote", null, "manager", "Request service Quote has been rejected by Consultant: " + serviceQuotes.getStaff().getName());
             }
         }
         return "redirect:/consultant/serviceQuote/detail/" + serviceQuoteId;
+    }
+    
+    public String checkValidation(ServiceQuotes newServiceQuotes, List<Integer> serviceIds,boolean isCreate, RedirectAttributes redirectAttributes ){
+        String redirectLink;
+        String flashAtrubute;
+        if(isCreate){
+            redirectLink = "redirect:/consultant/serviceQuote/create?consultantId=" + newServiceQuotes.getConsultant().getConsultantId();
+            flashAtrubute = "newServiceQuote";
+        }else{
+            redirectLink = "redirect:/consultant/serviceQuote/update?serviceQuoteId=" + newServiceQuotes.getServiceQuotesId();
+            flashAtrubute = "serviceQuote";
+        }
+        if (newServiceQuotes.getServiceQuotesName() == null || newServiceQuotes.getServiceQuotesName().trim().length() < 3) {
+            redirectAttributes.addFlashAttribute("error", "Quote name must be at least 3 characters long.");
+            redirectAttributes.addFlashAttribute(flashAtrubute, newServiceQuotes);
+            return redirectLink;  
+        }
+
+        // Validate the quote content (must not be empty)
+        if (newServiceQuotes.getServiceQuotesContent() == null || newServiceQuotes.getServiceQuotesContent().trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Quote content is required.");
+            redirectAttributes.addFlashAttribute(flashAtrubute, newServiceQuotes);
+            return redirectLink;  
+        }
+
+        // Validate the area (must be a positive number greater than zero)
+        if (newServiceQuotes.getServiceQuotesArea() <= 0) {
+            redirectAttributes.addFlashAttribute("error", "Area must be a positive number greater than zero.");
+            redirectAttributes.addFlashAttribute(flashAtrubute, newServiceQuotes);
+            return redirectLink;  
+        }
+
+        if (newServiceQuotes.getServiceQuotesTotalPrice() <= 0) {
+            redirectAttributes.addFlashAttribute("error", "Total price must be a positive number.");
+            redirectAttributes.addFlashAttribute(flashAtrubute, newServiceQuotes);
+            return redirectLink;
+        }
+
+        if (serviceIds == null || serviceIds.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "You must select at least one service.");
+            redirectAttributes.addFlashAttribute(flashAtrubute, newServiceQuotes);
+            return redirectLink;
+        }
+        return null;
     }
 
     //----------------------------------- CUSTOMER SECTION ----------------------------------------------
@@ -384,10 +444,10 @@ public String updateServiceQuote(@RequestParam("serviceQuoteId") int serviceQuot
             feedback.setServiceQuotes(serviceQuotes);
             feedback = feedbackService.saveFeedback(feedback);
         }
-        if(statusId==4){
-            notificationService.createNotification(serviceQuoteId,"serviceQuote",null,"manager","Service quotes has been accepted by Customer: "+serviceQuotes.getCustomer().getName());
-        }else if(statusId==5){
-            notificationService.createNotification(serviceQuoteId,"serviceQuote",serviceQuotes.getConsultant().getStaff().getId(),"consultant","Your service quotes has been denied by customer! Please edit it");
+        if (statusId == 4) {
+            notificationService.createNotification(serviceQuoteId, "serviceQuote", null, "manager", "Service quotes has been accepted by Customer: " + serviceQuotes.getCustomer().getName());
+        } else if (statusId == 5) {
+            notificationService.createNotification(serviceQuoteId, "serviceQuote", serviceQuotes.getConsultant().getStaff().getId(), "consultant", "Your service quotes has been denied by customer! Please edit it");
 
         }
 

@@ -54,7 +54,7 @@
                             <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>
                         </tr>
                         <tr>
-                            <th>Contract Status</th>
+                            <th>Consultant Status</th>
                             <td>
                                 <!-- 1: Pending 2: Assign 3: Processing 4:Completed(khi hợp đồng đc ký) 5.Cancel(khi khác ko muốn tư vấn)-->
                                 <c:choose>
@@ -68,7 +68,7 @@
                                         <span class="badge badge-warning badge-status">Processing</span>
                                     </c:when>
                                     <c:when test="${consultant.consultantStatus == 4}">
-                                        <span class="badge badge-success badge-status">Completed</span>
+                                        <span class="badge badge-success badge-status">${empty consultant.customer? 'Add Customer To Contineu':'Complete'}</span>
                                     </c:when>
                                     <c:when test="${consultant.consultantStatus == 5}">
                                         <span class="badge badge-danger badge-status">Cancel</span>
@@ -113,7 +113,8 @@
                                 </form>
                             </div>
                         </c:when>
-                        <c:when test="${consultant.consultantStatus == 4 && empty consultant.quotes && not empty consultant.customer}">
+                        <c:when test="${consultant.consultantStatus == 4 && empty consultant.quotes && 
+                                        not empty consultant.customer && empty consultant.serviceQuotes}">
                             <c:if test="${consultant.consultantType == 'Service'}">
                                 <div class="">
                                     <form action="${pageContext.request.contextPath}/consultant/serviceQuote/create" method="get" class="d-inline">
@@ -161,7 +162,7 @@
                                 </table>
                             </c:when>
                             <c:when test="${not empty consultant.serviceQuotes}">
-
+                                <h4 class="section-header text-primary">Associated Quotes</h4>
                                 <table class="table table-bordered">
                                     <tr>
                                         <th>Quotes ID</th>
@@ -259,35 +260,37 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- Table of Customers -->
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="customer" items="${customerList}">
+                        <div class="table-responsive">
+                            <!-- Table of Customers -->
+                            <table class="table table-hover">
+                                <thead>
                                     <tr>
-                                        <td>${customer.id}</td>
-                                        <td>${customer.name}</td>
-                                        <td>${customer.email}</td>
-                                        <td>${customer.phone}</td>
-                                        <td>
-                                            <form action="${pageContext.request.contextPath}/consultant/addCustomerToConsultant" method="post" class="d-inline">
-                                                <input type="hidden" name="consultantId" value="${consultant.consultantId}">
-                                                <input type="hidden" name="customerId" value="${customer.id}">
-                                                <button type="submit" class="btn btn-success btn-sm">Add</button>
-                                            </form>
-                                        </td>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Action</th>
                                     </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    <c:forEach var="customer" items="${customerList}">
+                                        <tr>
+                                            <td>${customer.id}</td>
+                                            <td>${customer.name}</td>
+                                            <td>${customer.email}</td>
+                                            <td>${customer.phone}</td>
+                                            <td>
+                                                <form action="${pageContext.request.contextPath}/consultant/addCustomerToConsultant" method="post" class="d-inline">
+                                                    <input type="hidden" name="consultantId" value="${consultant.consultantId}">
+                                                    <input type="hidden" name="customerId" value="${customer.id}">
+                                                    <button type="submit" class="btn btn-success btn-sm">Add</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
