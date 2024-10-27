@@ -47,8 +47,8 @@ public class ServiceDetailController {
             Model model,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "desc") String sortType,
+            @RequestParam(defaultValue = "serviceDetailStatus") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortType,
             @RequestParam(required = false) Integer statusFilter) {
 
         List<ServiceDetail> list;

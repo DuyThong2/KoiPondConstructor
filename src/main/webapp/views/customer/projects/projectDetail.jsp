@@ -460,7 +460,7 @@
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="cancelRequestModalLabel">Request Service
+                                        <h5 class="modal-title" id="cancelRequestModalLabel">Request Project
                                             Cancellation</h5>
 
                                     </div>

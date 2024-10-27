@@ -176,9 +176,9 @@ public class StaffDAO {
         }
 
         // Retrieve all staff members
-        String queryStr = "SELECT s FROM Staff s";
+        String queryStr = "SELECT s FROM Staff s  WHERE s.enabled = true";
         if(departmentFilters!=null && !departmentFilters.isEmpty()){
-            queryStr += " WHERE LOWER(s.department) IN :departments";
+            queryStr += " AND LOWER(s.department) IN :departments";
         }
         if(assignedStaff!=null && !assignedStaff.isEmpty()){
             queryStr += " AND LOWER(s.name) NOT IN :names";
@@ -221,7 +221,7 @@ public class StaffDAO {
         }
 
         // Build the base query for staff search
-        String jpaQuery = "SELECT s FROM Staff s WHERE LOWER(s.name) LIKE :name";
+        String jpaQuery = "SELECT s FROM Staff s WHERE LOWER(s.name) LIKE :name AND  s.enabled = true";
 
         // Add department filter if provided (list of departments)
         if (departmentFilters != null && !departmentFilters.isEmpty()) {
@@ -259,7 +259,7 @@ public class StaffDAO {
     // Get the project by its ID to find the assigned staff
     // Method to search staff by name and filter by "design" or "construction" department
     public List<Staff> searchStaffByName(String name) {
-        String query = "SELECT s FROM Staff s WHERE LOWER(s.department) IN ('design', 'construction')";
+        String query = "SELECT s FROM Staff s WHERE LOWER(s.department) IN ('design', 'construction') AND s.enabled = true";
         if (name != null && !name.isEmpty()) {
             query += " AND LOWER(s.name) LIKE :name";
         }
@@ -300,7 +300,7 @@ public class StaffDAO {
 
 
     public List<Staff> searchConstructionStaffByName(String name) {
-        String query = "SELECT s FROM Staff s WHERE LOWER(s.department) IN ('construction')";
+        String query = "SELECT s FROM Staff s WHERE LOWER(s.department) IN ('construction') and  s.enabled = true";
         if (name != null && !name.isEmpty()) {
             query += " AND LOWER(s.name) LIKE :name";
         }

@@ -45,8 +45,8 @@ public class ProjectController {
 
     public String ProjectList(Model model,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "5") int size,
-            @RequestParam(defaultValue = "dateStart") String sortBy,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "status") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType,
             @RequestParam(required = false) Integer statusFilter,
             @RequestParam(required = false) Integer stageFilter) {
@@ -365,14 +365,14 @@ public class ProjectController {
     }
 
     @PostMapping("/manager/projects/cancelProject")
-    public ResponseEntity<String> cancelProject(Model model, @RequestParam int projectId) {
+    public ResponseEntity<String> cancelProject(Model model, @RequestParam int projectId,@RequestParam int status) {
         try {
             Project project = projectService.getProjectById(projectId);
             if (project == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }
             if (project.getStatus() != 4 && project.getStatus() != 3) {
-                project.setStatus(4);
+                project.setStatus(status);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }
@@ -380,7 +380,7 @@ public class ProjectController {
                 project.setIsSharedAble(false);
             }
             projectService.updateProject(project);
-            return ResponseEntity.ok("Changed Successfully");
+                return ResponseEntity.ok("Changed Successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
