@@ -1,7 +1,16 @@
 <div class="side-bar">
     <div class="user-info">
-        <img class="img-profile img-circle img-responsive center-block"
-             src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt />
+        <c:choose>
+            <c:when test="${user.imgURL != null}">
+                <img class="img-profile img-circle img-responsive center-block"
+                     src="${user.getShowingImg(user.imgURL)}" alt />
+            </c:when>
+            <c:otherwise>
+                <img class="img-profile img-circle img-responsive center-block"
+                     src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" alt />
+            </c:otherwise>
+        </c:choose>
+
         <ul class="meta list list-unstyled">
             <li class="name">
                 ${user.name}
