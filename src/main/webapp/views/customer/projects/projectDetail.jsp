@@ -160,9 +160,13 @@
                             z-index: 1060 !important;
                         }
 
-                        .canRequestModalAppear {
-                            display: block !important;
+
+                        .modal {
                             opacity: 1 !important;
+                        }
+                        .btn-model{
+                            padding: 10px;
+                            font-size: 15px;
                         }
                     </style>
             </head>
@@ -480,9 +484,9 @@
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" id="TurnOffAppear"
+                                        <button type="button" class="btn btn-secondary btn-model" id="TurnOffAppear"
                                             data-dismiss="modal">Cancel</button>
-                                        <button type="button" class="btn btn-danger" id="submitCancelRequest">Submit
+                                        <button type="button" class="btn btn-danger btn-model" id="submitCancelRequest">Submit
                                             Request</button>
                                     </div>
                                 </div>

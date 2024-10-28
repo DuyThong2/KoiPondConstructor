@@ -65,10 +65,6 @@
 </head>
 
 <body class="body-1">
-
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
-<![endif]-->
-
 <div id="preloader" data-preloader="active" data-loaded="doted">
     <div class="preloader-close">x</div>
     <div class="sk-three-bounce">

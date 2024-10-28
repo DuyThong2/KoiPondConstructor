@@ -8,7 +8,7 @@
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <%@include file="../cssTemplate.jsp" %>
-        <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+
         <style>
             .view-account .side-bar .user-info .meta li span {
                 display: inline-block;
@@ -139,11 +139,6 @@
                 font-weight: bold;
             }
 
-            @media (min-width: 1200px) {
-                .container {
-                    width: 1400px;
-                }
-            }
             a{
                 color: inherit;
             }
@@ -163,7 +158,9 @@
             .badge-secondary{
                 background-color: #6c757d;
             }
+
         </style>
+        <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
     </head>
     <%@include file="../homePageNavbar.jsp" %>
 

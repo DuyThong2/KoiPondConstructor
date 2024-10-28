@@ -15,9 +15,10 @@
                 <link rel="shortcut icon" type="image/x-icon" href="<c:url value='/assets/imgs/favicon.svg' />">
                 <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-                <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+
                 <%@include file="../cssTemplate.jsp"%>
                 <%@include file="../cssCustom.jsp"%>
+                <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
                 <style>
 
                     .card-active p,
@@ -353,7 +354,7 @@
                             </div>
                         </section>
 
-                        <div class="container-fluid project-details-container mt-5">
+                        <div class="container-fluid  mt-5">
                             <div class="container">
 
                                 <!-- Customer Info Section -->
