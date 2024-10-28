@@ -23,7 +23,7 @@
                     padding-left: 30px;
                     width: 250px;
                 }
-            }
+            
             .btn-default{
                 padding: 10px 17px;
                 font-size: 13px;

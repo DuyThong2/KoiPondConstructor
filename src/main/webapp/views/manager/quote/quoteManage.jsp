@@ -137,7 +137,7 @@
                             </c:choose>
                         </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/manager/quote/detail/${quote.quotesId}" class="btn btn-primary">Detail</a>
+                            <a href="${pageContext.request.contextPath}/manager/quote/detail/${quote.quotesId}"  class="btn btn-primary">Detail</a>
                         </td>
                     </tr>
                 </c:forEach>

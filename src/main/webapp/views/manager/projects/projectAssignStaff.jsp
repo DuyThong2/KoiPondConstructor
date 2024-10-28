@@ -239,7 +239,7 @@
                                                         <div class="d-flex justify-content-center">
                                                             <c:choose>
                                                                 <c:when test="${project.status == 5}">
-                                                                    <button class="btn btn-warning" id="viewRequestBtn"
+                                                                    <button class="btn btn-danger" id="cancelProjectBtn"
                                                                         onclick="viewCancelRequest(${project.projectId})">View
                                                                         Request</button>
                                                                 </c:when>
@@ -649,26 +649,26 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="viewRequestModalLabel">Cancel
-                                                    Request
-                                                    Details</h5>
+                                                <h5 class="modal-title" id="viewRequestModalLabel">Cancellation Request
+                                                </h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                     aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-
-                                                <p><strong>Reason for Cancellation from
-                                                        ${project.contract.customer.name}:</strong></p>
+                                                <p><strong>Reason for Cancellation:</strong></p>
                                                 <p id="cancellationReason">${project.cancelMessage}</p>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary"
-                                                    data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-success"
+                                                    onclick="cancelProject(${project.projectId},4);">
+                                                    Accept Request
+                                                </button>
                                                 <button type="button" class="btn btn-danger"
-                                                    onclick="cancelProject(${project.projectId})">Confirm
-                                                    Cancel</button>
+                                                    onclick="cancelProject(${project.projectId},2);">
+                                                    Deny Request
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -939,7 +939,7 @@
 
                                             // Set the click handler for the confirm button for canceling
                                             $('#confirmActionButton').off('click').on('click', function () {
-                                                cancelProject(projectId);
+                                                cancelProject(projectId,4);
                                             });
                                         }
 
@@ -992,35 +992,61 @@
                                         }
                                     }
                                     // AJAX function to cancel the project
-                                    function cancelProject(projectId) {
+                                    function cancelProject(projectId, status) {
+                                        let action = 'cancel';
+                                        if (status == 4) {
+                                            action = 'cancel';
+                                        } else if (status == 2) {
+                                            action = 'processing';
+                                        }
+
                                         $.ajax({
                                             url: '${pageContext.request.contextPath}/manager/projects/cancelProject',
                                             method: 'POST',
-                                            data: { projectId: projectId },
+                                            data: {
+                                                projectId: projectId,
+                                                status: status,
+                                            },
                                             success: function (response) {
                                                 $('#confirmModal').modal('hide');
                                                 $('#viewRequestModal').modal('hide');
-                                                showNotification('Success', 'Project has been canceled successfully!', 'success');
-                                                if ($('#shareBadge').hasClass('badge-success')) {
-                                                    toggleShareButtonState();
+                                                if (action == "cancel") {
+                                                    showNotification('Success', `Project has been ${action} successfully!`, 'success');
+                                                    if ($('#shareBadge').hasClass('badge-success')) {
+                                                        toggleShareButtonState();
+                                                    }
                                                 }
-                                                toggleCancelButtonState();
+                                                toggleCancelButtonState(projectId,action);
                                             },
                                             error: function (xhr, status, error) {
                                                 $('#confirmModal').modal('hide');
                                                 $('#viewRequestModal').modal('hide');
-                                                showNotification('Error', 'Failed to cancel the project. Please try again.', 'error');
+                                                showNotification('Error', `Failed to ${action} the project. Please try again.`, 'error');
                                             }
                                         });
                                     }
-                                    function toggleCancelButtonState() {
-                                        // Update the status badge to show 'Cancelled'
-                                        $('#projectStatusBadge').removeClass('badge-secondary badge-primary badge-success badge-warning').addClass('badge-danger').text('Cancel');
+                                    function toggleCancelButtonState(projectId,action) {
+                                        let badgeClass, badgeText;
+                                        if (action === 'cancel') {
+                                            badgeClass = 'badge-danger';
+                                            badgeText = 'Cancelled';
+                                            $('#shareBtn, #cancelProjectBtn, #viewRequestBtn').remove();
+                                            // Hide elements
+                                            $('.delete-button, .search-section').hide();
+                                            // Disable all input fields and buttons
+                                        } else if (action === 'processing') {
+                                            badgeClass = 'badge-primary';
+                                            badgeText = 'Processing';
+                                            $('#cancelProjectBtn').removeClass('btn-danger').addClass('btn-warning').text('Cancel Project');
+                                            $('#cancelProjectBtn').attr('onclick', 'showConfirmationModal('+projectId+', "cancel")');                                            
+                                        }
+                                        // Update the status badge
+                                        $('#projectStatusBadge')
+                                            .removeClass('badge-secondary badge-primary badge-success badge-warning badge-danger')
+                                            .addClass(badgeClass)
+                                            .text(badgeText);
+                                        // Remove buttons
 
-                                        // Remove both the share and cancel buttons from the DOM
-                                        $('#shareBtn, #cancelProjectBtn, #viewRequestBtn').remove();
-
-                                        $('.delete-button, .search-section').hide();
                                     }
                                     // Utility function to show notification modal
                                     function showNotification(title, message, type) {
