@@ -448,18 +448,7 @@
                             <!-- isotope-item end -->
                         </div>
                     </div>
-                    <!-- Col -->
-                    <div class="col-lg-12">
-                        <div class="post-pagination-wrap mt-4 mt-xl-0">
-                            <ul class="nav pagination post-pagination justify-content-center test-pagination">
-                                <li class="nav-item"><a href="#" class="prev-page" title="prev"><i class="ti-angle-left"></i></a></li>
-                                <li class="nav-item active"><span class="active">01</span></li>
-                                <li class="nav-item"><a href="#">02</a></li>
-                                <li class="nav-item"><a href="#" class="next-page" title="next"><i class="ti-angle-right"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- Col -->
+
                 </div>
                 <!-- row -->
             </div>

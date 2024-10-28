@@ -10,12 +10,7 @@
                 <div class="row mb-minus-50">
                     <div class="col-lg-4 col-6">
                         <div class="footer-2__widget footer-2__widget-item-1">
-                            <div class="footer-2__logo mb-35">
-                                <a href="#">
 
-                                    <img class="img-fluid" src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
-                                </a>
-                            </div>
 
                             <div class="footer-2__content mb-25 mb-xs-20">
                                 <p class="mb-0">

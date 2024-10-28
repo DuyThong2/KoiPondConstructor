@@ -1,6 +1,4 @@
 
-
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -12,7 +10,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="<c:url value='/css/login.css'/>"> <!-- boxicons -->
-
+    <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
     <title>Forgot password</title>
 
 </head>
@@ -27,7 +25,7 @@
 
     <button type="submit" class="btn">Send Reset Link</button>
 </form>
-
+<%@include file="popup.jsp"%>
 </body>
 </html>
 

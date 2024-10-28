@@ -600,6 +600,9 @@ a:hover {
 }
 
 @media (min-width: 992px) {
+    .container, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+        max-width: 1920px;
+    }
     .view-account .content-panel {
         min-height: 900px;
         border-left: 1px solid #f3f3f7;
