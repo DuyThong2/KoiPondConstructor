@@ -71,6 +71,7 @@ public class ServiceQuotes {
     @JoinColumn(name = "staff_id")
     private Staff staff;
     
+    
     @ManyToMany
     @JoinTable(
             name = "Service_Quotes_Service",
