@@ -63,7 +63,7 @@
 
             .filter-card {
                 background-color: #ffffff;
-                padding: 20px 30px;
+                padding: 20px 15px;
                 border-radius: 15px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 margin-bottom: 30px;

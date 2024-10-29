@@ -156,7 +156,7 @@
         <!-- Left Column -->
         <div class="left-column">
             <div class="img-box">
-                <img src="${project.getShowingImg(project.imgURL)}" alt="Project Image">
+                <img src="${project.getShowingImg(project.imgURL)}" alt="Project Image" style="width: 431px;">
             </div>
             <!-- Notes Section -->
             <div class="notes-box">

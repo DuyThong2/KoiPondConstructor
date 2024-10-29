@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="<c:url value='/css/login.css'/>"> <!-- boxicons -->
     <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
     <title>Forgot password</title>
-
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' type="text/css"  rel='stylesheet'>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+<%@include file="popup.jsp"%>
 <form action="${pageContext.request.contextPath}/forgot-password" method="post" class="wrapper">
     <h1>Forgot Password</h1>
 
@@ -24,8 +26,14 @@
     </div>
 
     <button type="submit" class="btn">Send Reset Link</button>
+    <div class="register-link">
+        <p>
+            <a href="${pageContext.request.contextPath}/login" style="font-size: 18px"> Back to Login</a>
+        </p>
+    </div>
 </form>
-<%@include file="popup.jsp"%>
+
 </body>
+
 </html>
 

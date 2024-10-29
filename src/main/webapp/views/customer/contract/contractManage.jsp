@@ -12,6 +12,7 @@
 
         <%@include file="../cssCustom.jsp"%>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+        <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
         <style>
             .form-control{
                 font-size: 1.9rem;
@@ -302,6 +303,8 @@
                     </div>
                 </section>
             </div>
+            <!-- Popup -->
+            <%@include file="../../popup.jsp"%>
         </div>
 
     </body>

@@ -400,7 +400,7 @@ public class ServiceDetailController {
             @RequestParam("serviceDetailId") int serviceDetailId,
             @RequestParam("rating") int rating,
             @RequestParam("feedback") String feedback,
-            Model model) {
+            Model model, RedirectAttributes redirectAttributes) {
         // Fetch the service detail entity by its ID
         ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
 
@@ -411,9 +411,9 @@ public class ServiceDetailController {
 
         // Save the updated service detail
         serviceDetailService.updateServiceDetail(serviceDetail);
-
+        redirectAttributes.addFlashAttribute("success", "You have been sent feedback successfully!");
         // Redirect or load th page where feedback was submitted
-        return "redirect:/customer/serviceDetail/detail" + serviceDetailId;
+        return "redirect:/customer/serviceDetail/detail/" + serviceDetailId;
     }
 
     @GetMapping("/construction/serviceDetail/getCancelMessage")

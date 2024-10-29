@@ -14,6 +14,8 @@
 
         <%@include file="../cssCustom.jsp"%>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+        <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
+
         <style>
             .content-panel {
                 width: 100%;
@@ -423,6 +425,9 @@
                     </section>
                 </div>
             </div>
+
+            <!-- Popup -->
+            <%@include file="../../popup.jsp"%>
 <script>
     $(document).ready(function(){
         $('button[data-toggle="collapse"]').click(function(){

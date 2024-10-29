@@ -92,11 +92,6 @@
                             width: 550px;
                         }
                     }
-                    .view-account .side-bar .user-info .meta li span {
-                        width: 140px;
-                        margin-right: 5px;
-                        text-align: center;
-                    }
 
                     .content-panel {
                         background: #ffffff;
