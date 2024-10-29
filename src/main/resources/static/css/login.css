@@ -23,27 +23,29 @@ body{
      display: flex;
      justify-content:center;
      align-items:center;
-     background: url('../assets/imgs/mylogo/koi-background.jpg') no-repeat;
+     background: url('../assets/imgs/contactUsPage2.webp') no-repeat;
      background-size:center;
      background-position:center;
      min-height:100vh;
 }
 
 .wrapper{
+     max-height:95vh;
      background-color: rgba(255,255,255,1);
      border:2px solid rgba(255,255,255,.2);
      box-shadow:0 0 10px rgba(0,0,0,.2);
      width:500px;
      color:white;
      padding:30px 40px;
-     border-radius:10px;
+     border-radius:20px;
 }
 
 .wrapper h1{
      font-size: 36px;
      text-align:center;
-     color:black;
+     color:#df2453;
 }
+
 
 .wrapper .input-box{
      position: relative;
@@ -146,7 +148,9 @@ body{
      z-index:10;
 }
 
-
+.wrapper #sign{
+     color:#df2453;
+}
 .error-close{
      position: absolute;
      top:10px;

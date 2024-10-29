@@ -560,6 +560,7 @@ html {
     Typography css start
 ---------------------------------*/
 body {
+  overflow-x:hidden;
   font-family: var(--rr-ff-body);
   font-size: var(--rr-fs-body);
   line-height: var(--rr-lh-body);

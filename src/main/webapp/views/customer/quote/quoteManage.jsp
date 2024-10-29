@@ -353,7 +353,7 @@
                     </section>
                 </div>
                 <!-- Popup -->
-                <%@include file="../popup.jsp"%>
+                <%@include file="../../popup.jsp"%>
             </div>
         </div>
             <!-- Bootstrap JS and dependencies -->
