@@ -11,6 +11,7 @@
                <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/favicon.svg">
                <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+               <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
                <%@include file="../cssTemplate.jsp" %>
                     <style>
                          body {
@@ -75,20 +76,8 @@
                               resize: none;
                          }
 
-                         .modal-footer {
-                              border-top: 0;
-                              justify-content: flex-end;
-                         }
-
-                         /* Custom modal size for width and height */
-                         .modal-lg-custom {
-                              max-width: 900px;
-                              /* Adjust width */
-                         }
-
-                         .modal-lg-custom .modal-content {
-                              height: 80vh;
-                              /* Adjust height */
+                         .modal {
+                              opacity: 1 !important;
                          }
                     </style>
           </head>
@@ -274,7 +263,8 @@
                               </div>
                          </div>
 
-
+                         <!-- Popup -->
+                         <%@include file="../../popup.jsp"%>
                     </main>
 
                     <%@include file="../footer.jsp" %>

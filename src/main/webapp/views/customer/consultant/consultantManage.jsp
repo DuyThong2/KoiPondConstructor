@@ -8,7 +8,7 @@
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <%@include file="../cssTemplate.jsp" %>
-
+        <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
         <style>
             .view-account .side-bar .user-info .meta li span {
                 display: inline-block;
@@ -370,6 +370,8 @@
 
                 </section>
             </div>
+            <!-- Popup -->
+            <%@include file="../../popup.jsp"%>
         </div>
     </body>
     <script>

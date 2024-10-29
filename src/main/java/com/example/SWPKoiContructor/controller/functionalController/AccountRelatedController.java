@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
@@ -114,7 +115,7 @@ public class AccountRelatedController {
 
         // If session expired, add message to model
         if (expired != null) {
-            model.addAttribute("message", "Your session has expired. Please log in again.");
+            model.addAttribute("error", "Your session has expired. Please log in again.");
         }
 
         return "login";
@@ -140,7 +141,7 @@ public class AccountRelatedController {
 
     @GetMapping("/loginFail")
     public String loginFail(Model model) {
-        model.addAttribute("message", "wrong password or email");
+        model.addAttribute("error", "Wrong password or email");
         return "login";
     }
 
@@ -153,13 +154,13 @@ public class AccountRelatedController {
 
     @PostMapping("/register")
     public String registerCustomer(@ModelAttribute("customerDTO") @Valid CustomerDTO customerDTO,
-            BindingResult result, Model model) {
+            BindingResult result, Model model, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             return "registerCustomer";  // Return to form if there are errors
         }
 
         customerService.registerCustomer(customerDTO);
-        model.addAttribute("message", "Registration successful!");
+        redirectAttributes.addFlashAttribute("success", "Registration successful!");
         return "redirect:/login";  // Redirect to success page after registration
     }
 
@@ -171,7 +172,7 @@ public class AccountRelatedController {
 
     @PostMapping("/forgot-password")
     public String processForgotPassword(HttpServletRequest request,
-            @RequestParam("email") String email,
+            @RequestParam("email") String email, RedirectAttributes redirectAttributes,
             Model model) {
         User user = userService.findUserByEmail(email);
 
@@ -188,9 +189,9 @@ public class AccountRelatedController {
             String resetUrl = baseUrl + contexPath + "/reset-password?token=" + token;
             emailService.sendPasswordResetEmail(user.getEmail(), resetUrl);
 
-            model.addAttribute("message", "A password reset link has been sent to your email.");
+            model.addAttribute("success", "A password reset link has been sent to your email.");
         } else {
-            model.addAttribute("message", "No user found with the provided email.");
+            model.addAttribute("error", "No user found with the provided email.");
         }
 
         return "forgot_password_form";
@@ -203,7 +204,7 @@ public class AccountRelatedController {
             model.addAttribute("token", token);
             return "reset_password_form";
         } else {
-            model.addAttribute("message", "Invalid or expired token");
+            model.addAttribute("error", "Invalid or expired token");
             return "error";
         }
     }
@@ -214,10 +215,10 @@ public class AccountRelatedController {
         PasswordResetToken resetToken = userService.getPasswordResetToken(token);
         if (resetToken != null && resetToken.getExpiryDate().after(new Date())) {
             userService.updatePassword(resetToken.getUser(), newPassword);
-            model.addAttribute("message", "Password successfully reset. You can now log in.");
+            model.addAttribute("success", "Password successfully reset. You can now log in.");
             return "login";
         } else {
-            model.addAttribute("message", "Invalid or expired token");
+            model.addAttribute("error", "Invalid or expired token");
             return "error";
         }
     }

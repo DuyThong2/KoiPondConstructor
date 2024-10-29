@@ -14,6 +14,7 @@
 
         <%@include file="../cssCustom.jsp"%>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+        <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
         <style>
             .content-panel {
                 width: 100%;
@@ -351,8 +352,10 @@
 
                     </section>
                 </div>
+                <!-- Popup -->
+                <%@include file="../popup.jsp"%>
             </div>
-
+        </div>
             <!-- Bootstrap JS and dependencies -->
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

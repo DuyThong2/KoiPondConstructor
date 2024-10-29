@@ -801,3 +801,23 @@ a:hover {
     margin-left: 70px;
     margin-right: 265px;
 }
+.badge-default{
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.badge-success{
+    background-color: #28a745;
+}
+.badge-warning{
+    background-color: #ffc107;
+}
+.badge-danger{
+    background-color: #dc3545;
+}
+.badge-secondary{
+    background-color: #6c757d;
+}

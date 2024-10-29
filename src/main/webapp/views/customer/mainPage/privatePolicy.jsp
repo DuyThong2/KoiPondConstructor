@@ -273,6 +273,11 @@
 
                 <h3>13. External Links</h3>
                 <p>Our website may contain links to external sites not operated by us. We are not responsible for the content or privacy practices of these external sites, and encourage you to review their privacy policies before engaging with their services.</p>
+                <h3>14. Payment Policy</h3>
+                <p>We accept various forms of payment, including credit cards, debit cards, and online payment methods. Full payment must be made at the time of purchase. In the event of a payment failure, we reserve the right to cancel your order.</p>
+
+                <h3>15. Cancellation Policy</h3>
+                <p>You may cancel your order within 24 hours of placing it by contacting our customer service team. If your order has already been processed or shipped, cancellation may not be possible. Refunds for cancellations will be processed according to our refund policy, which may vary depending on the payment method used.</p>
 
             </div>
         </div>
