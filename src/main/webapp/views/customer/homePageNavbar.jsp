@@ -1,5 +1,10 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<style>
+    .section-header{
+        color:  #df2453 !important;
+    }
+</style>
 <header>
     <div id="header-sticky" class="header__area header-3">
         <div class="header__top d-none d-xl-block color-pink" style="background-color:rgba(rgba(255, 27, 80, 0.847), green, blue, alpha)">

@@ -246,7 +246,8 @@ public class ProjectService {
         return projectDAO.countSharedProjects();
     }
 
-    
-    
-    
+
+    public List<Project> getRelatedProject(int projectId) {
+        return projectDAO.getRelatedProject(projectId);
+    }
 }

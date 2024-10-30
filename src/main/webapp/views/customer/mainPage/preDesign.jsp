@@ -100,6 +100,15 @@
             margin-bottom: 10px;
             color: #ff5733; /* Accent color */
         }
+        .rr-btn{
+                            padding:15px;
+                          
+                            background-color: black;
+                        }
+                        .page-indicator{
+                            font-size:20px;
+                            color: #232323 !important;
+                        }
     </style>
 </head>
 
@@ -311,7 +320,7 @@
                                         <a href="${pageContext.request.contextPath}/home/preDesign/${preDesign.preDesignId}">
                                             <div class="portfolio-thumb">
                                                 <img src="${preDesign.getShowingImg(preDesign.preDesignImgUrl)}" alt="Template">
-                                                <div class="portfolio-info">
+                                                <div class="portfolio-info text-center">
                                                     <div class="portfolio-name">${preDesign.preDesignName}</div>
                                                     <div class="portfolio-description">${preDesign.preDesignDescription}</div>
                                                 </div>
@@ -332,21 +341,21 @@
     <div class="d-flex align-items-center mt-4">
         <!-- Previous Button -->
         <c:if test="${currentPage > 1}">
-            <a href="?page=${currentPage - 1}" class="btn btn-custom">&lt;</a>
+            <a href="?page=${currentPage - 1}" class="rr-btn">&lt;</a>
         </c:if>
         <c:if test="${currentPage == 1}">
-            <button class="btn btn-custom" disabled>&lt;</button>
+            <button class="rr-btn" disabled>&lt;</button>
         </c:if>
-
         <!-- Page Indicator -->
-        <span class="page-indicator">Page <strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
+        <span class="page-indicator"> <strong>${currentPage}</strong> /
+            <strong>${totalPages}</strong></span>
 
         <!-- Next Button -->
         <c:if test="${hasMoreServices}">
-            <a href="?page=${currentPage + 1}" class="btn btn-custom">&gt;</a>
+            <a href="?page=${currentPage + 1}" class="rr-btn">&gt;</a>
         </c:if>
         <c:if test="${!hasMoreServices}">
-            <button class="btn btn-custom" disabled>&gt;</button>
+            <button class="rr-btn" disabled>&gt;</button>
         </c:if>
     </div>
 

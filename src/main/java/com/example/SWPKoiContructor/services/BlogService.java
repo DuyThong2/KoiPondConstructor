@@ -61,4 +61,8 @@ public class BlogService {
     public Blog getBlogWithContentById(int id) {
         return blogDAO.getBlogWithContentById(id);
     }
+
+    public List<Blog> getRelatedBlog(int id) {
+        return blogDAO.getRelatedBlog(id);
+    }
 }

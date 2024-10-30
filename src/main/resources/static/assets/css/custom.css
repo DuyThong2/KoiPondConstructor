@@ -114,21 +114,20 @@
 }
 
 .service-box-wrap {
+   
     background-color: #f9f9f9;
-    padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
-    height: 500px; /* Increased height */
+    height: 450px; /* Increased height */
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    padding: 30px; /* Maintain padding */
+    flex-direction: column;
+    
+    overflow:hidden;
 }
 
 .service-box-wrap:hover {
-    background-color: #000;
-    color: #fff;
     transform: translateY(-10px);
 }
 
@@ -137,15 +136,18 @@
     transition: color 0.3s ease;
 }
 
-.service-box-wrap:hover h3,
-.service-box-wrap:hover p {
-    color: #fff;
+
+.service-icon{
+    height: 200px;
+    overflow: hidden;
 }
 
 .service-box-wrap img {
-    max-width: 150px;
-    height: 150px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 .service-box-wrap .btn-default {
@@ -170,6 +172,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    max-height:250px;
 }
 
 .service-content {
@@ -236,9 +239,17 @@
 
 .page-indicator strong {
     font-size: 3rem; /* Increase font size of numbers slightly */
-    color: #d3d3d3; /* Light grey color for the numbers by default */
+    color: #232323; /* Light grey color for the numbers by default */
     transition: color 0.3s ease, background-color 0.3s ease; /* Add transition for hover effect */
     padding: 0 5px;
 }
 
 /* Hover effect */
+
+.section-inner-content{
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}

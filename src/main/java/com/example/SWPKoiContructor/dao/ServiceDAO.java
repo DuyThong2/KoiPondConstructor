@@ -226,4 +226,10 @@ public class ServiceDAO {
         return query.getResultList();
     }
 
+    public List<Service> getRelatedService(int id) {
+        String sql = "SELECT s FROM Service s WHERE s.serviceId != :id and s.serviceStatus=1 ORDER BY function('RAND')";
+        TypedQuery<Service> query = entityManager.createQuery(sql, Service.class);
+        query.setParameter("id", id);
+        return query.setMaxResults(6).getResultList();
+    }
 }

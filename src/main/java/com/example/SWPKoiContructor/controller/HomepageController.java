@@ -26,7 +26,8 @@ public class HomepageController {
     private ParcelService parcelService;
     private TermService termService;
 
-    public HomepageController(ProjectService projectService, PreDesignService preDesignService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService, ParcelService parcelService, TermService termService) {
+    private ServicePriceService servicePriceService;
+    public HomepageController(ProjectService projectService, PreDesignService preDesignService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService, ParcelService parcelService, TermService termService,ServicePriceService servicePriceService) {
         this.projectService = projectService;
         this.preDesignService = preDesignService;
         this.blogService = blogService;
@@ -35,6 +36,7 @@ public class HomepageController {
         this.serviceService = serviceService;
         this.parcelService = parcelService;
         this.termService = termService;
+        this.servicePriceService =servicePriceService;
     }
 
     @GetMapping("")
@@ -84,8 +86,12 @@ public class HomepageController {
     @GetMapping("/home/services/{id}")
     public String servicesShowDetail(Model model, @PathVariable("id") int id) {
         Service service = serviceService.getServiceWithContentById(id);
+        List<Service> services= serviceService.getRelatedService(id);
         if (service != null && service.isServiceStatus()) {
             model.addAttribute("service", service);
+            model.addAttribute("services",services);
+//            model.addAttribute("servicePrice",servicePrice);
+//            model.addAttribute("servicePrice",)
             return "customer/mainPage/serviceDetail";
         } else {
             return "redirect:/home/services";
@@ -111,8 +117,10 @@ public class HomepageController {
     @GetMapping("/home/preDesign/{id}")
     public String getPreDesignDetail(Model model, @PathVariable("id") int id) {
         PreDesign preDesign = preDesignService.getPreDesignAndContentById(id);
+        List<PreDesign> preDesigns = preDesignService.getRelatedPreDesign(id);
         if(preDesign != null && preDesign.getContent() != null){
             model.addAttribute("preDesign", preDesign);
+            model.addAttribute("preDesignList",preDesigns);
             return "customer/mainPage/preDesignDetail";
         }else{
             return "redirect:/home/preDesign";
@@ -140,8 +148,10 @@ public class HomepageController {
     @GetMapping("/home/projects/{id}")
     public String getProjectDetail(Model model, @PathVariable("id") int id) {
         Project project = projectService.getProjectWithContent(id);
-        if (project != null && project.isIsSharedAble() && project.getContent() != null) {
+        List<Project> projectList = projectService.getRelatedProject(id);
 
+        if (project != null && project.isIsSharedAble() && project.getContent() != null) {
+            model.addAttribute("projectList",projectList);
             model.addAttribute("project", project);
             return "customer/mainPage/projectDetail";
         } else {
@@ -153,7 +163,7 @@ public class HomepageController {
     @GetMapping("/home/blogs")
     public String getBlogPosts(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "3") int size,
+            @RequestParam(defaultValue = "12") int size,
             Model model) {
 
         // Convert page number to 0-based for internal use
@@ -183,8 +193,10 @@ public class HomepageController {
     @GetMapping("/home/blogs/{id}")
     public String getBlogPosts(Model model, @PathVariable("id") int id) {
         Blog blog = blogService.getBlogWithContentById(id);
+        List<Blog> blogs= blogService.getRelatedBlog(id);
         if (blog != null) {
             model.addAttribute("blog", blog);
+            model.addAttribute("blogs",blogs);
             return "customer/mainPage/blogDetail";
         }
         return "redirect:/home/blogs";

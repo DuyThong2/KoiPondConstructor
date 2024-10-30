@@ -467,7 +467,6 @@ public class ProjectController {
 
         // Fetch the project
         Project project = projectService.getProjectById(projectId);
-
         // Check if the project exists and belongs to the logged-in customer
         if (project == null || !project.isProjectBelongToCustomer(project, customer)) {
             redirectAttributes.addFlashAttribute("errorMessage",
