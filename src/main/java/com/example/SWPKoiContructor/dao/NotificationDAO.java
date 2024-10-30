@@ -25,7 +25,7 @@ public class NotificationDAO {
     }
 
     public List<Notification> getNotificationsForManager() {
-        String query = "SELECT n FROM Notification n WHERE LOWER(n.receiverType) = :receiverType and n.isRead=0 ORDER BY n.createdAt DESC";
+        String query = "SELECT n FROM Notification n WHERE LOWER(n.receiverType) = :receiverType and n.isRead= false ORDER BY n.createdAt DESC";
         TypedQuery<Notification> typedQuery = entityManager.createQuery(query, Notification.class);
         typedQuery.setParameter("receiverType", "manager"); // Corrected parameter name
         return typedQuery.getResultList();

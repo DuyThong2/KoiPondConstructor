@@ -150,12 +150,13 @@ public class ServiceQuoteController {
         ServiceQuotes serviceQuote = serviceQuoteService.getServiceQuotesById(serviceQuoteId);
         PaymentHistory paymentHistory = new PaymentHistory();
         paymentHistory.setCustomer(serviceQuote.getCustomer());
-       
-//        BigDecimal amount = BigDecimal.valueOf(serviceQuote.calculateTotalPricePayment() - serviceQuote.calculatePointUsing());
-        BigDecimal totalPrice = BigDecimal.valueOf(serviceQuote.calculateTotalPricePayment());
-        BigDecimal pointsUsed = BigDecimal.valueOf(serviceQuote.calculatePointUsing());
-        BigDecimal amount = totalPrice.subtract(pointsUsed);
-         System.out.println(amount);
+        
+        BigDecimal amount;
+        if(serviceQuote.getServiceQuotesStatus() == 4){
+            amount = BigDecimal.valueOf(serviceQuote.calculateDeposit());
+        }else{
+            amount = BigDecimal.valueOf(serviceQuote.calculateFullPaid());
+        }
         paymentHistory.setAmount(amount);
         
         paymentHistory.setPaymentDate(LocalDateTime.now());
@@ -165,7 +166,6 @@ public class ServiceQuoteController {
         
         double pointGained = amount.doubleValue();
         loyaltyPointService.gainLoyaltyPoints(serviceQuote.getCustomer(), pointGained);
-    System.out.println(pointGained);
         serviceQuote = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
         return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
     }

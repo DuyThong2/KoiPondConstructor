@@ -160,39 +160,39 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
-                                                <span class="badge badge-warning badge-status">Pending</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
-                                                <span class="badge badge-success badge-status">Approved By Manager</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 3}">
-                                                <span class="badge badge-warning badge-status">Rejected (Manager)</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                                <span class="badge badge-warning badge-status">Awaiting payment 1</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
-                                                <span class="badge badge-warning badge-status">Rejected (Customer)</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
-                                                <span class="badge badge-warning badge-status">Rejected (Staff)</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
-                                                <span class="badge badge-danger badge-status">Canceled</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
-                                                <span class="badge badge-success badge-status">Deposit Paid</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
-                                                <span class="badge badge-success badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
-                                                                                                 'Awaiting Payment 2':'Service In Progress'}</span>
+                                            <span class="badge badge-warning badge-status">Pending</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
+                                            <span class="badge badge-success badge-status">Approved By Manager</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 3}">
+                                            <span class="badge badge-warning badge-status">Rejected (Manager)</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
+                                            <span class="badge badge-warning badge-status">Awaiting payment 1</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
+                                            <span class="badge badge-warning badge-status">Rejected (Customer)</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
+                                            <span class="badge badge-warning badge-status">Rejected (Staff)</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
+                                            <span class="badge badge-danger badge-status">Canceled</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
+                                            <span class="badge badge-success badge-status">Deposit Paid</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
+                                            <span class="badge badge-success badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
+                                                                                             'Awaiting Payment 2':'Service In Progress'}</span>
                                             </c:when>
                                             <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
-                                                <span class="badge badge-warning badge-status">Fully Paid</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
-                                                <span class="badge badge-warning badge-status">Completed</span>
-                                            </c:when>
+                                            <span class="badge badge-success badge-status">Fully Paid</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
+                                            <span class="badge badge-success badge-status">Completed</span>
+                                        </c:when>
                                     </c:choose>
                                 </td>
                             </tr>
@@ -353,10 +353,11 @@
                             <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
                                 <div class="">
                                     <c:if test="${!serviceQuote.isFree()}">
-                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModalForPayment"
-                                                onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                        document.getElementById('acceptForm').status.value = '8';">Confirm Payment
-                                        </button>
+                                        <form action="${pageContext.request.contextPath}/manager/serviceQuote/savePayment" method="post" class="d-inline">
+                                            <input type="hidden" name="id" value="${serviceQuote.serviceQuotesId}">
+                                            <input type="hidden" name="status" value="8">
+                                            <button type="submit" class="btn btn-success">Confirm Payment</button>
+                                        </form>
                                     </c:if>
                                     <c:if test="${serviceQuote.isFree() && empty serviceQuote.serviceDetails}">
                                         <form action="${pageContext.request.contextPath}/manager/serviceDetails/create" method="post" class="d-inline">
@@ -383,11 +384,11 @@
                                 </div>
                             </c:when>
                             <c:when test="${serviceQuote.serviceQuotesStatus == 8 && empty serviceQuote.serviceDetails}">
-                                    <form action="${pageContext.request.contextPath}/manager/serviceDetails/create" method="post" class="d-inline">
-                                        <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}">
-                                        <input type="hidden" name="statusId" value="9">
-                                         <button type="submit" class="btn btn-success">Create New Service Detail</button>
-                                    </form>
+                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/create" method="post" class="d-inline">
+                                    <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}">
+                                    <input type="hidden" name="statusId" value="9">
+                                    <button type="submit" class="btn btn-success">Create New Service Detail</button>
+                                </form>
                             </c:when>
                             <c:when test="${serviceQuote.serviceQuotesStatus == 9 && serviceQuote.isServiceDetailOfQuoteFinished()}">
                                 <c:choose>
@@ -397,14 +398,14 @@
                                                         document.getElementById('acceptForm').status.value = '10';">Confirm Payment
                                         </button>
                                     </c:when>
-                                    
+
                                     <c:when test="${serviceQuote.isAllServiceFailed()}">
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
                                                 onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                         document.getElementById('acceptForm').status.value = '7';">Cancel
                                         </button>
                                     </c:when>
-                                    
+
                                     <c:when test="${serviceQuote.isFree()}">
                                         <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
                                                 onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
@@ -415,8 +416,8 @@
                             </c:when>
                             <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
                                 <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
-                                    onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                             document.getElementById('acceptForm').status.value = '11';">Complete
+                                        onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                            document.getElementById('acceptForm').status.value = '11';">Complete
                                 </button>
                             </c:when>    
                         </c:choose>

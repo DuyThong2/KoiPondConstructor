@@ -426,6 +426,7 @@
                         <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separator"></span>Trending Topics<span data-width="40px" class="right-separator"></span></span>
                         <h2 class="section__title title-animation text-capitalize rr-br-hidden-md" data-cursor="-opaque">Latest Articles & Blog Posts</h2>
                     </div>
+
                 </div>
             </div>
 
@@ -478,6 +479,7 @@
                     <c:if test="${!hasMoreServices}">
                         <button class="rr-btn" disabled>&gt;</button>
                     </c:if>
+
                 </div>
             </div>
         </div>
