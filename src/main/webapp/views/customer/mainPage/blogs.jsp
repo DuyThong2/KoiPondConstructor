@@ -215,6 +215,22 @@
                 flex: 0 1 100%;
             }
         }
+        .rr-btn{
+                            padding:15px;
+                          
+                            background-color: black;
+                        }
+                        .page-indicator{
+                            font-size:20px;
+                            color: #232323 !important;
+                        }
+                        .blog__item {
+                            transition: transform 0.3s ease-in-out;
+                            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+                        }
+                        .blog__item:hover {
+                            transform: translateY(-5px);
+                        }
 
     </style>
 
@@ -400,130 +416,79 @@
         </div>
     </div>
 </section>
-<div style="height:100px">
 
-</div>
 <main>
-    <section id="blog-section" class="blog-section pad-bottom-70">
+    <section class="blog section-space section-bg-3">
         <div class="container">
-            <!-- Blog Main Wrap -->
-            <div class="blog-main-wrap blog-grid masonry-grid-default">
-                <!-- Row -->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="isotope-grid" data-gutter="30" data-cols="3">
-                            <!-- isotope-item-->
-                            <c:forEach var="blog" items="${blogs}">
-                                <div class="isotope-item">
-                                    <div class="blog-style-1 post-type post-grid">
-                                        <div class="blog-inner mb-4">
-                                            <div class="blog-thumb relative">
-                                                <img src="${blog.getShowingImg(blog.imgUrl)}" class="img-fluid" alt="blog-img" />
-                                                <div class="post-date">
-                                                    <p> <i class="ti-calendar"></i>
-                                                        <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/></p>
-
-
-                                                </div>
-                                            </div>
-                                            <div class="blog-details">
-                                                <div class="blog-title">
-                                                    <h4 class="margin-bottom-10"><a href="${pageContext.request.contextPath}/home/blogs/${blog.id}" class="blog-name">${blog.name}</a></h4>
-                                                </div>
-                                                <!-- Small description below the title -->
-                                                <div class="blog-description">
-                                                        ${blog.description}
-                                                </div>
-                                                <div class="post-desc mt-2">
-                                                    <div class="blog-link">
-                                                        <a target="_blank" href="${pageContext.request.contextPath}/home/blogs/${blog.id}" class="link font-w-500">Read More</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
-
-                            <!-- isotope-item end -->
-                        </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="section__title-wrapper text-center mb-60 mb-sm-40 mb-xs-35">
+                        <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separator"></span>Trending Topics<span data-width="40px" class="right-separator"></span></span>
+                        <h2 class="section__title title-animation text-capitalize rr-br-hidden-md" data-cursor="-opaque">Latest Articles & Blog Posts</h2>
                     </div>
 
                 </div>
-                <!-- row -->
-            </div>
-            <!-- Blog Main Wrap -->
-            <div class="d-flex align-items-center mt-4">
-                <!-- Previous Button -->
-                <c:if test="${currentPage > 1}">
-                    <a href="?page=${currentPage - 1}" class="btn btn-custom">&lt;</a>
-                </c:if>
-                <c:if test="${currentPage == 1}">
-                    <button class="btn btn-custom" disabled>&lt;</button>
-                </c:if>
-
-                <!-- Page Indicator -->
-                <span class="page-indicator">Page <strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
-
-                <!-- Next Button -->
-                <c:if test="${hasMoreServices}">
-                    <a href="?page=${currentPage + 1}" class="btn btn-custom">&gt;</a>
-                </c:if>
-                <c:if test="${!hasMoreServices}">
-                    <button class="btn btn-custom" disabled>&gt;</button>
-                </c:if>
-            </div>
-        </div>
-        <!-- Container -->
-    </section>
-
-
-
-    <section class="bg-light">
-        <div class="container">
-            <div class="section-title">
-                <h2>Service Implementation Process at Happikoi</h2>
             </div>
 
-            <div class="process-grid">
-                <div class="process-item">
-                    <div class="process-number">1</div>
-                    <h4>Receive Customer Request</h4>
-                    <p>We receive and record information about your garden landscape design and koi pond construction needs.</p>
-                </div>
+            <div class="row mb-minus-30">
+                <c:forEach var="blog" items="${blogs}">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="blog__item has-box-shadow mb-30" style="border-radius: 8px; overflow: hidden; transition: transform 0.3s;">
+                            <a href="blog-details.html" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
+                                <img src="${blog.getShowingImg(blog.imgUrl)}" alt="image not found" class="img-fluid" style="width: 100%; height: auto; transition: transform 0.3s;">
+                            </a>
+                            <div class="blog__item-text p-4" style="background-color: #ffffff;">
+                                <div class="blog__item-meta mb-10 text-muted d-flex justify-content-between">
+                                    <a href="blog-details.html" class="text-secondary">
+                                        <i class="fas fa-user"></i> ${blog.staff.name}
+                                    </a>
+                                    <a href="blog-details.html" class="text-secondary">
+                                        <i class="fas fa-calendar"></i> <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/>
+                                    </a>
+                                </div>
+                               <div class="d-flex flex-column justify-content-around" style="min-height:200px;">
+                                <h4 class="blog__item-title mb-3 text-dark font-weight-bold"><a href="${pageContext.request.contextPath}/home/blogs/${blog.id}">${blog.name}</a></h4>
+                                <p class="text-muted mb-4">${blog.description}</p>
+                                <a class="blog__item-readmore" href="${pageContext.request.contextPath}/home/blogs/${blog.id}">
+                                    <svg width="20" height="11" viewBox="0 0 20 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 5.5L19 5.5" stroke="#6A6A6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M13.75 1L19 5.5L13.75 10" stroke="#6A6A6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>Read More</a>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+                <div class="d-flex align-items-center mt-4">
+                    <!-- Previous Button -->
+                    <c:if test="${currentPage > 1}">
+                        <a href="?page=${currentPage - 1}" class="rr-btn">&lt;</a>
+                    </c:if>
+                    <c:if test="${currentPage == 1}">
+                        <button class="rr-btn" disabled>&lt;</button>
+                    </c:if>
+    
+                    <!-- Page Indicator -->
+                    <span class="page-indicator"> <strong>${currentPage}</strong> /
+                        <strong>${totalPages}</strong></span>
+    
+                    <!-- Next Button -->
+                    <c:if test="${hasMoreServices}">
+                        <a href="?page=${currentPage + 1}" class="rr-btn">&gt;</a>
+                    </c:if>
+                    <c:if test="${!hasMoreServices}">
+                        <button class="rr-btn" disabled>&gt;</button>
+                    </c:if>
 
-                <div class="process-item">
-                    <div class="process-number">2</div>
-                    <h4>On-Site Survey</h4>
-                    <p>Our team conducts an on-site survey to assess the area and ensure accuracy in the design and construction phases.</p>
-                </div>
-
-                <div class="process-item">
-                    <div class="process-number">3</div>
-                    <h4>Design Proposal</h4>
-                    <p>We propose a preliminary design that reflects natural elements, aesthetics, and your personal preferences.</p>
-                </div>
-
-                <div class="process-item">
-                    <div class="process-number">4</div>
-                    <h4>Quote Submission</h4>
-                    <p>We provide a detailed quotation based on the project scope, including all design and construction costs.</p>
-                </div>
-
-                <div class="process-item">
-                    <div class="process-number">5</div>
-                    <h4>Design Finalization</h4>
-                    <p>Once the quote is approved, the design is finalized in 3D, giving you a full visualization of the project.</p>
-                </div>
-
-                <div class="process-item">
-                    <div class="process-number">6</div>
-                    <h4>Construction and Supervision</h4>
-                    <p>We begin construction and supervise the project to ensure it meets design specifications and quality standards.</p>
                 </div>
             </div>
         </div>
     </section>
+
+
+
+
+    
 
 </main>
 

@@ -262,4 +262,9 @@ public class ProjectDAO {
         return query.getSingleResult();
     }
 
+    public List<Project> getRelatedProject(int projectId) {
+        String jpql = "SELECT p from Project p where p.projectId !=" + projectId+ " and p.isSharedAble=true ORDER BY FUNCTION('RAND')";
+        TypedQuery<Project> query = entityManager.createQuery(jpql, Project.class);
+        return query.setMaxResults(6).getResultList();
+    }
 }

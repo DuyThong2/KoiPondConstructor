@@ -41,7 +41,7 @@
         }
         /* Section spacing */
         section {
-            padding: 50px 0;
+            padding: 
         }
 
         .service-card h3 {
@@ -141,6 +141,20 @@
                 font-size: 1.1em;
             }
         }
+        .breadcrumb-space {
+                            padding: 168px 0 168px;
+                        }
+
+                        .rr-btn {
+                            padding: 15px;
+
+                            background-color:#df2453;
+                        }
+
+                        .page-indicator {
+                            font-size: 20px;
+                            color: #232323 !important;
+                        }
     </style>
 </head>
 
@@ -302,41 +316,55 @@
 <%@include file="../homePageNavbar.jsp" %>
 <!-- Header area end -->
 
-<section id="services"
-         class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
-    <div class="container rr-shape-p-c_1">
-        <div class="service__shape-1 rr-shape-p-s_1 leftRight">
-            <div></div>
-        </div>
-
-        <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
-            <div class="col-md-6">
-                <div class="section__title-wrapper text-center text-xl-start">
-                            <span class="section__subtitle justify-content-start mb-13"><span data-width="40px"
-                                                                                              class="left-separetor">
-
-                            </span> <a href="${pageContext.request.contextPath}/" class="theme-color">Home</a></span>
-                    <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
-                        data-cursor="-opaque">Services
-                    </h2>
+<div class="breadcrumb__area breadcrumb-space overly theme-bg-heading-primary overflow-hidden">
+    <div class="container">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-12">
+                <div class="breadcrumb__content text-center">
+                    <h1 class="breadcrumb__title color-white title-animation">Our Services</h1>
+                    <div class="breadcrumb__menu d-inline-flex justify-content-center">
+                        <nav>
+                            <ul>
+                                <li>
+                                    <span>
+                                        <a href="index.html">
+                                            <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M1 5.9L7.5 1L14 5.9V13.6C14 13.9713 13.8478 14.3274 13.5769 14.5899C13.306 14.8525 12.9386 15 12.5556 15H2.44444C2.06135 15 1.69395 14.8525 1.42307 14.5899C1.15218 14.3274 1 13.9713 1 13.6V5.9Z"
+                                                    stroke="white" stroke-width="1.5"
+                                                    stroke-linecap="round" stroke-linejoin="round" />
+                                                <path d="M5.33398 15V8H9.66732V15" stroke="white"
+                                                    stroke-width="1.5" stroke-linecap="round"
+                                                    stroke-linejoin="round" />
+                                            </svg>
+                                            Home
+                                        </a>
+                                    </span>
+                                </li>
+                                <li class="active"><span>Services</span></li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
-<main>
+    <div class="breadcrumb__background"
+        data-background="${pageContext.request.contextPath}/assets/imgs/koi-pond-2.jpg"></div>
+</div>
+
+<main class="mb-5">
     <div class="container">
         <!-- Row -->
         <div class="row">
-            <div class="offset-md-2 col-md-8">
-                <div class="title-wrap text-center">
-                    <div class="section-title">
-                        <h2 class="title mb-0">Unique Solutions For <span class="theme-color">Your Business</span></h2>
-                    </div>
-                    <div class="section-description">
-                        <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa officia deserunt mollit anim est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit vestibulum nec.</p>
-                    </div>
+            <div class="offset-md-2 col-md-8 mt-5">
+                <div class="section__title-wrapper text-center mb-60 mb-sm-40 mb-xs-35">
+                    <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separetor"></span>Template Projects<span data-width="40px" class="right-separetor"></span></span>
+                    <h2 class="section__title title-animation text-capitalize rr-br-hidden-md" data-cursor="-opaque">Our Awesome Creative Best
+                        <br> Projects</h2>
                 </div>
+           
             </div>
             <!-- Services Grid -->
             <div class="col-md-12">
@@ -346,93 +374,55 @@
                             <div class="service-box-wrap service-box-style-1 text-center">
                                 <!-- Service Icon or Image -->
                                 <div class="service-icon mb-3">
-                                    <img src="${service.serviceImgUrl != null ? service.getShowingImg(service.serviceImgUrl) : "/SWPKoiContructor/assets/imgs/logo/zoomed_logo_image.png"}" alt="${service.serviceName}" class="img-fluid" style="width: 150px ; height: 150px">
+                                    <img src="${service.serviceImgUrl != null ? service.getShowingImg(service.serviceImgUrl) : "/SWPKoiContructor/assets/imgs/logo/zoomed_logo_image.png"}" alt="${service.serviceName}" >
                                 </div>
                                 <!-- Service Content -->
-                                <h3 class="service-title">${service.serviceName}</h3>
-                                <p class="service-description">${service.serviceDescription}</p>
-                                <a href="${pageContext.request.contextPath}/home/services/${service.serviceId}" class="btn btn-default link">Detail</a>
+                              
+                                <div class="section-inner-content">
+                                    <h3 class="service-title" >${service.serviceName}</h3>
+                                    <p class="service-description">${service.serviceDescription}</p>
+                                    <a href="${pageContext.request.contextPath}/home/services/${service.serviceId}" class="btn rr-btn">Detail</a>
+                                </div>
                             </div>
                         </div>
                     </c:forEach>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="d-flex align-items-center mt-4">
-        <!-- Previous Button -->
-        <c:if test="${currentPage > 1}">
-            <a href="?page=${currentPage - 1}" class="btn btn-custom">&lt;</a>
-        </c:if>
-        <c:if test="${currentPage == 1}">
-            <button class="btn btn-custom" disabled>&lt;</button>
-        </c:if>
-
-        <!-- Page Indicator -->
-        <span class="page-indicator"><strong>${currentPage}</strong> / <strong>${totalPages}</strong></span>
-
-        <!-- Next Button -->
-        <c:if test="${hasMoreServices}">
-            <a href="?page=${currentPage + 1}" class="btn btn-custom">&gt;</a>
-        </c:if>
-        <c:if test="${!hasMoreServices}">
-            <button class="btn btn-custom" disabled>&gt;</button>
-        </c:if>
-    </div>
-
-
-    <section class="bg-light">
-        <div class="container">
-            <div class="section-title">
-                <h2>Service Implementation Process at Happikoi</h2>
-            </div>
-
-            <div class="process-grid">
-                <div class="process-item">
-                    <div class="process-number">1</div>
-                    <h4>Receive Customer Request</h4>
-                    <p>We receive and record information about your garden landscape design and koi pond construction needs.</p>
-                </div>
-
-                <div class="process-item">
-                    <div class="process-number">2</div>
-                    <h4>On-Site Survey</h4>
-                    <p>Our team conducts an on-site survey to assess the area and ensure accuracy in the design and construction phases.</p>
-                </div>
-
-                <div class="process-item">
-                    <div class="process-number">3</div>
-                    <h4>Design Proposal</h4>
-                    <p>We propose a preliminary design that reflects natural elements, aesthetics, and your personal preferences.</p>
-                </div>
-
-                <div class="process-item">
-                    <div class="process-number">4</div>
-                    <h4>Quote Submission</h4>
-                    <p>We provide a detailed quotation based on the project scope, including all design and construction costs.</p>
-                </div>
-
-                <div class="process-item">
-                    <div class="process-number">5</div>
-                    <h4>Design Finalization</h4>
-                    <p>Once the quote is approved, the design is finalized in 3D, giving you a full visualization of the project.</p>
-                </div>
-
-                <div class="process-item">
-                    <div class="process-number">6</div>
-                    <h4>Construction and Supervision</h4>
-                    <p>We begin construction and supervise the project to ensure it meets design specifications and quality standards.</p>
-                </div>
-            </div>
+        <div class="d-flex align-items-center mt-4">
+            <!-- Previous Button -->
+            <c:if test="${currentPage > 1}">
+                <a href="?page=${currentPage - 1}" class=" rr-btn">&lt;</a>
+            </c:if>
+            <c:if test="${currentPage == 1}">
+                <button class=" rr-btn" disabled>&lt;</button>
+            </c:if>
+            <!-- Page Indicator -->
+            <span class="page-indicator"> <strong>${currentPage}</strong> /
+                <strong>${totalPages}</strong></span>
+    
+            <!-- Next Button -->
+            <c:if test="${hasMoreServices}">
+                <a href="?page=${currentPage + 1}" class=" rr-btn">&gt;</a>
+            </c:if>
+            <c:if test="${!hasMoreServices}">
+                <button class=" rr-btn" disabled>&gt;</button>
+            </c:if>
         </div>
-    </section>
+    
+    </div>
+
+   
+
+
 
 
 
 
 
 </main>
+<%@include file="sectionContactUs.jsp" %>
+
 
 <%@include file="../footer.jsp" %>
 <%@include file="../scriptTemplate.jsp"%>

@@ -147,4 +147,11 @@ public class BlogDAO {
 
         return query.getSingleResult();
     }
+
+    public List<Blog> getRelatedBlog(int id) {
+        String jpql = "SELECT b FROM Blog b WHERE b.id != :id  ORDER BY FUNCTION('RAND')";
+        TypedQuery<Blog> query = entityManager.createQuery(jpql, Blog.class);
+        query.setParameter("id", id);
+        return query.setMaxResults(6).getResultList();
+    }
 }

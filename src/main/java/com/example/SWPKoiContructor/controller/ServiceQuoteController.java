@@ -408,6 +408,7 @@ public class ServiceQuoteController {
             return "redirect:/login";
         }
         List<ServiceQuotes> serviceQuoteses;
+
         long totalServiceQuotes;
 
         serviceQuoteses = serviceQuoteService.getFilteredServiceQuoteCustomer(page, size, sortBy, sortDirection, fromDate, toDate, customer.getId());

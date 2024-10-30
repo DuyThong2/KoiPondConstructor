@@ -560,6 +560,7 @@ html {
     Typography css start
 ---------------------------------*/
 body {
+  overflow-x:hidden;
   font-family: var(--rr-ff-body);
   font-size: var(--rr-fs-body);
   line-height: var(--rr-lh-body);
@@ -1798,7 +1799,7 @@ a:hover {
 }
 
 .rr-btn {
-  border-radius: 3px;
+  border-radius: 10px;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -1820,6 +1821,9 @@ a:hover {
       -ms-flex-align: center;
           align-items: center;
   text-transform: capitalize;
+}
+.rr-btn:hover{
+  opacity:0.8;
 }
 .rr-btn:after {
   display: block;
@@ -14629,7 +14633,7 @@ body .ui-tooltip {
 }
 
 .banner-3 {
-  background-image: url('../imgs/mylogo/koi-background.jpg');
+  background-image: url('../imgs/koi-pond-2.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

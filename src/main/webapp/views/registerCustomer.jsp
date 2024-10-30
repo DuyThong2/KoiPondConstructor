@@ -99,7 +99,7 @@
 
         <div class="register-link">
             <p> Have an account already?
-                <a href="${pageContext.request.contextPath}/login"> Back to Login</a>
+                <a href="${pageContext.request.contextPath}/login" id="sign"> Back to Login</a>
             </p>
         </div>
     </form:form>

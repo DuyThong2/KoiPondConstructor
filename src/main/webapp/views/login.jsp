@@ -82,7 +82,7 @@
         <button type="submit" class="btn">Login</button>
         <div class="register-link">
             <p>Don't have an account?
-                <a href="${pageContext.request.contextPath}/register">Sign up</a>
+                <a href="${pageContext.request.contextPath}/register" id="sign">Sign up</a>
             </p>
         </div>
         <div class="link register-link forgot-password">

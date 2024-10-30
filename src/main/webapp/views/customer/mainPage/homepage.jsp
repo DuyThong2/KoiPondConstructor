@@ -26,6 +26,13 @@
             width: 500px;
             height: 300px;
         }
+        .blog__item {
+                            transition: transform 0.3s ease-in-out;
+                            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+                        }
+                        .blog__item:hover {
+                            transform: translateY(-5px);
+                        }
     </style>
 </head>
 
@@ -283,7 +290,7 @@
 
                 <c:forEach var="project" items="${projectList}">
                     <div class="col-xl-4 col-md-6">
-                        <div class="team__item mb-30">
+                        <div class="team__item mb-30" style="min-height: 300px;">
                             <a href="${pageContext.request.contextPath}/home/projects/${project.projectId}" class="team__item-media d-block" data-cursor-text="View">
                                 <img src="${project.getShowingImg(project.imgURL)}" alt="image not found" class="img-fluid">
                             </a>
@@ -291,7 +298,7 @@
                             <div class="team__item-text d-flex align-items-center justify-content-between">
 
 
-                                <div class="team__item-text__left">
+                                <div class="team__item-text__left" style="min-height:100px;">
                                     <h4 class="team__item-title rr-fw-bold color-white mb-0"><a href="${pageContext.request.contextPath}/home/projects/${project.projectId}">${project.projectName}</a></h4>
                                     <span class="team__item-subtitle color-white">${project.description}</span>
                                 </div>
@@ -554,43 +561,7 @@
 
 
 
-<%--    <section class="blog section-space section-bg-3">--%>
-<%--        <div class="container">--%>
-<%--            <div class="row">--%>
-<%--                <div class="col-12">--%>
-<%--                    <div class="section__title-wrapper text-center mb-60 mb-sm-40 mb-xs-35">--%>
-<%--                        <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separator"></span>Trending Topics<span data-width="40px" class="right-separator"></span></span>--%>
-<%--                        <h2 class="section__title title-animation text-capitalize rr-br-hidden-md" data-cursor="-opaque">Latest Articles & Blog Posts</h2>--%>
-<%--                    </div>--%>
-<%--                </div>--%>
-<%--            </div>--%>
 
-<%--            <div class="row mb-minus-30">--%>
-<%--                <c:forEach var="blog" items="${blogList}">--%>
-<%--                    <div class="col-lg-4 col-md-6 mb-4">--%>
-<%--                        <div class="blog__item has-box-shadow mb-30" style="border-radius: 8px; overflow: hidden; transition: transform 0.3s;">--%>
-<%--                            <a href="blog-details.html" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">--%>
-<%--                                <img src="${pageContext.request.contextPath}/assets/imgs/blog/blog-1.jpg" alt="image not found" class="img-fluid" style="width: 100%; height: auto; transition: transform 0.3s;">--%>
-<%--                            </a>--%>
-<%--                            <div class="blog__item-text p-4" style="background-color: #ffffff;">--%>
-<%--                                <div class="blog__item-meta mb-10 text-muted d-flex justify-content-between">--%>
-<%--                                    <a href="blog-details.html" class="text-secondary">--%>
-<%--                                        <i class="fas fa-user"></i> By Admin--%>
-<%--                                    </a>--%>
-<%--                                    <a href="blog-details.html" class="text-secondary">--%>
-<%--                                        <i class="fas fa-calendar"></i> ${blog.datePost}--%>
-<%--                                    </a>--%>
-<%--                                </div>--%>
-<%--                                <h4 class="blog__item-title mb-3 text-dark font-weight-bold"><a href="blog-details.html">${blog.name}</a></h4>--%>
-<%--                                <p class="text-muted mb-4">${blog.description}</p>--%>
-<%--                                <a class="btn btn-outline-secondary btn-sm" href="${pageContext.request.contextPath}/home/blogs/${blog.id}">Read More</a>--%>
-<%--                            </div>--%>
-<%--                        </div>--%>
-<%--                    </div>--%>
-<%--                </c:forEach>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </section>--%>
 
 
     <!-- blog-2 area start -->
@@ -610,18 +581,19 @@
                 <c:forEach var="blog" items="${blogList}">
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="blog__item has-box-shadow mb-30" style="border-radius: 8px; overflow: hidden; transition: transform 0.3s;">
-                            <a href="blog-details.html" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
+                            <a href="${pageContext.request.contextPath}/home/blogs/${blog.id}l" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
                                 <img src="${blog.getShowingImg(blog.imgUrl)}" alt="image not found" class="img-fluid" style="width: 100%; height: auto; transition: transform 0.3s;">
                             </a>
                             <div class="blog__item-text p-4" style="background-color: #ffffff;">
                                 <div class="blog__item-meta mb-10 text-muted d-flex justify-content-between">
-                                    <a href="blog-details.html" class="text-secondary">
+                                    <a href="${pageContext.request.contextPath}/home/blogs/${blog.id}" class="text-secondary">
                                         <i class="fas fa-user"></i> ${blog.staff.name}
                                     </a>
-                                    <a href="blog-details.html" class="text-secondary">
+                                    <a href="${pageContext.request.contextPath}/home/blogs/${blog.id}" class="text-secondary">
                                         <i class="fas fa-calendar"></i> <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/>
                                     </a>
                                 </div>
+                               <div class="d-flex flex-column justify-content-around" style="min-height:200px;">
                                 <h4 class="blog__item-title mb-3 text-dark font-weight-bold"><a href="${pageContext.request.contextPath}/home/blogs/${blog.id}">${blog.name}</a></h4>
                                 <p class="text-muted mb-4">${blog.description}</p>
                                 <a class="blog__item-readmore" href="${pageContext.request.contextPath}/home/blogs/${blog.id}">
@@ -629,6 +601,7 @@
                                         <path d="M1 5.5L19 5.5" stroke="#6A6A6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                         <path d="M13.75 1L19 5.5L13.75 10" stroke="#6A6A6A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>Read More</a>
+                               </div>
                             </div>
                         </div>
                     </div>

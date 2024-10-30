@@ -68,4 +68,8 @@ public class PreDesignService {
     public PreDesign updatePreDesignStatus(int preDesignId, boolean status){
         return preDesignDAO.updatePreDesignStatus(preDesignId, status);
     }
+
+    public List<PreDesign> getRelatedPreDesign(int id) {
+        return preDesignDAO.getRelatedPreDesign(id);
+    }
 }

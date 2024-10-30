@@ -23,6 +23,5 @@
 <script src="${pageContext.request.contextPath}/assets/js/vendor/ajax-form.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/plugins/TextPlugin.min.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
-<script src="${pageContext.request.contextPath}/assets/js/plugins/magiccursor.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/image-reveal-hover.js"></script>
 <script src="${pageContext.request.contextPath}/assets/js/plugins/owl.carousel.min.js"></script>
