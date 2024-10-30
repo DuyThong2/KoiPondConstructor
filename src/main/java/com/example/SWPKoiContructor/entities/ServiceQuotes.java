@@ -71,6 +71,7 @@ public class ServiceQuotes {
     @JoinColumn(name = "staff_id")
     private Staff staff;
     
+    
     @ManyToMany
     @JoinTable(
             name = "Service_Quotes_Service",
@@ -298,5 +299,41 @@ public class ServiceQuotes {
         if(serviceQuotesStatus == 9 && isServiceDetailOfQuoteFinished())
             return pointLeft;
         return pointUsing;
+    }
+    
+//    public double calculatePointUsingForDeposit(){
+//        double pointUsing = usedPoint;
+//        if(pointUsing > (serviceQuotesTotalPrice / 2)){
+//            pointUsing = (serviceQuotesTotalPrice / 2) - 1;          
+//        }       
+//        return pointUsing;
+//    }
+    
+    public double calculateDeposit(){
+        double deposit = serviceQuotesTotalPrice / 2;
+        double pointUsing = usedPoint;
+        if(pointUsing > deposit){
+            deposit = 1;
+        }else{
+            deposit -= pointUsing;
+        }
+        return deposit;
+    }
+    
+    public double calculateFullPaid(){
+        double fullPaid = serviceQuotesTotalPrice / 2;
+        double pointUsing = usedPoint;
+        if(!serviceDetails.isEmpty()){
+            for (ServiceDetail serviceDetail : serviceDetails) {
+                if (serviceDetail.getServiceDetailStatus() == 5) {
+                    fullPaid -= serviceDetail.getPrice() / 2;
+                }
+            }
+        }
+        if(pointUsing >= serviceQuotesTotalPrice / 2){
+                 pointUsing = usedPoint - (serviceQuotesTotalPrice / 2) + 1;
+                 fullPaid -= pointUsing;
+        }
+        return fullPaid;
     }
 }

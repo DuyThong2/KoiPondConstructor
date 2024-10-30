@@ -77,8 +77,20 @@
                             </td>
                         </tr>
                         <tr>
+                            <th>consultation client</th>
+                            <td>${consultant.consultantCustomerName}</td>
+                        </tr>
+                        <tr>
                             <th>Consultant type</th>
                             <td>${consultant.consultantType}</td>
+                        </tr>
+                        <tr>
+                            <th>Client Phone</th>
+                            <td>${consultant.consultantPhone}</td>
+                        </tr>
+                        <tr>
+                            <th>Client Email</th>
+                            <td>${consultant.consultant_email}</td>
                         </tr>
                         <tr>
                             <th>Consultant Content</th>

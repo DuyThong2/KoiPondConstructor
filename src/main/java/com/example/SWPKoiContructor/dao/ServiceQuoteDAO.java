@@ -203,7 +203,7 @@ public class ServiceQuoteDAO {
     //----------------------CUSTOMER
     public List<ServiceQuotes> getFilteredServiceQuoteCustomer(int page, int size, String sortBy, String sortDirection,
             LocalDate fromDate, LocalDate toDate, int cusId){
-        StringBuilder queryStr = new StringBuilder("SELECT s FROM ServiceQuotes s WHERE 1=1 AND s.customer.id = :id AND (s.serviceQuotesStatus = 2 OR s.serviceQuotesStatus >= 4 OR s.serviceQuotesStatus != 6) ");
+        StringBuilder queryStr = new StringBuilder("SELECT s FROM ServiceQuotes s WHERE 1=1 AND s.customer.id = :id AND (s.serviceQuotesStatus = 2 OR (s.serviceQuotesStatus >= 4 AND s.serviceQuotesStatus != 6))");
        
         // Dynamic query construction
         if (fromDate != null) {
