@@ -11,8 +11,11 @@
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <%@include file="../cssTemplate.jsp"%>
-        <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+
         <%@include file="../cssCustom.jsp"%>
+        <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+        <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
+
         <style>
             .content-panel {
                 width: 100%;
@@ -121,6 +124,7 @@
             .modal {
                 opacity: 1 !important;
             }
+
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>
@@ -208,7 +212,7 @@
                                             <c:forEach var="serviceQuote" items="${serviceQuote}">
                                                 <!-- Main Row -->
                                                 <tr>
-                                                    <td>${serviceQuote.serviceQuotesDate}</td>
+                                                    <td><fmt:formatDate value="${serviceQuote.serviceQuotesDate}" pattern="dd-mm-yyyy hh:mm"/></td>
                                                     <td>${serviceQuote.serviceQuotesName}</td>
                                                     <td>${serviceQuote.serviceQuotesArea} m²</td>
                                                     <td>${serviceQuote.serviceQuotesTotalPrice}</td>
@@ -301,18 +305,19 @@
                                                     </td>
                                                 </tr>
 
-                                                <!-- Expandable/Collapsible Row -->
-                                                <tr id="details${serviceQuote.serviceQuotesId}" class="collapse">
-                                                    <td colspan="10">
-                                                        <table class="table table-bordered">
-                                                            <thead>
+                                                <!-- Row Collapsed Details -->
+                                                <tr>
+                                                    <td colspan="11">
+                                                        <div class="collapse" id="details${serviceQuote.serviceQuotesId}">
+                                                            <table class="table table-bordered">
+                                                                <thead>
                                                                 <tr class="table-info">
                                                                     <th>Service Name</th>
                                                                     <th>Service Description</th>
                                                                     <th>Service Price</th>
                                                                 </tr>
-                                                            </thead>
-                                                            <tbody>
+                                                                </thead>
+                                                                <tbody>
                                                                 <c:forEach items="${serviceQuote.service}" var="service">
                                                                     <tr>
                                                                         <td>${service.serviceName}</td>
@@ -328,8 +333,9 @@
                                                                         </td>
                                                                     </tr>
                                                                 </c:forEach>
-                                                            </tbody>
-                                                        </table>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </c:forEach>
@@ -420,11 +426,28 @@
                 </div>
             </div>
 
+            <!-- Popup -->
+            <%@include file="../../popup.jsp"%>
+<script>
+    $(document).ready(function(){
+        $('button[data-toggle="collapse"]').click(function(){
+            var button = $(this);
+            var target = $(this).attr('data-target');
+            $(target).on('shown.bs.collapse', function(){
+                button.text('View Less');
+            });
+            $(target).on('hidden.bs.collapse', function(){
+                button.text('View More');
+            });
+        });
+    });
+
+</script>
             <!-- Bootstrap JS and dependencies -->
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+        </div>
     </body>
     <%@include file="../spacing.jsp"%>
 

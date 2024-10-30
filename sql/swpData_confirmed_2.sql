@@ -427,7 +427,7 @@ CREATE TABLE Notification (
     related_id int, --to know the id of the related table
     from_table varchar(50), -- to know the table related to the context of the notification
     create_at_date DATETIME DEFAULT GETDATE(),
-    foreign key(receiver_id) references Users(id),
+    foreign key(receiver_id) references Users(id)
 )
 
 

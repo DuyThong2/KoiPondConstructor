@@ -8,9 +8,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-        <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+
         <%@include file="../cssTemplate.jsp"%>
         <%@include file="../cssCustom.jsp"%>
+        <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
         <style>
             .form-control{
                 font-size: 1.9rem;
@@ -62,7 +63,7 @@
 
             .filter-card {
                 background-color: #ffffff;
-                padding: 20px 30px;
+                padding: 20px 15px;
                 border-radius: 15px;
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 margin-bottom: 30px;
@@ -193,7 +194,7 @@
                                             <!-- Hidden Page Parameter and Submit Button -->
                                             <input type="hidden" name="page" value="${currentPage}">
                                             <div class="col-auto">
-                                                <button type="submit" class="btn btn-primary btn-default" style="margin-top: 3rem">Search & Sort</button>
+                                                <button type="submit" class="btn btn-primary btn-default" style="margin-top: 3rem">Search</button>
                                             </div>
                                         </div>
                                     </form>

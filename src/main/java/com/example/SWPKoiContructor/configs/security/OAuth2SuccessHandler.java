@@ -61,7 +61,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 // Set the new authentication token in the SecurityContext
                 SecurityContextHolder.getContext().setAuthentication(authToken);
 
-                response.sendRedirect("/customer/projects/");
+                response.sendRedirect("/");
                 return;
             } else {
                 request.setAttribute("message", "your account have been disabled");

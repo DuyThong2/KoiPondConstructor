@@ -11,8 +11,10 @@
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
         <%@include file="../cssTemplate.jsp"%>
-        <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+
         <%@include file="../cssCustom.jsp"%>
+        <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+        <link href="<c:url value='/css/popup.css'/>" rel="stylesheet">
         <style>
             .content-panel {
                 width: 100%;
@@ -350,8 +352,10 @@
 
                     </section>
                 </div>
+                <!-- Popup -->
+                <%@include file="../../popup.jsp"%>
             </div>
-
+        </div>
             <!-- Bootstrap JS and dependencies -->
             <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

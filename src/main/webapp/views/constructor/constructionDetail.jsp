@@ -251,7 +251,7 @@
                 <!-- Left Column -->
                 <div class="left-column">
                     <div class="img-box">
-                        <img src="${construction.project.getShowingImg(construction.project.imgURL)}" alt="Construction Project Image">
+                        <img src="${construction.project.getShowingImg(construction.project.imgURL)}" alt="Construction Project Image" style="width: 431px;">
                     </div>
 
                     <!-- Feedback Section-->

@@ -15,9 +15,10 @@
                 <link rel="shortcut icon" type="image/x-icon" href="<c:url value='/assets/imgs/favicon.svg' />">
                 <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
                 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-                <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
+
                 <%@include file="../cssTemplate.jsp"%>
                 <%@include file="../cssCustom.jsp"%>
+                <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
                 <style>
 
                     .card-active p,
@@ -83,18 +84,13 @@
                             width: 250px;
                         }
                         .current-project-details, .done-project {
-                            width: 790px;
+                            width: 1130px;
                         }
                     }
                     @media (min-width: 768px) and  (max-width: 1200px){
                         .current-project-details, .done-project {
                             width: 550px;
                         }
-                    }
-                    .view-account .side-bar .user-info .meta li span {
-                        width: 140px;
-                        margin-right: 5px;
-                        text-align: center;
                     }
 
                     .content-panel {
@@ -353,7 +349,7 @@
                             </div>
                         </section>
 
-                        <div class="container-fluid project-details-container mt-5">
+                        <div class="container-fluid  mt-5">
                             <div class="container">
 
                                 <!-- Customer Info Section -->
@@ -402,7 +398,7 @@
                                                                             <!-- Stage 1: Planning -->
                                                                             <c:set var="buttonClass"
                                                                                 value="${(currentStage > 1) ? 'btn-success' : (currentStage == 1) ? 'btn-primary' : 'btn-outline-secondary'}" />
-                                                                            <div class="col text-center mb-2">
+                                                                            <div class="col text-center ">
                                                                                 <button type="button"
                                                                                     class="btn stage-button btn-md btn-block px-3 ${buttonClass}">
                                                                                     Planning
@@ -412,7 +408,7 @@
                                                                             <!-- Stage 2: Design -->
                                                                             <c:set var="buttonClass"
                                                                                 value="${(currentStage > 2) ? 'btn-success' : (currentStage == 2) ? 'btn-primary' : 'btn-outline-secondary'}" />
-                                                                            <div class="col text-center mb-2">
+                                                                            <div class="col text-center ">
                                                                                 <c:choose>
                                                                                     <c:when test="${currentStage >= 2}">
                                                                                         <a href="${pageContext.request.contextPath}/customer/design/detail/${project.design.designId}"
@@ -433,7 +429,7 @@
                                                                             <!-- Stage 3: Construction -->
                                                                             <c:set var="buttonClass"
                                                                                 value="${(currentStage > 3) ? 'btn-success' : (currentStage == 3) ? 'btn-primary' : 'btn-outline-secondary'}" />
-                                                                            <div class="col text-center mb-2">
+                                                                            <div class="col text-center ">
                                                                                 <c:choose>
                                                                                     <c:when test="${currentStage >= 3}">
                                                                                         <a href="${pageContext.request.contextPath}/customer/construction/detail/${project.construction.constructionId}"
@@ -454,7 +450,7 @@
                                                                             <!-- Stage 4: Maintenance -->
                                                                             <c:set var="buttonClass"
                                                                                 value="${(currentStage > 4) ? 'btn-success' : (currentStage == 4) ? 'btn-primary' : 'btn-outline-secondary'}" />
-                                                                            <div class="col text-center mb-2">
+                                                                            <div class="col text-center ">
                                                                                 <button type="button"
                                                                                     class="btn stage-button btn-md btn-block px-3 ${buttonClass}">
                                                                                     Maintenance
@@ -464,7 +460,7 @@
                                                                             <!-- Stage 5: Complete -->
                                                                             <c:set var="buttonClass"
                                                                                 value="${(currentStage == 5) ? 'btn-success' : 'btn-outline-secondary'}" />
-                                                                            <div class="col text-center mb-2">
+                                                                            <div class="col text-center ">
                                                                                 <button type="button"
                                                                                     class="btn stage-button btn-md btn-block px-3 ${buttonClass}">
                                                                                     Complete
@@ -515,7 +511,7 @@
                                                                             <!-- Stage 1: Planning -->
                                                                             <c:set var="buttonClass"
                                                                                 value="${(currentStage > 1) ? 'btn-success' : (currentStage == 1) ? 'btn-primary' : 'btn-outline-secondary'}" />
-                                                                            <div class="col text-center mb-2">
+                                                                            <div class="col text-center ">
                                                                                 <button type="button"
                                                                                     class="btn stage-button btn-md btn-block px-3 ${buttonClass}">
                                                                                     Planning
@@ -525,7 +521,7 @@
                                                                             <!-- Stage 2: Design -->
                                                                             <c:set var="buttonClass"
                                                                                 value="${(currentStage > 2) ? 'btn-success' : (currentStage == 2) ? 'btn-primary' : 'btn-outline-secondary'}" />
-                                                                            <div class="col text-center mb-2">
+                                                                            <div class="col text-center">
                                                                                 <c:choose>
                                                                                     <c:when test="${currentStage >= 2}">
                                                                                         <a href="${pageContext.request.contextPath}/customer/design/detail/${project.design.designId}"
@@ -546,7 +542,7 @@
                                                                             <!-- Stage 3: Construction -->
                                                                             <c:set var="buttonClass"
                                                                                 value="${(currentStage > 3) ? 'btn-success' : (currentStage == 3) ? 'btn-primary' : 'btn-outline-secondary'}" />
-                                                                            <div class="col text-center mb-2">
+                                                                            <div class="col text-center ">
                                                                                 <c:choose>
                                                                                     <c:when test="${currentStage >= 3}">
                                                                                         <a href="${pageContext.request.contextPath}/customer/construction/detail/${project.construction.constructionId}"
@@ -567,7 +563,7 @@
                                                                             <!-- Stage 4: Maintenance -->
                                                                             <c:set var="buttonClass"
                                                                                 value="${(currentStage > 4) ? 'btn-success' : (currentStage == 4) ? 'btn-primary' : 'btn-outline-secondary'}" />
-                                                                            <div class="col text-center mb-2">
+                                                                            <div class="col text-center ">
                                                                                 <button type="button"
                                                                                     class="btn stage-button btn-md btn-block px-3 ${buttonClass}">
                                                                                     Maintenance
@@ -577,7 +573,7 @@
                                                                             <!-- Stage 5: Complete -->
                                                                             <c:set var="buttonClass"
                                                                                 value="${(currentStage == 5) ? 'btn-success' : 'btn-outline-secondary'}" />
-                                                                            <div class="col text-center mb-2">
+                                                                            <div class="col text-center ">
                                                                                 <button type="button"
                                                                                     class="btn stage-button btn-md btn-block px-3 ${buttonClass}">
                                                                                     Complete

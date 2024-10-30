@@ -125,6 +125,7 @@
                 border: none;
                 border-radius: 9px;
                 padding: 8px 15px;
+                font-size: 16px;
             }
             .btn-img:hover {
                 background-color: #6c757d;
@@ -212,7 +213,7 @@
                                         <figure class="figure col-md-2 col-sm-3 col-xs-12">
                                             <img class="img-rounded img-responsive" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt/>
                                         </figure>
-                                        <input type="hidden" name="id" value="${user.id}">
+                                        <input type="hidden" name="id" value="${user.id}" style="cursor: pointer;">
 
                                         <div class="form-inline col-md-10 col-sm-9 col-xs-12">
                                             <input type="file" name="file" class="file-uploader pull-left" accept="image/*"/>
