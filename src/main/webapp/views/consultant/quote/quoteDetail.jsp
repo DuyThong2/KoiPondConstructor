@@ -129,7 +129,7 @@
                         </form>
                     </div>
                 </c:when>
-                <c:when test="${quotes.quotesStatus == 4}">
+                <c:when test="${quotes.quotesStatus == 4 && quotes.contract == null}">
                     <div class="">
                         <form action="${pageContext.request.contextPath}/consultant/contract/create" method="get" class="d-inline">
                             <input type="hidden" name="quoteId" value="${quotes.quotesId}" >

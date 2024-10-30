@@ -130,8 +130,8 @@ public class PayPalController {
                                                     .replacePath(null)
                                                     .build()
                                                     .toUriString();
-        double afterPoint = amount - point;
-        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/serviceQuote/"+ serviceQuoteId ;
+        double afterPoint = amount;
+        String cancelUrl = baseUrl + contexPath + "/paypal/cancel/serviceQuote" ;
         String successUrl = baseUrl + contexPath + "/paypal/success/serviceQuote?serviceQuoteId=" + serviceQuoteId + "&point=" + point;
 
         try {
