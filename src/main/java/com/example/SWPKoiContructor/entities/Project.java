@@ -5,72 +5,78 @@
  */
 package com.example.SWPKoiContructor.entities;
 
+import com.example.SWPKoiContructor.entities.interfaces.HaveImagesFile;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
 /**
  *
  * @author Admin
  */
-
 @Entity
 @Table(name = "project")
-public class Project {
-    
+public class Project implements HaveImagesFile{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int projectId;
-    
+
     @Column(name = "project_name")
     private String projectName;
-    
+
     private String address;
-    
+
     private String style;
-    
+
     private String description;
-    
+
+    @Column(name="project_cancel_message")
+    private String cancelMessage;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "date_start")
     private Date dateStart;
-    
+
     @Temporal(TemporalType.DATE)
-    @Column(name="date_end")
+    @Column(name = "date_end")
     private Date dateEnd;
-    
-    @Column(name="project_status")
+
+    @Column(name = "project_status")
     private int status;
-    
+
     @Column(name = "img_url")
     private String imgURL;
-    
-    @Lob
-    @Column(name = "project_content")
-    private String content;
-    
+
+    @OneToOne(mappedBy = "project",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Content content;
+
     private int stage;
-    
-    @Column(name="is_shareable")
+
+    @Column(name = "is_shareable", columnDefinition = "bit default 0")
     private boolean isSharedAble;
-    
 
     @OneToOne()
     @JoinColumn(name = "contract_id")
     private Contract contract;
 
+    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Construction construction;
 
-    public Project(String projectName, String address, String style, String description, Date dateStart, Date dateEnd, int status, String imgURL, String content, int stage, boolean isSharedAble) {
+    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Design design;
+
+    public Project(String projectName, String address, String style, String description, Date dateStart, Date dateEnd, int status, String imgURL, int stage, boolean isSharedAble,String cancelMessage) {
         this.projectName = projectName;
         this.address = address;
         this.style = style;
@@ -79,7 +85,7 @@ public class Project {
         this.dateEnd = dateEnd;
         this.status = status;
         this.imgURL = imgURL;
-        this.content = content;
+        this.cancelMessage=cancelMessage;
         this.stage = stage;
         this.isSharedAble = isSharedAble;
     }
@@ -147,9 +153,7 @@ public class Project {
         return status;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+    public void setStatus(int status) {this.status = status;}
 
     public String getImgURL() {
         return imgURL;
@@ -159,13 +163,16 @@ public class Project {
         this.imgURL = imgURL;
     }
 
-    public String getContent() {
+    public Content getContent() {
         return content;
     }
 
-    public void setContent(String content) {
+    public void setContent(Content content) {
         this.content = content;
     }
+
+    
+   
 
     public int getStage() {
         return stage;
@@ -183,7 +190,6 @@ public class Project {
         this.isSharedAble = isSharedAble;
     }
 
-
     public Contract getContract() {
         return contract;
     }
@@ -192,13 +198,66 @@ public class Project {
         this.contract = contract;
     }
 
-    
+    public Construction getConstruction() {
+        return construction;
+    }
 
+    public void setConstruction(Construction construction) {
+        this.construction = construction;
+    }
+
+    public Design getDesign() {
+        return design;
+    }
+
+    public void setDesign(Design design) {
+        this.design = design;
+    }
 
     
-    
-    
-    
-    
-    
+    public void addDesign(Design design) {
+        this.design = design;
+        design.setProject(this);
+    }
+
+    public void addConstruction(Construction construction) {
+        this.construction = construction;
+        construction.setProject(this);
+    }
+
+    public void removeDesign(Design design) {
+        this.design = null;
+        design.setProject(null);
+    }
+
+    public void removeConstruction(Construction construction) {
+        this.construction = null;
+        construction.setProject(null);
+    }
+
+    public boolean isProjectBelongToCustomer(Project project, Customer customer) {
+        // Assuming the Project has a reference to the customer
+        if (project.getContract() != null && project.getContract().getCustomer() != null) {
+            if (project.getContract().getCustomer().getId() == customer.getId()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getCancelMessage() {
+        return cancelMessage;
+    }
+
+    public void setCancelMessage(String cancelMessage) {
+        this.cancelMessage = cancelMessage;
+    }
+
+    public boolean isSharedAble() {
+        return isSharedAble;
+    }
+
+    public void setSharedAble(boolean sharedAble) {
+        isSharedAble = sharedAble;
+    }
 }

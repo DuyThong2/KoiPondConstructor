@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class Base64ImageUploadController {
 
-    @PostMapping("/blog/uploadImage")
+    @PostMapping("/base64/uploadImage")
     public ResponseEntity<?> uploadImage(@RequestParam("upload") MultipartFile file) {
         try {
             byte[] fileContent = inputStreamToByteArray(file.getInputStream()); // Custom method to convert InputStream to byte array

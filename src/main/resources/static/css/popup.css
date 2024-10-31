@@ -1,0 +1,169 @@
+.popup-background {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Nền đen mờ */
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease; /* Hiệu ứng fade in */
+}
+
+.popup-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8); /* Hiệu ứng zoom nhỏ ban đầu */
+    width: 500px;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease; /* Hiệu ứng khi popup hiển thị */
+}
+
+/* Khi popup được hiển thị */
+.popup-background.show {
+    opacity: 1;
+    display: block;
+}
+
+.popup-box.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1); /* Zoom đầy đủ */
+}
+
+/* Header cho popup */
+.popup-box h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Nội dung text */
+.popup-box p {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Button close */
+.close-btn {
+    padding: 10px 20px;
+    background-color: #28a745; /* Màu xanh lá cho success */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.close-btn:hover {
+    background-color: #218838;
+}
+
+/* Popup thành công */
+.popup-box.success {
+    border-top: 8px solid #28a745;
+}
+
+/* Popup lỗi */
+.popup-box.error {
+    border-top: 8px solid #dc3545;
+}
+
+.popup-box.error .close-btn {
+    background-color: #dc3545; /* Màu đỏ cho lỗi */
+}
+
+.popup-box.error .close-btn:hover {
+    background-color: #c82333;
+}
+
+/* Biểu tượng trong popup */
+.popup-box i {
+    font-size: 50px;
+    margin-bottom: 15px;
+    animation: bounce 0.5s; /* Hiệu ứng bounce */
+}
+
+.popup-box.success i {
+    color: #28a745; /* Icon cho success */
+}
+
+.popup-box.error i {
+    color: #dc3545; /* Icon cho lỗi */
+}
+
+/* Popup thông báo (message) */
+.popup-box.message {
+    border-top: 8px solid #17a2b8; /* Đường viền trên màu xanh dương */
+}
+
+/* Biểu tượng cho popup message */
+.popup-box.message i {
+    color: #17a2b8; /* Icon màu xanh dương cho message */
+}
+
+/* Button close cho popup message */
+.popup-box.message .close-btn {
+    background-color: #17a2b8; /* Màu xanh dương cho button đóng */
+}
+
+.popup-box.message .close-btn:hover {
+    background-color: #138496; /* Màu xanh đậm hơn khi hover */
+}
+
+/* Nội dung text cho popup message */
+.popup-box.message p {
+    color: #333;
+}
+
+/* Hiệu ứng bounce cho icon của message */
+.popup-box.message i {
+    animation: bounce 0.5s;
+}
+
+/* Hiệu ứng fade in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Hiệu ứng bounce cho icon */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+h2 {
+    font-weight: bold;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.success {
+    border-bottom: 2px solid #28a745;
+}
+
+.error {
+    border-bottom: 2px solid #dc3545;
+}
+
+.message {
+    border-bottom: 2px solid #17a2b8;
+}

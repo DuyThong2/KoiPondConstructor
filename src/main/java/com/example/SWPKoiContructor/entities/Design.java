@@ -1,5 +1,6 @@
 package com.example.SWPKoiContructor.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -21,28 +24,47 @@ public class Design {
     private int designId;
     
     @Column(name = "design_name")
-    private String designName;
+        private String designName;
     
     @Column(name = "design_status")
     private int status;
     
-    @OneToOne
+    @OneToOne()
     @JoinColumn(name = "project_id")
     private Project project;
     
-    @OneToMany(mappedBy = "design")
-    private List<DesignStage> designStage;
+    @OneToMany(mappedBy = "design", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DesignStage> designStage = new ArrayList<>();
+    
+    @ManyToMany()
+    @JoinTable(
+    name = "Staff_Design",
+    joinColumns = @JoinColumn(name = "design_id"),
+    inverseJoinColumns = @JoinColumn(name = "staff_id")
+    )
+    private List<Staff> staff = new ArrayList<>();
     
     
     
     public Design() {
     }
 
-    public Design(int designId, String designName, int status) {
+    public Design(int designId, String designName, int status, Project project, List<DesignStage> designStage, List<Staff> staff) {
         this.designId = designId;
         this.designName = designName;
         this.status = status;
+        this.project = project;
+        this.designStage = designStage;
+        this.staff = staff;
     }
+
+    public Design(String designName, int status) {
+        this.designName = designName;
+        this.status = status;
+    }
+    
+    
+
 
     public int getDesignId() {
         return designId;
@@ -75,6 +97,74 @@ public class Design {
     public void setProject(Project project) {
         this.project = project;
     }
+
+    public List<DesignStage> getDesignStage() {
+        return designStage;
+    }
+
+    public void setDesignStage(List<DesignStage> designStage) {
+        this.designStage = designStage;
+    }
+    
+    //convinience method
+    public void addDesignStage(DesignStage designStage){
+        this.designStage.add(designStage);
+        designStage.setDesign(this);
+    }
+    
+    public void removeDesignStage(DesignStage designStage){
+        this.designStage.remove(designStage);
+        designStage.setDesign(null);
+    }
+
+    public List<Staff> getStaff() {
+        return staff;
+    }
+
+    public void setStaff(List<Staff> staff) {
+        this.staff = staff;
+    }
+    
+    public List<DesignStage> createListOfDesignStage(Project project){
+        Term term = project.getContract().getTerm();
+        Contract contract = project.getContract();
+        DesignStage conceptDesign = null;
+        DesignStage detailDesign = null;
+        DesignStage constructionDesign= null;
+        if (term.isFollowContract()){
+            conceptDesign = new DesignStage("concept design",1,contract.getPriceOnConceptDesign(), null);
+            detailDesign = new DesignStage("detail design",1,contract.getPriceOnDetailDesign(), null);
+            constructionDesign = new DesignStage("construction design",1,contract.getPriceOnConstructionDesign(), null);
+            
+        }else{
+            double contractCost = contract.getTotalPrice();
+            conceptDesign = new DesignStage("concept design",1,contractCost*term.getPercentOnDesign1()/100, null);
+            detailDesign = new DesignStage("detail design",1,contractCost*term.getPercentOnDesign2()/100, null);
+            constructionDesign = new DesignStage("construction design",1,contractCost*term.getPercentOnDesign3()/100, null);
+        }
+        
+        List<DesignStage> result = new ArrayList<>();
+        result.add(conceptDesign);
+        result.add(detailDesign);
+        result.add(constructionDesign);
+        return result;
+    }
+    
+     public boolean isStaffInDesignPhase(Staff staff, Design design) {
+        if (staff == null || design == null) {
+            return false; // Return false if either the staff or design is null
+        }
+
+        // Iterate over the staff list in the design and check if the staff is involved
+        for (Staff designStaff : design.getStaff()) {
+            if (designStaff.getId() == staff.getId()) {
+                return true; // Staff is part of the design
+            }
+        }
+
+        return false; // Staff is not part of the design
+    }
+    
     
     
 }

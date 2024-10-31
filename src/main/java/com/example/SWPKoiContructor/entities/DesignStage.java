@@ -1,5 +1,6 @@
 package com.example.SWPKoiContructor.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +26,7 @@ public class DesignStage {
     private String designStageName;
     
     @Column(name = "design_stage_status")
-    private int designStageStatus;
+    private int designStageStatus; // ---- 1:Pending ; 2:Proccessing; 3: completed/ 4: Canceled
     
     @Column(name = "design_stage_price")
     private double designStagePrice;
@@ -37,22 +38,37 @@ public class DesignStage {
     @JoinColumn(name = "design_id")
     private Design design;
     
-    @OneToMany(mappedBy = "designStage")
-    private List<DesignStageDetail> designDetail;
+    @OneToMany(mappedBy = "designStage", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DesignStageDetail> designDetail = new ArrayList<>();
     
     @OneToMany(mappedBy = "designStage")
-    private List<BluePrint> bluePrint;
+    private List<BluePrint> bluePrint = new ArrayList<>();
     
     public DesignStage() {
     }
 
-    public DesignStage(int designStageId, String designStageName, int designStageStatus, double designStagePrice, String summaryFile) {
+    public DesignStage(int designStageId, String designStageName, int designStageStatus, double designStagePrice, String summaryFile, Design design, List<DesignStageDetail> designDetail, List<BluePrint> bluePrint) {
         this.designStageId = designStageId;
         this.designStageName = designStageName;
         this.designStageStatus = designStageStatus;
         this.designStagePrice = designStagePrice;
         this.summaryFile = summaryFile;
+        this.design = design;
+        this.designDetail = designDetail;
+        this.bluePrint = bluePrint;
     }
+
+    public DesignStage(String designStageName, int designStageStatus, double designStagePrice, String summaryFile) {
+        this.designStageName = designStageName;
+        this.designStageStatus = designStageStatus;
+        this.designStagePrice = designStagePrice;
+        this.summaryFile = summaryFile;
+    }
+    
+    
+    
+    
+
 
     public int getDesignStageId() {
         return designStageId;
@@ -92,6 +108,72 @@ public class DesignStage {
 
     public void setSummaryFile(String summaryFile) {
         this.summaryFile = summaryFile;
+    }
+
+    public Design getDesign() {
+        return design;
+    }
+
+    public void setDesign(Design design) {
+        this.design = design;
+    }
+
+    public List<DesignStageDetail> getDesignDetail() {
+        return designDetail;
+    }
+
+    public void setDesignDetail(List<DesignStageDetail> designDetail) {
+        this.designDetail = designDetail;
+    }
+
+    public List<BluePrint> getBluePrint() {
+        return bluePrint;
+    }
+
+    public void setBluePrint(List<BluePrint> bluePrint) {
+        this.bluePrint = bluePrint;
+    }
+    
+    
+    //convinience method
+    public void addDesignStageDetail(DesignStageDetail designStageDetail){
+        this.designDetail.add(designStageDetail);
+        designStageDetail.setDesignStage(this);
+    }
+    
+    public void removeDesignStageDetail(DesignStageDetail designStageDetail){
+        this.designDetail.remove(designStageDetail);
+        designStageDetail.setDesignStage(null);
+    }
+    
+    public void addBlueprint(BluePrint bluePrint){
+        this.bluePrint.add(bluePrint);
+        bluePrint.setDesignStage(this);
+    }
+    
+    public void removeBlueprint(BluePrint bluePrint){
+        this.bluePrint.remove(bluePrint);
+        bluePrint.setDesignStage(null);
+    }
+    
+    public List<DesignStageDetail> createListOfDesignStageDetail(DesignStage designStage,Term term){
+        List<DesignStageDetail> list = new ArrayList<>();
+        DesignStageDetail planning = new DesignStageDetail("Planning","Planning for the "+designStage.getDesignStageName(), 1);
+        DesignStageDetail designing = new DesignStageDetail("Designing","Designing the "+designStage.getDesignStageName()+" layout", 1);
+        DesignStageDetail editing = new DesignStageDetail("Editing","Final editing for the "+designStage.getDesignStageName(), 1);
+        list.add(planning);
+        list.add(designing);
+        list.add(editing);
+        DesignStageDetail payment = new DesignStageDetail("Payment","Payment for the "+designStage.getDesignStageName(), 1);
+        if(designStage.getDesignStagePrice() <= 0){
+            payment.setStatus(4);
+        }
+        if (term.isPayOnStartOfDesign()){
+            list.add(0,payment);
+        }else{
+            list.add(payment);
+        }
+        return list;
     }
     
     

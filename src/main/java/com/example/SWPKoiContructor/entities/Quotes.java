@@ -6,6 +6,8 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -25,51 +28,59 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "Quotes")
 public class Quotes {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "quotes_id")
     private int quotesId;
-    
+
     @Column(name = "quotes_name")
     private String quotesName;
-    
+
     @Column(name = "quotes_content")
     private String quotesContent;
-    
+
     @Column(name = "quotes_total_price")
     private double quotesTotalPrice;
-    
+
     @Column(name = "quotes_area")
     private double quotesArea;
-    
+
     @Column(name = "quotes_date")
     @Temporal(TemporalType.DATE)
     private Date quotesDate;
-    
+
     @Column(name = "quotes_status")
     private int quotesStatus;
-    
+
     @Column(name = "quotes_design_cost")
     private double quotesDesignCost;
-    
+
     @Column(name = "quotes_construction_cost")
     private double quotesConstructionCost;
-    
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    
-    @ManyToOne
+
+    @OneToOne
     @JoinColumn(name = "consultant_id")
     private Consultant consultant;
-    
-    @OneToOne
+
+    @ManyToOne
     @JoinColumn(name = "package_id")
     private Parcel parcel;
-    
+
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
+
+    @OneToOne(mappedBy = "quote", cascade = CascadeType.ALL)
+    private Contract contract;
+    
+    @OneToMany(mappedBy = "quotes")
+    private List<Feedback> feedback;
+    
 
     public Quotes(String quotesName, String quotesContent, double quotesTotalPrice, double quotesArea, Date quotesDate, int quotesStatus, double quotesDesignCost, double quotesConstructionCost, Customer customer, Consultant consultant, Parcel pakage, Staff staff) {
         this.quotesName = quotesName;
@@ -192,6 +203,47 @@ public class Quotes {
     public void setStaff(Staff staff) {
         this.staff = staff;
     }
+
+    public Parcel getParcel() {
+        return parcel;
+    }
+
+    public void setParcel(Parcel parcel) {
+        this.parcel = parcel;
+    }
+
+    public Contract getContract() {
+        return contract;
+    }
+
+    public void setContract(Contract contract) {
+        this.contract = contract;
+    }
+
+    public List<Feedback> getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(List<Feedback> feedback) {
+        this.feedback = feedback;
+    }
+
     
-    
+    @Override
+    public String toString() {
+        return "Quotes{" + "quotesId=" + quotesId + ", quotesName=" + quotesName + ", quotesContent=" + quotesContent + ", quotesTotalPrice=" + quotesTotalPrice + ", quotesArea=" + quotesArea + ", quotesDate=" + quotesDate + ", quotesStatus=" + quotesStatus + ", quotesDesignCost=" + quotesDesignCost + ", quotesConstructionCost=" + quotesConstructionCost + '}';
+    }
+
+    public boolean isQuoteBelongToStaff(Quotes quote, Staff staff) {
+        // Check if the staff id matches the id in the quote (assuming the quote has a reference to the staff)
+        
+        return quote.getStaff() != null && quote.getStaff().getId() == staff.getId();
+    }
+
+    public boolean isQuoteBelongToCustomer(Quotes quote, Customer customer) {
+        // Check if the customer id matches the id in the quote (assuming the quote has a reference to the customer)
+        
+        return quote.getCustomer() != null && quote.getCustomer().getId() == customer.getId();
+    }
+
 }

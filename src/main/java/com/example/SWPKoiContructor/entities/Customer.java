@@ -19,120 +19,89 @@ import javax.persistence.Table;
  * @author HP
  */
 @Entity
-@Table(name = "Customer")
-public class Customer {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "customer_id")
-    private int customerId;
-
-    private String username;
-
-    @Column(name = "customer_phone")
-    private String customerPhone;
-
-    @Column(name = "customer_email")
-    private String customerEmail;
-  
-    private String password;
-
-    private boolean status;
-
-    @Column(name = "user_type")
-    private String userType;
+@Table(name = "Customers")
+public class Customer extends User{
     
     @OneToMany(mappedBy = "customer")
     private List<Consultant> consultant;
 
     @OneToMany(mappedBy = "customer")
     private List<Quotes> quotes;
-
-    public Customer(String username, String customerPhone, String customerEmail, String password, boolean status, String userType, List<Consultant> consultant, List<Quotes> quotes) {
-        this.username = username;
-        this.customerPhone = customerPhone;
-        this.customerEmail = customerEmail;
-        this.password = password;
-        this.status = status;
-        this.userType = userType;
-        this.consultant = consultant;
-        this.quotes = quotes;
+    
+    @OneToMany(mappedBy="customer")
+    private List<Contract> contracts;
+    
+    @OneToMany(mappedBy = "customer")
+    private List<Comment> comment;
+    
+    @OneToMany(mappedBy = "customer")
+    private List<LoyaltyPoint> point;
+    
+    @OneToMany(mappedBy = "customer")
+    private List<ServiceQuotes> serviceQuotes;
+    
+    public Customer(String name, String email, String imgURL, String phone, String password, boolean enable) {
+        super(name, email, imgURL, phone, password, enable);
     }
 
     public Customer() {
-    }
-
-    public int getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getCustomerPhone() {
-        return customerPhone;
-    }
-
-    public void setCustomerPhone(String customerPhone) {
-        this.customerPhone = customerPhone;
-    }
-
-    public String getCustomerEmail() {
-        return customerEmail;
-    }
-
-    public void setCustomerEmail(String customerEmail) {
-        this.customerEmail = customerEmail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
     }
 
     public List<Consultant> getConsultant() {
         return consultant;
     }
 
-    public void setConsultant(List<Consultant> consultant) {
-        this.consultant = consultant;
-    }
-
     public List<Quotes> getQuotes() {
         return quotes;
+    }
+
+    public List<Contract> getContracts() {
+        return contracts;
+    }
+
+    public void setConsultant(List<Consultant> consultant) {
+        this.consultant = consultant;
     }
 
     public void setQuotes(List<Quotes> quotes) {
         this.quotes = quotes;
     }
+
+    public void setContracts(List<Contract> contracts) {
+        this.contracts = contracts;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+    
+    
+    
+    public List<Comment> getComment() {
+        return comment;
+    }
+
+    public void setComment(List<Comment> comment) {
+        this.comment = comment;
+    }
+
+    public List<LoyaltyPoint> getPoint() {
+        return point;
+    }
+
+    public void setPoint(List<LoyaltyPoint> point) {
+        this.point = point;
+    }
+
+    public List<ServiceQuotes> getServiceQuotes() {
+        return serviceQuotes;
+    }
+
+    public void setServiceQuotes(List<ServiceQuotes> serviceQuotes) {
+        this.serviceQuotes = serviceQuotes;
+    }
+    
     
     
 }

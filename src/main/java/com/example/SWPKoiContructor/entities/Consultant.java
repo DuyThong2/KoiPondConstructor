@@ -6,6 +6,7 @@
 package com.example.SWPKoiContructor.entities;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,6 +20,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Email;
+
 
 
 /**
@@ -54,27 +59,34 @@ public class Consultant {
     private int consultantStatus;
     
     @Column(name = "consultant_email")
+
     private String consultant_email;
     
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "pre_design_id")
     private PreDesign predesign;
     
-    @OneToMany(mappedBy = "consultant")
-    private List<Quotes> quotes;
+    @OneToOne(mappedBy = "consultant")
+    private Quotes quotes;
     
     @ManyToOne
     @JoinColumn(name = "staff_id")
     private Staff staff;
-
+    
+    @OneToMany(mappedBy = "consultant")
+    private List<Feedback> feedback;
+    
+    @OneToOne(mappedBy = "consultant")
+    private ServiceQuotes serviceQuotes;
+            
     public Consultant() {
     }
 
-    public Consultant(int consultantId, String consultantCustomerName, Calendar consultantDateTime, String consultantPhone, String consultantContent, String consultantType, int consultantStatus, String consultant_email, Customer customer, PreDesign predesign, List<Quotes> quotes, Staff staff) {
+    public Consultant(int consultantId, String consultantCustomerName, Calendar consultantDateTime, String consultantPhone, String consultantContent, String consultantType, int consultantStatus, String consultant_email, Customer customer, PreDesign predesign, Quotes quotes, Staff staff) {
         this.consultantId = consultantId;
         this.consultantCustomerName = consultantCustomerName;
         this.consultantDateTime = consultantDateTime;
@@ -88,6 +100,8 @@ public class Consultant {
         this.quotes = quotes;
         this.staff = staff;
     }
+
+    
 
     
 
@@ -171,14 +185,15 @@ public class Consultant {
         this.predesign = predesign;
     }
 
-    public List<Quotes> getQuotes() {
+    public Quotes getQuotes() {
         return quotes;
     }
 
-    public void setQuotes(List<Quotes> quotes) {
+    public void setQuotes(Quotes quotes) {
         this.quotes = quotes;
     }
 
+    
     
 
     public Staff getStaff() {
@@ -188,6 +203,24 @@ public class Consultant {
     public void setStaff(Staff staff) {
         this.staff = staff;
     }
-    
-    
+
+    public List<Feedback> getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(List<Feedback> feedback) {
+        this.feedback = feedback;
+    }
+
+    public ServiceQuotes getServiceQuotes() {
+        return serviceQuotes;
+    }
+
+    public void setServiceQuotes(ServiceQuotes serviceQuotes) {
+        this.serviceQuotes = serviceQuotes;
+    }
+
+    public Date getConsultantDateTimeAsDate() {
+        return this.consultantDateTime != null ? this.consultantDateTime.getTime() : null;
+    }
 }
