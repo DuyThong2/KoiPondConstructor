@@ -66,7 +66,7 @@
                 <div class="col-md-8">
                     <h2 class="mb-4">Create Quote</h2>
 
-                    <form:form action="/consultant/quote/saveNewQuotes" modelAttribute="newQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true" onsubmit="return validateForm()">
+                    <form:form action="${pageContext.request.contextPath}/consultant/quote/saveNewQuotes" modelAttribute="newQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true" onsubmit="return validateForm()">
                         <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
                         <form:hidden path="customer.id" value="${customer.id}" />
                         <form:hidden path="staff.id" value="${staff.id}" />
@@ -85,7 +85,7 @@
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="area">Area (m�):</label>
+                            <label for="area">Area m<sub>2</sub>:</label>
                             <form:input type ="number" path="quotesArea" id="area" step="0.01" class="form-control" />
                         </div>
 
@@ -139,8 +139,8 @@
                                     <tr>
                                         <th style="width: 20%;">Package Name</th>
                                         <th style="width: 20%;">Description</th>
-                                        <th style="width: 15%;">Design Price per m�</th>
-                                        <th style="width: 15%;">Construction Price per m�</th>
+                                        <th style="width: 15%;">Design Price per m<sub>2</sub></th>
+                                        <th style="width: 15%;">Construction Price per m<sub>2</sub></th>
                                         <th style="width: 10%;">Status</th>
                                         <th style="width: 10%;">Select</th>
                                     </tr>

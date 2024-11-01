@@ -1,10 +1,16 @@
+<%-- 
+    Document   : quoteCreateNoConsultant
+    Created on : Nov 1, 2024, 10:48:05 AM
+    Author     : HP
+--%>
+
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Edit Quote</title>
+        <title>Create Quote</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <!-- FontAwesome Icons -->
@@ -28,9 +34,11 @@
             .customer-info {
                 text-align: center;
             }
+
             .modal-dialog.modal-lg {
                 max-width: 90%;
             }
+
             .table th, .table td {
                 vertical-align: middle;
                 padding: 8px;
@@ -45,49 +53,30 @@
 
         <div class="container mt-5">
             <jsp:include page="../consultantNav.jsp"/>
-            <div class="row">
-                <!-- Left Column for Customer Information -->
-                <div class="col-md-4">
-                    <div class="quote-info">
-                        <h4>Customer Information</h4>
-                        <div class="customer-info">
-                            <img src="${customer.imgURL != null ? customer.getShowingImg(customer.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="Customer Avatar" class="customer-avatar img-fluid"/>
-                            <p><strong>${customer.name}</strong></p>
-                        </div>
-                        <p><strong>Phone:</strong> ${customer.phone}</p>
-                        <p><strong>Email:</strong> ${customer.email}</p>
-                        <p><strong>Content:</strong> ${consultant.consultantContent}</p>
-                    </div>
-                </div>
-
-                <!-- Right Column for Quote Edit Form -->
+            <div class="d-flex justify-content-center">
+                <!-- Right Column for Quote Creation Form -->
                 <div class="col-md-8">
-                    <h2 class="mb-4">Edit Quote</h2>
+                    <h2 class="mb-4">Create Quote</h2>
 
-                    <form:form action="${pageContext.request.contextPath}/consultant/quote/saveUpdateQuote" modelAttribute="newQuote" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="true" onsubmit="return validateForm()">
-                        <form:hidden path="quotesId" value="${newQuote.quotesId}"/>
-                        <c:if test="${consultant != null}"> 
-                            <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
-                        </c:if>
-                        <form:hidden path="customer.id" value="${customer.id}" />
+                    <form:form action="${pageContext.request.contextPath}/consultant/quote/save" modelAttribute="newQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true" onsubmit="return validateForm()">
                         <form:hidden path="staff.id" value="${staff.id}" />
 
                         <!-- Quotes Name -->
                         <div class="form-group">
                             <label for="quoteName">Quote Name:</label>
-                            <form:input path="quotesName" id="quoteName" class="form-control" value="${newQuote.quotesName}" />
+                            <form:input path="quotesName" id="quoteName" class="form-control" />
                         </div>
 
                         <!-- Quotes Content -->
                         <div class="form-group">
                             <label for="quoteContent">Quote Content:</label>
-                            <form:input path="quotesContent" id="quoteContent" class="form-control" value="${newQuote.quotesContent}" />
+                            <form:input path="quotesContent" id="quoteContent" class="form-control" />
                         </div>
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="area">Area (m�):</label>
-                            <form:input type="number" path="quotesArea" id="area" step="0.01" class="form-control" value="${newQuote.quotesArea}" />
+                            <label for="area">Area (m<sub>2</sub>):</label>
+                            <form:input type ="number" path="quotesArea" id="area" step="0.01" class="form-control" />
                         </div>
 
                         <!-- Parcel Selection -->
@@ -96,30 +85,85 @@
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#parcelModal">
                                 Choose Parcel
                             </button>
-                            <input type="hidden" id="selectedParcelId" name="parcel.packageId" value="${newQuote.parcel.packageId}" required />
-                            <input type="text" id="selectedParcelName" name="parcelName" value="${newQuote.parcel.packageName}" readonly class="form-control" />
+                            <input type="hidden" id="selectedParcelId" name="parcel.packageId" required />
+                            <input type="text" id="selectedParcelName" name="parcelName" readonly class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="selectedCustomer">Select Customer For Quote</label>
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addCustomerModal">
+                                Choose Customer
+                            </button>
+                            <input type="hidden" id="selectedCustomerId" name="customer.id" required />
+                            <input type="text" id="selectedCustomerName" name="customerName" readonly class="form-control" />
                         </div>
 
                         <!-- Design Cost -->
                         <div class="form-group">
                             <label for="designCost">Design Cost:</label>
-                            <form:input path="quotesDesignCost" id="designCost" step="0.01" class="form-control" readonly="true" value="${newQuote.quotesDesignCost}" />
+                            <form:input path="quotesDesignCost" id="designCost" step="0.01" class="form-control" readonly="true"/>
                         </div>
 
                         <!-- Construction Cost -->
                         <div class="form-group">
                             <label for="constructionCost">Construction Cost:</label>
-                            <form:input path="quotesConstructionCost" id="constructionCost" step="0.01" class="form-control" readonly="true" value="${newQuote.quotesConstructionCost}" />
+                            <form:input path="quotesConstructionCost" id="constructionCost" step="0.01" class="form-control" readonly="true"/>
                         </div>
 
                         <!-- Total Price (Read-Only, auto-calculated) -->
                         <div class="form-group">
                             <label for="totalPrice">Total Price:</label>
-                            <form:input path="quotesTotalPrice" id="totalPrice" step="0.01" class="form-control" readonly="true" value="${newQuote.quotesTotalPrice}" />
+                            <form:input path="quotesTotalPrice" id="totalPrice" step="0.01" class="form-control" readonly="true"/>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Edit Quote</button>
+                        <button type="submit" class="btn btn-primary">Create Quote</button>
                     </form:form>
+                </div>
+            </div>
+
+            <!-- Customer Selection Modal -->
+            <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addCustomerModalLabel">Select Customer</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <!-- Table of Customers -->
+                                <table class="table table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th style="width: 40%;">Name</th>
+                                            <th style="width: 30%;">Email</th>
+                                            <th style="width: 20%;">Phone</th>
+                                            <th style="width: 10%;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <c:forEach var="customer" items="${customerList}">
+                                            <tr>
+                                                <td>${customer.name}</td>
+                                                <td>${customer.email}</td>
+                                                <td>${customer.phone}</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-primary" onclick="selectCustomer(${customer.id}, '${customer.name}')">
+                                                        Select
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -138,12 +182,11 @@
                             <table class="table table-bordered table-striped">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th>Package Name</th>
-                                        <th>Description</th>
-                                        <th>Design Price per m�</th>
-                                        <th>Construction Price per m�</th>
-                                        <th>Status</th>
-                                        <th>Select</th>
+                                        <th style="width: 20%;">Package Name</th>
+                                        <th style="width: 20%;">Description</th>
+                                        <th style="width: 15%;">Design Price per m<sub>2</sub></th>
+                                        <th style="width: 15%;">Construction Price per m<sub>2</sub></th>
+                                        <th style="width: 10%;">Select</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -153,16 +196,6 @@
                                             <td>${parcel.packageDescription}</td>
                                             <td class="text-center">${parcel.designOnSquareRoot}</td>
                                             <td class="text-center">${parcel.constructionPriceOnSquareRoot}</td>
-                                            <td class="text-center">
-                                                <c:choose>
-                                                    <c:when test="${parcel.package_status}">
-                                                        Active
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        Inactive
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
                                             <td class="text-center">
                                                 <button type="button" class="btn btn-sm btn-primary" onclick="selectParcel(${parcel.packageId}, '${parcel.packageName}', ${parcel.designOnSquareRoot}, ${parcel.constructionPriceOnSquareRoot})">
                                                     Select
@@ -180,13 +213,36 @@
                 </div>
             </div>
 
-            <!-- JavaScript for handling parcel selection and validation -->
+
+            <!-- JavaScript for handling parcel selection -->
             <script>
+                // Store selected parcel details for cost calculation
                 let selectedParcelDetails = {
                     designCostPerSquareMeter: 0,
                     constructionCostPerSquareMeter: 0
                 };
 
+                document.querySelectorAll('input[type="number"]').forEach(input => {
+                    input.addEventListener('input', function () {
+                        // Remove any characters that are not digits or dots (allowing decimal numbers)
+                        this.value = this.value.replace(/[^0-9.]/g, '');
+                    });
+
+                    input.addEventListener('blur', function () {
+                        // Prevent negative values by setting any negative number to zero
+                        if (parseFloat(this.value) < 0) {
+                            this.value = 0;
+                        }
+                    });
+                });
+                function selectCustomer(customerId, customerName) {
+                    // Set the selected customer ID and name in the form fields
+                    document.getElementById('selectedCustomerId').value = customerId;
+                    document.getElementById('selectedCustomerName').value = customerName;
+
+                    // Close the modal
+                    $('#addCustomerModal').modal('hide');
+                }
                 function selectParcel(packageId, packageName, designCostPerSquareMeter, constructionCostPerSquareMeter) {
                     document.getElementById('selectedParcelId').value = packageId;
                     document.getElementById('selectedParcelName').value = packageName;
@@ -194,6 +250,7 @@
                         designCostPerSquareMeter: designCostPerSquareMeter,
                         constructionCostPerSquareMeter: constructionCostPerSquareMeter
                     };
+
                     calculateCosts();
                     $('#parcelModal').modal('hide');
                 }
@@ -209,30 +266,23 @@
                     document.getElementById('totalPrice').value = totalPrice.toFixed(2);
                 }
 
-                document.querySelectorAll('input[type="number"]').forEach(input => {
-                    input.addEventListener('input', function () {
-                        // Remove any characters that are not digits or dots (allowing decimal numbers)
-                        this.value = this.value.replace(/[^0-9.]/g, '');
-                    });
 
-                    input.addEventListener('blur', function () {
-                        // Prevent negative values by setting any negative number to zero
-                        if (parseFloat(this.value) < 0) {
-                            this.value = 0;
-                        }
-                    });
-                });
-                
-                
+                // Validate the form before submission
                 function validateForm() {
                     const area = parseFloat(document.getElementById('area').value) || 0;
                     const designCost = parseFloat(document.getElementById('designCost').value) || 0;
                     const constructionCost = parseFloat(document.getElementById('constructionCost').value) || 0;
                     const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
                     const selectedParcelId = document.getElementById('selectedParcelId').value;
+                    const selectedCustomerId = document.getElementById('selectedCustomerId').value;
 
                     if (!selectedParcelId) {
                         alert('Please select a parcel before submitting the form.');
+                        return false;
+                    }
+
+                    if (!selectedCustomerId) {
+                        alert('Please select a customer before submitting the form.');
                         return false;
                     }
 

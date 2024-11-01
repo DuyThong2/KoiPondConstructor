@@ -64,7 +64,7 @@ public class ServiceQuotes {
     private Customer customer;
     
     @OneToOne
-    @JoinColumn(name = "consultant_id")
+    @JoinColumn(name = "consultant_id", nullable = true)
     private Consultant consultant;
     
     @ManyToOne

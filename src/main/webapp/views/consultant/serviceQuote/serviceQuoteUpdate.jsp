@@ -70,7 +70,9 @@
                     <!-- Bind the form to the "contract" object -->
                     <form:form action="${pageContext.request.contextPath}/consultant/serviceQuote/saveUpdate" modelAttribute="serviceQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="serviceQuotesId" value="${serviceQuote.serviceQuotesId}"/>
-                        <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
+                        <c:if test="${consultant != null}"> 
+                            <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
+                        </c:if>
                         <form:hidden path="customer.id" value="${customer.id}" />
                         <form:hidden path="staff.id" value="${staff.id}" />
 
@@ -142,6 +144,12 @@
                             <form:input path="serviceQuotesTotalPrice" id="serviceQuotesTotalPrice" class="form-control" readonly="true" />
                         </div>
                         
+                        <!-- Checkbox for 'isPayAfter' -->
+                        <div class="form-group form-check">
+                            <form:checkbox path="isPayAfter" id="isPayAfter" class="form-check-input" />
+                            <label for="isPayAfter" class="form-check-label">Pay All</label>
+                        </div>
+                        
                         <!-- Hidden input to store points used -->
                         <input type="hidden" id="pointsUsed" name="pointsUsed" value="0" />
 
@@ -160,7 +168,7 @@
                             <button type="button" class="btn btn-warning" onclick="updateCostsBasedOnParcel()">Auto Adjust Costs</button>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Create Service Quote</button>
+                        <button type="submit" class="btn btn-primary">Update Service Quote</button>
                     </form:form>
                 </div>
             </div>
