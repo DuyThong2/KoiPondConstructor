@@ -143,7 +143,7 @@
             <div class="offcanvas__content">
                 <div class="offcanvas__top d-flex justify-content-between align-items-center">
                     <div class="offcanvas__logo">
-                        <a href="index.html">
+                        <a href="${pageContext.request.contextPath}/home/services">
                             <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                         </a>
                     </div>

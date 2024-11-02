@@ -137,7 +137,7 @@ public class ProjectController {
             project.setContent(content);
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);
-            notificationService.createProjectNotification(project.getContract().getCustomer().getName(),project.getProjectId(),project.getContract().getCustomer().getId());
+            notificationService.createProjectNotification(project.getContract().getCustomer().getName(),newlyCreatedProject.getProjectId(),project.getContract().getCustomer().getId());
             return "redirect:/manager/projects/detail/" + newlyCreatedProject.getProjectId();
         } else {
             return "redirect:/manager/contracts";
@@ -203,11 +203,16 @@ public class ProjectController {
 
     @PostMapping("/updateStage")
     @ResponseBody
-    public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId) {
+    public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId,@RequestParam("projectStage") int projectStage) {
         try {
 
-            projectService.updateProjectStage(projectId);
+
             Project project = projectService.getProjectById(projectId);
+               if(project.getStage()==1){
+                   projectService.updateProjectStage(projectId);
+               }else{
+                   projectService.updateProjectStatus(projectId,2);
+               }
             List<Staff> staffList =new ArrayList<>(project.getDesign().getStaff());
             staffList.addAll(project.getConstruction().getStaff());
             notificationService.assignListStaffNotification(staffList,projectId,project.getProjectName());

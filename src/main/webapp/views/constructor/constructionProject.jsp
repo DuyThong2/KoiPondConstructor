@@ -138,6 +138,9 @@
                 <a href="${pageContext.request.contextPath}/constructor/designStage/detail/${construction.project.projectId}" class="btn btn-info">
                     <i class="fas fa-file-alt"></i> View All Design
                 </a>
+                <a href="${pageContext.request.contextPath}/constructor/construction/detail/${construction.constructionId}" class="btn btn-primary">
+                    <i class="fas fa-file-alt"></i> Manage Construction
+                </a>
             </div>
         </div>
     </div>

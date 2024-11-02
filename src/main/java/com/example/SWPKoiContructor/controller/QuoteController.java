@@ -99,6 +99,8 @@ public class QuoteController {
         User fromUser = (User) session.getAttribute("user");
         User toUser = userService.getUserById(toUserId);
         Feedback newFeedback = new Feedback(feedbackContent, new Date(), fromUser, toUser, quotes);
+        String message= "Customer has rejected your quote " + quotes.getQuotesName();
+        notificationService.createNotification(quotes.getQuotesId(),"quote", quotes.getStaff().getId(),"consultant",message);
         newFeedback = feedbackService.saveFeedback(newFeedback);
         return "redirect:/customer/quote";
     }
@@ -327,7 +329,14 @@ public class QuoteController {
         newQuote.setQuotesStatus(1);
         newQuote.setQuotesDate(new Date());
         newQuote = quoteService.saveQuotes(newQuote);
+        String message = newQuote.getStaff().getName()+ " has edited quote "+ newQuote.getQuotesName();
+        notificationService.createNotification(newQuote.getQuotesId(),"quote",null,"manager",message);
         return "redirect:/consultant/quote/detail/" + newQuote.getQuotesId();
+    }
+
+    @GetMapping("customer/quote/detail/{id}")
+    public String redirectCustomerQuote(){
+        return "redirect:/customer/quote";
     }
 
 }

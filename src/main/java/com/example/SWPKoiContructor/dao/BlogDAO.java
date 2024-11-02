@@ -154,4 +154,10 @@ public class BlogDAO {
         query.setParameter("id", id);
         return query.setMaxResults(6).getResultList();
     }
+
+    public List<Blog> getSomeBlogs(int i) {
+        String jpql="Select b from Blog b order by b.datePost Desc ";
+        TypedQuery<Blog> query = entityManager.createQuery(jpql, Blog.class);
+        return query.setMaxResults(i).getResultList();
+    }
 }
