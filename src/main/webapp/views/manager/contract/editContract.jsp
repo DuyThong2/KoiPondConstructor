@@ -272,6 +272,20 @@
                                 </div>
                             </div>
 
+                            <div id="defaultTermFields" style="display: none;">
+                                <div class="section-title">
+                                    <h3>Default Term Options</h3>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="default_pay_on_start_of_design" name="term.payOnStartOfDesign" class="form-check-input">
+                                    <label class="form-check-label" for="default_pay_on_start_of_design">Pay on Start of Design</label>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input type="checkbox" id="default_pay_on_start_of_construction" name="term.payOnStartOfConstruction" class="form-check-input">
+                                    <label class="form-check-label" for="default_pay_on_start_of_construction">Pay on Start of Construction</label>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <button type="button" class="btn btn-warning" onclick="autoAdjust()">Auto Adjust Costs</button>
                             </div>
@@ -283,6 +297,12 @@
                             <div class="form-group">
                                 <label for="contractTerm">Contract Term:</label>
                                 <form:textarea path="contractTerm" id="contractTerm" class="form-control"/>
+                            </div>
+                            <div style="margin: 25px 0 0 0">
+                                <div class="form-group form-check-inline">
+                                    <label for="estimatedEndDate">Estimated End Date:</label>
+                                    <input type="date" id="estimatedEndDate" name="estimatedEndDate" class="form-control" style="width: 50%;" min="" required>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="file">Choose file:</label>
@@ -367,7 +387,8 @@
 
                     <!-- JavaScript for Auto Adjustment -->
                     <script>
-
+                        const today = new Date().toISOString().split("T")[0];
+                        document.getElementById("estimatedEndDate").setAttribute("min", today);
 
                         function selectTerm(termId, description) {
                             document.getElementById('selectedTermId').value = termId; // Set the selected term ID
@@ -471,6 +492,15 @@
                             const termOption = document.querySelector('input[name="termOption"]:checked');
                             if (!termOption) {
                                 alert('Please select a term option.');
+                                event.preventDefault();
+                                return;
+                            }
+
+                            const estimatedEndDate = document.getElementById('estimatedEndDate').value;
+
+                            // Check if estimated end date is provided
+                            if (!estimatedEndDate) {
+                                alert('Please select an estimated end date.');
                                 event.preventDefault();
                                 return;
                             }
@@ -587,6 +617,8 @@
                         function showTermSelectionModal() {
                             document.getElementById('existingTermFields').style.display = 'block';
                             document.getElementById('customTermFields').style.display = 'none';
+                            document.getElementById('defaultTermFields').style.display = 'none';
+
                             $('#termModal').modal('show'); // Show the modal for selecting existing terms
                         }
 
@@ -594,13 +626,28 @@
                             document.getElementById('customTermFields').style.display = 'block';
                             document.getElementById('existingTermFields').style.display = 'none';
                             document.getElementById('selectedTermId').value = '0'; // Ensure a valid integer value is set
+                            document.getElementById('defaultTermFields').style.display = 'none';
+
                             document.getElementById('term').value = ''; // Clear selected term description
                         }
 
 
+//                        function setFollowContract() {
+//                            document.getElementById('customTermFields').style.display = 'none';
+//                            document.getElementById('existingTermFields').style.display = 'none';
+//                            document.getElementById('selectedTermId').value = '0'; // Clear selected term ID
+//                            document.getElementById('term').value = 'Following contract terms';
+//                        }
+
                         function setFollowContract() {
+                            // Hide other term input sections
                             document.getElementById('customTermFields').style.display = 'none';
                             document.getElementById('existingTermFields').style.display = 'none';
+
+                            // Show default term checkboxes
+                            document.getElementById('defaultTermFields').style.display = 'block';
+
+                            // Reset values to avoid conflicts
                             document.getElementById('selectedTermId').value = '0'; // Clear selected term ID
                             document.getElementById('term').value = 'Following contract terms';
                         }

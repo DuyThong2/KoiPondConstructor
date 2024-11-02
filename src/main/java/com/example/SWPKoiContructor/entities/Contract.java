@@ -5,10 +5,9 @@
  */
 package com.example.SWPKoiContructor.entities;
 
-import com.example.SWPKoiContructor.entities.interfaces.HaveImagesFile;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -52,6 +52,9 @@ public class Contract {
     private double priceOnRawConstruction;
     
     private double priceOnCompleteConstruction;
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+private LocalDate estimatedEndDate;
     
     private String contractTerm;
     
@@ -101,6 +104,18 @@ public class Contract {
 
     public Contract() {
     }
+
+    public LocalDate getEstimatedEndDate() {
+        return estimatedEndDate;
+    }
+
+    public void setEstimatedEndDate(LocalDate estimatedEndDate) {
+        this.estimatedEndDate = estimatedEndDate;
+    }
+
+    
+    
+    
 
     public int getContractId() {
         return contractId;

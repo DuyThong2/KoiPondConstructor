@@ -1035,3 +1035,4 @@ VALUES
 
 
 update Pre_Design set pre_design_status = 1;
+UPDATE [Contract] SET estimated_end_date = DATEADD(MONTH, 4, GETDATE())

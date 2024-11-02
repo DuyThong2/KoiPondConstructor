@@ -274,206 +274,128 @@ public class ContractController {
     }
 
     @PostMapping("/consultant/contract/create")
-    public String saveContract(@ModelAttribute("contract") Contract contract,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("termOption") String termOption) {
-        try {// Handle file upload
-            String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
+public String saveContract(@ModelAttribute("contract") Contract contract,
+                           @RequestParam("file") MultipartFile file,
+                           @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate,
+                           @RequestParam("termOption") String termOption) {
+    try {
+        // Handle file upload
+        String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
+        contract.setFileURL(fileURL);
+        contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
+        contract.setDateCreate(new Date());
+        contract.setEstimatedEndDate(estimatedEndDate);
+
+        // Handle term based on the selected termOption
+        handleTermOption(contract, termOption);
+
+        // Save the contract entity
+        contract = contractService.createContract(contract);
+
+        // Create notification for the new contract
+        notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId(), contract.getCustomer().getId());
+
+        return "redirect:/consultant/contract/detail/" + contract.getContractId();
+    } catch (Exception e) {
+        return "redirect:/consultant/contract";
+    }
+}
+
+@GetMapping("/consultant/contract/edit")
+public String updateContractByConsultant(@RequestParam("id") int contractId, Model model, HttpSession session) {
+    Contract contract = contractService.getContractById(contractId);
+    Staff staff = (Staff) session.getAttribute("user");
+    if (contract != null && contract.isContractBelongToStaff(staff, contract)) {
+        model.addAttribute("contract", contract);
+        model.addAttribute("quote", contract.getQuote());
+        model.addAttribute("terms", termService.getAllTemplateTerm());
+        model.addAttribute("term", contract.getTerm());
+        model.addAttribute("customer", contract.getCustomer());
+        return "consultant/contract/editContract";
+    } else {
+        return "redirect:/consultant/contract";
+    }
+}
+
+@PostMapping("/consultant/contract/edit")
+public String saveUpdatedContractByConsultant(
+        @ModelAttribute("contract") Contract contract,
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("termOption") String termOption,
+        @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate) {
+
+    try {
+        // Update file URL if a new file is provided
+        String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
+        if (fileURL != null) {
             contract.setFileURL(fileURL);
-            contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
-            contract.setDateCreate(new Date());
-
-            // Handle term based on the selected termOption
-            Term savedTerm = null;
-
-            if ("custom".equals(termOption)) {
-                // Create a new custom term
-                Term newTerm = new Term();
-                newTerm.setPercentOnDesign1(contract.getTerm().getPercentOnDesign1());
-                newTerm.setPercentOnDesign2(contract.getTerm().getPercentOnDesign2());
-                newTerm.setPercentOnDesign3(contract.getTerm().getPercentOnDesign3());
-                newTerm.setPercentOnConstruct1(contract.getTerm().getPercentOnConstruct1());
-                newTerm.setPercentOnConstruct2(contract.getTerm().getPercentOnConstruct2());
-                newTerm.setPayOnStartOfDesign(contract.getTerm().isPayOnStartOfDesign());
-                newTerm.setPayOnStartOfConstruction(contract.getTerm().isPayOnStartOfConstruction());
-                newTerm.setFollowContract(false);
-                newTerm.setDescription("Custom term");
-
-                // Save the custom term and associate it with the contract
-                savedTerm = termService.save(newTerm);
-                contract.setTerm(savedTerm);
-
-            } else if ("contract".equals(termOption)) {
-                // Create a new follow-contract term
-                Term newTerm = new Term();
-                newTerm.setFollowContract(true);
-                newTerm.setDescription("Follow contract default term");
-
-                // Save the follow-contract term and associate it with the contract
-                savedTerm = termService.save(newTerm);
-                contract.setTerm(savedTerm);
-
-            } else if ("existing".equals(termOption)) {
-                // Find the existing term by ID
-
-            }
-
-            // Set the term to the contract if a term was determined
-            // Save the contract entity with the term properly handled
-            contract = contractService.createContract(contract);
-
-            // Create notification for the new contract
-            notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId(), contract.getCustomer().getId());
-
-            return "redirect:/consultant/contract/detail/" + contract.getContractId();
-        } catch (Exception e) {
-            return "redirect:/consultant/contract";
         }
+        contract.setEstimatedEndDate(estimatedEndDate);
 
+        // Handle term based on the selected termOption
+        handleTermOption(contract, termOption);
+
+        // Update the contract
+        contract.setDateCreate(new Date());
+        contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
+        contract = contractService.createContract(contract);
+
+        // Create notification
+        notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId(), contract.getCustomer().getId());
+
+        return "redirect:/consultant/contract/detail/" + contract.getContractId();
+    } catch (Exception e) {
+        return "redirect:/consultant/contract";
     }
+}
 
-    @GetMapping("/consultant/contract/edit")
-    public String updateContractByConsultant(@RequestParam("id") int contractId, Model model, HttpSession session) {
-        Contract contract = contractService.getContractById(contractId);
-        Staff staff = (Staff) session.getAttribute("user");
-        if (contract != null && contract.isContractBelongToStaff(staff, contract)) {
-            model.addAttribute("contract", contract);
-            model.addAttribute("quote", contract.getQuote());
-            model.addAttribute("terms", termService.getAllTemplateTerm());
-            model.addAttribute("term", contract.getTerm());
+@GetMapping("/manager/contract/edit")
+public String updateContractByManager(@RequestParam("id") int contractId, Model model) {
+    Contract contract = contractService.getContractById(contractId);
+    if (contract != null) {
+        model.addAttribute("contract", contract);
+        model.addAttribute("quote", contract.getQuote());
+        model.addAttribute("terms", termService.getAllTemplateTerm());
+        model.addAttribute("customer", contract.getCustomer());
+        model.addAttribute("term", contract.getTerm());
+        return "manager/contract/editContract";
+    } else {
+        return "redirect:/manager/contract";
+    }
+}
 
-            model.addAttribute("customer", contract.getCustomer());
-            return "consultant/contract/editContract";
-        } else {
-            return "redirect:/consultant/contract";
+@PostMapping("/manager/contract/edit")
+public String saveUpdatedContractByManager(
+        @ModelAttribute("contract") Contract contract,
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("termOption") String termOption,
+        @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate) {
+
+    try {
+        // Update file URL if a new file is provided
+        String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
+        if (fileURL != null) {
+            contract.setFileURL(fileURL);
         }
+        contract.setEstimatedEndDate(estimatedEndDate);
 
+        // Handle term based on the selected termOption
+        handleTermOption(contract, termOption);
+
+        // Update contract status and date
+        contract.setDateCreate(new Date());
+        contract.setContractStatus(2);  // Assuming 2 is for 'Updated by Manager'
+        contract = contractService.createContract(contract);
+
+        // Notify the customer of the update
+        Customer customer = contract.getCustomer();
+        notificationService.createNotification(contract.getContractId(), "contract", customer.getId(), "customer", "Your contract has been updated! Please check it");
+
+        return "redirect:/manager/contract/detail/" + contract.getContractId();
+    } catch (Exception e) {
+        return "redirect:/manager/contract";
     }
-
-    @PostMapping("/consultant/contract/edit")
-    public String saveUpdatedContractByConsultant(
-            @ModelAttribute("contract") Contract contract,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("termOption") String termOption) {
-
-        // Handle file upload, only update if a new file is provided
-        try {
-            String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
-            if (fileURL != null) {
-                contract.setFileURL(fileURL);
-            }
-
-            // Handle term based on the selected termOption
-            Term savedTerm = null;
-
-            if ("custom".equals(termOption)) {
-                // Save custom term details
-                Term newTerm = contract.getTerm();
-                newTerm.setFollowContract(false);
-                newTerm.setIsTemplate(false); // Not a template term
-                savedTerm = termService.save(newTerm); // Save the custom term
-                contract.setTerm(savedTerm);
-
-            } else if ("contract".equals(termOption)) {
-                // Create a new follow-contract term
-                Term followContractTerm = new Term();
-                followContractTerm.setFollowContract(true);
-                followContractTerm.setDescription("Follow contract default term");
-                followContractTerm.setIsTemplate(false); // Not a template
-                savedTerm = termService.save(followContractTerm);
-                contract.setTerm(savedTerm);
-
-            } else if ("existing".equals(termOption) && contract.getTerm() != null) {
-                // Load the existing term by ID (template terms)
-                System.out.println("asdasdasdasdasdasdasdasdasdasdasd");
-                Term existingTerm = termService.findTermById(contract.getTerm().getTermId());
-                contract.setTerm(existingTerm);
-            }
-
-            // Update the contract's status and date
-            contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
-            contract.setDateCreate(new Date());
-
-            // Save the contract entity with the updated term
-            contract = contractService.createContract(contract);
-            notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId(), contract.getCustomer().getId());
-
-            return "redirect:/consultant/contract/detail/" + contract.getContractId();
-        } catch (Exception e) {
-            return "redirect:/consultant/contract";
-        }
-
-    }
-
-    @GetMapping("/manager/contract/edit")
-    public String updateContractByManager(@RequestParam("id") int contractId, Model model) {
-        Contract contract = contractService.getContractById(contractId);
-        if (contract != null) {
-            model.addAttribute("contract", contract);
-            model.addAttribute("quote", contract.getQuote());
-            model.addAttribute("terms", termService.getAllTemplateTerm());
-            model.addAttribute("customer", contract.getCustomer());
-            model.addAttribute("term", contract.getTerm());
-            return "manager/contract/editContract";
-        } else {
-            return "redirect:/manager/contract";
-        }
-
-    }
-
-    @PostMapping("/manager/contract/edit")
-    public String saveUpdatedContractByManager(
-            @ModelAttribute("contract") Contract contract,
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("termOption") String termOption) {
-
-        try {
-            // Handle file upload, only update if a new file is provided
-            String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
-            if (fileURL != null) {
-                contract.setFileURL(fileURL);
-            }
-
-            // Handle term based on the selected termOption
-            Term savedTerm = null;
-
-            if ("custom".equals(termOption)) {
-                // Save custom term details
-                Term newTerm = contract.getTerm();
-                newTerm.setFollowContract(false);
-                newTerm.setIsTemplate(false); // Not a template term
-                savedTerm = termService.save(newTerm); // Save the custom term
-                contract.setTerm(savedTerm);
-
-            } else if ("contract".equals(termOption)) {
-                // Create a new follow-contract term
-                Term followContractTerm = new Term();
-                followContractTerm.setFollowContract(true);
-                followContractTerm.setDescription("Follow contract default term");
-                followContractTerm.setIsTemplate(false); // Not a template
-                savedTerm = termService.save(followContractTerm);
-                contract.setTerm(savedTerm);
-
-            } else if ("existing".equals(termOption) && contract.getTerm() != null) {
-                // Load the existing term by ID (template terms)
-                Term existingTerm = termService.findTermById(contract.getTerm().getTermId());
-                contract.setTerm(existingTerm);
-            }
-
-            // Update the contract's status and date
-            contract.setContractStatus(2);  // Assuming 1 is for 'Pending'
-            contract.setDateCreate(new Date());
-
-            // Save the contract entity with the updated term
-            contract = contractService.createContract(contract);
-            Customer customer = contract.getCustomer();
-            notificationService.createNotification(contract.getContractId(), "contract", customer.getId(), "customer", "Your contract has been updated! Please check it");
-            return "redirect:/manager/contract/detail/" + contract.getContractId();
-        } catch (Exception e) {
-            return "redirect:/manager/contract";
-        }
-
-    }
+}
 
     @PostMapping("/customer/contract/editStatus")
     public String editStatusByCustomer(@RequestParam("id") int contractId, @RequestParam("status") int status) {
@@ -580,5 +502,35 @@ public class ContractController {
         return "redirect:/consultant/contract/detail/" + contractId;
 
     }
+    
+    
+    private void handleTermOption(Contract contract, String termOption) {
+    Term savedTerm = null;
+
+    if ("custom".equals(termOption)) {
+        // Create a new custom term
+        Term newTerm = contract.getTerm();
+        newTerm.setFollowContract(false);
+        newTerm.setIsTemplate(false);
+        savedTerm = termService.save(newTerm);
+        contract.setTerm(savedTerm);
+
+    } else if ("contract".equals(termOption)) {
+        // Create a new follow-contract term
+        Term followContractTerm = new Term();
+        followContractTerm.setFollowContract(true);
+        followContractTerm.setPayOnStartOfDesign(contract.getTerm().isPayOnStartOfDesign());
+        followContractTerm.setPayOnStartOfConstruction(contract.getTerm().isPayOnStartOfConstruction());
+        followContractTerm.setDescription("Follow contract default term");
+        followContractTerm.setIsTemplate(false);
+        savedTerm = termService.save(followContractTerm);
+        contract.setTerm(savedTerm);
+
+    } else if ("existing".equals(termOption) && contract.getTerm() != null) {
+        // Load the existing term by ID
+        Term existingTerm = termService.findTermById(contract.getTerm().getTermId());
+        contract.setTerm(existingTerm);
+    }
+}
 
 }
