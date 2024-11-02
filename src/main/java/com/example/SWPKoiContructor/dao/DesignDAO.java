@@ -172,13 +172,21 @@ public class DesignDAO {
         query.setParameter("staffId", staffId);
         return query.getResultList();
     }
-    public int getCustomerIdByDesignId(int designId){
-        try{
-            TypedQuery<Integer> query = entityManager.createQuery("SELECT d.project.contract.customer.id FROM Design d WHERE d.designId = :id", Integer.class);
-            query.setParameter("id",designId);
+
+    public int getCustomerIdByDesignId(int designId) {
+        try {
+            TypedQuery<Integer> query = entityManager.createQuery(
+                    "SELECT p.contract.customer.id " +
+                            "FROM Design d " +
+                            "JOIN Project p ON d.project.projectId = p.projectId " +
+                            "WHERE d.designId = :designId",
+                    Integer.class
+            );
+            query.setParameter("designId", designId);
             return query.getSingleResult();
-        }catch(NoResultException noResultException){
-            return 0;
+        } catch (NoResultException noResultException) {
+            return 0; // Return 0 if no customer is found
         }
     }
+
 }

@@ -160,39 +160,39 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
-                                                <span class="badge badge-warning badge-status">Pending</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
-                                                <span class="badge badge-success badge-status">Approved By Manager</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 3}">
-                                                <span class="badge badge-warning badge-status">Rejected (Manager)</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                                <span class="badge badge-warning badge-status">Awaiting payment 1</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
-                                                <span class="badge badge-warning badge-status">Rejected (Customer)</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
-                                                <span class="badge badge-warning badge-status">Rejected (Staff)</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
-                                                <span class="badge badge-danger badge-status">Canceled</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
-                                                <span class="badge badge-success badge-status">Deposit Paid</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
-                                                <span class="badge badge-success badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
-                                                                                                 'Awaiting Payment 2':'Service In Progress'}</span>
+                                            <span class="badge badge-warning badge-status">Pending</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
+                                            <span class="badge badge-success badge-status">Approved By Manager</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 3}">
+                                            <span class="badge badge-warning badge-status">Rejected (Manager)</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
+                                            <span class="badge badge-warning badge-status">Awaiting payment 1</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
+                                            <span class="badge badge-warning badge-status">Rejected (Customer)</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
+                                            <span class="badge badge-warning badge-status">Rejected (Staff)</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
+                                            <span class="badge badge-danger badge-status">Canceled</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
+                                            <span class="badge badge-success badge-status">Deposit Paid</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
+                                            <span class="badge badge-success badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
+                                                                                             'Awaiting Payment 2':'Service In Progress'}</span>
                                             </c:when>
                                             <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
-                                                <span class="badge badge-warning badge-status">Fully Paid</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
-                                                <span class="badge badge-warning badge-status">Completed</span>
-                                            </c:when>
+                                            <span class="badge badge-success badge-status">Fully Paid</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
+                                            <span class="badge badge-success badge-status">Completed</span>
+                                        </c:when>
                                     </c:choose>
                                 </td>
                             </tr>
@@ -421,7 +421,7 @@
                     </div>
 
                     <!-- Action Buttons Section -->
-                   
+
 
             </div>
         </div>

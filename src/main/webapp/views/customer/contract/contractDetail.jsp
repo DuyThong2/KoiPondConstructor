@@ -34,11 +34,9 @@
                     }
 
                     .btn-custom {
-                        margin-top: 20px;
-                        padding: 10px 20px;
+                        padding: 10px 15px;
                         font-size: 1rem;
                         border-radius: 5px;
-                        width: 100%;
                         /* Make it full width */
                     }
 
@@ -66,8 +64,35 @@
                         margin-top: 20px;
                     }
                     .btn{
+
                         font-size:20px;
                     }
+
+                        font-size: 20px;
+                        padding: 10px 15px;
+                    }
+                    .modal-content {
+                        border-radius: 10px;
+                        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                        border: none;
+                    }
+                    .modal-header {
+                        background-color: #007bff;
+                        color: white;
+                        border-top-left-radius: 10px;
+                        border-top-right-radius: 10px;
+                        padding: 15px 20px;
+                    }
+                    .modal-title {
+                        font-size: 2.1rem;
+                        font-weight: 700;
+                        margin-left: 150px;
+                    }
+                    .modal-body {
+                        font-size: 1.8rem; /* Tăng kích thước chữ */
+                        color: #555; /* Màu chữ dễ đọc hơn */
+                    }
+
                 </style>
         </head>
         <%@include file="../homePageNavbar.jsp" %>
@@ -339,7 +364,8 @@
                     </div>
 
                     <!-- Action Button (Spanning Full Width) -->
-                  
+
+                 
                 </div>
 
                 <!-- Decline Modal -->
@@ -369,18 +395,56 @@
                                 </form>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason &
+                                <button type="button" class="btn btn-secondary btn-custom" data-dismiss="modal">Cancel</button>
+                                <button type="submit"  form="declineForm" class="btn btn-danger btn-custom">Submit Reason &
                                     Decline</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                </div>
 
+                <!-- Accept Modal -->
+                <div class="modal fade" id="acceptModal" tabindex="-3" role="dialog" aria-labelledby="acceptModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="acceptModalLabel">Accept Contract</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>I have read and agree to all the terms and conditions of this contract.</p>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="termsCheckbox" required>
+                                    <label class="form-check-label" for="termsCheckbox">I agree to the terms and conditions.</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-custom" data-dismiss="modal">Close</button>
+                                <form action="${pageContext.request.contextPath}/customer/contract/editStatus" method="POST"
+                                      class="d-inline">
+                                    <input type="hidden" name="id" value="${contract.contractId}">
+                                    <input type="hidden" name="status" value="6">
+                                    <button type="submit" class="btn btn-success btn-custom" id="acceptButton" disabled>Confirm & Accept</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Bootstrap JS and dependencies -->
                 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                    <script>
+                        // Enable the accept button only if the checkbox is checked
+                        document.getElementById('termsCheckbox').addEventListener('change', function () {
+                            document.getElementById('acceptButton').disabled = !this.checked;
+                        });
+                    </script>
+
             </body>
             <%@include file="../footer.jsp" %>
                 <%@include file="../scriptTemplate.jsp" %>

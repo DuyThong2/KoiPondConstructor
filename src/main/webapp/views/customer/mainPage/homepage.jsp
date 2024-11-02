@@ -206,7 +206,7 @@
                     <div class="banner-3__content blur-backgroud">
                         <h6 class="banner-3__content-subtitle">Introducing Ribuild</h6>
                         <h1 class="banner-3__content-title">Building Excellence with Precision and Passion.</h1>
-                        <a href="index.html" class="rr-btn">
+                        <a href="#" class="rr-btn">
                             <span class="btn-wrap">
                                 <span class="text-one turn-off-animation-button">Explore Service</span>
                             </span>

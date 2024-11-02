@@ -249,9 +249,13 @@ public class DesignController {
         Design design =designStage.getDesign();
         bluePrintService.saveBluePrint(blueprint);
         Customer customer = design.getProject().getContract().getCustomer();
-        int customerId = designService.getCustomerIdByDesignId(designStageId);
-        System.out.println("VAI CA CHUONG");
-        notificationService.createNotification(design.getDesignId(), "design", customerId, "customer", "You are required to pay for design stage");
+        int customerId = designService.getCustomerIdByDesignId(design.getDesignId());
+        System.out.println("VAI CA CHUONG" + customerId);
+        notificationService.createNotification(design.getDesignId(),
+                "design",
+                customerId,
+                "customer",
+                "You are required to pay for design stage");
         System.out.println("VAI CA L ANH THONG");
         redirectAttributes.addFlashAttribute("success", "Upload Successfully!");
         return "redirect:/designer/manage/blueprint/" + designStageId;

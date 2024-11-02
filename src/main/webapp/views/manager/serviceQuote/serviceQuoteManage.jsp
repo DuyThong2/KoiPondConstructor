@@ -257,10 +257,10 @@
                                                                                                  'Awaiting Payment 2':'Service In Progress'}</span>
                                             </c:when>
                                             <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
-                                                <span class="badge badge-warning badge-status">Fully Paid</span>
+                                                <span class="badge badge-success badge-status">Fully Paid</span>
                                             </c:when>
                                             <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
-                                                <span class="badge badge-warning badge-status">Completed</span>
+                                                <span class="badge badge-success badge-status">Completed</span>
                                             </c:when>
                                         </c:choose>
                                     </td>

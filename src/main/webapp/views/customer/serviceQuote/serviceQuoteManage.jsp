@@ -124,7 +124,9 @@
             .modal {
                 opacity: 1 !important;
             }
-
+            .d-flex{
+                margin-top: 0;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>
@@ -217,10 +219,8 @@
                                                     <td>${serviceQuote.serviceQuotesArea} m²</td>
                                                     <td>${serviceQuote.serviceQuotesTotalPrice}</td>
                                                     <td>${serviceQuote.usedPoint}</td>
-                                                    <td>${(serviceQuote.serviceQuotesTotalPrice / 2) - serviceQuote.calculatePointUsing()}</td>
-                                                    <td>${!serviceQuote.isServiceDetailOfQuoteFinished()?
-                                                          (serviceQuote.serviceQuotesTotalPrice / 2) :
-                                                           serviceQuote.calculateTotalPricePayment() - serviceQuote.calculatePointUsing()}</td>
+                                                    <td>${!serviceQuote.isFree() ? serviceQuote.calculateDeposit() : '0'}</td>
+                                                    <td>${!serviceQuote.isFree()? serviceQuote.calculateFullPaid():'0'}</td>
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
@@ -243,10 +243,10 @@
                                                                                                                  'Awaiting Payment 2':'Service In Progress'}</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
-                                                                <span class="badge badge-warning badge-status">Fully Paid</span>
+                                                                <span class="badge badge-success badge-status">Fully Paid</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
-                                                                <span class="badge badge-warning badge-status">Completed</span>
+                                                                <span class="badge badge-sucess badge-status">Completed</span>
                                                             </c:when>
                                                         </c:choose>
                                                     </td>
@@ -274,7 +274,7 @@
                                                                 <c:if test="${!serviceQuote.isFree()}">
                                                                     <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post">
                                                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
-                                                                        <input type="hidden" name="amount" value="${serviceQuote.serviceQuotesTotalPrice / 2}" />
+                                                                        <input type="hidden" name="amount" value="${serviceQuote.calculateDeposit()}" />
                                                                         <input type="hidden" name="point" value="${serviceQuote.calculatePointUsing()}" />
                                                                         <button type="submit" class="btn btn-info">Pay Deposit</button>
                                                                     </form>
@@ -289,7 +289,7 @@
                                                                             && !serviceQuote.isAllServiceFailed()}">
                                                                     <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post">
                                                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
-                                                                        <input type="hidden" name="amount" value="${serviceQuote.calculateTotalPricePayment()}" />
+                                                                        <input type="hidden" name="amount" value="${serviceQuote.calculateFullPaid()}" />
                                                                         <input type="hidden" name="point" value="${serviceQuote.calculatePointUsing()}" />
                                                                         <button type="submit" class="btn btn-info">Pay Full</button>
                                                                     </form>

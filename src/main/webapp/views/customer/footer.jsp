@@ -26,6 +26,10 @@
                                     <li>Mon - Sat: 8AM - 6PM</li>
                                 </ul>
                             </div>
+
+                        </div>
+                        <div class="map-frame">
+                            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15679.486464949808!2d106.8078277!3d10.8406272!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752731176b07b1%3A0xb752b24b379bae5e!2sFPT%20University%20HCMC!5e0!3m2!1sen!2s!4v1690445842055!5m2!1sen!2s" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
 
@@ -165,7 +169,7 @@
                         <div class="footer-2__copyright-menu">
                             <ul>
                                 <li><a href="${pageContext.request.contextPath}/home/privatePolicy">Privacy Policy</a></li>
-                                <li><a href="#">Terms & Conditions</a></li>
+                                <li><a href="${pageContext.request.contextPath}/home/term&Service">Terms & Service</a></li>
                             </ul>
                         </div>
                     </div>

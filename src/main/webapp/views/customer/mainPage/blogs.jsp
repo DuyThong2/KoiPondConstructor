@@ -297,7 +297,7 @@
                 <div class="search__wrapper">
                     <div class="search__top d-flex justify-content-between align-items-center">
                         <div class="search__logo">
-                            <a href="index.html">
+                            <a href="#">
                                 <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                             </a>
                         </div>
@@ -344,7 +344,7 @@
             <div class="offcanvas__content">
                 <div class="offcanvas__top d-flex justify-content-between align-items-center">
                     <div class="offcanvas__logo">
-                        <a href="index.html">
+                        <a href="#">
                             <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                         </a>
                     </div>
@@ -369,7 +369,7 @@
                 </div>
                 <div class="offcanvas__btn">
                     <div class="header__btn-wrap">
-                        <a href="contact.html" class="rr-btn__header d-sm-none mb-10 w-100">
+                        <a href="#" class="rr-btn__header d-sm-none mb-10 w-100">
                                     <span class="btn-wrap">
                                         <span class="text-one">Get Started</span>
                                         <span class="text-two">Get Started</span>
@@ -426,6 +426,7 @@
                         <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separator"></span>Trending Topics<span data-width="40px" class="right-separator"></span></span>
                         <h2 class="section__title title-animation text-capitalize rr-br-hidden-md" data-cursor="-opaque">Latest Articles & Blog Posts</h2>
                     </div>
+
                 </div>
             </div>
 
@@ -433,15 +434,15 @@
                 <c:forEach var="blog" items="${blogs}">
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="blog__item has-box-shadow mb-30" style="border-radius: 8px; overflow: hidden; transition: transform 0.3s;">
-                            <a href="blog-details.html" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
+                            <a href="#" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
                                 <img src="${blog.getShowingImg(blog.imgUrl)}" alt="image not found" class="img-fluid" style="width: 100%; height: auto; transition: transform 0.3s;">
                             </a>
                             <div class="blog__item-text p-4" style="background-color: #ffffff;">
                                 <div class="blog__item-meta mb-10 text-muted d-flex justify-content-between">
-                                    <a href="blog-details.html" class="text-secondary">
+                                    <a href="#" class="text-secondary">
                                         <i class="fas fa-user"></i> ${blog.staff.name}
                                     </a>
-                                    <a href="blog-details.html" class="text-secondary">
+                                    <a href="#" class="text-secondary">
                                         <i class="fas fa-calendar"></i> <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/>
                                     </a>
                                 </div>
@@ -478,6 +479,7 @@
                     <c:if test="${!hasMoreServices}">
                         <button class="rr-btn" disabled>&gt;</button>
                     </c:if>
+
                 </div>
             </div>
         </div>
