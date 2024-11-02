@@ -135,7 +135,7 @@ public class PreDesignDAO {
         return preDesign;
     }
     public List<PreDesign> getRelatedPreDesign(int id){
-        String jpql = "SELECT p from PreDesign p where p.preDesignId !=" + id + " ORDER BY FUNCTION('RAND')";
+        String jpql = "SELECT p from PreDesign p where p.preDesignId !=" + id + " and p.preDesignStatus=true ORDER BY FUNCTION('RAND')";
         TypedQuery<PreDesign> query = entityManager.createQuery(jpql, PreDesign.class);
         return query.setMaxResults(6).getResultList();
     }

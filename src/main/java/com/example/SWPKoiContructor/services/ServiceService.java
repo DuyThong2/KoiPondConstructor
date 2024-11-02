@@ -107,4 +107,8 @@ public class ServiceService {
     public List<Service> getRelatedService(int id) {
         return serviceDAO.getRelatedService(id);
     }
+
+    public List<Service> getSomeService(int i) {
+        return serviceDAO.getSomeService(i);
+    }
 }

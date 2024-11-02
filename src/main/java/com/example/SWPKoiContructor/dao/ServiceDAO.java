@@ -232,4 +232,10 @@ public class ServiceDAO {
         query.setParameter("id", id);
         return query.setMaxResults(6).getResultList();
     }
+
+    public List<Service> getSomeService(int i) {
+        String sql = "SELECT s FROM Service s WHERE s.serviceStatus=1 ORDER BY function('RAND')";
+        TypedQuery<Service> query = entityManager.createQuery(sql, Service.class);
+        return query.setMaxResults(i).getResultList();
+    }
 }
