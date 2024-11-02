@@ -124,7 +124,9 @@
             .modal {
                 opacity: 1 !important;
             }
-
+            .d-flex{
+                margin-top: 0;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>

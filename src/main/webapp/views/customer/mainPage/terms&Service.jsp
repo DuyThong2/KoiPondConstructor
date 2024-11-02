@@ -7,7 +7,6 @@
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>HappiKoi</title>
-        <meta name="description" content="Ribuild - Construction Company HTML5 Template">
         <meta name="author" content="ahmmedsabbirbd">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Place favicon.ico in the root directory -->
@@ -214,7 +213,7 @@
                                 <span class="section__subtitle justify-content-start mb-13"><span data-width="40px" class="left-separetor">
                                     </span>Policy</span>
                                 <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
-                                    data-cursor="-opaque">Private Policy
+                                    data-cursor="-opaque">Terms & Services
                                 </h2>
                             </div>
                         </div>
@@ -224,65 +223,49 @@
             <div class="content-box">
                 <div class="container">
 
-                    <h3>1. Information Collection</h3>
+                    <h3>1. Acceptance of Terms</h3>
                     <ul>
-                        <li>We collect personal information such as your name, email address, phone number,
-                            address, and other necessary details<br> when you register an account or submit a service request for Koi pond construction or maintenance.</li>
-                        <li>Transaction data, including payment information and order history, is stored to manage and process your service requests.</li>
-                        <li>We use cookies to improve the user experience and track behavior on our website.</li>
+                        <li>By using our Koi pond construction management system, you agree to comply with all terms and conditions outlined in this document.</li>
+                        <li>We reserve the right to update or modify these terms without prior notice. It is your responsibility to review these terms periodically.</li>
                     </ul>
 
 
-                    <h3>2. Use of Information</h3>
+                    <h3>2. Service Requests and Payment</h3>
                     <ul>
-                        <li>To process and manage Koi pond construction requests, from consultation to completion and maintenance.</li>
-                        <li>To provide cleaning, maintenance, and care services for Koi ponds on a scheduled or on-demand basis.</li>
-                        <li>To communicate with customers and provide updates on the progress of construction or maintenance services.</li>
-                        <li>To improve our services and optimize the user experience on our website.</li>
+                        <li>Customers may request Koi pond construction services based on our available designs or their own custom requirements. Requests will be confirmed via email or phone.</li>
+                        <li>Full payment must be made as specified. If payment fails, we reserve the right to cancel the order.</li>
                     </ul>
 
 
-                    <h3>3. Data Security</h3>
-                    <ul style="margin-left: 15px">
-                        <li>Your information is protected with appropriate security measures and is only accessible by authorized personnel.</li>
-                        <li>Payment transactions are secured to ensure the safety of your financial data.</li>
+                    <h3>3. Order Cancellation and Refunds</h3>
+                    <ul>
+                        <li>You can cancel your service request within 24 hours. If cancellation occurs after design or construction work has begun, we may refuse or only partially refund the payment.</li>
+                        <li>Refund details will be provided during the service request process.</li>
                     </ul>
 
-                    <h3>4. Third-Party Disclosure</h3>
-                    <p>We do not share your personal information unless necessary to complete the service,
-                        such as sharing information with partners<br> or vendors who assist with pond construction and maintenance.</p>
+                    <h3>4. Maintenance and Cleaning Services</h3>
+                    <ul>
+                        <li>Scheduled or on-demand maintenance and cleaning services for Koi ponds will be assigned to our staff, and the results will be recorded.</li>
+                        <li>Customers can rate the quality of service after completion.</li>
+                    </ul>
+                    <h3>5. Warranty and Maintenance</h3>
+                    <ul>
+                        <li>After completing Koi pond construction, we provide periodic maintenance services for a specified time. Warranty details will be outlined in the service contract.</li>
+                        <li>We are not responsible for damage caused by natural events or improper use.
+                        </li>
+                    </ul>
 
-                    <h3>5. Your Rights</h3>
-                    <p>You have the right to access, modify, or delete your personal information at any time. Please contact us to exercise these rights.</p>
+                    <h3>6. Intellectual Property Rights</h3>
+                    <p>All content, images, designs, and materials on this system are the property of our company. Unauthorized copying, distribution, or use is prohibited and may result in legal action.</p>
 
-                    <h3>6. Policy Updates</h3>
-                    <p>We may update this Privacy Policy periodically. Changes will be posted on this page, and significant updates may be communicated via email.</p>
+                    <h3>7. Limitation of Liability</h3>
+                    <ul>
+                        <li>We are not liable for any direct, indirect, or incidental damages arising from the use or inability to use our services.</li>
+                        <li>Our total liability will not exceed the amount you have paid for the service.</li>
+                    </ul>
+                    <h3>8. Contact Information</h3>
+                    <p>If you have questions or concerns regarding the terms and services, please contact us at happikoi@contructioninc.com or via the phone number on our website.</p>
 
-                    <h3>7. Cookies and Web Beacons</h3>
-                    <p>We use cookies and web beacons to track user preferences, improve navigation, and customize advertising content. You can disable cookies in your browser settings, but this may limit some website features.</p>
-
-                    <h3>8. Third-Party Analytics</h3>
-                    <p>We partner with analytics providers, such as Google Analytics, to monitor website traffic. These services may collect information like your IP address, browser type, and visited pages to help us understand user engagement.</p>
-
-                    <h3>9. Consent to Data Transfer</h3>
-                    <p>Your information, including personal data, may be transferred to and maintained on servers outside your city, state, or country. By using our services, you consent to this transfer.</p>
-
-                    <h3>10. Child Privacy Protection</h3>
-                    <p>We do not knowingly collect or solicit personal information from children under the age of 13. If we discover that we have inadvertently
-                        collected information from a child under 13 without parental consent, we will delete that information as quickly as possible.</p>
-
-                    <h3>11. Advertising and Marketing</h3>
-                    <p>With your consent, we may send promotional emails or notifications about new products, services, or offers. You can opt out of marketing communications at any time.</p>
-
-                    <h3>12. External Links</h3>
-                    <p>Our website may contain links to external sites not operated by us. We are not responsible for the content or privacy practices of these sites and encourage you to review their privacy policies.</p>
-
-                    <h3>13. Payment Policy</h3>
-                    <p>We accept various forms of payment, including credit cards, debit cards, and online payment methods.
-                        Full payment must be made at the time of purchase. We reserve the right to cancel orders if payment fails.</p>
-                    <h3>14. Cancellation Policy</h3>
-                    <p>You may cancel your order within 24 hours of placing it by contacting customer service.
-                        If the order has already been processed or shipped, cancellation may not be possible. Refunds for cancellations will be processed according to our refund policy.</p>
                 </div>
             </div>
 
