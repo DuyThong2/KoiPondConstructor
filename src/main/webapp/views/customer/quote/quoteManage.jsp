@@ -126,6 +126,14 @@
             .d-flex{
                 margin: 0;
             }
+            .btn-modal{
+                padding:5px 10px;
+                font-size: 15px;
+            }
+            .btn-success{
+                padding: 7px 10px;
+
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>
@@ -343,8 +351,8 @@
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <button type="submit" form="acceptForm" class="btn btn-success">Yes</button>
+                                        <button type="button" class="btn btn-secondary btn-modal" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" form="acceptForm" class="btn btn-success btn-modal">Yes</button>
                                     </div>
                                 </div>
                             </div>

@@ -221,4 +221,8 @@ public class HomepageController {
     public String privatePolicy(Model model) {
         return "customer/mainPage/privatePolicy";
     }
+    @GetMapping("/home/term&Service")
+    public String termsAndService(Model model) {
+        return "customer/mainPage/terms&Service";
+    }
 }
