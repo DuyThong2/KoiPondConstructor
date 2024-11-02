@@ -31,7 +31,7 @@ public class ParcelDAO {
         return tq.getResultList();
     }
     public List<Parcel> viewParcelActiveList() {
-        TypedQuery<Parcel> tq = entityManager.createQuery("SELECT p FROM Parcel p where p.package_status = 1", Parcel.class);
+        TypedQuery<Parcel> tq = entityManager.createQuery("SELECT p FROM Parcel p where p.package_status = 1 order by p.designOnSquareRoot asc, p.constructionPriceOnSquareRoot asc", Parcel.class);
         return tq.getResultList();
     }
     //---------------------------------------------- VIEW PARCEL MANAGER HAVE SORT FILTER ----------------------------------------------------    
