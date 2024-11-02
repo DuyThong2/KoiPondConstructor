@@ -34,9 +34,9 @@ public class ProjectDAO {
         return query.getResultList();
     }
 
-    public List<Project> getProjectListIsSharable() {
+    public List<Project> getProjectListIsSharable(int number) {
         TypedQuery<Project> query = entityManager.createQuery("Select c from Project c where c.isSharedAble= true order by c.dateEnd desc", Project.class);
-        return query.getResultList();
+        return query.setMaxResults(number).getResultList();
     }
 
     public List<Project> getPaginationProjectList(int page, int size, String sortBy, String sortType) {

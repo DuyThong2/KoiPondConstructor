@@ -131,6 +131,9 @@
                     </c:choose>
                 </p>
             </div>
+            <div>
+                <a href="${pageContext.request.contextPath}/designer/design/detail/${project.design.designId}" class="btn btn-primary">Design detail</a>
+            </div>
         </div>
     </div>
 </div>

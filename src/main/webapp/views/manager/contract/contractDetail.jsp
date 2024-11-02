@@ -101,11 +101,11 @@
     <body>
         <div class="container-fluid mt-5">
             <div class="row">
-
+                <!-- Include Navbar -->
                 <%@include file="../navBar.jsp" %>
 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-
+                    <!-- Contract Details Section -->
                     <div class="section-card">
                         <h2 class="section-header"><i class="fas fa-file-contract"></i> Contract Details</h2>
                         <table class="table table-striped">
@@ -190,6 +190,78 @@
                                 <td>${contract.priceOnCompleteConstruction}</td>
                             </tr>
                         </table>
+                        <div class="action-buttons">
+                            <c:choose>
+                                <c:when test="${contract.contractStatus == 1}">
+                                    <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
+                                        <input type="hidden" name="id" value="${contract.contractId}">
+                                        <input type="hidden" name="status" value="2">
+                                        <button type="submit" class="btn btn-success"><i class="fas fa-check icon-btn"></i> Approve</button>
+                                    </form>
+                                    <!--                            <form action="/manager/contract/editStatus" method="POST" class="d-inline">
+                                    <input type="hidden" name="id" value="$/{contract.quote.staff.id}">
+                                    <input type="hidden" name="status" value="4">
+                                    <button type="submit" class="btn btn-warning"><i class="fas fa-times icon-btn"></i> Reject</button>
+                                    </form>-->
+                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                            onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
+                                                    document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
+                                                    document.getElementById('declineForm').status.value = '4';"><i class="fas fa-times icon-btn"></i>
+                                        Reject
+                                    </button>
+                                    <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
+                                        <input type="hidden" name="id" value="${contract.contractId}">
+                                        <input type="hidden" name="status" value="5">
+                                        <button type="submit" class="btn btn-danger"><i class="fas fa-ban icon-btn"></i> Cancel</button>
+                                    </form>
+                                </c:when>
+
+                                <c:when test="${contract.contractStatus == 3}">
+                                    <div class="mt-4 text-center">
+                                        <div class="alert alert-danger text-center" role="alert">
+                                            <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                        </div>
+                                        <p>Status: <span class="badge badge-danger">Refused by Customer</span></p>
+                                        <form action="${pageContext.request.contextPath}/manager/contract/edit" method="GET" class="d-inline">
+                                            <input type="hidden" name="id" value="${contract.contractId}">
+                                            <button type="submit" class="btn btn-primary">Edit</button>
+                                        </form>
+                                        <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
+                                            <input type="hidden" name="id" value="${contract.contractId}">
+                                            <input type="hidden" name="status" value="5">
+                                            <button type="submit" class="btn btn-danger">Cancel</button>
+                                        </form>
+                                    </div>
+                                </c:when>
+
+                                <c:when test="${contract.contractStatus == 4}">
+                                    <div class="text-center">
+                                        <div class="alert alert-danger text-center" role="alert">
+                                            <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                        </div>
+                                    </div>
+                                </c:when>
+
+                                <c:when test="${contract.contractStatus == 6 && empty contract.project}">
+                                    <div class="mt-4 text-center">
+                                        <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
+                                        <form action="${pageContext.request.contextPath}/manager/project/create" method="GET" class="d-inline">
+                                            <input type="hidden" name="id" value="${contract.contractId}">
+                                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
+                                        </form>
+                                    </div>
+
+                                </c:when>
+                                <c:when test="${not empty contract.project}">
+                                    <div class="mt-4 text-center">
+                                        <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
+                                        <form action="${pageContext.request.contextPath}/manager/projects/detail/${contract.contractId}" method="GET" class="d-inline">
+                                            <button type="submit" class="btn btn-success">VIEW PROJECT</button>
+                                        </form>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+                        </div>
                     </div>
 
                     <div class="row">
@@ -296,6 +368,8 @@
                             </div>
                         </div>
 
+
+                        <!-- Project and Customer Details Section -->
                         <div class="col-md-6">
                             <div class="section-card">
                                 <h4 class="section-header"><i class="fas fa-project-diagram"></i> Associated Project</h4>
@@ -344,113 +418,44 @@
                             </div>
                         </div>
                     </div>
+            </div>
+            <!-- Action Buttons Section -->
 
-                    <div class="action-buttons">
-                        <c:choose>
-                            <c:when test="${contract.contractStatus == 1}">
-                                <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
-                                    <input type="hidden" name="id" value="${contract.contractId}">
-                                    <input type="hidden" name="status" value="2">
-                                    <button type="submit" class="btn btn-success"><i class="fas fa-check icon-btn"></i> Approve</button>
-                                </form>
-                                <!--                            <form action="/manager/contract/editStatus" method="POST" class="d-inline">
-                                <input type="hidden" name="id" value="$/{contract.quote.staff.id}">
-                                <input type="hidden" name="status" value="4">
-                                <button type="submit" class="btn btn-warning"><i class="fas fa-times icon-btn"></i> Reject</button>
-                                </form>-->
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
-                                        onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
-                                                document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
-                                                document.getElementById('declineForm').status.value = '4';"><i class="fas fa-times icon-btn"></i>
-                                    Reject
-                                </button>
-                                <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
-                                    <input type="hidden" name="id" value="${contract.contractId}">
-                                    <input type="hidden" name="status" value="5">
-                                    <button type="submit" class="btn btn-danger"><i class="fas fa-ban icon-btn"></i> Cancel</button>
-                                </form>
-                            </c:when>
+        </main>
+    </div>
+</div>
 
-                            <c:when test="${contract.contractStatus == 3}">
-                                <div class="mt-4 text-center">
-                                    <div class="alert alert-danger text-center" role="alert">
-                                        <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
-                                    </div>
-                                    <p>Status: <span class="badge badge-danger">Refused by Customer</span></p>
-                                    <form action="${pageContext.request.contextPath}/manager/contract/edit" method="GET" class="d-inline">
-                                        <input type="hidden" name="id" value="${contract.contractId}">
-                                        <button type="submit" class="btn btn-primary">Edit</button>
-                                    </form>
-                                    <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
-                                        <input type="hidden" name="id" value="${contract.contractId}">
-                                        <input type="hidden" name="status" value="5">
-                                        <button type="submit" class="btn btn-danger">Cancel</button>
-                                    </form>
-                                </div>
-                            </c:when>
-
-                            <c:when test="${contract.contractStatus == 4}">
-                                <div class="text-center">
-                                    <div class="alert alert-danger text-center" role="alert">
-                                        <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
-                                    </div>
-                                </div>
-                            </c:when>
-
-                            <c:when test="${contract.contractStatus == 6 && empty contract.project}">
-                                <div class="mt-4 text-center">
-                                    <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
-                                    <form action="${pageContext.request.contextPath}/manager/project/create" method="GET" class="d-inline">
-                                        <input type="hidden" name="id" value="${contract.contractId}">
-                                        <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
-                                    </form>
-                                </div>
-
-                            </c:when>
-                            <c:when test="${not empty contract.project}">
-                                <div class="mt-4 text-center">
-                                    <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
-                                    <form action="${pageContext.request.contextPath}/manager/projects/detail/${contract.contractId}" method="GET" class="d-inline">
-                                        <button type="submit" class="btn btn-success">VIEW PROJECT</button>
-                                    </form>
-                                </div>
-                            </c:when>
-                        </c:choose>
+<!-- Decline Modal -->
+<div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="declineForm" action="${pageContext.request.contextPath}/manager/contract/editStatusAndFeedback" method="post">
+                    <input type="hidden" name="id" value="">
+                    <input type="hidden" name="status" value="">
+                    <input type="hidden" name="toUserId" value="">
+                    <div class="form-group">
+                        <label for="declineReason">Please provide a reason for declining this quote:</label>
+                        <textarea class="form-control" id="declineReason" name="declineReason" rows="4" required></textarea>
                     </div>
-                </main>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason & Decline</button>
             </div>
         </div>
-
-        <div class="modal fade" id="declineModal" tabindex="-1" role="dialog" aria-labelledby="declineModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="declineForm" action="${pageContext.request.contextPath}/manager/contract/editStatusAndFeedback" method="post">
-                            <input type="hidden" name="id" value="">
-                            <input type="hidden" name="status" value="">
-                            <input type="hidden" name="toUserId" value="">
-                            <div class="form-group">
-                                <label for="declineReason">Please provide a reason for declining this quote:</label>
-                                <textarea class="form-control" id="declineReason" name="declineReason" rows="4" required></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason & Decline</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div style="height:6vh;"></div>
-        <!-- Bootstrap JS and dependencies -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    </body>
+    </div>
+</div>
+<div style="height:6vh;"></div>
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
 </html>

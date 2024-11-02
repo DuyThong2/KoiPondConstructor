@@ -34,9 +34,11 @@
             }
 
             .btn-custom {
-                padding: 10px 15px;
+                margin-top: 20px;
+                padding: 10px 20px;
                 font-size: 1rem;
                 border-radius: 5px;
+                width: 100%;
                 /* Make it full width */
             }
 
@@ -64,31 +66,8 @@
                 margin-top: 20px;
             }
             .btn{
-                font-size: 20px;
-                padding: 10px 15px;
+                font-size:20px;
             }
-            .modal-content {
-                border-radius: 10px;
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-                border: none;
-            }
-            .modal-header {
-                background-color: #007bff;
-                color: white;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-                padding: 15px 20px;
-            }
-            .modal-title {
-                font-size: 2.1rem;
-                font-weight: 700;
-                margin-left: 150px;
-            }
-            .modal-body {
-                font-size: 1.8rem; /* Tăng kích thước chữ */
-                color: #555; /* Màu chữ dễ đọc hơn */
-            }
-
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp" %>
@@ -116,6 +95,7 @@
         </section>
         <div class="container mt-5">
             <div class="row">
+                <!-- Contract Details Section (50%) -->
                 <div class="col-md-6 contract-section">
                     <h2 class="section-header"><i class="fas fa-file-contract"></i> Contract
                         Details</h2>
@@ -204,8 +184,46 @@
                             <td>${contract.priceOnCompleteConstruction}</td>
                         </tr>
                     </table>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <c:choose>
+                                <c:when test="${contract.contractStatus == 2}">
+                                    <div class="mt-4 text-center">
+                                        <button type="button" class="btn btn-success" data-toggle="modal"
+                                                data-target="#acceptModal">Accept</button>
+                                        <!--                            <form action="/customer/contract/editStatus" method="POST" class="d-inline">
+                                                            <input type="hidden" name="id" value="$/{contract.contractId}">
+                                                            <input type="hidden" name="status" value="3">
+                                                            <button type="submit" class="btn btn-warning">Reject</button>
+                                                        </form>-->
+                                        <button type="button" class="btn btn-lg btn-danger" data-toggle="modal"
+                                                data-target="#declineModal" onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
+                                                            document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
+                                                            document.getElementById('declineForm').status.value = '3';"><i
+                                                class="fas fa-times icon-btn"></i>
+                                            Reject
+                                        </button>
+                                        <form action="${pageContext.request.contextPath}/customer/contract/editStatus"
+                                              method="POST" class="d-inline">
+                                            <input type="hidden" name="id" value="${contract.contractId}">
+                                            <input type="hidden" name="status" value="5">
+                                            <button type="submit" class="btn btn-lg btn-danger">Cancel</button>
+                                        </form>
+                                    </div>
+                                </c:when>
+                                <c:when test="${contract.contractStatus == 3}">
+                                    <div class="mt-4 text-center">
+                                        <div class="alert alert-danger text-center" role="alert">
+                                            <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                        </div>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+                        </div>
+                    </div>
                 </div>
 
+                <!-- Term Details Section (50%) -->
                 <div class="col-md-6 term-section">
                     <h2 class="section-header text-primary"><i class="fas fa-file-alt"></i> Associated Term</h2>
                     <c:if test="${not empty contract.term}">
@@ -308,6 +326,7 @@
                 </div>
             </div>
 
+            <!-- Project and Customer Details Row -->
             <div class="row">
                 <!-- Project Details (50%) -->
                 <div class="col-md-6 project-section">
@@ -360,84 +379,43 @@
             </div>
 
             <!-- Action Button (Spanning Full Width) -->
-            <div class="row">
-                <div class="col-md-12">
-                    <c:choose>
-                        <c:when test="${contract.contractStatus == 2}">
-                            <div class="mt-4 text-center">
-                                <div class="mt-4 text-center">
-                                    <button type="button" class="btn btn-success" data-toggle="modal"
-                                            data-target="#acceptModal">Accept</button>
 
-                                    <!--                            <form action="/customer/contract/editStatus" method="POST" class="d-inline">
-                                                        <input type="hidden" name="id" value="$/{contract.contractId}">
-                                                        <input type="hidden" name="status" value="3">
-                                                        <button type="submit" class="btn btn-warning">Reject</button>
-                                                    </form>-->
-                                    <button type="button" class="btn btn-danger" data-toggle="modal"
-                                            data-target="#declineModal" onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
-                                                    document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
-                                                    document.getElementById('declineForm').status.value = '3';"><i
-                                            class="fas fa-times icon-btn"></i>
-                                        Reject
-                                    </button>
-                                    <form action="${pageContext.request.contextPath}/customer/contract/editStatus"
-                                          method="POST" class="d-inline">
-                                        <input type="hidden" name="id" value="${contract.contractId}">
-                                        <input type="hidden" name="status" value="5">
-                                        <button type="submit" class="btn btn-danger">Cancel</button>
-                                    </form>
-                                </div>
-                            </c:when>
-                            <c:when test="${contract.contractStatus == 3}">
-                                <div class="mt-4 text-center">
-                                    <div class="alert alert-danger text-center" role="alert">
-                                        <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
-                                    </div>
-                                </div>
-                            </c:when>
-                        </c:choose>
+        </div>
+
+        <!-- Decline Modal -->
+        <div class="modal fade" id="declineModal" tabindex="-1" role="dialog"
+             aria-labelledby="declineModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
-                </div>
-                <%@include file="../spacing.jsp" %>
-            </div>
-
-            <!-- Decline Modal -->
-            <div class="modal fade" id="declineModal" tabindex="-1" role="dialog"
-                 aria-labelledby="declineModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="declineForm"
-                                  action="${pageContext.request.contextPath}/customer/contract/editStatusAndFeedback"
-                                  method="post">
-                                <input type="hidden" name="id" value="">
-                                <input type="hidden" name="status" value="">
-                                <input type="hidden" name="toUserId" value="">
-                                <div class="form-group">
-                                    <label for="declineReason">Please provide a reason for declining this
-                                        quote:</label>
-                                    <textarea class="form-control" id="declineReason" name="declineReason" rows="4"
-                                              required></textarea>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary btn-custom" data-dismiss="modal">Cancel</button>
-                            <button type="submit"  form="declineForm" class="btn btn-danger btn-custom">Submit Reason &
-                                Decline</button>
-                        </div>
+                    <div class="modal-body">
+                        <form id="declineForm"
+                              action="${pageContext.request.contextPath}/customer/contract/editStatusAndFeedback"
+                              method="post">
+                            <input type="hidden" name="id" value="">
+                            <input type="hidden" name="status" value="">
+                            <input type="hidden" name="toUserId" value="">
+                            <div class="form-group">
+                                <label for="declineReason">Please provide a reason for declining this
+                                    quote:</label>
+                                <textarea class="form-control" id="declineReason" name="declineReason" rows="4"
+                                          required></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason &
+                            Decline</button>
                     </div>
                 </div>
             </div>
         </div>
-
         <!-- Accept Modal -->
         <div class="modal fade" id="acceptModal" tabindex="-3" role="dialog" aria-labelledby="acceptModalLabel"
              aria-hidden="true">
@@ -468,8 +446,9 @@
                 </div>
             </div>
         </div>
+
         <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
         <script>
@@ -478,7 +457,6 @@
                                                     document.getElementById('acceptButton').disabled = !this.checked;
                                                 });
         </script>
-
     </body>
     <%@include file="../footer.jsp" %>
     <%@include file="../scriptTemplate.jsp" %>

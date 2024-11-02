@@ -452,15 +452,16 @@ public String saveUpdatedContractByManager(
         Contract contract = contractService.changeStatusContract(status, contractId);
         Staff staff = contract.getQuote().getStaff();
         String statusString = "";
+        Customer customer = contract.getCustomer();
         if (status == 2) {
             statusString = "Accepted";
-            Customer customer = contract.getCustomer();
-            notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "You contract has been approved! Please check it!");
+            notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract has been approved! Please check it!");
         } else if (status == 4) {
             statusString = "Rejected";
         }
         if (status == 5) {
             statusString = "Cancelled";
+            notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract has been cancelled!");
         }
         notificationService.changeNotificationToConsultant(staff.getId(), contract.getCustomer().getName(), contractId, status, "Manager", "contract", statusString);
 
