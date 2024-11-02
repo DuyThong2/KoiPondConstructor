@@ -39,8 +39,8 @@ public class ProjectService {
 
     }
 
-    public List<Project> getProjectListIsSharable() {
-        return projectDAO.getProjectListIsSharable();
+    public List<Project> getProjectListIsSharable(int number) {
+        return projectDAO.getProjectListIsSharable(number);
     }
 
     public List<Project> getPaginationProjectList(int page, int size, String sortBy, String sortType) {
@@ -176,10 +176,10 @@ public class ProjectService {
             Construction construction = project.getConstruction();
             ConstructionStage startingConstructionStage = construction.getConstructionStage().get(0);
             ConstructionStageDetail startingConstructionStageDetail = startingConstructionStage.getConstructionStageDetail().get(0);
+
             switch (project.getStage()) {
                 case 1:
                     project.setStage(2);
-                    project.setStatus(2);
                     design.setStatus(2);
                     startingDesignStage.setDesignStageStatus(2);
                     stratingDesignStageDetail.setStatus(2);
@@ -205,6 +205,8 @@ public class ProjectService {
             projectDAO.updateProject(project);
         }
     }
+
+
 
     public long countProjectProcessing() {
         return projectDAO.countProjectProcessing();

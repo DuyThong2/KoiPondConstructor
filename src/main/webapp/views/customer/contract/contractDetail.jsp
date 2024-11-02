@@ -64,6 +64,10 @@
                         margin-top: 20px;
                     }
                     .btn{
+
+                        font-size:20px;
+                    }
+
                         font-size: 20px;
                         padding: 10px 15px;
                     }
@@ -201,6 +205,47 @@
                                     <td>${contract.priceOnCompleteConstruction}</td>
                                 </tr>
                             </table>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <c:choose>
+                                        <c:when test="${contract.contractStatus == 2}">
+                                            <div class="mt-4 text-center">
+                                                <form action="${pageContext.request.contextPath}/customer/contract/editStatus"
+                                                    method="POST" class="d-inline">
+                                                    <input type="hidden" name="id" value="${contract.contractId}">
+                                                    <input type="hidden" name="status" value="6">
+                                                    <button type="submit" class="btn btn-lg btn-success">Accept</button>
+                                                </form>
+                                                <!--                            <form action="/customer/contract/editStatus" method="POST" class="d-inline">
+                                                                    <input type="hidden" name="id" value="$/{contract.contractId}">
+                                                                    <input type="hidden" name="status" value="3">
+                                                                    <button type="submit" class="btn btn-warning">Reject</button>
+                                                                </form>-->
+                                                <button type="button" class="btn btn-lg btn-danger" data-toggle="modal"
+                                                    data-target="#declineModal" onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
+                                                document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
+                                                document.getElementById('declineForm').status.value = '3';"><i
+                                                        class="fas fa-times icon-btn"></i>
+                                                    Reject
+                                                </button>
+                                                <form action="${pageContext.request.contextPath}/customer/contract/editStatus"
+                                                    method="POST" class="d-inline">
+                                                    <input type="hidden" name="id" value="${contract.contractId}">
+                                                    <input type="hidden" name="status" value="5">
+                                                    <button type="submit" class="btn btn-lg btn-danger">Cancel</button>
+                                                </form>
+                                            </div>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 3}">
+                                            <div class="mt-4 text-center">
+                                                <div class="alert alert-danger text-center" role="alert">
+                                                    <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                                </div>
+                                            </div>
+                                        </c:when>
+                                    </c:choose>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Term Details Section (50%) -->
@@ -319,47 +364,8 @@
                     </div>
 
                     <!-- Action Button (Spanning Full Width) -->
-                    <div class="row">
-                        <div class="col-md-12">
-                            <c:choose>
-                                <c:when test="${contract.contractStatus == 2}">
-                                    <div class="mt-4 text-center">
-                                        <div class="mt-4 text-center">
-                                            <button type="button" class="btn btn-success" data-toggle="modal"
-                                                    data-target="#acceptModal">Accept</button>
-                                            <!-- Other buttons and forms -->
 
-                                        <!--                            <form action="/customer/contract/editStatus" method="POST" class="d-inline">
-                                                            <input type="hidden" name="id" value="$/{contract.contractId}">
-                                                            <input type="hidden" name="status" value="3">
-                                                            <button type="submit" class="btn btn-warning">Reject</button>
-                                                        </form>-->
-                                        <button type="button" class="btn btn-danger" data-toggle="modal"
-                                            data-target="#declineModal" onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
-                                        document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
-                                        document.getElementById('declineForm').status.value = '3';"><i
-                                                class="fas fa-times icon-btn"></i>
-                                            Reject
-                                        </button>
-                                        <form action="${pageContext.request.contextPath}/customer/contract/editStatus"
-                                            method="POST" class="d-inline">
-                                            <input type="hidden" name="id" value="${contract.contractId}">
-                                            <input type="hidden" name="status" value="5">
-                                            <button type="submit" class="btn btn-danger">Cancel</button>
-                                        </form>
-                                    </div>
-                                </c:when>
-                                <c:when test="${contract.contractStatus == 3}">
-                                    <div class="mt-4 text-center">
-                                        <div class="alert alert-danger text-center" role="alert">
-                                            <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
-                                        </div>
-                                    </div>
-                                </c:when>
-                            </c:choose>
-                        </div>
-                    </div>
-                    <%@include file="../spacing.jsp" %>
+                 
                 </div>
 
                 <!-- Decline Modal -->
@@ -429,7 +435,7 @@
                     </div>
                 </div>
                 <!-- Bootstrap JS and dependencies -->
-                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+                <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
                     <script>
