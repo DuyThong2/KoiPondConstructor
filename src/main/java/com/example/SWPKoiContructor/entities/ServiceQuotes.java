@@ -64,7 +64,7 @@ public class ServiceQuotes {
     private Customer customer;
     
     @OneToOne
-    @JoinColumn(name = "consultant_id")
+    @JoinColumn(name = "consultant_id", nullable = true)
     private Consultant consultant;
     
     @ManyToOne
@@ -312,7 +312,10 @@ public class ServiceQuotes {
     public double calculateDeposit(){
         double deposit = serviceQuotesTotalPrice / 2;
         double pointUsing = usedPoint;
-        if(pointUsing > deposit){
+        if(isPayAfter){
+            deposit = serviceQuotesTotalPrice - usedPoint;
+        }
+        else if(pointUsing > deposit){
             deposit = 1;
         }else{
             deposit -= pointUsing;
@@ -323,6 +326,9 @@ public class ServiceQuotes {
     public double calculateFullPaid(){
         double fullPaid = serviceQuotesTotalPrice / 2;
         double pointUsing = usedPoint;
+        if(isPayAfter){
+            return 0;
+        }
         if(!serviceDetails.isEmpty()){
             for (ServiceDetail serviceDetail : serviceDetails) {
                 if (serviceDetail.getServiceDetailStatus() == 5) {
