@@ -81,14 +81,7 @@
                     <div class="header__right">
                         <div class="header__action d-flex align-items-center">
                             <div class="header__btn-wrap align-items-center d-inline-flex">
-                                <div class="rr-header-icon-search d-none d-sm-flex">
-                                    <button class="search-open-btn">
-                                        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M9.88966 18.7793C14.7993 18.7793 18.7793 14.7993 18.7793 9.88966C18.7793 4.98004 14.7993 1 9.88966 1C4.98004 1 1 4.98004 1 9.88966C1 14.7993 4.98004 18.7793 9.88966 18.7793Z" stroke="#767676" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                            <path d="M21.0017 20.9978L16.168 16.1641" stroke="#767676" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                    </button>
-                                </div>
+
 
                                 <div class="rr-header-contact-btn d-flex align-items-space-between justify-content-between d-none d-md-flex">
 

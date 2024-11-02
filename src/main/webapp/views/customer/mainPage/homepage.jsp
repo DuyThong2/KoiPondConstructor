@@ -143,7 +143,7 @@
             <div class="offcanvas__content">
                 <div class="offcanvas__top d-flex justify-content-between align-items-center">
                     <div class="offcanvas__logo">
-                        <a href="index.html">
+                        <a href="${pageContext.request.contextPath}/home/services">
                             <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                         </a>
                     </div>
@@ -206,7 +206,7 @@
                     <div class="banner-3__content blur-backgroud">
                         <h6 class="banner-3__content-subtitle">Introducing Ribuild</h6>
                         <h1 class="banner-3__content-title">Building Excellence with Precision and Passion.</h1>
-                        <a href="index.html" class="rr-btn">
+                        <a href="#" class="rr-btn">
                             <span class="btn-wrap">
                                 <span class="text-one turn-off-animation-button">Explore Service</span>
                             </span>

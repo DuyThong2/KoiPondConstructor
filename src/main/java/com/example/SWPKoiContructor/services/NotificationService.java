@@ -130,7 +130,8 @@ public class NotificationService {
      @Transactional
      public void createProjectNotification(String name, int projectId, int id) {
           String message="Your project has been created! Please check it";
-          createNotification(projectId,"project",id,"customer",message);
+          System.out.println("PROJECTSS: "+projectId);
+          createNotification(projectId,"projects",id,"customer",message);
      }
 
      @Transactional

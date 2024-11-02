@@ -106,8 +106,27 @@
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <!-- Pre Design Header -->
-                    <div class="blog-header">
-                        <h1>Pre Design Detail</h1>
+                    <div class="blog-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <h1>Pre Design Detail</h1>
+                        </div>
+                       <div>
+                        <c:choose>
+                            <c:when test="${preDesign.preDesignStatus}">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
+                                        onclick="document.getElementById('acceptForm').id.value = '${preDesign.preDesignId}';
+                                                    document.getElementById('acceptForm').status.value = 'false';">Deactivate
+                                </button>
+                            </c:when>
+                            <c:when test="${!preDesign.preDesignStatus}">
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
+                                        onclick="document.getElementById('acceptForm').id.value = '${preDesign.preDesignId}';
+                                                    document.getElementById('acceptForm').status.value = 'true';">Activate
+                                </button>
+                            </c:when>
+                        </c:choose>
+                        <a href="${pageContext.request.contextPath}/manager/preDesign/update/${preDesign.preDesignId}" class="btn btn-info">Update</a>
+                       </div>
                     </div>
 
                     <!-- Pre Design Card -->
@@ -120,7 +139,6 @@
 
                             <!-- Pre Design Title -->
                             <h2 class="blog-title">${preDesign.preDesignName}</h2>
-
                             <!-- Pre Design Date and Status -->
                             <div class="d-flex justify-content-between align-items-center">
                                 <p class="text-muted">Posted on: ${preDesign.content.createDate}</p>
@@ -145,32 +163,16 @@
                             <p class="blog-description">
                                 ${preDesign.preDesignDescription}
                             </p>
-
+                            <br>
                             <!-- Pre Design Content Section -->
-                            <h4>Full Content</h4>
+                            <h1 class="blog-title text-primary">Full Content</h1>
                             <div class="blog-body">
                                 <p>${preDesign.content.content}</p>
                             </div>
 
                         </div>
                     </div>
-                    <div class="blog-footer">
-                        <c:choose>
-                            <c:when test="${preDesign.preDesignStatus}">
-                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
-                                        onclick="document.getElementById('acceptForm').id.value = '${preDesign.preDesignId}';
-                                                    document.getElementById('acceptForm').status.value = 'false';">Deactivate
-                                </button>
-                            </c:when>
-                            <c:when test="${!preDesign.preDesignStatus}">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
-                                        onclick="document.getElementById('acceptForm').id.value = '${preDesign.preDesignId}';
-                                                    document.getElementById('acceptForm').status.value = 'true';">Activate
-                                </button>
-                            </c:when>
-                        </c:choose>
-                        <a href="${pageContext.request.contextPath}/manager/preDesign/update/${preDesign.preDesignId}" class="btn btn-info">Update</a>
-                    </div>
+                    
 
                 </main>
                 <!-- Footer Section with Back Button -->

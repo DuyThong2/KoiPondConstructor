@@ -124,7 +124,9 @@
             .modal {
                 opacity: 1 !important;
             }
-
+            .d-flex{
+                margin-top: 0;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>
@@ -238,7 +240,7 @@
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
                                                                 <span class="badge badge-success badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()?
-                                                                                                                 'Awaiting Payment 2':'Service In Progress'}</span>
+                                                                                                                 'Service Done':'Service In Progress'}</span>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
                                                                 <span class="badge badge-success badge-status">Fully Paid</span>
@@ -284,7 +286,7 @@
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
                                                                 <c:if test="${!serviceQuote.isFree() && serviceQuote.isServiceDetailOfQuoteFinished()
-                                                                            && !serviceQuote.isAllServiceFailed()}">
+                                                                            && !serviceQuote.isAllServiceFailed() && !serviceQuote.isPayAfter}">
                                                                     <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post">
                                                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
                                                                         <input type="hidden" name="amount" value="${serviceQuote.calculateFullPaid()}" />

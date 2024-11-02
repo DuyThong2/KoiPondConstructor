@@ -1,3 +1,9 @@
+<%-- 
+    Document   : serviceQuoteCreateNoConsultant
+    Created on : Nov 1, 2024, 12:43:41 PM
+    Author     : HP
+--%>
+
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -45,7 +51,7 @@
 
         <div class="container mt-5">
             <jsp:include page="../consultantNav.jsp"/>
-            <div class="row">
+            <div class="col-md-8">
                 <!-- Left Column for Customer Information -->
                 <div class="col-md-4">
                     <div class="quote-info">
@@ -58,7 +64,6 @@
                         <!-- Customer Information -->
                         <p><strong>Phone:</strong> ${customer.phone}</p>
                         <p><strong>Email:</strong> ${customer.email}</p>
-                        <p><strong>Content:</strong> ${consultant.consultantContent}</p>
                         <p><strong>Point:</strong> ${totalPoint}</p>
                     </div>
                 </div>
@@ -68,9 +73,7 @@
                     <h2 class="mb-4">Create Service Quote</h2>
 
                     <!-- Bind the form to the "contract" object -->
-                    <form:form action="${pageContext.request.contextPath}/consultant/serviceQuote/save" modelAttribute="newServiceQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
-
-                        <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
+                    <form:form action="${pageContext.request.contextPath}/consultant/serviceQuote/saves" modelAttribute="newServiceQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="customer.id" value="${customer.id}" />
                         <form:hidden path="staff.id" value="${staff.id}" />
 
@@ -326,3 +329,4 @@
 
     </body>
 </html>
+

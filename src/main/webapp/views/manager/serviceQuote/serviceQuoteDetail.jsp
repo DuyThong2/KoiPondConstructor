@@ -185,7 +185,7 @@
                                         </c:when>
                                         <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
                                             <span class="badge badge-success badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
-                                                                                             'Awaiting Payment 2':'Service In Progress'}</span>
+                                                                                             'Service Done':'Service In Progress'}</span>
                                             </c:when>
                                             <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
                                             <span class="badge badge-success badge-status">Fully Paid</span>
@@ -209,6 +209,94 @@
                                 <td>${serviceQuote.usedPoint}</td>
                             </tr>
                         </table>
+                        <div class="action-buttons">
+                            <c:choose>
+                                <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
+                                    <div class="">
+                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
+                                                onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                        document.getElementById('acceptForm').status.value = '2';">Approve
+                                        </button>
+    
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                                onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                        document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
+                                                        document.getElementById('declineForm').status.value = '3';">Reject
+                                        </button>
+                                    </div>
+                                </c:when>
+                                <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
+                                    <div class="">
+                                        <c:if test="${!serviceQuote.isFree()}">
+                                            <form action="${pageContext.request.contextPath}/manager/serviceQuote/savePayment" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="${serviceQuote.serviceQuotesId}">
+                                                <input type="hidden" name="status" value="8">
+                                                <button type="submit" class="btn btn-success">Confirm Payment</button>
+                                            </form>
+                                        </c:if>
+                                        <c:if test="${serviceQuote.isFree() && empty serviceQuote.serviceDetails}">
+                                            <form action="${pageContext.request.contextPath}/manager/serviceDetails/create" method="post" class="d-inline">
+                                                <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}">
+                                                <input type="hidden" name="statusId" value="9">
+                                                <button type="submit" class="btn btn-success">Create New Service Detail</button>
+                                            </form>
+                                        </c:if>
+                                    </div>
+                                </c:when>
+                                <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
+                                    <div class="">
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                                onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                        document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
+                                                        document.getElementById('declineForm').status.value = '7';">Cancel
+                                        </button>
+    
+                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                                onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                        document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
+                                                        document.getElementById('declineForm').status.value = '3';">Continue Quotation
+                                        </button>
+                                    </div>
+                                </c:when>
+                                <c:when test="${serviceQuote.serviceQuotesStatus == 8 && empty serviceQuote.serviceDetails}">
+                                    <form action="${pageContext.request.contextPath}/manager/serviceDetails/create" method="post" class="d-inline">
+                                        <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}">
+                                        <input type="hidden" name="statusId" value="9">
+                                        <button type="submit" class="btn btn-success">Create New Service Detail</button>
+                                    </form>
+                                </c:when>
+                                <c:when test="${serviceQuote.serviceQuotesStatus == 9 && serviceQuote.isServiceDetailOfQuoteFinished()}">
+                                    <c:choose>
+                                        <c:when test="${!serviceQuote.isFree() && !serviceQuote.isAllServiceFailed() && !serviceQuote.isPayAfter}">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModalForPayment"
+                                                    onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                            document.getElementById('acceptForm').status.value = '10';">Confirm Payment
+                                            </button>
+                                        </c:when>
+    
+                                        <c:when test="${serviceQuote.isAllServiceFailed()}">
+                                            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
+                                                    onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                            document.getElementById('acceptForm').status.value = '7';">Cancel
+                                            </button>
+                                        </c:when>
+    
+                                        <c:when test="${serviceQuote.isFree() || serviceQuote.isPayAfter}">
+                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
+                                                    onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                            document.getElementById('acceptForm').status.value = '11';">Complete
+                                            </button>
+                                        </c:when>
+                                    </c:choose> 
+                                </c:when>
+                                <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
+                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
+                                            onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
+                                                document.getElementById('acceptForm').status.value = '11';">Complete
+                                    </button>
+                                </c:when>    
+                            </c:choose>
+                        </div>
                     </div>
 
                     <c:if test="${serviceQuote.serviceQuotesStatus == 3 || serviceQuote.serviceQuotesStatus == 5 || serviceQuote.serviceQuotesStatus == 6}">
@@ -333,95 +421,8 @@
                         </div>
                     </div>
 
-                    <!-- Action Buttons Section -->
-                    <div class="action-buttons">
-                        <c:choose>
-                            <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
-                                <div class="">
-                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
-                                            onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                    document.getElementById('acceptForm').status.value = '2';">Approve
-                                    </button>
+                    
 
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
-                                            onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                    document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
-                                                    document.getElementById('declineForm').status.value = '3';">Reject
-                                    </button>
-                                </div>
-                            </c:when>
-                            <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                <div class="">
-                                    <c:if test="${!serviceQuote.isFree()}">
-                                        <form action="${pageContext.request.contextPath}/manager/serviceQuote/savePayment" method="post" class="d-inline">
-                                            <input type="hidden" name="id" value="${serviceQuote.serviceQuotesId}">
-                                            <input type="hidden" name="status" value="8">
-                                            <button type="submit" class="btn btn-success">Confirm Payment</button>
-                                        </form>
-                                    </c:if>
-                                    <c:if test="${serviceQuote.isFree() && empty serviceQuote.serviceDetails}">
-                                        <form action="${pageContext.request.contextPath}/manager/serviceDetails/create" method="post" class="d-inline">
-                                            <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}">
-                                            <input type="hidden" name="statusId" value="9">
-                                            <button type="submit" class="btn btn-success">Create New Service Detail</button>
-                                        </form>
-                                    </c:if>
-                                </div>
-                            </c:when>
-                            <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
-                                <div class="">
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
-                                            onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                    document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
-                                                    document.getElementById('declineForm').status.value = '7';">Cancel
-                                    </button>
-
-                                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
-                                            onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                    document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
-                                                    document.getElementById('declineForm').status.value = '3';">Continue Quotation
-                                    </button>
-                                </div>
-                            </c:when>
-                            <c:when test="${serviceQuote.serviceQuotesStatus == 8 && empty serviceQuote.serviceDetails}">
-                                <form action="${pageContext.request.contextPath}/manager/serviceDetails/create" method="post" class="d-inline">
-                                    <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}">
-                                    <input type="hidden" name="statusId" value="9">
-                                    <button type="submit" class="btn btn-success">Create New Service Detail</button>
-                                </form>
-                            </c:when>
-                            <c:when test="${serviceQuote.serviceQuotesStatus == 9 && serviceQuote.isServiceDetailOfQuoteFinished()}">
-                                <c:choose>
-                                    <c:when test="${!serviceQuote.isFree() && !serviceQuote.isAllServiceFailed()}">
-                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModalForPayment"
-                                                onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                        document.getElementById('acceptForm').status.value = '10';">Confirm Payment
-                                        </button>
-                                    </c:when>
-
-                                    <c:when test="${serviceQuote.isAllServiceFailed()}">
-                                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
-                                                onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                        document.getElementById('acceptForm').status.value = '7';">Cancel
-                                        </button>
-                                    </c:when>
-
-                                    <c:when test="${serviceQuote.isFree()}">
-                                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
-                                                onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                        document.getElementById('acceptForm').status.value = '11';">Complete
-                                        </button>
-                                    </c:when>
-                                </c:choose> 
-                            </c:when>
-                            <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
-                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
-                                        onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                            document.getElementById('acceptForm').status.value = '11';">Complete
-                                </button>
-                            </c:when>    
-                        </c:choose>
-                    </div>
 
             </div>
         </div>

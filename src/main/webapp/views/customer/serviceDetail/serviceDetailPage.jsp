@@ -5,12 +5,12 @@
 
     <head>
         <title>My Service</title>
-        <%@include file="../cssTemplate.jsp" %>
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
          <%@include file="../cssTemplate.jsp"%>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
         <%@include file="../cssCustom.jsp"%>
+
         <style>
             .view-account .side-bar .user-info .meta li span {
                 display: inline-block;
@@ -392,17 +392,15 @@
                 </section>
             </div>
         </div>
-    </body>
+        <%@include file="../spacing.jsp" %>
+        <%@include file="../footer.jsp" %>
+        <%@include file="../scriptTemplate.jsp" %>
     <script>
         var currentDetailsRow = null;
-
-
 
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <%@include file="../spacing.jsp" %>
-    <%@include file="../footer.jsp" %>
-    <%@include file="../scriptTemplate.jsp" %>
 
+    </body>
 </html>

@@ -38,13 +38,12 @@ public class HomepageController {
         this.termService = termService;
         this.servicePriceService =servicePriceService;
     }
-
     @GetMapping("")
     public String homePageShow(Model model) {
-
-        List<Project> projectList = projectService.getProjectListIsSharable();
+        List<Project> projectList = projectService.getProjectListIsSharable(6);
         List<Staff> staffList = staffService.getTopStaffList();
-        List<Blog> allBlogs = blogService.getAllBlogs();
+        List<Blog> allBlogs = blogService.getSomeBlogs(6);
+        List<Service> services = serviceService.getSomeService(6);
         List<Blog> blogList;
         if (allBlogs.size() >= 3) {
             blogList = new ArrayList<>(allBlogs.subList(0, 3));
@@ -57,9 +56,9 @@ public class HomepageController {
         model.addAttribute("blogList", blogList);
         model.addAttribute("projectList", projectList);
         model.addAttribute("staffList", staffList);
+        model.addAttribute("services",services);
         return "customer/mainPage/homepage";
     }
-
     @GetMapping("/home/services")
     public String servicesShow(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
         int pageSize = 6; // Number of services per page
@@ -220,5 +219,9 @@ public class HomepageController {
     @GetMapping("/home/privatePolicy")
     public String privatePolicy(Model model) {
         return "customer/mainPage/privatePolicy";
+    }
+    @GetMapping("/home/term&Service")
+    public String termsAndService(Model model) {
+        return "customer/mainPage/terms&Service";
     }
 }

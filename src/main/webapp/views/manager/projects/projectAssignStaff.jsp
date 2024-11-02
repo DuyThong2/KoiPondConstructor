@@ -158,7 +158,7 @@
                                         <c:choose>
                                             <c:when test="${project.status == 1}">
                                                 <span id="projectStatusBadge"
-                                                    class="badge badge-warning status">Pending</span>
+                                                    class="badge badge-secondary status">Pending</span>
                                             </c:when>
                                             <c:when test="${project.status == 2}">
                                                 <span id="projectStatusBadge"
@@ -344,8 +344,8 @@
                                         <div class="col-6">
                                             <h3>Planning Stage</h3>
                                         </div>
-                                        <div class="col-6 text-right">
-                                            <c:if test="${project.stage==1 &&project.status!=3 &&project.status!=4}">
+                                        <div class="col-6 text-right" id="confirmPlanningStageButtonContainer">
+                                            <c:if test="${project.status!=2 && project.status!=3 &&project.status!=4 &&project.status!=5}">
                                                 <button type="button" id="confirmPlanningStageButton"
                                                     onclick="handleStageClick(2)" class="btn btn-primary btn-md">
                                                     Confirm Planning Stage
@@ -666,7 +666,7 @@
                                                     Accept Request
                                                 </button>
                                                 <button type="button" class="btn btn-danger"
-                                                    onclick="cancelProject(${project.projectId},2);">
+                                                    onclick="cancelProject(${project.projectId},1);">
                                                     Deny Request
                                                 </button>
                                             </div>
@@ -810,6 +810,7 @@
                                             type: 'POST',
                                             data: {
                                                 projectId: projectId,
+                                                projectStage: newStage
                                             },
                                             success: function (response) {
                                                 // Show success message modal
@@ -996,8 +997,10 @@
                                         let action = 'cancel';
                                         if (status == 4) {
                                             action = 'cancel';
-                                        } else if (status == 2) {
-                                            action = 'processing';
+                                        } else if (status == 1) {
+                                            action = 'pending';
+                                        } else if(status==2){
+                                            action= 'processing';
                                         }
 
                                         $.ajax({
@@ -1011,10 +1014,13 @@
                                                 $('#confirmModal').modal('hide');
                                                 $('#viewRequestModal').modal('hide');
                                                 if (action == "cancel") {
-                                                    showNotification('Success', `Project has been ${action} successfully!`, 'success');
+                                                    showNotification('Success', `Cancelled successfully!`, 'success');
                                                     if ($('#shareBadge').hasClass('badge-success')) {
                                                         toggleShareButtonState();
                                                     }
+                                                }else if(action=='pending'||action=='processing'){
+                                                    showNotification('Success', `Deny Request successfully!`, 'success');
+                                                    $('#confirmPlanningStageButtonContainer').append('<button type="button" id="confirmPlanningStageButton" onclick="handleStageClick(2)" class="btn btn-primary btn-md">Confirm Planning Stage</button>');
                                                 }
                                                 toggleCancelButtonState(projectId,action);
                                             },
@@ -1039,6 +1045,11 @@
                                             badgeText = 'Processing';
                                             $('#cancelProjectBtn').removeClass('btn-danger').addClass('btn-warning').text('Cancel Project');
                                             $('#cancelProjectBtn').attr('onclick', 'showConfirmationModal('+projectId+', "cancel")');                                            
+                                        } else if(action=='pending'){
+                                            badgeClass = 'badge-secondary';
+                                            badgeText = 'Pending';
+                                            $('#cancelProjectBtn').removeClass('btn-danger').addClass('btn-warning').text('Cancel Project');
+                                            $('#cancelProjectBtn').attr('onclick', 'showConfirmationModal('+projectId+', "cancel")');    
                                         }
                                         // Update the status badge
                                         $('#projectStatusBadge')
