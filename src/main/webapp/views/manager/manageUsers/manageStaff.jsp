@@ -25,17 +25,17 @@
             margin-bottom: 20px;
         }
         .btn-block{
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
         .table th, .table td {
             vertical-align: middle;
         }
         .btn-primary, .btn-success {
-            border-radius: 25px;
+            border-radius: 8px;
             padding: 8px 20px;
         }
         .btn-info {
-            border-radius: 25px;
+            border-radius: 8px;
         }
         .badge-success {
             background-color: #28a745;
@@ -120,13 +120,13 @@
                         </select>
                     </div>
                     <!-- Search Button -->
-                    <div class="col-md-2 mb-3">
+                    <div class="col-md-2 mb-3 mt-2">
                         <button type="submit" class="btn btn-primary btn-block">
                             <i class="fas fa-search"></i> Search
                         </button>
                     </div>
                     <!-- Button to open modal -->
-                    <div class="col-md-2 mb-3">
+                    <div class="col-md-2 mb-3 mt-2">
                         <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#addStaffModal">
                             <i class="fas fa-plus"></i> Add New Staff
                         </button>

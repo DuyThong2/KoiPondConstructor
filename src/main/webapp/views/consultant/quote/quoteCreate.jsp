@@ -53,7 +53,18 @@
                     <div class="quote-info">
                         <h4>Customer Information</h4>
                         <div class="customer-info">
-                            <img src="" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+
+                            <c:choose>
+                                <c:when test="${quote.customer.imgURL != null}">
+                                    <img class="customer-avatar img-fluid"
+                                         src="${quote.customer.getShowingImg(quote.customer.imgURL)}" alt />
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="customer-avatar img-fluid"
+                                         src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" alt />
+                                </c:otherwise>
+                            </c:choose>
+
                             <p><strong>${customer.name}</strong></p>
                         </div>
                         <p><strong>Phone:</strong> ${customer.phone}</p>
@@ -233,13 +244,50 @@
                         return false;
                     }
 
-                    return true;
+                    return confirm('Are you sure you want to create this quote?');
                 }
 
                 // Automatically adjust costs every second
                 setInterval(function () {
                     calculateCosts();
                 }, 1000);
+                // Warning popup when user tries to leave the page without saving data
+                let isFormModified = false;
+
+                // Detect if any input fields are modified
+                document.querySelectorAll('input, select').forEach(input => {
+                    input.addEventListener('change', () => {
+                        isFormModified = true;
+                    });
+                });
+
+                // Warn the user if they attempt to leave without saving
+                window.addEventListener('beforeunload', function (e) {
+                    if (isFormModified) {
+                        // Custom message is no longer supported in modern browsers, but you can still alert the user
+                        e.preventDefault();
+                        e.returnValue = '';
+                    }
+                });
+
+                // Warning popup when user tries to leave the page without saving data
+                let isFormModified = false;
+
+                // Detect if any input fields are modified
+                document.querySelectorAll('input, select').forEach(input => {
+                    input.addEventListener('change', () => {
+                        isFormModified = true;
+                    });
+                });
+
+                // Warn the user if they attempt to leave without saving
+                window.addEventListener('beforeunload', function (e) {
+                    if (isFormModified) {
+                        // Custom message is no longer supported in modern browsers, but you can still alert the user
+                        e.preventDefault();
+                        e.returnValue = '';
+                    }
+                });
             </script>
 
         </div>
