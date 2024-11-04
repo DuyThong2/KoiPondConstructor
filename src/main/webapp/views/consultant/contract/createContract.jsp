@@ -120,7 +120,16 @@
                         <h4>Quote Information</h4>
                         <!-- Customer Avatar -->
                         <div class="customer-info">
-                            <img src="${quote.customer.imgURL != null ? quote.customer.getShowingImg(quote.customer.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                            <c:choose>
+                                <c:when test='${quote.customer.imgURL != null}'>
+                                    <img src="${quote.customer.getShowingImg(quote.customer.imgURL)}" 
+                                         alt="Customer Avatar" class="customer-avatar img-fluid" />
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" 
+                                         alt="Customer Avatar" class="customer-avatar img-fluid" />
+                                </c:otherwise>
+                            </c:choose>
                             <p><strong>${quote.customer.name}</strong></p>
                         </div>
                         <!-- Quote Information -->
@@ -476,7 +485,7 @@
                     document.getElementById('customTermFields').style.display = 'none';
                     document.getElementById('defaultTermFields').style.display = 'none';
 
-                    
+
                     $('#termModal').modal('show'); // Show the modal for selecting existing terms
                 }
 
@@ -586,7 +595,7 @@
                                 parseFloat(document.getElementById('percent_on_construct2').value || 0);
 
                         if (totalPercent < 99 || totalPercent > 100.5) {
-                            alert('Total percentage for all stages must be between 99% and 100.5%.');
+                            alert('Total percentage for all stages must be 100%.');
                             event.preventDefault();
                             return;
                         }
@@ -601,27 +610,29 @@
 
                     // Ensure the total price matches the quote price
                     const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
-                    if (totalPrice !== totalQuotePrice) {
-                        alert('The total price must match the total quote price.');
+                    if (Math.abs(totalPrice - totalQuotePrice) > 0.1) {
+                        alert('The total price must match the total quote price within a small tolerance.');
                         event.preventDefault();
                         return;
                     }
 
-                    // Ensure the total design cost matches the quote's design cost
+// Ensure the total design cost matches the quote's design cost with a precision tolerance
                     const totalDesign = parseFloat(document.getElementById('conceptDesign').value || 0) +
                             parseFloat(document.getElementById('detailDesign').value || 0) +
                             parseFloat(document.getElementById('constructionDesign').value || 0);
-                    if (totalDesign !== maxDesignCost) {
-                        alert('The total of design costs must match the quoted design cost.');
+
+                    if (Math.abs(totalDesign - maxDesignCost) > 0.1) {
+                        alert('The total of design costs must match the quoted design cost within a small tolerance.');
                         event.preventDefault();
                         return;
                     }
 
-                    // Ensure the total construction cost matches the quote's construction cost
+// Ensure the total construction cost matches the quote's construction cost with a precision tolerance
                     const totalConstruction = parseFloat(document.getElementById('rawConstruction').value || 0) +
                             parseFloat(document.getElementById('completeConstruction').value || 0);
-                    if (totalConstruction !== maxConstructionCost) {
-                        alert('The total of construction costs must match the quoted construction cost.');
+
+                    if (Math.abs(totalConstruction - maxConstructionCost) > 0.1) {
+                        alert('The total of construction costs must match the quoted construction cost within a small tolerance.');
                         event.preventDefault();
                         return;
                     }
