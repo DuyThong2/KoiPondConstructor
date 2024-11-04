@@ -451,8 +451,29 @@
 
                     // Ensure the total price matches the quote price
                     const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
-                    if (totalPrice !== totalQuotePrice) {
+                    if (Math.abs(totalPrice - totalQuotePrice) > 0.1) {
                         alert('The total price must match the total quote price.');
+                        event.preventDefault();
+                        return;
+                    }
+
+// Ensure the total design cost matches the quote's design cost with a precision tolerance
+                    const totalDesign = parseFloat(document.getElementById('conceptDesign').value || 0) +
+                            parseFloat(document.getElementById('detailDesign').value || 0) +
+                            parseFloat(document.getElementById('constructionDesign').value || 0);
+
+                    if (Math.abs(totalDesign - maxDesignCost) > 0.1) {
+                        alert('The total of design costs must match the quoted design cost.');
+                        event.preventDefault();
+                        return;
+                    }
+
+// Ensure the total construction cost matches the quote's construction cost with a precision tolerance
+                    const totalConstruction = parseFloat(document.getElementById('rawConstruction').value || 0) +
+                            parseFloat(document.getElementById('completeConstruction').value || 0);
+
+                    if (Math.abs(totalConstruction - maxConstructionCost) > 0.1) {
+                        alert('The total of construction costs must match the quoted construction cost.');
                         event.preventDefault();
                         return;
                     }
