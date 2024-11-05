@@ -581,7 +581,7 @@
                 <c:forEach var="blog" items="${blogList}">
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="blog__item has-box-shadow mb-30" style="border-radius: 8px; overflow: hidden; transition: transform 0.3s;">
-                            <a href="${pageContext.request.contextPath}/home/blogs/${blog.id}l" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
+                            <a href="${pageContext.request.contextPath}/home/blogs/${blog.id}" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
                                 <img src="${blog.getShowingImg(blog.imgUrl)}" alt="image not found" class="img-fluid" style="width: 100%; height: auto; transition: transform 0.3s;">
                             </a>
                             <div class="blog__item-text p-4" style="background-color: #ffffff;">
