@@ -52,7 +52,16 @@
                     <div class="quote-info">
                         <h4>Quote Information</h4>
                         <div class="customer-info">
-                            <img src="${quote.customer.imgURL != null ? quote.customer.getShowingImg(quote.customer.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                            <c:choose>
+                                <c:when test='${quote.customer.imgURL != null}'>
+                                    <img src="${quote.customer.getShowingImg(quote.customer.imgURL)}"
+                                         alt="Customer Avatar" class="customer-avatar img-fluid" />
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png"
+                                         alt="Customer Avatar" class="customer-avatar img-fluid" />
+                                </c:otherwise>
+                            </c:choose>
                             <p><strong>${quote.customer.name}</strong></p>
                         </div>
                         <p><strong>Quote ID:</strong> ${quote.quotesId}</p>

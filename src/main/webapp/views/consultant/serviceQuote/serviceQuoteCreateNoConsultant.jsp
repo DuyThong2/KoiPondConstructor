@@ -58,7 +58,16 @@
                         <h4>Customer Information</h4>
                         <!-- Customer Avatar -->
                         <div class="customer-info">
-                            <img src="" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                            <c:choose>
+                                <c:when test="${customer.imgURL != null}">
+                                    <img class="customer-avatar img-fluid"
+                                         src="${customer.getShowingImg(customer.imgURL)}" alt />
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="customer-avatar img-fluid"
+                                         src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" alt />
+                                </c:otherwise>
+                            </c:choose>
                             <p><strong>${customer.name}</strong></p>
                         </div>
                         <!-- Customer Information -->
