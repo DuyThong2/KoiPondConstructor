@@ -70,6 +70,123 @@
                             transition: height 0.5s ease-in-out;
                             /* Adjust for smoother transition if needed */
                         }
+
+                        body {
+                            background-color: #f8f9fa;
+                            font-family: 'Mukta', sans-serif;
+                        }
+
+                        h2 {
+                            font-weight: bold;
+                            color: #007bff;
+                            border-bottom: 2px solid #007bff;
+                            padding-bottom: 10px;
+                            margin-bottom: 20px;
+                        }
+
+                        /* Table styling */
+                        table.table {
+                            background-color: white;
+                            border-radius: 10px;
+                            overflow: hidden;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                        }
+
+                        /* Table Header Styling */
+                        thead.thead-dark th {
+                            background-color: #007bff;
+                            color: white;
+                            font-weight: bold;
+                            text-transform: uppercase;
+                        }
+
+                        /* Pagination Controls */
+                        .pagination-controls {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            margin-top: 20px;
+                        }
+
+                        .pagination-controls a,
+                        .pagination-controls button {
+                            font-weight: bold;
+                        }
+
+                        /* Button Styles */
+                        .btn-info {
+                            background-color: #007bff;
+                            border-color: #007bff;
+                            font-weight: bold;
+                            padding: 8px 12px;
+                            transition: all 0.3s ease;
+                        }
+
+                        .btn-info:hover {
+                            background-color: #0056b3;
+                            border-color: #0056b3;
+                        }
+
+                        /* Badge styles */
+                        .badge-status {
+                            padding: 10px 15px;
+                            font-size: 1em;
+                            border-radius: 20px;
+                        }
+
+                        /* Filter Form Styling */
+                        .form-control {
+                            border-radius: 20px;
+                            padding: 10px;
+                        }
+
+                        .btn-primary {
+                            background-color: #007bff;
+                            border-radius: 20px;
+                            padding: 8px 20px;
+                        }
+
+                        .btn-primary:hover {
+                            background-color: #0056b3;
+                            border-color: #0056b3;
+                        }
+
+                        .form-row {
+                            margin-bottom: 20px;
+                        }
+
+                        /* Card Container for Form */
+                        .filter-card {
+                            background-color: #ffffff;
+                            padding: 20px;
+                            border-radius: 10px;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                            margin-bottom: 30px;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-end;
+                            /* Align the form elements to the bottom */
+                            flex-wrap: no-wrap;
+                            /* Allow wrapping for smaller screens */
+                            gap: 15px;
+                            /* Adjust gap between form elements */
+                        }
+
+                        .filter-card .form-control,
+                        .filter-card select,
+                     
+
+                        .filter-card label {
+                            margin-bottom: 5px;
+                            /* Space between labels and inputs */
+                            display: inline-block;
+                        }
+
+                        .btn-primary,
+                        .btn-success {
+                            border-radius: 25px;
+                            padding: 10px 20px;
+                        }
                     </style>
                 </head>
                 <div style="height:6vh;"></div>
@@ -85,7 +202,7 @@
 
                                     <h2 class="mb-4">Service List</h2>
                                     <div class="row">
-                                        <div class="filter-card col-md-6">
+                                        <div class="filter-card col-md-12">
                                             <form method="get"
                                                 action="${pageContext.request.contextPath}/manager/services">
                                                 <div class="form-row align-items-center">
@@ -131,19 +248,19 @@
                                                     <div class="col-auto">
                                                         <button type="submit" class="btn btn-primary"
                                                             style="margin-top: 2rem">Apply</button>
+
+
+                                                            <button type="button" class="btn btn-success" data-toggle="modal"  style="margin-top: 2rem"
+                                                            data-target="#createServiceModal"><i class="fas fa-plus"></i> Create New
+                                                            Service</button>
+    
                                                     </div>
-
-
+                                                  
                                                 </div>
                                             </form>
                                         </div>
-                                        <div class="col-md-2"></div>
-                                        <div class="col-md-2 filter-card">
-                                            <!-- Trigger the modal with a button -->
-                                            <button type="button" class="btn btn-success" style="margin-top: 2rem"
-                                                data-toggle="modal" data-target="#createServiceModal">Create New
-                                                Service</button>
-                                        </div>
+
+
                                     </div>
                                     <!-- Modal -->
 
@@ -363,19 +480,20 @@
                                                         <c:choose>
                                                             <c:when test="${service.serviceStatus}">
                                                                 <button id="status-badge-${service.serviceId}"
-                                                                    class="badge badge-success"
+                                                                    class="badge badge-success badge-status"
                                                                     style="cursor: pointer; border:none;">Active</button>
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <button id="status-badge-${service.serviceId}"
-                                                                    class="badge badge-danger"
+                                                                    class="badge badge-danger badge-status"
                                                                     style="cursor: pointer; border:none;">Inactive</button>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </td>
                                                     <td style="z-index: 100;" class="d-flex flex-column g-2">
                                                         <a class="btn btn-info mb-2"" href="
-                                                            ${pageContext.request.contextPath}/manager/service/detail/${service.serviceId}" onclick="event.stopPropagation()">Details</a>
+                                                            ${pageContext.request.contextPath}/manager/service/detail/${service.serviceId}"
+                                                            onclick="event.stopPropagation()">Detail</a>
 
 
 
@@ -488,7 +606,7 @@
                                                                                     test="${price.servicePriceStatus}">
                                                                                     <button
                                                                                         id="price-status-badge-${price.servicePriceId}"
-                                                                                        class="badge badge-success"
+                                                                                        class="badge badge-success badge-status"
                                                                                         style="cursor: pointer; border:none;">
                                                                                         Active
                                                                                     </button>
@@ -496,7 +614,7 @@
                                                                                 <c:otherwise>
                                                                                     <button
                                                                                         id="price-status-badge-${price.servicePriceId}"
-                                                                                        class="badge badge-danger"
+                                                                                        class="badge badge-danger badge-status"
                                                                                         style="cursor: pointer; border:none;">
                                                                                         Inactive
                                                                                     </button>

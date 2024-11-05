@@ -12,6 +12,7 @@ import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Term;
 import com.example.SWPKoiContructor.utils.Utility;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
 
@@ -157,13 +158,13 @@ public class ProjectService {
         }
     }
 
-    public List<Project> getPaginationProjectListByStatusAndStage(int page, int size, String sortBy, String sortType, Integer statusFilter, Integer stageFilter) {
-        return projectDAO.getPaginationProjectListByStatusAndStage(page, size, sortBy, sortType, statusFilter, stageFilter);
+    public List<Project> getPaginationProjectListByStatusAndStage(int page, int size, String sortBy, String sortType, Integer statusFilter, Integer stageFilter, Date fromDate, Date endDate, String searchName) {
+        return projectDAO.getPaginationProjectListByStatusAndStage(page, size, sortBy, sortType, statusFilter, stageFilter,fromDate,endDate,searchName);
 
     }
 
-    public long countProjectFilter(Integer statusFilter, Integer stageFilter) {
-        return projectDAO.countProjectFilter(statusFilter, stageFilter);
+    public long countProjectFilter(Integer statusFilter, Integer stageFilter,Date fromDate,Date endDate, String searchName) {
+        return projectDAO.countProjectFilter(statusFilter, stageFilter,fromDate,endDate,searchName);
     }
 
     @Transactional

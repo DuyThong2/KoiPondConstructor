@@ -205,7 +205,7 @@
                             </c:choose>
                         </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/manager/consultant/detail/${consultant.consultantId}" class="btn btn-info">View Detail</a>
+                            <a href="${pageContext.request.contextPath}/manager/consultant/detail/${consultant.consultantId}" class="btn btn-info">Detail</a>
                         </td>
                     </tr>
                 </c:forEach>
