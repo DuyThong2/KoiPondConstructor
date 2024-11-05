@@ -47,6 +47,14 @@
                 text-align: center;
                 background-color: #f8f9fa;
             }
+            .table th, .table td {
+                padding: 10px; /* Ensure consistent padding */
+                vertical-align: middle; /* Ensure content is vertically centered */
+                text-align: center; /* Center align text for uniform appearance */
+            }
+            .table thead th {
+                background-color: #f8f9fa;
+            }
         </style>
     </head>
     <body>
@@ -121,29 +129,34 @@
                 </div>
             </div>
 
+
+
             <!-- Customer Selection Modal -->
             <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-lg" role="document"> <!-- Using modal-lg for a larger modal if needed -->
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="addCustomerModalLabel">Select Customer</h5>
+                            <h5 class="modal-title" id="addCustomerModalLabel">Select Customer for New Service Quote</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
+                            <div class="form-group">
+                                <input type="text" id="customerSearch" class="form-control" placeholder="Search by name or gmail...">
+                            </div>
                             <div class="table-responsive">
                                 <!-- Table of Customers -->
                                 <table class="table table-hover">
                                     <thead class="thead-light">
                                         <tr>
-                                            <th style="width: 40%;">Name</th>
+                                            <th style="width: 35%;">Name</th>
                                             <th style="width: 30%;">Email</th>
-                                            <th style="width: 20%;">Phone</th>
+                                            <th style="width: 25%;">Phone</th>
                                             <th style="width: 10%;">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="customerTableBody">
                                         <c:forEach var="customer" items="${customerList}">
                                             <tr>
                                                 <td>${customer.name}</td>
@@ -165,7 +178,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>  
+
 
             <!-- Parcel Selection Modal -->
             <div class="modal fade" id="parcelModal" tabindex="-1" role="dialog" aria-labelledby="parcelModalLabel" aria-hidden="true">
@@ -293,6 +307,21 @@
 
                     return true;
                 }
+
+                document.getElementById('customerSearch').addEventListener('input', function () {
+                    const searchValue = this.value.toLowerCase();
+                    const customerRows = document.querySelectorAll('#customerTableBody tr');
+
+                    customerRows.forEach(row => {
+                        const customerName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                        const customerEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                        if (customerName.includes(searchValue) || customerEmail.includes(searchValue)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
 
                 // Automatically adjust costs every second
                 setInterval(function () {

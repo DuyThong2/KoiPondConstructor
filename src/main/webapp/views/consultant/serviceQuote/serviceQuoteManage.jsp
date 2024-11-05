@@ -134,14 +134,13 @@
             <div class="filter-card">
                 <!-- Sort and Search Form -->
                 <form method="get" action="${pageContext.request.contextPath}/consultant/serviceQuote">
-                    <div class="form-row align-items-center d-flex justify-content-between">
+                    <div class="form-row align-items-end d-flex justify-content-between">
                         <!-- Sort By -->
                         <div class="col-auto">
                             <label for="sortBy">Sort by:</label>
                             <select name="sortBy" id="sortBy" class="form-control">
                                 <option value="serviceQuotesDate" ${sortBy == 'serviceQuotesDate' ? 'selected' : ''}>Date Created</option>
                                 <option value="serviceQuotesArea" ${sortBy == 'serviceQuotesArea' ? 'selected' : ''}>Area</option>
-                                <option value="serviceQuotesTotalPrice" ${sortBy == 'serviceQuotesTotalPrice' ? 'selected' : ''}>Total Price</option>
                                 <option value="serviceQuotesTotalPrice" ${sortBy == 'serviceQuotesTotalPrice' ? 'selected' : ''}>Total Price</option>
                             </select>
                         </div>
@@ -155,7 +154,7 @@
                             </select>
                         </div>
 
-                        <!-- Filter By Status --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel -->
+                        <!-- Filter By Status -->
                         <div class="col-auto">
                             <label for="statusFilter">Status:</label>
                             <select name="statusFilter" id="statusFilter" class="form-control">
@@ -187,23 +186,25 @@
 
                         <!-- Search by Name -->
                         <div class="col-auto">
-                            <label for="searchName">Service Quote Name</label>
+                            <label for="searchName">Service Quote Name:</label>
                             <input type="text" name="searchName" id="searchName" class="form-control" value="${searchName}">
                         </div>
 
                         <input type="hidden" name="page" value="${currentPage}">
 
                         <!-- Apply Button -->
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary" style="margin-top: 2rem">Apply</button>
+                        <div class="col-auto d-flex align-items-end"> <!-- Aligned with other elements -->
+                            <button type="submit" class="btn btn-primary">Apply</button>
+                        </div>
+
+                        <!-- Create New Service Quote Button -->
+                        <div class="col-auto d-flex align-items-end"> <!-- Aligned with other elements -->
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addCustomerModal">
+                                Create New Service Quote
+                            </button>
                         </div>
                     </div>
                 </form>
-                <div class="text-right mb-3">
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addCustomerModal">
-                        Create New Service Quote
-                    </button>
-                </div>
             </div>
 
 
@@ -296,27 +297,30 @@
 
         <!-- Customer Selection Modal -->
         <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document"> <!-- Using modal-lg for a larger modal if needed -->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addCustomerModalLabel">Select Customer For New Service Quote</h5>
+                        <h5 class="modal-title" id="addCustomerModalLabel">Select Customer for New Service Quote</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" id="customerSearch" class="form-control" placeholder="Search by name or email...">
+                        </div>
                         <div class="table-responsive">
                             <!-- Table of Customers -->
                             <table class="table table-hover">
                                 <thead class="thead-light">
                                     <tr>
-                                        <th style="width: 40%;">Name</th>
+                                        <th style="width: 35%;">Name</th>
                                         <th style="width: 30%;">Email</th>
-                                        <th style="width: 20%;">Phone</th>
+                                        <th style="width: 25%;">Phone</th>
                                         <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="customerTableBody">
                                     <c:forEach var="customer" items="${customerList}">
                                         <tr>
                                             <td>${customer.name}</td>
@@ -324,8 +328,8 @@
                                             <td>${customer.phone}</td>
                                             <td>
                                                 <form method="get" action="${pageContext.request.contextPath}/consultant/serviceQuote/creates">
-                                                    <input type="hidden" name="customerId" value="${customer.id}" >
-                                                    <button type="submit" class="btn btn-info">Create</button>
+                                                    <input type="hidden" name="customerId" value="${customer.id}">
+                                                    <button type="submit" class="btn btn-info btn-sm">Create</button> <!-- Using btn-sm for a smaller button -->
                                                 </form>
                                             </td>
                                         </tr>
@@ -344,6 +348,23 @@
         <!-- Bootstrap JS and dependencies -->
 
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script>
+            document.getElementById('customerSearch').addEventListener('input', function () {
+                const searchValue = this.value.toLowerCase();
+                const customerRows = document.querySelectorAll('#customerTableBody tr');
+
+                customerRows.forEach(row => {
+                    const customerName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                    const customerEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (customerName.includes(searchValue) || customerEmail.includes(searchValue)){
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+
     </body>
 </html>
 
