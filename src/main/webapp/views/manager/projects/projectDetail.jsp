@@ -252,7 +252,7 @@
                                         </td>
                                     </div>
                                     <tr>
-                                        <th>Project ID</th>
+                                        <th style="width: 20%">Project ID</th>
                                         <td>${project.projectId}</td>
                                     </tr>
                                     <tr>

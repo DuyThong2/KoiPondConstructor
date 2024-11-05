@@ -168,12 +168,33 @@
         }
 
         button.btn-info:hover {
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Thêm đổ bóng khi hover */
-            transform: translateY(-2px); /* Di chuyển nhẹ nút khi hover */
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
         }
         .btn{
             padding: 10px 25px;
             font-size: 1.5rem;
+        }
+        .modal-content {
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border: none;
+        }
+        .modal-header {
+            background-color: #c65252;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 15px 20px;
+        }
+        .modal-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-left: 172px;
+        }
+        .modal-body {
+            font-size: 1.8rem; /* Tăng kích thước chữ */
+            color: #555; /* Màu chữ dễ đọc hơn */
         }
     </style>
 </head>
@@ -291,7 +312,7 @@
                             <c:if test="${detail.name == 'Editing' && detail.status == 2}">
                                 <div style="float: right; margin-right: 10px;">
                                     <form action="${pageContext.request.contextPath}/customer/designStageDetail/updateStatus/"
-                                          method="post" style="display:inline-block;" onsubmit="return confirmStatusChange();">
+                                          method="post" style="display:inline-block;"  onsubmit="return checkSummaryFile(${stage.summaryFile != null});">
                                         <input type="hidden" name="detailId" value="${detail.id}">
                                         <input type="hidden" name="newStatus" value="4"> <!-- Status for 'Completed' -->
                                         <input type="hidden" name="designStageId" value="${stage.designStageId}">
@@ -358,6 +379,19 @@
 
     </div>
 </div>
+<!-- Popup Warning -->
+<div class="modal fade" id="alertModal" tabindex="-2" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertModalLabel">Warning</h5>
+            </div>
+            <div class="modal-body">
+                The summary file has not been uploaded. <br>Please contact our hotline: <strong>0123-456-789</strong> for assistance.
+            </div>
+        </div>
+    </div>
+</div>
 
 <%@include file="../footer.jsp"%>
 <%@include file="../scriptTemplate.jsp"%>
@@ -393,13 +427,18 @@
             });
         });
     });
-    function confirmStatusChange() {
+
+    function checkSummaryFile(hasSummaryFile) {
+        if (!hasSummaryFile) {
+            // Hiển thị popup cảnh báo
+            $('#alertModal').modal('show');
+            return false; // Ngăn chặn form submit
+        }
         return confirm("Do you want to complete this phase design?");
     }
 </script>
 
 <!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>

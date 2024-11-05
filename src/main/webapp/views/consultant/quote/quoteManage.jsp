@@ -31,7 +31,7 @@
                 margin-top: 2rem;
             }
             .btn-primary{
-                border-radius: 20px;
+                border-radius: 8px;
             }
         </style>
     </head>
@@ -40,7 +40,7 @@
             <jsp:include page="../consultantNav.jsp"/>
 
             <h2 class="mb-4">Quote List</h2>
-            <div class="filter-card">
+            <div class="row filter-card">
                 <form method="get" action="${pageContext.request.contextPath}/consultant/quote">
                     <div class="form-row align-items-center">
                         <!-- Sort By -->
@@ -94,7 +94,7 @@
             <table class="table table-bordered table-hover">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Date</th>
+                        <th style="width: 8%">Date</th>
                         <th>Quote Name</th>
                         <th>Content</th>
                         <th>Area</th>
@@ -108,7 +108,7 @@
                 <tbody>
                     <c:forEach var="quote" items="${quoteList}">
                         <tr>
-                            <td>${quote.quotesDate}</td>
+                            <td><fmt:formatDate value="${quote.quotesDate}" pattern="dd-MM-yyyy"/></td>
                             <td>${quote.quotesName}</td>
                             <td>${quote.quotesContent}</td>
                             <td>${quote.quotesArea}</td>

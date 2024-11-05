@@ -91,7 +91,7 @@
             <table class="table table-bordered table-hover mt-3">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Date Created</th>
+                        <th style="width: 8%">Date Created</th>
                         <th>File URL</th>
                         <th>Total Price</th>
                         <th>Contract Term</th>

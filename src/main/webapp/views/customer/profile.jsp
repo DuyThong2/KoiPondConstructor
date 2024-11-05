@@ -209,9 +209,17 @@
                                 <h3 class="fieldset-title">Personal Info</h3>
                                 <form class="form-horizontal" action="${pageContext.request.contextPath}/image/uploads" method="post" enctype="multipart/form-data">
                                     <div class="form-group avatar">
-
                                         <figure class="figure col-md-2 col-sm-3 col-xs-12">
-                                            <img class="img-rounded img-responsive" src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt/>
+                                            <c:choose>
+                                                <c:when test="${user.imgURL != null}">
+                                                    <img class="img-profile img-circle img-responsive center-block"
+                                                         src="${user.getShowingImg(user.imgURL)}" alt />
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img class="img-profile img-circle img-responsive center-block"
+                                                         src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" alt />
+                                                </c:otherwise>
+                                            </c:choose>
                                         </figure>
                                         <input type="hidden" name="id" value="${user.id}" style="cursor: pointer;">
 
