@@ -6,8 +6,11 @@ import com.example.SWPKoiContructor.utils.FileUtility;
 import com.example.SWPKoiContructor.utils.Utility;
 
 import java.nio.charset.StandardCharsets;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -49,13 +54,20 @@ public class ProjectController {
             @RequestParam(defaultValue = "status") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType,
             @RequestParam(required = false) Integer statusFilter,
-            @RequestParam(required = false) Integer stageFilter) {
+            @RequestParam(required = false) Integer stageFilter,
+                              @RequestParam(name="fromDate",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate getFromDate,
+                              @RequestParam(name="endDate",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate getEndDate,
+                              @RequestParam(required = false) String searchName) {
+
         List<Project> list;
+        Date fromDate = (getFromDate != null) ? Date.valueOf(getFromDate) : null;
+        Date endDate = (getEndDate != null) ? Date.valueOf(getEndDate) : null;
+
         long projectNum;
-        if (stageFilter != null || statusFilter != null) {
+        if (stageFilter != null || statusFilter != null||fromDate!=null||endDate!=null||searchName!=null) {
             list = projectService.getPaginationProjectListByStatusAndStage(page, size, sortBy, sortType, statusFilter,
-                    stageFilter);
-            projectNum = projectService.countProjectFilter(statusFilter, stageFilter);
+                    stageFilter,fromDate,endDate,searchName);
+            projectNum = projectService.countProjectFilter(statusFilter, stageFilter,fromDate,endDate,searchName);
         } else {
             list = projectService.getPaginationProjectList(page, size, sortBy, sortType);
             projectNum = projectService.countProject();
@@ -70,6 +82,15 @@ public class ProjectController {
         model.addAttribute("projectList", list);
         model.addAttribute("statusFilter", statusFilter);
         model.addAttribute("stageFilter", stageFilter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedFromDate = (getFromDate != null) ? getFromDate.format(formatter) : "";
+        String formattedEndDate = (getEndDate != null) ? getEndDate.format(formatter) : "";
+        System.out.println("From Date: " + getFromDate);
+        System.out.println("End Date: " + getEndDate);
+        model.addAttribute("fromDate", formattedFromDate);
+        model.addAttribute("endDate", formattedEndDate);
+        model.addAttribute("searchName",searchName);
+
         return "manager/projects/projectManage";
     }
 

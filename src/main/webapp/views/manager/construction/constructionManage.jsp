@@ -70,7 +70,7 @@
                     <th>Construction Name</th>
                     <th>Customer Name</th>
                     <th>Status</th>
-                    <th>View Detail</th>
+                    <th>Detail</th>
                 </tr>
                 </thead>
                 <tbody>

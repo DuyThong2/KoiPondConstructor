@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import java.sql.Date;
 import java.util.List;
 import javax.persistence.FlushModeType;
 import javax.persistence.NoResultException;
@@ -95,10 +96,10 @@ public class ProjectDAO {
         return query.getSingleResult();
     }
 
-    public List<Project> getPaginationProjectListByStatusAndStage(int page, int size, String sortBy, String sortType, Integer statusFilter, Integer stageFilter) {
+    public List<Project> getPaginationProjectListByStatusAndStage(int page, int size, String sortBy, String sortType, Integer statusFilter, Integer stageFilter, Date fromDate, Date endDate, String searchName) {
         StringBuilder queryBuilder = new StringBuilder("SELECT c FROM Project c");
 
-        String filter = filterQueryString(statusFilter, stageFilter);
+        String filter = filterQueryString(statusFilter, stageFilter,fromDate,endDate,searchName);
         if (filter != null) {
             queryBuilder.append(filter);
         }
@@ -116,7 +117,14 @@ public class ProjectDAO {
         }
         if (stageFilter != null) {
             query.setParameter("stageFilter", stageFilter);
+        }if(fromDate!=null){
+            query.setParameter("fromDate",fromDate);
+      } if(endDate!=null){
+            query.setParameter("endDate",endDate);
+        }if(searchName!=null){
+            query.setParameter("searchName","%"+searchName+"%");
         }
+
 
         query.setFirstResult((page - 1) * size);
         query.setMaxResults(size);
@@ -124,46 +132,64 @@ public class ProjectDAO {
         return query.getResultList();
     }
 
-    public long countProjectFilter(Integer statusFilter, Integer stageFilter) {
+    public long countProjectFilter(Integer statusFilter, Integer stageFilter, Date fromDate, Date endDate, String searchName) {
         StringBuilder queryBuilder = new StringBuilder("SELECT COUNT(c) FROM Project c");
 
-        String filter = filterQueryString(statusFilter, stageFilter);
+        String filter = filterQueryString(statusFilter, stageFilter, fromDate, endDate, searchName);
         if (filter != null) {
             queryBuilder.append(filter);
         }
 
         TypedQuery<Long> query = entityManager.createQuery(queryBuilder.toString(), Long.class);
+
         if (statusFilter != null) {
             query.setParameter("statusFilter", statusFilter);
         }
         if (stageFilter != null) {
             query.setParameter("stageFilter", stageFilter);
         }
+        if (fromDate != null) {
+            query.setParameter("fromDate", fromDate);
+        }
+        if (endDate != null) {
+            query.setParameter("endDate", endDate);
+        }
+        if (searchName != null) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
 
         return query.getSingleResult();
     }
 
-    private String filterQueryString(Integer statusFilter, Integer stageFilter) {
+    private String filterQueryString(Integer statusFilter, Integer stageFilter, Date fromDate, Date endDate, String searchName) {
         StringBuilder queryBuilder = new StringBuilder();
-        boolean hasStatusFilter = (statusFilter != null);
-        boolean hasStageFilter = (stageFilter != null);
+        boolean hasPrevious = false;
 
-        if (hasStatusFilter || hasStageFilter) {
-            queryBuilder.append(" WHERE");
-            if (hasStatusFilter) {
-                queryBuilder.append(" c.status = :statusFilter");
-            }
-            if (hasStageFilter) {
-                if (hasStatusFilter) {
-                    queryBuilder.append(" AND");
-                }
-                queryBuilder.append(" c.stage = :stageFilter");
-            }
-        } else {
-            return null;
+        if (statusFilter != null) {
+            queryBuilder.append(" WHERE c.status = :statusFilter");
+            hasPrevious = true;
         }
-        return queryBuilder.toString();
+        if (stageFilter != null) {
+            queryBuilder.append(hasPrevious ? " AND" : " WHERE").append(" c.stage = :stageFilter");
+            hasPrevious = true;
+        }
+        if (fromDate != null && endDate != null) {
+            queryBuilder.append(hasPrevious ? " AND" : " WHERE").append(" c.dateStart >= :fromDate AND c.dateEnd <= :endDate");
+            hasPrevious = true;
+        } else if (fromDate != null) {
+            queryBuilder.append(hasPrevious ? " AND" : " WHERE").append(" c.dateStart >= :fromDate");
+            hasPrevious = true;
+        } else if (endDate != null) {
+            queryBuilder.append(hasPrevious ? " AND" : " WHERE").append(" c.dateEnd <= :endDate");
+            hasPrevious = true;
+        }
+        if (searchName != null) {
+            queryBuilder.append(hasPrevious ? " AND" : " WHERE").append(" c.projectName LIKE :searchName");
+        }
+
+        return queryBuilder.length() > 0 ? queryBuilder.toString() : null;
     }
+
 
     public long countProjectProcessing() {
         TypedQuery<Long> query = entityManager.createQuery("Select Count(c) from Project c where c.status = 2", Long.class);
