@@ -64,12 +64,12 @@ public class HomepageController {
         int pageSize = 6; // Number of services per page
 
         // Fetch services for the current page
-        List<Service> services = serviceService.getPaginationServiceListByStatus(page,pageSize,null,null,true);
+        List<Service> services = serviceService.getPaginationServiceListByStatus(page,pageSize,null,null,true,null);
         model.addAttribute("services", services);
         model.addAttribute("currentPage", page);
 
         // Get the total number of active services using a count method
-        long totalServices = serviceService.countServiceFilter(Boolean.TRUE);
+        long totalServices = serviceService.countServiceFilter(Boolean.TRUE,null);
 
         // Calculate the total number of pages
         int totalPages = (int) Math.ceil((double) totalServices / pageSize);

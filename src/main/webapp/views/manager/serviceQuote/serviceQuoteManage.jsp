@@ -264,7 +264,7 @@
                                             </c:when>
                                         </c:choose>
                                     </td>
-                                    <td><a href="${pageContext.request.contextPath}/manager/serviceQuote/detail/${serviceQuote.serviceQuotesId}" class="btn btn-info">View</a></td>
+                                    <td><a href="${pageContext.request.contextPath}/manager/serviceQuote/detail/${serviceQuote.serviceQuotesId}" class="btn btn-info">Detail</a></td>
                                 </tr>
                             </c:forEach>
                         </tbody>

@@ -399,6 +399,8 @@ public class ProjectController {
             }
             if (project.getStatus() != 4 && project.getStatus() != 3) {
                 project.setStatus(status);
+                project.getDesign().setStatus(4);
+                project.getConstruction().setConstructionStatus(4);
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
             }

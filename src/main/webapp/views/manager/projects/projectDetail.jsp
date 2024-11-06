@@ -100,7 +100,7 @@
             justify-content: center;
             gap: 15px;
         }
-
+        
         .section-header i {
             margin-right: 8px;
         }
@@ -131,6 +131,122 @@
             overflow-y: auto;
             /* Adds scrolling for overflow */
         }
+        body {
+                    background-color: #f8f9fa;
+                    font-family: 'Mukta', sans-serif;
+                }
+
+                h2 {
+                    font-weight: bold;
+                    color: #007bff;
+                    border-bottom: 2px solid #007bff;
+                    padding-bottom: 10px;
+                    margin-bottom: 20px;
+                }
+
+                /* Table styling */
+                table.table {
+                    background-color: white;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                /* Table Header Styling */
+                thead.thead-dark th {
+                    background-color: #007bff;
+                    color: white;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+
+                /* Pagination Controls */
+                .pagination-controls {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 20px;
+                }
+
+                .pagination-controls a,
+                .pagination-controls button {
+                    font-weight: bold;
+                }
+
+                /* Button Styles */
+                .btn-info {
+                    background-color: #007bff;
+                    border-color: #007bff;
+                    font-weight: bold;
+                    padding: 8px 12px;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-info:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                }
+
+                /* Badge styles */
+                .badge-status {
+                    padding: 10px 15px;
+                    font-size: 1em;
+                    border-radius: 20px;
+                }
+
+                /* Filter Form Styling */
+                .form-control {
+                    border-radius: 20px;
+                    padding: 10px;
+                }
+
+                .btn-primary {
+                    background-color: #007bff;
+                    border-radius: 20px;
+                    padding: 8px 20px;
+                }
+
+                .btn-primary:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                }
+
+                .form-row {
+                    margin-bottom: 20px;
+                }
+
+                /* Card Container for Form */
+                .filter-card {
+                    background-color: #ffffff;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    margin-bottom: 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    /* Align the form elements to the bottom */
+                    flex-wrap: wrap;
+                    /* Allow wrapping for smaller screens */
+                    gap: 15px;
+                    /* Adjust gap between form elements */
+                }
+
+                .filter-card .form-control,
+                .filter-card select,
+                .filter-card .btn-primary {
+                    flex: 1 1 150px;
+                    /* Allows the fields to scale and ensures consistency in size */
+                    margin-bottom: 10px;
+                    /* Adds spacing between the form elements */
+                }
+
+                .filter-card label {
+                    margin-bottom: 5px;
+                    /* Space between labels and inputs */
+                    display: inline-block;
+                }
+             
     </style>
 </head>
 <div style="height:6vh;"></div>
@@ -186,7 +302,8 @@
                                                 <a href="${pageContext.request.contextPath}/manager/design/detail/${project.design.designId}">
                                                     <button type="button"
                                                             class="btn stage-button btn-md btn-block px-3 ${designClass}">
-                                                        Design
+                                                        <i class="fas fa-info-circle"></i> Design                                                   
+
                                                     </button>
                                                 </a>
                                             </c:when>
@@ -209,7 +326,7 @@
                                                 <a
                                                         href="${pageContext.request.contextPath}/manager/construction/detail/${project.construction.constructionId}">
                                                     <button type="button" class="btn stage-button btn-md btn-block px-3 ${constructionClass}">
-                                                        Construction
+                                                        <i class="fas fa-info-circle"></i>  Construction
                                                     </button>
                                                 </a>
                                             </c:when>
@@ -305,22 +422,22 @@
                                             <c:choose>
                                                 <c:when test="${project.status == 1}">
                                                             <span
-                                                                    class="badge badge-secondary badge-custom">Pending</span>
+                                                                    class="badge badge-secondary badge-status">Pending</span>
                                                 </c:when>
                                                 <c:when test="${project.status == 2}">
-                                                            <span class="badge badge-primary badge-custom">Processing</span>
+                                                            <span class="badge badge-primary badge-status">Processing</span>
                                                 </c:when>
                                                 <c:when test="${project.status == 3}">
                                                             <span
-                                                                    class="badge badge-success badge-custom">Completed</span>
+                                                                    class="badge badge-success badge-status">Completed</span>
                                                 </c:when>
                                                 <c:when test="${project.status == 4}">
                                                             <span
-                                                                    class="badge badge-danger badge-custom">Cancelled</span>
+                                                                    class="badge badge-danger badge-status">Cancelled</span>
                                                 </c:when>
                                                 <c:when test="${project.status == 5}">
                                                             <span
-                                                                    class="badge badge-warning badge-custom">Request Cancel</span>
+                                                                    class="badge badge-warning badge-status">Request Cancel</span>
                                                 </c:when>
                                             </c:choose>
                                         </td>
@@ -333,10 +450,10 @@
                                             <c:choose>
                                                 <c:when test="${project.isSharedAble == true}">
                                                             <span
-                                                                    class="badge badge-success badge-custom">Shared</span>
+                                                                    class="badge badge-success badge-status">Shared</span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                            <span class="badge badge-danger badge-custom">Not
+                                                            <span class="badge badge-danger badge-status">Not
                                                                 Shared</span>
                                                 </c:otherwise>
                                             </c:choose>
@@ -357,15 +474,15 @@
                                     Information</h4>
                                 <table class="table table-hover">
                                     <tr>
-                                        <th>Customer Name</th>
+                                        <th style="text-wrap:nowrap"> Name </th>
                                         <td>${customer.name}</td>
                                     </tr>
                                     <tr>
-                                        <th>Phone</th>
+                                        <th style="text-wrap:nowrap">Phone</th>
                                         <td>${customer.phone}</td>
                                     </tr>
                                     <tr>
-                                        <th>Email</th>
+                                        <th style="text-wrap:nowrap">Email</th>
                                         <td>${customer.email}</td>
                                     </tr>
                                 </table>
