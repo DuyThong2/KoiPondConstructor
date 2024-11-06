@@ -190,7 +190,7 @@
                                 </p>
 
                                 <!-- Button aligned at the bottom -->
-                                <a href="${pageContext.request.contextPath}/manager/preDesign/detail/${preDesign.preDesignId}" class="btn btn-info mt-auto">View Details</a>
+                                <a href="${pageContext.request.contextPath}/manager/preDesign/detail/${preDesign.preDesignId}" class="btn btn-info mt-auto">Detail</a>
                             </div>
                         </div>
                     </div>

@@ -223,6 +223,25 @@
                                                 </option>
                                             </select>
                                         </div>
+                                        <div class="col-auto">
+                                            <label for="fromDate">From Date:</label>
+                                            <input type="date" name="fromDate" id="fromDate" class="form-control"
+                                                value="${fromDate}">
+                                        </div>
+
+                                        <div class="col-auto">
+                                            <label for="endDate">To Date:</label>
+                                            <input type="date" name="endDate" id="endDate" class="form-control"
+                                                value="${endDate}">
+                                        </div>
+
+                                        <!-- Search by Name -->
+                                        <div class="col-auto">
+                                            <label for="searchName">Search:</label>
+                                            <input type="text" name="searchName" id="searchName" class="form-control" placeholder="Search for Service Orders"
+                                                value="${searchName}">
+                                        </div>
+
 
                                         <input type="hidden" name="page" value="${currentPage}">
                                         <div class="col-auto">
@@ -400,30 +419,42 @@
                             </table>
                             <!-- Pagination Controls -->
                             <div class="d-flex justify-content-between align-items-center mt-4">
-                                <c:if test="${currentPage != 1}">
+                                <c:if test="${currentPage > 1}">
                                     <form method="get" action="${pageContext.request.contextPath}/manager/serviceDetails">
-                                        <button class="btn btn-primary" type="submit">Previous</button>
+                                        <button class="btn btn-primary" type="submit"> &lt; </button>
                                         <input type="hidden" name="page" value="${currentPage - 1}">
                                         <input type="hidden" name="size" value="${size}">
                                         <input type="hidden" name="sortBy" value="${sortBy}">
                                         <input type="hidden" name="sortType" value="${sortType}">
+                                        <input type="hidden" name="fromDate" value="${fromDate}">
+                                        <input type="hidden" name="endDate" value="${endDate}">
+                                        <input type="hidden" name="searchName" value="${searchName}">
                                         <c:if test="${statusFilter != null}">
                                             <input type="hidden" name="statusFilter" value="${statusFilter}">
                                         </c:if>
                                     </form>
                                 </c:if>
+                                <c:if test="${currentPage == 1}">
+                                    <button class="btn btn-primary" disabled>&lt;</button>
+                                </c:if>
                                 <span>Page <strong>${currentPage}</strong> of <strong>${totalPage}</strong></span>
-                                <c:if test="${currentPage != totalPage}">
+                                <c:if test="${currentPage < totalPage}">
                                     <form method="get" action="${pageContext.request.contextPath}/manager/serviceDetails">
-                                        <button class="btn btn-primary" type="submit">Next</button>
+                                        <button class="btn btn-primary" type="submit">&gt;</button>
                                         <input type="hidden" name="page" value="${currentPage + 1}">
                                         <input type="hidden" name="size" value="${size}">
                                         <input type="hidden" name="sortBy" value="${sortBy}">
                                         <input type="hidden" name="sortType" value="${sortType}">
+                                        <input type="hidden" name="fromDate" value="${fromDate}">
+                                        <input type="hidden" name="endDate" value="${endDate}">
+                                        <input type="hidden" name="searchName" value="${searchName}">
                                         <c:if test="${statusFilter != null}">
                                             <input type="hidden" name="statusFilter" value="${statusFilter}">
                                         </c:if>
                                     </form>
+                                </c:if>
+                                <c:if test="${currentPage == totalPages}">
+                                    <button class="btn btn-primary" disabled>&gt;</button>
                                 </c:if>
                             </div>
                         </main>
@@ -478,6 +509,8 @@
                         </div>
                 </div>
             </div>
+            <div style="height:15vh;"></div>
+
                 <!-- Bootstrap JS and dependencies -->
                 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
                 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

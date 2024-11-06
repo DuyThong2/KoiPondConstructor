@@ -487,11 +487,11 @@
                                 </tbody>
                             </table>
                             <!-- Pagination Controls -->
-                            <div class="d-flex justify-content-between align-items-center mt-4">
+                            <div class="pagination-controls">
                                 <!-- Previous Button -->
-                                <c:if test="${currentPage!=1}">
+                                <c:if test="${currentPage>1}">
                                     <form href="${pageContext.request.contextPath}/manager/projects">
-                                        <button class="btn btn-primary" type="submit">Previous</button>
+                                        <button class="btn btn-primary" type="submit"><</button>
                                         <input type="hidden" name="page" value="${currentPage-1}">
                                         <input type="hidden" name="size" value="${size}">
                                         <input type="hidden" name="sortBy" value="${sortBy}">
@@ -502,13 +502,16 @@
 
                                     </form>
                                 </c:if>
+                                <c:if test="${currentPage == 1}">
+                                    <button class="btn btn-primary" disabled>&lt;</button>
+                                </c:if>
 
                                 <!-- Page Indicator (Static for this example) -->
                                 <span>Page <strong>${currentPage}</strong> of <strong>${totalPage}</strong></span>
                                 <!-- Next Button -->
-                                <c:if test="${currentPage!=totalPage}">
+                                <c:if test="${currentPage<totalPage}">
                                     <form href="manager/projects/">
-                                        <button class="btn btn-primary" type="submit">Previous</button>
+                                        <button class="btn btn-primary" type="submit">></button>
                                         <input type="hidden" name="page" value="${currentPage+1}">
                                         <input type="hidden" name="size" value="${size}">
                                         <input type="hidden" name="sortBy" value="${sortBy}">
@@ -519,7 +522,11 @@
 
                                     </form>
                                 </c:if>
+                                <c:if test="${currentPage == totalPage}">
+                                    <button class="btn btn-primary" disabled>&gt;</button>
+                                </c:if>
                             </div>
+                         
                         </main>
                         <div id="messageModal" class="modal fade" tabindex="-1" role="dialog"
                             aria-labelledby="messageModalLabel" aria-hidden="true">
@@ -553,6 +560,7 @@
                         </div>
                 </div>
             </div>
+            <div style="height:15vh;"></div>
             <script>
                 var currentDetailsRow = null;
 

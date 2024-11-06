@@ -74,6 +74,7 @@
                         body {
                             background-color: #f8f9fa;
                             font-family: 'Mukta', sans-serif;
+                            overflow-x: hidden;
                         }
 
                         h2 {
@@ -243,19 +244,24 @@
                                                                 : '' }>Inactive</option>
                                                         </select>
                                                     </div>
+                                                    <div class="col-auto">
+                                                        <label for="searchName">Search:</label>
+                                                            <input type="text" id="searchName" name="searchName" class="form-control" placeholder="Search for service" value="${searchName}">
+                                                        
+                                                    </div>
 
                                                     <input type="hidden" name="page" value="${currentPage}">
                                                     <div class="col-auto">
                                                         <button type="submit" class="btn btn-primary"
-                                                            style="margin-top: 2rem">Apply</button>
+                                                            style="margin-top: 1rem">Apply</button>
 
 
-                                                            <button type="button" class="btn btn-success" data-toggle="modal"  style="margin-top: 2rem"
+                                                            <button type="button" class="btn btn-success" data-toggle="modal"  style="margin-top: 1rem"
                                                             data-target="#createServiceModal"><i class="fas fa-plus"></i> Create New
                                                             Service</button>
     
                                                     </div>
-                                                  
+                                                    
                                                 </div>
                                             </form>
                                         </div>
@@ -643,31 +649,39 @@
                                     <!-- Pagination Controls -->
                                     <div class="d-flex justify-content-between align-items-center mt-4">
                                         <!-- Previous Button -->
-                                        <c:if test="${currentPage != 1}">
+                                        <c:if test="${currentPage > 1}">
                                             <form method="get"
                                                 action="${pageContext.request.contextPath}/manager/services">
-                                                <button class="btn btn-primary" type="submit">Previous</button>
+                                                <button class="btn btn-primary" type="submit">&lt;</button>
                                                 <input type="hidden" name="page" value="${currentPage - 1}">
                                                 <input type="hidden" name="size" value="${size}">
                                                 <input type="hidden" name="sortBy" value="${sortBy}">
                                                 <input type="hidden" name="sortType" value="${sortType}">
+                                                <input type="hidden" name="searchName" value="${searchName}">
                                             </form>
                                         </c:if>
-
+                                        <c:if test="${currentPage == 1}">
+                                            <button class="btn btn-primary" disabled>&lt;</button>
+                                        </c:if>
                                         <!-- Page Indicator -->
                                         <span>Page <strong>${currentPage}</strong> of
                                             <strong>${totalPage}</strong></span>
 
                                         <!-- Next Button -->
-                                        <c:if test="${currentPage != totalPage}">
+                                        <c:if test="${currentPage < totalPage}">
                                             <form method="get"
                                                 action="${pageContext.request.contextPath}/manager/services">
-                                                <button class="btn btn-primary" type="submit">Next</button>
+                                                <button class="btn btn-primary" type="submit">&gt;</button>
                                                 <input type="hidden" name="page" value="${currentPage + 1}">
                                                 <input type="hidden" name="size" value="${size}">
                                                 <input type="hidden" name="sortBy" value="${sortBy}">
                                                 <input type="hidden" name="sortType" value="${sortType}">
+                                                <input type="hidden" name="searchName" value="${searchName}">
+
                                             </form>
+                                        </c:if>
+                                        <c:if test="${currentPage == totalPages}">
+                                            <button class="btn btn-primary" disabled>&gt;</button>
                                         </c:if>
                                     </div>
                                 </main>
@@ -700,7 +714,7 @@
                                     </div>
                                 </div>
                         </div>
-                        <div style="height:6vh;"></div>
+                        <div style="height:15vh;"></div>
                     </div>
 
                     <script>
