@@ -12,20 +12,136 @@
         <link href="<c:url value='/css/manager/navbar.css'/>" rel="stylesheet">
         <style>
             body {
-
-                font-family: 'Arial', sans-serif;
                 background-color: #f8f9fa;
-                padding-top: 60px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
-            .container {
-                max-width: 90%;
-                margin: auto;
-                background: #ffffff;
-                padding: 30px;
+            .title {
+                font-weight: bold;
+                color: #007bff;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+            /* Table Styling */
+            .table {
+                background-color: #ffffff;
                 border-radius: 10px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
             }
-            /* Other styling omitted for brevity */
+
+            .table th, .table td {
+                vertical-align: middle;
+                text-align: center;
+            }
+
+            .thead-dark th {
+                background-color: #343a40;
+                color: #ffffff;
+                font-size: 1.1rem;
+                padding: 15px;
+            }
+
+            .table td {
+                padding: 15px;
+                font-size: 0.95rem;
+            }
+
+            /* Badge Styling */
+            .badge-status {
+                font-size: 14px;
+                padding: 8px 15px;
+                border-radius: 15px;
+                text-transform: capitalize;
+            }
+
+            .badge-status.success {
+                background-color: #28a745;
+                color: white;
+            }
+            .badge-status.proccessing {
+                background-color: #0d6efd;
+                color: white;
+            }
+            .badge-status.pending {
+                background-color: #6c757d;
+                color: white;
+            }
+
+            .badge-status.canceled {
+                background-color: #ffc107;
+                color: white;
+            }
+            /* Button Styling */
+            .btn-custom {
+                border-radius: 5px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                margin: 5px;
+            }
+
+            .btn-success, .btn-info {
+                font-size: 0.9rem;
+                padding: 10px 20px;
+            }
+
+            .detail-name-bar {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+
+            .detail-name-bar .badge-status {
+                margin-right: 10px;
+                margin-bottom: 10px;
+            }
+            /* Styling for Collapse Card */
+            .collapse-card {
+                background-color: #ffffff;
+                border: 1px solid #e0e0e0;
+                border-radius: 5px;
+                padding: 15px;
+                margin-top: 10px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                font-size: 1.1rem;
+            }
+
+            .collapse-header {
+                font-weight: bold;
+                color: #007bff;
+                margin-bottom: 10px;
+                font-size: 1.4rem; 
+            }
+
+            .collapse-detail {
+                display: flex;
+                align-items: center;
+                padding-left: 15px; 
+                margin: 0 0 10px 400px;
+            }
+
+            .collapse-detail strong {
+                color: #343a40;
+                min-width: 80px;
+            }
+
+            .collapse-detail .badge {
+                margin-right: 5px;
+            }
+            .detail-value {
+                flex: 1;
+            }
+            /* Media Query for Responsive Design */
+            @media (max-width: 768px) {
+                .table {
+                    font-size: 0.85rem;
+                }
+
+                .btn-custom {
+                    font-size: 0.85rem;
+                }
+            }
         </style>
     </head>
     <div style="height:6vh;"></div>
@@ -39,7 +155,7 @@
                 <%@include file="../navBar.jsp" %>
 
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 mt-4">
-                    <h2>Manage Construction Stage Details</h2>
+                    <h2 class="title">Manage Construction Stage Details</h2>
 
                     <!-- Project Info Section -->
                     <div class="project-info">
@@ -65,7 +181,8 @@
                                 <th>Price</th>
                                 <th>Status</th>
                                 <th>Description</th>
-                                <th>Action</th>
+                                <th style="width: 250px">Payment Process</th>
+                                <th style="width: 150px">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,6 +209,7 @@
                                     </td>
                                     <td>${rawStage.constructionStageDescription}</td>
                                     <td>
+
                                         <!-- Display action for payment -->
                                         <c:set var="allPreviousCompleted" value="true" />
 
@@ -109,46 +227,57 @@
                                                     <input type="hidden" name="constructionId" value="${construction.constructionId}">
                                                     <input type="hidden" name="constructionStageId" value="${rawStage.constructionStageId}">
 
-                                                    <div class="action-buttons mt-2">
+                                                    <div class="action-buttons mt-2 d-flex align-items-center">
                                                         <select class="form-control text-center" name="newStatus" required
                                                                 ${rawStage.constructionStageStatus != 2 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
                                                             <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
                                                             <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
                                                         </select>
-                                                        <button type="submit" class="btn btn-primary ml-2"
+                                                        <button type="submit" class="btn btn-primary ml-1"
                                                                 ${rawStage.constructionStageStatus != 2 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
-                                                            Update Payment Status
+                                                            Update
                                                         </button>
                                                     </div>
                                                 </form>
                                             </c:if>
                                         </c:forEach>
+
+                                    </td>
+                                    <td><button class="btn btn-primary" data-toggle="collapse" data-target="#details-${rawStage.constructionStageId}" aria-expanded="false" aria-controls="details-${rawStage.constructionStageId}">
+                                            View Details
+                                        </button></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        <div id="details-${rawStage.constructionStageId}" class="collapse">
+                                            <div class="collapse-card">
+                                                <div class="collapse-header">Stage Details</div>
+                                                <c:forEach var="detail" items="${rawStage.constructionStageDetail}">
+                                                    <div class="collapse-detail">
+                                                        <strong>Detail:</strong> ${detail.constructionStageDetailName},
+                                                        <strong>Status:</strong>
+                                                        <c:choose>
+                                                            <c:when test="${detail.constructionStageDetailStatus == 1}">
+                                                                <span class="badge badge-secondary">Pending</span>
+                                                            </c:when>
+                                                            <c:when test="${detail.constructionStageDetailStatus == 2}">
+                                                                <span class="badge badge-primary">Processing</span>
+                                                            </c:when>
+                                                            <c:when test="${detail.constructionStageDetailStatus == 3}">
+                                                                <span class="badge badge-warning">Canceled</span>
+                                                            </c:when>
+                                                            <c:when test="${detail.constructionStageDetailStatus == 4}">
+                                                                <span class="badge badge-success">Completed</span>
+                                                            </c:when>
+                                                        </c:choose>
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
 
-                                <!-- Display all construction details under the current stage -->
-                                <c:forEach var="detail" items="${rawStage.constructionStageDetail}">
-                                    <tr>
-                                        <td colspan="5">
-                                            <strong>Detail:</strong> ${detail.constructionStageDetailName},
-                                            <strong>Status:</strong>
-                                            <c:choose>
-                                                <c:when test="${detail.constructionStageDetailStatus == 1}">
-                                                    <span class="badge badge-secondary">Pending</span>
-                                                </c:when>
-                                                <c:when test="${detail.constructionStageDetailStatus == 2}">
-                                                    <span class="badge badge-primary">Processing</span>
-                                                </c:when>
-                                                <c:when test="${detail.constructionStageDetailStatus == 3}">
-                                                    <span class="badge badge-warning">Canceled</span>
-                                                </c:when>
-                                                <c:when test="${detail.constructionStageDetailStatus == 4}">
-                                                    <span class="badge badge-success">Completed</span>
-                                                </c:when>
-                                            </c:choose>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+
                             </c:forEach>
                         </tbody>
                     </table>
@@ -162,7 +291,8 @@
                                 <th>Price</th>
                                 <th>Status</th>
                                 <th>Description</th>
-                                <th>Action</th>
+                                <th style="width: 250px">Payment Process</th>
+                                <th style="width: 150px">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -204,60 +334,73 @@
                                                     <input type="hidden" name="constructionId" value="${construction.constructionId}">
                                                     <input type="hidden" name="constructionStageId" value="${completeStage.constructionStageId}">
 
-                                                    <div class="action-buttons mt-2">
+                                                    <div class="action-buttons mt-2 d-flex align-items-center">
                                                         <select class="form-control text-center" name="newStatus" required
                                                                 ${completeStage.constructionStageStatus != 2 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
                                                             <option value="2" ${detail.constructionStageDetailStatus == 2 ? 'selected' : ''}>Processing</option>
                                                             <option value="4" ${detail.constructionStageDetailStatus == 4 ? 'selected' : ''}>Completed</option>
                                                         </select>
-                                                        <button type="submit" class="btn btn-primary ml-2"
+                                                        <button type="submit" class="btn btn-primary ml-1"
                                                                 ${completeStage.constructionStageStatus != 2 || detail.constructionStageDetailStatus == 4 ? 'disabled' : ''}>
-                                                            Update Payment Status
+                                                            Update
                                                         </button>
                                                     </div>
                                                 </form>
                                             </c:if>
                                         </c:forEach>
                                     </td>
+                                    <td>
+                                        <button class="btn btn-primary" data-toggle="collapse" data-target="#details-${completeStage.constructionStageId}" aria-expanded="false" aria-controls="details-${completeStage.constructionStageId}">
+                                            View Details
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6">
+                                        <div id="details-${completeStage.constructionStageId}" class="collapse">
+                                            <div class="collapse-card">
+                                                <div class="collapse-header">Stage Details</div>
+                                                <c:forEach var="detail" items="${completeStage.constructionStageDetail}">
+                                                    <div class="collapse-detail">
+                                                        <strong>Detail:</strong> ${detail.constructionStageDetailName},
+                                                        <strong>Status:</strong>
+                                                        <c:choose>
+                                                            <c:when test="${detail.constructionStageDetailStatus == 1}">
+                                                                <span class="badge badge-secondary">Pending</span>
+                                                            </c:when>
+                                                            <c:when test="${detail.constructionStageDetailStatus == 2}">
+                                                                <span class="badge badge-primary">Processing</span>
+                                                            </c:when>
+                                                            <c:when test="${detail.constructionStageDetailStatus == 3}">
+                                                                <span class="badge badge-warning">Canceled</span>
+                                                            </c:when>
+                                                            <c:when test="${detail.constructionStageDetailStatus == 4}">
+                                                                <span class="badge badge-success">Completed</span>
+                                                            </c:when>
+                                                        </c:choose>
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
 
-                                <!-- Display all construction details under the current stage -->
-                                <c:forEach var="detail" items="${completeStage.constructionStageDetail}">
-                                    <tr>
-                                        <td colspan="5">
-                                            <strong>Detail:</strong> ${detail.constructionStageDetailName},
-                                            <strong>Status:</strong>
-                                            <c:choose>
-                                                <c:when test="${detail.constructionStageDetailStatus == 1}">
-                                                    <span class="badge badge-secondary">Pending</span>
-                                                </c:when>
-                                                <c:when test="${detail.constructionStageDetailStatus == 2}">
-                                                    <span class="badge badge-primary">Processing</span>
-                                                </c:when>
-                                                <c:when test="${detail.constructionStageDetailStatus == 3}">
-                                                    <span class="badge badge-warning">Canceled</span>
-                                                </c:when>
-                                                <c:when test="${detail.constructionStageDetailStatus == 4}">
-                                                    <span class="badge badge-success">Completed</span>
-                                                </c:when>
-                                            </c:choose>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
+
                             </c:forEach>
                         </tbody>
                     </table>
-                    <div class="staff-info mt-5">
-                        <h4>Assigned Construction Staff</h4>
-                        <ul class="list-group d-inline-block list-group-horizontal d-flex flex-wrap">
-                            <c:forEach var="staff" items="${construction.constructionStaffs}">
-                                <li class="list-group-item mx-2 p-2">${staff.staff.name}</li>
-                                </c:forEach>
-                        </ul>
-                    </div>
+                    <%--                    <div class="staff-info mt-5">
+                                            <h4>Assigned Construction Staff</h4>
+                                            <ul class="list-group d-inline-block list-group-horizontal d-flex flex-wrap">
+                                                <c:forEach var="staff" items="${construction.constructionStaffs}">
+                                                    <li class="list-group-item mx-2 p-2">${staff.staff.name}</li>
+                                                    </c:forEach>
+                                            </ul>
+                                        </div>--%>
                 </main>
 
             </div>
+            <div style="height:25vh;"></div>
         </div>
 
 
