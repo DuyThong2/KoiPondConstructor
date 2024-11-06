@@ -243,6 +243,8 @@
             }
         </script>
     </head>
+    <c:set var="disableUpdateButton" value="${construction.constructionStatus != 2 || construction.project.status == 4 || construction.project.stage != 3 }" />
+
     <body>
         <div class="container">
             <%@include file="navbarConstruction.jsp" %>
@@ -343,8 +345,13 @@
                                 </p>
                                 <p><strong>Price:</strong> ${stage.constructionStagePrice}</p>
 
-                                <c:if test="${stage.constructionStageStatus != 4}"> 
-                                    <a href="${pageContext.request.contextPath}/staff/updateStatus/constructionStage/${stage.constructionStageId}?constructionId=${constructionId}" class="btn btn-info">Update Status</a>
+                                <c:if test="${stage.constructionStageStatus != 4}">
+                                    <form action="${pageContext.request.contextPath}/staff/updateStatus/constructionStage/${stage.constructionStageId}" method="get" style="display: inline;">
+                                        <input type="hidden" name="constructionId" value="${constructionId}" />
+                                        <button type="submit" class="btn btn-info" ${disableUpdateButton ? 'disabled="disabled"' : ''}>
+                                            Update Status
+                                        </button>
+                                    </form>
                                 </c:if>
                             </div>
                         </div>
@@ -395,7 +402,7 @@
         </script>
 
         <!-- Bootstrap JS -->
-       
+
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </body>
 </html>

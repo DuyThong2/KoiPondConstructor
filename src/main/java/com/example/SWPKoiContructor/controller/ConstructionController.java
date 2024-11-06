@@ -33,7 +33,7 @@ public class ConstructionController {
 
     private NotificationService notificationService;
 
-    public ConstructionController(DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService, NotificationService notificationService) {
+    public ConstructionController(PaymentHistoryService paymentHistoryService,DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService, NotificationService notificationService) {
         this.designService = designService;
         this.constructionService = constructionService;
         this.constructionStageService = ConstructionStageService;
@@ -176,6 +176,11 @@ public class ConstructionController {
         if (user.getAuthority().getAuthority().equalsIgnoreCase("ROLE_MANAGER")) {
             return "redirect:/manager/construction/detail/" + constructionId;
         }
+        
+        Construction construction = constructionService.getConstructionById(constructionId);
+        boolean disableUpdateButton = construction.getConstructionStatus() != 2 
+                                  || construction.getProject().getStatus() == 4 
+                                  || construction.getProject().getStage() != 3;
 
         // Fetch the construction stage details by constructionStageId
         List<ConstructionStageDetail> details = constructionStageDetailService.getConstructionStageDetailByStageId(id);
@@ -183,6 +188,7 @@ public class ConstructionController {
             model.addAttribute("constructionId", constructionId);
             model.addAttribute("details", details);
             model.addAttribute("id", id);  // constructionStageId
+            model.addAttribute("disableUpdateButton", disableUpdateButton);
         }
         // Add attributes to the model to render in the JSP
 
