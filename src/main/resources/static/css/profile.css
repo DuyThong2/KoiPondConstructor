@@ -779,11 +779,6 @@ a:hover {
     border-color: #007bff;
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
 }
-.modal-header {
-    background-color: #000000;
-    color: white;
-    text-align: center;
-}
 .btn-img {
     padding: 8px 10px;
     font-size: 12px;

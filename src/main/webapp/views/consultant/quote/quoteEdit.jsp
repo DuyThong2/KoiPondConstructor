@@ -12,13 +12,29 @@
         <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
             .quote-info {
-                background-color: #f8f9fa;
+                background-color: #ffffff;
                 padding: 20px;
-                border-radius: 10px;
+                border-radius: 8px;
+                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
                 margin-bottom: 20px;
             }
             .quote-info h4 {
                 margin-bottom: 15px;
+                color: #333;
+            }
+            .section-title {
+                font-weight: bold;
+                text-align: center;
+                padding-bottom: 10px;
+                color: #007bff;
+            }
+            .form-section {
+                background-color: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                margin-bottom: 20px;
+                width: 66%;
             }
             .customer-avatar {
                 max-width: 150px;
@@ -27,6 +43,15 @@
             }
             .customer-info {
                 text-align: center;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .btn-primary {
+                background-color: #007bff;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 15px;
             }
             .modal-dialog.modal-lg {
                 max-width: 90%;
@@ -51,7 +76,16 @@
                     <div class="quote-info">
                         <h4>Customer Information</h4>
                         <div class="customer-info">
-                            <img src="${customer.imgURL != null ? customer.getShowingImg(customer.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                            <c:choose>
+                                <c:when test="${quote.customer.imgURL != null}">
+                                    <img class="customer-avatar img-fluid"
+                                         src="${quote.customer.getShowingImg(quote.customer.imgURL)}" alt />
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="customer-avatar img-fluid"
+                                         src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" alt />
+                                </c:otherwise>
+                            </c:choose>
                             <p><strong>${customer.name}</strong></p>
                         </div>
                         <p><strong>Phone:</strong> ${customer.phone}</p>
@@ -61,9 +95,10 @@
                 </div>
 
                 <!-- Right Column for Quote Edit Form -->
-                <div class="col-md-8">
-                    <h2 class="mb-4">Edit Quote</h2>
-
+                <div class="form-section">
+                    <div class="section-title">
+                        <h2>Create Quote</h2>
+                    </div>
                     <form:form action="${pageContext.request.contextPath}/consultant/quote/saveUpdateQuote" modelAttribute="newQuote" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="true" onsubmit="return validateForm()">
                         <form:hidden path="quotesId" value="${newQuote.quotesId}"/>
                         <c:if test="${consultant != null}"> 
@@ -86,14 +121,14 @@
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="area">Area (m�):</label>
+                            <label for="area">Area (m<sup>2</sup>):</label>
                             <form:input type="number" path="quotesArea" id="area" step="0.01" class="form-control" value="${newQuote.quotesArea}" />
                         </div>
 
                         <!-- Parcel Selection -->
                         <div class="form-group">
                             <label for="parcel">Select Parcel:</label>
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#parcelModal">
+                            <button style="margin-bottom: 5px" type="button" class="btn btn-info" data-toggle="modal" data-target="#parcelModal">
                                 Choose Parcel
                             </button>
                             <input type="hidden" id="selectedParcelId" name="parcel.packageId" value="${newQuote.parcel.packageId}" required />
@@ -140,8 +175,8 @@
                                     <tr>
                                         <th>Package Name</th>
                                         <th>Description</th>
-                                        <th>Design Price per m�</th>
-                                        <th>Construction Price per m�</th>
+                                        <th>Design Price per m<sup>2</sup></th>
+                                        <th>Construction Price per m<sup>2</sup></th>
                                         <th>Status</th>
                                         <th>Select</th>
                                     </tr>
@@ -222,8 +257,8 @@
                         }
                     });
                 });
-                
-                
+
+
                 function validateForm() {
                     const area = parseFloat(document.getElementById('area').value) || 0;
                     const designCost = parseFloat(document.getElementById('designCost').value) || 0;

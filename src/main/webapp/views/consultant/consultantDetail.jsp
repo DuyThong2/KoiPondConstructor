@@ -7,9 +7,9 @@
     <head>
         <title>Contract Details</title>
         <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-        <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
             .section-header {
                 margin-bottom: 20px;
@@ -68,7 +68,7 @@
                                         <span class="badge badge-warning badge-status">Processing</span>
                                     </c:when>
                                     <c:when test="${consultant.consultantStatus == 4}">
-                                        <span class="badge badge-success badge-status">${empty consultant.customer? 'Add Customer To Contineu':'Complete'}</span>
+                                        <span class="badge badge-success badge-status">${empty consultant.customer? 'Add Customer To Continue':'Complete'}</span>
                                     </c:when>
                                     <c:when test="${consultant.consultantStatus == 5}">
                                         <span class="badge badge-danger badge-status">Cancel</span>
@@ -261,33 +261,35 @@
             </div>
         </div>
 
-        <!-- Modal -->
+
+        <!-- Customer Selection Modal -->
         <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog modal-lg" role="document"> <!-- Using modal-lg for a larger modal if needed -->
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addCustomerModalLabel">Select Customer</h5>
+                        <h5 class="modal-title" id="addCustomerModalLabel">Select Customer for New Service Quote</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" id="customerSearch" class="form-control" placeholder="Search by name or email...">
+                        </div>
                         <div class="table-responsive">
                             <!-- Table of Customers -->
                             <table class="table table-hover">
-                                <thead>
+                                <thead class="thead-light">
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Action</th>
+                                        <th style="width: 35%;">Name</th>
+                                        <th style="width: 30%;">Email</th>
+                                        <th style="width: 25%;">Phone</th>
+                                        <th style="width: 10%;">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="customerTableBody">
                                     <c:forEach var="customer" items="${customerList}">
                                         <tr>
-                                            <td>${customer.id}</td>
                                             <td>${customer.name}</td>
                                             <td>${customer.email}</td>
                                             <td>${customer.phone}</td>
@@ -304,16 +306,34 @@
                             </table>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
-        </div>
+        </div>        
 
 
         <!-- Bootstrap JS and dependencies -->
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+        <script>
+            document.getElementById('customerSearch').addEventListener('input', function () {
+                const searchValue = this.value.toLowerCase();
+                const customerRows = document.querySelectorAll('#customerTableBody tr');
+
+                customerRows.forEach(row => {
+                    const customerName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                    const customerEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (customerName.includes(searchValue) || customerEmail.includes(searchValue)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        </script>
     </body>
 </html>
 

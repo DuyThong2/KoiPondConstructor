@@ -159,7 +159,18 @@
                         <div class="quote-info">
                             <h4>Quote Information</h4>
                             <div class="customer-info">
-                                <img src="${quote.customer.imgURL != null ? quote.customer.getShowingImg(quote.customer.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                                <c:choose>
+                                    <c:when test='${quote.customer.imgURL != null}'>
+                                        <img class="customer-avatar img-fluid"
+                                             src="${quote.customer.getShowingImg(quote.customer.imgURL)}"
+                                             alt="Customer Avatar"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img class="customer-avatar img-fluid"
+                                             src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png"
+                                             alt="Customer Avatar"/>
+                                    </c:otherwise>
+                                </c:choose>
                                 <p><strong>${quote.customer.name}</strong></p>
                             </div>
                             <p><strong>Quote ID:</strong> ${quote.quotesId}</p>
@@ -167,7 +178,7 @@
                             <p><strong>Customer:</strong> ${quote.customer.name}</p>
                             <p><strong>Total Design Cost:</strong> ${quote.quotesDesignCost}</p>
                             <p><strong>Total Construction Cost:</strong> ${quote.quotesConstructionCost}</p>
-                            <p><strong>Area:</strong> ${quote.quotesArea} m�</p>
+                            <p><strong>Area:</strong> ${quote.quotesArea} m<sup>2</sup></p>
                             <p><strong>Total Price:</strong> ${quote.quotesTotalPrice}</p>
                         </div>
                     </div>
@@ -535,8 +546,29 @@
 
                             // Ensure the total price matches the quote price
                             const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
-                            if (totalPrice !== totalQuotePrice) {
-                                alert('The total price must match the total quote price.');
+                            if (Math.abs(totalPrice - totalQuotePrice) > 0.1) {
+                                alert('The total price must match the total quote price within a small tolerance.');
+                                event.preventDefault();
+                                return;
+                            }
+
+// Ensure the total design cost matches the quote's design cost with a precision tolerance
+                            const totalDesign = parseFloat(document.getElementById('conceptDesign').value || 0) +
+                                    parseFloat(document.getElementById('detailDesign').value || 0) +
+                                    parseFloat(document.getElementById('constructionDesign').value || 0);
+
+                            if (Math.abs(totalDesign - maxDesignCost) > 0.1) {
+                                alert('The total of design costs must match the quoted design cost within a small tolerance.');
+                                event.preventDefault();
+                                return;
+                            }
+
+// Ensure the total construction cost matches the quote's construction cost with a precision tolerance
+                            const totalConstruction = parseFloat(document.getElementById('rawConstruction').value || 0) +
+                                    parseFloat(document.getElementById('completeConstruction').value || 0);
+
+                            if (Math.abs(totalConstruction - maxConstructionCost) > 0.1) {
+                                alert('The total of construction costs must match the quoted construction cost within a small tolerance.');
                                 event.preventDefault();
                                 return;
                             }
