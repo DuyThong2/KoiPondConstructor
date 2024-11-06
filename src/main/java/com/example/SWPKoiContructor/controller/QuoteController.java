@@ -86,8 +86,9 @@ public class QuoteController {
     @PostMapping("/customer/quote/updateStatus")
     public String customerUpdateQuoteStatus(@RequestParam("id") int quoteId, @RequestParam("status") int statusId, Model model, HttpSession session) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
+        Customer customer = quotes.getCustomer();
        String statusString=statusId==4?"Accepted":"Rejected";
-        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Customer","quote",statusString);
+        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),customer.getName(), quoteId,statusId,"Customer","quote",statusString);
         return "redirect:/customer/quote";
     }
 
@@ -172,7 +173,7 @@ public class QuoteController {
         if(statusId==2){
             notificationService.createNotification(quoteId,"quote", customer.getId(),"customer","Your Quote has been Approved! Please check it!");
         }
-        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Manager","quote",statusString);
+        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),customer.getName(), quoteId,statusId,"Manager","quote",statusString);
         return "redirect:/manager/quote/detail/" + quoteId;
     }
 
