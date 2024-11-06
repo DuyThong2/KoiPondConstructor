@@ -175,8 +175,11 @@
 
                                 <td>
                                     <!-- Disable the button if Payment, Inspection, or the previous detail is incomplete -->
-                                    <c:if
-                                        test="${canUpdateNext && detail.constructionStageDetailName != 'Payment' && previousCompleted && detail.constructionStageDetailStatus != 4}">
+                                    <c:if test="${canUpdateNext 
+                                                && detail.constructionStageDetailName != 'Payment' 
+                                                && previousCompleted 
+                                                && detail.constructionStageDetailStatus != 4 
+                                                && !disableUpdateButton}">
                                         <button type="submit" class="btn btn-primary mt-2">Update</button>
                                     </c:if>
                                 </td>

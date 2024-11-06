@@ -28,25 +28,26 @@ public class ScheduledTasks {
         this.projectService = projectService;
     }
 
-    @Scheduled(fixedRate = 90000)  // Runs every 90 seconds (adjust accordingly)
+    @Scheduled(fixedRate = 90000)  
     public void runAutoCompletedProject() {
-        List<Project> projects = projectService.getProjectList(Integer.MAX_VALUE);  // Fetch all projects
+        List<Project> projects = projectService.getProjectList(Integer.MAX_VALUE);  
         Date currentDate = new Date();
 
         projects.stream()
                 .filter(project -> project.getStage() == 4 && project.getDateEnd() != null)
-                .filter(project -> isSameDay(project.getDateEnd(), currentDate)) // Compare only the date part
+                .filter(project -> isTwoMonthsAfterEndDate(project.getDateEnd(), currentDate)) 
                 .mapToInt(Project::getProjectId)
-                .forEach(projectService::updateProjectStage);  // Update each project that matches the condition
+                .forEach(projectService::updateProjectStage);  
     }
 
-    // Helper method to check if two dates are on the same calendar day
-    private boolean isSameDay(Date date1, Date date2) {
-        Calendar cal1 = Calendar.getInstance();
-        Calendar cal2 = Calendar.getInstance();
-        cal1.setTime(date1);
-        cal2.setTime(date2);
-        return cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR)
-                && cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR);
+
+    private boolean isTwoMonthsAfterEndDate(Date endDate, Date currentDate) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(endDate);
+        cal.add(Calendar.MONTH, 0);  
+
+       
+        return !cal.getTime().after(currentDate);
     }
+
 }
