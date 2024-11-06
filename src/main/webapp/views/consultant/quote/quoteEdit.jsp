@@ -175,8 +175,8 @@
                                     <tr>
                                         <th>Package Name</th>
                                         <th>Description</th>
-                                        <th>Design Price per m�</th>
-                                        <th>Construction Price per m�</th>
+                                        <th>Design Price per m<sup>2</sup></th>
+                                        <th>Construction Price per m<sup>2</sup></th>
                                         <th>Status</th>
                                         <th>Select</th>
                                     </tr>
