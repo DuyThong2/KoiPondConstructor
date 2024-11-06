@@ -265,7 +265,7 @@ public class ContractController {
             model.addAttribute("contract", contract);
             model.addAttribute("term", new Term());
             model.addAttribute("terms", terms);
-
+            quote = quotesService.updateQuoteStatus(quoteId, 8);
             return "consultant/contract/createContract";
         } else {
             return "redirect:/consultant/contract";

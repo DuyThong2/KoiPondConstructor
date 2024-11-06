@@ -323,14 +323,16 @@
                                 <tbody id="customerTableBody">
                                     <c:forEach var="customer" items="${customerList}">
                                         <tr>
-                                            <td>${customer.name}</td>
+                                            <td>${customer.name != null ? customer.name:'N/A'}</td>
                                             <td>${customer.email}</td>
-                                            <td>${customer.phone}</td>
+                                            <td>${customer.phone != null ? customer.phone:'N/A'}</td>
                                             <td>
-                                                <form method="get" action="${pageContext.request.contextPath}/consultant/serviceQuote/creates">
-                                                    <input type="hidden" name="customerId" value="${customer.id}">
-                                                    <button type="submit" class="btn btn-info btn-sm">Create</button> <!-- Using btn-sm for a smaller button -->
-                                                </form>
+                                                <c:if test="${customer.name != null && customer.phone != null}">
+                                                    <form method="get" action="${pageContext.request.contextPath}/consultant/serviceQuote/creates">
+                                                        <input type="hidden" name="customerId" value="${customer.id}">
+                                                        <button type="submit" class="btn btn-info btn-sm">Create</button> <!-- Using btn-sm for a smaller button -->
+                                                    </form>
+                                                </c:if>
                                             </td>
                                         </tr>
                                     </c:forEach>
