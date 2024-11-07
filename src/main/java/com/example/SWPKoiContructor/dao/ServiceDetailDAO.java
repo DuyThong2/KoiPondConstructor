@@ -316,4 +316,26 @@ public class ServiceDetailDAO {
         query.setParameter("staffId", staffId);
         return query.getResultList();
     }
+
+    public Double averageRatingService(int id){
+        String sumSql= "SELECT SUM(sd.rating) FROM ServiceDetail sd where sd.service.serviceId = :id";
+        String amountSql= "SELECT COUNT(sd) FROM ServiceDetail sd where sd.service.serviceId = :id";
+        TypedQuery<Long> query = entityManager.createQuery(sumSql,Long.class);
+        TypedQuery<Long> query2= entityManager.createQuery(amountSql,Long.class);
+        query.setParameter("id",id);
+        query2.setParameter("id",id);
+        Long ratingSum = query.getSingleResult();
+        Long amount = query2.getSingleResult();
+        if(ratingSum==null||amount==0){
+            return null;
+        }
+        return (ratingSum*1.0)/amount;
+    }
+
+    public List<ServiceDetail> topFeedBack(int id){
+        String sql= "SELECT sd FROM ServiceDetail sd where sd.service.serviceId= :id and sd.rating is not null Order By sd.rating Desc, function('RAND')";
+        TypedQuery<ServiceDetail> query= entityManager.createQuery(sql,ServiceDetail.class);
+        query.setParameter("id",id);
+        return query.setMaxResults(3).getResultList();
+    }
 }

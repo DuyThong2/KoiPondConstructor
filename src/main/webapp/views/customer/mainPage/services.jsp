@@ -375,8 +375,10 @@
                                         <!-- Service Content -->
 
                                         <div class="section-inner-content">
-                                            <h3 class="service-title" >${service.serviceName}</h3>
+                                            <h3 class="service-title" >${service.serviceName} </h3>
+                                            
                                             <p class="service-description">${service.serviceDescription}</p>
+                                           
                                             <a href="${pageContext.request.contextPath}/home/services/${service.serviceId}" class="btn rr-btn">Detail</a>
                                         </div>
                                     </div>

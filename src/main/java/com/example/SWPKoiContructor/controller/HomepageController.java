@@ -26,8 +26,9 @@ public class HomepageController {
     private ParcelService parcelService;
     private TermService termService;
 
+    private ServiceDetailService serviceDetailService;
     private ServicePriceService servicePriceService;
-    public HomepageController(ProjectService projectService, PreDesignService preDesignService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService, ParcelService parcelService, TermService termService,ServicePriceService servicePriceService) {
+    public HomepageController(ProjectService projectService, PreDesignService preDesignService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService, ParcelService parcelService, TermService termService,ServicePriceService servicePriceService,ServiceDetailService serviceDetailService) {
         this.projectService = projectService;
         this.preDesignService = preDesignService;
         this.blogService = blogService;
@@ -37,6 +38,7 @@ public class HomepageController {
         this.parcelService = parcelService;
         this.termService = termService;
         this.servicePriceService =servicePriceService;
+        this.serviceDetailService = serviceDetailService;
     }
     @GetMapping("")
     public String homePageShow(Model model) {
@@ -86,9 +88,18 @@ public class HomepageController {
     public String servicesShowDetail(Model model, @PathVariable("id") int id) {
         Service service = serviceService.getServiceWithContentById(id);
         List<Service> services= serviceService.getRelatedService(id);
+        Double rating = serviceDetailService.getAverageRatingService(id);
+        List<ServiceDetail> serviceDetailList= serviceDetailService.getTopFeedBackService(id);
+
+        System.out.println(serviceDetailList.toString());
+        serviceDetailList.forEach(t->{
+            System.out.println(t.getRating());
+        });
         if (service != null && service.isServiceStatus()) {
             model.addAttribute("service", service);
             model.addAttribute("services",services);
+            model.addAttribute("avgRating",rating);
+            model.addAttribute("serviceDetailList",serviceDetailList);
 //            model.addAttribute("servicePrice",servicePrice);
 //            model.addAttribute("servicePrice",)
             return "customer/mainPage/serviceDetail";

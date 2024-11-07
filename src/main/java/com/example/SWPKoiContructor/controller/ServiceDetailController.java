@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import static java.util.Date.*;
@@ -62,8 +62,8 @@ public class ServiceDetailController {
             @RequestParam(name="searchName",required = false) String searchName) {
 
         List<ServiceDetail> list;
-        Date fromDate = (getFromDate != null) ? Date.valueOf(getFromDate) : null;
-        Date endDate = (getEndDate != null) ? Date.valueOf(getEndDate) : null;
+        java.sql.Date fromDate = (getFromDate != null) ? java.sql.Date.valueOf(getFromDate) : null;
+        java.sql.Date endDate = (getEndDate != null) ? java.sql.Date.valueOf(getEndDate) : null;
         long serviceDetailNum;
 
         // Apply filters if any are provided
