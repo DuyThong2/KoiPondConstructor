@@ -329,7 +329,7 @@
 
                                                     <div class="project-details__author-item d-flex flex-column">
                                                         <span class="sub-t">Price:</span>
-                                                        <span class="title">${service.servicePrice[0].value}</span>
+                                                        <span class="title">&dollar;${service.servicePrice[0].value}</span>
                                                     </div>
                                                     <div class="project-details__author-item d-flex flex-column">
                                                         <span class="sub-t">Description:</span>
