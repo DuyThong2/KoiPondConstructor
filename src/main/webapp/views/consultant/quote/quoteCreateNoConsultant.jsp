@@ -159,13 +159,15 @@
                                     <tbody id="customerTableBody">
                                         <c:forEach var="customer" items="${customerList}">
                                             <tr>
-                                                <td>${customer.name}</td>
+                                                <td>${customer.name != null ? customer.name:'N/A'}</td>
                                                 <td>${customer.email}</td>
-                                                <td>${customer.phone}</td>
+                                                <td>${customer.phone != null ? customer.phone:'N/A'}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-sm btn-primary" onclick="selectCustomer(${customer.id}, '${customer.name}')">
-                                                        Select
-                                                    </button>
+                                                    <c:if test="${customer.name != null && customer.phone != null}">
+                                                        <button type="button" class="btn btn-sm btn-primary" onclick="selectCustomer(${customer.id}, '${customer.name}')">
+                                                            Select
+                                                        </button>
+                                                    </c:if>    
                                                 </td>
                                             </tr>
                                         </c:forEach>

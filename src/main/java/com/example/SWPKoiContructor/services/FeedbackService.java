@@ -55,6 +55,10 @@ public class FeedbackService {
         return feedbackDAO.getLatestFeedback(serviceQuoteFeedback);
     }
     
+    public Feedback getLatestFeedbackForQuote(int quoteId){
+        return feedbackDAO.getLatestFeedbackForQuotes(quoteId);
+    }
+    
     @Transactional
     public Feedback saveFeedback(Feedback feedback){
         return feedbackDAO.saveFeedback(feedback);

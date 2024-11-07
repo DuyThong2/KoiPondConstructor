@@ -147,17 +147,17 @@ public class QuoteController {
         if (quotes.getQuotesStatus() == 3) {
             User toUser = quotes.getStaff();
             User fromUser = (User) session.getAttribute("user");
-            Feedback fb = feedbackService.getLatestFeedback(quoteId, fromUser.getId(), toUser.getId());
+            Feedback fb = feedbackService.getLatestFeedbackForQuote(quoteId);
             model.addAttribute("feedback", fb);
         }
         if (quotes.getQuotesStatus() == 5) {
             User toUser = quotes.getStaff();
             User fromUser = quotes.getCustomer();
-            Feedback fb = feedbackService.getLatestFeedback(quoteId, fromUser.getId(), toUser.getId());
+            Feedback fb = feedbackService.getLatestFeedbackForQuote(quoteId);
             model.addAttribute("feedback", fb);
         }
         if (quotes.getQuotesStatus() == 6) {
-            Feedback fb = feedbackService.getFeedbackForCancel(quoteId);
+            Feedback fb = feedbackService.getLatestFeedbackForQuote(quoteId);
             model.addAttribute("feedback", fb);
         }
         model.addAttribute("quotes", quotes);
@@ -297,6 +297,7 @@ public class QuoteController {
             model.addAttribute("parcelList", parcelList);
             User user = (User) session.getAttribute("user");
             model.addAttribute("staff", user);
+            consultant = consultantService.updateConsultantStatus(consultantId, 6);
             return "consultant/quote/quoteCreate";
         }
         return "redirect:/consultant/viewConsultantList";

@@ -76,6 +76,7 @@
                                 <option value="5" ${statusFilter == 5 ? 'selected' : ''}>Rejected By Customer</option>
                                 <option value="6" ${statusFilter == 6 ? 'selected' : ''}>Rejected By Staff</option>
                                 <option value="7" ${statusFilter == 7 ? 'selected' : ''}>Cancel</option>
+                                <option value="8" ${statusFilter == 8 ? 'selected' : ''}>Contract Created</option>
                             </select>
                         </div>
 
@@ -97,7 +98,7 @@
                         <th style="width: 8%">Date</th>
                         <th>Quote Name</th>
                         <th>Content</th>
-                        <th>Area</th>
+                        <th>Area In m&sup2</th>
                         <th>Design Cost</th>
                         <th>Construction Cost</th>
                         <th>Total Price</th>
@@ -111,10 +112,10 @@
                             <td><fmt:formatDate value="${quote.quotesDate}" pattern="dd-MM-yyyy"/></td>
                             <td>${quote.quotesName}</td>
                             <td>${quote.quotesContent}</td>
-                            <td>${quote.quotesArea}</td>
-                            <td>${quote.quotesDesignCost}</td>
-                            <td>${quote.quotesConstructionCost}</td>
-                            <td>${quote.quotesTotalPrice}</td>
+                            <td>${quote.quotesArea} m&sup2</td>
+                            <td>${quote.quotesDesignCost}$</td>
+                            <td>${quote.quotesConstructionCost}$</td>
+                            <td>${quote.quotesTotalPrice}$</td>
                             <td>
                                 <!--1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer),
                                     5.refused(customer), 6.refused(by staff), 7. cancel -->
@@ -123,22 +124,25 @@
                                         <span class="badge badge-warning badge-status">Pending</span>
                                     </c:when>
                                     <c:when test="${quote.quotesStatus == 2}">
-                                        <span class="badge badge-secondary badge-status">Approved</span>
+                                        <span class="badge badge-success badge-status">Approved</span>
                                     </c:when>
                                     <c:when test="${quote.quotesStatus == 3}">
-                                        <span class="badge badge-danger badge-status">Rejected By Manager</span>
+                                        <span class="badge badge-warning badge-status">Rejected By Manager</span>
                                     </c:when>
                                     <c:when test="${quote.quotesStatus == 4}">
                                         <span class="badge badge-success badge-status">Accepted By Customer</span>
                                     </c:when>
                                     <c:when test="${quote.quotesStatus == 5}">
-                                        <span class="badge badge-success badge-status">Refused By Customer</span>
+                                        <span class="badge badge-warning badge-status">Refused By Customer</span>
                                     </c:when>
                                     <c:when test="${quote.quotesStatus == 6}">
-                                        <span class="badge badge-success badge-status">Refuse By Staff</span>
+                                        <span class="badge badge-warning badge-status">Refuse By Staff</span>
                                     </c:when>
                                     <c:when test="${quote.quotesStatus == 7}">
-                                        <span class="badge badge-success badge-status">cancel</span>
+                                        <span class="badge badge-danger badge-status">cancel</span>
+                                    </c:when>
+                                    <c:when test="${quote.quotesStatus == 8}">
+                                        <span class="badge badge-success badge-status">Contract Created</span>
                                     </c:when>
                                 </c:choose>
                             </td>

@@ -225,9 +225,9 @@
                                                     <td><fmt:formatDate value="${Quote.quotesDate}" pattern="dd-MM-yyyy"/></td>
                                                     <td>${Quote.quotesName}</td>
                                                     <td>${Quote.quotesArea} m²</td>
-                                                    <td>${Quote.quotesTotalPrice}</td>
-                                                    <td>${Quote.quotesDesignCost}</td>
-                                                    <td>${Quote.quotesConstructionCost}</td>
+                                                    <td>${Quote.quotesTotalPrice}$</td>
+                                                    <td>${Quote.quotesDesignCost}$</td>
+                                                    <td>${Quote.quotesConstructionCost}$</td>
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${Quote.quotesStatus == 2}">

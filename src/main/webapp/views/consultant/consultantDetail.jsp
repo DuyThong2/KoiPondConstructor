@@ -7,9 +7,9 @@
     <head>
         <title>Contract Details</title>
         <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
             .section-header {
                 margin-bottom: 20px;
@@ -62,16 +62,19 @@
                                         <span class="badge badge-warning badge-status">Pending</span>
                                     </c:when>
                                     <c:when test="${consultant.consultantStatus == 2}">
-                                        <span class="badge badge-success badge-status">Assign</span>
+                                        <span class="badge badge-info badge-status">Assigned</span>
                                     </c:when>
                                     <c:when test="${consultant.consultantStatus == 3}">
-                                        <span class="badge badge-warning badge-status">Processing</span>
+                                        <span class="badge badge-info badge-status">Processing</span>
                                     </c:when>
                                     <c:when test="${consultant.consultantStatus == 4}">
-                                        <span class="badge badge-success badge-status">${empty consultant.customer? 'Add Customer To Continue':'Complete'}</span>
+                                        <span class="badge badge-success badge-status">Completed</span>
                                     </c:when>
                                     <c:when test="${consultant.consultantStatus == 5}">
-                                        <span class="badge badge-danger badge-status">Cancel</span>
+                                        <span class="badge badge-danger badge-status">Canceled</span>
+                                    </c:when>
+                                    <c:when test="${consultant.consultantStatus == 6}">
+                                        <span class="badge badge-success badge-status">Quote Created</span>
                                     </c:when>
                                 </c:choose>
                             </td>
@@ -113,13 +116,20 @@
                         </c:when>
                         <c:when test="${consultant.consultantStatus == 3}">
                             <div class="">
-                                <form action="${pageContext.request.contextPath}/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
-                                    <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
+                                <form 
+                                    action="${pageContext.request.contextPath}/consultant/viewConsultantDetail/updateStatus" 
+                                    method="get" 
+                                    class="d-inline" 
+                                    onsubmit="return validateForm();">
+
+                                    <input type="hidden" name="consultantId" value="${consultant.consultantId}">
                                     <input type="hidden" name="statusId" value="4">
                                     <button type="submit" class="btn btn-success">Completed</button>
                                 </form>
-                                <form action="${pageContext.request.contextPath}/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline">
-                                    <input type="hidden" name="consultantId" value="${consultant.consultantId}" >
+
+                                <form 
+                                    action="${pageContext.request.contextPath}/consultant/viewConsultantDetail/updateStatus" method="get" class="d-inline" onsubmit="return confirm('Are you sure you want to cancel this?');">
+                                    <input type="hidden" name="consultantId" value="${consultant.consultantId}">
                                     <input type="hidden" name="statusId" value="5">
                                     <button type="submit" class="btn btn-danger">Cancel</button>
                                 </form>
@@ -212,7 +222,7 @@
                                 </tr>
                                 <tr>
                                     <th>Customer Name</th>
-                                    <td>${consultant.customer.name}</td>
+                                    <td>${consultant.customer.name != null? consultant.customer.name:' N/A'}</td>
                                 </tr>
                                 <tr>
                                     <th>Customer Email</th>
@@ -220,9 +230,14 @@
                                 </tr>
                                 <tr>
                                     <th>Customer phone</th>
-                                    <td>${consultant.customer.phone}</td>
+                                    <td>${consultant.customer.phone != null? consultant.customer.phone:' N/A'}</td>
                                 </tr>
                             </table>
+                            <c:if test="${consultant.consultantStatus < 4}">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCustomerModal">
+                                    Edit Customer
+                                </button>
+                            </c:if>
                         </c:if>
                         <c:if test="${empty consultant.customer}">
                             <p>No Pre-Design are associated with this Consultant.</p>
@@ -290,9 +305,9 @@
                                 <tbody id="customerTableBody">
                                     <c:forEach var="customer" items="${customerList}">
                                         <tr>
-                                            <td>${customer.name}</td>
+                                            <td>${customer.name != null? customer.name:' N/A '}</td>
                                             <td>${customer.email}</td>
-                                            <td>${customer.phone}</td>
+                                            <td>${customer.phone != null? customer.phone:' N/A '}</td>
                                             <td>
                                                 <form action="${pageContext.request.contextPath}/consultant/addCustomerToConsultant" method="post" class="d-inline">
                                                     <input type="hidden" name="consultantId" value="${consultant.consultantId}">
@@ -319,20 +334,34 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
         <script>
-            document.getElementById('customerSearch').addEventListener('input', function () {
-                const searchValue = this.value.toLowerCase();
-                const customerRows = document.querySelectorAll('#customerTableBody tr');
+                                        document.getElementById('customerSearch').addEventListener('input', function () {
+                                            const searchValue = this.value.toLowerCase();
+                                            const customerRows = document.querySelectorAll('#customerTableBody tr');
 
-                customerRows.forEach(row => {
-                    const customerName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
-                    const customerEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-                    if (customerName.includes(searchValue) || customerEmail.includes(searchValue)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-            });
+                                            customerRows.forEach(row => {
+                                                const customerName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                                                const customerEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                                                if (customerName.includes(searchValue) || customerEmail.includes(searchValue)) {
+                                                    row.style.display = '';
+                                                } else {
+                                                    row.style.display = 'none';
+                                                }
+                                            });
+                                        });
+                                        function validateForm() {
+                                            // Assuming you have access to the customer information in JavaScript
+                                            var customerName = "${consultant.customer.name}";
+                                            var customerPhone = "${consultant.customer.phone}";
+
+                                            // Check if customer name or phone is null or empty
+                                            if (!customerName || !customerPhone) {
+                                                alert("Cannot mark as completed. Customer information is incomplete.");
+                                                return false;
+                                            }
+
+                                            // If both fields are filled, ask for confirmation
+                                            return confirm("Are you sure you want to mark this as completed?");
+                                        }
         </script>
     </body>
 </html>

@@ -135,7 +135,7 @@ public class ServiceDetailController {
                         }
                     }
                     newServiceDetail.setServiceQuotes(serviceQuotes);
-                    newServiceDetail.setDateRegister(new Date());
+                    newServiceDetail.setDateRegister(new java.util.Date());
                     newServiceDetail.setServiceDetailStatus(1);
                     newServiceDetail.setService(i);
                     newServiceDetail.setCustomer(serviceQuotes.getCustomer());
@@ -428,7 +428,7 @@ public class ServiceDetailController {
         // Update the service detail with feedback and rating
         serviceDetail.setFeedback(feedback);
         serviceDetail.setRating(rating);
-        serviceDetail.setFeedbackDate(new Date()); // Set the current date as feedback date
+        serviceDetail.setFeedbackDate(new java.util.Date()); // Set the current date as feedback date
 
         // Save the updated service detail
         serviceDetailService.updateServiceDetail(serviceDetail);

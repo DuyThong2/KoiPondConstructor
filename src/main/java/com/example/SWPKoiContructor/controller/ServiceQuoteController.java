@@ -243,8 +243,9 @@ public class ServiceQuoteController {
             model.addAttribute("staff", user);
             long totalPoint = loyaltyPointService.TotalPoints(consultant.getCustomer().getId());
             model.addAttribute("totalPoint", totalPoint);
-
+            consultant = consultantService.updateConsultantStatus(consultantId, 6);
             return "consultant/serviceQuote/serviceQuoteCreate";
+
         }
         model.addAttribute("newServiceQuote", newServiceQuotes);
         return "redirect:/consultant/viewConsultantDetail/" + consultantId;

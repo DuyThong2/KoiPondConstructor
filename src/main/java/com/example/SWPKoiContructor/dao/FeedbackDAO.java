@@ -73,6 +73,17 @@ public class FeedbackDAO {
         }
     }
     
+    public Feedback getLatestFeedbackForQuotes(int quotesId){
+        try{
+        TypedQuery<Feedback> tq = entityManager.createQuery("SELECT f FROM Feedback f WHERE f.quotes.quotesId = :quotesId ORDER BY f.feedbackId DESC", Feedback.class);
+        tq.setParameter("quotesId", quotesId);
+        tq.setMaxResults(1);
+        return tq.getSingleResult();  
+        }catch(NoResultException e){
+            return null;
+        }
+    }
+    
     //-------------------------------------- CONTRACT  -------------------------------
     public Feedback getLatestContractFeedback(int contractId, int from_user, int to_user) {
         try{

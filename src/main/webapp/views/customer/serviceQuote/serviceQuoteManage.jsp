@@ -286,7 +286,7 @@
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
                                                                 <c:if test="${!serviceQuote.isFree() && serviceQuote.isServiceDetailOfQuoteFinished()
-                                                                            && !serviceQuote.isAllServiceFailed() && !serviceQuote.isPayAfter}">
+                                                                            && !serviceQuote.isAllServiceFailed() && !serviceQuote.isPayAfter && serviceQuote.calculateFullPaid() != 0}">
                                                                     <form action="${pageContext.request.contextPath}/paypal/pay/serviceQuote" method="post">
                                                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
                                                                         <input type="hidden" name="amount" value="${serviceQuote.calculateFullPaid()}" />
