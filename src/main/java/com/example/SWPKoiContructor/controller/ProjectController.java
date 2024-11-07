@@ -158,6 +158,7 @@ public class ProjectController {
             project.setContent(content);
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);
+            contract.setContractStatus(7);
             notificationService.createProjectNotification(project.getContract().getCustomer().getName(),newlyCreatedProject.getProjectId(),project.getContract().getCustomer().getId());
             return "redirect:/manager/projects/detail/" + newlyCreatedProject.getProjectId();
         } else {

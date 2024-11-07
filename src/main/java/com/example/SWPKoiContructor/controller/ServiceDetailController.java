@@ -7,6 +7,7 @@ import com.example.SWPKoiContructor.entities.ServicePrice;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.services.*;
+import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -22,10 +23,9 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.sql.Date;
+
 import java.util.List;
 
-import static java.util.Date.*;
 
 @Controller
 public class ServiceDetailController {
@@ -135,7 +135,7 @@ public class ServiceDetailController {
                         }
                     }
                     newServiceDetail.setServiceQuotes(serviceQuotes);
-                    newServiceDetail.setDateRegister(new Date());
+                    newServiceDetail.setDateRegister(new java.util.Date());
                     newServiceDetail.setServiceDetailStatus(1);
                     newServiceDetail.setService(i);
                     newServiceDetail.setCustomer(serviceQuotes.getCustomer());
@@ -428,7 +428,7 @@ public class ServiceDetailController {
         // Update the service detail with feedback and rating
         serviceDetail.setFeedback(feedback);
         serviceDetail.setRating(rating);
-        serviceDetail.setFeedbackDate(new Date()); // Set the current date as feedback date
+        serviceDetail.setFeedbackDate(new java.util.Date()); // Set the current date as feedback date
 
         // Save the updated service detail
         serviceDetailService.updateServiceDetail(serviceDetail);
