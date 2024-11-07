@@ -431,10 +431,10 @@
                         <div class="d-flex align-items-center mt-4">
                             <!-- Previous Button -->
                             <c:if test="${currentPage > 1}">
-                                <a href="?page=${currentPage - 1}" class=" rr-btn">&lt;</a>
+                                <a href="?page=${currentPage - 1}" class=" rr-btn" style="background-color: black;">&lt;</a>
                             </c:if>
                             <c:if test="${currentPage == 1}">
-                                <button class=" rr-btn" disabled>&lt;</button>
+                                <button class=" rr-btn" disabled style="background-color: black;">&lt;</button>
                             </c:if>
                             <!-- Page Indicator -->
                             <span class="page-indicator"> <strong>${currentPage}</strong> /
@@ -442,10 +442,10 @@
 
                             <!-- Next Button -->
                             <c:if test="${hasMoreServices}">
-                                <a href="?page=${currentPage + 1}" class=" rr-btn">&gt;</a>
+                                <a href="?page=${currentPage + 1}" class=" rr-btn" style="background-color: black;">&gt;</a>
                             </c:if>
                             <c:if test="${!hasMoreServices}">
-                                <button class=" rr-btn" disabled>&gt;</button>
+                                <button class=" rr-btn" disabled style="background-color: black;">&gt;</button>
                             </c:if>
                         </div>
 

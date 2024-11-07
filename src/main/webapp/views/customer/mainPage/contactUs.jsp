@@ -48,7 +48,7 @@
 
         .contact-info h1 {
             font-size: 48px;
-            color: #ff5733;
+            color:  #df2453;
         }
 
         .contact-info p {
@@ -59,7 +59,7 @@
 
         .contact-info hr {
             width: 80px;
-            border: 2px solid #ff5733;
+            border: 2px solid #df2453;
             margin: 20px auto;
         }
 
@@ -152,7 +152,7 @@
 
         .about-item i {
             font-size: 20px;
-            color: #df2453;
+            color:  #df2453;
             margin-right: 15px;
         }
 
@@ -181,8 +181,8 @@
             font-weight: bold;
             margin-bottom: 10px;
             padding-top: 25px;
-            color: #ff5733;
-            border-bottom: 3px solid #ff5733;
+            color: #df2453;
+            border-bottom: 3px solid #df2453;
         }
         .process-grid {
             display: flex;
@@ -240,11 +240,11 @@
         /* Headings */
         .intro h2 {
             font-size: 2.8em;
-            color: #ff5733;
+            color:  #df2453;
             text-align: center;
             font-weight: bold;
             margin-bottom: 30px;
-            border-bottom: 3px solid #ff5733;
+            border-bottom: 3px solid  #df2453;
             display: inline-block;
             padding-bottom: 10px;
         }
@@ -293,12 +293,12 @@
             font-family: 'FontAwesome';
             position: absolute;
             left: 0;
-            color: #ff5733;
+            color:  #df2453;
             font-size: 1.4em;
         }
 
         .intro strong {
-            color: #ff5733;
+            color:  #df2453;
             font-weight: bold;
         }
 
@@ -336,7 +336,7 @@
 
         ul.links-list a {
             display: inline-block;
-            background-color: #ff5733;
+            background-color: #df2453;
             color: white;
             text-decoration: none;
             font-weight: bold;
@@ -358,13 +358,13 @@
         }
 
         .contact-form button {
-            background-color: #ff5733;
+            background-color:  #df2453;
             color: white;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .contact-form button:hover {
-            background-color: #ff471a;
+            background-color:  #df2453;
             transform: scale(1.05);
         }
 
