@@ -274,7 +274,7 @@ public class ContractController {
     }
 
     @PostMapping("/consultant/contract/create")
-public String saveContract(@ModelAttribute("contract") Contract contract,
+    public String saveContract(@ModelAttribute("contract") Contract contract,
                            @RequestParam("file") MultipartFile file,
                            @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate,
                            @RequestParam("termOption") String termOption) {

@@ -182,29 +182,29 @@
 
                                 <!-- Sort Form -->
                                 <div class="filter-card">
-                                <form method="get" action="${pageContext.request.contextPath}/customer/contract">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto">
-                                            <label for="sortBy">Sort by:</label>
-                                            <select name="sortBy" id="sortBy" class="form-control" size="padding: 20px">
-                                                <option value="dateCreate" ${sortBy == 'dateCreate' ? 'selected' : ''}>Date Created</option>
-                                                <option value="totalPrice" ${sortBy == 'totalPrice' ? 'selected' : ''}>Total Price</option>
+                                    <form method="get" action="${pageContext.request.contextPath}/customer/contract">
+                                        <div class="row align-items-center">
+                                            <div class="col-auto">
+                                                <label for="sortBy">Sort by:</label>
+                                                <select name="sortBy" id="sortBy" class="form-control" size="padding: 20px">
+                                                    <option value="dateCreate" ${sortBy == 'dateCreate' ? 'selected' : ''}>Date Created</option>
+                                                    <option value="totalPrice" ${sortBy == 'totalPrice' ? 'selected' : ''}>Total Price</option>
 
-                                            </select>
+                                                </select>
+                                            </div>
+                                            <div class="col-auto">
+                                                <label for="sortDirection">Direction:</label>
+                                                <select name="sortDirection" id="sortDirection" class="form-control" size="padding: 20px">
+                                                    <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
+                                                    <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
+                                                </select>
+                                            </div>
+                                            <input type="hidden" name="page" value="${currentPage}">
+                                            <div class="col-auto">
+                                                <button type="submit" class="btn btn-primary btn-default">Sort</button>
+                                            </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <label for="sortDirection">Direction:</label>
-                                            <select name="sortDirection" id="sortDirection" class="form-control" size="padding: 20px">
-                                                <option value="asc" ${sortDirection == 'asc' ? 'selected' : ''}>Ascending</option>
-                                                <option value="desc" ${sortDirection == 'desc' ? 'selected' : ''}>Descending</option>
-                                            </select>
-                                        </div>
-                                        <input type="hidden" name="page" value="${currentPage}">
-                                        <div class="col-auto">
-                                            <button type="submit" class="btn btn-primary btn-default">Sort</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                    </form>
                                 </div>
                                 <!-- Table for contracts -->
                                 <table class="table table-bordered table-hover mt-3">
@@ -262,6 +262,9 @@
                                                         </c:when>
                                                         <c:when test="${contract.contractStatus == 6}">
                                                             <span class="badge badge-success badge-default status-badge">Accepted</span>
+                                                        </c:when>
+                                                        <c:when test="${contract.contractStatus == 7}">
+                                                            <span class="badge badge-success badge-default status-badge">Project Created</span>
                                                         </c:when>
                                                     </c:choose>
                                                 </td>

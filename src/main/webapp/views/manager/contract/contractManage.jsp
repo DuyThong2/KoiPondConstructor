@@ -150,6 +150,7 @@
                                 <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Rejected (Manager)</option>
                                 <option value="5" ${statusFilter == 5 ? 'selected' : ''}>Canceled</option>
                                 <option value="6" ${statusFilter == 6 ? 'selected' : ''}>Accepted by customer</option>
+                                <option value="7" ${statusFilter == 7 ? 'selected' : ''}>Project Created</option>
                             </select>
                         </div>
 
@@ -236,6 +237,9 @@
                                 </c:when>
                                 <c:when test="${contract.contractStatus == 6}">
                                     <span class="badge badge-success badge-status">Accepted by customer</span>
+                                </c:when>
+                                <c:when test="${contract.contractStatus == 7}">
+                                    <span class="badge badge-success badge-status">Project Created</span>
                                 </c:when>
                             </c:choose>
                         </td>
