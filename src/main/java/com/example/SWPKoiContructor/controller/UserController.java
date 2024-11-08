@@ -4,7 +4,9 @@ import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.User;
 import com.example.SWPKoiContructor.services.*;
+import com.example.SWPKoiContructor.services.functionalService.EmailService;
 import com.example.SWPKoiContructor.utils.FileUtility;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,9 @@ public class UserController {
     private DesignService designService;
     private ConstructionService constructionService;
 
+    @Autowired
+    private EmailService emailService;
+
     public UserController(ConsultantService consultantService, FileUtility fileUtility, ProjectService projectService, StaffService staffService, CustomerService customerService, ServiceDetailService serviceDetailService, LoyaltyPointService loyaltyPointService, UserService userService, PasswordEncoder passwordEncoder, DesignService designService, ConstructionService constructionService) {
         this.consultantService = consultantService;
         this.fileUtility = fileUtility;
@@ -52,6 +57,7 @@ public class UserController {
         Customer customer = (Customer) session.getAttribute("user");
         if(customer == null)
             return "redirect:/login";
+
 
         long totalProject = projectService.countCustomerProjectsById(customer.getId());
         long totalPoint = loyaltyPointService.TotalPoints(customer.getId());

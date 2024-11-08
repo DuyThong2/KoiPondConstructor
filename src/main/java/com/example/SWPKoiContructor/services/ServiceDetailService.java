@@ -134,5 +134,10 @@ public class ServiceDetailService {
     public List<ServiceDetail> getServiceDetailsByStaffId(int staffId) {
         return serviceDetailDAO.getServiceDetailsByStaffId(staffId);
     }
-
+    public Double getAverageRatingService(int id){
+        return serviceDetailDAO.averageRatingService(id);
+    }
+    public List<ServiceDetail> getTopFeedBackService(int id){
+        return serviceDetailDAO.topFeedBack(id);
+    }
 }

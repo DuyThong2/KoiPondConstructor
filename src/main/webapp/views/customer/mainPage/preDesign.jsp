@@ -94,11 +94,11 @@
         }
         .section-title h2 {
             margin-top: 20px;
-            border-bottom: 2px solid #ff5733;
+            border-bottom: 2px solid #131313;
             font-size: 2.8em;
             font-weight: bold;
             margin-bottom: 10px;
-            color: #ff5733; /* Accent color */
+            color: #181818; /* Accent color */
         }
         .rr-btn{
                             padding:15px;
