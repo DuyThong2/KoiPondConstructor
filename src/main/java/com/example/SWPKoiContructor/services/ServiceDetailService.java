@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
+import java.sql.Date;
 import java.util.List;
 import javax.persistence.Tuple;
 
@@ -68,12 +69,12 @@ public class ServiceDetailService {
         return serviceDetailDAO.countServiceDetails();
     }
 
-    public List<ServiceDetail> getPaginationServiceDetailListByStatus(int page, int size, String sortBy, String sortType, Integer statusFilter) {
-        return serviceDetailDAO.getPaginationServiceDetailListByStatus(page, size, sortBy, sortType, statusFilter);
+    public List<ServiceDetail> getPaginationServiceDetailListByStatus(int page, int size, String sortBy, String sortType, Integer statusFilter, Date fromDate, Date endDate, String searchName) {
+        return serviceDetailDAO.getPaginationServiceDetailListByStatus(page, size, sortBy, sortType, statusFilter, fromDate, endDate, searchName);
     }
 
-    public long countServiceDetailFilter(Integer statusFilter) {
-        return serviceDetailDAO.countServiceDetailFilter(statusFilter);
+    public long countServiceDetailFilter(Integer statusFilter, Date fromDate, Date endDate, String searchName) {
+        return serviceDetailDAO.countServiceDetailFilter(statusFilter, fromDate, endDate, searchName);
     }
 
     public long countServiceDetailsPending() {
@@ -133,5 +134,10 @@ public class ServiceDetailService {
     public List<ServiceDetail> getServiceDetailsByStaffId(int staffId) {
         return serviceDetailDAO.getServiceDetailsByStaffId(staffId);
     }
-
+    public Double getAverageRatingService(int id){
+        return serviceDetailDAO.averageRatingService(id);
+    }
+    public List<ServiceDetail> getTopFeedBackService(int id){
+        return serviceDetailDAO.topFeedBack(id);
+    }
 }

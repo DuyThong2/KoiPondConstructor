@@ -20,6 +20,8 @@ public class PayPalService {
     @Autowired
     private APIContext apiContext;
 
+
+
     // Updated method to accept cancelUrl and returnUrl as parameters
     public Payment createPayment(
             Double total,
@@ -64,6 +66,10 @@ public class PayPalService {
         payment.setId(paymentId);
         PaymentExecution paymentExecution = new PaymentExecution();
         paymentExecution.setPayerId(payerId);
-        return payment.execute(apiContext, paymentExecution);
+        Payment executedPayment = payment.execute(apiContext, paymentExecution);
+
+
+
+        return executedPayment;
     }
 }

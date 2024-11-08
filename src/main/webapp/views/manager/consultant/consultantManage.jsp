@@ -149,6 +149,7 @@
                                 <option value="3" ${statusFilter == 3 ? 'selected' : ''}>Processing</option>
                                 <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Completed</option>
                                 <option value="5" ${statusFilter == 5 ? 'selected' : ''}>Canceled</option>
+                                <option value="6" ${statusFilter == 6 ? 'selected' : ''}>Quote Created</option>
                             </select>
                         </div>
 
@@ -188,24 +189,27 @@
                         <td>
                             <c:choose>
                                 <c:when test="${consultant.consultantStatus == 1}">
-                                    <span class="badge badge-warning badge-status">Pending</span>
-                                </c:when>
-                                <c:when test="${consultant.consultantStatus == 2}">
-                                    <span class="badge badge-secondary badge-status">Assign</span>
-                                </c:when>
-                                <c:when test="${consultant.consultantStatus == 3}">
-                                    <span class="badge badge-info badge-status">Processing</span>
-                                </c:when>
-                                <c:when test="${consultant.consultantStatus == 4}">
-                                    <span class="badge badge-success badge-status">Completed</span>
-                                </c:when>
-                                <c:when test="${consultant.consultantStatus == 5}">
-                                    <span class="badge badge-danger badge-status">Cancel</span>
-                                </c:when>
+                                        <span class="badge badge-warning badge-status">Pending</span>
+                                    </c:when>
+                                    <c:when test="${consultant.consultantStatus == 2}">
+                                        <span class="badge badge-info badge-status">Assigned</span>
+                                    </c:when>
+                                    <c:when test="${consultant.consultantStatus == 3}">
+                                        <span class="badge badge-info badge-status">Processing</span>
+                                    </c:when>
+                                    <c:when test="${consultant.consultantStatus == 4}">
+                                        <span class="badge badge-success badge-status">Completed</span>
+                                    </c:when>
+                                    <c:when test="${consultant.consultantStatus == 5}">
+                                        <span class="badge badge-danger badge-status">Canceled</span>
+                                    </c:when>
+                                    <c:when test="${consultant.consultantStatus == 6}">
+                                        <span class="badge badge-success badge-status">Quote Created</span>
+                                    </c:when>
                             </c:choose>
                         </td>
                         <td>
-                            <a href="${pageContext.request.contextPath}/manager/consultant/detail/${consultant.consultantId}" class="btn btn-info">View Detail</a>
+                            <a href="${pageContext.request.contextPath}/manager/consultant/detail/${consultant.consultantId}" class="btn btn-info">Detail</a>
                         </td>
                     </tr>
                 </c:forEach>

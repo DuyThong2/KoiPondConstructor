@@ -26,8 +26,9 @@ public class HomepageController {
     private ParcelService parcelService;
     private TermService termService;
 
+    private ServiceDetailService serviceDetailService;
     private ServicePriceService servicePriceService;
-    public HomepageController(ProjectService projectService, PreDesignService preDesignService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService, ParcelService parcelService, TermService termService,ServicePriceService servicePriceService) {
+    public HomepageController(ProjectService projectService, PreDesignService preDesignService, BlogService blogService, StaffService staffService, CustomerService customerService, ServiceService serviceService, ParcelService parcelService, TermService termService,ServicePriceService servicePriceService,ServiceDetailService serviceDetailService) {
         this.projectService = projectService;
         this.preDesignService = preDesignService;
         this.blogService = blogService;
@@ -37,14 +38,14 @@ public class HomepageController {
         this.parcelService = parcelService;
         this.termService = termService;
         this.servicePriceService =servicePriceService;
+        this.serviceDetailService = serviceDetailService;
     }
-
     @GetMapping("")
     public String homePageShow(Model model) {
-
-        List<Project> projectList = projectService.getProjectListIsSharable();
+        List<Project> projectList = projectService.getProjectListIsSharable(6);
         List<Staff> staffList = staffService.getTopStaffList();
-        List<Blog> allBlogs = blogService.getAllBlogs();
+        List<Blog> allBlogs = blogService.getSomeBlogs(6);
+        List<Service> services = serviceService.getSomeService(6);
         List<Blog> blogList;
         if (allBlogs.size() >= 3) {
             blogList = new ArrayList<>(allBlogs.subList(0, 3));
@@ -57,20 +58,20 @@ public class HomepageController {
         model.addAttribute("blogList", blogList);
         model.addAttribute("projectList", projectList);
         model.addAttribute("staffList", staffList);
+        model.addAttribute("services",services);
         return "customer/mainPage/homepage";
     }
-
     @GetMapping("/home/services")
     public String servicesShow(Model model, @RequestParam(value = "page", defaultValue = "1") int page) {
         int pageSize = 6; // Number of services per page
 
         // Fetch services for the current page
-        List<Service> services = serviceService.getPaginationServiceListByStatus(page,pageSize,null,null,true);
+        List<Service> services = serviceService.getPaginationServiceListByStatus(page,pageSize,null,null,true,null);
         model.addAttribute("services", services);
         model.addAttribute("currentPage", page);
 
         // Get the total number of active services using a count method
-        long totalServices = serviceService.countServiceFilter(Boolean.TRUE);
+        long totalServices = serviceService.countServiceFilter(Boolean.TRUE,null);
 
         // Calculate the total number of pages
         int totalPages = (int) Math.ceil((double) totalServices / pageSize);
@@ -87,9 +88,18 @@ public class HomepageController {
     public String servicesShowDetail(Model model, @PathVariable("id") int id) {
         Service service = serviceService.getServiceWithContentById(id);
         List<Service> services= serviceService.getRelatedService(id);
+        Double rating = serviceDetailService.getAverageRatingService(id);
+        List<ServiceDetail> serviceDetailList= serviceDetailService.getTopFeedBackService(id);
+
+        System.out.println(serviceDetailList.toString());
+        serviceDetailList.forEach(t->{
+            System.out.println(t.getRating());
+        });
         if (service != null && service.isServiceStatus()) {
             model.addAttribute("service", service);
             model.addAttribute("services",services);
+            model.addAttribute("avgRating",rating);
+            model.addAttribute("serviceDetailList",serviceDetailList);
 //            model.addAttribute("servicePrice",servicePrice);
 //            model.addAttribute("servicePrice",)
             return "customer/mainPage/serviceDetail";
@@ -220,5 +230,9 @@ public class HomepageController {
     @GetMapping("/home/privatePolicy")
     public String privatePolicy(Model model) {
         return "customer/mainPage/privatePolicy";
+    }
+    @GetMapping("/home/term&Service")
+    public String termsAndService(Model model) {
+        return "customer/mainPage/terms&Service";
     }
 }

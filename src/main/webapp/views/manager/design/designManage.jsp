@@ -24,7 +24,123 @@
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                 margin-bottom: 30px;
             }
+               
 
+                h2 {
+                    font-weight: bold;
+                    color: #007bff;
+                    border-bottom: 2px solid #007bff;
+                    padding-bottom: 10px;
+                    margin-bottom: 20px;
+                }
+
+                /* Table styling */
+                table.table {
+                    background-color: white;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                /* Table Header Styling */
+                thead.thead-dark th {
+                    background-color: #007bff;
+                    color: white;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+
+                /* Pagination Controls */
+                .pagination-controls {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 20px;
+                }
+
+                .pagination-controls a,
+                .pagination-controls button {
+                    font-weight: bold;
+                }
+
+                /* Button Styles */
+                .btn-info {
+                    background-color: #007bff;
+                    border-color: #007bff;
+                    font-weight: bold;
+                    padding: 8px 12px;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-info:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                }
+
+                /* Badge styles */
+                .badge-status {
+                    padding: 10px 15px;
+                    font-size: 1em;
+                    border-radius: 20px;
+                }
+
+                /* Filter Form Styling */
+                .form-control {
+                    border-radius: 20px;
+                    padding: 10px;
+                }
+
+                .btn-primary{
+                    background-color: #007bff;
+                    border-radius: 20px;
+                    padding: 8px 20px;
+                }
+                .btn-success{
+                    border-radius: 20px;
+                    padding: 8px 20px;
+                }
+
+                .btn-primary:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                }
+
+                .form-row {
+                    margin-bottom: 20px;
+                }
+
+                /* Card Container for Form */
+                .filter-card {
+                    background-color: #ffffff;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    margin-bottom: 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    /* Align the form elements to the bottom */
+                    flex-wrap: wrap;
+                    /* Allow wrapping for smaller screens */
+                    gap: 15px;
+                    /* Adjust gap between form elements */
+                }
+
+                .filter-card .form-control,
+                .filter-card select,
+                .filter-card .btn-primary {
+                    flex: 1 1 150px;
+                    /* Allows the fields to scale and ensures consistency in size */
+                    margin-bottom: 10px;
+                    /* Adds spacing between the form elements */
+                }
+
+                .filter-card label {
+                    margin-bottom: 5px;
+                    /* Space between labels and inputs */
+                    display: inline-block;
+                }
+             
         </style>
     </head>
     <div style="height:6vh;"></div>
@@ -89,16 +205,16 @@
                                     <td>
                                         <c:choose>
                                             <c:when test="${designs.status == 1}">
-                                                <span class="badge badge-secondary">Pending</span>
+                                                <span class="badge badge-secondary badge-status">Pending</span>
                                             </c:when>
                                             <c:when test="${designs.status == 2}">
-                                                <span class="badge badge-primary">Processing</span>
+                                                <span class="badge badge-primary badge-status">Processing</span>
                                             </c:when>
                                             <c:when test="${designs.status == 3}">
-                                                <span class="badge badge-success">Completed</span>
+                                                <span class="badge badge-success badge-status">Completed</span>
                                             </c:when>
                                             <c:when test="${designs.status == 4}">
-                                                <span class="badge badge-warning">Canceled</span>
+                                                <span class="badge badge-warning badge-status">Canceled</span>
                                             </c:when>
                                         </c:choose>
                                     </td>
@@ -131,6 +247,7 @@
                 </main>
             </div>
         </div>
+        <div style="height:15vh;"></div>
         <br>
         <!-- Bootstrap JS and dependencies -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>

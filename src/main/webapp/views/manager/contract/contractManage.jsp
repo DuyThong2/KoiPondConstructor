@@ -103,6 +103,7 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             margin-bottom: 30px;
         }
+        
     </style>
 </head>
 <div style="height:6vh;"></div>
@@ -149,6 +150,7 @@
                                 <option value="4" ${statusFilter == 4 ? 'selected' : ''}>Rejected (Manager)</option>
                                 <option value="5" ${statusFilter == 5 ? 'selected' : ''}>Canceled</option>
                                 <option value="6" ${statusFilter == 6 ? 'selected' : ''}>Accepted by customer</option>
+                                <option value="7" ${statusFilter == 7 ? 'selected' : ''}>Project Created</option>
                             </select>
                         </div>
 
@@ -236,10 +238,13 @@
                                 <c:when test="${contract.contractStatus == 6}">
                                     <span class="badge badge-success badge-status">Accepted by customer</span>
                                 </c:when>
+                                <c:when test="${contract.contractStatus == 7}">
+                                    <span class="badge badge-success badge-status">Project Created</span>
+                                </c:when>
                             </c:choose>
                         </td>
                         <td>${contract.contractNote}</td>
-                        <td><a href="${pageContext.request.contextPath}/manager/contract/detail/${contract.contractId}" class="btn btn-info">View</a></td>
+                        <td><a href="${pageContext.request.contextPath}/manager/contract/detail/${contract.contractId}" class="btn btn-info">Detail</a></td>
                     </tr>
                 </c:forEach>
                 </tbody>

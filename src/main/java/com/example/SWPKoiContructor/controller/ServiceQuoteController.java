@@ -50,10 +50,10 @@ public class ServiceQuoteController {
     private FeedbackService feedbackService;
     private LoyaltyPointService loyaltyPointService;
     private PaymentHistoryService paymentHistoryService;
-
+    private CustomerService customerService;
     private NotificationService notificationService;
 
-    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService, LoyaltyPointService loyaltyPointService, PaymentHistoryService paymentHistoryService, NotificationService notificationService) {
+    public ServiceQuoteController(ServiceQuoteService serviceQuoteService, ServiceService serviceService, ConsultantService consultantService, UserService userService, FeedbackService feedbackService, LoyaltyPointService loyaltyPointService, PaymentHistoryService paymentHistoryService, CustomerService customerService, NotificationService notificationService) {
         this.serviceQuoteService = serviceQuoteService;
         this.serviceService = serviceService;
         this.consultantService = consultantService;
@@ -61,8 +61,11 @@ public class ServiceQuoteController {
         this.feedbackService = feedbackService;
         this.loyaltyPointService = loyaltyPointService;
         this.paymentHistoryService = paymentHistoryService;
+        this.customerService = customerService;
         this.notificationService = notificationService;
     }
+
+    
 
     //----------------------------------- MANAGER SECTION ----------------------------------------------
     @GetMapping("/manager/serviceQuote/detail/{id}")
@@ -222,7 +225,7 @@ public class ServiceQuoteController {
         model.addAttribute("searchName", searchName);  // Add searchName to model
         model.addAttribute("fromDate", fromDate);  // Add fromDate to model
         model.addAttribute("toDate", toDate);  // Add toDate to model
-
+        model.addAttribute("customerList", customerService.getCustomerListForChoose());
         return "consultant/serviceQuote/serviceQuoteManage";  // JSP page to display the contract list
     }
 
@@ -240,8 +243,9 @@ public class ServiceQuoteController {
             model.addAttribute("staff", user);
             long totalPoint = loyaltyPointService.TotalPoints(consultant.getCustomer().getId());
             model.addAttribute("totalPoint", totalPoint);
-
+            consultant = consultantService.updateConsultantStatus(consultantId, 6);
             return "consultant/serviceQuote/serviceQuoteCreate";
+
         }
         model.addAttribute("newServiceQuote", newServiceQuotes);
         return "redirect:/consultant/viewConsultantDetail/" + consultantId;
@@ -253,13 +257,60 @@ public class ServiceQuoteController {
             @RequestParam("pointsUsed") String pointUsed,
             RedirectAttributes redirectAttributes) {
         
-        String redirectIfWrong = checkValidation(newServiceQuotes, serviceIds, true, redirectAttributes);
+        String redirectIfWrong = checkValidation(newServiceQuotes, serviceIds, 1, redirectAttributes);
         if(redirectIfWrong != null){
             return redirectIfWrong;
         }
         List<Service> serviceList = new ArrayList<>();
         newServiceQuotes.setServiceQuotesStatus(1);
         newServiceQuotes.setServiceQuotesDate(new Date());
+        newServiceQuotes.setUsedPoint(Integer.parseInt(pointUsed));
+        for (int id : serviceIds) {
+            Service service = serviceService.getServiceById(id);
+            if (service != null) { // Check if the service exists
+                serviceList.add(service);
+            }
+        }
+
+        newServiceQuotes.setService(serviceList);
+        newServiceQuotes = serviceQuoteService.saveNewServiceQuote(newServiceQuotes);
+        notificationService.createNotification(newServiceQuotes.getServiceQuotesId(),"serviceQuote",null,"manager","New Service Quote has been created");
+        return "redirect:/consultant/serviceQuote";
+    }
+    
+    @GetMapping("/consultant/serviceQuote/creates")
+    public String createNewServiceQuoteNoConsultant(@RequestParam("customerId") int customerId, Model model, HttpSession session) {
+        User customer = userService.getUserById(customerId);
+        if (customer != null) {
+            ServiceQuotes newServiceQuotes = new ServiceQuotes();
+            model.addAttribute("customer", customer);
+            model.addAttribute("newServiceQuote", newServiceQuotes);
+            List<Service> services = serviceService.getServiceList(20);
+            model.addAttribute("services", services);
+            User user = (User) session.getAttribute("user");
+            model.addAttribute("staff", user);
+            long totalPoint = loyaltyPointService.TotalPoints(customer.getId());
+            model.addAttribute("totalPoint", totalPoint);
+
+            return "consultant/serviceQuote/serviceQuoteCreateNoConsultant";
+        }
+        return "redirect:/consultant/serviceQuote";
+    }
+    
+    @PostMapping("/consultant/serviceQuote/saves")
+    public String saveServiceQuoteNoConsultant(@ModelAttribute("newServiceQuote") ServiceQuotes newServiceQuotes,
+            @RequestParam("serviceIds") List<Integer> serviceIds,
+            @RequestParam("pointsUsed") String pointUsed,
+            RedirectAttributes redirectAttributes) {
+        
+        String redirectIfWrong = checkValidation(newServiceQuotes, serviceIds, 3, redirectAttributes);
+        if(redirectIfWrong != null){
+            return redirectIfWrong;
+        }
+        List<Service> serviceList = new ArrayList<>();
+        newServiceQuotes.setServiceQuotesStatus(1);
+        newServiceQuotes.setServiceQuotesDate(new Date());
+        newServiceQuotes.setConsultant(null);
         newServiceQuotes.setUsedPoint(Integer.parseInt(pointUsed));
         for (int id : serviceIds) {
             Service service = serviceService.getServiceById(id);
@@ -304,7 +355,7 @@ public class ServiceQuoteController {
             @RequestParam("pointsUsed") String pointUsed,
             RedirectAttributes redirectAttributes) {
         
-        String redirectIfWrong = checkValidation(serviceQuote, serviceIds, false, redirectAttributes);
+        String redirectIfWrong = checkValidation(serviceQuote, serviceIds, 2, redirectAttributes);
         if(redirectIfWrong != null){
             return redirectIfWrong;
         }
@@ -348,16 +399,20 @@ public class ServiceQuoteController {
         return "redirect:/consultant/serviceQuote/detail/" + serviceQuoteId;
     }
     
-    public String checkValidation(ServiceQuotes newServiceQuotes, List<Integer> serviceIds,boolean isCreate, RedirectAttributes redirectAttributes ){
+    public String checkValidation(ServiceQuotes newServiceQuotes, List<Integer> serviceIds,int isCreate, RedirectAttributes redirectAttributes ){
         String redirectLink;
         String flashAtrubute;
-        if(isCreate){
+        if(isCreate == 1){
             redirectLink = "redirect:/consultant/serviceQuote/create?consultantId=" + newServiceQuotes.getConsultant().getConsultantId();
             flashAtrubute = "newServiceQuote";
-        }else{
+        }else if(isCreate == 2){
             redirectLink = "redirect:/consultant/serviceQuote/update?serviceQuoteId=" + newServiceQuotes.getServiceQuotesId();
             flashAtrubute = "serviceQuote";
+        }else{
+            redirectLink = "redirect:/consultant/serviceQuote/creates?customerId=" + newServiceQuotes.getCustomer().getId();
+            flashAtrubute = "newServiceQuote";
         }
+        
         if (newServiceQuotes.getServiceQuotesName() == null || newServiceQuotes.getServiceQuotesName().trim().length() < 3) {
             redirectAttributes.addFlashAttribute("error", "Quote name must be at least 3 characters long.");
             redirectAttributes.addFlashAttribute(flashAtrubute, newServiceQuotes);

@@ -40,7 +40,15 @@
         <!-- User Profile Dropdown -->
         <div class="dropdown">
             <a href="#" class="nav-link dropdown-toggle d-flex align-items-center" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="${user.imgURL != null ? user.getShowingImg(user.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="User Avatar" class="rounded-circle" width="40">
+                <c:choose>
+                    <c:when test='${user.imgURL != null}'>
+                        <img src="${user.getShowingImg(user.imgURL)}" alt="User Avatar" class="rounded-circle" width="40" />
+                    </c:when>
+                    <c:otherwise>
+                        <img src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" alt="User Avatar" class="rounded-circle" width="40" />
+                    </c:otherwise>
+                </c:choose>
+
                 <span class="ml-2">${user.name}</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">

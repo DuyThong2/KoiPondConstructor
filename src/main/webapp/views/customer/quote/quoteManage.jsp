@@ -126,6 +126,15 @@
             .d-flex{
                 margin: 0;
             }
+            .btn-modal{
+                padding:5px 10px;
+                font-size: 15px;
+            }
+            .btn-table{
+                padding: 5px 15px;
+                font-size: 17px;
+                margin-bottom: 5px;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>
@@ -199,26 +208,26 @@
                                     <table class="table table-bordered table-hover mt-3">
                                         <thead class="thead-dark">
                                             <tr>
-                                                <th>Date Created</th>
+                                                <th style="width: 13% ">Date Created</th>
                                                 <th>Name</th>
                                                 <th>Area</th>
                                                 <th>Total Price</th>
                                                 <th>Design Price</th>
-                                                <th>Construct Price</th>
+                                                <th style="width: 10%">Construct Price</th>
                                                 <th>Status</th>
-                                                <th>Action</th>
+                                                <th style="width: 10%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <c:forEach var="Quote" items="${Quote}">
                                                 <!-- Main Row -->
                                                 <tr>
-                                                    <td>${Quote.quotesDate}</td>
+                                                    <td><fmt:formatDate value="${Quote.quotesDate}" pattern="dd-MM-yyyy"/></td>
                                                     <td>${Quote.quotesName}</td>
                                                     <td>${Quote.quotesArea} m²</td>
-                                                    <td>${Quote.quotesTotalPrice}</td>
-                                                    <td>${Quote.quotesDesignCost}</td>
-                                                    <td>${Quote.quotesConstructionCost}</td>
+                                                    <td>${Quote.quotesTotalPrice}$</td>
+                                                    <td>${Quote.quotesDesignCost}$</td>
+                                                    <td>${Quote.quotesConstructionCost}$</td>
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${Quote.quotesStatus == 2}">
@@ -245,12 +254,12 @@
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${Quote.quotesStatus == 2}">
-                                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
+                                                                <button type="button" class="btn btn-success btn-table" data-toggle="modal" data-target="#acceptModal"
                                                                         onclick="document.getElementById('acceptForm').id.value = '${Quote.quotesId}';
                                                                                 document.getElementById('acceptForm').status.value = '4';">Approve
                                                                 </button>
 
-                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                                                <button style="margin-left: 7px" type="button" class="btn btn-danger btn-table" data-toggle="modal" data-target="#declineModal"
                                                                         onclick="document.getElementById('declineForm').id.value = '${Quote.quotesId}';
                                                                                 document.getElementById('declineForm').toUserId.value = '${Quote.staff.id}';
                                                                                 document.getElementById('declineForm').status.value = '5';">Reject
@@ -302,9 +311,6 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
                                     </div>
                                     <div class="modal-body">
                                         <form id="declineForm" action="${pageContext.request.contextPath}/customer/quote/updateStatusAndFeedback" method="post">
@@ -331,9 +337,6 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="acceptModalLabel">Confirm Acceptance</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
                                     </div>
                                     <div class="modal-body">
                                         Are you sure you want to continue?
@@ -343,8 +346,8 @@
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <button type="submit" form="acceptForm" class="btn btn-success">Yes</button>
+                                        <button type="button" class="btn btn-secondary btn-modal" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" form="acceptForm" class="btn btn-success btn-modal">Yes</button>
                                     </div>
                                 </div>
                             </div>

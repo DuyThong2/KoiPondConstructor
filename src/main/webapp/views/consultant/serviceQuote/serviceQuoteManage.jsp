@@ -3,145 +3,144 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>Service quote staff Management</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
-    <style>
-        /* Custom styles to enhance UI performance */
-        body {
-            background-color: #f8f9fa;
-            font-family: 'Mukta', sans-serif;
-        }
+    <head>
+        <title>Service quote staff Management</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
+        <style>
+            /* Custom styles to enhance UI performance */
+            body {
+                background-color: #f8f9fa;
+                font-family: 'Mukta', sans-serif;
+            }
 
-        h2 {
-                    font-weight: bold;
-                    border-bottom: 2px solid #343a40;
-                    padding-bottom: 10px;
-                    margin-bottom: 20px;
-                    width: 95%;
-                    margin-left: 5px;
-                }
+            h2 {
+                font-weight: bold;
+                border-bottom: 2px solid #343a40;
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+                width: 95%;
+                margin-left: 5px;
+            }
 
-        /* Table styling */
-        table.table {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+            /* Table styling */
+            table.table {
+                background-color: white;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
 
-        /* Table Header Styling */
-        thead.thead-dark th {
-            background-color: #007bff;
-            color: white;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
+            /* Table Header Styling */
+            thead.thead-dark th {
+                background-color: #007bff;
+                color: white;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
 
-        /* Pagination Controls */
-        .pagination-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-        }
+            /* Pagination Controls */
+            .pagination-controls {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+            }
 
-        .pagination-controls a,
-        .pagination-controls button {
-            font-weight: bold;
-        }
+            .pagination-controls a,
+            .pagination-controls button {
+                font-weight: bold;
+            }
 
-        /* Button Styles */
-        .btn-info {
-            background-color: #007bff;
-            border-color: #007bff;
-            font-weight: bold;
-            padding: 8px 12px;
-            transition: all 0.3s ease;
-        }
+            /* Button Styles */
+            .btn-info {
+                background-color: #007bff;
+                border-color: #007bff;
+                font-weight: bold;
+                padding: 8px 12px;
+                transition: all 0.3s ease;
+            }
 
-        .btn-info:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
+            .btn-info:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
 
-        /* Badge styles */
-        .badge-status {
-            padding: 10px 15px;
-            font-size: 1em;
-            border-radius: 20px;
-        }
+            /* Badge styles */
+            .badge-status {
+                padding: 10px 15px;
+                font-size: 1em;
+                border-radius: 20px;
+            }
 
-        /* Filter Form Styling */
-        .form-control {
-            border-radius: 20px;
-            padding: 10px;
-        }
+            /* Filter Form Styling */
+            .form-control {
+                border-radius: 20px;
+                padding: 10px;
+            }
 
-        .btn-primary {
-            background-color: #007bff;
-            border-radius: 20px;
-            padding: 8px 20px;
-        }
+            .btn-primary {
+                background-color: #007bff;
+                border-radius: 20px;
+                padding: 8px 20px;
+            }
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
 
-        .form-row {
-            margin-bottom: 20px;
-        }
+            .form-row {
+                margin-bottom: 20px;
+            }
 
-        /* Card Container for Form */
-        .filter-card {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end; /* Align the form elements to the bottom */
-            flex-wrap: wrap; /* Allow wrapping for smaller screens */
-            gap: 15px; /* Adjust gap between form elements */
-        }
+            /* Card Container for Form */
+            .filter-card {
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                margin-bottom: 30px;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end; /* Align the form elements to the bottom */
+                flex-wrap: wrap; /* Allow wrapping for smaller screens */
+                gap: 15px; /* Adjust gap between form elements */
+            }
 
-        .filter-card .form-control,
-        .filter-card select,
-        .filter-card .btn-primary {
-            flex: 1 1 150px; /* Allows the fields to scale and ensures consistency in size */
-            margin-bottom: 10px; /* Adds spacing between the form elements */
-        }
+            .filter-card .form-control,
+            .filter-card select,
+            .filter-card .btn-primary {
+                flex: 1 1 150px; /* Allows the fields to scale and ensures consistency in size */
+                margin-bottom: 10px; /* Adds spacing between the form elements */
+            }
 
-        .filter-card label {
-            margin-bottom: 5px; /* Space between labels and inputs */
-            display: inline-block;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-    <%@include file="../consultantNav.jsp"%>
+            .filter-card label {
+                margin-bottom: 5px; /* Space between labels and inputs */
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <%@include file="../consultantNav.jsp"%>
 
-        <!-- Main content -->
+            <!-- Main content -->
 
             <h2 class="mb-4">Service Quote List</h2>
 
             <div class="filter-card">
                 <!-- Sort and Search Form -->
                 <form method="get" action="${pageContext.request.contextPath}/consultant/serviceQuote">
-                    <div class="form-row align-items-center d-flex justify-content-between">
+                    <div class="form-row align-items-end d-flex justify-content-between">
                         <!-- Sort By -->
                         <div class="col-auto">
                             <label for="sortBy">Sort by:</label>
                             <select name="sortBy" id="sortBy" class="form-control">
                                 <option value="serviceQuotesDate" ${sortBy == 'serviceQuotesDate' ? 'selected' : ''}>Date Created</option>
                                 <option value="serviceQuotesArea" ${sortBy == 'serviceQuotesArea' ? 'selected' : ''}>Area</option>
-                                <option value="serviceQuotesTotalPrice" ${sortBy == 'serviceQuotesTotalPrice' ? 'selected' : ''}>Total Price</option>
                                 <option value="serviceQuotesTotalPrice" ${sortBy == 'serviceQuotesTotalPrice' ? 'selected' : ''}>Total Price</option>
                             </select>
                         </div>
@@ -155,7 +154,7 @@
                             </select>
                         </div>
 
-                        <!-- Filter By Status --1 pending, 2 approved(manager ok),3. rejected(by manage),4.accepted(customer), 5.refused(customer),6.refused(by staff),7. cancel -->
+                        <!-- Filter By Status -->
                         <div class="col-auto">
                             <label for="statusFilter">Status:</label>
                             <select name="statusFilter" id="statusFilter" class="form-control">
@@ -187,15 +186,22 @@
 
                         <!-- Search by Name -->
                         <div class="col-auto">
-                            <label for="searchName">Service Quote Name</label>
+                            <label for="searchName">Service Quote Name:</label>
                             <input type="text" name="searchName" id="searchName" class="form-control" value="${searchName}">
                         </div>
 
                         <input type="hidden" name="page" value="${currentPage}">
 
                         <!-- Apply Button -->
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-primary" style="margin-top: 2rem">Apply</button>
+                        <div class="col-auto d-flex align-items-end"> <!-- Aligned with other elements -->
+                            <button type="submit" class="btn btn-primary">Apply</button>
+                        </div>
+
+                        <!-- Create New Service Quote Button -->
+                        <div class="col-auto d-flex align-items-end"> <!-- Aligned with other elements -->
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addCustomerModal">
+                                Create New Service Quote
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -206,63 +212,63 @@
             <!-- Table for contracts -->
             <table class="table table-bordered table-hover mt-3">
                 <thead class="thead-dark">
-                <tr>
-                    <th>Date Created</th>
-                    <th>Name</th>
-                    <th>Area</th>
-                    <th>Total Price</th>
-                    <th>Status</th>
-                    <th>View Detail</th>
-                </tr>
+                    <tr>
+                        <th>Date Created</th>
+                        <th>Name</th>
+                        <th>Area</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>View Detail</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <c:forEach var="serviceQuote" items="${serviceQuote}">
-                    <tr>
-                        <td>${serviceQuote.serviceQuotesDate}</td>
-                        <td>${serviceQuote.serviceQuotesName}</td>
-                        <td>${serviceQuote.serviceQuotesArea}</td>
-                        <td>${serviceQuote.serviceQuotesTotalPrice}</td>
-                        <td>
-                            <c:choose>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
-                                    <span class="badge badge-warning badge-status">Pending</span>
-                                </c:when>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
-                                    <span class="badge badge-success badge-status">Approved By Manager</span>
-                                </c:when>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 3}">
-                                    <span class="badge badge-warning badge-status">Rejected (Manager)</span>
-                                </c:when>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                    <span class="badge badge-warning badge-status">Awaiting payment 1</span>
-                                </c:when>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
-                                    <span class="badge badge-warning badge-status">Rejected (Customer)</span>
-                                </c:when>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
-                                    <span class="badge badge-warning badge-status">Rejected (Staff)</span>
-                                </c:when>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
-                                    <span class="badge badge-danger badge-status">Canceled</span>
-                                </c:when>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
-                                    <span class="badge badge-success badge-status">Deposit Paid</span>
-                                </c:when>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
-                                    <span class="badge badge-warning badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
-                                                                                     'Awaiting Payment 2':'Service In Progress'}</span>
-                                </c:when>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
-                                    <span class="badge badge-success badge-status">Fully Paid</span>
-                                </c:when>
-                                <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
-                                    <span class="badge badge-success badge-status">Completed</span>
-                                </c:when>
-                            </c:choose>
-                        </td>
-                        <td><a href="/consultant/serviceQuote/detail/${serviceQuote.serviceQuotesId}" class="btn btn-info">View</a></td>
-                    </tr>
-                </c:forEach>
+                    <c:forEach var="serviceQuote" items="${serviceQuote}">
+                        <tr>
+                            <td>${serviceQuote.serviceQuotesDate}</td>
+                            <td>${serviceQuote.serviceQuotesName}</td>
+                            <td>${serviceQuote.serviceQuotesArea}</td>
+                            <td>${serviceQuote.serviceQuotesTotalPrice}</td>
+                            <td>
+                                <c:choose>
+                                    <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
+                                        <span class="badge badge-warning badge-status">Pending</span>
+                                    </c:when>
+                                    <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
+                                        <span class="badge badge-success badge-status">Approved By Manager</span>
+                                    </c:when>
+                                    <c:when test="${serviceQuote.serviceQuotesStatus == 3}">
+                                        <span class="badge badge-warning badge-status">Rejected (Manager)</span>
+                                    </c:when>
+                                    <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
+                                        <span class="badge badge-warning badge-status">Awaiting payment 1</span>
+                                    </c:when>
+                                    <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
+                                        <span class="badge badge-warning badge-status">Rejected (Customer)</span>
+                                    </c:when>
+                                    <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
+                                        <span class="badge badge-warning badge-status">Rejected (Staff)</span>
+                                    </c:when>
+                                    <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
+                                        <span class="badge badge-danger badge-status">Canceled</span>
+                                    </c:when>
+                                    <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
+                                        <span class="badge badge-success badge-status">Deposit Paid</span>
+                                    </c:when>
+                                    <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
+                                        <span class="badge badge-warning badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
+                                                                                         'Awaiting Payment 2':'Service In Progress'}</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
+                                        <span class="badge badge-success badge-status">Fully Paid</span>
+                                    </c:when>
+                                    <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
+                                        <span class="badge badge-success badge-status">Completed</span>
+                                    </c:when>
+                                </c:choose>
+                            </td>
+                            <td><a href="${pageContext.request.contextPath}/consultant/serviceQuote/detail/${serviceQuote.serviceQuotesId}" class="btn btn-info">View</a></td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
 
@@ -287,13 +293,80 @@
                     <button class="btn btn-primary" disabled>&gt;</button>
                 </c:if>
             </div>
+        </div>
 
-    </div>
+        <!-- Customer Selection Modal -->
+        <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document"> <!-- Using modal-lg for a larger modal if needed -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addCustomerModalLabel">Select Customer for New Service Quote</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" id="customerSearch" class="form-control" placeholder="Search by name or email...">
+                        </div>
+                        <div class="table-responsive">
+                            <!-- Table of Customers -->
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th style="width: 35%;">Name</th>
+                                        <th style="width: 30%;">Email</th>
+                                        <th style="width: 25%;">Phone</th>
+                                        <th style="width: 10%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customerTableBody">
+                                    <c:forEach var="customer" items="${customerList}">
+                                        <tr>
+                                            <td>${customer.name != null ? customer.name:'N/A'}</td>
+                                            <td>${customer.email}</td>
+                                            <td>${customer.phone != null ? customer.phone:'N/A'}</td>
+                                            <td>
+                                                <c:if test="${customer.name != null && customer.phone != null}">
+                                                    <form method="get" action="${pageContext.request.contextPath}/consultant/serviceQuote/creates">
+                                                        <input type="hidden" name="customerId" value="${customer.id}">
+                                                        <button type="submit" class="btn btn-info btn-sm">Create</button> <!-- Using btn-sm for a smaller button -->
+                                                    </form>
+                                                </c:if>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>        
 
+        <!-- Bootstrap JS and dependencies -->
 
-<!-- Bootstrap JS and dependencies -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        <script>
+            document.getElementById('customerSearch').addEventListener('input', function () {
+                const searchValue = this.value.toLowerCase();
+                const customerRows = document.querySelectorAll('#customerTableBody tr');
 
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-</body>
+                customerRows.forEach(row => {
+                    const customerName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                    const customerEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                    if (customerName.includes(searchValue) || customerEmail.includes(searchValue)){
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+            });
+        </script>
+
+    </body>
 </html>
 

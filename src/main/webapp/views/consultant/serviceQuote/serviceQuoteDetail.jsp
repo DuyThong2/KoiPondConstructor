@@ -206,6 +206,14 @@
                                 <th>Service Quote Used Point</th>
                                 <td>${serviceQuote.usedPoint}</td>
                             </tr>
+                            <tr>
+                                <th>Deposit</th>
+                                <td>${serviceQuote.calculateDeposit()}</td>
+                            </tr>
+                            <tr>
+                                <th>Full pay</th>
+                                <td>${serviceQuote.calculateFullPaid()}</td>
+                            </tr>
                         </table>
                     </div>
 

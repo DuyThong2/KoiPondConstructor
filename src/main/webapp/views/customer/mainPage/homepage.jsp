@@ -143,7 +143,7 @@
             <div class="offcanvas__content">
                 <div class="offcanvas__top d-flex justify-content-between align-items-center">
                     <div class="offcanvas__logo">
-                        <a href="index.html">
+                        <a href="${pageContext.request.contextPath}/home/services">
                             <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                         </a>
                     </div>
@@ -206,7 +206,7 @@
                     <div class="banner-3__content blur-backgroud">
                         <h6 class="banner-3__content-subtitle">Introducing Ribuild</h6>
                         <h1 class="banner-3__content-title">Building Excellence with Precision and Passion.</h1>
-                        <a href="index.html" class="rr-btn">
+                        <a href="#" class="rr-btn">
                             <span class="btn-wrap">
                                 <span class="text-one turn-off-animation-button">Explore Service</span>
                             </span>
@@ -581,7 +581,7 @@
                 <c:forEach var="blog" items="${blogList}">
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="blog__item has-box-shadow mb-30" style="border-radius: 8px; overflow: hidden; transition: transform 0.3s;">
-                            <a href="${pageContext.request.contextPath}/home/blogs/${blog.id}l" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
+                            <a href="${pageContext.request.contextPath}/home/blogs/${blog.id}" data-cursor-text="View" class="blog__item-media d-block" style="overflow: hidden;">
                                 <img src="${blog.getShowingImg(blog.imgUrl)}" alt="image not found" class="img-fluid" style="width: 100%; height: auto; transition: transform 0.3s;">
                             </a>
                             <div class="blog__item-text p-4" style="background-color: #ffffff;">

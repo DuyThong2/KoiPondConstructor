@@ -12,6 +12,7 @@ import com.example.SWPKoiContructor.entities.Project;
 import com.example.SWPKoiContructor.entities.Term;
 import com.example.SWPKoiContructor.utils.Utility;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
 
@@ -39,8 +40,8 @@ public class ProjectService {
 
     }
 
-    public List<Project> getProjectListIsSharable() {
-        return projectDAO.getProjectListIsSharable();
+    public List<Project> getProjectListIsSharable(int number) {
+        return projectDAO.getProjectListIsSharable(number);
     }
 
     public List<Project> getPaginationProjectList(int page, int size, String sortBy, String sortType) {
@@ -157,13 +158,13 @@ public class ProjectService {
         }
     }
 
-    public List<Project> getPaginationProjectListByStatusAndStage(int page, int size, String sortBy, String sortType, Integer statusFilter, Integer stageFilter) {
-        return projectDAO.getPaginationProjectListByStatusAndStage(page, size, sortBy, sortType, statusFilter, stageFilter);
+    public List<Project> getPaginationProjectListByStatusAndStage(int page, int size, String sortBy, String sortType, Integer statusFilter, Integer stageFilter, Date fromDate, Date endDate, String searchName) {
+        return projectDAO.getPaginationProjectListByStatusAndStage(page, size, sortBy, sortType, statusFilter, stageFilter,fromDate,endDate,searchName);
 
     }
 
-    public long countProjectFilter(Integer statusFilter, Integer stageFilter) {
-        return projectDAO.countProjectFilter(statusFilter, stageFilter);
+    public long countProjectFilter(Integer statusFilter, Integer stageFilter,Date fromDate,Date endDate, String searchName) {
+        return projectDAO.countProjectFilter(statusFilter, stageFilter,fromDate,endDate,searchName);
     }
 
     @Transactional
@@ -176,10 +177,10 @@ public class ProjectService {
             Construction construction = project.getConstruction();
             ConstructionStage startingConstructionStage = construction.getConstructionStage().get(0);
             ConstructionStageDetail startingConstructionStageDetail = startingConstructionStage.getConstructionStageDetail().get(0);
+
             switch (project.getStage()) {
                 case 1:
                     project.setStage(2);
-                    project.setStatus(2);
                     design.setStatus(2);
                     startingDesignStage.setDesignStageStatus(2);
                     stratingDesignStageDetail.setStatus(2);
@@ -205,6 +206,8 @@ public class ProjectService {
             projectDAO.updateProject(project);
         }
     }
+
+
 
     public long countProjectProcessing() {
         return projectDAO.countProjectProcessing();

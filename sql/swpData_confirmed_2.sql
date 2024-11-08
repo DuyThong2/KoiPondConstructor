@@ -186,8 +186,9 @@ CREATE TABLE [Contract] (
     price_on_raw_construction DECIMAL(10, 2),
     price_on_complete_construction DECIMAL(10, 2),
     contract_term NVARCHAR(255),
-    contract_status INT, -- 1:Pending 2: Approved 3: Rejected(customer) 4:rejected(manager) 5:cancel 6:accepted
+    contract_status INT, -- 1:Pending 2: Approved 3: Rejected(customer) 4:rejected(manager) 5:cancel 6:accepted 7: contract created
     contract_note NVARCHAR(255),
+	estimated_end_date date,
     term_id int ,
     customer_id INT,
 	quote_id int,

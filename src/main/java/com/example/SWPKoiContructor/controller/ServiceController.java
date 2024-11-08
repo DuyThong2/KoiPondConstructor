@@ -40,14 +40,15 @@ public class ServiceController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "serviceId") String sortBy,
             @RequestParam(defaultValue = "desc") String sortType,
-            @RequestParam(required = false) Boolean statusFilter) {
+            @RequestParam(required = false) Boolean statusFilter,
+            @RequestParam(name="searchName",required = false) String searchName) {
 
         List<Service> list;
         long serviceNum;
 
-        if (statusFilter != null) {
-            list = serviceService.getPaginationServiceListByStatus(page, size, sortBy, sortType, statusFilter);
-            serviceNum = serviceService.countServiceFilter(statusFilter);
+        if (statusFilter != null||searchName!=null) {
+            list = serviceService.getPaginationServiceListByStatus(page, size, sortBy, sortType, statusFilter,searchName);
+            serviceNum = serviceService.countServiceFilter(statusFilter,searchName);
         } else {
             list = serviceService.getPaginationServiceList(page, size, sortBy, sortType);
             serviceNum = serviceService.countServices();
@@ -55,7 +56,7 @@ public class ServiceController {
 
         long totalPage = (long) Math.ceil(serviceNum / (double) size);
         page = Math.max(page, 1);
-        
+
         model.addAttribute("currentPage", page);
         model.addAttribute("size", size);
         model.addAttribute("sortBy", sortBy);
@@ -63,6 +64,7 @@ public class ServiceController {
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("serviceList", list);
         model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("searchName",searchName);
 
         return "manager/service/serviceManage"; // Path to your JSP page for services list
     }

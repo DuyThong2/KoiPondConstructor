@@ -69,6 +69,126 @@
                               font-size: 0.9rem;
                          }
                     }
+                    body {
+                    background-color: #f8f9fa;
+                    font-family: 'Mukta', sans-serif;
+                }
+
+                h2 {
+                    font-weight: bold;
+                    color: #007bff;
+                    border-bottom: 2px solid #007bff;
+                    padding-bottom: 10px;
+                    margin-bottom: 20px;
+                }
+
+                /* Table styling */
+                table.table {
+                    background-color: white;
+                    border-radius: 10px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                }
+
+                /* Table Header Styling */
+                thead.thead-dark th {
+                    background-color: #007bff;
+                    color: white;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                }
+
+                /* Pagination Controls */
+                .pagination-controls {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 20px;
+                }
+
+                .pagination-controls a,
+                .pagination-controls button {
+                    font-weight: bold;
+                }
+
+                /* Button Styles */
+                .btn-info {
+                    background-color: #007bff;
+                    border-color: #007bff;
+                    font-weight: bold;
+                    padding: 8px 12px;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-info:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                }
+
+                /* Badge styles */
+                .badge-status {
+                    padding: 10px 15px;
+                    font-size: 1em;
+                    border-radius: 20px;
+                }
+
+                /* Filter Form Styling */
+                .form-control {
+                    border-radius: 20px;
+                    padding: 10px;
+                }
+
+                .btn-primary{
+                    background-color: #007bff;
+                    border-radius: 20px;
+                    padding: 8px 20px;
+                }
+                .btn-success{
+                    border-radius: 20px;
+                    padding: 8px 20px;
+                }
+
+                .btn-primary:hover {
+                    background-color: #0056b3;
+                    border-color: #0056b3;
+                }
+
+                .form-row {
+                    margin-bottom: 20px;
+                }
+
+                /* Card Container for Form */
+                .filter-card {
+                    background-color: #ffffff;
+                    padding: 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    margin-bottom: 30px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-end;
+                    /* Align the form elements to the bottom */
+                    flex-wrap: wrap;
+                    /* Allow wrapping for smaller screens */
+                    gap: 15px;
+                    /* Adjust gap between form elements */
+                }
+
+                .filter-card .form-control,
+                .filter-card select,
+                .filter-card .btn-primary {
+                    flex: 1 1 150px;
+                    /* Allows the fields to scale and ensures consistency in size */
+                    margin-bottom: 10px;
+                    /* Adds spacing between the form elements */
+                }
+
+                .filter-card label {
+                    margin-bottom: 5px;
+                    /* Space between labels and inputs */
+                    display: inline-block;
+                }
+             
                </style>
 
 
@@ -86,7 +206,8 @@
                               <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                                    <!-- Service Information Section -->
                                    <div class="section-card">
-                                        <h2 class="section-header"><i class="fas fa-cogs"></i> Service Information</h2>
+                                        <h2 class="section-header d-flex justify-content-between"><span><i class="fas fa-cogs"></i> Service Information </span> <button class="btn btn-primary" id="updateServiceBtn">Update
+                                             Service</button></h2>
                                         <table class="table table-striped">
                                              <tr>
                                                   <th>Service ID</th>
@@ -105,17 +226,16 @@
                                                   <td>
                                                        <c:choose>
                                                             <c:when test="${service.serviceStatus}">
-                                                                 <span class="badge badge-success">Active</span>
+                                                                 <span class="badge badge-success badge-status">Active</span>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                 <span class="badge badge-danger">Inactive</span>
+                                                                 <span class="badge badge-danger badge-status">Inactive</span>
                                                             </c:otherwise>
                                                        </c:choose>
                                                   </td>
                                              </tr>
                                         </table>
-                                        <button class="btn btn-primary" id="updateServiceBtn">Update
-                                             Service</button>
+                                       
 
                                    </div>
 
@@ -144,11 +264,11 @@
                                                                                 <c:when
                                                                                      test="${price.servicePriceStatus}">
                                                                                      <span
-                                                                                          class="badge badge-success">Active</span>
+                                                                                          class="badge badge-success badge-status">Active</span>
                                                                                 </c:when>
                                                                                 <c:otherwise>
                                                                                      <span
-                                                                                          class="badge badge-secondary">Inactive</span>
+                                                                                          class="badge badge-secondary badge-status">Inactive</span>
                                                                                 </c:otherwise>
                                                                            </c:choose>
                                                                       </td>
@@ -165,10 +285,11 @@
 
                                    <!-- Service Content Section -->
                                    <div class="section-card">
-                                        <h4 class="section-header"><i class="fas fa-file-alt"></i> Service Content</h4>
-                                        <button class="btn btn-success"
-                                             onclick="window.location.href='${pageContext.request.contextPath}/manager/serviceContent/updateDetail/${service.serviceId}'">Update
-                                             Content</button>
+                                        <h4 class="section-header d-flex justify-content-between"><span><i class="fas fa-file-alt"></i> Service Content </span>
+                                             <button class="btn btn-success"
+                                                  onclick="window.location.href='${pageContext.request.contextPath}/manager/serviceContent/updateDetail/${service.serviceId}'">Update
+                                                  Content</button>
+                                        </h4>
 
                                         <c:if test="${not empty service.content}">
                                              <div>

@@ -52,7 +52,16 @@
                         <h4>Customer Information</h4>
                         <!-- Customer Avatar -->
                         <div class="customer-info">
-                            <img src="" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                            <c:choose>
+                                <c:when test="${customer.imgURL != null}">
+                                    <img class="customer-avatar img-fluid"
+                                         src="${customer.getShowingImg(customer.imgURL)}" alt />
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="customer-avatar img-fluid"
+                                         src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" alt />
+                                </c:otherwise>
+                            </c:choose>
                             <p><strong>${customer.name}</strong></p>
                         </div>
                         <!-- Customer Information -->
@@ -70,7 +79,9 @@
                     <!-- Bind the form to the "contract" object -->
                     <form:form action="${pageContext.request.contextPath}/consultant/serviceQuote/saveUpdate" modelAttribute="serviceQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="serviceQuotesId" value="${serviceQuote.serviceQuotesId}"/>
-                        <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
+                        <c:if test="${consultant != null}"> 
+                            <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
+                        </c:if>
                         <form:hidden path="customer.id" value="${customer.id}" />
                         <form:hidden path="staff.id" value="${staff.id}" />
 
@@ -141,7 +152,13 @@
                             <label for="serviceQuotesTotalPrice">Total Price:</label>
                             <form:input path="serviceQuotesTotalPrice" id="serviceQuotesTotalPrice" class="form-control" readonly="true" />
                         </div>
-                        
+
+                        <!-- Checkbox for 'isPayAfter' -->
+                        <div class="form-group form-check">
+                            <form:checkbox path="isPayAfter" id="isPayAfter" class="form-check-input" />
+                            <label for="isPayAfter" class="form-check-label">Pay All</label>
+                        </div>
+
                         <!-- Hidden input to store points used -->
                         <input type="hidden" id="pointsUsed" name="pointsUsed" value="0" />
 
@@ -160,7 +177,7 @@
                             <button type="button" class="btn btn-warning" onclick="updateCostsBasedOnParcel()">Auto Adjust Costs</button>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Create Service Quote</button>
+                        <button type="submit" class="btn btn-primary">Update Service Quote</button>
                     </form:form>
                 </div>
             </div>
@@ -321,13 +338,13 @@
                         }
                     });
                 });
-                
+
             </script>
             <%@include file="../../popup.jsp"%>
         </div>
 
         <!-- Bootstrap JS and dependencies -->
-       
+
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     </body>

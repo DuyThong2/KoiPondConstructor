@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.sql.Date;
 import java.util.List;
 import javax.persistence.Tuple;
 
@@ -99,43 +100,87 @@ public class ServiceDetailDAO {
     }
 
     // Get paginated list of service details filtered by status
-    public List<ServiceDetail> getPaginationServiceDetailListByStatus(int page, int size, String sortBy, String sortType, Integer statusFilter) {
-        StringBuilder queryBuilder = new StringBuilder("SELECT sd FROM ServiceDetail sd");
+    public List<ServiceDetail> getPaginationServiceDetailListByStatus(int page, int size, String sortBy, String sortType, Integer statusFilter, Date fromDate, Date endDate, String searchName) {
+        StringBuilder queryBuilder = new StringBuilder("SELECT sd FROM ServiceDetail sd WHERE 1=1");
 
+        // Apply filters if they are provided
         if (statusFilter != null) {
-            queryBuilder.append(" WHERE sd.serviceDetailStatus = :statusFilter");
+            queryBuilder.append(" AND sd.serviceDetailStatus = :statusFilter");
+        }
+        if (fromDate != null) {
+            queryBuilder.append(" AND sd.dateRegister >= :fromDate");
+        }
+        if (endDate != null) {
+            queryBuilder.append(" AND sd.dateRegister <= :endDate");
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            queryBuilder.append(" AND sd.service.serviceName LIKE :searchName");
         }
 
+        // Add sorting
         queryBuilder.append(" ORDER BY sd.").append(sortBy).append(" ").append(sortType);
 
         TypedQuery<ServiceDetail> query = entityManager.createQuery(queryBuilder.toString(), ServiceDetail.class);
 
+        // Set query parameters
         if (statusFilter != null) {
             query.setParameter("statusFilter", statusFilter);
         }
+        if (fromDate != null) {
+            query.setParameter("fromDate", fromDate);
+        }
+        if (endDate != null) {
+            query.setParameter("endDate", endDate);
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName + "%");
+        }
 
+        // Apply pagination
         query.setFirstResult((page - 1) * size);
         query.setMaxResults(size);
 
         return query.getResultList();
     }
 
-    // Count service details by status filter
-    public long countServiceDetailFilter(Integer statusFilter) {
-        StringBuilder queryBuilder = new StringBuilder("SELECT COUNT(sd) FROM ServiceDetail sd");
 
+    // Count service details by status filter
+    public long countServiceDetailFilter(Integer statusFilter, Date fromDate, Date endDate, String searchName) {
+        StringBuilder queryBuilder = new StringBuilder("SELECT COUNT(sd) FROM ServiceDetail sd WHERE 1=1");
+
+        // Apply filters if they are provided
         if (statusFilter != null) {
-            queryBuilder.append(" WHERE sd.serviceDetailStatus = :statusFilter");
+            queryBuilder.append(" AND sd.serviceDetailStatus = :statusFilter");
+        }
+        if (fromDate != null) {
+            queryBuilder.append(" AND sd.dateRegister >= :fromDate");
+        }
+        if (endDate != null) {
+            queryBuilder.append(" AND sd.dateRegister <= :endDate");
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            queryBuilder.append(" AND sd.service.serviceName LIKE :searchName");
         }
 
         TypedQuery<Long> query = entityManager.createQuery(queryBuilder.toString(), Long.class);
 
+        // Set query parameters
         if (statusFilter != null) {
             query.setParameter("statusFilter", statusFilter);
+        }
+        if (fromDate != null) {
+            query.setParameter("fromDate", fromDate);
+        }
+        if (endDate != null) {
+            query.setParameter("endDate", endDate);
+        }
+        if (searchName != null && !searchName.isEmpty()) {
+            query.setParameter("searchName", "%" + searchName + "%");
         }
 
         return query.getSingleResult();
     }
+
 
     // Count service details with status 'Pending' (assuming pending status is represented by `1`)
     public long countServiceDetailsPending() {
@@ -270,5 +315,27 @@ public class ServiceDetailDAO {
         TypedQuery<ServiceDetail> query = entityManager.createQuery(queryString, ServiceDetail.class);
         query.setParameter("staffId", staffId);
         return query.getResultList();
+    }
+
+    public Double averageRatingService(int id){
+        String sumSql= "SELECT SUM(sd.rating) FROM ServiceDetail sd where sd.service.serviceId = :id";
+        String amountSql= "SELECT COUNT(sd) FROM ServiceDetail sd where sd.service.serviceId = :id";
+        TypedQuery<Long> query = entityManager.createQuery(sumSql,Long.class);
+        TypedQuery<Long> query2= entityManager.createQuery(amountSql,Long.class);
+        query.setParameter("id",id);
+        query2.setParameter("id",id);
+        Long ratingSum = query.getSingleResult();
+        Long amount = query2.getSingleResult();
+        if(ratingSum==null||amount==0){
+            return null;
+        }
+        return (ratingSum*1.0)/amount;
+    }
+
+    public List<ServiceDetail> topFeedBack(int id){
+        String sql= "SELECT sd FROM ServiceDetail sd where sd.service.serviceId= :id and sd.rating is not null Order By sd.rating Desc, function('RAND')";
+        TypedQuery<ServiceDetail> query= entityManager.createQuery(sql,ServiceDetail.class);
+        query.setParameter("id",id);
+        return query.setMaxResults(3).getResultList();
     }
 }

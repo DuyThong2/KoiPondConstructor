@@ -117,16 +117,29 @@ public class ServiceDAO {
         return query.getSingleResult();
     }
 
-    public List<Service> getPaginationServiceListByStatus(int page, int size, String sortBy, String sortType, Boolean statusFilter) {
+    public List<Service> getPaginationServiceListByStatus(int page, int size, String sortBy, String sortType, Boolean statusFilter,String searchName) {
         // Ensure valid defaults for sortBy and sortType
         String validSortBy = (sortBy != null && !sortBy.isEmpty()) ? sortBy : "serviceName";
         String validSortType = (sortType != null && (sortType.equalsIgnoreCase("ASC") || sortType.equalsIgnoreCase("DESC"))) ? sortType : "ASC"; 
 
         StringBuilder queryBuilder = new StringBuilder("SELECT s FROM Service s");
 
-        if (statusFilter != null) {
-            queryBuilder.append(" WHERE s.serviceStatus = :statusFilter");
+        boolean hasStatusFilter = (statusFilter != null);
+        boolean hasSearchName = (searchName != null && !searchName.isEmpty());
+
+        if (hasStatusFilter || hasSearchName) {
+            queryBuilder.append(" WHERE ");
+            if (hasStatusFilter) {
+                queryBuilder.append("s.serviceStatus = :statusFilter");
+            }
+            if (hasSearchName) {
+                if (hasStatusFilter) {
+                    queryBuilder.append(" AND ");
+                }
+                queryBuilder.append("s.serviceName LIKE :searchName");
+            }
         }
+
 
         queryBuilder.append(" ORDER BY s.").append(validSortBy).append(" ").append(validSortType);
 
@@ -134,6 +147,9 @@ public class ServiceDAO {
 
         if (statusFilter != null) {
             query.setParameter("statusFilter", statusFilter);
+        }
+        if(searchName!=null){
+            query.setParameter("searchName", "%"+searchName+"%");
         }
 
         query.setFirstResult((page - 1) * size);
@@ -143,11 +159,23 @@ public class ServiceDAO {
     }
 
     // Count services by status filter
-    public long countServiceFilter(Boolean statusFilter) {
+    public long countServiceFilter(Boolean statusFilter,String searchName) {
         StringBuilder queryBuilder = new StringBuilder("SELECT COUNT(s) FROM Service s");
 
-        if (statusFilter != null) {
-            queryBuilder.append(" WHERE s.serviceStatus = :statusFilter");
+        boolean hasStatusFilter = (statusFilter != null);
+        boolean hasSearchName = (searchName != null && !searchName.isEmpty());
+
+        if (hasStatusFilter || hasSearchName) {
+            queryBuilder.append(" WHERE ");
+            if (hasStatusFilter) {
+                queryBuilder.append("s.serviceStatus = :statusFilter");
+            }
+            if (hasSearchName) {
+                if (hasStatusFilter) {
+                    queryBuilder.append(" AND ");
+                }
+                queryBuilder.append("s.serviceName LIKE :searchName");
+            }
         }
 
         TypedQuery<Long> query = entityManager.createQuery(queryBuilder.toString(), Long.class);
@@ -155,7 +183,9 @@ public class ServiceDAO {
         if (statusFilter != null) {
             query.setParameter("statusFilter", statusFilter);
         }
-
+        if(searchName!=null){
+            query.setParameter("searchName", "%"+searchName+"%");
+        }
         return query.getSingleResult();
     }
 
@@ -232,4 +262,12 @@ public class ServiceDAO {
         query.setParameter("id", id);
         return query.setMaxResults(6).getResultList();
     }
+
+    public List<Service> getSomeService(int i) {
+        String sql = "SELECT s FROM Service s WHERE s.serviceStatus=1 ORDER BY function('RAND')";
+        TypedQuery<Service> query = entityManager.createQuery(sql, Service.class);
+        return query.setMaxResults(i).getResultList();
+    }
+
+
 }

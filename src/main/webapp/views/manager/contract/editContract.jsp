@@ -159,7 +159,18 @@
                         <div class="quote-info">
                             <h4>Quote Information</h4>
                             <div class="customer-info">
-                                <img src="${quote.customer.imgURL != null ? quote.customer.getShowingImg(quote.customer.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                                <c:choose>
+                                    <c:when test='${quote.customer.imgURL != null}'>
+                                        <img class="customer-avatar img-fluid"
+                                             src="${quote.customer.getShowingImg(quote.customer.imgURL)}"
+                                             alt="Customer Avatar"/>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img class="customer-avatar img-fluid"
+                                             src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png"
+                                             alt="Customer Avatar"/>
+                                    </c:otherwise>
+                                </c:choose>
                                 <p><strong>${quote.customer.name}</strong></p>
                             </div>
                             <p><strong>Quote ID:</strong> ${quote.quotesId}</p>
@@ -167,7 +178,7 @@
                             <p><strong>Customer:</strong> ${quote.customer.name}</p>
                             <p><strong>Total Design Cost:</strong> ${quote.quotesDesignCost}</p>
                             <p><strong>Total Construction Cost:</strong> ${quote.quotesConstructionCost}</p>
-                            <p><strong>Area:</strong> ${quote.quotesArea} m�</p>
+                            <p><strong>Area:</strong> ${quote.quotesArea} m<sup>2</sup></p>
                             <p><strong>Total Price:</strong> ${quote.quotesTotalPrice}</p>
                         </div>
                     </div>
@@ -272,6 +283,20 @@
                                 </div>
                             </div>
 
+                            <div id="defaultTermFields" style="display: none;">
+                                <div class="section-title">
+                                    <h3>Default Term Options</h3>
+                                </div>
+                                <div class="form-check">
+                                    <input type="checkbox" id="default_pay_on_start_of_design" name="term.payOnStartOfDesign" class="form-check-input">
+                                    <label class="form-check-label" for="default_pay_on_start_of_design">Pay on Start of Design</label>
+                                </div>
+                                <div class="form-check mt-2">
+                                    <input type="checkbox" id="default_pay_on_start_of_construction" name="term.payOnStartOfConstruction" class="form-check-input">
+                                    <label class="form-check-label" for="default_pay_on_start_of_construction">Pay on Start of Construction</label>
+                                </div>
+                            </div>
+
                             <div class="form-group">
                                 <button type="button" class="btn btn-warning" onclick="autoAdjust()">Auto Adjust Costs</button>
                             </div>
@@ -283,6 +308,12 @@
                             <div class="form-group">
                                 <label for="contractTerm">Contract Term:</label>
                                 <form:textarea path="contractTerm" id="contractTerm" class="form-control"/>
+                            </div>
+                            <div style="margin: 25px 0 0 0">
+                                <div class="form-group form-check-inline">
+                                    <label for="estimatedEndDate">Estimated End Date:</label>
+                                    <input type="date" id="estimatedEndDate" name="estimatedEndDate" class="form-control" style="width: 50%;" min="" required>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="file">Choose file:</label>
@@ -367,7 +398,8 @@
 
                     <!-- JavaScript for Auto Adjustment -->
                     <script>
-
+                        const today = new Date().toISOString().split("T")[0];
+                        document.getElementById("estimatedEndDate").setAttribute("min", today);
 
                         function selectTerm(termId, description) {
                             document.getElementById('selectedTermId').value = termId; // Set the selected term ID
@@ -475,6 +507,15 @@
                                 return;
                             }
 
+                            const estimatedEndDate = document.getElementById('estimatedEndDate').value;
+
+                            // Check if estimated end date is provided
+                            if (!estimatedEndDate) {
+                                alert('Please select an estimated end date.');
+                                event.preventDefault();
+                                return;
+                            }
+
                             // Validation for Custom Term Option
                             if (termOption.value === 'custom') {
                                 const totalPercent = parseFloat(document.getElementById('percent_on_design1').value || 0) +
@@ -505,8 +546,29 @@
 
                             // Ensure the total price matches the quote price
                             const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
-                            if (totalPrice !== totalQuotePrice) {
-                                alert('The total price must match the total quote price.');
+                            if (Math.abs(totalPrice - totalQuotePrice) > 0.1) {
+                                alert('The total price must match the total quote price within a small tolerance.');
+                                event.preventDefault();
+                                return;
+                            }
+
+// Ensure the total design cost matches the quote's design cost with a precision tolerance
+                            const totalDesign = parseFloat(document.getElementById('conceptDesign').value || 0) +
+                                    parseFloat(document.getElementById('detailDesign').value || 0) +
+                                    parseFloat(document.getElementById('constructionDesign').value || 0);
+
+                            if (Math.abs(totalDesign - maxDesignCost) > 0.1) {
+                                alert('The total of design costs must match the quoted design cost within a small tolerance.');
+                                event.preventDefault();
+                                return;
+                            }
+
+// Ensure the total construction cost matches the quote's construction cost with a precision tolerance
+                            const totalConstruction = parseFloat(document.getElementById('rawConstruction').value || 0) +
+                                    parseFloat(document.getElementById('completeConstruction').value || 0);
+
+                            if (Math.abs(totalConstruction - maxConstructionCost) > 0.1) {
+                                alert('The total of construction costs must match the quoted construction cost within a small tolerance.');
                                 event.preventDefault();
                                 return;
                             }
@@ -541,14 +603,32 @@
 
                         document.querySelectorAll('input[type="number"]').forEach(input => {
                             input.addEventListener('input', function () {
-                                // Remove any characters that are not digits or dots (allowing decimal numbers)
-                                this.value = this.value.replace(/[^0-9.]/g, '');
+                                // Allow only digits and one decimal point
+                                if (/[^0-9.]/.test(this.value)) {
+                                    this.value = "0";  // Reset to 0 if invalid characters are found
+                                    return;
+                                }
+
+                                // Split input on '.' to manage decimal points
+                                const parts = this.value.split('.');
+
+                                // If more than one '.' or invalid numeric parts, reset to 0
+                                if (parts.length > 2 || !/^\d*$/.test(parts[0]) || (parts[1] && !/^\d*$/.test(parts[1]))) {
+                                    this.value = "0";
+                                    return;
+                                }
+
+                                // If the value is less than or equal to 0, reset to 0
+                                if (parseFloat(this.value) <= 0) {
+                                    this.value = "0";
+                                    return;
+                                }
                             });
 
                             input.addEventListener('blur', function () {
-                                // Prevent negative values by setting any negative number to zero
-                                if (parseFloat(this.value) < 0) {
-                                    this.value = 0;
+                                // If input is empty, NaN, or less than or equal to 0 after blur, reset to 0
+                                if (this.value === "" || parseFloat(this.value) <= 0 || isNaN(parseFloat(this.value))) {
+                                    this.value = "0";
                                 }
                             });
                         });
@@ -574,7 +654,7 @@
                                     event.preventDefault();
                                     return;
                                 }
-                            } else if (termOption.value === 'existing' && !document.getElementById('selectedTermId').value) {
+                            } else if (termOption.value === 'existing' && (!document.getElementById('selectedTermId').value || parseInt(document.getElementById('selectedTermId').value) <= 0)) {
                                 alert('Please select an existing term.');
                                 event.preventDefault();
                                 return;
@@ -587,6 +667,8 @@
                         function showTermSelectionModal() {
                             document.getElementById('existingTermFields').style.display = 'block';
                             document.getElementById('customTermFields').style.display = 'none';
+                            document.getElementById('defaultTermFields').style.display = 'none';
+
                             $('#termModal').modal('show'); // Show the modal for selecting existing terms
                         }
 
@@ -594,13 +676,28 @@
                             document.getElementById('customTermFields').style.display = 'block';
                             document.getElementById('existingTermFields').style.display = 'none';
                             document.getElementById('selectedTermId').value = '0'; // Ensure a valid integer value is set
+                            document.getElementById('defaultTermFields').style.display = 'none';
+
                             document.getElementById('term').value = ''; // Clear selected term description
                         }
 
 
+//                        function setFollowContract() {
+//                            document.getElementById('customTermFields').style.display = 'none';
+//                            document.getElementById('existingTermFields').style.display = 'none';
+//                            document.getElementById('selectedTermId').value = '0'; // Clear selected term ID
+//                            document.getElementById('term').value = 'Following contract terms';
+//                        }
+
                         function setFollowContract() {
+                            // Hide other term input sections
                             document.getElementById('customTermFields').style.display = 'none';
                             document.getElementById('existingTermFields').style.display = 'none';
+
+                            // Show default term checkboxes
+                            document.getElementById('defaultTermFields').style.display = 'block';
+
+                            // Reset values to avoid conflicts
                             document.getElementById('selectedTermId').value = '0'; // Clear selected term ID
                             document.getElementById('term').value = 'Following contract terms';
                         }

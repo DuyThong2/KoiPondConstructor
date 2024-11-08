@@ -7,7 +7,9 @@ import com.example.SWPKoiContructor.entities.ServicePrice;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.services.*;
+import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -15,10 +17,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+
 import javax.servlet.http.HttpSession;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
 import java.util.Date;
+
+
+
 import java.util.List;
+
 
 @Controller
 public class ServiceDetailController {
@@ -49,16 +60,20 @@ public class ServiceDetailController {
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "serviceDetailStatus") String sortBy,
             @RequestParam(defaultValue = "asc") String sortType,
-            @RequestParam(required = false) Integer statusFilter) {
+            @RequestParam(name="statusFilter",required = false) Integer statusFilter,
+            @RequestParam(name = "fromDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate getFromDate,
+            @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate getEndDate,
+            @RequestParam(name="searchName",required = false) String searchName) {
 
         List<ServiceDetail> list;
+        java.sql.Date fromDate = (getFromDate != null) ? java.sql.Date.valueOf(getFromDate) : null;
+        java.sql.Date endDate = (getEndDate != null) ? java.sql.Date.valueOf(getEndDate) : null;
         long serviceDetailNum;
 
-        // Fetch service details with or without status filtering
-        if (statusFilter != null) {
-            list = serviceDetailService.getPaginationServiceDetailListByStatus(page, size, sortBy, sortType,
-                    statusFilter);
-            serviceDetailNum = serviceDetailService.countServiceDetailFilter(statusFilter);
+        // Apply filters if any are provided
+        if (statusFilter != null || fromDate != null || endDate != null || searchName != null) {
+            list = serviceDetailService.getPaginationServiceDetailListByStatus(page, size, sortBy, sortType, statusFilter, fromDate, endDate, searchName);
+            serviceDetailNum = serviceDetailService.countServiceDetailFilter(statusFilter, fromDate, endDate, searchName);
         } else {
             list = serviceDetailService.getPaginationServiceDetailList(page, size, sortBy, sortType);
             serviceDetailNum = serviceDetailService.countServiceDetails();
@@ -66,6 +81,11 @@ public class ServiceDetailController {
 
         long totalPage = (long) Math.ceil(serviceDetailNum / (double) size);
         page = Math.max(page, 1);
+
+        // Format dates for display
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String formattedFromDate = (getFromDate != null) ? getFromDate.format(formatter) : "";
+        String formattedEndDate = (getEndDate != null) ? getEndDate.format(formatter) : "";
 
         // Add attributes to the model for rendering in the view
         model.addAttribute("currentPage", page);
@@ -75,9 +95,13 @@ public class ServiceDetailController {
         model.addAttribute("totalPage", totalPage);
         model.addAttribute("serviceDetailsList", list);
         model.addAttribute("statusFilter", statusFilter);
+        model.addAttribute("fromDate", formattedFromDate);
+        model.addAttribute("endDate", formattedEndDate);
+        model.addAttribute("searchName", searchName);
 
         return "manager/service/serviceDetailManage"; // Path to your JSP page for service details list
     }
+
 
     // Show detailed information about a specific service detail
 
@@ -115,7 +139,7 @@ public class ServiceDetailController {
                         }
                     }
                     newServiceDetail.setServiceQuotes(serviceQuotes);
-                    newServiceDetail.setDateRegister(new Date());
+                    newServiceDetail.setDateRegister(new java.util.Date());
                     newServiceDetail.setServiceDetailStatus(1);
                     newServiceDetail.setService(i);
                     newServiceDetail.setCustomer(serviceQuotes.getCustomer());
@@ -408,7 +432,7 @@ public class ServiceDetailController {
         // Update the service detail with feedback and rating
         serviceDetail.setFeedback(feedback);
         serviceDetail.setRating(rating);
-        serviceDetail.setFeedbackDate(new Date()); // Set the current date as feedback date
+        serviceDetail.setFeedbackDate(new java.util.Date()); // Set the current date as feedback date
 
         // Save the updated service detail
         serviceDetailService.updateServiceDetail(serviceDetail);

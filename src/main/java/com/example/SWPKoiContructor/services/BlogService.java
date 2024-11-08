@@ -65,4 +65,8 @@ public class BlogService {
     public List<Blog> getRelatedBlog(int id) {
         return blogDAO.getRelatedBlog(id);
     }
+
+    public List<Blog> getSomeBlogs(int i) {
+        return blogDAO.getSomeBlogs(i);
+    }
 }

@@ -132,15 +132,15 @@ public class Design {
         DesignStage detailDesign = null;
         DesignStage constructionDesign= null;
         if (term.isFollowContract()){
-            conceptDesign = new DesignStage("concept design",1,contract.getPriceOnConceptDesign(), null);
-            detailDesign = new DesignStage("detail design",1,contract.getPriceOnDetailDesign(), null);
-            constructionDesign = new DesignStage("construction design",1,contract.getPriceOnConstructionDesign(), null);
+            conceptDesign = new DesignStage("Conceptual Design",1,contract.getPriceOnConceptDesign(), null);
+            detailDesign = new DesignStage("Detail Design",1,contract.getPriceOnDetailDesign(), null);
+            constructionDesign = new DesignStage("Construction Design",1,contract.getPriceOnConstructionDesign(), null);
             
         }else{
             double contractCost = contract.getTotalPrice();
-            conceptDesign = new DesignStage("concept design",1,contractCost*term.getPercentOnDesign1()/100, null);
-            detailDesign = new DesignStage("detail design",1,contractCost*term.getPercentOnDesign2()/100, null);
-            constructionDesign = new DesignStage("construction design",1,contractCost*term.getPercentOnDesign3()/100, null);
+            conceptDesign = new DesignStage("Conceptual Design",1,contractCost*term.getPercentOnDesign1()/100, null);
+            detailDesign = new DesignStage("Detail Design",1,contractCost*term.getPercentOnDesign2()/100, null);
+            constructionDesign = new DesignStage("Construction Design",1,contractCost*term.getPercentOnDesign3()/100, null);
         }
         
         List<DesignStage> result = new ArrayList<>();

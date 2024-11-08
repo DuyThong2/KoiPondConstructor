@@ -11,13 +11,57 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <style>
             .quote-info {
-                background-color: #f8f9fa;
+                background-color: #ffffff;
                 padding: 20px;
-                border-radius: 10px;
+                border-radius: 8px;
+                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
                 margin-bottom: 20px;
             }
-            .quote-info h4 {
+            .quote-info h3 {
                 margin-bottom: 15px;
+                color: #333;
+            }
+            .section-title {
+                font-weight: bold;
+                text-align: center;
+                padding-bottom: 10px;
+            }
+            .form-section {
+                background-color: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                margin-bottom: 20px;
+                width: 66%;
+            }
+            .grid-container {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .btn-primary {
+                background-color: #007bff;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 15px;
+            }
+            .btn-warning {
+                background-color: #ffc107;
+                border: none;
+                border-radius: 5px;
+                padding: 8px 12px;
+            }
+            .modal-content {
+                border-radius: 8px;
+            }
+            .modal-header {
+                background-color: #007bff;
+                color: #fff;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
             }
             .customer-avatar {
                 max-width: 150px;
@@ -29,18 +73,39 @@
             }
 
             .modal-dialog.modal-lg {
-                max-width: 90%; /* Increase the width of the modal */
+                max-width: 90%;
             }
+
             .table th, .table td {
-                vertical-align: middle; /* Center content vertically */
-                padding: 8px; /* Add padding for better readability */
+                vertical-align: middle;
+                padding: 8px;
             }
             .table thead th {
-                text-align: center; /* Center-align header text */
-                background-color: #f8f9fa; /* Light background for the header */
+                text-align: center;
+                background-color: #f8f9fa;
             }
-            .table-striped tbody tr:nth-of-type(odd) {
-                background-color: #f2f2f2; /* Alternate row colors for better distinction */
+            .form-check-inline {
+                margin-right: 15px; /* Tạo khoảng cách giữa các lựa chọn */
+            }
+            label{
+                font-size: 20px;
+            }
+            .section-title h2 {
+                font-size: 2.8em;
+                font-weight: bold;
+                margin-bottom: 10px;
+                padding-top: 25px;
+                color: #007bff;
+                border-bottom: none;
+            }
+            .section-title h3 {
+                font-size: 1.8em;
+                font-weight: bold;
+                margin-bottom: 10px;
+                padding-top: 25px;
+                color: #2f2829;
+                border-bottom: none;
+                border-bottom: 1px solid #ccc;
             }
         </style>
     </head>
@@ -55,7 +120,16 @@
                         <h4>Quote Information</h4>
                         <!-- Customer Avatar -->
                         <div class="customer-info">
-                            <img src="${quote.customer.imgURL != null ? quote.customer.getShowingImg(quote.customer.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                            <c:choose>
+                                <c:when test='${quote.customer.imgURL != null}'>
+                                    <img src="${quote.customer.getShowingImg(quote.customer.imgURL)}"
+                                         alt="Customer Avatar" class="customer-avatar img-fluid" />
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png"
+                                         alt="Customer Avatar" class="customer-avatar img-fluid" />
+                                </c:otherwise>
+                            </c:choose>
                             <p><strong>${quote.customer.name}</strong></p>
                         </div>
                         <!-- Quote Information -->
@@ -64,158 +138,171 @@
                         <p><strong>Customer:</strong> ${quote.customer.name}</p>
                         <p><strong>Total Design Cost:</strong> ${quote.quotesDesignCost}</p>
                         <p><strong>Total Construction Cost:</strong> ${quote.quotesConstructionCost}</p>
-                        <p><strong>Area:</strong> ${quote.quotesArea} m�</p>
+                        <p><strong>Area:</strong> ${quote.quotesArea}m<sup>2</sup></p>
                         <p><strong>Total Price:</strong> ${quote.quotesTotalPrice}</p>
                     </div>
                 </div>
 
                 <!-- Right Column for Contract Creation Form -->
-                <div class="col-md-8">
-                    <h2 class="mb-4">Create Contract</h2>
-
-                    <!-- Bind the form to the "contract" object -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <h2>Create Contract</h2>
+                    </div>
                     <form:form action="${pageContext.request.contextPath}/consultant/contract/create" modelAttribute="contract" method="post" enctype="multipart/form-data" class="needs-validation" novalidate="true">
                         <form:hidden path="term.termId" id="selectedTermId" value="${term.termId != null ? term.termId : 0}"/>
-
                         <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
                         <form:hidden path="customer.id" value="${customer.id}" />
 
-                        <!-- Total Price (Read-Only, auto-calculated) -->
-                        <div class="form-group">
-                            <label for="totalPrice">Total Price:</label>
-                            <form:input path="totalPrice" id="totalPrice" step="0.01" class="form-control" readonly="true"/>
+
+
+                        <!-- Design Phases -->
+                        <div class="section-title">
+                            <h3>Design Phases</h3>
                         </div>
-
-                        <!-- Design Costs -->
-                        <h4>Design Phases</h4>
-
-                        <!-- Conceptual Design -->
-                        <div class="form-group">
-                            <label for="priceOnConceptDesign">Conceptual Design:</label>
-                            <form:input type="number" path="priceOnConceptDesign" id="conceptDesign" step="0.01" min="0" max="${quote.quotesDesignCost}" class="form-control"/>
+                        <div class="grid-container">
+                            <div class="form-group">
+                                <label for="priceOnConceptDesign">Conceptual Design:</label>
+                                <form:input type="number" path="priceOnConceptDesign" id="conceptDesign" step="0.01" min="0" max="${quote.quotesDesignCost}" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="priceOnDetailDesign">Detailed Design:</label>
+                                <form:input type="number" path="priceOnDetailDesign" id="detailDesign" step="0.01" min="0" max="${quote.quotesDesignCost}" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="priceOnConstructionDesign">Construction Design:</label>
+                                <form:input type="number" path="priceOnConstructionDesign" id="constructionDesign" step="0.01" min="0" max="${quote.quotesDesignCost}" class="form-control"/>
+                            </div>
                         </div>
-
-                        <!-- Detailed Design -->
-                        <div class="form-group">
-                            <label for="priceOnDetailDesign">Detailed Design:</label>
-                            <form:input type="number" path="priceOnDetailDesign" id="detailDesign" step="0.01" min="0" max="${quote.quotesDesignCost}" class="form-control"/>
-                        </div>
-
-                        <!-- Construction Design -->
-                        <div class="form-group">
-                            <label for="priceOnConstructionDesign">Construction Design:</label>
-                            <form:input type="number" path="priceOnConstructionDesign" id="constructionDesign" step="0.01" min="0" max="${quote.quotesDesignCost}" class="form-control"/>
-                        </div>
-
-                        <!-- Total Design Cost (Used for calculation only) -->
                         <div class="form-group">
                             <label for="totalDesignCost">Total Design Cost:</label>
                             <input type="number" id="totalDesignCost" step="0.01" class="form-control" value="${quote.quotesDesignCost}" readonly/>
                         </div>
 
-                        <!-- Construction Costs -->
-                        <h4>Construction Phases</h4>
-
-                        <!-- Raw Construction -->
-                        <div class="form-group">
-                            <label for="priceOnRawConstruction">Raw Construction:</label>
-                            <form:input type="number" path="priceOnRawConstruction" id="rawConstruction" step="0.01" min="0" max="${quote.quotesConstructionCost}" class="form-control"/>
+                        <!-- Construction Phases -->
+                        <div class="section-title">
+                            <h3>Construction Phases</h3>
                         </div>
-
-                        <!-- Complete Construction -->
-                        <div class="form-group">
-                            <label for="priceOnCompleteConstruction">Complete Construction:</label>
-                            <form:input type="number" path="priceOnCompleteConstruction" id="completeConstruction" step="0.01" min="0" max="${quote.quotesConstructionCost}" class="form-control"/>
+                        <div class="grid-container ">
+                            <div class="form-group">
+                                <label for="priceOnRawConstruction">Raw Construction:</label>
+                                <form:input type="number" path="priceOnRawConstruction" id="rawConstruction" step="0.01" min="0" max="${quote.quotesConstructionCost}" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="priceOnCompleteConstruction">Complete Construction:</label>
+                                <form:input type="number" path="priceOnCompleteConstruction" id="completeConstruction" step="0.01" min="0" max="${quote.quotesConstructionCost}" class="form-control"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="totalConstructionCost">Total Construction Cost:</label>
+                                <input type="number" id="totalConstructionCost" step="0.01" class="form-control" readonly value="${quote.quotesConstructionCost}" />
+                            </div>
                         </div>
-
-                        <!-- Total Construction Cost (Used for calculation only) -->
-                        <div class="form-group">
-                            <label for="totalConstructionCost">Total Construction Cost:</label>
-                            <input type="number" id="totalConstructionCost" step="0.01" class="form-control" readonly value="${quote.quotesConstructionCost}" />
+                        <div class="section-title">
+                            <h3>Choose Term Option</h3>
                         </div>
-
-                        <!-- Term Selection Dropdown -->
-                        <div class="form-group">
-                            <label>Choose Term Option:</label>
-                            <div class="form-check">
+                        <div class="form-group"  style="text-align: center">
+                            <div class="form-check form-check-inline">
                                 <input type="radio" name="termOption" id="customTerm" value="custom" class="form-check-input" onclick="showCustomTermInput()">
                                 <label class="form-check-label" for="customTerm">Custom Term</label>
                             </div>
-                            <div class="form-check">
+                            <div class="form-check form-check-inline">
                                 <input type="radio" name="termOption" id="chooseExistingTerm" value="existing" class="form-check-input" onclick="showTermSelectionModal()">
                                 <label class="form-check-label" for="chooseExistingTerm">Choose Existing Term</label>
                             </div>
-
-                            <div class="form-check">
+                            <div class="form-check form-check-inline">
                                 <input type="radio" name="termOption" id="followContractTerm" value="contract" class="form-check-input" onclick="setFollowContract()">
                                 <label class="form-check-label" for="followContractTerm">Follow Contract Default Term</label>
                             </div>
                         </div>
 
+                        <!-- Existing Term Selection -->
                         <div class="form-group" id="existingTermFields" style="display: none;">
                             <label for="term">Select Term:</label>
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#termModal">
-                                Choose Term
-                            </button>
-
-                            <input type="text" id="term" name="termDescription" readonly class="form-control" />
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#termModal">Choose Term</button>
+                            <input type="text" id="term" name="termDescription" readonly class="form-control mt-2"/>
                         </div>
+
+                        <!-- Custom Term Fields -->
                         <div id="customTermFields" style="display: none;">
-                            <h4>Custom Term Percentages</h4>
-                            <div class="form-group">
-                                <label for="percent_on_design1">Percent on Design 1:</label>
-                                <form:input path="term.percentOnDesign1" id="percent_on_design1" class="form-control" type="number" min="0" max="100"/>
+                            <div class="section-title">
+                                <h3>Custom Term Percentages</h3>
                             </div>
-                            <div class="form-group">
-                                <label for="percent_on_design2">Percent on Design 2:</label>
-                                <form:input path="term.percentOnDesign2" id="percent_on_design2" class="form-control" type="number" min="0" max="100"/>
+                            <div class="grid-container">
+                                <div class="form-group">
+                                    <label for="percent_on_design1">Percent on Design 1:</label>
+                                    <form:input path="term.percentOnDesign1" id="percent_on_design1" class="form-control" type="number" min="0" max="100"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="percent_on_design2">Percent on Design 2:</label>
+                                    <form:input path="term.percentOnDesign2" id="percent_on_design2" class="form-control" type="number" min="0" max="100"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="percent_on_design3">Percent on Design 3:</label>
+                                    <form:input path="term.percentOnDesign3" id="percent_on_design3" class="form-control" type="number" min="0" max="100"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="percent_on_construct1">Percent on Construction 1:</label>
+                                    <form:input path="term.percentOnConstruct1" id="percent_on_construct1" class="form-control" type="number" min="0" max="100"/>
+                                </div>
+                                <div class="form-group">
+                                    <label for="percent_on_construct2">Percent on Construction 2:</label>
+                                    <form:input path="term.percentOnConstruct2" id="percent_on_construct2" class="form-control" type="number" min="0" max="100"/>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="percent_on_design3">Percent on Design 3:</label>
-                                <form:input path="term.percentOnDesign3" id="percent_on_design3" class="form-control" type="number" min="0" max="100"/>
+                            <div class="form-check">
+                                <input type="checkbox" id="pay_on_start_of_design" name="term.payOnStartOfDesign" class="form-check-input">
+                                <label class="form-check-label" for="pay_on_start_of_design">Pay on Start of Design</label>
                             </div>
-                            <div class="form-group">
-                                <label for="percent_on_construct1">Percent on Construction 1:</label>
-                                <form:input path="term.percentOnConstruct1" id="percent_on_construct1" class="form-control" type="number" min="0" max="100"/>
+                            <div class="form-check mt-2">
+                                <input type="checkbox" id="pay_on_start_of_construction" name="term.payOnStartOfConstruction" class="form-check-input">
+                                <label class="form-check-label" for="pay_on_start_of_construction">Pay on Start of Construction</label>
                             </div>
-                            <div class="form-group">
-                                <label for="percent_on_construct2">Percent on Construction 2:</label>
-                                <form:input path="term.percentOnConstruct2" id="percent_on_construct2" class="form-control" type="number" min="0" max="100"/>
+                        </div>
+                        <div id="defaultTermFields" style="display: none;">
+                            <div class="section-title">
+                                <h3>Default Term Options</h3>
                             </div>
-                            <div class="form-group">
-                                <label for="pay_on_start_of_design">Pay on Start of Design:</label>
-                                <input type="checkbox" id="pay_on_start_of_design" name="term.payOnStartOfDesign" style="margin-left: 10px" class="form-check-input">
+                            <div class="form-check">
+                                <input type="checkbox" id="default_pay_on_start_of_design" name="term.payOnStartOfDesign" class="form-check-input">
+                                <label class="form-check-label" for="default_pay_on_start_of_design">Pay on Start of Design</label>
                             </div>
-                            <div class="form-group">
-                                <label for="pay_on_start_of_construction">Pay on Start of Construction:</label>
-                                <input type="checkbox" id="pay_on_start_of_construction" name="term.payOnStartOfConstruction" style="margin-left: 10px" class="form-check-input">
+                            <div class="form-check mt-2">
+                                <input type="checkbox" id="default_pay_on_start_of_construction" name="term.payOnStartOfConstruction" class="form-check-input">
+                                <label class="form-check-label" for="default_pay_on_start_of_construction">Pay on Start of Construction</label>
                             </div>
                         </div>
 
-
-                        <!-- Button to Adjust Costs -->
-                        <div class="form-group">
-                            <button type="button" class="btn btn-warning" onclick="autoAdjust()">Auto Adjust Costs</button>
-                        </div>
-
-                        <!-- Contract Note -->
-                        <div class="form-group">
+                        <!-- Contract Note and Term -->
+                        <div class="form-group" style="margin-top: 20px">
                             <label for="contractNote">Contract Note:</label>
                             <form:textarea path="contractNote" id="contractNote" class="form-control"/>
                         </div>
-
                         <div class="form-group">
                             <label for="contractTerm">Contract Term:</label>
                             <form:textarea path="contractTerm" id="contractTerm" class="form-control"/>
                         </div>
-
-                        <!-- File Input (for file upload) -->
+                        <!-- Terminate Date -->
+                        <div style="margin: 25px 0 0 0">
+                            <div class="form-group form-check-inline">
+                                <label for="estimatedEndDate">Estimated End Date:</label>
+                                <input type="date" id="estimatedEndDate" name="estimatedEndDate" class="form-control" style="width: 50%;" min="" required>
+                            </div>
+                        </div>
+                        <!-- Total Price -->
+                        <div class="form-group">
+                            <label for="totalPrice">Total Price:</label>
+                            <form:input path="totalPrice" id="totalPrice" step="0.01" class="form-control" readonly="true"/>
+                        </div>
+                        <!-- Button to Adjust Costs -->
+                        <div class="form-group">
+                            <button type="button" class="btn btn-warning" onclick="autoAdjust()">Auto Adjust Costs</button>
+                        </div>
+                        <!-- File Input -->
                         <div class="form-group">
                             <label for="file">Choose file:</label>
-                            <input type="file" id="file" name="file" class="form-control-file" required/>
+                            <input type="file" id="file" name="file" class="form-control-file"/>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Create Contract</button>
+                        <button type="submit" class="btn btn-primary btn-block">Create Contract</button>
                     </form:form>
                 </div>
             </div>
@@ -300,7 +387,8 @@
 
             <!-- JavaScript for handling term selection -->
             <script>
-
+                const today = new Date().toISOString().split("T")[0];
+                document.getElementById("estimatedEndDate").setAttribute("min", today);
 
                 function selectTerm(termId, description) {
                     document.getElementById('selectedTermId').value = termId; // Set the selected term ID
@@ -384,17 +472,20 @@
                     document.getElementById('totalPrice').value = totalPrice.toFixed(2);
                 }
 
-// Existing Functionality: JavaScript for handling term selection
+                // Existing Functionality: JavaScript for handling term selection
                 function selectTerm(termId, description) {
                     document.getElementById('selectedTermId').value = termId; // Set the selected term ID
                     document.getElementById('term').value = description; // Display the description in the read-only field
                     $('#termModal').modal('hide'); // Close the modal
                 }
 
-// Existing Functionality: Show/hide term selection and custom term input
+                // Existing Functionality: Show/hide term selection and custom term input
                 function showTermSelectionModal() {
                     document.getElementById('existingTermFields').style.display = 'block';
                     document.getElementById('customTermFields').style.display = 'none';
+                    document.getElementById('defaultTermFields').style.display = 'none';
+
+
                     $('#termModal').modal('show'); // Show the modal for selecting existing terms
                 }
 
@@ -403,31 +494,63 @@
                     document.getElementById('existingTermFields').style.display = 'none';
                     document.getElementById('selectedTermId').value = '0'; // Ensure a valid integer value is set
                     document.getElementById('term').value = ''; // Clear selected term description
+                    document.getElementById('defaultTermFields').style.display = 'none';
+
                 }
 
+                //                function setFollowContract() {
+                //                    document.getElementById('customTermFields').style.display = 'none';
+                //                    document.getElementById('existingTermFields').style.display = 'none';
+                //                    document.getElementById('selectedTermId').value = '0'; // Clear selected term ID
+                //                    document.getElementById('term').value = 'Following contract terms';
+                //                }
                 function setFollowContract() {
+                    // Hide other term input sections
                     document.getElementById('customTermFields').style.display = 'none';
                     document.getElementById('existingTermFields').style.display = 'none';
+
+                    // Show default term checkboxes
+                    document.getElementById('defaultTermFields').style.display = 'block';
+
+                    // Reset values to avoid conflicts
                     document.getElementById('selectedTermId').value = '0'; // Clear selected term ID
                     document.getElementById('term').value = 'Following contract terms';
                 }
 
-// New Functionality: Prevent special characters and negative values in inputs
+                // New Functionality: Prevent special characters and negative values in inputs
                 document.querySelectorAll('input[type="number"]').forEach(input => {
                     input.addEventListener('input', function () {
-                        // Remove any characters that are not digits or dots (allowing decimal numbers)
-                        this.value = this.value.replace(/[^0-9.]/g, '');
+                        // Allow only digits and one decimal point
+                        if (/[^0-9.]/.test(this.value)) {
+                            this.value = "0";  // Reset to 0 if invalid characters are found
+                            return;
+                        }
+
+                        // Split input on '.' to manage decimal points
+                        const parts = this.value.split('.');
+
+                        // If more than one '.' or invalid numeric parts, reset to 0
+                        if (parts.length > 2 || !/^\d*$/.test(parts[0]) || (parts[1] && !/^\d*$/.test(parts[1]))) {
+                            this.value = "0";
+                            return;
+                        }
+
+                        // If the value is less than or equal to 0, reset to 0
+                        if (parseFloat(this.value) <= 0) {
+                            this.value = "0";
+                            return;
+                        }
                     });
 
                     input.addEventListener('blur', function () {
-                        // Prevent negative values by setting any negative number to zero
-                        if (parseFloat(this.value) < 0) {
-                            this.value = 0;
+                        // If input is empty, NaN, or less than or equal to 0 after blur, reset to 0
+                        if (this.value === "" || parseFloat(this.value) <= 0 || isNaN(parseFloat(this.value))) {
+                            this.value = "0";
                         }
                     });
                 });
 
-// New Functionality: Validate custom term inputs for negative values
+                // New Functionality: Validate custom term inputs for negative values
                 function validateCustomTermInputs() {
                     const customTermFields = [
                         'percent_on_design1',
@@ -456,10 +579,17 @@
                     return isValid;
                 }
 
-// Prevent form submission if validation fails
+                // Prevent form submission if validation fails
                 document.querySelector('form').addEventListener('submit', function (event) {
                     const termOption = document.querySelector('input[name="termOption"]:checked');
+                    const estimatedEndDate = document.getElementById('estimatedEndDate').value;
 
+                    // Check if estimated end date is provided
+                    if (!estimatedEndDate) {
+                        alert('Please select an estimated end date.');
+                        event.preventDefault();
+                        return;
+                    }
                     // Check if a term option is selected
                     if (!termOption) {
                         alert('Please select a term option.');
@@ -483,42 +613,44 @@
                                 parseFloat(document.getElementById('percent_on_construct2').value || 0);
 
                         if (totalPercent < 99 || totalPercent > 100.5) {
-                            alert('Total percentage for all stages must be between 99% and 100.5%.');
+                            alert('Total percentage for all stages must be 100%.');
                             event.preventDefault();
                             return;
                         }
                     }
 
                     // Validate for existing term selection if "existing" option is selected
-                    if (termOption.value === 'existing' && !document.getElementById('selectedTermId').value) {
-                        alert('Please select an existing term.');
+                    if (termOption.value === 'existing' && (!document.getElementById('selectedTermId').value || parseInt(document.getElementById('selectedTermId').value) <= 0)) {
+                        alert('Please select a valid existing term.');
                         event.preventDefault();
                         return;
                     }
 
                     // Ensure the total price matches the quote price
                     const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
-                    if (totalPrice !== totalQuotePrice) {
-                        alert('The total price must match the total quote price.');
+                    if (Math.abs(totalPrice - totalQuotePrice) > 0.1) {
+                        alert('The total price must match the total quote price within a small tolerance.');
                         event.preventDefault();
                         return;
                     }
 
-                    // Ensure the total design cost matches the quote's design cost
+                    // Ensure the total design cost matches the quote's design cost with a precision tolerance
                     const totalDesign = parseFloat(document.getElementById('conceptDesign').value || 0) +
                             parseFloat(document.getElementById('detailDesign').value || 0) +
                             parseFloat(document.getElementById('constructionDesign').value || 0);
-                    if (totalDesign !== maxDesignCost) {
-                        alert('The total of design costs must match the quoted design cost.');
+
+                    if (Math.abs(totalDesign - maxDesignCost) > 0.1) {
+                        alert('The total of design costs must match the quoted design cost within a small tolerance.');
                         event.preventDefault();
                         return;
                     }
 
-                    // Ensure the total construction cost matches the quote's construction cost
+                    // Ensure the total construction cost matches the quote's construction cost with a precision tolerance
                     const totalConstruction = parseFloat(document.getElementById('rawConstruction').value || 0) +
                             parseFloat(document.getElementById('completeConstruction').value || 0);
-                    if (totalConstruction !== maxConstructionCost) {
-                        alert('The total of construction costs must match the quoted construction cost.');
+
+                    if (Math.abs(totalConstruction - maxConstructionCost) > 0.1) {
+                        alert('The total of construction costs must match the quoted construction cost within a small tolerance.');
                         event.preventDefault();
                         return;
                     }
@@ -530,7 +662,7 @@
                     }
                 });
 
-// Function to prevent negative values in input fields (called during submission)
+                // Function to prevent negative values in input fields (called during submission)
                 function validateFields() {
                     let fields = ['conceptDesign', 'detailDesign', 'constructionDesign', 'rawConstruction', 'completeConstruction', 'totalDesignCost', 'totalConstructionCost', 'totalPrice'];
                     let isValid = true;
@@ -556,7 +688,7 @@
         </div>
 
         <!-- Bootstrap JS and dependencies -->
-       
+
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     </body>

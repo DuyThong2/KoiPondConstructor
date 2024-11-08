@@ -1,3 +1,9 @@
+<%-- 
+    Document   : quoteCreateNoConsultant
+    Created on : Nov 1, 2024, 10:48:05 AM
+    Author     : HP
+--%>
+
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
@@ -12,29 +18,13 @@
         <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
             .quote-info {
-                background-color: #ffffff;
+                background-color: #f8f9fa;
                 padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
                 margin-bottom: 20px;
             }
             .quote-info h4 {
                 margin-bottom: 15px;
-                color: #333;
-            }
-            .section-title {
-                font-weight: bold;
-                text-align: center;
-                padding-bottom: 10px;
-                color: #007bff;
-            }
-            .form-section {
-                background-color: #ffffff;
-                border-radius: 8px;
-                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-                padding: 20px;
-                margin-bottom: 20px;
-                width: 66%;
             }
             .customer-avatar {
                 max-width: 150px;
@@ -44,18 +34,11 @@
             .customer-info {
                 text-align: center;
             }
-            .form-group {
-                margin-bottom: 15px;
-            }
-            .btn-primary {
-                background-color: #007bff;
-                border: none;
-                border-radius: 5px;
-                padding: 10px 15px;
-            }
+
             .modal-dialog.modal-lg {
                 max-width: 90%;
             }
+
             .table th, .table td {
                 vertical-align: middle;
                 padding: 8px;
@@ -64,45 +47,26 @@
                 text-align: center;
                 background-color: #f8f9fa;
             }
+            .table th, .table td {
+                padding: 10px; /* Ensure consistent padding */
+                vertical-align: middle; /* Ensure content is vertically centered */
+                text-align: center; /* Center align text for uniform appearance */
+            }
+            .table thead th {
+                background-color: #f8f9fa;
+            }
         </style>
     </head>
     <body>
 
         <div class="container mt-5">
             <jsp:include page="../consultantNav.jsp"/>
-            <div class="row">
-                <!-- Left Column for Customer Information -->
-                <div class="col-md-4">
-                    <div class="quote-info">
-                        <h4>Customer Information</h4>
-                        <div class="customer-info">
-                            <c:choose>
-                                <c:when test="${quote.customer.imgURL != null}">
-                                    <img class="customer-avatar img-fluid"
-                                         src="${quote.customer.getShowingImg(quote.customer.imgURL)}" alt />
-                                </c:when>
-                                <c:otherwise>
-                                    <img class="customer-avatar img-fluid"
-                                         src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" alt />
-                                </c:otherwise>
-                            </c:choose>
-
-                            <p><strong>${customer.name}</strong></p>
-                        </div>
-                        <p><strong>Phone:</strong> ${customer.phone}</p>
-                        <p><strong>Email:</strong> ${customer.email}</p>
-                        <p><strong>Consultation Content:</strong> ${consultant.consultantContent}</p>
-                    </div>
-                </div>
-
+            <div class="d-flex justify-content-center">
                 <!-- Right Column for Quote Creation Form -->
-                <div class="form-section">
-                    <div class="section-title">
-                        <h2>Create Quote</h2>
-                    </div>
-                    <form:form action="${pageContext.request.contextPath}/consultant/quote/saveNewQuotes" modelAttribute="newQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true" onsubmit="return validateForm()">
-                        <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
-                        <form:hidden path="customer.id" value="${customer.id}" />
+                <div class="col-md-8">
+                    <h2 class="mb-4">Create Quote</h2>
+
+                    <form:form action="${pageContext.request.contextPath}/consultant/quote/save" modelAttribute="newQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true" onsubmit="return validateForm()">
                         <form:hidden path="staff.id" value="${staff.id}" />
 
                         <!-- Quotes Name -->
@@ -119,18 +83,27 @@
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="area">Area (m<sup>2</sup>):</label>
+                            <label for="area">Area (m<sub>2</sub>):</label>
                             <form:input type ="number" path="quotesArea" id="area" step="0.01" class="form-control" />
                         </div>
 
                         <!-- Parcel Selection -->
                         <div class="form-group">
                             <label for="parcel">Select Parcel:</label>
-                            <button style="margin-bottom: 5px" type="button" class="btn btn-info" data-toggle="modal" data-target="#parcelModal">
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#parcelModal">
                                 Choose Parcel
                             </button>
                             <input type="hidden" id="selectedParcelId" name="parcel.packageId" required />
                             <input type="text" id="selectedParcelName" name="parcelName" readonly class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="selectedCustomer">Select Customer For Quote</label>
+                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addCustomerModal">
+                                Choose Customer
+                            </button>
+                            <input type="hidden" id="selectedCustomerId" name="customer.id" required />
+                            <input type="text" id="selectedCustomerName" name="customerName" readonly class="form-control" />
                         </div>
 
                         <!-- Design Cost -->
@@ -156,6 +129,60 @@
                 </div>
             </div>
 
+
+
+            <!-- Customer Selection Modal -->
+            <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document"> <!-- Using modal-lg for a larger modal if needed -->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addCustomerModalLabel">Select Customer for New Service Quote</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input type="text" id="customerSearch" class="form-control" placeholder="Search by name or gmail...">
+                            </div>
+                            <div class="table-responsive">
+                                <!-- Table of Customers -->
+                                <table class="table table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th style="width: 35%;">Name</th>
+                                            <th style="width: 30%;">Email</th>
+                                            <th style="width: 25%;">Phone</th>
+                                            <th style="width: 10%;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="customerTableBody">
+                                        <c:forEach var="customer" items="${customerList}">
+                                            <tr>
+                                                <td>${customer.name != null ? customer.name:'N/A'}</td>
+                                                <td>${customer.email}</td>
+                                                <td>${customer.phone != null ? customer.phone:'N/A'}</td>
+                                                <td>
+                                                    <c:if test="${customer.name != null && customer.phone != null}">
+                                                        <button type="button" class="btn btn-sm btn-primary" onclick="selectCustomer(${customer.id}, '${customer.name}')">
+                                                            Select
+                                                        </button>
+                                                    </c:if>    
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+
+
             <!-- Parcel Selection Modal -->
             <div class="modal fade" id="parcelModal" tabindex="-1" role="dialog" aria-labelledby="parcelModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
@@ -173,9 +200,8 @@
                                     <tr>
                                         <th style="width: 20%;">Package Name</th>
                                         <th style="width: 20%;">Description</th>
-                                        <th style="width: 15%;">Design Price/m<sup>2</sup></th>
-                                        <th style="width: 15%;">Construction Price/m<sup>2</sup></th>
-
+                                        <th style="width: 15%;">Design Price per m<sub>2</sub></th>
+                                        <th style="width: 15%;">Construction Price per m<sub>2</sub></th>
                                         <th style="width: 10%;">Select</th>
                                     </tr>
                                 </thead>
@@ -202,6 +228,7 @@
                     </div>
                 </div>
             </div>
+
 
             <!-- JavaScript for handling parcel selection -->
             <script>
@@ -242,7 +269,14 @@
                         }
                     });
                 });
+                function selectCustomer(customerId, customerName) {
+                    // Set the selected customer ID and name in the form fields
+                    document.getElementById('selectedCustomerId').value = customerId;
+                    document.getElementById('selectedCustomerName').value = customerName;
 
+                    // Close the modal
+                    $('#addCustomerModal').modal('hide');
+                }
                 function selectParcel(packageId, packageName, designCostPerSquareMeter, constructionCostPerSquareMeter) {
                     document.getElementById('selectedParcelId').value = packageId;
                     document.getElementById('selectedParcelName').value = packageName;
@@ -268,36 +302,46 @@
 
 
                 // Validate the form before submission
-                let isConfirmed = false; // Track if the user has already confirmed
-
                 function validateForm() {
-                    if (!isConfirmed) {
-                        const area = parseFloat(document.getElementById('area').value) || 0;
-                        const designCost = parseFloat(document.getElementById('designCost').value) || 0;
-                        const constructionCost = parseFloat(document.getElementById('constructionCost').value) || 0;
-                        const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
-                        const selectedParcelId = document.getElementById('selectedParcelId').value;
+                    const area = parseFloat(document.getElementById('area').value) || 0;
+                    const designCost = parseFloat(document.getElementById('designCost').value) || 0;
+                    const constructionCost = parseFloat(document.getElementById('constructionCost').value) || 0;
+                    const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
+                    const selectedParcelId = document.getElementById('selectedParcelId').value;
+                    const selectedCustomerId = document.getElementById('selectedCustomerId').value;
 
-                        if (!selectedParcelId) {
-                            alert('Please select a parcel before submitting the form.');
-                            return false;
-                        }
-
-                        if (area <= 0 || designCost <= 0 || constructionCost <= 0 || totalPrice <= 0) {
-                            alert('Area, design cost, construction cost, and total price must all be greater than 0.');
-                            return false;
-                        }
-
-                        // Show the confirmation message only the first time
-                        if (!confirm('Are you sure you want to create this quote?')) {
-                            return false;
-                        }
-
-                        isConfirmed = true; // Mark as confirmed if the user clicks "Yes"
+                    if (!selectedParcelId) {
+                        alert('Please select a parcel before submitting the form.');
+                        return false;
                     }
 
-                    return true; // Proceed with form submission
+                    if (!selectedCustomerId) {
+                        alert('Please select a customer before submitting the form.');
+                        return false;
+                    }
+
+                    if (area <= 0 || designCost <= 0 || constructionCost <= 0 || totalPrice <= 0) {
+                        alert('Area, design cost, construction cost, and total price must all be greater than 0.');
+                        return false;
+                    }
+
+                    return true;
                 }
+
+                document.getElementById('customerSearch').addEventListener('input', function () {
+                    const searchValue = this.value.toLowerCase();
+                    const customerRows = document.querySelectorAll('#customerTableBody tr');
+
+                    customerRows.forEach(row => {
+                        const customerName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                        const customerEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                        if (customerName.includes(searchValue) || customerEmail.includes(searchValue)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
 
                 // Automatically adjust costs every second
                 setInterval(function () {

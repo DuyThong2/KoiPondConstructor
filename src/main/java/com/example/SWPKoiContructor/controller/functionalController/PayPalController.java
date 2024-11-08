@@ -4,6 +4,7 @@ import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.PaymentHistory;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.services.*;
+import com.example.SWPKoiContructor.services.functionalService.EmailService;
 import com.example.SWPKoiContructor.services.functionalService.PayPalService;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
@@ -53,7 +54,12 @@ public class PayPalController {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
     private NotificationService notificationService;
+
+    @Autowired
+    private EmailService emailService; // Inject the EmailService
+
     @PostMapping("/pay/construction")
     public RedirectView payForConstruction(HttpServletRequest request, 
                                            @RequestParam("amount") double amount,
@@ -180,6 +186,7 @@ public class PayPalController {
                 paymentHistory.setPaymentMethod("PayPal");
                 paymentHistory.setDescription("Payment of "+amount+" for construction stage by "+ customer.getName());
                 paymentHistoryService.createPayment(paymentHistory);
+                emailService.sendThankYouEmail(customer.getEmail(), customer.getName());
 
                 // Redirect to construction page
                 redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
@@ -220,6 +227,7 @@ public class PayPalController {
                 paymentHistory.setPaymentMethod("PayPal");
                 paymentHistory.setDescription("Payment of "+amount+" for design stage by "+ customer.getName());
                 paymentHistoryService.createPayment(paymentHistory);
+                emailService.sendThankYouEmail(customer.getEmail(), customer.getName());
 
                 // Redirect to design page
                 redirectAttributes.addFlashAttribute("success", "Payment Successfully.");
@@ -263,6 +271,8 @@ public class PayPalController {
                 paymentHistory.setPaymentMethod("PayPal");
                 paymentHistory.setDescription("Payment of "+amount+" for service quote" + sq.getServiceQuotesId() + " by "+ sq.getCustomer().getName());
                 paymentHistoryService.createPayment(paymentHistory);
+                Customer customer = (Customer)session.getAttribute("user");
+                emailService.sendThankYouEmail(customer.getEmail(), customer.getName());
 
 
                 double pointGained = amount.doubleValue();
