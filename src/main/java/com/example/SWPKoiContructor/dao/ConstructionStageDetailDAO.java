@@ -48,10 +48,23 @@ public class ConstructionStageDetailDAO {
         query.setParameter("stageId", constructionStageId);
         List<ConstructionStageDetail> details = query.getResultList();
 
-        // Return the second-to-last detail, which is the previous one
-        if (details.size() > 1) {
-            return details.get(1); // Second-to-last detail
+        // Check the last stage's type and determine the correct "previous" stage
+        if (!details.isEmpty()) {
+            String lastStageName = details.get(0).getConstructionStageDetailName();
+
+            if ("Inspection".equalsIgnoreCase(lastStageName) && details.size() > 1) {
+                // Testing is the 2nd to last if last stage is Inspection
+                return details.get(1);
+            } else if ("Payment".equalsIgnoreCase(lastStageName) && details.size() > 2) {
+                // Testing is the 3rd to last if last stage is Payment
+                return details.get(2);
+            } else if (details.size() > 1) {
+                // General fallback to the 2nd to last if none of the above conditions match
+                return details.get(1);
+            }
         }
+
+        // Return null if no appropriate previous stage is found
         return null;
     }
 }

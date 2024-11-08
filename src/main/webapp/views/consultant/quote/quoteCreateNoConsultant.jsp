@@ -47,6 +47,14 @@
                 text-align: center;
                 background-color: #f8f9fa;
             }
+            .table th, .table td {
+                padding: 10px; /* Ensure consistent padding */
+                vertical-align: middle; /* Ensure content is vertically centered */
+                text-align: center; /* Center align text for uniform appearance */
+            }
+            .table thead th {
+                background-color: #f8f9fa;
+            }
         </style>
     </head>
     <body>
@@ -121,38 +129,45 @@
                 </div>
             </div>
 
+
+
             <!-- Customer Selection Modal -->
             <div class="modal fade" id="addCustomerModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog modal-lg" role="document"> <!-- Using modal-lg for a larger modal if needed -->
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="addCustomerModalLabel">Select Customer</h5>
+                            <h5 class="modal-title" id="addCustomerModalLabel">Select Customer for New Service Quote</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <div class="modal-body">
+                            <div class="form-group">
+                                <input type="text" id="customerSearch" class="form-control" placeholder="Search by name or gmail...">
+                            </div>
                             <div class="table-responsive">
                                 <!-- Table of Customers -->
                                 <table class="table table-hover">
                                     <thead class="thead-light">
                                         <tr>
-                                            <th style="width: 40%;">Name</th>
+                                            <th style="width: 35%;">Name</th>
                                             <th style="width: 30%;">Email</th>
-                                            <th style="width: 20%;">Phone</th>
+                                            <th style="width: 25%;">Phone</th>
                                             <th style="width: 10%;">Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="customerTableBody">
                                         <c:forEach var="customer" items="${customerList}">
                                             <tr>
-                                                <td>${customer.name}</td>
+                                                <td>${customer.name != null ? customer.name:'N/A'}</td>
                                                 <td>${customer.email}</td>
-                                                <td>${customer.phone}</td>
+                                                <td>${customer.phone != null ? customer.phone:'N/A'}</td>
                                                 <td>
-                                                    <button type="button" class="btn btn-sm btn-primary" onclick="selectCustomer(${customer.id}, '${customer.name}')">
-                                                        Select
-                                                    </button>
+                                                    <c:if test="${customer.name != null && customer.phone != null}">
+                                                        <button type="button" class="btn btn-sm btn-primary" onclick="selectCustomer(${customer.id}, '${customer.name}')">
+                                                            Select
+                                                        </button>
+                                                    </c:if>    
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -165,7 +180,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>  
+
 
             <!-- Parcel Selection Modal -->
             <div class="modal fade" id="parcelModal" tabindex="-1" role="dialog" aria-labelledby="parcelModalLabel" aria-hidden="true">
@@ -224,14 +240,32 @@
 
                 document.querySelectorAll('input[type="number"]').forEach(input => {
                     input.addEventListener('input', function () {
-                        // Remove any characters that are not digits or dots (allowing decimal numbers)
-                        this.value = this.value.replace(/[^0-9.]/g, '');
+                        // Allow only digits and one decimal point
+                        if (/[^0-9.]/.test(this.value)) {
+                            this.value = "0";  // Reset to 0 if invalid characters are found
+                            return;
+                        }
+
+                        // Split input on '.' to manage decimal points
+                        const parts = this.value.split('.');
+
+                        // If more than one '.' or invalid numeric parts, reset to 0
+                        if (parts.length > 2 || !/^\d*$/.test(parts[0]) || (parts[1] && !/^\d*$/.test(parts[1]))) {
+                            this.value = "0";
+                            return;
+                        }
+
+                        // If the value is less than or equal to 0, reset to 0
+                        if (parseFloat(this.value) <= 0) {
+                            this.value = "0";
+                            return;
+                        }
                     });
 
                     input.addEventListener('blur', function () {
-                        // Prevent negative values by setting any negative number to zero
-                        if (parseFloat(this.value) < 0) {
-                            this.value = 0;
+                        // If input is empty, NaN, or less than or equal to 0 after blur, reset to 0
+                        if (this.value === "" || parseFloat(this.value) <= 0 || isNaN(parseFloat(this.value))) {
+                            this.value = "0";
                         }
                     });
                 });
@@ -293,6 +327,21 @@
 
                     return true;
                 }
+
+                document.getElementById('customerSearch').addEventListener('input', function () {
+                    const searchValue = this.value.toLowerCase();
+                    const customerRows = document.querySelectorAll('#customerTableBody tr');
+
+                    customerRows.forEach(row => {
+                        const customerName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                        const customerEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                        if (customerName.includes(searchValue) || customerEmail.includes(searchValue)) {
+                            row.style.display = '';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    });
+                });
 
                 // Automatically adjust costs every second
                 setInterval(function () {

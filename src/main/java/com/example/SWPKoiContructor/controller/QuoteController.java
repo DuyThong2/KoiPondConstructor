@@ -86,8 +86,9 @@ public class QuoteController {
     @PostMapping("/customer/quote/updateStatus")
     public String customerUpdateQuoteStatus(@RequestParam("id") int quoteId, @RequestParam("status") int statusId, Model model, HttpSession session) {
         Quotes quotes = quoteService.updateQuoteStatus(quoteId, statusId);
+        Customer customer = quotes.getCustomer();
        String statusString=statusId==4?"Accepted":"Rejected";
-        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Customer","quote",statusString);
+        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),customer.getName(), quoteId,statusId,"Customer","quote",statusString);
         return "redirect:/customer/quote";
     }
 
@@ -146,17 +147,17 @@ public class QuoteController {
         if (quotes.getQuotesStatus() == 3) {
             User toUser = quotes.getStaff();
             User fromUser = (User) session.getAttribute("user");
-            Feedback fb = feedbackService.getLatestFeedback(quoteId, fromUser.getId(), toUser.getId());
+            Feedback fb = feedbackService.getLatestFeedbackForQuote(quoteId);
             model.addAttribute("feedback", fb);
         }
         if (quotes.getQuotesStatus() == 5) {
             User toUser = quotes.getStaff();
             User fromUser = quotes.getCustomer();
-            Feedback fb = feedbackService.getLatestFeedback(quoteId, fromUser.getId(), toUser.getId());
+            Feedback fb = feedbackService.getLatestFeedbackForQuote(quoteId);
             model.addAttribute("feedback", fb);
         }
         if (quotes.getQuotesStatus() == 6) {
-            Feedback fb = feedbackService.getFeedbackForCancel(quoteId);
+            Feedback fb = feedbackService.getLatestFeedbackForQuote(quoteId);
             model.addAttribute("feedback", fb);
         }
         model.addAttribute("quotes", quotes);
@@ -172,7 +173,7 @@ public class QuoteController {
         if(statusId==2){
             notificationService.createNotification(quoteId,"quote", customer.getId(),"customer","Your Quote has been Approved! Please check it!");
         }
-        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),quotes.getConsultant().getConsultantCustomerName(), quoteId,statusId,"Manager","quote",statusString);
+        notificationService.changeNotificationToConsultant(quotes.getStaff().getId(),customer.getName(), quoteId,statusId,"Manager","quote",statusString);
         return "redirect:/manager/quote/detail/" + quoteId;
     }
 
@@ -296,6 +297,7 @@ public class QuoteController {
             model.addAttribute("parcelList", parcelList);
             User user = (User) session.getAttribute("user");
             model.addAttribute("staff", user);
+            
             return "consultant/quote/quoteCreate";
         }
         return "redirect:/consultant/viewConsultantList";
@@ -307,6 +309,10 @@ public class QuoteController {
         newQuote.setQuotesDate(new Date());
         newQuote = quoteService.saveQuotes(newQuote);
         Consultant consultant = newQuote.getConsultant();
+        if (consultant != null){
+            consultantService.updateConsultantStatus(consultant.getConsultantId(), 6);
+        }
+        
         notificationService.createQuoteNotification(consultant.getConsultantCustomerName(),newQuote.getQuotesId(),newQuote.getCustomer().getId());
         return "redirect:/consultant/quote";
     }

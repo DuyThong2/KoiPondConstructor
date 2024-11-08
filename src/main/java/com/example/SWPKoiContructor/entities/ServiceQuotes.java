@@ -340,6 +340,9 @@ public class ServiceQuotes {
                  pointUsing = usedPoint - (serviceQuotesTotalPrice / 2) + 1;
                  fullPaid -= pointUsing;
         }
+        if(fullPaid < 0){
+            fullPaid = 0;
+        }
         return fullPaid;
     }
 }

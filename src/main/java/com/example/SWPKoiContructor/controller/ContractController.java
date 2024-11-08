@@ -265,7 +265,6 @@ public class ContractController {
             model.addAttribute("contract", contract);
             model.addAttribute("term", new Term());
             model.addAttribute("terms", terms);
-
             return "consultant/contract/createContract";
         } else {
             return "redirect:/consultant/contract";
@@ -274,7 +273,7 @@ public class ContractController {
     }
 
     @PostMapping("/consultant/contract/create")
-public String saveContract(@ModelAttribute("contract") Contract contract,
+    public String saveContract(@ModelAttribute("contract") Contract contract,
                            @RequestParam("file") MultipartFile file,
                            @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate,
                            @RequestParam("termOption") String termOption) {
@@ -285,6 +284,8 @@ public String saveContract(@ModelAttribute("contract") Contract contract,
         contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
         contract.setDateCreate(new Date());
         contract.setEstimatedEndDate(estimatedEndDate);
+        Quotes quote = contract.getQuote();
+        quotesService.updateQuoteStatus(quote.getQuotesId(), 8);
 
         // Handle term based on the selected termOption
         handleTermOption(contract, termOption);

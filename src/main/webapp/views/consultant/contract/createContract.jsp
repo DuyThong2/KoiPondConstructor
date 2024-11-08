@@ -120,7 +120,16 @@
                         <h4>Quote Information</h4>
                         <!-- Customer Avatar -->
                         <div class="customer-info">
-                            <img src="${quote.customer.imgURL != null ? quote.customer.getShowingImg(quote.customer.imgURL) : "/SWPKoiConstructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                            <c:choose>
+                                <c:when test='${quote.customer.imgURL != null}'>
+                                    <img src="${quote.customer.getShowingImg(quote.customer.imgURL)}"
+                                         alt="Customer Avatar" class="customer-avatar img-fluid" />
+                                </c:when>
+                                <c:otherwise>
+                                    <img src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png"
+                                         alt="Customer Avatar" class="customer-avatar img-fluid" />
+                                </c:otherwise>
+                            </c:choose>
                             <p><strong>${quote.customer.name}</strong></p>
                         </div>
                         <!-- Quote Information -->
@@ -463,20 +472,20 @@
                     document.getElementById('totalPrice').value = totalPrice.toFixed(2);
                 }
 
-// Existing Functionality: JavaScript for handling term selection
+                // Existing Functionality: JavaScript for handling term selection
                 function selectTerm(termId, description) {
                     document.getElementById('selectedTermId').value = termId; // Set the selected term ID
                     document.getElementById('term').value = description; // Display the description in the read-only field
                     $('#termModal').modal('hide'); // Close the modal
                 }
 
-// Existing Functionality: Show/hide term selection and custom term input
+                // Existing Functionality: Show/hide term selection and custom term input
                 function showTermSelectionModal() {
                     document.getElementById('existingTermFields').style.display = 'block';
                     document.getElementById('customTermFields').style.display = 'none';
                     document.getElementById('defaultTermFields').style.display = 'none';
 
-                    
+
                     $('#termModal').modal('show'); // Show the modal for selecting existing terms
                 }
 
@@ -489,12 +498,12 @@
 
                 }
 
-//                function setFollowContract() {
-//                    document.getElementById('customTermFields').style.display = 'none';
-//                    document.getElementById('existingTermFields').style.display = 'none';
-//                    document.getElementById('selectedTermId').value = '0'; // Clear selected term ID
-//                    document.getElementById('term').value = 'Following contract terms';
-//                }
+                //                function setFollowContract() {
+                //                    document.getElementById('customTermFields').style.display = 'none';
+                //                    document.getElementById('existingTermFields').style.display = 'none';
+                //                    document.getElementById('selectedTermId').value = '0'; // Clear selected term ID
+                //                    document.getElementById('term').value = 'Following contract terms';
+                //                }
                 function setFollowContract() {
                     // Hide other term input sections
                     document.getElementById('customTermFields').style.display = 'none';
@@ -508,22 +517,40 @@
                     document.getElementById('term').value = 'Following contract terms';
                 }
 
-// New Functionality: Prevent special characters and negative values in inputs
+                // New Functionality: Prevent special characters and negative values in inputs
                 document.querySelectorAll('input[type="number"]').forEach(input => {
                     input.addEventListener('input', function () {
-                        // Remove any characters that are not digits or dots (allowing decimal numbers)
-                        this.value = this.value.replace(/[^0-9.]/g, '');
+                        // Allow only digits and one decimal point
+                        if (/[^0-9.]/.test(this.value)) {
+                            this.value = "0";  // Reset to 0 if invalid characters are found
+                            return;
+                        }
+
+                        // Split input on '.' to manage decimal points
+                        const parts = this.value.split('.');
+
+                        // If more than one '.' or invalid numeric parts, reset to 0
+                        if (parts.length > 2 || !/^\d*$/.test(parts[0]) || (parts[1] && !/^\d*$/.test(parts[1]))) {
+                            this.value = "0";
+                            return;
+                        }
+
+                        // If the value is less than or equal to 0, reset to 0
+                        if (parseFloat(this.value) <= 0) {
+                            this.value = "0";
+                            return;
+                        }
                     });
 
                     input.addEventListener('blur', function () {
-                        // Prevent negative values by setting any negative number to zero
-                        if (parseFloat(this.value) < 0) {
-                            this.value = 0;
+                        // If input is empty, NaN, or less than or equal to 0 after blur, reset to 0
+                        if (this.value === "" || parseFloat(this.value) <= 0 || isNaN(parseFloat(this.value))) {
+                            this.value = "0";
                         }
                     });
                 });
 
-// New Functionality: Validate custom term inputs for negative values
+                // New Functionality: Validate custom term inputs for negative values
                 function validateCustomTermInputs() {
                     const customTermFields = [
                         'percent_on_design1',
@@ -552,7 +579,7 @@
                     return isValid;
                 }
 
-// Prevent form submission if validation fails
+                // Prevent form submission if validation fails
                 document.querySelector('form').addEventListener('submit', function (event) {
                     const termOption = document.querySelector('input[name="termOption"]:checked');
                     const estimatedEndDate = document.getElementById('estimatedEndDate').value;
@@ -586,42 +613,44 @@
                                 parseFloat(document.getElementById('percent_on_construct2').value || 0);
 
                         if (totalPercent < 99 || totalPercent > 100.5) {
-                            alert('Total percentage for all stages must be between 99% and 100.5%.');
+                            alert('Total percentage for all stages must be 100%.');
                             event.preventDefault();
                             return;
                         }
                     }
 
                     // Validate for existing term selection if "existing" option is selected
-                    if (termOption.value === 'existing' && !document.getElementById('selectedTermId').value) {
-                        alert('Please select an existing term.');
+                    if (termOption.value === 'existing' && (!document.getElementById('selectedTermId').value || parseInt(document.getElementById('selectedTermId').value) <= 0)) {
+                        alert('Please select a valid existing term.');
                         event.preventDefault();
                         return;
                     }
 
                     // Ensure the total price matches the quote price
                     const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
-                    if (totalPrice !== totalQuotePrice) {
-                        alert('The total price must match the total quote price.');
+                    if (Math.abs(totalPrice - totalQuotePrice) > 0.1) {
+                        alert('The total price must match the total quote price within a small tolerance.');
                         event.preventDefault();
                         return;
                     }
 
-                    // Ensure the total design cost matches the quote's design cost
+                    // Ensure the total design cost matches the quote's design cost with a precision tolerance
                     const totalDesign = parseFloat(document.getElementById('conceptDesign').value || 0) +
                             parseFloat(document.getElementById('detailDesign').value || 0) +
                             parseFloat(document.getElementById('constructionDesign').value || 0);
-                    if (totalDesign !== maxDesignCost) {
-                        alert('The total of design costs must match the quoted design cost.');
+
+                    if (Math.abs(totalDesign - maxDesignCost) > 0.1) {
+                        alert('The total of design costs must match the quoted design cost within a small tolerance.');
                         event.preventDefault();
                         return;
                     }
 
-                    // Ensure the total construction cost matches the quote's construction cost
+                    // Ensure the total construction cost matches the quote's construction cost with a precision tolerance
                     const totalConstruction = parseFloat(document.getElementById('rawConstruction').value || 0) +
                             parseFloat(document.getElementById('completeConstruction').value || 0);
-                    if (totalConstruction !== maxConstructionCost) {
-                        alert('The total of construction costs must match the quoted construction cost.');
+
+                    if (Math.abs(totalConstruction - maxConstructionCost) > 0.1) {
+                        alert('The total of construction costs must match the quoted construction cost within a small tolerance.');
                         event.preventDefault();
                         return;
                     }
@@ -633,7 +662,7 @@
                     }
                 });
 
-// Function to prevent negative values in input fields (called during submission)
+                // Function to prevent negative values in input fields (called during submission)
                 function validateFields() {
                     let fields = ['conceptDesign', 'detailDesign', 'constructionDesign', 'rawConstruction', 'completeConstruction', 'totalDesignCost', 'totalConstructionCost', 'totalPrice'];
                     let isValid = true;

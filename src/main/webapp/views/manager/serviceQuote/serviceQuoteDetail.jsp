@@ -208,6 +208,14 @@
                                 <th>Service Quote Used Point</th>
                                 <td>${serviceQuote.usedPoint}</td>
                             </tr>
+                            <tr>
+                                <th>Deposit</th>
+                                <td>${serviceQuote.calculateDeposit()}</td>
+                            </tr>
+                            <tr>
+                                <th>Full pay</th>
+                                <td>${serviceQuote.calculateFullPaid()}</td>
+                            </tr>
                         </table>
                         <div class="action-buttons">
                             <c:choose>
@@ -267,7 +275,7 @@
                                 </c:when>
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 9 && serviceQuote.isServiceDetailOfQuoteFinished()}">
                                     <c:choose>
-                                        <c:when test="${!serviceQuote.isFree() && !serviceQuote.isAllServiceFailed() && !serviceQuote.isPayAfter}">
+                                        <c:when test="${!serviceQuote.isFree() && !serviceQuote.isAllServiceFailed() && !serviceQuote.isPayAfter && serviceQuote.calculateFullPaid() != 0}">
                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModalForPayment"
                                                     onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                             document.getElementById('acceptForm').status.value = '10';">Confirm Payment
@@ -281,7 +289,7 @@
                                             </button>
                                         </c:when>
     
-                                        <c:when test="${serviceQuote.isFree() || serviceQuote.isPayAfter}">
+                                        <c:when test="${serviceQuote.isFree() || serviceQuote.isPayAfter || serviceQuote.calculateFullPaid() == 0}">
                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
                                                     onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                             document.getElementById('acceptForm').status.value = '11';">Complete

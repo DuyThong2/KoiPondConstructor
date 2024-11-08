@@ -162,6 +162,9 @@
                                         <c:when test="${contract.contractStatus == 6}">
                                             <span class="badge badge-success status-badge">Accepted</span>
                                         </c:when>
+                                        <c:when test="${contract.contractStatus == 7}">
+                                            <span class="badge badge-success status-badge">Accepted</span>
+                                        </c:when>
                                     </c:choose>
                                 </td>
                             </tr>
@@ -255,7 +258,7 @@
                                 <c:when test="${not empty contract.project}">
                                     <div class="mt-4 text-center">
                                         <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
-                                        <form action="${pageContext.request.contextPath}/manager/projects/detail/${contract.contractId}" method="GET" class="d-inline">
+                                        <form action="${pageContext.request.contextPath}/manager/projects/detail/${contract.project.projectId}" method="GET" class="d-inline">
                                             <button type="submit" class="btn btn-success">VIEW PROJECT</button>
                                         </form>
                                     </div>

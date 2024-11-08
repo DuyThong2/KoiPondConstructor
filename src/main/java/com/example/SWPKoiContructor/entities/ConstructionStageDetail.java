@@ -110,6 +110,12 @@ public class ConstructionStageDetail {
     public void setConstructionStage(ConstructionStage constructionStage) {
         this.constructionStage = constructionStage;
     }
+
+    @Override
+    public String toString() {
+        return "ConstructionStageDetail{" + "constructionStageDetailId=" + constructionStageDetailId + ", constructionStageDetailName=" + constructionStageDetailName + ", constructionStageDetailPrice=" + constructionStageDetailPrice + ", constructionStageDetailDescription=" + constructionStageDetailDescription + ", constructionStageDetailStatus=" + constructionStageDetailStatus + ", constructionStage=" + constructionStage + '}';
+    }
+    
     
     
     

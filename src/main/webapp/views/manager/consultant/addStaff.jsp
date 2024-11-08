@@ -192,7 +192,12 @@
                                         </c:choose>
                                     </td>
                                     <td>
-                                        <form action="${pageContext.request.contextPath}/manager/consultant/viewConsultantStaffList/editConsultantStaff" method="POST" class="d-inline">
+                                        <form 
+                                            action="${pageContext.request.contextPath}/manager/consultant/viewConsultantStaffList/editConsultantStaff" 
+                                            method="POST" 
+                                            class="d-inline"
+                                            onsubmit="return confirm('Are you sure you want to update this staff member?');">
+
                                             <input type="hidden" name="id" value="${consultantId}">
                                             <input type="hidden" name="staffId" value="${staff.id}">
                                             <button type="submit" class="btn btn-info">Update Staff</button>
@@ -207,7 +212,7 @@
                     <div class="d-flex justify-content-between align-items-center mt-4">
                         <!-- Previous Button -->
                         <c:if test="${currentPage > 0}">
-                            <a href="?page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&lt;</a>
+                            <a href="?consultantId=${consultantId}&page=${currentPage - 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&lt;</a>
                         </c:if>
                         <c:if test="${currentPage == 0}">
                             <button class="btn btn-primary" disabled>&lt;</button>
@@ -218,7 +223,7 @@
 
                         <!-- Next Button -->
                         <c:if test="${currentPage < totalPages - 1}">
-                            <a href="?page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&gt;</a>
+                            <a href="?consultantId=${consultantId}&page=${currentPage + 1}&sortBy=${sortBy}&sortDirection=${sortDirection}&statusFilter=${statusFilter}&searchName=${searchName}&fromDate=${fromDate}&toDate=${toDate}" class="btn btn-primary">&gt;</a>
                         </c:if>
                         <c:if test="${currentPage == totalPages - 1}">
                             <button class="btn btn-primary" disabled>&gt;</button>

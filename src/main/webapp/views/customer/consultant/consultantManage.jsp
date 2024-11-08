@@ -282,31 +282,23 @@
                                                     <td>${consultant.consultantType}</td>
                                                     <td style="text-align: center;">
                                                         <c:choose>
-                                                            <c:when
-                                                                test="${consultant.consultantStatus == 1}">
-                                                                <span
-                                                                    class="badge badge-secondary">Pending</span>
+                                                            <c:when test="${consultant.consultantStatus == 1}">
+                                                                <span class="badge badge-warning badge-status">Pending</span>
                                                             </c:when>
-                                                            <c:when
-                                                                test="${consultant.consultantStatus == 2}">
-                                                                <span
-                                                                    class="badge badge-info">Staff Assigned</span>
+                                                            <c:when test="${consultant.consultantStatus == 2}">
+                                                                <span class="badge badge-info badge-status">Assigned</span>
                                                             </c:when>
-                                                            <c:when
-                                                                test="${consultant.consultantStatus == 3}">
-                                                                <span
-                                                                    class="badge badge-primary">In-Progress</span>
+                                                            <c:when test="${consultant.consultantStatus == 3}">
+                                                                <span class="badge badge-info badge-status">Processing</span>
                                                             </c:when>
-                                                            <c:when
-                                                                test="${consultant.consultantStatus == 4}">
-                                                                <span
-                                                                    class="badge badge-success">Complete</span>
-
+                                                            <c:when test="${consultant.consultantStatus == 4}">
+                                                                <span class="badge badge-success badge-status">Completed</span>
                                                             </c:when>
-                                                            <c:when
-                                                                test="${consultant.consultantStatus == 5}">
-                                                                <span
-                                                                    class="badge badge-danger">Canceled</span>
+                                                            <c:when test="${consultant.consultantStatus == 5}">
+                                                                <span class="badge badge-danger badge-status">Canceled</span>
+                                                            </c:when>
+                                                            <c:when test="${consultant.consultantStatus == 6}">
+                                                                <span class="badge badge-success badge-status">Quote Created</span>
                                                             </c:when>
                                                         </c:choose>
                                                     </td>

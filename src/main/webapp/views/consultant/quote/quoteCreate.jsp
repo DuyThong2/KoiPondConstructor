@@ -12,13 +12,29 @@
         <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
             .quote-info {
-                background-color: #f8f9fa;
+                background-color: #ffffff;
                 padding: 20px;
-                border-radius: 10px;
+                border-radius: 8px;
+                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
                 margin-bottom: 20px;
             }
             .quote-info h4 {
                 margin-bottom: 15px;
+                color: #333;
+            }
+            .section-title {
+                font-weight: bold;
+                text-align: center;
+                padding-bottom: 10px;
+                color: #007bff;
+            }
+            .form-section {
+                background-color: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                margin-bottom: 20px;
+                width: 66%;
             }
             .customer-avatar {
                 max-width: 150px;
@@ -28,11 +44,18 @@
             .customer-info {
                 text-align: center;
             }
-
+            .form-group {
+                margin-bottom: 15px;
+            }
+            .btn-primary {
+                background-color: #007bff;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 15px;
+            }
             .modal-dialog.modal-lg {
                 max-width: 90%;
             }
-
             .table th, .table td {
                 vertical-align: middle;
                 padding: 8px;
@@ -53,7 +76,17 @@
                     <div class="quote-info">
                         <h4>Customer Information</h4>
                         <div class="customer-info">
-                            <img src="" alt="Customer Avatar" class="customer-avatar img-fluid"/>
+                            <c:choose>
+                                <c:when test="${quote.customer.imgURL != null}">
+                                    <img class="customer-avatar img-fluid"
+                                         src="${quote.customer.getShowingImg(quote.customer.imgURL)}" alt />
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="customer-avatar img-fluid"
+                                         src="${pageContext.request.contextPath}/assets/imgs/logo/final_resized_colored_logo_image.png" alt />
+                                </c:otherwise>
+                            </c:choose>
+
                             <p><strong>${customer.name}</strong></p>
                         </div>
                         <p><strong>Phone:</strong> ${customer.phone}</p>
@@ -63,10 +96,11 @@
                 </div>
 
                 <!-- Right Column for Quote Creation Form -->
-                <div class="col-md-8">
-                    <h2 class="mb-4">Create Quote</h2>
-
-                    <form:form action="/consultant/quote/saveNewQuotes" modelAttribute="newQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true" onsubmit="return validateForm()">
+                <div class="form-section">
+                    <div class="section-title">
+                        <h2>Create Quote</h2>
+                    </div>
+                    <form:form action="${pageContext.request.contextPath}/consultant/quote/saveNewQuotes" modelAttribute="newQuote" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate="true" onsubmit="return validateForm()">
                         <form:hidden path="consultant.consultantId" value="${consultant.consultantId}"/>
                         <form:hidden path="customer.id" value="${customer.id}" />
                         <form:hidden path="staff.id" value="${staff.id}" />
@@ -92,7 +126,7 @@
                         <!-- Parcel Selection -->
                         <div class="form-group">
                             <label for="parcel">Select Parcel:</label>
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#parcelModal">
+                            <button style="margin-bottom: 5px" type="button" class="btn btn-info" data-toggle="modal" data-target="#parcelModal">
                                 Choose Parcel
                             </button>
                             <input type="hidden" id="selectedParcelId" name="parcel.packageId" required />
@@ -176,20 +210,38 @@
                     designCostPerSquareMeter: 0,
                     constructionCostPerSquareMeter: 0
                 };
-                
-                document.querySelectorAll('input[type="number"]').forEach(input => {
-                            input.addEventListener('input', function () {
-                                // Remove any characters that are not digits or dots (allowing decimal numbers)
-                                this.value = this.value.replace(/[^0-9.]/g, '');
-                            });
 
-                            input.addEventListener('blur', function () {
-                                // Prevent negative values by setting any negative number to zero
-                                if (parseFloat(this.value) < 0) {
-                                    this.value = 0;
-                                }
-                            });
-                        });
+                document.querySelectorAll('input[type="number"]').forEach(input => {
+                    input.addEventListener('input', function () {
+                        // Allow only digits and one decimal point
+                        if (/[^0-9.]/.test(this.value)) {
+                            this.value = "0";  // Reset to 0 if invalid characters are found
+                            return;
+                        }
+
+                        // Split input on '.' to manage decimal points
+                        const parts = this.value.split('.');
+
+                        // If more than one '.' or invalid numeric parts, reset to 0
+                        if (parts.length > 2 || !/^\d*$/.test(parts[0]) || (parts[1] && !/^\d*$/.test(parts[1]))) {
+                            this.value = "0";
+                            return;
+                        }
+
+                        // If the value is less than or equal to 0, reset to 0
+                        if (parseFloat(this.value) <= 0) {
+                            this.value = "0";
+                            return;
+                        }
+                    });
+
+                    input.addEventListener('blur', function () {
+                        // If input is empty, NaN, or less than or equal to 0 after blur, reset to 0
+                        if (this.value === "" || parseFloat(this.value) <= 0 || isNaN(parseFloat(this.value))) {
+                            this.value = "0";
+                        }
+                    });
+                });
 
                 function selectParcel(packageId, packageName, designCostPerSquareMeter, constructionCostPerSquareMeter) {
                     document.getElementById('selectedParcelId').value = packageId;
@@ -213,27 +265,38 @@
                     document.getElementById('constructionCost').value = constructionCost.toFixed(2);
                     document.getElementById('totalPrice').value = totalPrice.toFixed(2);
                 }
-                
+
 
                 // Validate the form before submission
+                let isConfirmed = false; // Track if the user has already confirmed
+
                 function validateForm() {
-                    const area = parseFloat(document.getElementById('area').value) || 0;
-                    const designCost = parseFloat(document.getElementById('designCost').value) || 0;
-                    const constructionCost = parseFloat(document.getElementById('constructionCost').value) || 0;
-                    const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
-                    const selectedParcelId = document.getElementById('selectedParcelId').value;
+                    if (!isConfirmed) {
+                        const area = parseFloat(document.getElementById('area').value) || 0;
+                        const designCost = parseFloat(document.getElementById('designCost').value) || 0;
+                        const constructionCost = parseFloat(document.getElementById('constructionCost').value) || 0;
+                        const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
+                        const selectedParcelId = document.getElementById('selectedParcelId').value;
 
-                    if (!selectedParcelId) {
-                        alert('Please select a parcel before submitting the form.');
-                        return false;
+                        if (!selectedParcelId) {
+                            alert('Please select a parcel before submitting the form.');
+                            return false;
+                        }
+
+                        if (area <= 0 || designCost <= 0 || constructionCost <= 0 || totalPrice <= 0) {
+                            alert('Area, design cost, construction cost, and total price must all be greater than 0.');
+                            return false;
+                        }
+
+                        // Show the confirmation message only the first time
+                        if (!confirm('Are you sure you want to create this quote?')) {
+                            return false;
+                        }
+
+                        isConfirmed = true; // Mark as confirmed if the user clicks "Yes"
                     }
 
-                    if (area <= 0 || designCost <= 0 || constructionCost <= 0 || totalPrice <= 0) {
-                        alert('Area, design cost, construction cost, and total price must all be greater than 0.');
-                        return false;
-                    }
-
-                    return true;
+                    return true; // Proceed with form submission
                 }
 
                 // Automatically adjust costs every second
@@ -245,7 +308,7 @@
         </div>
 
         <!-- Bootstrap JS and dependencies -->
-       
+
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     </body>

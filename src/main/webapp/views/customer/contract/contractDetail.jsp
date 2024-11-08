@@ -34,11 +34,9 @@
             }
 
             .btn-custom {
-                margin-top: 20px;
-                padding: 10px 20px;
+                padding: 10px 15px;
                 font-size: 1rem;
                 border-radius: 5px;
-                width: 100%;
                 /* Make it full width */
             }
 
@@ -66,7 +64,29 @@
                 margin-top: 20px;
             }
             .btn{
-                font-size:20px;
+                font-size: 20px;
+                padding: 10px 15px;
+            }
+            .modal-content {
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                border: none;
+            }
+            .modal-header {
+                background-color: #007bff;
+                color: white;
+                border-top-left-radius: 10px;
+                border-top-right-radius: 10px;
+                padding: 15px 20px;
+            }
+            .modal-title {
+                font-size: 2.4rem;
+                font-weight: 700;
+                margin-left: 130px;
+            }
+            .modal-body {
+                font-size: 1.8rem; /* Tăng kích thước chữ */
+                color: #555; /* Màu chữ dễ đọc hơn */
             }
         </style>
     </head>
@@ -156,6 +176,9 @@
                                     <c:when test="${contract.contractStatus == 6}">
                                         <span class="badge badge-success status-badge">Accepted</span>
                                     </c:when>
+                                        <c:when test="${contract.contractStatus == 7}">
+                                        <span class="badge badge-success status-badge">Project Created</span>
+                                    </c:when>
                                 </c:choose>
                             </td>
                         </tr>
@@ -190,7 +213,7 @@
                                 <c:when test="${contract.contractStatus == 2}">
                                     <div class="mt-4 text-center">
                                         <button type="button" class="btn btn-success" data-toggle="modal"
-                                                data-target="#acceptModal">Accept</button>
+                                                data-target="#acceptModal"><i class="fas fa-check"></i> Accept</button>
                                         <!--                            <form action="/customer/contract/editStatus" method="POST" class="d-inline">
                                                             <input type="hidden" name="id" value="$/{contract.contractId}">
                                                             <input type="hidden" name="status" value="3">
@@ -200,14 +223,13 @@
                                                 data-target="#declineModal" onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
                                                             document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
                                                             document.getElementById('declineForm').status.value = '3';"><i
-                                                class="fas fa-times icon-btn"></i>
-                                            Reject
+                                                class="fas fa-times icon-btn"></i> Reject
                                         </button>
                                         <form action="${pageContext.request.contextPath}/customer/contract/editStatus"
                                               method="POST" class="d-inline">
                                             <input type="hidden" name="id" value="${contract.contractId}">
                                             <input type="hidden" name="status" value="5">
-                                            <button type="submit" class="btn btn-lg btn-danger">Cancel</button>
+                                            <button type="submit" class="btn btn-lg btn-danger"><i class="fas fa-ban"></i> Cancel</button>
                                         </form>
                                     </div>
                                 </c:when>
@@ -389,9 +411,6 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body">
                         <form id="declineForm"
@@ -403,7 +422,7 @@
                             <div class="form-group">
                                 <label for="declineReason">Please provide a reason for declining this
                                     quote:</label>
-                                <textarea class="form-control" id="declineReason" name="declineReason" rows="4"
+                                <textarea class="form-control" id="declineReason" name="declineReason" rows="4" style="font-size: 20px"
                                           required></textarea>
                             </div>
                         </form>
@@ -423,9 +442,6 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="acceptModalLabel">Accept Contract</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
                     </div>
                     <div class="modal-body">
                         <p>I have read and agree to all the terms and conditions of this contract.</p>

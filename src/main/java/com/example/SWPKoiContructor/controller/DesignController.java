@@ -28,9 +28,9 @@ public class DesignController {
     private CommentService commentService;
     private PaymentHistoryService paymentHistoryService;
 
-
     private NotificationService notificationService;
-    public DesignController(DesignService designService, DesignStageService designStageService, BluePrintService bluePrintService, DesignStageDetailService designStageDetailService, CommentService commentService, FileUtility fileUtility, PaymentHistoryService paymentHistoryService,NotificationService notificationService) {
+
+    public DesignController(DesignService designService, DesignStageService designStageService, BluePrintService bluePrintService, DesignStageDetailService designStageDetailService, CommentService commentService, FileUtility fileUtility, PaymentHistoryService paymentHistoryService, NotificationService notificationService) {
         this.designService = designService;
         this.designStageService = designStageService;
         this.bluePrintService = bluePrintService;
@@ -38,7 +38,7 @@ public class DesignController {
         this.commentService = commentService;
         this.fileUtility = fileUtility;
         this.paymentHistoryService = paymentHistoryService;
-        this.notificationService=notificationService;
+        this.notificationService = notificationService;
     }
 
     @GetMapping("/manager/design")
@@ -52,7 +52,7 @@ public class DesignController {
             page = 0;
         }
         List<Design> list = designService.getListDesignWithSortedAndPaginated(page, size, statusFilter, searchName);
-        
+
         model.addAttribute("designList", list);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPage);
@@ -84,31 +84,36 @@ public class DesignController {
             redirectAttributes.addFlashAttribute("error", "Missing required parameters.");
             return "redirect:/manager/design/detail/" + designId;
         }
-        DesignStageDetail updatedDetail = designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
-    
-        if (newStatus == 4) {
 
+        DesignStageDetail updatedDetail = designStageDetailService.getDesignStageDetailById(detailId);
+        if (updatedDetail.getStatus() == 4) {
+            return "redirect:/manager/design/detail/" + designId;
+        }
+        if (updatedDetail.getStatus() == newStatus) {
+            redirectAttributes.addFlashAttribute("info", "Status is already up-to-date.");
+            return "redirect:/manager/design/detail/" + designId;
+        }
+
+        updatedDetail = designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
+
+        if (newStatus == 4) {
             try {
                 Customer customer = updatedDetail.getDesignStage().getDesign().getProject().getContract().getCustomer();
                 BigDecimal amount = BigDecimal.valueOf(updatedDetail.getDesignStage().getDesignStagePrice());
 
-                // Create a new PaymentHistory record using the streamlined constructor
                 PaymentHistory paymentHistory = new PaymentHistory(
                         customer,
-                        amount, // Amount from the detail
-                        "Manual", // Indicate that this payment is manual or any relevant method
-                        "Payment for " + updatedDetail.getDesignStage().getDesignStageName() + "of " + customer.getName()
+                        amount,
+                        "Manual",
+                        "Payment for " + updatedDetail.getDesignStage().getDesignStageName() + " of " + customer.getName()
                 );
                 notificationService.createNotification(designId, "design", customer.getId(), "customer", "We have noticed your payment. Aligator Godzillamatsu");
-
-                // Save the payment history
-
                 paymentHistoryService.createPayment(paymentHistory);
 
             } catch (Exception e) {
-                redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
+                redirectAttributes.addFlashAttribute("error", "Failed to record payment: " + e.getMessage());
             }
-        }else if(newStatus==2){
+        } else if (newStatus == 2) {
             Customer customer = updatedDetail.getDesignStage().getDesign().getProject().getContract().getCustomer();
             notificationService.createNotification(designId, "design", customer.getId(), "customer", "You are required to pay for design stage");
         }
@@ -134,7 +139,7 @@ public class DesignController {
             page = 0;
         }
         List<Design> designs = designService.getSortedAndPaginatedByDesigner(user.getId(), page, size, statusFilter, searchName);
-        
+
         model.addAttribute("designs", designs);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -246,7 +251,7 @@ public class DesignController {
         blueprint.setImgUrl(uploadedFilePath);
         blueprint.setDateCreate(new Date());
 
-        Design design =designStage.getDesign();
+        Design design = designStage.getDesign();
         bluePrintService.saveBluePrint(blueprint);
         Customer customer = design.getProject().getContract().getCustomer();
         int customerId = designService.getCustomerIdByDesignId(design.getDesignId());
@@ -326,29 +331,27 @@ public class DesignController {
     @PostMapping("/designStageDetail/updateStatus")
     public String updateStatus(@RequestParam(required = false) int detailId,
             @RequestParam(required = false) int newStatus,
-            @RequestParam int designStageId, @RequestParam int designId,
+            @RequestParam int designStageId,
+            @RequestParam int designId,
             RedirectAttributes redirectAttributes) {
 
         DesignStageDetail detail = designStageDetailService.getDesignStageDetailById(detailId);
         if (detail.getStatus() == newStatus || detail.getStatus() > newStatus) {
-            redirectAttributes.addFlashAttribute("error", "Progress is also updated!");
+            redirectAttributes.addFlashAttribute("info", "No update needed as status is already up-to-date.");
             return "redirect:/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
         }
 
         try {
-            Design design = designService.getDesignById(designId);
-            Customer customer =design.getProject().getContract().getCustomer();
-            DesignStageDetail designStageDetail= designStageDetailService.getDesignStageDetailById(detailId);
             designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
-            String message="";
-            if(newStatus==2&&designStageDetail.getName().equalsIgnoreCase("Editing")){
-                message="You can check your blue print now!";
-                notificationService.createNotification(designId, "design", customer.getId(), "customer", message);
+            if (newStatus == 2 && "Editing".equalsIgnoreCase(detail.getName())) {
+                Customer customer = detail.getDesignStage().getDesign().getProject().getContract().getCustomer();
+                notificationService.createNotification(designId, "design", customer.getId(), "customer", "You can check your blueprint now!");
             }
             redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Failed to update status!!");
+            redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
+
         return "redirect:/designer/updateStatus/designStage/" + designStageId + "?designId=" + designId;
     }
 
@@ -398,15 +401,21 @@ public class DesignController {
             return "redirect:/customer/design/detail/" + designId;
         }
 
+        DesignStageDetail detail = designStageDetailService.getDesignStageDetailById(detailId);
+        if (detail.getStatus() == newStatus) {
+            redirectAttributes.addFlashAttribute("info", "Status is already up-to-date.");
+            return "redirect:/customer/design/detail/" + designId;
+        }
+
         List<BluePrint> blueprints = bluePrintService.findByDesignStageId(designStageId);
 
         try {
             designStageDetailService.updateDesignStageDetailStatus(detailId, newStatus);
             for (BluePrint blueprint : blueprints) {
-                blueprint.setBluePrintStatus(3);
+                blueprint.setBluePrintStatus(3);  // Assuming 3 is the status indicating 'approved' or similar
                 bluePrintService.saveBluePrint(blueprint);
             }
-            redirectAttributes.addFlashAttribute("success", "Updated successfully!");
+            redirectAttributes.addFlashAttribute("success", "Status and blueprints updated successfully!");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
         }
