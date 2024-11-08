@@ -265,7 +265,6 @@ public class ContractController {
             model.addAttribute("contract", contract);
             model.addAttribute("term", new Term());
             model.addAttribute("terms", terms);
-            quote = quotesService.updateQuoteStatus(quoteId, 8);
             return "consultant/contract/createContract";
         } else {
             return "redirect:/consultant/contract";
@@ -285,6 +284,8 @@ public class ContractController {
         contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
         contract.setDateCreate(new Date());
         contract.setEstimatedEndDate(estimatedEndDate);
+        Quotes quote = contract.getQuote();
+        quotesService.updateQuoteStatus(quote.getQuotesId(), 8);
 
         // Handle term based on the selected termOption
         handleTermOption(contract, termOption);

@@ -603,14 +603,32 @@
 
                         document.querySelectorAll('input[type="number"]').forEach(input => {
                             input.addEventListener('input', function () {
-                                // Remove any characters that are not digits or dots (allowing decimal numbers)
-                                this.value = this.value.replace(/[^0-9.]/g, '');
+                                // Allow only digits and one decimal point
+                                if (/[^0-9.]/.test(this.value)) {
+                                    this.value = "0";  // Reset to 0 if invalid characters are found
+                                    return;
+                                }
+
+                                // Split input on '.' to manage decimal points
+                                const parts = this.value.split('.');
+
+                                // If more than one '.' or invalid numeric parts, reset to 0
+                                if (parts.length > 2 || !/^\d*$/.test(parts[0]) || (parts[1] && !/^\d*$/.test(parts[1]))) {
+                                    this.value = "0";
+                                    return;
+                                }
+
+                                // If the value is less than or equal to 0, reset to 0
+                                if (parseFloat(this.value) <= 0) {
+                                    this.value = "0";
+                                    return;
+                                }
                             });
 
                             input.addEventListener('blur', function () {
-                                // Prevent negative values by setting any negative number to zero
-                                if (parseFloat(this.value) < 0) {
-                                    this.value = 0;
+                                // If input is empty, NaN, or less than or equal to 0 after blur, reset to 0
+                                if (this.value === "" || parseFloat(this.value) <= 0 || isNaN(parseFloat(this.value))) {
+                                    this.value = "0";
                                 }
                             });
                         });
@@ -636,7 +654,7 @@
                                     event.preventDefault();
                                     return;
                                 }
-                            } else if (termOption.value === 'existing' && !document.getElementById('selectedTermId').value) {
+                            } else if (termOption.value === 'existing' && (!document.getElementById('selectedTermId').value || parseInt(document.getElementById('selectedTermId').value) <= 0)) {
                                 alert('Please select an existing term.');
                                 event.preventDefault();
                                 return;

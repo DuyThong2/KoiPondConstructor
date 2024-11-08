@@ -33,7 +33,7 @@ public class ConstructionController {
 
     private NotificationService notificationService;
 
-    public ConstructionController(PaymentHistoryService paymentHistoryService,DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService, NotificationService notificationService) {
+    public ConstructionController(PaymentHistoryService paymentHistoryService, DesignService designService, ConstructionService constructionService, ConstructionStageService ConstructionStageService, ConstructionStageDetailService ConstructionStageDetailService, CommentService commentService, ServiceDetailService serviceDetailService, NotificationService notificationService) {
         this.designService = designService;
         this.constructionService = constructionService;
         this.constructionStageService = ConstructionStageService;
@@ -176,11 +176,11 @@ public class ConstructionController {
         if (user.getAuthority().getAuthority().equalsIgnoreCase("ROLE_MANAGER")) {
             return "redirect:/manager/construction/detail/" + constructionId;
         }
-        
+
         Construction construction = constructionService.getConstructionById(constructionId);
-        boolean disableUpdateButton = construction.getConstructionStatus() != 2 
-                                  || construction.getProject().getStatus() == 4 
-                                  || construction.getProject().getStage() != 3;
+        boolean disableUpdateButton = construction.getConstructionStatus() != 2
+                || construction.getProject().getStatus() == 4
+                || construction.getProject().getStage() != 3;
 
         // Fetch the construction stage details by constructionStageId
         List<ConstructionStageDetail> details = constructionStageDetailService.getConstructionStageDetailByStageId(id);
@@ -208,44 +208,51 @@ public class ConstructionController {
         }
 
         try {
-            // Update the construction stage detail status
-            ConstructionStageDetail updatedDetail = constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
+            // Fetch the current detail to check its current status
+            ConstructionStageDetail currentDetail = constructionStageDetailService.getConstructionStageDetail(detailId);
 
-            // Check if the updated detail is related to a payment and the new status is set to 4 (Completed)
-            if (updatedDetail != null) {
-                if ("Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())
-                        && newStatus == 4) {
-                    // Step 1: Retrieve the Project ID from the constructionId
+            // Check if the current status is 4 and the stage name is "Payment"
+            if (currentDetail != null
+                    && currentDetail.getConstructionStageDetailStatus() == 4
+                    && "Payment".equalsIgnoreCase(currentDetail.getConstructionStageDetailName())) {
+                // Reload the page if these conditions are met
+                return "redirect:/manager/construction/detail/" + constructionId;
+            }
+
+            // Proceed with status update if different from the current status
+            if (currentDetail != null && currentDetail.getConstructionStageDetailStatus() != newStatus) {
+                // Update the construction stage detail status
+                ConstructionStageDetail updatedDetail = constructionStageDetailService.updateConstructionStageDetailStatus(detailId, newStatus);
+
+                // Additional logic based on detail name and newStatus
+                if ("Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName()) && newStatus == 4) {
                     Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
                     BigDecimal amount = BigDecimal.valueOf(updatedDetail.getConstructionStage().getConstructionStagePrice());
-                    // Step 4: Create a new PaymentHistory record using the streamlined constructor
                     PaymentHistory paymentHistory = new PaymentHistory(
                             customer,
-                            amount, // Replace with the actual amount from the detail
-                            "Manual", // Indicate that this payment is manual or any relevant method
+                            amount,
+                            "Manual",
                             "Payment for " + updatedDetail.getConstructionStage().getConstructionStageName() + " of " + customer.getName()
                     );
                     notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "We have noticed your payment. Aligator Godzillamatsu");
-
                     paymentHistoryService.createPayment(paymentHistory);
-
                     redirectAttributes.addFlashAttribute("success", "Status updated and payment recorded successfully!");
+
                 } else if (newStatus == 2 && "Payment".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())) {
                     Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
                     notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "You are required to pay for construction stage");
+
                 } else if (newStatus == 2 && "Inspection".equalsIgnoreCase(updatedDetail.getConstructionStageDetailName())) {
                     Customer customer = updatedDetail.getConstructionStage().getConstruction().getProject().getContract().getCustomer();
                     notificationService.createNotification(constructionId, "construction", customer.getId(), "customer", "We need your confirmation on construction site");
                 }
             } else {
-                redirectAttributes.addFlashAttribute("success", "Status updated successfully!");
+                redirectAttributes.addFlashAttribute("error", "Status update not required as the current status is the same.");
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "Failed to update status: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "An error occurred while updating the status: " + e.getMessage());
         }
 
-        // Redirect back to the construction stage details page
         return "redirect:/staff/updateStatus/constructionStage/" + constructionStageId + "?constructionId=" + constructionId;
     }
 
@@ -321,7 +328,6 @@ public class ConstructionController {
 
     }
 
-    // Method to approve the inspection stage
     @PostMapping("/customer/approveInspection")
     public String approveInspection(
             @RequestParam("detailId") int constructionStageDetailId,
@@ -330,19 +336,21 @@ public class ConstructionController {
             RedirectAttributes redirectAttributes) {
 
         try {
-            // Approve the inspection stage
-            constructionStageDetailService.updateConstructionStageDetailStatus(constructionStageDetailId, 4); // Assuming 4 is 'approved' status
-            redirectAttributes.addFlashAttribute("success", "Inspection approved successfully!");
+            ConstructionStageDetail currentDetail = constructionStageDetailService.getConstructionStageDetail(constructionStageDetailId);
+            if (currentDetail != null && currentDetail.getConstructionStageDetailStatus() != 4) { // Assuming 4 is 'approved' status
+                constructionStageDetailService.updateConstructionStageDetailStatus(constructionStageDetailId, 4);
+                redirectAttributes.addFlashAttribute("success", "Inspection approved successfully!");
+            } else {
+                redirectAttributes.addFlashAttribute("info", "Inspection already approved.");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to approve inspection: " + e.getMessage());
         }
 
-        // Redirect back to the construction stage details page
         return "redirect:/customer/construction/detail/" + constructionId;
     }
 
-    // Method to reject the inspection stage
     @PostMapping("/customer/rejectInspection")
     public String rejectInspection(
             @RequestParam("detailId") int constructionStageDetailId,
@@ -351,22 +359,25 @@ public class ConstructionController {
             RedirectAttributes redirectAttributes) {
 
         try {
-            // Reject the inspection stage
-            constructionStageDetailService.updateConstructionStageDetailStatus(constructionStageDetailId, 3); // Assuming 3 is 'rejected' status
+            ConstructionStageDetail currentDetail = constructionStageDetailService.getConstructionStageDetail(constructionStageDetailId);
+            if (currentDetail != null && currentDetail.getConstructionStageDetailStatus() != 3) { // Assuming 3 is 'rejected' status
+                constructionStageDetailService.updateConstructionStageDetailStatus(constructionStageDetailId, 3);
 
-            // Optionally reset the previous stage detail to 'processing' status
-            ConstructionStageDetail previousDetail = constructionStageDetailService.getPreviousStageDetail(constructionStageId);
-            if (previousDetail != null) {
-                constructionStageDetailService.updateConstructionStageDetailStatus(previousDetail.getConstructionStageDetailId(), 2); // Assuming 2 is 'processing' status
+                // Optionally reset the previous stage detail to 'processing' status
+                ConstructionStageDetail previousDetail = constructionStageDetailService.getPreviousStageDetail(constructionStageId);
+                if (previousDetail != null && previousDetail.getConstructionStageDetailStatus() != 2) { // Assuming 2 is 'processing' status
+                    constructionStageDetailService.updateConstructionStageDetailStatus(previousDetail.getConstructionStageDetailId(), 2);
+                }
+
+                redirectAttributes.addFlashAttribute("success", "Inspection rejected and previous stage reset to processing.");
+            } else {
+                redirectAttributes.addFlashAttribute("info", "Inspection already rejected.");
             }
-
-            redirectAttributes.addFlashAttribute("success", "Inspection rejected and previous stage reset to processing.");
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Failed to reject inspection: " + e.getMessage());
         }
 
-        // Redirect back to the construction stage details page
         return "redirect:/customer/construction/detail/" + constructionId;
     }
 

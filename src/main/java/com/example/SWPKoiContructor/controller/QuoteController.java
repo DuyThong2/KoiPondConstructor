@@ -297,7 +297,7 @@ public class QuoteController {
             model.addAttribute("parcelList", parcelList);
             User user = (User) session.getAttribute("user");
             model.addAttribute("staff", user);
-            consultant = consultantService.updateConsultantStatus(consultantId, 6);
+            
             return "consultant/quote/quoteCreate";
         }
         return "redirect:/consultant/viewConsultantList";
@@ -309,6 +309,10 @@ public class QuoteController {
         newQuote.setQuotesDate(new Date());
         newQuote = quoteService.saveQuotes(newQuote);
         Consultant consultant = newQuote.getConsultant();
+        if (consultant != null){
+            consultantService.updateConsultantStatus(consultant.getConsultantId(), 6);
+        }
+        
         notificationService.createQuoteNotification(consultant.getConsultantCustomerName(),newQuote.getQuotesId(),newQuote.getCustomer().getId());
         return "redirect:/consultant/quote";
     }
