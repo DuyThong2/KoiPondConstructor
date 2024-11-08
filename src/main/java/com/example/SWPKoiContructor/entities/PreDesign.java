@@ -57,6 +57,9 @@ public class PreDesign implements HaveImagesFile {
 
     @OneToOne(mappedBy = "preDesign",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Content content;
+
+    @OneToMany(mappedBy = "preDesign")
+    private List<Project> projects;
     
     public PreDesign() {
     }
@@ -156,6 +159,12 @@ public class PreDesign implements HaveImagesFile {
     public void setParcel(Parcel parcel) {
         this.parcel = parcel;
     }
-    
-    
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
 }
