@@ -175,6 +175,7 @@ public class ConsultantController {
         if (consultant != null && consultant.getStaff().getId() == staff.getId()) {
             model.addAttribute("consultant", consultant);
             model.addAttribute("customerList", customerService.getCustomerListForChoose());
+            model.addAttribute("preDesignList", preDesignService.getActivePreDesignList());
             return "consultant/consultantDetail";
         }
         return "redirect:/consultant/viewConsultantList";
@@ -190,12 +191,20 @@ public class ConsultantController {
     public String addCustomerToConsultant(@RequestParam("consultantId") int consultantId,
             @RequestParam("customerId") int customerId) {
         // Fetch consultant and customer from database
-        Consultant consultant = consultantService.getConsultantById(consultantId);
         Customer customer = customerService.getCustomerById(customerId);
 
         // Associate customer with consultant
-        consultant = consultantService.setCustomer(consultantId, customer);
+        Consultant consultant = consultantService.setCustomer(consultantId, customer);
 
+        return "redirect:/consultant/consultant/detail/" + consultantId;
+    }
+    
+    @PostMapping("/consultant/addPreDesignToConsultant")
+    public String addPreDesignToConsultant(@RequestParam("consultantId") int consultantId,
+                                            @RequestParam("preDesignId") int preDesignId){
+        PreDesign preDesign = preDesignService.getPredesignById(preDesignId);
+        
+        Consultant consultant = consultantService.setPreDesign(consultantId, preDesign);
         return "redirect:/consultant/consultant/detail/" + consultantId;
     }
 
