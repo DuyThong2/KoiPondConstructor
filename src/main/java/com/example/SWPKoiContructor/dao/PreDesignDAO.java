@@ -139,4 +139,8 @@ public class PreDesignDAO {
         TypedQuery<PreDesign> query = entityManager.createQuery(jpql, PreDesign.class);
         return query.setMaxResults(6).getResultList();
     }
+        public List<PreDesign> getPreDesignListIsActive(){        
+        TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p WHERE p.preDesignStatus = true", PreDesign.class);
+        return tq.getResultList();
+    }
 }
