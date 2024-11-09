@@ -147,9 +147,10 @@
             }
             p {
                 margin-bottom: 10px;
+                font-size: 19px;
             }
             h4 {
-                font-size: 2.4rem;
+                font-size: 2.6rem;
                 color: #343a40;
                 margin-bottom: 20px;
             }
@@ -200,6 +201,28 @@
     </head>
     <%@include file="../homePageNavbar.jsp"%>
     <body>
+        <section id="services"
+                 class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+            <div class="container rr-shape-p-c_1">
+                <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+                    <div></div>
+                </div>
+
+                <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+                    <div class="col-md-6">
+                        <div class="section__title-wrapper text-center text-xl-start">
+                            <span class="section__subtitle justify-content-start mb-13"><span data-width="40px"
+                                                                                              class="left-separetor">
+                                </span><a href="${pageContext.request.contextPath}/customer/projects/" class="theme-color">Project</a></span>
+                            <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                                data-cursor="-opaque">Design Detail
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div style="height:5vh;"></div>                    
         <div class="container mt-5">
             <!-- Navigation -->
 
@@ -229,6 +252,10 @@
                     <div class="col-md-8 right-column">
                         <h2 class="card-title mb-3 text-center">Information Of Design</h2>
                         <p>Design's Name: ${design.designName}</p>
+                    <c:if test="${project.preDesign.preDesignId != null}">
+                        <p>Template Design:<a href="${pageContext.request.contextPath}/home/preDesign/${project.preDesign.preDesignId}">  
+                                ${project.preDesign.preDesignName}</a></p></c:if>
+                          
                     <p>Design Status:
                         <c:choose>
                             <c:when test="${design.status == 1}">
@@ -261,7 +288,7 @@
                             <div class="card-body">
                                 <h4>
                                     <a data-status="${stage.designStageStatus}" class="design-stage-link "
-                                       href="${pageContext.request.contextPath}/customer/project/design/blueprint/${stage.designStageId}">
+                                       href="${pageContext.request.contextPath}/customer/project/design/blueprint/${stage.designStageId}?designId=${design.designId}">
                                         ${stage.designStageName}
                                     </a>
                                 </h4>
@@ -369,7 +396,7 @@
                         </div>
 
                         <script>
-                    document.querySelector(`[data-stage='${stage.designStageName}']`).setAttribute('data-status', '${stage.designStageStatus}');
+                            document.querySelector(`[data-stage='${stage.designStageName}']`).setAttribute('data-status', '${stage.designStageStatus}');
                         </script>
                     </c:forEach>
                 </div>

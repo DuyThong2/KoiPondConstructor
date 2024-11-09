@@ -188,7 +188,7 @@
                         <div class="card mb-4">
                             <div class="card-body">
                                 <!-- Add Link to Blueprint Management Page -->
-                                <h4><a href="${pageContext.request.contextPath}/designer/manage/blueprint/${stage.designStageId}">${stage.designStageName}</a></h4>
+                                <h4><a href="${pageContext.request.contextPath}/designer/manage/blueprint/${stage.designStageId}?designId=${design.designId}">${stage.designStageName}</a></h4>
                                 <p><strong>Stage Status:</strong>
                                     <c:choose>
                                         <c:when test="${stage.designStageStatus == 1}">

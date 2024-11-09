@@ -132,8 +132,13 @@
                 </p>
             </div>
             <div>
-                <a href="${pageContext.request.contextPath}/designer/design/detail/${project.design.designId}" class="btn btn-primary">Design detail</a>
-            </div>
+                <a href="${pageContext.request.contextPath}/designer/design/detail/${project.design.designId}" class="btn btn-primary">Design Detail</a>
+            
+                <c:if test="${project.preDesign.preDesignId != null}">
+                     <a href="${pageContext.request.contextPath}/designer/project/preDesign/${project.preDesign.preDesignId}"  class="btn btn-primary">View Pre Design</a>
+            
+                </c:if>
+                </div>
         </div>
     </div>
 </div>
