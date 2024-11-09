@@ -267,9 +267,19 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <c:if test="${consultant.consultantStatus < 4}">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPreDesignModal">
+                                    Select Pre Design
+                                </button>
+                            </c:if>
                         </c:if>
                         <c:if test="${empty consultant.predesign}">
                             <p>No Pre-Design are associated with this Consultant.</p>
+                            <c:if test="${consultant.consultantStatus < 4}"> 
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPreDesignModal">
+                                    Select Pre Design
+                                </button>
+                            </c:if>
                         </c:if>
                     </div>
                 </div>
@@ -328,7 +338,54 @@
             </div>
         </div>        
 
-
+        <!-- Pre-Design Selection Modal -->
+        <div class="modal fade" id="createPreDesignModal" tabindex="-1" role="dialog" aria-labelledby="createPreDesignModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document"> <!-- Using modal-lg for a larger modal if needed -->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="createPreDesignModalLabel">Select Pre-Design for Consultant</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" id="preDesignSearch" class="form-control" placeholder="Search by name or description...">
+                        </div>
+                        <div class="table-responsive">
+                            <!-- Table of Pre-Designs -->
+                            <table class="table table-hover">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th style="width: 40%;">Pre-Design Name</th>
+                                        <th style="width: 45%;">Description</th>
+                                        <th style="width: 15%;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="preDesignTableBody">
+                                    <c:forEach var="preDesign" items="${preDesignList}">
+                                        <tr>
+                                            <td>${preDesign.preDesignName}</td>
+                                            <td>${preDesign.preDesignDescription}</td>
+                                            <td>
+                                                <form action="${pageContext.request.contextPath}/consultant/addPreDesignToConsultant" method="post" class="d-inline">
+                                                    <input type="hidden" name="consultantId" value="${consultant.consultantId}">
+                                                    <input type="hidden" name="preDesignId" value="${preDesign.preDesignId}">
+                                                    <button type="submit" class="btn btn-success btn-sm">Select</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!-- Bootstrap JS and dependencies -->
 
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -342,6 +399,20 @@
                                                 const customerName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
                                                 const customerEmail = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
                                                 if (customerName.includes(searchValue) || customerEmail.includes(searchValue)) {
+                                                    row.style.display = '';
+                                                } else {
+                                                    row.style.display = 'none';
+                                                }
+                                            });
+                                        });
+                                        document.getElementById('preDesignSearch').addEventListener('input', function () {
+                                            const searchValue = this.value.toLowerCase();
+                                            const preDesignRows = document.querySelectorAll('#preDesignTableBody tr');
+
+                                            preDesignRows.forEach(row => {
+                                                const preDesignName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                                                const preDesignDescription = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                                                if (preDesignName.includes(searchValue) || preDesignDescription.includes(searchValue)) {
                                                     row.style.display = '';
                                                 } else {
                                                     row.style.display = 'none';
