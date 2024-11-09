@@ -7,6 +7,7 @@ package com.example.SWPKoiContructor.dao;
 
 import com.example.SWPKoiContructor.entities.Consultant;
 import com.example.SWPKoiContructor.entities.Customer;
+import com.example.SWPKoiContructor.entities.PreDesign;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.User;
 import java.util.List;
@@ -190,6 +191,12 @@ public class ConsultantDAO {
     public Consultant setCustomerForConsultant(int consultantId, Customer customer){
         Consultant consultant = getConsultantById(consultantId);
         consultant.setCustomer(customer);
+        return consultant;
+    }
+    
+    public Consultant setPreDesignForConsultant(int consultantId, PreDesign preDesign){
+        Consultant consultant = getConsultantById(consultantId);
+        consultant.setPredesign(preDesign);
         return consultant;
     }
 }
