@@ -27,17 +27,18 @@ public class DesignController {
     private DesignStageDetailService designStageDetailService;
     private CommentService commentService;
     private PaymentHistoryService paymentHistoryService;
-
+    private PreDesignService preDesignService;
     private NotificationService notificationService;
 
-    public DesignController(DesignService designService, DesignStageService designStageService, BluePrintService bluePrintService, DesignStageDetailService designStageDetailService, CommentService commentService, FileUtility fileUtility, PaymentHistoryService paymentHistoryService, NotificationService notificationService) {
+    public DesignController(FileUtility fileUtility, DesignService designService, DesignStageService designStageService, BluePrintService bluePrintService, DesignStageDetailService designStageDetailService, CommentService commentService, PaymentHistoryService paymentHistoryService, PreDesignService preDesignService, NotificationService notificationService) {
+        this.fileUtility = fileUtility;
         this.designService = designService;
         this.designStageService = designStageService;
         this.bluePrintService = bluePrintService;
         this.designStageDetailService = designStageDetailService;
         this.commentService = commentService;
-        this.fileUtility = fileUtility;
         this.paymentHistoryService = paymentHistoryService;
+        this.preDesignService = preDesignService;
         this.notificationService = notificationService;
     }
 
@@ -122,6 +123,23 @@ public class DesignController {
     }
 //=========================Designer Controller====================================//
 
+    @GetMapping("/designer/project/preDesign/{id}")
+    public String viewPreDesign(@PathVariable("id") int id, Model model,
+            HttpSession session, RedirectAttributes redirectAttributes) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        PreDesign preDesign = preDesignService.getPreDesignAndContentById(id);
+        if (preDesign != null) {
+            model.addAttribute("preDesign", preDesign);
+            return "designer/preDesignDetail";
+        }
+        return "redirect:/error/error-403";
+        
+    }
+
     @GetMapping("/designer/manage")
     public String listContractsByDesigner(Model model,
             HttpSession session,
@@ -166,7 +184,6 @@ public class DesignController {
         Contract contract = project.getContract();
         Quotes quote = contract.getQuote();
         Customer customer = project.getContract().getCustomer();
-        model.addAttribute("desgin", design);
         model.addAttribute("customer", customer);
         model.addAttribute("project", project);
         model.addAttribute("quote", quote);
@@ -203,7 +220,8 @@ public class DesignController {
     //View BluePrint, uploads image and update sumary file.
     @GetMapping("/designer/manage/blueprint/{designStageId}")
     public String manageBlueprint(@PathVariable("designStageId") int designStageId,
-            Model model, HttpSession session) {
+                                  @RequestParam int designId,
+                                  Model model, HttpSession session) {
 
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -223,7 +241,7 @@ public class DesignController {
 
         List<BluePrint> allBlueprints = bluePrintService.findByDesignStageId(designStageId);
         model.addAttribute("allBlueprints", allBlueprints);
-
+        model.addAttribute("designId", designId);
         List<BluePrint> feedbackBlueprints = bluePrintService.findByDesignStageIdWithComments(designStageId);
         model.addAttribute("feedbackBlueprints", feedbackBlueprints);
 
@@ -235,6 +253,7 @@ public class DesignController {
     @PostMapping("/designer/blueprint/upload")
     public String uploadBlueprint(
             @RequestParam("designStageId") int designStageId,
+            @RequestParam int designId,
             @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 
         DesignStage designStage = designStageService.getDesignStageById(designStageId);
@@ -243,7 +262,7 @@ public class DesignController {
 
         if (uploadedFilePath == null) {
             redirectAttributes.addFlashAttribute("error", "Choose file to uploads!");
-            return "redirect:/designer/manage/blueprint/" + designStageId;
+            return "redirect:/designer/manage/blueprint/" + designStageId + "?designId=" + designId;
         }
         BluePrint blueprint = new BluePrint();
         blueprint.setDesignStage(designStage);
@@ -263,12 +282,12 @@ public class DesignController {
                 "You are required to pay for design stage");
         System.out.println("VAI CA L ANH THONG");
         redirectAttributes.addFlashAttribute("success", "Upload Successfully!");
-        return "redirect:/designer/manage/blueprint/" + designStageId;
+        return "redirect:/designer/manage/blueprint/" + designStageId + "?designId=" + designId;
     }
 
     @PostMapping("/updateSummary/")
     public String updateSummaryFile(
-            @RequestParam("designStageId") int designStageId,
+            @RequestParam("designStageId") int designStageId,@RequestParam int designId,
             @RequestParam("file") MultipartFile file,
             RedirectAttributes redirectAttributes) {
         DesignStage designStage = designStageService.getDesignStageById(designStageId);
@@ -279,20 +298,20 @@ public class DesignController {
         // Update the design stage with the new summary file path
         designStage.setSummaryFile(uploadedFilePath);
         designStageService.updateDesignStage(designStage);
-        redirectAttributes.addFlashAttribute("success", "Upload Success!!");
-        return "redirect:/designer/manage/blueprint/" + designStageId;
+        redirectAttributes.addFlashAttribute("success", "Upload File Success!!");
+        return "redirect:/designer/manage/blueprint/" + designStageId + "?designId=" + designId;
     }
 
     @PostMapping("/delete/blueprint")
     public String deleteBlueprint(
-            @RequestParam("bluePrintId") int bluePrintId,
+            @RequestParam("bluePrintId") int bluePrintId,@RequestParam int designId,
             @RequestParam("designStageId") int designStageId, RedirectAttributes redirectAttributes) {
         // Delete the blueprint file and its record from the database
         BluePrint bluePrint = bluePrintService.getBluePrintById(bluePrintId);
         fileUtility.deleteFile(bluePrint.getImgUrl(), FileUtility.DESIGN_BLUEPRINT_DIR);
         bluePrintService.deleteBluePrint(bluePrintId);
-        redirectAttributes.addFlashAttribute("success", "Delete Success!!");
-        return "redirect:/designer/manage/blueprint/" + designStageId;
+        redirectAttributes.addFlashAttribute("success", "Delete Successfully!!");
+        return "redirect:/designer/manage/blueprint/" + designStageId + "?designId=" + designId;
     }
 //========================================End Design BluePrints=================================//
 
@@ -425,6 +444,7 @@ public class DesignController {
     @GetMapping("/customer/project/design/blueprint/{designStageId}")
     public String viewBlueprint(
             @PathVariable("designStageId") int designStageId, Model model,
+            @RequestParam int designId,
             HttpSession session, RedirectAttributes redirectAttributes) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
@@ -441,6 +461,7 @@ public class DesignController {
         }
 
         model.addAttribute("designStage", designStage);
+        model.addAttribute("designId", designId);
         // Fetch existing blueprints for this stage
         List<BluePrint> blueprints = bluePrintService.findByDesignStageId(designStageId);
         model.addAttribute("blueprints", blueprints);
@@ -452,6 +473,7 @@ public class DesignController {
     public String submitFeedback(
             @RequestParam("feedback") String feedbackContent,
             @RequestParam("designStageId") int designStageId,
+            @RequestParam int designId,
             @RequestParam(value = "blueprintsId", required = false) List<Integer> blueprintsId, // Lấy danh sách các bluePrint đã chọn
             HttpSession session,
             RedirectAttributes redirectAttributes) {
@@ -464,7 +486,7 @@ public class DesignController {
 
         if (blueprintsId == null || blueprintsId.isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Please choose image to submit feedback.");
-            return "redirect:/customer/project/design/blueprint/" + designStageId;
+            return "redirect:/customer/project/design/blueprint/" + designStageId + "?designId=" + designId;
 
         }
 
@@ -481,7 +503,7 @@ public class DesignController {
             commentService.saveComment(blueprintComment);
         }
         redirectAttributes.addFlashAttribute("success", "Feedback has been submitted successfully!");
-        return "redirect:/customer/project/design/blueprint/" + designStageId;
+        return "redirect:/customer/project/design/blueprint/" + designStageId + "?designId=" + designId;
     }
 
 }

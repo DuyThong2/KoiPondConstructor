@@ -281,7 +281,7 @@
                     <p>We accept various forms of payment, including credit cards, debit cards, and online payment methods.
                         Full payment must be made at the time of purchase. We reserve the right to cancel orders if payment fails.</p>
                     <h3>14. Cancellation Policy</h3>
-                    <p>You may cancel your order within 24 hours of placing it by contacting customer service.
+                    <p>You may cancel your order within 24 hours of placing it by contacting our Company service.
                         If the order has already been processed or shipped, cancellation may not be possible. Refunds for cancellations will be processed according to our refund policy.</p>
                 </div>
             </div>
