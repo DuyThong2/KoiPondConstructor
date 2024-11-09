@@ -151,6 +151,7 @@
                                 <option value="5" ${statusFilter == 5 ? 'selected' : ''}>Canceled</option>
                                 <option value="6" ${statusFilter == 6 ? 'selected' : ''}>Accepted by customer</option>
                                 <option value="7" ${statusFilter == 7 ? 'selected' : ''}>Project Created</option>
+                                <option value="8" ${statusFilter == 8 ? 'selected' : ''}>Payment confirmed</option>
                             </select>
                         </div>
 
@@ -240,6 +241,9 @@
                                 </c:when>
                                 <c:when test="${contract.contractStatus == 7}">
                                     <span class="badge badge-success badge-status">Project Created</span>
+                                </c:when>
+                                <c:when test="${contract.contractStatus == 8}">
+                                    <span class="badge badge-success badge-status">Payment confirmed</span>
                                 </c:when>
                             </c:choose>
                         </td>

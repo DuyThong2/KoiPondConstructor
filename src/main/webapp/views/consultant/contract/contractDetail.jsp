@@ -92,6 +92,7 @@
                             <th>Estimated End Date</th>
                             <td>${contract.estimatedEndDate}</td>
                         </tr>
+                        
                         <tr>
                             <th>Contract Status</th>
                             <td>
@@ -117,11 +118,14 @@
                                     <c:when test="${contract.contractStatus == 7}">
                                         <span class="badge badge-success status-badge">Project Created</span>
                                     </c:when>
+                                    <c:when test="${contract.contractStatus == 8}">
+                                        <span class="badge badge-warning status-badge">Confirmed Payment</span>
+                                    </c:when>
                                 </c:choose>
                             </td>
                         </tr>
                         <tr>
-                            <th>Total Price</th>
+                            <th>Total Price (not include deposit)</th>
                             <td>${contract.totalPrice}</td>
                         </tr>
                         <tr>
@@ -143,6 +147,10 @@
                         <tr>
                             <th>Price on Complete Construction</th>
                             <td>${contract.priceOnCompleteConstruction}</td>
+                        </tr>
+                        <tr>
+                            <th>Deposit Cost:</th>
+                            <td>${contract.depositOnContract}</td>
                         </tr>
                     </table>
                 </div>

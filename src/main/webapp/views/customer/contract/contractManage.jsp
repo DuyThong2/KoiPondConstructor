@@ -266,6 +266,9 @@
                                                         <c:when test="${contract.contractStatus == 7}">
                                                             <span class="badge badge-success badge-default status-badge">Project Created</span>
                                                         </c:when>
+                                                        <c:when test="${contract.contractStatus == 8}">
+                                                            <span class="badge badge-warning badge-default status-badge">payment confirmed</span>
+                                                        </c:when>
                                                     </c:choose>
                                                 </td>
                                                 <td>${contract.contractNote}</td>
