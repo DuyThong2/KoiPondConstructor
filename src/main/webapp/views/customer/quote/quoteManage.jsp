@@ -214,6 +214,7 @@
                                                 <th>Total Price</th>
                                                 <th>Design Price</th>
                                                 <th style="width: 10%">Construct Price</th>
+                                                <th style="width: 10%">Deposit On Contract</th>
                                                 <th>Status</th>
                                                 <th style="width: 10%">Action</th>
                                             </tr>
@@ -228,6 +229,7 @@
                                                     <td>${Quote.quotesTotalPrice}$</td>
                                                     <td>${Quote.quotesDesignCost}$</td>
                                                     <td>${Quote.quotesConstructionCost}$</td>
+                                                    <td>${Quote.depositOnContract}$</td>
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${Quote.quotesStatus == 2}">

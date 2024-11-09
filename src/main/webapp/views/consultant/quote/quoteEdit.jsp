@@ -152,6 +152,11 @@
                             <label for="totalPrice">Total Price:</label>
                             <form:input path="quotesTotalPrice" id="totalPrice" step="0.01" class="form-control" readonly="true" value="${newQuote.quotesTotalPrice}" />
                         </div>
+                        
+                        <div class="form-group">
+                            <label for="depositOnContract">Deposit On Contract:</label>
+                            <form:input type ="number" path="depositOnContract" id="depositOnContract" step="0.01" class="form-control" value="${newQuote.depositOnContract}"/>
+                        </div>
 
                         <button type="submit" class="btn btn-primary">Edit Quote</button>
                     </form:form>
@@ -283,7 +288,14 @@
                     const constructionCost = parseFloat(document.getElementById('constructionCost').value) || 0;
                     const totalPrice = parseFloat(document.getElementById('totalPrice').value) || 0;
                     const selectedParcelId = document.getElementById('selectedParcelId').value;
+                    const depositOnContract = parseFloat(document.getElementById('depositOnContract').value) || 0; // Get the deposit value
 
+                        // Validate depositOnContract field
+                    if (isNaN(depositOnContract) || depositOnContract <= 0) {
+                        alert('Deposit on contract must be a valid number greater than 0.');
+                        return false;
+                    }
+                    
                     if (!selectedParcelId) {
                         alert('Please select a parcel before submitting the form.');
                         return false;

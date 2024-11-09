@@ -108,6 +108,10 @@
                             <th>Quotes Construction Cost</th>
                             <td>${quotes.quotesConstructionCost}$</td>
                         </tr>
+                        <tr>
+                            <th>Deposit On Contract</th>
+                            <td>${quotes.depositOnContract}$</td>
+                        </tr>
                         <!-- Contract Status moved back into the table -->
                     </table>
 
