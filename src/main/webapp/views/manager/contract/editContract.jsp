@@ -194,7 +194,7 @@
                             <form:hidden path="fileURL"/>
 
                             <div class="form-group">
-                                <label for="totalPrice">Total Price:</label>
+                                <label for="totalPrice">Total Price (not include deposit):</label>
                                 <form:input path="totalPrice" id="totalPrice" step="0.01" class="form-control" readonly="true"/>
                             </div>
 
@@ -313,6 +313,12 @@
                                 <div class="form-group form-check-inline">
                                     <label for="estimatedEndDate">Estimated End Date:</label>
                                     <input type="date" id="estimatedEndDate" name="estimatedEndDate" class="form-control" style="width: 50%;" min="" required>
+                                </div>
+                            </div>
+                            <div style="margin: 25px 0 0 0">
+                                <div class="form-group form-check-inline">
+                                    <label>Contract Deposit:</label>
+                                    <form:input type="number" path="depositOnContract" style="width: 50%;" id="depositOnContract" step="0.01" min="0" value="${contract.depositOnContract}" required="true" class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -501,6 +507,7 @@
                         // Prevent form submission if the total price does not match the total quote price
                         document.querySelector('form').addEventListener('submit', function (event) {
                             const termOption = document.querySelector('input[name="termOption"]:checked');
+                            const depositOnContract = parseFloat(document.getElementById('depositOnContract').value);
                             if (!termOption) {
                                 alert('Please select a term option.');
                                 event.preventDefault();
@@ -569,6 +576,12 @@
 
                             if (Math.abs(totalConstruction - maxConstructionCost) > 0.1) {
                                 alert('The total of construction costs must match the quoted construction cost within a small tolerance.');
+                                event.preventDefault();
+                                return;
+                            }
+
+                            if (depositOnContract <= 0) {
+                                alert('The deposit amount must be greater than 0.');
                                 event.preventDefault();
                                 return;
                             }

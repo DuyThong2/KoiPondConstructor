@@ -163,13 +163,20 @@
                                             <span class="badge badge-success status-badge">Accepted</span>
                                         </c:when>
                                         <c:when test="${contract.contractStatus == 7}">
-                                            <span class="badge badge-success status-badge">Accepted</span>
+                                            <span class="badge badge-success status-badge">Project Created</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 8}">
+                                            <span class="badge badge-success status-badge">Confirmed Deposit</span>
                                         </c:when>
                                     </c:choose>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Total Price</th>
+                                <th>Deposit Cost:</th>
+                                <td>${contract.depositOnContract}</td>
+                            </tr>
+                            <tr>
+                                <th>Total Price (not include deposit)</th>
                                 <td>${contract.totalPrice}</td>
                             </tr>
                             <tr>
@@ -248,21 +255,39 @@
                                 <c:when test="${contract.contractStatus == 6 && empty contract.project}">
                                     <div class="mt-4 text-center">
                                         <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
-                                        <form action="${pageContext.request.contextPath}/manager/project/create" method="GET" class="d-inline">
+                                        <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
                                             <input type="hidden" name="id" value="${contract.contractId}">
-                                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
+                                            <input type="hidden" name="status" value="8">
+                                            <button type="submit" class="btn btn-success">Confirm Payment</button>
+                                        </form>
+                                        <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
+                                            <input type="hidden" name="id" value="${contract.contractId}">
+                                            <input type="hidden" name="status" value="5">
+                                            <button type="submit" class="btn btn-danger">Cancel</button>
                                         </form>
                                     </div>
 
                                 </c:when>
-                                <c:when test="${not empty contract.project}">
+                                <c:when test="${contract.contractStatus == 7 && not empty contract.project}">
                                     <div class="mt-4 text-center">
-                                        <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
+                                        <p>Status: <span class="badge badge-success">Project Created</span></p>
                                         <form action="${pageContext.request.contextPath}/manager/projects/detail/${contract.project.projectId}" method="GET" class="d-inline">
                                             <button type="submit" class="btn btn-success">VIEW PROJECT</button>
                                         </form>
                                     </div>
                                 </c:when>
+                                <c:when test="${contract.contractStatus == 8}">
+                                    <div class="mt-4 text-center">
+                                        <p>Status: <span class="badge badge-success">Confirmed payment</span></p>
+                                        
+                                            
+                                        <form action="${pageContext.request.contextPath}/manager/project/create" method="GET" class="d-inline">
+                                            <input type="hidden" name="id" value="${contract.contractId}">
+                                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
+                                        </form>
+                                    </div>
+                                </c:when>
+
                             </c:choose>
                         </div>
                     </div>

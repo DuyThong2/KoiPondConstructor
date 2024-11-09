@@ -177,305 +177,336 @@
                                     <c:when test="${contract.contractStatus == 6}">
                                         <span class="badge badge-success status-badge">Accepted</span>
                                     </c:when>
-                                        <c:when test="${contract.contractStatus == 7}">
+                                    <c:when test="${contract.contractStatus == 7}">
                                         <span class="badge badge-success status-badge">Project Created</span>
                                     </c:when>
-                                </c:choose>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>Total Price</th>
-                            <td>${contract.totalPrice}</td>
-                        </tr>
-                        <tr>
-                            <th>Price on Concept Design</th>
-                            <td>${contract.priceOnConceptDesign}</td>
-                        </tr>
-                        <tr>
-                            <th>Price on Construction Design</th>
-                            <td>${contract.priceOnConstructionDesign}</td>
-                        </tr>
-                        <tr>
-                            <th>Price on Detail Design</th>
-                            <td>${contract.priceOnDetailDesign}</td>
-                        </tr>
-                        <tr>
-                            <th>Price on Raw Construction</th>
-                            <td>${contract.priceOnRawConstruction}</td>
-                        </tr>
-                        <tr>
-                            <th>Price on Complete Construction</th>
-                            <td>${contract.priceOnCompleteConstruction}</td>
-                        </tr>
-                    </table>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <c:choose>
-                                <c:when test="${contract.contractStatus == 2}">
-                                    <div class="mt-4 text-center">
-                                        <button type="button" class="btn btn-success" data-toggle="modal"
-                                                data-target="#acceptModal"><i class="fas fa-check"></i> Accept</button>
-                                        <!--                            <form action="/customer/contract/editStatus" method="POST" class="d-inline">
-                                                            <input type="hidden" name="id" value="$/{contract.contractId}">
-                                                            <input type="hidden" name="status" value="3">
-                                                            <button type="submit" class="btn btn-warning">Reject</button>
-                                                        </form>-->
-                                        <button type="button" class="btn btn-lg btn-danger" data-toggle="modal"
-                                                data-target="#declineModal" onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
-                                                            document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
-                                                            document.getElementById('declineForm').status.value = '3';"><i
-                                                class="fas fa-times icon-btn"></i> Reject
-                                        </button>
-                                        <form action="${pageContext.request.contextPath}/customer/contract/editStatus"
-                                              method="POST" class="d-inline">
-                                            <input type="hidden" name="id" value="${contract.contractId}">
-                                            <input type="hidden" name="status" value="5">
-                                            <button type="submit" class="btn btn-lg btn-danger"><i class="fas fa-ban"></i> Cancel</button>
-                                        </form>
-                                    </div>
-                                </c:when>
-                                <c:when test="${contract.contractStatus == 3}">
-                                    <div class="mt-4 text-center">
-                                        <div class="alert alert-danger text-center" role="alert">
-                                            <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
-                                        </div>
-                                    </div>
+                                
+                                <c:when test="${contract.contractStatus == 8}">
+                                    <span class="badge badge-success status-badge">Payment confirmed</span>
                                 </c:when>
                             </c:choose>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Term Details Section (50%) -->
-                <div class="col-md-6 term-section">
-                    <h2 class="section-header text-primary"><i class="fas fa-file-alt"></i> Associated Term</h2>
-                    <c:if test="${not empty contract.term}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Deposit Cost:</th>
+                        <td>${contract.depositOnContract}</td>
+                    </tr>
+                    <tr>
+                        <th>Total Price (not include deposit)</th>
+                        <td>${contract.totalPrice}</td>
+                    </tr>
+                    <tr>
+                        <th>Price on Concept Design</th>
+                        <td>${contract.priceOnConceptDesign}</td>
+                    </tr>
+                    <tr>
+                        <th>Price on Construction Design</th>
+                        <td>${contract.priceOnConstructionDesign}</td>
+                    </tr>
+                    <tr>
+                        <th>Price on Detail Design</th>
+                        <td>${contract.priceOnDetailDesign}</td>
+                    </tr>
+                    <tr>
+                        <th>Price on Raw Construction</th>
+                        <td>${contract.priceOnRawConstruction}</td>
+                    </tr>
+                    <tr>
+                        <th>Price on Complete Construction</th>
+                        <td>${contract.priceOnCompleteConstruction}</td>
+                    </tr>
+                </table>
+                <div class="row">
+                    <div class="col-md-12">
                         <c:choose>
-                            <c:when test="${contract.term.followContract}">
-                                <p>This contract follows the predefined terms, with payments scheduled exactly as per the contract’s phases.</p>
-                                <table class="table table-hover">
-                                    <tr>
-                                        <th>Term ID</th>
-                                        <td>${contract.term.termId}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Term Description</th>
-                                        <td>${contract.term.description}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Payment Timing for Design</th>
-                                        <td>
-                                            <c:if test="${contract.term.payOnStartOfDesign}">
-                                                Pay at the start of the design stage.
-                                            </c:if>
-                                            <c:if test="${!contract.term.payOnStartOfDesign}">
-                                                Payment follows normal design stage completion.
-                                            </c:if>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Payment Timing for Construction</th>
-                                        <td>
-                                            <c:if test="${contract.term.payOnStartOfConstruction}">
-                                                Pay at the start of the construction stage.
-                                            </c:if>
-                                            <c:if test="${!contract.term.payOnStartOfConstruction}">
-                                                Payment follows normal construction stage completion.
-                                            </c:if>
-                                        </td>
-                                    </tr>
-                                </table>
+                            <c:when test="${contract.contractStatus == 2}">
+                                <div class="mt-4 text-center">
+                                    <button type="button" class="btn btn-success" data-toggle="modal"
+                                            data-target="#acceptModal"><i class="fas fa-check"></i> Accept</button>
+                                    <!--                            <form action="/customer/contract/editStatus" method="POST" class="d-inline">
+                                                        <input type="hidden" name="id" value="$/{contract.contractId}">
+                                                        <input type="hidden" name="status" value="3">
+                                                        <button type="submit" class="btn btn-warning">Reject</button>
+                                                    </form>-->
+                                    <button type="button" class="btn btn-lg btn-danger" data-toggle="modal"
+                                            data-target="#declineModal" onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
+                                                        document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
+                                                        document.getElementById('declineForm').status.value = '3';"><i
+                                            class="fas fa-times icon-btn"></i> Reject
+                                    </button>
+                                    <form action="${pageContext.request.contextPath}/customer/contract/editStatus"
+                                          method="POST" class="d-inline">
+                                        <input type="hidden" name="id" value="${contract.contractId}">
+                                        <input type="hidden" name="status" value="5">
+                                        <button type="submit" class="btn btn-lg btn-danger"><i class="fas fa-ban"></i> Cancel</button>
+                                    </form>
+                                </div>
                             </c:when>
-
-                            <c:otherwise>
-                                <table class="table table-hover">
-                                    <tr>
-                                        <th>Term ID</th>
-                                        <td>${contract.term.termId}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Term Description</th>
-                                        <td>${contract.term.description}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Payment on Concept Design</th>
-                                        <td>${contract.term.percentOnDesign1}%</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Payment on Detailed Design</th>
-                                        <td>${contract.term.percentOnDesign2}%</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Payment on Construction Design</th>
-                                        <td>${contract.term.percentOnDesign3}%</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Payment on Rough Construction</th>
-                                        <td>${contract.term.percentOnConstruct1}%</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Payment on Final Construction</th>
-                                        <td>${contract.term.percentOnConstruct2}%</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Payment Timing for Design</th>
-                                        <td>
-                                            <c:if test="${contract.term.payOnStartOfDesign}">
-                                                Pay at the start of the design stage.
-                                            </c:if>
-                                            <c:if test="${!contract.term.payOnStartOfDesign}">
-                                                Payment follows normal design stage completion.
-                                            </c:if>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>Payment Timing for Construction</th>
-                                        <td>
-                                            <c:if test="${contract.term.payOnStartOfConstruction}">
-                                                Pay at the start of the construction stage.
-                                            </c:if>
-                                            <c:if test="${!contract.term.payOnStartOfConstruction}">
-                                                Payment follows normal construction stage completion.
-                                            </c:if>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </c:otherwise>
+                            <c:when test="${contract.contractStatus == 3}">
+                                <div class="mt-4 text-center">
+                                    <div class="alert alert-danger text-center" role="alert">
+                                        <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                    </div>
+                                </div>
+                            </c:when>
+                            <c:when test="${contract.contractStatus == 6}">
+                                <div class="mt-4 text-center">
+                                    <form action="${pageContext.request.contextPath}/customer/contract/editStatus"
+                                          method="POST" class="d-inline">
+                                        <input type="hidden" name="id" value="${contract.contractId}">
+                                        <input type="hidden" name="status" value="5">
+                                        <button type="submit" class="btn btn-lg btn-danger"><i class="fas fa-ban"></i> Cancel</button>
+                                    </form>
+                                    <button type="button" class="btn btn-lg btn-danger" data-toggle="modal"
+                                            data-target="#declineModal" onclick="document.getElementById('declineForm').id.value = '${contract.contractId}';
+                                                        document.getElementById('declineForm').toUserId.value = '${contract.quote.staff.id}';
+                                                        document.getElementById('declineForm').status.value = '3';"><i
+                                            class="fas fa-times icon-btn"></i> Reject
+                                    </button>
+                                    <form action="${pageContext.request.contextPath}/paypal/pay/contract"
+                                          method="POST" class="d-inline">
+                                        <input type="hidden" name="detailId" value="${contract.contractId}" />
+                                       
+                                        <input type="hidden" name="amount" value="${contract.depositOnContract}" />
+                                        <button type="submit" class="btn btn-info">Pay with PayPal</button>
+                                    </form>
+                                </div>
+                            </c:when>
                         </c:choose>
-                    </c:if>
-                    <c:if test="${empty contract.term}">
-                        <p>No terms are associated with this contract.</p>
-                    </c:if>
+                    </div>
                 </div>
             </div>
 
-            <!-- Project and Customer Details Row -->
-            <div class="row">
-                <!-- Project Details (50%) -->
-                <div class="col-md-6 project-section">
-                    <h4 class="section-header text-primary"><i class="fas fa-project-diagram"></i> Associated
-                        Project</h4>
-                        <c:if test="${not empty contract.project}">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>Project ID</th>
-                                <td>${contract.project.projectId}</td>
-                            </tr>
-                            <tr>
-                                <th>Project Name</th>
-                                <td>${contract.project.projectName}</td>
-                            </tr>
-                            <tr>
-                                <th>Project Description</th>
-                                <td>${contract.project.description}</td>
-                            </tr>
-                        </table>
-                    </c:if>
-                    <c:if test="${empty contract.project}">
-                        <p class="text-muted">No project is associated with this contract.</p>
-                    </c:if>
-                </div>
+            <!-- Term Details Section (50%) -->
+            <div class="col-md-6 term-section">
+                <h2 class="section-header text-primary"><i class="fas fa-file-alt"></i> Associated Term</h2>
+                <c:if test="${not empty contract.term}">
+                    <c:choose>
+                        <c:when test="${contract.term.followContract}">
+                            <p>This contract follows the predefined terms, with payments scheduled exactly as per the contract’s phases.</p>
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>Term ID</th>
+                                    <td>${contract.term.termId}</td>
+                                </tr>
+                                <tr>
+                                    <th>Term Description</th>
+                                    <td>${contract.term.description}</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Timing for Design</th>
+                                    <td>
+                                        <c:if test="${contract.term.payOnStartOfDesign}">
+                                            Pay at the start of the design stage.
+                                        </c:if>
+                                        <c:if test="${!contract.term.payOnStartOfDesign}">
+                                            Payment follows normal design stage completion.
+                                        </c:if>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Timing for Construction</th>
+                                    <td>
+                                        <c:if test="${contract.term.payOnStartOfConstruction}">
+                                            Pay at the start of the construction stage.
+                                        </c:if>
+                                        <c:if test="${!contract.term.payOnStartOfConstruction}">
+                                            Payment follows normal construction stage completion.
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </table>
+                        </c:when>
 
-                <!-- Customer Details (50%) -->
-                <div class="col-md-6 customer-section">
-                    <h4 class="section-header text-primary"><i class="fas fa-user"></i> Associated Customer</h4>
-                    <c:if test="${not empty contract.customer}">
-                        <table class="table table-hover">
-                            <tr>
-                                <th>Customer Name</th>
-                                <td>${contract.customer.name}</td>
-                            </tr>
-                            <tr>
-                                <th>Customer Email</th>
-                                <td>${contract.customer.email}</td>
-                            </tr>
-                            <tr>
-                                <th>Customer Phone</th>
-                                <td>${contract.customer.phone}</td>
-                            </tr>
-                        </table>
-                    </c:if>
-                    <c:if test="${empty contract.customer}">
-                        <p>No customer is associated with this contract.</p>
-                    </c:if>
-                </div>
+                        <c:otherwise>
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>Term ID</th>
+                                    <td>${contract.term.termId}</td>
+                                </tr>
+                                <tr>
+                                    <th>Term Description</th>
+                                    <td>${contract.term.description}</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment on Concept Design</th>
+                                    <td>${contract.term.percentOnDesign1}%</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment on Detailed Design</th>
+                                    <td>${contract.term.percentOnDesign2}%</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment on Construction Design</th>
+                                    <td>${contract.term.percentOnDesign3}%</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment on Rough Construction</th>
+                                    <td>${contract.term.percentOnConstruct1}%</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment on Final Construction</th>
+                                    <td>${contract.term.percentOnConstruct2}%</td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Timing for Design</th>
+                                    <td>
+                                        <c:if test="${contract.term.payOnStartOfDesign}">
+                                            Pay at the start of the design stage.
+                                        </c:if>
+                                        <c:if test="${!contract.term.payOnStartOfDesign}">
+                                            Payment follows normal design stage completion.
+                                        </c:if>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Payment Timing for Construction</th>
+                                    <td>
+                                        <c:if test="${contract.term.payOnStartOfConstruction}">
+                                            Pay at the start of the construction stage.
+                                        </c:if>
+                                        <c:if test="${!contract.term.payOnStartOfConstruction}">
+                                            Payment follows normal construction stage completion.
+                                        </c:if>
+                                    </td>
+                                </tr>
+                            </table>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+                <c:if test="${empty contract.term}">
+                    <p>No terms are associated with this contract.</p>
+                </c:if>
             </div>
-
-            <!-- Action Button (Spanning Full Width) -->
-
         </div>
 
-        <!-- Decline Modal -->
-        <div class="modal fade" id="declineModal" tabindex="-1" role="dialog"
-             aria-labelledby="declineModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
-                    </div>
-                    <div class="modal-body">
-                        <form id="declineForm"
-                              action="${pageContext.request.contextPath}/customer/contract/editStatusAndFeedback"
-                              method="post">
-                            <input type="hidden" name="id" value="">
-                            <input type="hidden" name="status" value="">
-                            <input type="hidden" name="toUserId" value="">
-                            <div class="form-group">
-                                <label for="declineReason">Please provide a reason for declining this
-                                    quote:</label>
-                                <textarea class="form-control" id="declineReason" name="declineReason" rows="4" style="font-size: 20px"
-                                          required></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason &
-                            Decline</button>
-                    </div>
-                </div>
+        <!-- Project and Customer Details Row -->
+        <div class="row">
+            <!-- Project Details (50%) -->
+            <div class="col-md-6 project-section">
+                <h4 class="section-header text-primary"><i class="fas fa-project-diagram"></i> Associated
+                    Project</h4>
+                    <c:if test="${not empty contract.project}">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Project ID</th>
+                            <td>${contract.project.projectId}</td>
+                        </tr>
+                        <tr>
+                            <th>Project Name</th>
+                            <td>${contract.project.projectName}</td>
+                        </tr>
+                        <tr>
+                            <th>Project Description</th>
+                            <td>${contract.project.description}</td>
+                        </tr>
+                    </table>
+                </c:if>
+                <c:if test="${empty contract.project}">
+                    <p class="text-muted">No project is associated with this contract.</p>
+                </c:if>
+            </div>
+
+            <!-- Customer Details (50%) -->
+            <div class="col-md-6 customer-section">
+                <h4 class="section-header text-primary"><i class="fas fa-user"></i> Associated Customer</h4>
+                <c:if test="${not empty contract.customer}">
+                    <table class="table table-hover">
+                        <tr>
+                            <th>Customer Name</th>
+                            <td>${contract.customer.name}</td>
+                        </tr>
+                        <tr>
+                            <th>Customer Email</th>
+                            <td>${contract.customer.email}</td>
+                        </tr>
+                        <tr>
+                            <th>Customer Phone</th>
+                            <td>${contract.customer.phone}</td>
+                        </tr>
+                    </table>
+                </c:if>
+                <c:if test="${empty contract.customer}">
+                    <p>No customer is associated with this contract.</p>
+                </c:if>
             </div>
         </div>
-        <!-- Accept Modal -->
-        <div class="modal fade" id="acceptModal" tabindex="-3" role="dialog" aria-labelledby="acceptModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="acceptModalLabel">Accept Contract</h5>
-                    </div>
-                    <div class="modal-body">
-                        <p>I have read and agree to all the terms and conditions of this contract.</p>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="termsCheckbox" required>
-                            <label class="form-check-label" for="termsCheckbox">I agree to the terms and conditions.</label>
+
+        <!-- Action Button (Spanning Full Width) -->
+
+    </div>
+
+    <!-- Decline Modal -->
+    <div class="modal fade" id="declineModal" tabindex="-1" role="dialog"
+         aria-labelledby="declineModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="declineModalLabel">Reason for Declining</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="declineForm"
+                          action="${pageContext.request.contextPath}/customer/contract/editStatusAndFeedback"
+                          method="post">
+                        <input type="hidden" name="id" value="">
+                        <input type="hidden" name="status" value="">
+                        <input type="hidden" name="toUserId" value="">
+                        <div class="form-group">
+                            <label for="declineReason">Please provide a reason for declining this
+                                quote:</label>
+                            <textarea class="form-control" id="declineReason" name="declineReason" rows="4" style="font-size: 20px"
+                                      required></textarea>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-custom" data-dismiss="modal">Close</button>
-                        <form action="${pageContext.request.contextPath}/customer/contract/editStatus" method="POST"
-                              class="d-inline">
-                            <input type="hidden" name="id" value="${contract.contractId}">
-                            <input type="hidden" name="status" value="6">
-                            <button type="submit" class="btn btn-success btn-custom" id="acceptButton" disabled>Confirm & Accept</button>
-                        </form>
-                    </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" form="declineForm" class="btn btn-danger">Submit Reason &
+                        Decline</button>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- Accept Modal -->
+    <div class="modal fade" id="acceptModal" tabindex="-3" role="dialog" aria-labelledby="acceptModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="acceptModalLabel">Accept Contract</h5>
+                </div>
+                <div class="modal-body">
+                    <p>I have read and agree to all the terms and conditions of this contract.</p>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="termsCheckbox" required>
+                        <label class="form-check-label" for="termsCheckbox">I agree to the terms and conditions.</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-custom" data-dismiss="modal">Close</button>
+                    <form action="${pageContext.request.contextPath}/customer/contract/editStatus" method="POST"
+                          class="d-inline">
+                        <input type="hidden" name="id" value="${contract.contractId}">
+                        <input type="hidden" name="status" value="6">
+                        <button type="submit" class="btn btn-success btn-custom" id="acceptButton" disabled>Confirm & Accept</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-        <script>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
                                                 // Enable the accept button only if the checkbox is checked
                                                 document.getElementById('termsCheckbox').addEventListener('change', function () {
                                                     document.getElementById('acceptButton').disabled = !this.checked;
                                                 });
-        </script>
-    </body>
-    <%@include file="../footer.jsp" %>
-    <%@include file="../scriptTemplate.jsp" %>
+    </script>
+</body>
+<%@include file="../footer.jsp" %>
+<%@include file="../scriptTemplate.jsp" %>
 
 </html>
