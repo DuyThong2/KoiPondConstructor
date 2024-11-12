@@ -205,6 +205,7 @@
 
                 <!-- Main content -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                    <div style="height:5vh;"></div>
                     <!-- Service Information Section -->
                     <div class="section-card">
                         <h2 class="section-header d-flex justify-content-between"><span><i class="fas fa-cogs"></i> Service Information </span> <button class="btn btn-primary" id="updateServiceBtn">Update

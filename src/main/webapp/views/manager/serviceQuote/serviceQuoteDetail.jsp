@@ -219,6 +219,14 @@
                             </tr>
                         </table>
                         <div class="action-buttons">
+                            <c:if test="${serviceQuote.consultant != null}">
+                                <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/consultant/detail/${serviceQuote.consultant.consultantId}">
+                                    View Consultant Detail
+                                </a>
+                            </c:if>
+                        </div>
+
+                        <div class="action-buttons p-2">
                             <c:choose>
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
                                     <div class="">
@@ -335,16 +343,33 @@
                                                     <th>Service Id</th>
                                                     <th>Service Name</th>
                                                     <th>Service Description</th>
+                                                    <th>Detail</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach items="${serviceQuote.service}" var="service"> 
-                                                    <tr>
-                                                        <td>${service.serviceId}</td>
-                                                        <td>${service.serviceName}</td>
-                                                        <td>${service.serviceDescription}</td>
-                                                    </tr>
-                                                </c:forEach>
+                                                <c:if test="${not empty serviceQuote.serviceDetails}"> 
+                                                    <c:forEach items="${serviceQuote.serviceDetails}" var="service"> 
+                                                        <tr>
+                                                            <td>${service.id}</td>
+                                                            <td>${service.service.serviceName}</td>
+                                                            <td>${service.service.serviceDescription}</td>
+                                                                <td>
+                                                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/serviceDetail/detail/${service.id}">
+                                                                        View Consultant Detail
+                                                                    </a>
+                                                                </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </c:if>
+                                                <c:if test="${empty serviceQuote.serviceDetails}"> 
+                                                    <c:forEach items="${serviceQuote.service}" var="service"> 
+                                                        <tr>
+                                                            <td>${service.serviceId}</td>
+                                                            <td>${service.serviceName}</td>
+                                                            <td>${service.serviceDescription}</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </c:if>
                                             </tbody>                                                                                
                                         </table>
                                     </c:when>

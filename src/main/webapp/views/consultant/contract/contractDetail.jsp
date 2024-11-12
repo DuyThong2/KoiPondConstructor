@@ -49,8 +49,8 @@
             }
             .action-buttons {
                 display: flex;
-                justify-content: space-between;
-                margin-top: 20px;
+                justify-content: center;
+                gap: 15px;
             }
         </style>
     </head>
@@ -154,6 +154,41 @@
                             <td>${contract.depositOnContract}</td>
                         </tr>
                     </table>
+                    <div class="action-buttons">
+                        <c:choose>
+                            <c:when test="${contract.contractStatus == 3}">
+                                <div class="mt-4 text-center">
+                                    <div class="alert alert-danger text-center" role="alert">
+                                        <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                    </div>
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/quote/detail/${contract.quote.quotesId}">
+                                        View Quote Detail
+                                    </a>
+                                </div>
+                            </c:when>
+                            <c:when test="${contract.contractStatus == 4}">
+                                <div class="mt-4 text-center">
+                                    <div class="alert alert-danger text-center" role="alert">
+                                        <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                    </div>
+                                    <a class="btn btn-primary d-inline me-2 p-2" href="${pageContext.request.contextPath}/consultant/quote/detail/${contract.quote.quotesId}">
+                                        View Quote Detail
+                                    </a>
+                                    <form action="${pageContext.request.contextPath}/consultant/contract/edit" method="PUT" class="d-inline">
+                                        <input type="hidden" name="id" value="${contract.contractId}">
+                                        <button type="submit" class="btn btn-success p-2">
+                                            <i class="fas fa-edit icon-btn"></i> Edit Contract
+                                        </button>
+                                    </form>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/quote/detail/${contract.quote.quotesId}">
+                                    View Quote Detail
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div> 
                 </div>
             </div>
 
@@ -302,6 +337,10 @@
                                     <th>Customer Phone</th>
                                     <td>${contract.customer.phone}</td>
                                 </tr>
+                                <tr>
+                                    <th>Point</th>
+                                    <td>${totalPoint}</td>
+                                </tr>
                             </table>
                         </c:if>
                         <c:if test="${empty contract.customer}">
@@ -311,33 +350,7 @@
                 </div>
             </div>
 
-            <!-- Action Button (Spanning Full Width) -->
-            <div class="row">
-                <div class="col-md-12">
-                    <c:choose>
-                        <c:when test="${contract.contractStatus == 3}">
-                            <div class="text-center">
-                                <div class="alert alert-danger text-center" role="alert">
-                                    <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
-                                </div>
-                            </div>
-                        </c:when>
-                        <c:when test="${contract.contractStatus == 4}">
-                            <div class="text-center">
-                                <div class="alert alert-danger text-center" role="alert">
-                                    <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
-                                </div>
-                                <form action="${pageContext.request.contextPath}/consultant/contract/edit" method="PUT">
-                                    <input type="hidden" name="id" value="${contract.contractId}">
-                                    <button type="submit" class="btn btn-success btn-custom">
-                                        <i class="fas fa-edit icon-btn"></i> Edit Contract
-                                    </button>
-                                </form>
-                            </div>
-                        </c:when>
-                    </c:choose>
-                </div>
-            </div>
+
         </div>
 
         <!-- Bootstrap JS and dependencies -->

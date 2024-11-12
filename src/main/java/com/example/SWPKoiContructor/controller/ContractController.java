@@ -18,6 +18,7 @@ import com.example.SWPKoiContructor.services.TermService;
 import com.example.SWPKoiContructor.services.ContractService;
 import com.example.SWPKoiContructor.services.CustomerService;
 import com.example.SWPKoiContructor.services.FeedbackService;
+import com.example.SWPKoiContructor.services.LoyaltyPointService;
 import com.example.SWPKoiContructor.services.QuoteService;
 import com.example.SWPKoiContructor.services.StaffService;
 import com.example.SWPKoiContructor.services.UserService;
@@ -59,7 +60,8 @@ public class ContractController {
     private FeedbackService feedbackService;
     private EmailService emailService;
     private PaymentHistoryService paymentHistoryService;
-
+    private LoyaltyPointService loyaltyPointService;
+    
     private NotificationService notificationService;
 
     public ContractController(ContractService contractService, TermService termService, CustomerService customerService,
@@ -74,12 +76,12 @@ public class ContractController {
         this.contractDAO = contractDAO;
         this.userService = userService;
         this.feedbackService = feedbackService;
-        this.fileUtility = fileUtility;
-        this.notificationService = notificationService;
         this.emailService = emailService;
         this.paymentHistoryService = paymentHistoryService;
+        this.loyaltyPointService = loyaltyPointService;
+        this.notificationService = notificationService;
     }
-
+    
     @GetMapping("/manager/contract")
     public String listContracts(Model model,
             @RequestParam(defaultValue = "0") int page,
@@ -209,6 +211,9 @@ public class ContractController {
                 Feedback fb = feedbackService.getManagerSelfFeedback(id);
                 model.addAttribute("feedback", fb);
             }
+            if (contract.getCustomer() != null) {
+                model.addAttribute("totalPoint", loyaltyPointService.TotalPoints(contract.getCustomer().getId()));
+            }
             return "manager/contract/contractDetail";
         } else {
             return "redirect:/manager/contract";
@@ -232,6 +237,9 @@ public class ContractController {
                 User toUser = (User) session.getAttribute("user");
                 Feedback fb = feedbackService.getLatestContractFeedbackFromManager(id, toUser.getId());
                 model.addAttribute("feedback", fb);
+            }
+            if (contract.getCustomer() != null) {
+                model.addAttribute("totalPoint", loyaltyPointService.TotalPoints(contract.getCustomer().getId()));
             }
             return "consultant/contract/contractDetail";
         } else {

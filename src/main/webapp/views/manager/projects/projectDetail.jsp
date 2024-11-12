@@ -469,6 +469,9 @@
 
 
                                         </table>
+                                         <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/contract/detail/${project.contract.contractId}">
+                                            View Contract Detail
+                                        </a>
                                     </div>
 
                                 </div>
