@@ -137,6 +137,8 @@ public class ConsultantController {
         // Push the notification via WebSocket
         return "redirect:/manager/consultant/detail/" + id;
     }
+    
+    
     //--------------------------------------------  CONSULTANT SITE ---------------------------------------------
 
     @GetMapping("/consultant/viewConsultantList")
@@ -211,6 +213,23 @@ public class ConsultantController {
 
         Consultant consultant = consultantService.setPreDesign(consultantId, preDesign);
         return "redirect:/consultant/consultant/detail/" + consultantId;
+    }
+    
+    @GetMapping("/consultant/preDesign/{id}")
+    public String viewPreDesign(@PathVariable("id") int id, Model model,
+            HttpSession session, RedirectAttributes redirectAttributes) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        PreDesign preDesign = preDesignService.getPreDesignAndContentById(id);
+        if (preDesign != null) {
+            model.addAttribute("preDesign", preDesign);
+            return "consultant/preDesignDetail";
+        }
+        return "redirect:/error/error-403";
+        
     }
 
     //----------------------------------------------  CUSTOMER SITE ------------------------------------------

@@ -5,7 +5,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Create New Blog</title>
+        <title>Create Pre Design</title>
         <!-- Bootstrap 5 CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
@@ -108,7 +108,8 @@
 
                     <!-- Form for Creating a New Pre Design -->
                     <form:form method="post" enctype="multipart/form-data" modelAttribute="preDesign"
-                               action="${pageContext.request.contextPath}/manager/preDesign/save">
+                               action="${pageContext.request.contextPath}/manager/preDesign/save"
+                               onsubmit="return validateForm()">
 
                         <!-- Pre Design Name -->
                         <div class="form-group">
@@ -298,12 +299,51 @@
 
                                                     $('#parcelModal').modal('hide');
                                                 }
+                                                let isConfirmed = false;
+
+                                                function validateForm() {
+                                                    if (!isConfirmed) {
+                                                        const preDesignName = document.getElementById('preDesignName').value.trim();
+                                                        const preDesignDescription = document.getElementById('preDesignDescription').value.trim();
+                                                        const preDesignTime = document.getElementById('preDesignTime').value.trim();
+                                                        const parcelId = document.getElementById('selectedParcelId').value.trim();
+                                                        const content = document.getElementById('content').value.trim();
+                                                        const fileInput = document.getElementById('file').value;
+
+                                                        // Validate that all required text fields are not empty
+                                                        if (preDesignName === "" || preDesignDescription === "" || preDesignTime === "" || content === "") {
+                                                            alert('Please fill in all required fields: Pre Design Name, Description, Estimate Time, and Blog Content.');
+                                                            return false;
+                                                        }
+
+                                                        // Validate that a parcel is selected
+                                                        if (parcelId === "") {
+                                                            alert('Please select a Parcel.');
+                                                            return false;
+                                                        }
+
+                                                        // Validate that a file has been selected for upload
+                                                        if (fileInput === "") {
+                                                            alert('Please upload an image.');
+                                                            return false;
+                                                        }
+
+                                                        // Show confirmation message only the first time
+                                                        if (!confirm('Are you sure you want to create this Pre Design?')) {
+                                                            return false;
+                                                        }
+
+                                                        isConfirmed = true; // Mark as confirmed if the user clicks "Yes"
+                                                    }
+
+                                                    return true; // Proceed with form submission
+                                                }
         </script>
 
 
         <!-- Bootstrap JS and dependencies -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     </body>
 </html>
 
