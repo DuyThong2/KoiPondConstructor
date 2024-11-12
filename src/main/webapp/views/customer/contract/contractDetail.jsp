@@ -153,7 +153,7 @@
                         </tr>
                         <tr>
                             <th>Estimated End Date</th>
-                            <td><fmt:formatDate value="${contract.estimatedEndDate}" pattern="MMM dd yyyy" /></td>
+                             <td>${estimatedEndDate}</td>
                         </tr>
                         <tr>
                             <th>Contract Status</th>

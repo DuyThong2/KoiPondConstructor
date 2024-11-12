@@ -388,40 +388,6 @@
                                                 <th>Total Price:</th>
                                                 <td>${project.contract.totalPrice}</td>
                                             </tr>
-                                            <tr>
-                                                <th>Status:</th>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when
-                                                            test="${project.contract.contractStatus == 1}">
-                                                            <span class="badge bg-warning">Pending</span>
-                                                        </c:when>
-                                                        <c:when
-                                                            test="${project.contract.contractStatus == 2}">
-                                                            <span class="badge bg-info">Wait for
-                                                                customer</span>
-                                                            </c:when>
-                                                            <c:when
-                                                                test="${project.contract.contractStatus == 3}">
-                                                            <span class="badge bg-danger">Rejected
-                                                                (Customer)</span>
-                                                            </c:when>
-                                                            <c:when
-                                                                test="${project.contract.contractStatus == 4}">
-                                                            <span class="badge bg-danger">Rejected
-                                                                (Manager)</span>
-                                                            </c:when>
-                                                            <c:when
-                                                                test="${project.contract.contractStatus == 5}">
-                                                            <span class="badge bg-secondary">Canceled</span>
-                                                        </c:when>
-                                                        <c:when
-                                                            test="${project.contract.contractStatus == 6}">
-                                                            <span class="badge bg-success">Accepted</span>
-                                                        </c:when>
-                                                    </c:choose>
-                                                </td>
-                                            </tr>
                                         </table>
                                     </c:when>
                                     <c:otherwise>

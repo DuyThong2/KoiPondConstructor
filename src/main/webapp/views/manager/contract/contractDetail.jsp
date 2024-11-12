@@ -137,10 +137,13 @@
                                 <th>Date Created</th>
                                 <td><fmt:formatDate value="${contract.dateCreate}" pattern="MMM dd yyyy" /></td>
                             </tr>
-                            <tr>
-                                <th>Estimated End Date</th>
-                                <td><fmt:formatDate value="${contract.estimatedEndDate}" pattern="MMM dd yyyy" /></td>
-                            </tr>
+                            <c:if test="${not empty estimatedEndDate}">
+                                <tr>
+                                    <th>Estimated End Date</th>
+                                    <td>${estimatedEndDate}</td>
+                                </tr>
+                            </c:if>
+
                             <tr>
                                 <th>Contract Status</th>
                                 <td>

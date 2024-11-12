@@ -390,14 +390,14 @@
                                                 <td>${project.description}</td>
                                             </tr>
                                             <c:if test="${project.preDesign.preDesignId != null}">
-                                                 <tr>
+                                                <tr>
                                                     <th>Design Following</th>
                                                     <td><a href="${pageContext.request.contextPath}/manager/preDesign/detail/${project.preDesign.preDesignId}">${project.preDesign.preDesignName}</a></td>
                                                 </tr>
                                             </c:if>
                                             <tr>
                                                 <th>Start Date</th>
-                                                <td>${project.dateStart}</td>
+                                                <td><fmt:formatDate value="${project.dateStart}" pattern="MMM dd yyyy" /></td>
                                             </tr>
                                             <tr>
                                                 <th>End Date</th>
@@ -412,6 +412,12 @@
                                                     </c:choose>
                                                 </td>
                                             </tr>
+                                            <c:if test="${not empty estimatedEndDate}">
+                                                <tr>
+                                                    <th>Estimated End Date</th>
+                                                    <td>${estimatedEndDate}</td>
+                                                </tr>
+                                            </c:if>
                                             <tr>
                                                 <th>Project Content</th>
                                                 <td>
@@ -469,7 +475,7 @@
 
 
                                         </table>
-                                         <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/contract/detail/${project.contract.contractId}">
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/contract/detail/${project.contract.contractId}">
                                             View Contract Detail
                                         </a>
                                     </div>

@@ -394,7 +394,7 @@
                                             <c:if test="${comment.staff != null}">
                                                 <p><strong>Staff: ${comment.staff.name}</strong></p>
                                             </c:if>
-                                            <p class="text-muted small mb-0"><fmt:formatDate value="${comment.datePost.time}" pattern="dd-MM-yyyy HH:mm"/></p>
+                                            <p class="text-muted small mb-0"><fmt:formatDate value="${comment.datePost.time}" pattern="MMM dd yyyy HH:mm"/></p>
                                             <p class="mb-2"> ${comment.commentContent}</p>
                                         </div>
 

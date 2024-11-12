@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -188,7 +189,7 @@
             <table class="table table-bordered table-hover mt-3">
                 <thead class="thead-dark">
                 <tr>
-                    <th>Date Created</th>
+                    <th style="width: 10%">Date Created</th>
                     <th>File URL</th>
                     <th>Total Price</th>
                     <th>Contract Term</th>
@@ -200,7 +201,7 @@
                 <tbody>
                 <c:forEach var="contract" items="${contracts}">
                     <tr>
-                        <td>${contract.dateCreate}</td>
+                        <td> <fmt:formatDate value="${contract.dateCreate}" pattern="MMM dd yyyy" /></td>
                         <td>
                             <c:choose>
                                 <c:when test="${not empty contract.fileURL}">
