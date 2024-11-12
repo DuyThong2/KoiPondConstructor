@@ -48,8 +48,8 @@
             }
             .action-buttons {
                 display: flex;
-                justify-content: space-between;
-                margin-top: 20px;
+                justify-content: center;
+                gap: 15px;
             }
         </style>
     </head>
@@ -92,7 +92,7 @@
                             <th>Estimated End Date</th>
                             <td>${contract.estimatedEndDate}</td>
                         </tr>
-                        
+
                         <tr>
                             <th>Contract Status</th>
                             <td>
@@ -153,6 +153,41 @@
                             <td>${contract.depositOnContract}</td>
                         </tr>
                     </table>
+                    <div class="action-buttons">
+                        <c:choose>
+                            <c:when test="${contract.contractStatus == 3}">
+                                <div class="mt-4 text-center">
+                                    <div class="alert alert-danger text-center" role="alert">
+                                        <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                    </div>
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/quote/detail/${contract.quote.quotesId}">
+                                        View Quote Detail
+                                    </a>
+                                </div>
+                            </c:when>
+                            <c:when test="${contract.contractStatus == 4}">
+                                <div class="mt-4 text-center">
+                                    <div class="alert alert-danger text-center" role="alert">
+                                        <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
+                                    </div>
+                                    <a class="btn btn-primary d-inline me-2 p-2" href="${pageContext.request.contextPath}/consultant/quote/detail/${contract.quote.quotesId}">
+                                        View Quote Detail
+                                    </a>
+                                    <form action="${pageContext.request.contextPath}/consultant/contract/edit" method="PUT" class="d-inline">
+                                        <input type="hidden" name="id" value="${contract.contractId}">
+                                        <button type="submit" class="btn btn-success p-2">
+                                            <i class="fas fa-edit icon-btn"></i> Edit Contract
+                                        </button>
+                                    </form>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/quote/detail/${contract.quote.quotesId}">
+                                    View Quote Detail
+                                </a>
+                            </c:otherwise>
+                        </c:choose>
+                    </div> 
                 </div>
             </div>
 
@@ -253,94 +288,72 @@
                                 </table>
                             </c:otherwise>
                         </c:choose>
-                   
-                </c:if>
-                <c:if test="${empty contract.term}">
-                    <p>No terms are associated with this contract.</p>
-                </c:if>
-            </div>
 
-            <div class="col-md-6">
-                <div class="project-section mb-4">
-                    <h4 class="section-header"><i class="fas fa-project-diagram"></i> Associated Project</h4>
-                    <c:if test="${not empty contract.project}">
-                        <table class="table table-bordered">
-                            <tr>
-                                <th>Project ID</th>
-                                <td>${contract.project.projectId}</td>
-                            </tr>
-                            <tr>
-                                <th>Project Name</th>
-                                <td>${contract.project.projectName}</td>
-                            </tr>
-                            <tr>
-                                <th>Project Description</th>
-                                <td>${contract.project.description}</td>
-                            </tr>
-                        </table>
                     </c:if>
-                    <c:if test="${empty contract.project}">
-                        <p class="text-muted">No project is associated with this contract.</p>
+                    <c:if test="${empty contract.term}">
+                        <p>No terms are associated with this contract.</p>
                     </c:if>
                 </div>
 
-                <!-- Customer Section -->
-                <div class="customer-section">
-                    <h4 class="section-header"><i class="fas fa-user"></i> Associated Customer</h4>
-                    <c:if test="${not empty contract.customer}">
-                        <table class="table table-hover">
-                            <tr>
-                                <th>Customer Name</th>
-                                <td>${contract.customer.name}</td>
-                            </tr>
-                            <tr>
-                                <th>Customer Email</th>
-                                <td>${contract.customer.email}</td>
-                            </tr>
-                            <tr>
-                                <th>Customer Phone</th>
-                                <td>${contract.customer.phone}</td>
-                            </tr>
-                        </table>
-                    </c:if>
-                    <c:if test="${empty contract.customer}">
-                        <p class="text-muted">No customer is associated with this contract.</p>
-                    </c:if>
+                <div class="col-md-6">
+                    <div class="project-section mb-4">
+                        <h4 class="section-header"><i class="fas fa-project-diagram"></i> Associated Project</h4>
+                        <c:if test="${not empty contract.project}">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>Project ID</th>
+                                    <td>${contract.project.projectId}</td>
+                                </tr>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <td>${contract.project.projectName}</td>
+                                </tr>
+                                <tr>
+                                    <th>Project Description</th>
+                                    <td>${contract.project.description}</td>
+                                </tr>
+                            </table>
+                        </c:if>
+                        <c:if test="${empty contract.project}">
+                            <p class="text-muted">No project is associated with this contract.</p>
+                        </c:if>
+                    </div>
+
+                    <!-- Customer Section -->
+                    <div class="customer-section">
+                        <h4 class="section-header"><i class="fas fa-user"></i> Associated Customer</h4>
+                        <c:if test="${not empty contract.customer}">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>Customer Name</th>
+                                    <td>${contract.customer.name}</td>
+                                </tr>
+                                <tr>
+                                    <th>Customer Email</th>
+                                    <td>${contract.customer.email}</td>
+                                </tr>
+                                <tr>
+                                    <th>Customer Phone</th>
+                                    <td>${contract.customer.phone}</td>
+                                </tr>
+                                <tr>
+                                    <th>Point</th>
+                                    <td>${totalPoint}</td>
+                                </tr>
+                            </table>
+                        </c:if>
+                        <c:if test="${empty contract.customer}">
+                            <p class="text-muted">No customer is associated with this contract.</p>
+                        </c:if>
+                    </div>
                 </div>
             </div>
+
+
         </div>
 
-        <!-- Action Button (Spanning Full Width) -->
-        <div class="row">
-            <div class="col-md-12">
-                <c:choose>
-                    <c:when test="${contract.contractStatus == 3}">
-                        <div class="text-center">
-                            <div class="alert alert-danger text-center" role="alert">
-                                <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
-                            </div>
-                        </div>
-                    </c:when>
-                    <c:when test="${contract.contractStatus == 4}">
-                        <div class="text-center">
-                            <div class="alert alert-danger text-center" role="alert">
-                                <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
-                            </div>
-                            <form action="${pageContext.request.contextPath}/consultant/contract/edit" method="PUT">
-                                <input type="hidden" name="id" value="${contract.contractId}">
-                                <button type="submit" class="btn btn-success btn-custom">
-                                    <i class="fas fa-edit icon-btn"></i> Edit Contract
-                                </button>
-                            </form>
-                        </div>
-                    </c:when>
-                </c:choose>
-            </div>
-        </div>
-    </div>
+        <!-- Bootstrap JS and dependencies -->
 
-    <!-- Bootstrap JS and dependencies -->
-
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </body>
 </html>

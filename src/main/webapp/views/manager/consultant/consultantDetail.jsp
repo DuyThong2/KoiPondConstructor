@@ -137,7 +137,7 @@
                                 <h4 class="section-header text-primary">Associated Quotes</h4>
                                 <c:choose>
                                     <c:when test="${not empty consultant.quotes}">
-                                        <table class="table table-bordered">
+                                        <table class="table table-hover">
                                             <tr>
                                                 <th>Quotes ID</th>
                                                 <td>${consultant.quotes.quotesId}</td>
@@ -155,9 +155,12 @@
                                                 <td>${consultant.quotes.quotesContent}</td>
                                             </tr>
                                         </table>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${consultant.quotes.quotesId}">
+                                            See Quote Detail
+                                        </a>
                                     </c:when>
                                     <c:when test="${not empty consultant.serviceQuotes}">
-                                        <table class="table table-bordered">
+                                        <table class="table table-hover">
                                             <tr>
                                                 <th>Quotes ID</th>
                                                 <td>${consultant.serviceQuotes.serviceQuotesId}</td>
@@ -175,6 +178,9 @@
                                                 <td>${consultant.serviceQuotes.serviceQuotesContent}</td>
                                             </tr>
                                         </table>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/serviceQuote/detail/${consultant.serviceQuotes.serviceQuotesId}">
+                                            See Quote Detail
+                                        </a>
                                     </c:when>
                                     <c:otherwise>
                                         <p class="text-muted">No Quotes is associated with this consultant.</p>
@@ -186,7 +192,7 @@
                             <div class="customer-section mb-4">
                                 <h4 class="section-header text-primary">Associated Customer</h4>
                                 <c:if test="${not empty consultant.customer}">
-                                    <table class="table table-bordered">
+                                    <table class="table table-hover">
                                         <tr>
                                             <th>Customer ID</th>
                                             <td>${consultant.customer.id}</td>
@@ -202,6 +208,10 @@
                                         <tr>
                                             <th>Customer phone</th>
                                             <td>${consultant.customer.phone != null? consultant.customer.phone:' N/A'}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Point</th>
+                                            <td>${totalPoint}</td>
                                         </tr>
                                     </table>
                                 </c:if>

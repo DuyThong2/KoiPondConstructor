@@ -203,6 +203,9 @@
                         <div class="action-buttons">
                             <c:choose>
                                 <c:when test="${contract.contractStatus == 1}">
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                        View Quote Detail
+                                    </a>
                                     <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
                                         <input type="hidden" name="id" value="${contract.contractId}">
                                         <input type="hidden" name="status" value="2">
@@ -232,6 +235,9 @@
                                             <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                         </div>
                                         <p>Status: <span class="badge badge-danger">Refused by Customer</span></p>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                            View Quote Detail
+                                        </a>
                                         <form action="${pageContext.request.contextPath}/manager/contract/edit" method="GET" class="d-inline">
                                             <input type="hidden" name="id" value="${contract.contractId}">
                                             <button type="submit" class="btn btn-primary">Edit</button>
@@ -249,12 +255,18 @@
                                         <div class="alert alert-danger text-center" role="alert">
                                             <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                         </div>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                            View Quote Detail
+                                        </a>
                                     </div>
                                 </c:when>
 
                                 <c:when test="${contract.contractStatus == 6 && empty contract.project}">
                                     <div class="mt-4 text-center">
                                         <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                            View Quote Detail
+                                        </a>
                                         <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
                                             <input type="hidden" name="id" value="${contract.contractId}">
                                             <input type="hidden" name="status" value="8">
@@ -271,6 +283,9 @@
                                 <c:when test="${contract.contractStatus == 7 && not empty contract.project}">
                                     <div class="mt-4 text-center">
                                         <p>Status: <span class="badge badge-success">Project Created</span></p>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                            View Quote Detail
+                                        </a>
                                         <form action="${pageContext.request.contextPath}/manager/projects/detail/${contract.project.projectId}" method="GET" class="d-inline">
                                             <button type="submit" class="btn btn-success">VIEW PROJECT</button>
                                         </form>
@@ -279,15 +294,21 @@
                                 <c:when test="${contract.contractStatus == 8}">
                                     <div class="mt-4 text-center">
                                         <p>Status: <span class="badge badge-success">Confirmed payment</span></p>
-                                        
-                                            
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                            View Quote Detail
+                                        </a>
+
                                         <form action="${pageContext.request.contextPath}/manager/project/create" method="GET" class="d-inline">
                                             <input type="hidden" name="id" value="${contract.contractId}">
                                             <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
                                         </form>
                                     </div>
                                 </c:when>
-
+                                <c:otherwise>
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                        View Quote Detail
+                                    </a>
+                                </c:otherwise>
                             </c:choose>
                         </div>
                     </div>
@@ -437,6 +458,10 @@
                                         <tr>
                                             <th>Customer Phone</th>
                                             <td>${contract.customer.phone}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Point</th>
+                                            <td>${totalPoint}</td>
                                         </tr>
                                     </table>
                                 </c:if>

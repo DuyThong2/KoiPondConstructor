@@ -218,6 +218,14 @@
                             </tr>
                         </table>
                         <div class="action-buttons">
+                            <c:if test="${serviceQuote.consultant != null}">
+                                <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/consultant/detail/${serviceQuote.consultant.consultantId}">
+                                    View Consultant Detail
+                                </a>
+                            </c:if>
+                        </div>
+
+                        <div class="action-buttons p-2">
                             <c:choose>
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
                                     <div class="">
@@ -225,7 +233,7 @@
                                                 onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                         document.getElementById('acceptForm').status.value = '2';">Approve
                                         </button>
-    
+
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                                 onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                         document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
@@ -258,7 +266,7 @@
                                                         document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
                                                         document.getElementById('declineForm').status.value = '7';">Cancel
                                         </button>
-    
+
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                                 onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                         document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
@@ -281,14 +289,14 @@
                                                             document.getElementById('acceptForm').status.value = '10';">Confirm Payment
                                             </button>
                                         </c:when>
-    
+
                                         <c:when test="${serviceQuote.isAllServiceFailed()}">
                                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
                                                     onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                             document.getElementById('acceptForm').status.value = '7';">Cancel
                                             </button>
                                         </c:when>
-    
+
                                         <c:when test="${serviceQuote.isFree() || serviceQuote.isPayAfter || serviceQuote.calculateFullPaid() == 0}">
                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
                                                     onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
@@ -300,7 +308,7 @@
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
                                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
                                             onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                document.getElementById('acceptForm').status.value = '11';">Complete
+                                                    document.getElementById('acceptForm').status.value = '11';">Complete
                                     </button>
                                 </c:when>    
                             </c:choose>
@@ -334,16 +342,33 @@
                                                     <th>Service Id</th>
                                                     <th>Service Name</th>
                                                     <th>Service Description</th>
+                                                    <th>Detail</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach items="${serviceQuote.service}" var="service"> 
-                                                    <tr>
-                                                        <td>${service.serviceId}</td>
-                                                        <td>${service.serviceName}</td>
-                                                        <td>${service.serviceDescription}</td>
-                                                    </tr>
-                                                </c:forEach>
+                                                <c:if test="${not empty serviceQuote.serviceDetails}"> 
+                                                    <c:forEach items="${serviceQuote.serviceDetails}" var="service"> 
+                                                        <tr>
+                                                            <td>${service.id}</td>
+                                                            <td>${service.service.serviceName}</td>
+                                                            <td>${service.service.serviceDescription}</td>
+                                                                <td>
+                                                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/serviceDetail/detail/${service.id}">
+                                                                        View Consultant Detail
+                                                                    </a>
+                                                                </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </c:if>
+                                                <c:if test="${empty serviceQuote.serviceDetails}"> 
+                                                    <c:forEach items="${serviceQuote.service}" var="service"> 
+                                                        <tr>
+                                                            <td>${service.serviceId}</td>
+                                                            <td>${service.serviceName}</td>
+                                                            <td>${service.serviceDescription}</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </c:if>
                                             </tbody>                                                                                
                                         </table>
                                     </c:when>
@@ -429,7 +454,7 @@
                         </div>
                     </div>
 
-                    
+
 
 
             </div>

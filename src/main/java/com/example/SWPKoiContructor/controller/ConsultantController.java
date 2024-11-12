@@ -44,13 +44,15 @@ public class ConsultantController {
     private CustomerService customerService;
     private PreDesignService preDesignService;
     private NotificationService notificationService;
+    private LoyaltyPointService loyaltyPointService;
 
-    public ConsultantController(ConsultantService consultantService, StaffService staffService, CustomerService customerService, PreDesignService preDesignService, NotificationService notificationService) {
+    public ConsultantController(ConsultantService consultantService, StaffService staffService, CustomerService customerService, PreDesignService preDesignService, NotificationService notificationService, LoyaltyPointService loyaltyPointService) {
         this.consultantService = consultantService;
         this.staffService = staffService;
         this.customerService = customerService;
         this.preDesignService = preDesignService;
         this.notificationService = notificationService;
+        this.loyaltyPointService = loyaltyPointService;
     }
 
     //-------------------------------------  MANAGER SITE -------------------------------------------  
@@ -89,6 +91,9 @@ public class ConsultantController {
     public String getConsultantById(@PathVariable("id") int consultantId, Model model) {
         Consultant consultant = consultantService.getConsultantById(consultantId);
         model.addAttribute("consultant", consultant);
+        if (consultant.getCustomer() != null) {
+            model.addAttribute("totalPoint", loyaltyPointService.TotalPoints(consultant.getCustomer().getId()));
+        }
         return "manager/consultant/consultantDetail";
     }
 
@@ -104,15 +109,13 @@ public class ConsultantController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "8") int size,
             @RequestParam(required = false) String searchName,
-            @RequestParam(name = "consultantId")int consultantId) {
+            @RequestParam(name = "consultantId") int consultantId) {
         List<Staff> staffs;
         long totalStaff;
 
+        staffs = staffService.getAllConsultantStaff(page, size, searchName);
+        totalStaff = staffService.countAllConsultantStaff(page, size, searchName);
 
-            staffs = staffService.getAllConsultantStaff(page, size, searchName);
-            totalStaff = staffService.countAllConsultantStaff(page, size, searchName);
-
-            
         int totalPages = (int) Math.ceil((double) totalStaff / size);
         if (page > totalPages) {
             page = 0;
@@ -129,13 +132,12 @@ public class ConsultantController {
     public String updateConsultantStaff(@RequestParam("id") int id, @RequestParam("staffId") int staffId, Model model) {
         Staff consultantStaff = staffService.getStaffById(staffId);
         Consultant consultant = consultantService.updateConsultantStaff(id, consultantStaff);
-        String messageNotification = "You have been assigned to consultant of Customer:"+ consultant.getConsultantCustomerName();
-        notificationService.assignStaffNotification(consultantStaff.getId(),consultant.getConsultantId(),"consultant","consultant",messageNotification);
+        String messageNotification = "You have been assigned to consultant of Customer:" + consultant.getConsultantCustomerName();
+        notificationService.assignStaffNotification(consultantStaff.getId(), consultant.getConsultantId(), "consultant", "consultant", messageNotification);
         // Push the notification via WebSocket
         return "redirect:/manager/consultant/detail/" + id;
     }
     //--------------------------------------------  CONSULTANT SITE ---------------------------------------------
-
 
     @GetMapping("/consultant/viewConsultantList")
     public String getConsultantListByStaffId(Model model, HttpSession session,
@@ -176,6 +178,9 @@ public class ConsultantController {
             model.addAttribute("consultant", consultant);
             model.addAttribute("customerList", customerService.getCustomerListForChoose());
             model.addAttribute("preDesignList", preDesignService.getActivePreDesignList());
+            if (consultant.getCustomer() != null) {
+                model.addAttribute("totalPoint", loyaltyPointService.TotalPoints(consultant.getCustomer().getId()));
+            }
             return "consultant/consultantDetail";
         }
         return "redirect:/consultant/viewConsultantList";
@@ -198,12 +203,12 @@ public class ConsultantController {
 
         return "redirect:/consultant/consultant/detail/" + consultantId;
     }
-    
+
     @PostMapping("/consultant/addPreDesignToConsultant")
     public String addPreDesignToConsultant(@RequestParam("consultantId") int consultantId,
-                                            @RequestParam("preDesignId") int preDesignId){
+            @RequestParam("preDesignId") int preDesignId) {
         PreDesign preDesign = preDesignService.getPredesignById(preDesignId);
-        
+
         Consultant consultant = consultantService.setPreDesign(consultantId, preDesign);
         return "redirect:/consultant/consultant/detail/" + consultantId;
     }
@@ -211,32 +216,26 @@ public class ConsultantController {
     //----------------------------------------------  CUSTOMER SITE ------------------------------------------
     @PostMapping("/save")
     public String saveConsultantInWeb(@NotEmpty @Size(min = 2) @RequestParam("name") String name,
-            @RequestParam("phone")String phone,
-            @RequestParam("email")String email,
-            @RequestParam("content")String content,
+            @RequestParam("phone") String phone,
+            @RequestParam("email") String email,
+            @RequestParam("content") String content,
             @RequestParam("type") String type,
             @RequestParam(name = "preDesignId", required = false) Integer preDesignId,
             HttpSession session, RedirectAttributes redirectAttributes) {
         if (name == null || name.length() < 2) {
             redirectAttributes.addFlashAttribute("error", "Name must be at least 2 characters long.");
-            return "redirect:/"; 
-        }
-
-        else if (phone == null || phone.trim().isEmpty()) {
+            return "redirect:/";
+        } else if (phone == null || phone.trim().isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Phone number is required.");
             return "redirect:/";
-        }
-
-        else if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+        } else if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
             redirectAttributes.addFlashAttribute("error", "Please provide a valid email address.");
             return "redirect:/";
-        }
-
-        else if (content == null || content.trim().isEmpty()) {
+        } else if (content == null || content.trim().isEmpty()) {
             redirectAttributes.addFlashAttribute("error", "Content is required.");
             return "redirect:/";
         }
-        
+
         Consultant newConsultant = new Consultant();
         newConsultant.setConsultantCustomerName(name);
         newConsultant.setConsultantPhone(phone);
@@ -281,7 +280,7 @@ public class ConsultantController {
         totalConsultant = consultantService.countConsultantListOrderByAndSortCustomer(page, size, sortBy, sortDirection, statusFilter, customer);
 
         int totalPages = (int) Math.ceil((double) totalConsultant / size);
-       
+
         // Add attributes to the model for JSP rendering
         model.addAttribute("consultant", consultants);
         model.addAttribute("currentPage", page);
