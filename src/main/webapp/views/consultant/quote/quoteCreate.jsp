@@ -119,7 +119,7 @@
 
                         <!-- Area -->
                         <div class="form-group">
-                            <label for="area">Area (m<sup>2</sup>):</label>
+                            <label for="area">Area (m&sup2;):</label>
                             <form:input type ="number" path="quotesArea" id="area" step="0.01" class="form-control" />
                         </div>
 

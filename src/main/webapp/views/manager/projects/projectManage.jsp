@@ -270,7 +270,6 @@
                                 <th>Project Name</th>
                                 <th>Customer Name</th>
                                 <th>Date Start</th>
-                                <th>Estimated Date End </th>
                                 <th>Status</th>
                                 <th>Stage</th>
                                 <th>More</th>
@@ -283,8 +282,8 @@
                                     <td>${project.projectId}</td>
                                     <td>${project.projectName}</td>
                                     <td>${project.contract.quote.customer.name}</td>
-                                    <td class="date-cell" data-date="${project.dateStart}"></td>
-                                    <td class="date-cell" data-date="${project.contract.estimatedEndDate}"></td>
+                                    <td><fmt:formatDate value="${project.dateStart}" pattern="MMM dd yyyy" /></td>
+              
                                     <td>
                                         <c:choose>
                                             <c:when test="${project.status == 1}">

@@ -85,7 +85,7 @@ public class ProjectController {
         model.addAttribute("projectList", list);
         model.addAttribute("statusFilter", statusFilter);
         model.addAttribute("stageFilter", stageFilter);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
         String formattedFromDate = (getFromDate != null) ? getFromDate.format(formatter) : "";
         String formattedEndDate = (getEndDate != null) ? getEndDate.format(formatter) : "";
         System.out.println("From Date: " + getFromDate);
@@ -122,6 +122,11 @@ public class ProjectController {
             } catch (IllegalArgumentException e) {
                 System.out.println("Error decoding Base64: " + e.getMessage());
                 decodedContent = "Error decoding content";
+            }
+             if(project.getContract().getEstimatedEndDate() != null){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+            String formattedDate = project.getContract().getEstimatedEndDate().format(formatter);
+            model.addAttribute("estimatedEndDate", formattedDate);
             }
             System.out.println(decodedContent);
             model.addAttribute("customer", customer);
