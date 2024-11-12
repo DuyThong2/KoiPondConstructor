@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -86,11 +87,11 @@
                         </tr>
                         <tr>
                             <th>Date Created</th>
-                            <td>${contract.dateCreate}</td>
+                            <td><fmt:formatDate value="${contract.dateCreate}" pattern="MMM dd yyyy" /></td>
                         </tr>
                         <tr>
                             <th>Estimated End Date</th>
-                            <td>${contract.estimatedEndDate}</td>
+                            <td><fmt:formatDate value="${contract.estimatedEndDate}" pattern="MMM dd yyyy" /></td>
                         </tr>
 
                         <tr>

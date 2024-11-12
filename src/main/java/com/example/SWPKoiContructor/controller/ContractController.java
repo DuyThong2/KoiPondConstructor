@@ -64,8 +64,10 @@ public class ContractController {
     
     private NotificationService notificationService;
 
-    public ContractController(FileUtility fileUtility, ContractService contractService, TermService termService, CustomerService customerService, StaffService staffService, QuoteService quotesService, ContractDAO contractDAO, UserService userService, FeedbackService feedbackService, EmailService emailService, PaymentHistoryService paymentHistoryService, LoyaltyPointService loyaltyPointService, NotificationService notificationService) {
-        this.fileUtility = fileUtility;
+    public ContractController(ContractService contractService, TermService termService, CustomerService customerService,
+            StaffService staffService, QuoteService quotesService, PaymentHistoryService paymentHistoryService,
+            ContractDAO contractDAO, UserService userService, FeedbackService feedbackService,
+            FileUtility fileUtility, NotificationService notificationService, EmailService emailService) {
         this.contractService = contractService;
         this.termService = termService;
         this.customerService = customerService;
@@ -440,6 +442,8 @@ public class ContractController {
                 return "Canceled";
             case 6:
                 return "Accepted";
+            case 8:
+                return "payment confirmed";
             default:
                 return "Unknown";
         }
@@ -464,38 +468,58 @@ public class ContractController {
     }
 
     @PostMapping("/manager/contract/editStatus")
-    public String editStatusByManager(@RequestParam("id") int contractId, @RequestParam("status") int status) {
-        Contract contract = contractService.changeStatusContract(status, contractId);
-        Staff staff = contract.getQuote().getStaff();
-        String statusString = "";
-        Customer customer = contract.getCustomer();
-        if (status == 2) {
-            statusString = "Accepted";
-            notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract has been approved! Please check it!");
-        } else if (status == 4) {
-            statusString = "Rejected";
+    public String editStatusByManager(@RequestParam("id") int contractId, @RequestParam("status") int newStatus) {
+        // Retrieve the contract without changing its status
+        Contract contract = contractService.getContractById(contractId);
+        int currentStatus = contract.getContractStatus();
+
+        // If the current status is 8, prevent editing and reload the page
+        if (currentStatus == 8) {
+            return "redirect:/manager/contract/detail/" + contractId;
         }
-        if (status == 5) {
-            statusString = "Cancelled";
-            notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract has been cancelled!");
-        } else if (status == 8) {
-            statusString = "Payment Done";
-            // Send notification to customer
-            notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract is done. Please review if needed.");
-            // Create a PaymentHistory record
-        PaymentHistory paymentHistory = new PaymentHistory();
-        paymentHistory.setCustomer(customer);
-        BigDecimal amount = BigDecimal.valueOf(contract.getDepositOnContract());
-        paymentHistory.setAmount(amount);
-        paymentHistory.setPaymentDate(LocalDateTime.now());
-        paymentHistory.setPaymentMethod("PayPal");
-        paymentHistory.setDescription("Payment of " + amount + " for contract " + contractId + " by " + customer.getName());
-        paymentHistoryService.createPayment(paymentHistory);
+
+        // Only proceed with updating if the new status is different from the current status
+        if (newStatus != currentStatus) {
+            contract = contractService.changeStatusContract(newStatus, contractId); // Update the status now
+            Staff staff = contract.getQuote().getStaff();
+            String statusString = "";
+            Customer customer = contract.getCustomer();
+
+            // Determine the new status and send notifications
+            switch (newStatus) {
+                case 2:
+                    statusString = "Accepted";
+                    notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract has been approved! Please check it!");
+                    break;
+                case 4:
+                    statusString = "Rejected";
+                    break;
+                case 5:
+                    statusString = "Cancelled";
+                    notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract has been cancelled!");
+                    break;
+                case 8:
+                    statusString = "Payment Done";
+                    notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract is done. Please review if needed.");
+                    // Create a PaymentHistory record
+                    PaymentHistory paymentHistory = new PaymentHistory();
+                    paymentHistory.setCustomer(customer);
+                    BigDecimal amount = BigDecimal.valueOf(contract.getDepositOnContract());
+                    paymentHistory.setAmount(amount);
+                    paymentHistory.setPaymentDate(LocalDateTime.now());
+                    paymentHistory.setPaymentMethod("PayPal");
+                    paymentHistory.setDescription("Payment of " + amount + " for contract " + contractId + " by " + customer.getName());
+                    paymentHistoryService.createPayment(paymentHistory);
+                    notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract has become effective!");
+                    break;
+                default:
+                    break;
+            }
+
+            notificationService.changeNotificationToConsultant(staff.getId(), contract.getCustomer().getName(), contractId, newStatus, "Manager", "contract", statusString);
         }
-        notificationService.changeNotificationToConsultant(staff.getId(), contract.getCustomer().getName(), contractId, status, "Manager", "contract", statusString);
 
         return "redirect:/manager/contract/detail/" + contractId;
-
     }
 
     @PostMapping("/manager/contract/editStatusAndFeedback")

@@ -246,11 +246,11 @@
                                     </c:if>
                                     <tr>
                                         <th>Start Date:</th>
-                                        <td><fmt:formatDate value="${project.dateStart}" pattern="dd-MM-yyyy"/></td>
+                                        <td><fmt:formatDate value="${project.dateStart}" pattern="MMM dd yyyy"/></td>
                                     </tr>
                                     <tr>
                                         <th>End Date:</th>
-                                        <td><fmt:formatDate value="${project.dateEnd}" pattern="dd-MM-yyyy"/></td>
+                                        <td><fmt:formatDate value="${project.dateEnd}" pattern="MMM dd yyyy"/></td>
                                     </tr>
                                     <tr>
                                         <th>Status:</th>
@@ -382,7 +382,7 @@
                                             </tr>
                                             <tr>
                                                 <th>Date Created:</th>
-                                                <td>${project.contract.dateCreate}</td>
+                                                <td><fmt:formatDate value="${project.contract.dateCreate}" pattern="MMM dd yyyy"/></td>
                                             </tr>
                                             <tr>
                                                 <th>Total Price:</th>

@@ -17,55 +17,57 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service
 public class PreDesignService {
+
     private PreDesignDAO preDesignDAO;
 
     public PreDesignService(PreDesignDAO preDesignDAO) {
         this.preDesignDAO = preDesignDAO;
     }
-    
-    public List<PreDesign> getFilteredPredesignList(int page, int size, String sortBy, String sortDirection, Boolean statusFilter, String searchName){
+
+    public List<PreDesign> getFilteredPredesignList(int page, int size, String sortBy, String sortDirection, Boolean statusFilter, String searchName) {
         return preDesignDAO.getFilteredPreDesign(page, size, sortBy, sortDirection, statusFilter, searchName);
     }
-    
-    public long countFilteredPredesignList(Boolean statusFilter, String searchName){
+
+    public long countFilteredPredesignList(Boolean statusFilter, String searchName) {
         return preDesignDAO.countFilteredPreDesign(statusFilter, searchName);
     }
-    
-    public List<PreDesign> getPreDesignList(int page, int size, String sortBy, String sortDirection){
+
+    public List<PreDesign> getPreDesignList(int page, int size, String sortBy, String sortDirection) {
         return preDesignDAO.getPreDesignList(page, size, sortBy, sortDirection);
     }
-           
-    public long countPreDesignList(){
+
+    public long countPreDesignList() {
         return preDesignDAO.countPreDesignList();
     }
-    
-    public List<PreDesign> getPreDesignListForHomePage(int page, int size){
+
+    public List<PreDesign> getPreDesignListForHomePage(int page, int size) {
         return preDesignDAO.getPreDesignListForHomePage(page, size);
     }
-    
-    public long countPreDesignListOfHomePage(){
+
+    public long countPreDesignListOfHomePage() {
         return preDesignDAO.countPreDesignListOfHomepage();
     }
-    
-    public PreDesign getPredesignById(int id){
+
+    public PreDesign getPredesignById(int id) {
         return preDesignDAO.getPreDesignById(id);
     }
-    
+
     @Transactional
-    public PreDesign createNewPreDesign(PreDesign preDesign){
+    public PreDesign createNewPreDesign(PreDesign preDesign) {
         return preDesignDAO.createNewPreDesign(preDesign);
     }
-    
+
     @Transactional
-    public PreDesign updatePreDesign(PreDesign preDesign){
+    public PreDesign updatePreDesign(PreDesign preDesign) {
         return preDesignDAO.updatePreDesign(preDesign);
     }
-    
-    public PreDesign getPreDesignAndContentById(int preDesignId){
+
+    public PreDesign getPreDesignAndContentById(int preDesignId) {
         return preDesignDAO.getPreDesignAndContentById(preDesignId);
     }
+
     @Transactional
-    public PreDesign updatePreDesignStatus(int preDesignId, boolean status){
+    public PreDesign updatePreDesignStatus(int preDesignId, boolean status) {
         return preDesignDAO.updatePreDesignStatus(preDesignId, status);
     }
 
@@ -73,11 +75,16 @@ public class PreDesignService {
         return preDesignDAO.getRelatedPreDesign(id);
     }
 
-       public List<PreDesign> getPreDesignListIsActive() {
-           return preDesignDAO.getPreDesignListIsActive();
+
+    public List<PreDesign> getPreDesignListIsActive() {
+        return preDesignDAO.getPreDesignListIsActive();
+
        }
-    
-    public List<PreDesign> getActivePreDesignList(){
+
+
+    public List<PreDesign> getActivePreDesignList() {
+
+
         return preDesignDAO.getActivePreDesignList();
     }
 }

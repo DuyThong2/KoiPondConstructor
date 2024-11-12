@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -149,7 +150,7 @@
                             </tr>
                             <tr>
                                 <th>Date Created</th>
-                                <td>${serviceQuote.serviceQuotesDate}</td>
+                                <td><fmt:formatDate value="${serviceQuote.serviceQuotesDate}" pattern="MMM dd yyyy" /></td>
                             </tr>
                             <tr>
                                 <th>Service Quote Content</th>

@@ -241,8 +241,8 @@
                     <!-- Additional Information -->
                     <div class="additional-info">
                         <h4>Additional Information</h4>
-                        <p><strong>Start Date:</strong><fmt:formatDate value="${project.dateStart}" pattern="dd-MM-yyyy"/></p>
-                        <p><strong>Expected End Date:</strong><fmt:formatDate value="${project.dateEnd}" pattern="dd-MM-yyyy"/></p>
+                        <p><strong>Start Date:</strong><fmt:formatDate value="${project.dateStart}" pattern="MMM dd yyyy"/></p>
+                        <p><strong>Expected End Date:</strong><fmt:formatDate value="${project.dateEnd}" pattern="MMM dd yyyy"/></p>
                         <p><strong>Design Team:</strong>
                             <c:forEach var="staff" items="${design.staff}"> | ${staff.name} | </c:forEach>
                             </p>
@@ -255,8 +255,8 @@
                     <c:if test="${project.preDesign.preDesignId != null}">
                         <p>Template Design:<a href="${pageContext.request.contextPath}/home/preDesign/${project.preDesign.preDesignId}">  
                                 ${project.preDesign.preDesignName}</a></p></c:if>
-                          
-                    <p>Design Status:
+
+                        <p>Design Status:
                         <c:choose>
                             <c:when test="${design.status == 1}">
                                 <span class="badge badge-secondary">Pending</span>

@@ -51,7 +51,7 @@
                         </tr>
                         <tr>
                             <th>Date Created</th>
-                            <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>
+                            <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="MMM dd yyyy HH:mm"/></td>
                         </tr>
                         <tr>
                             <th>Consultant Status</th>

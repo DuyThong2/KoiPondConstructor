@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+   <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -147,8 +148,9 @@
                             <div class="col-md-6 col-lg-4 mb-4">
                                 <div class="card h-100">
                                     <!-- Adjusted Image Height -->
+                                    <a href="${pageContext.request.contextPath}/staff/blog/viewDetail/${blog.id}">
                                     <img src="${blog.getShowingImg(blog.imgUrl)}" class="card-img-top" alt="Blog Image" style="height: 250px; object-fit: cover;">
-
+                                    </a>
                                     <div class="card-body d-flex flex-column">
                                         <h5 class="card-title">${blog.name}</h5>
 
@@ -158,7 +160,7 @@
                                         </p>
 
                                         <p class="card-text">
-                                            <small class="text-muted">Posted on ${blog.datePost}</small>
+                                            <small class="text-muted">Posted on: <fmt:formatDate value="${blog.datePost}" pattern="MMM dd yyyy" /></small>
                                         </p>
 
                                         <!-- Button aligned at the bottom -->

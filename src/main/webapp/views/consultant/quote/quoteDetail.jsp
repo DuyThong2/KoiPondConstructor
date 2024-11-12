@@ -90,7 +90,7 @@
                         </tr>
                         <tr>
                             <th>Quotes Create Date</th>
-                            <td>${quotes.quotesDate}</td>
+                            <td> <fmt:formatDate value="${quotes.quotesDate}" pattern="MMM dd yyyy" /></td>
                         </tr>
                         <tr>
                             <th>Quotes Area In m&sup2</th>
@@ -225,7 +225,7 @@
                                     </tr>
                                     <tr>
                                         <th>Contract Create Date</th>
-                                        <td>${quotes.contract.dateCreate}</td>
+                                        <td> <fmt:formatDate value="${quotes.contract.dateCreate}" pattern="MMM dd yyyy" /></td>
                                     </tr>
                                 </tbody>
                             </table>
