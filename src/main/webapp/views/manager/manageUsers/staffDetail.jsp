@@ -294,7 +294,7 @@
                                                         <td>
                                                             <fmt:formatDate
                                                                 value="${consultant.consultantDateTime.time}"
-                                                                pattern="yyyy-MM-dd HH:mm" />
+                                                                pattern="MMM dd yyyy HH:mm" />
                                                         </td>
                                                         <td>${consultant.consultantPhone}</td>
                                                         <td>
@@ -309,7 +309,7 @@
                                                                     <span class="badge badge-success">Completed</span>
                                                                 </c:when>
                                                                 <c:when test="${consultant.consultantStatus == 5}">
-                                                                    <span class="badge badge-warning">Cancelled</span>
+                                                                    <span class="badge badge-warning">Canceled</span>
                                                                 </c:when>
                                                             </c:choose>
                                                         </td>

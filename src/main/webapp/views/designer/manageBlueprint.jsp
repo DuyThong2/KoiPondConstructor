@@ -184,7 +184,7 @@
                                 <div class="card">
                                     <img class="card-img-top" src="${blueprint.getShowingImg(blueprint.imgUrl)}" alt="Blueprint Image">
                                     <div class="card-body">
-                                        <p><strong>Date Uploaded:</strong> <fmt:formatDate value="${blueprint.dateCreate}" pattern="dd-MM-yyyy"/></p>
+                                        <p><strong>Date Uploaded:</strong> <fmt:formatDate value="${blueprint.dateCreate}" pattern="MMM dd yyyy"/></p>
                                         <div class="d-flex justify-content-between">
                                             <a href="${blueprint.getShowingImg(blueprint.imgUrl)}" class="btn btn-primary" target="_blank">View Full Image</a>
                                             <form action="${pageContext.request.contextPath}/delete/blueprint" method="post" onsubmit="return confirmDelete();">
@@ -216,14 +216,14 @@
                                             <img class="card-img-top rounded" src="${blueprint.getShowingImg(blueprint.imgUrl)}" alt="Blueprint Image" style="height: 250px; object-fit: cover;">
                                             <div class="card-body">
                                                 <p class="font-weight-bold text-primary">
-                                                    Date Uploaded: <fmt:formatDate value="${blueprint.dateCreate}" pattern="dd-MM-yyyy"/>
+                                                    Date Uploaded: <fmt:formatDate value="${blueprint.dateCreate}" pattern="MMM dd yyyy"/>
                                                 </p>
                                                 <div class="feedback-section">
                                                     <h5 class="text-success">Customer Feedback:</h5>
                                                     <div class="feedback-content">
                                                         <c:forEach var="comment" items="${blueprint.comments}">
                                                             <div class="feedback-item">
-                                                                <p class="text-muted small mb-0"><fmt:formatDate value="${comment.datePost.time}" pattern="dd-MM-yyyy HH:mm"/></p>
+                                                                <p class="text-muted small mb-0"><fmt:formatDate value="${comment.datePost.time}" pattern="MMM dd yyyy HH:mm"/></p>
                                                                 <p class="mb-2"> ${comment.commentContent}</p>
                                                             </div>
                                                         </c:forEach>

@@ -106,13 +106,13 @@
                 <p><strong>Description:</strong> ${construction.project.description}</p>
             </div>
             <div class="info-item">
-                <p><strong>Start Date: </strong><fmt:formatDate value="${construction.project.dateStart}" pattern="dd-MM-yyyy"/></p>
+                <p><strong>Start Date: </strong><fmt:formatDate value="${construction.project.dateStart}" pattern="MMM dd yyyy"/></p>
             </div>
             <div class="info-item">
                 <p><strong>End Date: </strong>
                     <c:choose>
                         <c:when test="${empty construction.project.dateEnd}">Not yet</c:when>
-                        <c:otherwise><fmt:formatDate value="${construction.project.dateEnd}" pattern="dd-MM-yyyy"/></c:otherwise>
+                        <c:otherwise><fmt:formatDate value="${construction.project.dateEnd}" pattern="MMM dd yyyy"/></c:otherwise>
                     </c:choose>
                 </p>
             </div>

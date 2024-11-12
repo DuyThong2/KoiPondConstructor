@@ -210,7 +210,7 @@
                                             <tr>
                                                 <th style="width: 13% ">Date Created</th>
                                                 <th>Name</th>
-                                                <th>Area</th>
+                                                <th style="width: 9%">Area</th>
                                                 <th>Total Price</th>
                                                 <th>Design Price</th>
                                                 <th style="width: 10%">Construct Price</th>
@@ -223,7 +223,7 @@
                                             <c:forEach var="Quote" items="${Quote}">
                                                 <!-- Main Row -->
                                                 <tr>
-                                                    <td><fmt:formatDate value="${Quote.quotesDate}" pattern="dd-MM-yyyy"/></td>
+                                                    <td><fmt:formatDate value="${Quote.quotesDate}" pattern="MMM dd yyyy"/></td>
                                                     <td>${Quote.quotesName}</td>
                                                     <td>${Quote.quotesArea} m²</td>
                                                     <td>${Quote.quotesTotalPrice}$</td>

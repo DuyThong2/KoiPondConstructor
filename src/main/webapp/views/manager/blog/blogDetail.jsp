@@ -1,5 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -116,7 +116,7 @@
 
                             <!-- Blog Date and Status -->
                             <div class="d-flex justify-content-between align-items-center">
-                                <p class="text-muted">Posted on: ${blog.datePost}</p>
+                                <p class="text-muted">Posted on:  <fmt:formatDate value="${blog.datePost}" pattern="MMM dd yyyy" /></p>
                                 <div class="blog-status">
                                     Status:
                                     <c:choose>

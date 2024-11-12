@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -149,7 +150,7 @@
                             </tr>
                             <tr>
                                 <th>Date Created</th>
-                                <td>${serviceQuote.serviceQuotesDate}</td>
+                                <td><fmt:formatDate value="${serviceQuote.serviceQuotesDate}" pattern="MMM dd yyyy" /></td>
                             </tr>
                             <tr>
                                 <th>Service Quote Content</th>
@@ -225,7 +226,7 @@
                                                 onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                         document.getElementById('acceptForm').status.value = '2';">Approve
                                         </button>
-    
+
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                                 onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                         document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
@@ -258,7 +259,7 @@
                                                         document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
                                                         document.getElementById('declineForm').status.value = '7';">Cancel
                                         </button>
-    
+
                                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
                                                 onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                         document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
@@ -281,14 +282,14 @@
                                                             document.getElementById('acceptForm').status.value = '10';">Confirm Payment
                                             </button>
                                         </c:when>
-    
+
                                         <c:when test="${serviceQuote.isAllServiceFailed()}">
                                             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
                                                     onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                             document.getElementById('acceptForm').status.value = '7';">Cancel
                                             </button>
                                         </c:when>
-    
+
                                         <c:when test="${serviceQuote.isFree() || serviceQuote.isPayAfter || serviceQuote.calculateFullPaid() == 0}">
                                             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
                                                     onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
@@ -300,7 +301,7 @@
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
                                     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
                                             onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                document.getElementById('acceptForm').status.value = '11';">Complete
+                                                    document.getElementById('acceptForm').status.value = '11';">Complete
                                     </button>
                                 </c:when>    
                             </c:choose>
@@ -429,7 +430,7 @@
                         </div>
                     </div>
 
-                    
+
 
 
             </div>

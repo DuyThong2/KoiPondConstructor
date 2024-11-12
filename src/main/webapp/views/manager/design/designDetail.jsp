@@ -279,7 +279,7 @@
                                                 <tbody>
                                                     <c:forEach var="bluePrint" items="${stage.bluePrint}">
                                                         <tr>
-                                                            <td>${bluePrint.dateCreate}</td>
+                                                            <td><fmt:formatDate value="${bluePrint.dateCreate}" pattern="MMM dd yyyy"/></td>
                                                             <td>
                                                                 <c:choose>
                                                                     <c:when test="${bluePrint.bluePrintStatus == 1}">
