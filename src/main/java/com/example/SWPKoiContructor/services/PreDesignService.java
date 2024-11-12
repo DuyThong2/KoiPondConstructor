@@ -75,7 +75,7 @@ public class PreDesignService {
 
        public List<PreDesign> getPreDesignListIsActive(){        
         return preDesignDAO.getPreDesignListIsActive();
-    
+       }
     public List<PreDesign> getActivePreDesignList(){
         return preDesignDAO.getActivePreDesignList();
     }
