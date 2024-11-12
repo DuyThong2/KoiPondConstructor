@@ -241,7 +241,7 @@
                         <tbody>
                             <c:forEach var="quote" items="${quoteList}">
                                 <tr>
-                                    <td>${quote.quotesDate}</td>
+                                    <td><fmt:formatDate value="${quote.quotesDate}" pattern="MMM dd yyyy" /></td>
                                     <td>${quote.quotesName}</td>
                                     <td>${quote.quotesContent}</td>
                                     <td>${quote.quotesArea} m&sup2</td>

@@ -104,7 +104,7 @@
                         <div class="search__wrapper">
                             <div class="search__top d-flex justify-content-between align-items-center">
                                 <div class="search__logo">
-                                    <a href="index.html">
+                                    <a href="#">
                                         <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                                     </a>
                                 </div>
@@ -151,7 +151,7 @@
                     <div class="offcanvas__content">
                         <div class="offcanvas__top d-flex justify-content-between align-items-center">
                             <div class="offcanvas__logo">
-                                <a href="index.html">
+                                <a href="#">
                                     <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="logo not found">
                                 </a>
                             </div>
@@ -176,7 +176,7 @@
                         </div>
                         <div class="offcanvas__btn">
                             <div class="header__btn-wrap">
-                                <a href="contact.html" class="rr-btn__header d-sm-none mb-10 w-100">
+                                <a href="#" class="rr-btn__header d-sm-none mb-10 w-100">
                                     <span class="btn-wrap">
                                         <span class="text-one">Get Started</span>
                                         <span class="text-two">Get Started</span>

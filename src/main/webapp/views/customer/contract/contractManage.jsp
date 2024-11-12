@@ -223,7 +223,7 @@
                                     <tbody>
                                         <c:forEach var="contract" items="${contracts}">
                                             <tr>
-                                                <td> <fmt:formatDate value="${contract.dateCreate}" pattern="dd-MM-yyyy"/></td>
+                                                <td> <fmt:formatDate value="${contract.dateCreate}" pattern="MMM dd yyyy"/></td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${not empty contract.fileURL}">

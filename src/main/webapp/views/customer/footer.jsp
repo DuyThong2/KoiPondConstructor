@@ -69,54 +69,7 @@
                         </div>
                     </div>
 
-                    <div class="col-lg-3 col-6">
-                        <div class="footer-2__widget footer-2__widget-item-4">
-                            <div class="footer-2__widget-title">
-                                <h4>Our Gallery</h4>
-                            </div>
-
-                            <div class="footer-2__widget-gallery">
-                                <div class="row g-10">
-                                    <div class="col-4">
-                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-1.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-1.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-2.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-2.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-3.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img Tiêu chí Đầu vào: Đây là các điều kiện tiên quyết, đảm bảo rằng dự án sẵn sàng để tiến hành quy trình kiểm soát thay đổi. Việc đặt ra tiêu chí đầu vào giúp tránh những thay đổi không hợp lý hoặc chưa chuẩn bị kỹ lưỡng.
-
-                                            Các Nhiệm vụ Cần Thực Hiện: Mỗi nhiệm vụ trong quy trình đều được gán trách nhiệm cụ thể cho từng vai trò trong dự án, giúp duy trì sự rõ ràng và minh bạch về trách nhiệm.
-                                            
-                                            Bước Xác minh: Đây là các bước kiểm tra để đảm bảo rằng các nhiệm vụ đã được hoàn thành đúng cách, tránh các sai sót có thể làm ảnh hưởng đến toàn bộ quy trình.
-                                            
-                                            Tiêu chí Đầu ra: Định nghĩa rõ ràng về tiêu chí đầu ra giúp xác định khi nào quy trình kiểm soát thay đổi đã hoàn tất thành công, mang lại sự rõ ràng và tránh việc kéo dài không cần thiết.="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-3.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-4.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-4.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-5.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-5.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-popup-6.jpg" class="footer-2__widget-gallery__item popup-image">
-                                            <img src="${pageContext.request.contextPath}/assets/imgs/gallery__item/gallery__item-6.jpg" alt="">
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                
                 </div>
             </div>
         </div>

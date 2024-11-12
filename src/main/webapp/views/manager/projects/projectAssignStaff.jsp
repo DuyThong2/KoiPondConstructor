@@ -261,12 +261,12 @@
                                 </div>
                                 <div class="info-item">
                                     <p><strong>Start Date:</strong>
-                                        <fmt:formatDate value="${project.dateStart}" pattern="yyyy-MM-dd" />
+                                        <fmt:formatDate value="${project.dateStart}" pattern="MMM dd yyyy" />
                                     </p>
                                 </div>
                                 <div class="info-item">
                                     <p><strong>End Date:</strong>
-                                        <fmt:formatDate value="${project.dateEnd}" pattern="yyyy-MM-dd" />
+                                        <fmt:formatDate value="${project.dateEnd}" pattern="MMM dd yyyy" />
                                     </p>
                                 </div>
                                 <div class="info-item">

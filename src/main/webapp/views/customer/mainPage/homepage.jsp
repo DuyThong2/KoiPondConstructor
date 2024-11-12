@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>HappiKoi</title>
-    <meta name="description" content="Ribuild - Construction Company HTML5 Template">
     <meta name="author" content="ahmmedsabbirbd">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico in the root directory -->
@@ -96,7 +95,7 @@
                 <div class="search__wrapper">
                     <div class="search__top d-flex justify-content-between align-items-center">
                         <div class="search__logo">
-                            <a href="index.html">
+                            <a href="#">
                                 <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                             </a>
                         </div>
@@ -168,7 +167,7 @@
                 </div>
                 <div class="offcanvas__btn">
                     <div class="header__btn-wrap">
-                        <a href="contact.html" class="rr-btn__header d-sm-none mb-10 w-100">
+                        <a href="#" class="rr-btn__header d-sm-none mb-10 w-100">
                             <span class="btn-wrap">
                                 <span class="text-one">Get Started</span>
                                 <span class="text-two">Get Started</span>
@@ -590,7 +589,7 @@
                                         <i class="fas fa-user"></i> ${blog.staff.name}
                                     </a>
                                     <a href="${pageContext.request.contextPath}/home/blogs/${blog.id}" class="text-secondary">
-                                        <i class="fas fa-calendar"></i> <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/>
+                                        <i class="fas fa-calendar"></i> <fmt:formatDate value="${blog.datePost}" pattern="MMM dd yyyy"/>
                                     </a>
                                 </div>
                                <div class="d-flex flex-column justify-content-around" style="min-height:200px;">

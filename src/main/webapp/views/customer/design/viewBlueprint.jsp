@@ -149,7 +149,7 @@
                     <div class="col-md-6">
                         <div class="section__title-wrapper text-center text-xl-start">
                             <span class="section__subtitle justify-content-start mb-13"><span
-                                                                                              class="left-separetor">
+                                    class="left-separetor">
                                 </span><a href="${pageContext.request.contextPath}/customer/design/detail/${designId}" class="theme-color">Project - Design</a></span>
                             <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
                                 data-cursor="-opaque">${designStage.designStageName}
@@ -162,7 +162,7 @@
         <div style="height:10vh;"></div>   
         <div class="container-fluid mt-5">
             <!-- Page Header -->
-        
+
             <!-- Existing Blueprints Section -->
             <div class="existing-blueprints">
                 <h3>Existing Blueprints</h3>
@@ -188,7 +188,7 @@
 
                                         <div class="card-body">
 
-                                            <p><strong>Date Uploaded:</strong> <fmt:formatDate value="${blueprint.dateCreate}" pattern="dd-MM-yyyy"/>.</p>
+                                            <p><strong>Date Uploaded:</strong> <fmt:formatDate value="${blueprint.dateCreate}" pattern="MMM dd yyyy"/>.</p>
                                         </div>
                                     </div>
                                 </div>
