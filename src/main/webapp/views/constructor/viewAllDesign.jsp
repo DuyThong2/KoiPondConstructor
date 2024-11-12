@@ -162,7 +162,7 @@
                                     <div class="card">
                                         <img class="card-img-top" src="${blueprint.getShowingImg(blueprint.imgUrl)}" alt="Blueprint Image">
                                         <div class="card-body">
-                                            <p><strong>Date Uploaded:</strong> <fmt:formatDate value="${blueprint.dateCreate}" pattern="dd-MM-yyyy"/></p>
+                                            <p><strong>Date Uploaded:</strong> <fmt:formatDate value="${blueprint.dateCreate}" pattern="MMM dd yyyy"/></p>
                                             <div class="d-flex justify-content-between">
                                                 <a href="${blueprint.getShowingImg(blueprint.imgUrl)}" class="btn btn-primary" target="_blank">View Full Image</a>
 

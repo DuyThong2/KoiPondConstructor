@@ -95,7 +95,7 @@
             <table class="table table-bordered table-hover">
                 <thead class="thead-dark">
                     <tr>
-                        <th style="width: 8%">Date</th>
+                        <th style="width: 9%">Date</th>
                         <th>Quote Name</th>
                         <th>Content</th>
                         <th>Area In m&sup2</th>
@@ -109,7 +109,7 @@
                 <tbody>
                     <c:forEach var="quote" items="${quoteList}">
                         <tr>
-                            <td><fmt:formatDate value="${quote.quotesDate}" pattern="dd-MM-yyyy"/></td>
+                            <td><fmt:formatDate value="${quote.quotesDate}" pattern="MMM dd yyyy"/></td>
                             <td>${quote.quotesName}</td>
                             <td>${quote.quotesContent}</td>
                             <td>${quote.quotesArea} m&sup2</td>

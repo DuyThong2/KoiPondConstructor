@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -162,11 +163,11 @@
                         <h4>Project Information</h4>
                         <p><strong>Project Name:</strong> ${project.projectName}</p>
                         <p><strong>Project Address:</strong> ${project.address}</p>
-                        <p><strong>Start Date:</strong> ${project.dateStart}</p>
-                        <p><strong>End Date:</strong>
+                        <p><strong>Start Date:</strong> <fmt:formatDate value="${project.dateStart}" pattern="MMM dd yyyy" /></p>
+                        <p><strong>End Date: </strong>
                             <c:choose>
                                 <c:when test="${empty project.dateEnd}">Not yet</c:when>
-                                <c:otherwise>${project.dateEnd}</c:otherwise>
+                                <c:otherwise><fmt:formatDate value="${project.dateEnd}" pattern="MMM dd yyyy" /></c:otherwise>
                             </c:choose>
                         </p>
                         <p><strong>Project Description:</strong> ${project.description}</p>

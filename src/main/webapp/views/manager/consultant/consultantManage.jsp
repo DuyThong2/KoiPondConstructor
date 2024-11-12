@@ -165,7 +165,7 @@
             <table class="table table-bordered table-hover mt-3">
                 <thead class="thead-dark">
                 <tr>
-                    <th>Date Created</th>
+                    <th style="width: 9%">Date Created</th>
                     <th>Customer Name</th>
                     <th>Phone</th>
                     <th>Email</th>
@@ -179,7 +179,7 @@
                 <tbody>
                 <c:forEach var="consultant" items="${consultants}">
                     <tr>
-                        <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="MMM dd yyyy HH:mm"/></td>
                         <td>${consultant.consultantCustomerName}</td>
                         <td>${consultant.consultantPhone}</td>
                         <td>${consultant.consultant_email}</td>

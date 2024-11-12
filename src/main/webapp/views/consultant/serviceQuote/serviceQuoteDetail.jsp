@@ -1,6 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -12,18 +13,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
-            body {
-                background-color: #f7f9fc;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            }
-
-            /* General Layout */
-            .container {
-                max-width: 1200px;
-                margin: auto;
-                padding: 20px;
-            }
-
+   
             .section-header {
                 margin-bottom: 20px;
                 padding-bottom: 10px;
@@ -125,12 +115,12 @@
         </style>
     </head>
     <body>
-        <div class="container-fluid mt-5">
+        <div class="container mt-5">
             <jsp:include page="../consultantNav.jsp"/>                <!-- Include Navbar -->
 
             <div class="row">
 
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <main role="main" class=" col-lg-12">
                     <!-- Contract Details Section -->
                     <div class="section-card">
                         <h2 class="section-header"><i class="fas fa-file-contract"></i> Service Quote Details</h2>
@@ -147,7 +137,7 @@
                             </tr>
                             <tr>
                                 <th>Date Created</th>
-                                <td>${serviceQuote.serviceQuotesDate}</td>
+                                <td><fmt:formatDate value="${serviceQuote.serviceQuotesDate}" pattern="MMM dd yyyy HH:mm" /></td>
                             </tr>
                             <tr>
                                 <th>Service Quote Content</th>

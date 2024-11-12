@@ -127,6 +127,11 @@
             .d-flex{
                 margin-top: 0;
             }
+            .btn-bigger{
+                font-size: 15px;
+                padding: 5px;
+                margin-bottom: 3px;
+            }
         </style>
     </head>
     <%@include file="../homePageNavbar.jsp"%>
@@ -214,7 +219,7 @@
                                             <c:forEach var="serviceQuote" items="${serviceQuote}">
                                                 <!-- Main Row -->
                                                 <tr>
-                                                    <td><fmt:formatDate value="${serviceQuote.serviceQuotesDate}" pattern="dd-mm-yyyy hh:mm"/></td>
+                                                    <td><fmt:formatDate value="${serviceQuote.serviceQuotesDate}" pattern="MMM dd yyyy"/></td>
                                                     <td>${serviceQuote.serviceQuotesName}</td>
                                                     <td>${serviceQuote.serviceQuotesArea} m²</td>
                                                     <td>${serviceQuote.serviceQuotesTotalPrice}</td>
@@ -253,19 +258,19 @@
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
-                                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModal"
+                                                                <button type="button" class="btn btn-success btn-bigger" data-toggle="modal" data-target="#acceptModal"
                                                                         onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                                                 document.getElementById('acceptForm').status.value = '4';">Approve
                                                                 </button>
 
-                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#declineModal"
+                                                                <button type="button" class="btn btn-danger btn-bigger" data-toggle="modal" data-target="#declineModal"
                                                                         onclick="document.getElementById('declineForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                                                 document.getElementById('declineForm').toUserId.value = '${serviceQuote.staff.id}';
                                                                                 document.getElementById('declineForm').status.value = '5';">Reject
                                                                 </button>
                                                             </c:when>
                                                             <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
-                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
+                                                                <button type="button" class="btn btn-danger btn-bigger" data-toggle="modal" data-target="#acceptModal"
                                                                         onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                                                 document.getElementById('acceptForm').status.value = '7';">Cancel
                                                                 </button>
@@ -276,10 +281,10 @@
                                                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
                                                                         <input type="hidden" name="amount" value="${serviceQuote.calculateDeposit()}" />
                                                                         <input type="hidden" name="point" value="${serviceQuote.calculatePointUsing()}" />
-                                                                        <button type="submit" class="btn btn-info">Pay Deposit</button>
+                                                                        <button type="submit" class="btn btn-info btn-bigger">Pay Deposit</button>
                                                                     </form>
                                                                 </c:if>
-                                                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#acceptModal"
+                                                                <button type="button" class="btn btn-danger btn-bigger" data-toggle="modal" data-target="#acceptModal"
                                                                         onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
                                                                                 document.getElementById('acceptForm').status.value = '7';">Cancel
                                                                 </button>
@@ -291,7 +296,7 @@
                                                                         <input type="hidden" name="serviceQuoteId" value="${serviceQuote.serviceQuotesId}" />
                                                                         <input type="hidden" name="amount" value="${serviceQuote.calculateFullPaid()}" />
                                                                         <input type="hidden" name="point" value="${serviceQuote.calculatePointUsing()}" />
-                                                                        <button type="submit" class="btn btn-info">Pay Full</button>
+                                                                        <button type="submit" class="btn btn-info btn-bigger">Pay Full</button>
                                                                     </form>
                                                                 </c:if>
                                                             </c:when>
@@ -299,7 +304,7 @@
 
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#details${serviceQuote.serviceQuotesId}" aria-expanded="false" aria-controls="details${serviceQuote.serviceQuotesId}">
+                                                        <button class="btn btn-info btn-bigger" type="button" data-toggle="collapse" data-target="#details${serviceQuote.serviceQuotesId}" aria-expanded="false" aria-controls="details${serviceQuote.serviceQuotesId}">
                                                             View More
                                                         </button>
                                                     </td>

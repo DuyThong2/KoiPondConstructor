@@ -369,8 +369,8 @@
                     <!-- Additional Information -->
                     <div class="additional-info">
                         <h4>Additional Information</h4>
-                        <p><strong>Start Date:</strong><fmt:formatDate value="${construction.project.dateStart}" pattern="dd-MM-yyyy"/></p>
-                        <p><strong>Expected End Date:</strong><fmt:formatDate value="${construction.project.dateEnd}" pattern="dd-MM-yyyy"/></p>
+                        <p><strong>Start Date:</strong ><fmt:formatDate value="${construction.project.dateStart}" pattern="MMM dd yyyy"/></p>
+                        <p><strong>Expected End Date:</strong> <fmt:formatDate value="${construction.project.dateEnd}" pattern="MMM dd yyyy"/></p>
                         <p><strong>Team:</strong>
                             <c:forEach var="staff" items="${construction.constructionStaffs}">
                                 | ${staff.staff.name} |

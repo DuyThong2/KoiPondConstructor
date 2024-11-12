@@ -119,7 +119,7 @@
 
                     <!-- Pre Design Title -->
                     <h2 class="blog-title">${preDesign.preDesignName}</h2>
-                    <!-- Pre Design Date and Status -->
+            
 
                     <br>
                     <!-- Pre Design Content Section -->
