@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Contract Details</title>
+        <title>Consultant Details</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -277,6 +277,7 @@
                                     </tr>
                                 </tbody>
                             </table>
+                            <a href="${pageContext.request.contextPath}/consultant/preDesign/${consultant.predesign.preDesignId}"  class="btn btn-primary">View Pre Design</a>
                             <c:if test="${consultant.consultantStatus < 4}">
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPreDesignModal">
                                     Select Pre Design
