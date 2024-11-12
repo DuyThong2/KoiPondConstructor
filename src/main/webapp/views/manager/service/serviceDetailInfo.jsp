@@ -130,6 +130,7 @@
                                              </button>
                                              
                                         </c:if>
+                                        <a href="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}" class="btn btn-warning btn-md mt-4"> Manage </a>
                                    </div>
 
                                    <div class="row">
