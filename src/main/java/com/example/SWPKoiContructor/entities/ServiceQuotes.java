@@ -312,7 +312,10 @@ public class ServiceQuotes {
     public double calculateDeposit(){
         double deposit = serviceQuotesTotalPrice / 2;
         double pointUsing = usedPoint;
-        if(isPayAfter){
+        if(isFree()){
+            deposit = 0;
+        }
+        else if(isPayAfter){
             deposit = serviceQuotesTotalPrice - usedPoint;
         }
         else if(pointUsing > deposit){

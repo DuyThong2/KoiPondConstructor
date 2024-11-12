@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Service Quote Manage Customer</title>
+        <title>My Service Quote</title>
         <!-- Bootstrap CSS -->
 
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />

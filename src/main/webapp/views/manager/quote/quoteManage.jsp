@@ -5,7 +5,7 @@
 <html>
 
     <head>
-        <title>Contract Details</title>
+        <title>Quote Management</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet"

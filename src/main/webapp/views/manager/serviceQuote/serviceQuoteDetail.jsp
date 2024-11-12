@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Service Quote Details Manager</title>
+        <title>Service Quote Details</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
@@ -355,7 +355,7 @@
                                                             <td>${service.service.serviceDescription}</td>
                                                                 <td>
                                                                     <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/serviceDetail/detail/${service.id}">
-                                                                        View Consultant Detail
+                                                                        View
                                                                     </a>
                                                                 </td>
                                                         </tr>

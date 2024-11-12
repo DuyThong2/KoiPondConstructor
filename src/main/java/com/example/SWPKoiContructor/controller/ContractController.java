@@ -68,8 +68,10 @@ public class ContractController {
     public ContractController(ContractService contractService, TermService termService, CustomerService customerService,
             StaffService staffService, QuoteService quotesService, PaymentHistoryService paymentHistoryService,
             ContractDAO contractDAO, UserService userService, FeedbackService feedbackService,
+
             FileUtility fileUtility, NotificationService notificationService, EmailService emailService,
             LoyaltyPointService loyaltyPointService) {
+
         this.contractService = contractService;
         this.termService = termService;
         this.customerService = customerService;
