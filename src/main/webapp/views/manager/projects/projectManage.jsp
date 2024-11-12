@@ -406,6 +406,7 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
+                                            
                                             <thead>
                                                 <tr class="table-info">
                                                     <th colspan="12">Construction Information</th>
