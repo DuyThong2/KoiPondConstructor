@@ -1,7 +1,9 @@
 package com.example.SWPKoiContructor.controller.functionalController;
 
+import com.example.SWPKoiContructor.entities.ConstructionStageDetail;
 import com.example.SWPKoiContructor.entities.Contract;
 import com.example.SWPKoiContructor.entities.Customer;
+import com.example.SWPKoiContructor.entities.DesignStageDetail;
 import com.example.SWPKoiContructor.entities.PaymentHistory;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.services.*;
@@ -48,7 +50,7 @@ public class PayPalController {
 
     @Autowired
     private LoyaltyPointService loyaltyPointService;
-    
+
     @Autowired
     private ContractService contractService;
 
@@ -67,6 +69,12 @@ public class PayPalController {
             @RequestParam("detailId") int detailId,
             @RequestParam("constructionId") int constructionId) {
         // Dynamically build the base URL
+        ConstructionStageDetail detail = constructionStageDetailService.getConstructionStageDetail(detailId);
+
+        // If the status condition is met, redirect to the payment details page
+        if ("payment".equalsIgnoreCase(detail.getConstructionStageDetailName()) && detail.getConstructionStageDetailStatus() == 4) {
+            return new RedirectView("/customer/construction/detail/" + constructionId);
+        }
         String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
                 .replacePath(null)
                 .build()
@@ -100,6 +108,13 @@ public class PayPalController {
             @RequestParam("detailId") int detailId,
             @RequestParam("designId") int designId) {
         // Dynamically build the base URL
+
+        DesignStageDetail detail = designStageDetailService.getDesignStageDetailById(detailId);
+
+        // If the status condition is met, redirect to the payment details page
+        if ("payment".equalsIgnoreCase(detail.getName()) && detail.getStatus() == 4) {
+            return new RedirectView("/customer/design/detail/" + designId);
+        }
         String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
                 .replacePath(null)
                 .build()
@@ -308,6 +323,13 @@ public class PayPalController {
             @RequestParam("amount") double amount,
             @RequestParam("detailId") int contractId) {
         // Dynamically build the base URL
+        Contract contract = contractService.getContractById(contractId);
+
+        // If the contract status is 8, redirect to the payment details page
+        if (contract.getContractStatus() == 8) {
+            return new RedirectView("/customer/contract/detail/" + contractId);
+        }
+
         String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
                 .replacePath(null)
                 .build()
