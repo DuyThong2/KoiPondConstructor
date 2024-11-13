@@ -4,13 +4,13 @@
 <!doctype html>
 <html class="no-js" lang="zxx">
 
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>My Project</title>
-        <meta name="description" content="Ribuild - Construction Company HTML5 Template">
-        <meta name="author" content="ahmmedsabbirbd">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+            <head>
+                <meta charset="utf-8">
+                <meta http-equiv="x-ua-compatible" content="ie=edge">
+                <title>My Project</title>
+                <meta name="description" content="HappiKoi">
+                <meta name="author" content="ahmmedsabbirbd">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet"
@@ -516,9 +516,9 @@
                                 // Hide cancel request modal
                                 $('#cancelRequestModal').modal('hide');
                                 $('#cancelRequestModal').removeClass('canRequestModalAppear');
-
+                                $('.modal-backdrop').remove();
                                 // Show success message
-                                alert("Cancellation request sent successfully!");
+                                
                             },
                             error: function (xhr, status, error) {
                                 alert("An error occurred while sending the cancellation request. Please try again.");

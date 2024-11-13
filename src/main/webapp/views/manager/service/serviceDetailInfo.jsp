@@ -122,20 +122,22 @@
                                 <td>${serviceDetail.price}</td>
                             </tr>
                         </table>
-                        <div class="text-center">
-                            <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/serviceQuote/detail/${serviceDetail.serviceQuotes.serviceQuotesId}">
+                        <!-- Add View Request button for status 4 (Requesting Cancel) -->
+                        <div class="w-100 d-flex justify-content-center">
+                            <a class="btn btn-primary btn-md mt-4 mr-2" href="${pageContext.request.contextPath}/manager/serviceQuote/detail/${serviceDetail.serviceQuotes.serviceQuotesId}">
                                 View Service Quote Detail
                             </a>
-                        </div>
-                        <!-- Add View Request button for status 4 (Requesting Cancel) -->
-                        <c:if test="${serviceDetail.serviceDetailStatus == 4}">
-                            <button id="viewRequestBtn-${serviceDetail.id}" type="button"
-                                    class="btn btn-danger btn-md mt-4"
-                                    onclick="showModal(${serviceDetail.id})";> 
-                                View Request
-                            </button>
+                            <c:if test="${serviceDetail.serviceDetailStatus == 4}">
+                                 <button id="viewRequestBtn-${serviceDetail.id}" type="button"
+                                         class="btn btn-danger btn-md mt-4"
+                                          onclick="showModal(${serviceDetail.id})";> 
+                                      View Request
+                                 </button>
+                                 
+                            </c:if>
 
-                        </c:if>
+                            <a href="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}" class="btn btn-warning btn-md mt-4"> Manage </a>
+                       </div>
                     </div>
 
                     <div class="row">

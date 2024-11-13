@@ -300,6 +300,17 @@ public class ServiceDetailController {
                     .body("Error updating status: " + e.getMessage());
         }
     }
+    @PostMapping("/manager/serviceDetails/updateStatus")
+    public String updateServiceDetailStatus(
+            @RequestParam("serviceDetailId") int serviceDetailId,
+            @RequestParam("newStatus") int newStatus) {
+            ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
+            if (serviceDetail != null && serviceDetail.getServiceDetailStatus()!=3) {
+                serviceDetail.setServiceDetailStatus(newStatus); // Update status
+                serviceDetailService.updateServiceDetail(serviceDetail); // Save updated status
+            }
+            return "redirect:/manager/serviceDetails/assign/"+serviceDetailId;
+    }
 
     @PostMapping("/manager/serviceDetails/assignStaffAjax")
     @ResponseBody
