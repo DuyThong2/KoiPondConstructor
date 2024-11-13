@@ -140,7 +140,7 @@ public class ServiceQuoteController {
         if (statusId == 2) {
             notificationService.createNotification(serviceQuoteId, "serviceQuote", serviceQuotes.getCustomer().getId(), "customer", "Your service quotes has been created!");
         } else if (statusId == 3) {
-            notificationService.createNotification(serviceQuoteId, "serviceQuote", serviceQuotes.getConsultant().getStaff().getId(), "consultant", "Your service quotes has been denied by manager! Please edit it");
+            notificationService.createNotification(serviceQuoteId, "serviceQuote", serviceQuotes.getStaff().getId(), "consultant", "Your service quotes has been denied by manager! Please edit it");
 
         }
         return "redirect:/manager/serviceQuote/detail/" + serviceQuoteId;
@@ -167,6 +167,7 @@ public class ServiceQuoteController {
         paymentHistory.setDescription("Payment of " + amount + " for service quote" + serviceQuote.getServiceQuotesId() + " by " + serviceQuote.getCustomer().getName() + " using " + serviceQuote.calculatePointUsing());
         paymentHistoryService.createPayment(paymentHistory);
         
+        Double gg = loyaltyPointService.useLoyaltyPoints(serviceQuote.getCustomer(), serviceQuote.calculatePointUsing());
         double pointGained = amount.doubleValue();
         loyaltyPointService.gainLoyaltyPoints(serviceQuote.getCustomer(), pointGained);
         serviceQuote = serviceQuoteService.saveStatusUpdateManager(serviceQuoteId, statusId);
@@ -503,7 +504,7 @@ public class ServiceQuoteController {
         if (statusId == 4) {
             notificationService.createNotification(serviceQuoteId, "serviceQuote", null, "manager", "Service quotes has been accepted by Customer: " + serviceQuotes.getCustomer().getName());
         } else if (statusId == 5) {
-            notificationService.createNotification(serviceQuoteId, "serviceQuote", serviceQuotes.getConsultant().getStaff().getId(), "consultant", "Your service quotes has been denied by customer! Please edit it");
+            notificationService.createNotification(serviceQuoteId, "serviceQuote", serviceQuotes.getStaff().getId(), "consultant", "Your service quotes has been denied by customer! Please edit it");
 
         }
 

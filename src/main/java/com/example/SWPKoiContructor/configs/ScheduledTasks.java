@@ -28,7 +28,7 @@ public class ScheduledTasks {
         this.projectService = projectService;
     }
 
-    @Scheduled(fixedRate = 90000)  
+    @Scheduled(fixedRate = 30000)  
     public void runAutoCompletedProject() {
         List<Project> projects = projectService.getProjectList(Integer.MAX_VALUE);  
         Date currentDate = new Date();
