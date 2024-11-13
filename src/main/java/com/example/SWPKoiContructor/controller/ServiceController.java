@@ -113,7 +113,7 @@ public class ServiceController {
 
             // Add success message to redirect attributes
             redirectAttributes.addFlashAttribute("message", "Service successfully created.");
-            return "redirect:/manager/service/detail"+newService.getServiceId();
+            return "redirect:/manager/service/detail/"+newService.getServiceId();
         } catch (Exception e) {
             // Add error message to redirect attributes if an error occurs
             redirectAttributes.addFlashAttribute("error", "An error occurred while creating the service: " + e.getMessage());

@@ -127,7 +127,10 @@
                                 Status:
                                 <c:choose>
                                     <c:when test="${blog.status == 1}">
-                                        <span class="badge bg-success">Active</span>
+                                        <span class="badge bg-warning">Not Ready</span>
+                                    </c:when>
+                                    <c:when test="${blog.status == 2}">
+                                        <span class="badge bg-success">Ready</span>
                                     </c:when>
                                     <c:otherwise>
                                         <span class="badge bg-secondary">Inactive</span>

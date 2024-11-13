@@ -33,7 +33,7 @@ public class ParcelController {
     @GetMapping("/manager/parcel")
     public String getParcelList(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "packageId") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection,
             @RequestParam(required = false) Integer statusFilter) {

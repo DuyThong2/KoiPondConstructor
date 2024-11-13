@@ -112,7 +112,7 @@
 
                 <!-- Submit Button -->
                 <div class="form-group btn-submit">
-                    <button type="submit" class="btn btn-primary">Create Blog</button>
+                    <button type="submit" class="btn btn-primary">Update Blog</button>
                 </div>
             </form:form>
 
