@@ -203,9 +203,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="banner-3__content blur-backgroud">
-                        <h6 class="banner-3__content-subtitle">Introducing Ribuild</h6>
+                        <h6 class="banner-3__content-subtitle">Introducing HappiKoi</h6>
                         <h1 class="banner-3__content-title">Building Excellence with Precision and Passion.</h1>
-                        <a href="#" class="rr-btn">
+                        <a href="${pageContext.request.contextPath}/home/services" class="rr-btn">
                             <span class="btn-wrap">
                                 <span class="text-one turn-off-animation-button">Explore Service</span>
                             </span>
@@ -434,40 +434,7 @@
     </div>
 
     <!-- our-professional -->
-    <section class="our-professional section-space">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section__title-wrapper text-center mb-60 mb-sm-40 mb-xs-35">
-                        <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separetor"></span>Our Professionals<span data-width="40px" class="right-separetor"></span></span>
-                        <h2 class="section__title title-animation text-capitalize rr-br-hidden-md" data-cursor="-opaque">Experienced & Professional Team</h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mb-minus-30">
-                <c:forEach var="staff" items="${staffList}">
-                    <div class="col-xl-3 col-md-6">
-                        <div class="our-professional__item mb-30">
-                            <a href="#" class="our-professional__item-media d-block" data-cursor-text="View">
-                                <img src="${staff.imgURL != null ? staff.getShowingImg(staff.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="image not found" class="img-fluid">
-                            </a>
-                            <div class="our-professional__item__content d-flex align-items-center justify-content-center text-center">
-                                <div class="our-professional__item-text">
-                                    <h4 class="our-professional__item-title text-center rr-fw-bold  mb-0">${staff.name}</h4>
-                                    <span class="our-professional__item-subtitle text-center">${staff.department}</span>
-                                </div>
-                            </div>
-                            <div class="our-professional__item-to-plus">
-                                <button></button>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-    </section>
-    <!-- our-professional -->
+    
 
     <!-- support area start -->
     <!-- support area start -->
