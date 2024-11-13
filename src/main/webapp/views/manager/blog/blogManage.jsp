@@ -265,9 +265,11 @@
                             <div class="form-group mb-0">
                                 <select name="status" class="form-control">
                                     <option value="" ${status==null ? 'selected' : '' }>All Statuses</option>
-                                    <option value="1" ${status !=null && status==1 ? 'selected' : '' }>Active
+                                    <option value="1" ${status !=null && status==1 ? 'selected' : '' }>Not Ready
                                     </option>
-                                    <option value="0" ${status !=null && status==0 ? 'selected' : '' }>Inactive
+                                    <option value="2" ${status !=null && status==2 ? 'selected' : '' }>Ready
+                                    </option>
+                                    <option value="3" ${status !=null && status==3 ? 'selected' : '' }>Disabled
                                     </option>
                                 </select>
 

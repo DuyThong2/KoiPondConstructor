@@ -34,7 +34,7 @@ public class TermController {
     @GetMapping("/manager/terms")
     public String listTerms(Model model,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "description") String sortBy,
             @RequestParam(defaultValue = "asc") String sortDirection,
             @RequestParam(required = false) Boolean termStatusFilter, // Now using termStatus
@@ -118,7 +118,7 @@ public class TermController {
 
     }
 
-    @PutMapping("/manager/updateTerm")
+    @PostMapping("/manager/updateTerm")
     public String updateTerm(@ModelAttribute("term") Term term, Model model) {
 
         term.setFollowContract(false);

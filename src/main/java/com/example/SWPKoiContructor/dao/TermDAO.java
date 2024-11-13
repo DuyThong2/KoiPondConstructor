@@ -52,7 +52,7 @@ public class TermDAO {
 
         // Add the filter for the disabled status if it's provided
         if (isDisabled != null) {
-            jpql.append(" AND t.isDisabled = :isDisabled");
+            jpql.append(" AND t.termStatus = :isDisabled");
         }
 
         TypedQuery<Long> query = entityManager.createQuery(jpql.toString(), Long.class);
@@ -67,36 +67,41 @@ public class TermDAO {
 
     // Find all terms and filter by disabled status
     public List<Term> findAllTerms(int page, int size, String sortBy, String sortDirection, Boolean termStatus) {
-        StringBuilder jpql = new StringBuilder("SELECT t FROM Term t");
+        // Start building the query with the default filter for isTemplate
+        StringBuilder jpql = new StringBuilder("SELECT t FROM Term t WHERE t.isTemplate = true");
 
-        // Add the filter for the term status if it's provided
+        // Add the filter for termStatus if it's provided
         if (termStatus != null) {
-            jpql.append(" WHERE t.termStatus = :termStatus and t.isTemplate = true");
+            jpql.append(" AND t.termStatus = :termStatus");
         }
 
+        // Add sorting options
         jpql.append(" ORDER BY t.").append(sortBy).append(" ").append(sortDirection);
 
+        // Create and set parameters for the query
         TypedQuery<Term> query = entityManager.createQuery(jpql.toString(), Term.class);
-
         if (termStatus != null) {
             query.setParameter("termStatus", termStatus);
         }
 
+        // Set pagination options
         query.setFirstResult(page * size);
         query.setMaxResults(size);
+
         return query.getResultList();
     }
 
     public long countAllTerms(Boolean isDisabled) {
+        // Start with the default condition for isTemplate
         StringBuilder jpql = new StringBuilder("SELECT COUNT(t) FROM Term t WHERE t.isTemplate = true");
 
-        // Add the filter for the disabled status if it's provided
+        // Add the filter for termStatus if isDisabled is provided
         if (isDisabled != null) {
             jpql.append(" AND t.termStatus = :isDisabled");
         }
 
+        // Create and set parameters for the query
         TypedQuery<Long> query = entityManager.createQuery(jpql.toString(), Long.class);
-
         if (isDisabled != null) {
             query.setParameter("isDisabled", isDisabled);
         }

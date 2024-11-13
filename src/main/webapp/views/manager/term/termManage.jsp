@@ -86,8 +86,8 @@
                                     <label for="termStatusFilter">Filter by Status:</label>
                                     <select name="termStatusFilter" id="termStatusFilter" class="form-control">
                                         <option value="">All</option>
-                                        <option value="false" ${termStatusFilter == false ? 'selected' : ''}>Enabled</option>
-                                        <option value="true" ${termStatusFilter == true ? 'selected' : ''}>Disabled</option>
+                                        <option value="true" ${termStatusFilter == true ? 'selected' : ''}>Enabled</option>
+                                        <option value="false" ${termStatusFilter == false ? 'selected' : ''}>Disabled</option>
                                     </select>
                                 </div>
 
