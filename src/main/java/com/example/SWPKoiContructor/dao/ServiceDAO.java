@@ -125,7 +125,7 @@ public class ServiceDAO {
         StringBuilder queryBuilder = new StringBuilder("SELECT s FROM Service s");
 
         boolean hasStatusFilter = (statusFilter != null);
-        boolean hasSearchName = (searchName != null);
+        boolean hasSearchName = (searchName != null && !searchName.isEmpty());
 
         if (hasStatusFilter || hasSearchName) {
             queryBuilder.append(" WHERE ");

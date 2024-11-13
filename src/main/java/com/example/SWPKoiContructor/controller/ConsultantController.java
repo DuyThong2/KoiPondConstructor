@@ -244,8 +244,8 @@ public class ConsultantController {
         if (name == null || name.length() < 2) {
             redirectAttributes.addFlashAttribute("error", "Name must be at least 2 characters long.");
             return "redirect:/";
-        } else if (phone == null || phone.trim().isEmpty() || !phone.matches("[0-9]")) {         
-            redirectAttributes.addFlashAttribute("error", "Phone number is required.");
+        } else if (phone == null || phone.trim().isEmpty() || !phone.matches("[0-9]{10}")) {         
+            redirectAttributes.addFlashAttribute("error", "Phone number is required or invalid format.");
             return "redirect:/";
         } else if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
             redirectAttributes.addFlashAttribute("error", "Please provide a valid email address.");
