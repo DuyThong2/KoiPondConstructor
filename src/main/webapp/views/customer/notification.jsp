@@ -6,8 +6,8 @@
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 
 <div class="dropdown">
-    <a class="icon-link dropdown-toggle" href="#" id="notificationDropdown" role="button"
-        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <a class="icon-link dropdown-toggle" href="#" id="notificationDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
         <i class="fas fa-bell" style="font-size: 23px; margin: 6px 20px 0 4px"></i>
         <!-- Badge for unread notifications -->
         <span class="badge-note badge-danger" id="notificationCount">0</span>
@@ -26,87 +26,95 @@
 </div>
 
 <script>
-    var customerId = ${user.id};
+    console.log("Dropdown items after update:", $('#notificationItems').html());
+    $('#notificationDropdown').on('click', function (e) {
+        console.log("clicking")
+        e.preventDefault();
+        $('#notificationItems').toggleClass('show');  // Toggle dropdown open/close
+    });
+    var customerId = ${ user.id };
     console.log(customerId);
     var stompClient = null;
-    $(document).ready(function() {
-    function connectWebSocket() {
-        var socket = new SockJS("${pageContext.request.contextPath}/ws-notifications");
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/customer/' +customerId, function (notification) {
-                console.log("Received notification: ", notification.body);
-                showNotificationWebSocket(JSON.parse(notification.body));
-                updateNotificationCountDisplay();
+    $(document).ready(function () {
+        function connectWebSocket() {
+            var socket = new SockJS("${pageContext.request.contextPath}/ws-notifications");
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/customer/' + customerId, function (notification) {
+                    console.log("Subscribed to topic:", '/topic/customer/' + customerId);
+                    console.log("Received notification: ", notification.body);
+                    showNotificationWebSocket(JSON.parse(notification.body));
+                    updateNotificationCountDisplay();
+                });
+            }, function (error) {
+                console.log('WebSocket connection error:', error);
+                setTimeout(connectWebSocket, 5000); // Retry connection after 5 seconds
             });
-        }, function (error) {
-            console.log('WebSocket connection error:', error);
-            setTimeout(connectWebSocket, 5000); // Retry connection after 5 seconds
-        });
-    }
+        }
 
-   
 
-    
 
-    function fetchNotifications() {
-        $.ajax({
-            url: '${pageContext.request.contextPath}/api/notifications/${user.id}',
-            method: 'POST',
-            success: function (data) {
-                console.log(data);
-                if (data && data.length > 0) {
-                    updateNotificationDropdown(data);
-                    updateNotificationCount(data.length);
-                } else {
-                    updateNotificationDropdown([]);
-                    updateNotificationCount(0);
+
+
+        function fetchNotifications() {
+            console.log('Fetch data');
+            $.ajax({
+                url: '${pageContext.request.contextPath}/api/notifications/${user.id}',
+                method: 'POST',
+                success: function (data) {
+                    console.log(data);
+                    if (data && data.length > 0) {
+                        updateNotificationDropdown(data);
+                        updateNotificationCount(data.length);
+                    } else {
+                        updateNotificationDropdown([]);
+                        updateNotificationCount(0);
+                    }
+                },
+                error: function (err) {
+                    console.error("Failed to fetch notifications:", err);
                 }
-            },
-            error: function (err) {
-                console.error("Failed to fetch notifications:", err);
-            }
-        });
-    }
+            });
+        }
 
-    connectWebSocket();
-    fetchNotifications();
-  });
-  function markAsReadAndNavigate(event, element) {
+        connectWebSocket();
+        fetchNotifications();
+    });
+    function markAsReadAndNavigate(event, element) {
         event.preventDefault();
         const notificationId = element.getAttribute("data-notification-id");
         const href = $(element).attr('href');
         $.ajax({
             url: '${pageContext.request.contextPath}/api/notifications/update/' + notificationId,
             method: 'PUT',
-            success: function(response) {
+            success: function (response) {
                 console.log("Notification marked as read");
-               
-                    window.location.href = href;
-              
+
+                window.location.href = href;
+
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.log("Error marking notification as read:", error);
-                
-                    window.location.href = href;
+
+                window.location.href = href;
             }
         });
     }
     function markAllAsRead() {
         $.ajax({
-            url: '${pageContext.request.contextPath}/api/notifications/markAllAsRead/'+customerId,
+            url: '${pageContext.request.contextPath}/api/notifications/markAllAsRead/' + customerId,
             method: 'PUT',
-            success: function(response) {
+            success: function (response) {
                 console.log("All notifications marked as read");
                 $('#notificationItems .dropdown-item').remove();
                 updateNotificationCount(0);
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.log("Error marking all notifications as read:", error);
             }
         });
-    }function updateNotificationDropdown(notifications) {
+    } function updateNotificationDropdown(notifications) {
         const dropdown = $('#notificationItems');
         dropdown.empty();
 
@@ -116,14 +124,14 @@
                 const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown Time";
                 const viewDetailLink = "${pageContext.request.contextPath}/customer/" + notification.fromTable + "/detail/" + notification.relatedId;
 
-                
+
                 const notificationHtml =
                     '<a class="dropdown-item current-notification" href="' + viewDetailLink + '" ' +
-                'data-notification-id="' + notification.id + '" ' +
-                'onclick="markAsReadAndNavigate(event, this)">' +
-                '<strong>' + message + '</strong><br>' +
-                '<small>' + timeAgo + '</small>' +
-                '</a>';
+                    'data-notification-id="' + notification.id + '" ' +
+                    'onclick="markAsReadAndNavigate(event, this)">' +
+                    '<strong>' + message + '</strong><br>' +
+                    '<small>' + timeAgo + '</small>' +
+                    '</a>';
                 dropdown.append(notificationHtml);
             });
         } else {
@@ -137,6 +145,7 @@
         notificationCount.toggle(count > 0);
     }
     function showNotificationWebSocket(notification) {
+        console.log("Processing notification:", notification);
         $(".no-notification").remove();  // Remove the "no notification" message
         const message = notification.message || "No message";
         const timeAgo = notification.createdAt ? formatTime(notification.createdAt) : "Unknown Time";
@@ -173,6 +182,6 @@
             return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         }
         return date.toLocaleDateString();
-    }   
+    }
 
 </script>

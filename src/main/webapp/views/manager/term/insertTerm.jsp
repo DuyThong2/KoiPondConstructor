@@ -115,17 +115,17 @@
                                 <h5>Design Percentages</h5>
                                 <div class="form-group">
                                     <label for="percent_on_design1">Percent on Design 1</label>
-                                    <form:input path="percentOnDesign1" class="form-control" id="percent_on_design1" min="0" max="100" step="0.01" />
+                                    <form:input type="number" path="percentOnDesign1" class="form-control" id="percent_on_design1" min="0" max="100" step="0.01" />
                                     <form:errors path="percentOnDesign1" cssClass="text-danger" />
                                 </div>
                                 <div class="form-group">
                                     <label for="percent_on_design2">Percent on Design 2</label>
-                                    <form:input path="percentOnDesign2" class="form-control" id="percent_on_design2" min="0" max="100" step="0.01" />
+                                    <form:input type="number" path="percentOnDesign2" class="form-control" id="percent_on_design2" min="0" max="100" step="0.01" />
                                     <form:errors path="percentOnDesign2" cssClass="text-danger" />
                                 </div>
                                 <div class="form-group">
                                     <label for="percent_on_design3">Percent on Design 3</label>
-                                    <form:input path="percentOnDesign3" class="form-control" id="percent_on_design3" min="0" max="100" step="0.01" />
+                                    <form:input  type="number"  path="percentOnDesign3" class="form-control" id="percent_on_design3" min="0" max="100" step="0.01" />
                                     <form:errors path="percentOnDesign3" cssClass="text-danger" />
                                 </div>
                                 <div class="form-group custom-checkbox">
@@ -142,12 +142,12 @@
                                 <h5>Construction Percentages</h5>
                                 <div class="form-group">
                                     <label for="percent_on_construct1">Percent on Construction 1</label>
-                                    <form:input path="percentOnConstruct1" class="form-control" id="percent_on_construct1" min="0" max="100" step="0.01" />
+                                    <form:input type="number" path="percentOnConstruct1" class="form-control" id="percent_on_construct1" min="0" max="100" step="0.01" />
                                     <form:errors path="percentOnConstruct1" cssClass="text-danger" />
                                 </div>
                                 <div class="form-group">
                                     <label for="percent_on_construct2">Percent on Construction 2</label>
-                                    <form:input path="percentOnConstruct2" class="form-control" id="percent_on_construct2" min="0" max="100" step="0.01" />
+                                    <form:input type="number" path="percentOnConstruct2" class="form-control" id="percent_on_construct2" min="0" max="100" step="0.01" />
                                     <form:errors path="percentOnConstruct2" cssClass="text-danger" />
                                 </div>
                                 <div class="form-group custom-checkbox">
@@ -197,6 +197,38 @@
                     }
                 });
             });
+            
+            document.querySelectorAll('input[type="number"]').forEach(input => {
+                            input.addEventListener('input', function () {
+                                // Allow only digits and one decimal point
+                                if (/[^0-9.]/.test(this.value)) {
+                                    this.value = "0";  // Reset to 0 if invalid characters are found
+                                    return;
+                                }
+
+                                // Split input on '.' to manage decimal points
+                                const parts = this.value.split('.');
+
+                                // If more than one '.' or invalid numeric parts, reset to 0
+                                if (parts.length > 2 || !/^\d*$/.test(parts[0]) || (parts[1] && !/^\d*$/.test(parts[1]))) {
+                                    this.value = "0";
+                                    return;
+                                }
+
+                                // If the value is less than or equal to 0, reset to 0
+                                if (parseFloat(this.value) <= 0) {
+                                    this.value = "0";
+                                    return;
+                                }
+                            });
+
+                            input.addEventListener('blur', function () {
+                                // If input is empty, NaN, or less than or equal to 0 after blur, reset to 0
+                                if (this.value === "" || parseFloat(this.value) <= 0 || isNaN(parseFloat(this.value))) {
+                                    this.value = "0";
+                                }
+                            });
+                        });
 
             function adjustPercentages() {
                 adjustCombinedCosts();

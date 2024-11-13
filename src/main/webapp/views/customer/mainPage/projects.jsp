@@ -190,7 +190,7 @@
                             <div class="search__wrapper">
                                 <div class="search__top d-flex justify-content-between align-items-center">
                                     <div class="search__logo">
-                                        <a href="index.html">
+                                        <a href="#">
                                             <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg"
                                                 alt="img">
                                         </a>
@@ -240,7 +240,7 @@
                         <div class="offcanvas__content">
                             <div class="offcanvas__top d-flex justify-content-between align-items-center">
                                 <div class="offcanvas__logo">
-                                    <a href="index.html">
+                                    <a href="#">
                                         <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg"
                                             alt="logo not found">
                                     </a>
@@ -272,7 +272,7 @@
                             </div>
                             <div class="offcanvas__btn">
                                 <div class="header__btn-wrap">
-                                    <a href="contact.html" class="rr-btn__header d-sm-none mb-10 w-100">
+                                    <a href="#" class="rr-btn__header d-sm-none mb-10 w-100">
                                         <span class="btn-wrap">
                                             <span class="text-one">Get Started</span>
                                             <span class="text-two">Get Started</span>
@@ -310,7 +310,7 @@
                                             <ul>
                                                 <li>
                                                     <span>
-                                                        <a href="index.html">
+                                                        <a href="${pageContext.request.contextPath}/">
                                                             <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
                                                                 xmlns="http://www.w3.org/2000/svg">
                                                                 <path

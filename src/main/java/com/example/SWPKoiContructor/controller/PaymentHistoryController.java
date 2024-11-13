@@ -31,7 +31,7 @@ public class PaymentHistoryController {
     @GetMapping("/manager/payment")
     public String listManagerPayments(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "paymentDate") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection,
             @RequestParam(required = false) String paymentMethod,
@@ -83,7 +83,7 @@ public class PaymentHistoryController {
     @GetMapping("/customer/payment")
     public String listCustomerPayments(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "paymentDate") String sortBy,
             @RequestParam(defaultValue = "desc") String sortDirection,
             @RequestParam(required = false) String paymentMethod,

@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Contract Details</title>
+        <title>Quote Details</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
@@ -90,7 +90,7 @@
                         </tr>
                         <tr>
                             <th>Quotes Create Date</th>
-                            <td>${quotes.quotesDate}</td>
+                            <td> <fmt:formatDate value="${quotes.quotesDate}" pattern="MMM dd yyyy" /></td>
                         </tr>
                         <tr>
                             <th>Quotes Area In m&sup2</th>
@@ -108,13 +108,23 @@
                             <th>Quotes Construction Cost</th>
                             <td>${quotes.quotesConstructionCost}$</td>
                         </tr>
+                        <tr>
+                            <th>Deposit On Contract</th>
+                            <td>${quotes.depositOnContract}$</td>
+                        </tr>
                         <!-- Contract Status moved back into the table -->
                     </table>
+
 
                     <!-- Approve/Reject buttons placed below the main table -->
                     <c:choose>
                         <c:when test="${quotes.quotesStatus == 1}">
                             <div class="">
+                                <c:if test="${quotes.consultant != null}">
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/consultant/detail/${quotes.consultant.consultantId}">
+                                        View Consultant Detail
+                                    </a>
+                                </c:if>
                                 <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="get" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                                     <button type="submit" class="btn btn-info">Edit Quotes</button>
@@ -126,6 +136,11 @@
                                 <div class="alert alert-danger" role="alert">
                                     <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                 </div>
+                                <c:if test="${quotes.consultant != null}">
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/consultant/detail/${quotes.consultant.consultantId}">
+                                        View Consultant Detail
+                                    </a>
+                                </c:if>
                                 <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="get" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                                     <button type="submit" class="btn btn-info">Edit Quotes</button>
@@ -134,6 +149,11 @@
                         </c:when>
                         <c:when test="${quotes.quotesStatus == 4 && quotes.contract == null}">
                             <div class="">
+                                <c:if test="${quotes.consultant != null}">
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/consultant/detail/${quotes.consultant.consultantId}">
+                                        View Consultant Detail
+                                    </a>
+                                </c:if>
                                 <form action="${pageContext.request.contextPath}/consultant/contract/create" method="get" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                                     <button type="submit" class="btn btn-info">Create Contract</button>
@@ -145,6 +165,11 @@
                                 <div class="alert alert-danger" role="alert">
                                     <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                 </div>
+                                <c:if test="${quotes.consultant != null}">
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/consultant/detail/${quotes.consultant.consultantId}">
+                                        View Consultant Detail
+                                    </a>
+                                </c:if>
                                 <form action="${pageContext.request.contextPath}/consultant/quote/updateQuote" method="get" class="d-inline">
                                     <input type="hidden" name="quoteId" value="${quotes.quotesId}" >
                                     <button type="submit" class="btn btn-info">Edit Quotes</button>
@@ -155,20 +180,64 @@
                         </c:when>
                         <c:when test="${quotes.quotesStatus == 6}">
                             <div class="">
+                                <c:if test="${quotes.consultant != null}">
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/consultant/detail/${quotes.consultant.consultantId}">
+                                        View Consultant Detail
+                                    </a>
+                                </c:if>
                                 <div class="alert alert-danger" role="alert">
                                     <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                 </div>
                             </div>
                         </c:when>
+                        <c:when test="${quotes.quotesStatus == 8}">
+                            <c:if test="${quotes.consultant != null}">
+                                <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/consultant/detail/${quotes.consultant.consultantId}">
+                                    View Consultant Detail
+                                </a>
+                            </c:if>
+                            <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/contract/detail/${quotes.contract.contractId}">
+                                View Contract Detail
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${quotes.consultant != null}">
+                                <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/consultant/detail/${quotes.consultant.consultantId}">
+                                    View Consultant Detail
+                                </a>
+                            </c:if>
+                        </c:otherwise>
                     </c:choose>
                 </div>
 
                 <!-- customer and quotes and predesign Details Section (30%) -->
                 <div class="col-md-4">
                     <!-- Associated Customer Details -->
+                    <!-- Associated Contract Details -->
+                    <div class="PreDesign-section mb-4">
+                        <h4 class="section-header text-primary">Associated Contract</h4>
+                        <c:if test="${not empty quotes.contract}">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <th>Contract Id</th>
+                                        <td>${quotes.contract.contractId}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Contract Create Date</th>
+                                        <td> <fmt:formatDate value="${quotes.contract.dateCreate}" pattern="MMM dd yyyy" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </c:if>
+                        <c:if test="${empty quotes.contract}">
+                            <p>No Contract are associated with this Consultant.</p>
+                        </c:if>
+                    </div>
+
                     <div class="quotes-section mb-4">
                         <h4 class="section-header text-primary">Associated Customer</h4>
-                        <table class="table table-bordered">
+                        <table class="table table-hover">
                             <tr>
                                 <th>Customer Name</th>
                                 <td>${quotes.customer.name}</td>
@@ -181,13 +250,17 @@
                                 <th>Customer Email</th>
                                 <td>${quotes.customer.email}</td>
                             </tr>
+                            <tr>
+                                <th>Point</th>
+                                <td>${totalPoint}</td>
+                            </tr>
                         </table>
                     </div>
 
                     <!-- Associated package Details -->
                     <div class="customer-section mb-4">
                         <h4 class="section-header text-primary">Associated Package</h4>
-                        <table class="table table-bordered">
+                        <table class="table table-hover">
                             <tr>
                                 <th>Package Name</th>
                                 <td>${quotes.parcel.packageName}</td>
@@ -207,27 +280,7 @@
                         </table>
                     </div>
 
-                    <!-- Associated Contract Details -->
-                    <div class="PreDesign-section mb-4">
-                        <h4 class="section-header text-primary">Associated Contract</h4>
-                        <c:if test="${not empty quotes.contract}">
-                            <table class="table table-hover">
-                                <tbody>
-                                    <tr>
-                                        <th>Contract Id</th>
-                                        <td>${quotes.contract.contractId}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Contract Create Date</th>
-                                        <td>${quotes.contract.dateCreate}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </c:if>
-                        <c:if test="${empty quotes.contract}">
-                            <p>No Contract are associated with this Consultant.</p>
-                        </c:if>
-                    </div>
+
                 </div>
             </div>
         </div>

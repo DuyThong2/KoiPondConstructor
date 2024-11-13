@@ -37,11 +37,11 @@ public class ServiceController {
     public String serviceList(
             Model model,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "serviceId") String sortBy,
+            @RequestParam(defaultValue = "2") int size,
+            @RequestParam(defaultValue = "serviceStatus") String sortBy,
             @RequestParam(defaultValue = "desc") String sortType,
             @RequestParam(required = false) Boolean statusFilter,
-            @RequestParam(name="searchName",required = false) String searchName) {
+            @RequestParam(required = false) String searchName) {
 
         List<Service> list;
         long serviceNum;
@@ -113,7 +113,7 @@ public class ServiceController {
 
             // Add success message to redirect attributes
             redirectAttributes.addFlashAttribute("message", "Service successfully created.");
-            return "redirect:/manager/service/detail"+newService.getServiceId();
+            return "redirect:/manager/service/detail/"+newService.getServiceId();
         } catch (Exception e) {
             // Add error message to redirect attributes if an error occurs
             redirectAttributes.addFlashAttribute("error", "An error occurred while creating the service: " + e.getMessage());

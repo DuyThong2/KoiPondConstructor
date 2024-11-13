@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Quote Manage Customer</title>
+        <title>My Quote</title>
         <!-- Bootstrap CSS -->
 
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
@@ -210,10 +210,11 @@
                                             <tr>
                                                 <th style="width: 13% ">Date Created</th>
                                                 <th>Name</th>
-                                                <th>Area</th>
+                                                <th style="width: 9%">Area</th>
                                                 <th>Total Price</th>
                                                 <th>Design Price</th>
                                                 <th style="width: 10%">Construct Price</th>
+                                                <th style="width: 10%">Deposit On Contract</th>
                                                 <th>Status</th>
                                                 <th style="width: 10%">Action</th>
                                             </tr>
@@ -222,12 +223,13 @@
                                             <c:forEach var="Quote" items="${Quote}">
                                                 <!-- Main Row -->
                                                 <tr>
-                                                    <td><fmt:formatDate value="${Quote.quotesDate}" pattern="dd-MM-yyyy"/></td>
+                                                    <td><fmt:formatDate value="${Quote.quotesDate}" pattern="MMM dd yyyy"/></td>
                                                     <td>${Quote.quotesName}</td>
                                                     <td>${Quote.quotesArea} m²</td>
                                                     <td>${Quote.quotesTotalPrice}$</td>
                                                     <td>${Quote.quotesDesignCost}$</td>
                                                     <td>${Quote.quotesConstructionCost}$</td>
+                                                    <td>${Quote.depositOnContract}$</td>
                                                     <td>
                                                         <c:choose>
                                                             <c:when test="${Quote.quotesStatus == 2}">

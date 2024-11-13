@@ -86,6 +86,12 @@ public class PreDesignDAO {
          return tq.getSingleResult();
     }
     
+    public List<PreDesign> getActivePreDesignList(){
+        String query = "SELECT p FROM PreDesign p WHERE p.preDesignStatus = true ORDER BY p.preDesignId DESC";
+        TypedQuery<PreDesign> tq = entityManager.createQuery(query, PreDesign.class);
+        return tq.getResultList();
+    }
+    
     public List<PreDesign> getPreDesignListForHomePage(int page, int size){        
         TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p WHERE p.preDesignStatus = true ORDER BY p.preDesignName ASC", PreDesign.class);
         tq.setFirstResult((page-1) * size);
@@ -138,5 +144,9 @@ public class PreDesignDAO {
         String jpql = "SELECT p from PreDesign p where p.preDesignId !=" + id + " and p.preDesignStatus=true ORDER BY FUNCTION('RAND')";
         TypedQuery<PreDesign> query = entityManager.createQuery(jpql, PreDesign.class);
         return query.setMaxResults(6).getResultList();
+    }
+        public List<PreDesign> getPreDesignListIsActive(){        
+        TypedQuery<PreDesign> tq = entityManager.createQuery("SELECT p FROM PreDesign p WHERE p.preDesignStatus = true", PreDesign.class);
+        return tq.getResultList();
     }
 }

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -279,7 +280,7 @@
                                                 <tbody>
                                                     <c:forEach var="bluePrint" items="${stage.bluePrint}">
                                                         <tr>
-                                                            <td>${bluePrint.dateCreate}</td>
+                                                            <td><fmt:formatDate value="${bluePrint.dateCreate}" pattern="MMM dd yyyy"/></td>
                                                             <td>
                                                                 <c:choose>
                                                                     <c:when test="${bluePrint.bluePrintStatus == 1}">

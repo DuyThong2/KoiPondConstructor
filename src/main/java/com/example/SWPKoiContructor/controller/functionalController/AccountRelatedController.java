@@ -47,9 +47,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @Controller
 public class AccountRelatedController {
 
-    
-    private String contexPath="";
-    
+    private String contexPath = "";
+
     private CustomerService customerService;
     private UserService userService;
     private EmailService emailService;
@@ -158,9 +157,13 @@ public class AccountRelatedController {
         if (result.hasErrors()) {
             return "registerCustomer";  // Return to form if there are errors
         }
+        if (customerService.getCustomerByEmail(customerDTO.getEmail()) == null) {
+            customerService.registerCustomer(customerDTO);
+            redirectAttributes.addFlashAttribute("success", "Registration successful!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "account already exist !");
+        }
 
-        customerService.registerCustomer(customerDTO);
-        redirectAttributes.addFlashAttribute("success", "Registration successful!");
         return "redirect:/login";  // Redirect to success page after registration
     }
 

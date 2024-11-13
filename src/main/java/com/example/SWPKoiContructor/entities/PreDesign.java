@@ -31,7 +31,7 @@ public class PreDesign implements HaveImagesFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pre_design_id")
-    private int preDesignId;
+    private Integer preDesignId;
     
     @Column(name = "pre_design_name")
     private String preDesignName;
@@ -57,11 +57,14 @@ public class PreDesign implements HaveImagesFile {
 
     @OneToOne(mappedBy = "preDesign",fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Content content;
+
+    @OneToMany(mappedBy = "preDesign")
+    private List<Project> projects;
     
     public PreDesign() {
     }
 
-    public PreDesign(int preDesignId, String preDesignName, String preDesignImgUrl, String preDesignDescription) {
+    public PreDesign(Integer  preDesignId, String preDesignName, String preDesignImgUrl, String preDesignDescription) {
         this.preDesignId = preDesignId;
         this.preDesignName = preDesignName;
         this.preDesignImgUrl = preDesignImgUrl;
@@ -69,7 +72,7 @@ public class PreDesign implements HaveImagesFile {
         
     }
 
-    public PreDesign(int preDesignId, String preDesignName, String preDesignImgUrl, String preDesignDescription, boolean preDesignStatus, List<Consultant> consultant, Content content) {
+    public PreDesign(Integer  preDesignId, String preDesignName, String preDesignImgUrl, String preDesignDescription, boolean preDesignStatus, List<Consultant> consultant, Content content) {
         this.preDesignId = preDesignId;
         this.preDesignName = preDesignName;
         this.preDesignImgUrl = preDesignImgUrl;
@@ -79,11 +82,11 @@ public class PreDesign implements HaveImagesFile {
         this.content = content;
     }
 
-    public int getPreDesignId() {
+    public Integer  getPreDesignId() {
         return preDesignId;
     }
 
-    public void setPreDesignId(int preDesignId) {
+    public void setPreDesignId(Integer preDesignId) {
         this.preDesignId = preDesignId;
     }
 
@@ -156,6 +159,12 @@ public class PreDesign implements HaveImagesFile {
     public void setParcel(Parcel parcel) {
         this.parcel = parcel;
     }
-    
-    
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
 }

@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
         <!DOCTYPE html>
         <html>
 
@@ -271,7 +271,7 @@
                                             <td>${service.id}</td>
                                             <td>${service.service.serviceName}</td>
                                             <td>${service.price}</td>
-                                            <td>${service.dateRegister}</td>
+                                            <td><fmt:formatDate value="${service.dateRegister}" pattern="MMM dd yyyy" /></td>
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${service.serviceDetailStatus == 1}">
@@ -453,7 +453,7 @@
                                         </c:if>
                                     </form>
                                 </c:if>
-                                <c:if test="${currentPage == totalPages}">
+                                <c:if test="${currentPage == totalPage}">
                                     <button class="btn btn-primary" disabled>&gt;</button>
                                 </c:if>
                             </div>

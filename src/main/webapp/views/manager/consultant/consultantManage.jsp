@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Consultant List</title>
+    <title>Consultant Management</title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
@@ -165,7 +165,7 @@
             <table class="table table-bordered table-hover mt-3">
                 <thead class="thead-dark">
                 <tr>
-                    <th>Date Created</th>
+                    <th style="width: 9%">Date Created</th>
                     <th>Customer Name</th>
                     <th>Phone</th>
                     <th>Email</th>
@@ -179,7 +179,7 @@
                 <tbody>
                 <c:forEach var="consultant" items="${consultants}">
                     <tr>
-                        <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>
+                        <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="MMM dd yyyy HH:mm"/></td>
                         <td>${consultant.consultantCustomerName}</td>
                         <td>${consultant.consultantPhone}</td>
                         <td>${consultant.consultant_email}</td>

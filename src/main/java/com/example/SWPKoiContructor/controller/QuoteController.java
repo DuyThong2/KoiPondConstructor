@@ -36,16 +36,17 @@ public class QuoteController {
     private UserService userService;
     private FeedbackService feedbackService;
     private CustomerService customerService;
-
+    private LoyaltyPointService loyaltyPointService;
     private NotificationService notificationService;
 
-    public QuoteController(QuoteService quoteService, ConsultantService consultantService, ParcelService parcelService, UserService userService, FeedbackService feedbackService, CustomerService customerService, NotificationService notificationService) {
+    public QuoteController(QuoteService quoteService, ConsultantService consultantService, ParcelService parcelService, UserService userService, FeedbackService feedbackService, CustomerService customerService, LoyaltyPointService loyaltyPointService, NotificationService notificationService) {
         this.quoteService = quoteService;
         this.consultantService = consultantService;
         this.parcelService = parcelService;
         this.userService = userService;
         this.feedbackService = feedbackService;
         this.customerService = customerService;
+        this.loyaltyPointService = loyaltyPointService;
         this.notificationService = notificationService;
     }
     
@@ -160,6 +161,9 @@ public class QuoteController {
             Feedback fb = feedbackService.getLatestFeedbackForQuote(quoteId);
             model.addAttribute("feedback", fb);
         }
+        if (quotes.getCustomer() != null) {
+            model.addAttribute("totalPoint", loyaltyPointService.TotalPoints(quotes.getCustomer().getId()));
+        }
         model.addAttribute("quotes", quotes);
         return "manager/quote/quoteDetail";
     }
@@ -257,6 +261,9 @@ public class QuoteController {
         if (quotes.getQuotesStatus() == 6) {
             Feedback fb = feedbackService.getFeedbackForCancel(quoteId);
             model.addAttribute("feedback", fb);
+        }
+        if (quotes.getCustomer() != null) {
+            model.addAttribute("totalPoint", loyaltyPointService.TotalPoints(quotes.getCustomer().getId()));
         }
         model.addAttribute("quotes", quotes);
         return "/consultant/quote/quoteDetail";

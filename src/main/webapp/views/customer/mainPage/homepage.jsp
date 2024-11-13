@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>HappiKoi</title>
-    <meta name="description" content="Ribuild - Construction Company HTML5 Template">
     <meta name="author" content="ahmmedsabbirbd">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico in the root directory -->
@@ -96,7 +95,7 @@
                 <div class="search__wrapper">
                     <div class="search__top d-flex justify-content-between align-items-center">
                         <div class="search__logo">
-                            <a href="index.html">
+                            <a href="#">
                                 <img src="${pageContext.request.contextPath}/assets/imgs/logo/logo-white.svg" alt="img">
                             </a>
                         </div>
@@ -168,7 +167,7 @@
                 </div>
                 <div class="offcanvas__btn">
                     <div class="header__btn-wrap">
-                        <a href="contact.html" class="rr-btn__header d-sm-none mb-10 w-100">
+                        <a href="#" class="rr-btn__header d-sm-none mb-10 w-100">
                             <span class="btn-wrap">
                                 <span class="text-one">Get Started</span>
                                 <span class="text-two">Get Started</span>
@@ -204,9 +203,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-6">
                     <div class="banner-3__content blur-backgroud">
-                        <h6 class="banner-3__content-subtitle">Introducing Ribuild</h6>
+                        <h6 class="banner-3__content-subtitle">Introducing HappiKoi</h6>
                         <h1 class="banner-3__content-title">Building Excellence with Precision and Passion.</h1>
-                        <a href="#" class="rr-btn">
+                        <a href="${pageContext.request.contextPath}/home/services" class="rr-btn">
                             <span class="btn-wrap">
                                 <span class="text-one turn-off-animation-button">Explore Service</span>
                             </span>
@@ -435,40 +434,7 @@
     </div>
 
     <!-- our-professional -->
-    <section class="our-professional section-space">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <div class="section__title-wrapper text-center mb-60 mb-sm-40 mb-xs-35">
-                        <span class="section__subtitle justify-content-center mb-13 ml-0"><span data-width="40px" class="left-separetor"></span>Our Professionals<span data-width="40px" class="right-separetor"></span></span>
-                        <h2 class="section__title title-animation text-capitalize rr-br-hidden-md" data-cursor="-opaque">Experienced & Professional Team</h2>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row mb-minus-30">
-                <c:forEach var="staff" items="${staffList}">
-                    <div class="col-xl-3 col-md-6">
-                        <div class="our-professional__item mb-30">
-                            <a href="#" class="our-professional__item-media d-block" data-cursor-text="View">
-                                <img src="${staff.imgURL != null ? staff.getShowingImg(staff.imgURL) : "/SWPKoiContructor/assets/imgs/logo/final_resized_colored_logo_image.png"}" alt="image not found" class="img-fluid">
-                            </a>
-                            <div class="our-professional__item__content d-flex align-items-center justify-content-center text-center">
-                                <div class="our-professional__item-text">
-                                    <h4 class="our-professional__item-title text-center rr-fw-bold  mb-0">${staff.name}</h4>
-                                    <span class="our-professional__item-subtitle text-center">${staff.department}</span>
-                                </div>
-                            </div>
-                            <div class="our-professional__item-to-plus">
-                                <button></button>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
-        </div>
-    </section>
-    <!-- our-professional -->
+    
 
     <!-- support area start -->
     <!-- support area start -->
@@ -590,7 +556,7 @@
                                         <i class="fas fa-user"></i> ${blog.staff.name}
                                     </a>
                                     <a href="${pageContext.request.contextPath}/home/blogs/${blog.id}" class="text-secondary">
-                                        <i class="fas fa-calendar"></i> <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/>
+                                        <i class="fas fa-calendar"></i> <fmt:formatDate value="${blog.datePost}" pattern="MMM dd yyyy"/>
                                     </a>
                                 </div>
                                <div class="d-flex flex-column justify-content-around" style="min-height:200px;">

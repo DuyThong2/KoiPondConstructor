@@ -7,7 +7,6 @@ import com.example.SWPKoiContructor.entities.ServicePrice;
 import com.example.SWPKoiContructor.entities.ServiceQuotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.services.*;
-import java.sql.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-import java.util.Date;
+//import java.util.Date;
+
 
 
 
@@ -300,6 +300,17 @@ public class ServiceDetailController {
                     .body("Error updating status: " + e.getMessage());
         }
     }
+    @PostMapping("/manager/serviceDetails/updateStatus")
+    public String updateServiceDetailStatus(
+            @RequestParam("serviceDetailId") int serviceDetailId,
+            @RequestParam("newStatus") int newStatus) {
+            ServiceDetail serviceDetail = serviceDetailService.getServiceDetailById(serviceDetailId);
+            if (serviceDetail != null && serviceDetail.getServiceDetailStatus()!=3) {
+                serviceDetail.setServiceDetailStatus(newStatus); // Update status
+                serviceDetailService.updateServiceDetail(serviceDetail); // Save updated status
+            }
+            return "redirect:/manager/serviceDetails/assign/"+serviceDetailId;
+    }
 
     @PostMapping("/manager/serviceDetails/assignStaffAjax")
     @ResponseBody
@@ -329,7 +340,7 @@ public class ServiceDetailController {
             Model model,
             RedirectAttributes redirectAttributes,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "1") int size,
+            @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "desc") String sortType) {
 

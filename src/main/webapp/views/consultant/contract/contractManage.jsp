@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -67,6 +68,7 @@
                                 <option value="5" ${statusFilter == '5' ? 'selected' : ''}>Canceled</option>
                                 <option value="6" ${statusFilter == '6' ? 'selected' : ''}>Accepted by customer</option>
                                 <option value="7" ${statusFilter == '7' ? 'selected' : ''}>Project Created</option>
+                                <option value="8" ${statusFilter == '8' ? 'selected' : ''}>Confirmed Deposit</option>
                             </select>
                         </div>
                         <div class="col">
@@ -92,7 +94,7 @@
             <table class="table table-bordered table-hover mt-3">
                 <thead class="thead-dark">
                     <tr>
-                        <th style="width: 8%">Date Created</th>
+                        <th style="width: 10%">Date Created</th>
                         <th>File URL</th>
                         <th>Total Price</th>
                         <th>Contract Term</th>
@@ -104,7 +106,7 @@
                 <tbody>
                     <c:forEach var="contract" items="${contracts}">
                         <tr>
-                            <td>${contract.dateCreate}</td>
+                            <td><fmt:formatDate value="${contract.dateCreate}" pattern="MMM dd yyyy" /></td>
                             <td>
                                 <c:choose>
                                     <c:when test="${not empty contract.fileURL}">
@@ -145,6 +147,9 @@
                                     </c:when>
                                     <c:when test="${contract.contractStatus == 7}">
                                         <span class="badge badge-success">Project Created</span>
+                                    </c:when>
+                                    <c:when test="${contract.contractStatus == 8}">
+                                        <span class="badge badge-success">Deposit confirmed</span>
                                     </c:when>
                                 </c:choose>
                             </td>

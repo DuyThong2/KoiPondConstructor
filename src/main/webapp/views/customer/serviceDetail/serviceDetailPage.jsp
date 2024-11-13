@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 
@@ -7,7 +8,7 @@
         <title>My Service</title>
         <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
-         <%@include file="../cssTemplate.jsp"%>
+        <%@include file="../cssTemplate.jsp"%>
         <link href="<c:url value='/css/profile.css'/>" rel="stylesheet" />
         <%@include file="../cssCustom.jsp"%>
 
@@ -284,7 +285,7 @@
                                                     <td>${service.id}</td>
                                                     <td>${service.service.serviceName}</td>
                                                     <td>${service.price}</td>
-                                                    <td>${service.dateRegister}</td>
+                                                    <td><fmt:formatDate value="${service.dateRegister}" pattern="MMM dd yyyy" /></td>
 
                                                     <td>
                                                         <c:choose>
@@ -395,12 +396,12 @@
         <%@include file="../spacing.jsp" %>
         <%@include file="../footer.jsp" %>
         <%@include file="../scriptTemplate.jsp" %>
-    <script>
-        var currentDetailsRow = null;
+        <script>
+            var currentDetailsRow = null;
 
-    </script>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
     </body>
 </html>

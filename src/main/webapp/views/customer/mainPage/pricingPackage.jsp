@@ -535,38 +535,38 @@
             <div class="process-grid">
                 <div class="process-item">
                     <div class="process-number">1</div>
-                    <h4>Receive Customer Request</h4>
-                    <p>We receive and record information about your garden landscape design and koi pond construction needs.</p>
+                    <h4>Consultation on Style and Design</h4>
+                    <p>We conduct an on-site survey and discuss with the client to understand their desires and preferences. Based on this information, we will recommend the most suitable style and size for the pond.</p>
                        </div>
 
                 <div class="process-item">
                     <div class="process-number">2</div>
-                    <h4>On-Site Survey</h4>
-                    <p>Our team conducts an on-site survey to assess the area and ensure accuracy in the design and construction phases.</p>
+                    <h4>Quotation and Design Task Assignment</h4>
+                    <p>Depending on the scope, complexity, and style of the pond, our Company will review and provide an accurate and specific quotation to the client.</p>
                            </div>
 
                 <div class="process-item">
                     <div class="process-number">3</div>
-                    <h4>Design Proposal</h4>
-                    <p>We propose a preliminary design that reflects natural elements, aesthetics, and your personal preferences.</p>
+                    <h4>Conceptual Design Preparation</h4>
+                    <p>After understanding the client’s desires and preferences regarding the shape and style of the koi pond, our architectural team will prepare a conceptual design to send to the client after contract signing.</p>
                         </div>
 
                 <div class="process-item">
                     <div class="process-number">4</div>
-                    <h4>Quote Submission</h4>
-                    <p>We provide a detailed quotation based on the project scope, including all design and construction costs.</p>
+                    <h4>Basic and Detailed Design Documentation</h4>
+                    <p>After presenting the initial design concept, we will continue discussions to gauge client satisfaction. The design will then be further refined to achieve the best possible result.</p>
                        </div>
 
                 <div class="process-item">
                     <div class="process-number">5</div>
-                    <h4>Design Finalization</h4>
-                    <p>Once the quote is approved, the design is finalized in 3D, giving you a full visualization of the project.</p>
+                    <h4>Construction from Start to Finish</h4>
+                    <p>The engineering and construction team at Happikoi will carry out the project as per the provided documentation. Our project supervisors will ensure construction progress and quality for the koi pond project.</p>
                      </div>
 
                 <div class="process-item">
                     <div class="process-number">6</div>
-                    <h4>Construction and Supervision</h4>
-                    <p>We begin construction and supervise the project to ensure it meets design specifications and quality standards.</p>
+                     <h4>Construction and Supervision</h4>
+                      <p>Upon completion of construction, the Happikoi team will continue to care for and maintain the plants and related items for a period. Later, everything will be handed over to the client for care and preservation, with Happikoi providing support for any issues within our capacity.</p>
                     </div>
             </div>
         </div>

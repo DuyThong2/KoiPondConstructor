@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Create Service Quote</title>
+        <title>Update Service Quote</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -335,6 +335,38 @@
                         // If the field is empty or invalid, set it to 0.0
                         if (!serviceQuotesArea.value || isNaN(parseFloat(serviceQuotesArea.value))) {
                             serviceQuotesArea.value = 0.0;
+                        }
+                    });
+                });
+                
+                document.querySelectorAll('input[type="number"]').forEach(input => {
+                    input.addEventListener('input', function () {
+                        // Allow only digits and one decimal point
+                        if (/[^0-9.]/.test(this.value)) {
+                            this.value = "0";  // Reset to 0 if invalid characters are found
+                            return;
+                        }
+
+                        // Split input on '.' to manage decimal points
+                        const parts = this.value.split('.');
+
+                        // If more than one '.' or invalid numeric parts, reset to 0
+                        if (parts.length > 2 || !/^\d*$/.test(parts[0]) || (parts[1] && !/^\d*$/.test(parts[1]))) {
+                            this.value = "0";
+                            return;
+                        }
+
+                        // If the value is less than or equal to 0, reset to 0
+                        if (parseFloat(this.value) <= 0) {
+                            this.value = "0";
+                            return;
+                        }
+                    });
+
+                    input.addEventListener('blur', function () {
+                        // If input is empty, NaN, or less than or equal to 0 after blur, reset to 0
+                        if (this.value === "" || parseFloat(this.value) <= 0 || isNaN(parseFloat(this.value))) {
+                            this.value = "0";
                         }
                     });
                 });

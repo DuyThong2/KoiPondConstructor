@@ -53,8 +53,11 @@ public class Contract {
     
     private double priceOnCompleteConstruction;
     
+    @Column(name="deposit_on_contract_confirmed")
+    private double depositOnContract;
+    
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-private LocalDate estimatedEndDate;
+    private LocalDate estimatedEndDate;
     
     private String contractTerm;
     
@@ -253,6 +256,16 @@ private LocalDate estimatedEndDate;
     public void setFeedback(List<Feedback> feedback) {
         this.feedback = feedback;
     }
+
+    public double getDepositOnContract() {
+        return depositOnContract;
+    }
+
+    public void setDepositOnContract(double depositOnContract) {
+        this.depositOnContract = depositOnContract;
+    }
+    
+    
     
     
     

@@ -8,6 +8,7 @@ package com.example.SWPKoiContructor.services;
 import com.example.SWPKoiContructor.dao.ConsultantDAO;
 import com.example.SWPKoiContructor.entities.Consultant;
 import com.example.SWPKoiContructor.entities.Customer;
+import com.example.SWPKoiContructor.entities.PreDesign;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.User;
 import java.util.List;
@@ -106,5 +107,10 @@ public class ConsultantService {
     @Transactional
     public Consultant setCustomer(int id, Customer customer){
         return consultantDAO.setCustomerForConsultant(id, customer);
+    }
+    
+    @Transactional
+    public Consultant setPreDesign(int id, PreDesign preDesign){
+        return consultantDAO.setPreDesignForConsultant(id, preDesign);
     }
 }

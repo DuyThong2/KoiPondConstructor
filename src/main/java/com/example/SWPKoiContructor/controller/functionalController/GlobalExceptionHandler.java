@@ -43,13 +43,13 @@ public class GlobalExceptionHandler {
 //    }
 
 
-    // Handle 400 Bad Request
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String handleBadRequest(IllegalArgumentException ex, Model model) {
-        model.addAttribute("errorMessage", "Bad request");
-        return "error/error-400"; // Error page for 400
-    }
+//    // Handle 400 Bad Request
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public String handleBadRequest(IllegalArgumentException ex, Model model) {
+//        model.addAttribute("errorMessage", "Bad request");
+//        return "error/error-400"; // Error page for 400
+//    }
 
     @ExceptionHandler(AccountIsExistException.class)
     public String handleDuplicateEmail(AccountIsExistException ex, Model model) {
@@ -63,11 +63,11 @@ public class GlobalExceptionHandler {
         return "error/error-404";
     }
     
-    @ExceptionHandler(UserErrorSyntaxException.class)
-    public String handleBadRequest(UserErrorSyntaxException ex, Model model) {
-        model.addAttribute("errorMessage", "Bad request");
-        return "error/error-400"; // Error page for 400
-    }
+//    @ExceptionHandler(UserErrorSyntaxException.class)
+//    public String handleBadRequest(UserErrorSyntaxException ex, Model model) {
+//        model.addAttribute("errorMessage", "Bad request");
+//        return "error/error-400"; // Error page for 400
+//    }
 
     @ExceptionHandler(MultipartException.class)
     public String handleMultipartException(MultipartException ex, Model model) {

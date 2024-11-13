@@ -35,15 +35,18 @@ public class ProjectController {
     private ContractService contractService;
     private StaffService staffService;
     private NotificationService notificationService;
+    private PreDesignService preDesignService;
+
     public ProjectController(FileUtility fileUtility, ProjectService projectService, ContractService contractService,
             StaffService staffService, DesignService designService, CustomerService customerService,
-            NotificationService notificationService) {
+            NotificationService notificationService, PreDesignService preDesignService) {
         this.fileUtility = fileUtility;
         this.projectService = projectService;
         this.contractService = contractService;
         this.staffService = staffService;
         this.customerService = customerService;
         this.notificationService = notificationService;
+        this.preDesignService = preDesignService;
     }
 
     @GetMapping("/manager/projects")
@@ -55,19 +58,19 @@ public class ProjectController {
             @RequestParam(defaultValue = "asc") String sortType,
             @RequestParam(required = false) Integer statusFilter,
             @RequestParam(required = false) Integer stageFilter,
-                              @RequestParam(name="fromDate",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate getFromDate,
-                              @RequestParam(name="endDate",required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate getEndDate,
-                              @RequestParam(required = false) String searchName) {
+            @RequestParam(name = "fromDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate getFromDate,
+            @RequestParam(name = "endDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate getEndDate,
+            @RequestParam(required = false) String searchName) {
 
         List<Project> list;
         Date fromDate = (getFromDate != null) ? Date.valueOf(getFromDate) : null;
         Date endDate = (getEndDate != null) ? Date.valueOf(getEndDate) : null;
 
         long projectNum;
-        if (stageFilter != null || statusFilter != null||fromDate!=null||endDate!=null||searchName!=null) {
+        if (stageFilter != null || statusFilter != null || fromDate != null || endDate != null || searchName != null) {
             list = projectService.getPaginationProjectListByStatusAndStage(page, size, sortBy, sortType, statusFilter,
-                    stageFilter,fromDate,endDate,searchName);
-            projectNum = projectService.countProjectFilter(statusFilter, stageFilter,fromDate,endDate,searchName);
+                    stageFilter, fromDate, endDate, searchName);
+            projectNum = projectService.countProjectFilter(statusFilter, stageFilter, fromDate, endDate, searchName);
         } else {
             list = projectService.getPaginationProjectList(page, size, sortBy, sortType);
             projectNum = projectService.countProject();
@@ -82,14 +85,14 @@ public class ProjectController {
         model.addAttribute("projectList", list);
         model.addAttribute("statusFilter", statusFilter);
         model.addAttribute("stageFilter", stageFilter);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
         String formattedFromDate = (getFromDate != null) ? getFromDate.format(formatter) : "";
         String formattedEndDate = (getEndDate != null) ? getEndDate.format(formatter) : "";
         System.out.println("From Date: " + getFromDate);
         System.out.println("End Date: " + getEndDate);
         model.addAttribute("fromDate", formattedFromDate);
         model.addAttribute("endDate", formattedEndDate);
-        model.addAttribute("searchName",searchName);
+        model.addAttribute("searchName", searchName);
 
         return "manager/projects/projectManage";
     }
@@ -120,6 +123,11 @@ public class ProjectController {
                 System.out.println("Error decoding Base64: " + e.getMessage());
                 decodedContent = "Error decoding content";
             }
+             if(project.getContract().getEstimatedEndDate() != null){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+            String formattedDate = project.getContract().getEstimatedEndDate().format(formatter);
+            model.addAttribute("estimatedEndDate", formattedDate);
+            }
             System.out.println(decodedContent);
             model.addAttribute("customer", customer);
             model.addAttribute("project", project);
@@ -135,8 +143,14 @@ public class ProjectController {
         Contract contract = contractService.getContractById(contractId);
         if (contract != null) {
             Project project = new Project();
+            List<PreDesign> preDesign = preDesignService.getPreDesignListIsActive();
             model.addAttribute("contract", contract);
             model.addAttribute("project", project);
+            model.addAttribute("activePreDesigns", preDesign);
+            if (preDesign.isEmpty()) {
+                model.addAttribute("errorMessage", "No active designs available.");
+            }
+            System.out.println("Active PreDesigns: " + preDesign); // Kiểm tra log
             return "manager/projects/createProject";
         } else {
             return "redirect:/manager/contracts";
@@ -153,13 +167,22 @@ public class ProjectController {
             project.setDateStart(Utility.localDateToUtilDate(localDate));
             project.setStatus(1);
             project.setStage(1);
+            if (project.getPreDesign() != null && project.getPreDesign().getPreDesignId() != null) {
+                PreDesign preDesign = preDesignService.getPredesignById(project.getPreDesign().getPreDesignId());
+                if (preDesign != null) 
+                    project.setPreDesign(preDesign); 
+               
+            }
+            else{
+                project.setPreDesign(null);
+            }
             Content content = new Content("");
             content.setProject(project);
             project.setContent(content);
             project.setIsSharedAble(false);
             Project newlyCreatedProject = projectService.createProject(project);
             contract.setContractStatus(7);
-            notificationService.createProjectNotification(project.getContract().getCustomer().getName(),newlyCreatedProject.getProjectId(),project.getContract().getCustomer().getId());
+            notificationService.createProjectNotification(project.getContract().getCustomer().getName(), newlyCreatedProject.getProjectId(), project.getContract().getCustomer().getId());
             return "redirect:/manager/projects/detail/" + newlyCreatedProject.getProjectId();
         } else {
             return "redirect:/manager/contracts";
@@ -225,19 +248,18 @@ public class ProjectController {
 
     @PostMapping("/updateStage")
     @ResponseBody
-    public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId,@RequestParam("projectStage") int projectStage) {
+    public ResponseEntity<String> updateProjectStage(@RequestParam("projectId") int projectId, @RequestParam("projectStage") int projectStage) {
         try {
 
-
             Project project = projectService.getProjectById(projectId);
-               if(project.getStage()==1){
-                   projectService.updateProjectStage(projectId);
-               }else{
-                   projectService.updateProjectStatus(projectId,2);
-               }
-            List<Staff> staffList =new ArrayList<>(project.getDesign().getStaff());
+            if (project.getStage() == 1) {
+                projectService.updateProjectStage(projectId);
+            } else {
+                projectService.updateProjectStatus(projectId, 2);
+            }
+            List<Staff> staffList = new ArrayList<>(project.getDesign().getStaff());
             staffList.addAll(project.getConstruction().getStaff());
-            notificationService.assignListStaffNotification(staffList,projectId,project.getProjectName());
+            notificationService.assignListStaffNotification(staffList, projectId, project.getProjectName());
             return ResponseEntity.ok("Change stage successfully");
 
         } catch (Exception e) {
@@ -254,7 +276,7 @@ public class ProjectController {
             // 'construction' departments.
             if (searchTerm == null || searchTerm.trim().isEmpty()) {
                 staffList = staffService.getAllStaff(); // Ensure that getAllStaff() fetches only Design and
-                                                        // Construction staff.
+                // Construction staff.
             } else {
                 // Fetch staff members that match the search query for 'design' or
                 // 'construction' departments.
@@ -282,9 +304,9 @@ public class ProjectController {
         try {
             staffService.assignStaffToProject(staffId, projectId, role);
             Staff staff = staffService.getStaffById(staffId);
-            Project project= projectService.getProjectById(projectId);
-            if(project.getStatus()>=2){
-                notificationService.assignStaffNotification(staffId,projectId,staff.getDepartment(),"project","You have been assigned to a new Project: "+ project.getProjectName());
+            Project project = projectService.getProjectById(projectId);
+            if (project.getStatus() >= 2) {
+                notificationService.assignStaffNotification(staffId, projectId, staff.getDepartment(), "project", "You have been assigned to a new Project: " + project.getProjectName());
             }
             return "redirect:/manager/projects/assign/" + projectId;
         } catch (Exception e) {
@@ -319,8 +341,8 @@ public class ProjectController {
                     throw new IllegalArgumentException(
                             "Staff with ID " + staffId + " is not assigned as a designer for the project.");
                 }
-                if(project.getStatus()>=2){
-                    notificationService.assignStaffNotification(staffId,projectId,staff.getDepartment(),"project","You have been deleted from project: "+ project.getProjectName());
+                if (project.getStatus() >= 2) {
+                    notificationService.assignStaffNotification(staffId, projectId, staff.getDepartment(), "project", "You have been deleted from project: " + project.getProjectName());
                 }
 
             } else if (role.equalsIgnoreCase("construction")) {
@@ -335,8 +357,8 @@ public class ProjectController {
                             "Staff with ID " + staffId + " is not assigned as a construction staff for the project.");
                 }
 
-                if(project.getStatus()>=2){
-                    notificationService.assignStaffNotification(staffId,projectId,staff.getDepartment(),"project","You have been deleted from project: "+ project.getProjectName());
+                if (project.getStatus() >= 2) {
+                    notificationService.assignStaffNotification(staffId, projectId, staff.getDepartment(), "project", "You have been deleted from project: " + project.getProjectName());
                 }
             } else {
                 throw new IllegalArgumentException("Invalid role specified: " + role);
@@ -392,7 +414,7 @@ public class ProjectController {
     }
 
     @PostMapping("/manager/projects/cancelProject")
-    public ResponseEntity<String> cancelProject(Model model, @RequestParam int projectId,@RequestParam int status) {
+    public ResponseEntity<String> cancelProject(Model model, @RequestParam int projectId, @RequestParam int status) {
         try {
             Project project = projectService.getProjectById(projectId);
             if (project == null) {
@@ -409,7 +431,7 @@ public class ProjectController {
                 project.setIsSharedAble(false);
             }
             projectService.updateProject(project);
-                return ResponseEntity.ok("Changed Successfully");
+            return ResponseEntity.ok("Changed Successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
@@ -422,7 +444,6 @@ public class ProjectController {
             @RequestParam("projectAddress") String address,
             @RequestParam("projectStyle") String style,
             @RequestParam("projectDescription") String description,
-
             @RequestParam("projectImage") MultipartFile file,
             RedirectAttributes redirectAttributes) {
         String returnSite = "";
@@ -504,7 +525,6 @@ public class ProjectController {
         }
 
         // Decode the project content if it exists
-
         // Add attributes to the model
         model.addAttribute("project", project);
         // model.addAttribute("decodedContent");
@@ -531,7 +551,7 @@ public class ProjectController {
                 // Create notification for cancel request
                 String notificationMessage = "Cancel Request From " + project.getContract().getCustomer().getName() + ": "
                         + cancelMessage;
-                notificationService.createCancelRequestNotification(project.getProjectId(), notificationMessage,"projects");
+                notificationService.createCancelRequestNotification(project.getProjectId(), notificationMessage, "projects");
                 // Return success JSON string wrapped in ResponseEntity with 200 OK
                 return ResponseEntity.ok("{\"status\":\"success\"}");
             } else {
