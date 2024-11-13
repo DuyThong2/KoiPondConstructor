@@ -657,7 +657,13 @@
                                                 <input type="hidden" name="size" value="${size}">
                                                 <input type="hidden" name="sortBy" value="${sortBy}">
                                                 <input type="hidden" name="sortType" value="${sortType}">
-                                                <input type="hidden" name="searchName" value="${searchName}">
+                                                <c:if test="${searchName!=null}">
+                                                    <input type="hidden" name="searchName" value="${searchName}">
+
+                                                </c:if>
+                                                <c:if test="${statusFilter!=null}">
+                                                    <input type="hidden" name="statusFilter" value="${statusFilter}">
+                                                </c:if>
                                             </form>
                                         </c:if>
                                         <c:if test="${currentPage == 1}">
@@ -676,11 +682,16 @@
                                                 <input type="hidden" name="size" value="${size}">
                                                 <input type="hidden" name="sortBy" value="${sortBy}">
                                                 <input type="hidden" name="sortType" value="${sortType}">
-                                                <input type="hidden" name="searchName" value="${searchName}">
+                                                <c:if test="${searchName!=null}">
+                                                    <input type="hidden" name="searchName" value="${searchName}">
 
+                                                </c:if>
+                                                <c:if test="${statusFilter!=null}">
+                                                    <input type="hidden" name="statusFilter" value="${statusFilter}">
+                                                </c:if>
                                             </form>
                                         </c:if>
-                                        <c:if test="${currentPage == totalPages}">
+                                        <c:if test="${currentPage == totalPage}">
                                             <button class="btn btn-primary" disabled>&gt;</button>
                                         </c:if>
                                     </div>

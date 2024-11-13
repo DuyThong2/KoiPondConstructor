@@ -8,7 +8,7 @@
                 <meta charset="utf-8">
                 <meta http-equiv="x-ua-compatible" content="ie=edge">
                 <title>My Project</title>
-                <meta name="description" content="Ribuild - Construction Company HTML5 Template">
+                <meta name="description" content="HappiKoi">
                 <meta name="author" content="ahmmedsabbirbd">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -497,12 +497,13 @@
                     </main>
 
                     <!-- Footer area start -->
-                  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
-                  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-                    <%@include file="../footer.jsp" %>ư
-                        <%@include file="../scriptTemplate.jsp" %>
-
-                            <!-- Footer area end -->
+                  
+                    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+                    <!-- Load a compatible jQuery version -->
+                    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                    <%@include file="../spacing.jsp" %>
+                        <%@include file="../footer.jsp" %>
+                            <%@include file="../scriptTemplate.jsp" %>
                             <script>
                                 $(document).ready(function () {
                                     var projectId = ${ project.projectId };
@@ -544,9 +545,8 @@
                                                     // Hide cancel request modal
                                                     $('#cancelRequestModal').modal('hide');
                                                     $('#cancelRequestModal').removeClass('canRequestModalAppear');
-
+                                                    $('.modal-backdrop').remove();
                                                     // Show success message
-                                                    alert("Cancellation request sent successfully!");
                                                 },
                                                 error: function (xhr, status, error) {
                                                     alert("An error occurred while sending the cancellation request. Please try again.");

@@ -453,7 +453,7 @@
                                         </c:if>
                                     </form>
                                 </c:if>
-                                <c:if test="${currentPage == totalPages}">
+                                <c:if test="${currentPage == totalPage}">
                                     <button class="btn btn-primary" disabled>&gt;</button>
                                 </c:if>
                             </div>

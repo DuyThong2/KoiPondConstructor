@@ -122,15 +122,17 @@
                                              </tr>
                                         </table>
                                         <!-- Add View Request button for status 4 (Requesting Cancel) -->
-                                        <c:if test="${serviceDetail.serviceDetailStatus == 4}">
-                                             <button id="viewRequestBtn-${serviceDetail.id}" type="button"
-                                                     class="btn btn-danger btn-md mt-4"
-                                                      onclick="showModal(${serviceDetail.id})";> 
-                                                  View Request
-                                             </button>
-                                             
-                                        </c:if>
-                                        <a href="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}" class="btn btn-warning btn-md mt-4"> Manage </a>
+                                        <div class="w-100 d-flex justify-content-center">
+                                             <c:if test="${serviceDetail.serviceDetailStatus == 4}">
+                                                  <button id="viewRequestBtn-${serviceDetail.id}" type="button"
+                                                          class="btn btn-danger btn-md mt-4"
+                                                           onclick="showModal(${serviceDetail.id})";> 
+                                                       View Request
+                                                  </button>
+                                                  
+                                             </c:if>
+                                             <a href="${pageContext.request.contextPath}/manager/serviceDetails/assign/${serviceDetail.id}" class="btn btn-warning btn-md mt-4"> Manage </a>
+                                        </div>
                                    </div>
 
                                    <div class="row">

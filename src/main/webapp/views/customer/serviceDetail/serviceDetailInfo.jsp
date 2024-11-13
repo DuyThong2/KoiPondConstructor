@@ -85,8 +85,28 @@
           <body>
 
                <%@include file="../homePageNavbar.jsp" %>
+                    <section id="services"
+                         class="service section-space__top section-space__bottom-80 theme-bg-heading-primary">
+                         <div class="container rr-shape-p-c_1">
+                              <div class="service__shape-1 rr-shape-p-s_1 leftRight">
+                                   <div></div>
+                              </div>
 
+                              <div class="row mb-30 mb-sm-40 mb-xs-35 align-items-lg-end align-items-center">
+                                   <div class="col-md-6">
+                                        <div class="section__title-wrapper text-center text-xl-start">
+                                             <span class="section__subtitle justify-content-start mb-13"><span
+                                                       data-width="40px" class="left-separetor"></span>Services</span>
+                                             <h2 class="section__title color-white title-animation text-capitalize mb-0 rr-br-hidden-xl"
+                                                  data-cursor="-opaque">Service Details
+                                             </h2>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </section>
                     <main role="main" class="mt-4 mb-5 container">
+
                          <div class="row">
                               <!-- Staff Information Column -->
                               <div class="col-md-4">
@@ -264,15 +284,17 @@
                          </div>
 
                          <!-- Popup -->
-                         <%@include file="../../popup.jsp"%>
+                         <%@include file="../../popup.jsp" %>
                     </main>
 
                     <%@include file="../footer.jsp" %>
 
                          <!-- JS Scripts -->
                          <%@include file="../scriptTemplate.jsp" %>
-                          <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script> <!-- Load a compatible jQuery version -->
-                          <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+                              <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+                              <!-- Load a compatible jQuery version -->
+                              <script
+                                   src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
                               <script
                                    src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
                               <script>

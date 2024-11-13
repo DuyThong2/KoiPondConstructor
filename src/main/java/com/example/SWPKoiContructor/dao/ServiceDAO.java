@@ -120,7 +120,7 @@ public class ServiceDAO {
     public List<Service> getPaginationServiceListByStatus(int page, int size, String sortBy, String sortType, Boolean statusFilter,String searchName) {
         // Ensure valid defaults for sortBy and sortType
         String validSortBy = (sortBy != null && !sortBy.isEmpty()) ? sortBy : "serviceName";
-        String validSortType = (sortType != null && (sortType.equalsIgnoreCase("ASC") || sortType.equalsIgnoreCase("DESC"))) ? sortType : "ASC"; 
+        String validSortType = (sortType != null && (sortType.equalsIgnoreCase("ASC") || sortType.equalsIgnoreCase("DESC"))) ? sortType : "ASC";
 
         StringBuilder queryBuilder = new StringBuilder("SELECT s FROM Service s");
 
@@ -148,7 +148,7 @@ public class ServiceDAO {
         if (statusFilter != null) {
             query.setParameter("statusFilter", statusFilter);
         }
-        if(searchName!=null){
+        if(searchName!=null&&!searchName.isEmpty()){
             query.setParameter("searchName", "%"+searchName+"%");
         }
 
@@ -183,7 +183,7 @@ public class ServiceDAO {
         if (statusFilter != null) {
             query.setParameter("statusFilter", statusFilter);
         }
-        if(searchName!=null){
+        if(searchName!=null&&!searchName.isEmpty()){
             query.setParameter("searchName", "%"+searchName+"%");
         }
         return query.getSingleResult();
