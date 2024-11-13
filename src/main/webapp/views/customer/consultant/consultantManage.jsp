@@ -278,7 +278,7 @@
                                                 <!-- Main Service Row -->
                                                 <tr>
                                                     <td>${consultant.consultantId}</td>
-                                                    <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>
+                                                    <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="MMM dd yyyy HH:mm"/></td>
                                                     <td>${consultant.consultantType}</td>
                                                     <td style="text-align: center;">
                                                         <c:choose>

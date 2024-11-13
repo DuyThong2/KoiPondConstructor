@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -177,7 +178,7 @@
                                 <p><strong>Price:</strong> ${serviceDetail.price}</p>
                             </div>
                             <div class="info-item">
-                                <p><strong>Date Registered:</strong> ${serviceDetail.dateRegister}</p>
+                                <p><strong>Date Registered:</strong>  <fmt:formatDate value="${serviceDetail.dateRegister}" pattern="MMM dd yyyy" /></p>
                             </div>
 
                             <div class="info-item">

@@ -223,7 +223,7 @@
                                     <tbody>
                                         <c:forEach var="contract" items="${contracts}">
                                             <tr>
-                                                <td> <fmt:formatDate value="${contract.dateCreate}" pattern="dd-MM-yyyy"/></td>
+                                                <td> <fmt:formatDate value="${contract.dateCreate}" pattern="MMM dd yyyy"/></td>
                                                 <td>
                                                     <c:choose>
                                                         <c:when test="${not empty contract.fileURL}">
@@ -265,6 +265,9 @@
                                                         </c:when>
                                                         <c:when test="${contract.contractStatus == 7}">
                                                             <span class="badge badge-success badge-default status-badge">Project Created</span>
+                                                        </c:when>
+                                                        <c:when test="${contract.contractStatus == 8}">
+                                                            <span class="badge badge-success badge-default status-badge">payment confirmed</span>
                                                         </c:when>
                                                     </c:choose>
                                                 </td>

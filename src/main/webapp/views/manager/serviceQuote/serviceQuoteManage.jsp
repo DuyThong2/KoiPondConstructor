@@ -1,11 +1,10 @@
-
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Contract Management</title>
+        <title>Service Quote Management</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
@@ -222,7 +221,7 @@
                         <tbody>
                             <c:forEach var="serviceQuote" items="${serviceQuote}">
                                 <tr>
-                                    <td>${serviceQuote.serviceQuotesDate}</td>
+                                    <td><fmt:formatDate value="${serviceQuote.serviceQuotesDate}" pattern="MMM dd yyyy"/></td>
                                     <td>${serviceQuote.serviceQuotesName}</td>
                                     <td>${serviceQuote.serviceQuotesArea}</td>
                                     <td>${serviceQuote.serviceQuotesTotalPrice}</td>

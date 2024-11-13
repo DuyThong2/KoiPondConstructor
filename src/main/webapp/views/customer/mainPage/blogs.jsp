@@ -443,7 +443,7 @@
                                         <i class="fas fa-user"></i> ${blog.staff.name}
                                     </a>
                                     <a href="#" class="text-secondary">
-                                        <i class="fas fa-calendar"></i> <fmt:formatDate value="${blog.datePost}" pattern="dd-MM-yyyy"/>
+                                        <i class="fas fa-calendar"></i> <fmt:formatDate value="${blog.datePost}" pattern="MMM dd yyyy"/>
                                     </a>
                                 </div>
                                <div class="d-flex flex-column justify-content-around" style="min-height:200px;">

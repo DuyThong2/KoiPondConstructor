@@ -58,6 +58,9 @@ public class Quotes {
 
     @Column(name = "quotes_construction_cost")
     private double quotesConstructionCost;
+    
+    @Column(name="deposit_on_contract")
+    private double depositOnContract;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -227,6 +230,16 @@ public class Quotes {
     public void setFeedback(List<Feedback> feedback) {
         this.feedback = feedback;
     }
+
+    public double getDepositOnContract() {
+        return depositOnContract;
+    }
+
+    public void setDepositOnContract(double depositOnContract) {
+        this.depositOnContract = depositOnContract;
+    }
+    
+    
 
     
     @Override

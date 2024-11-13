@@ -37,7 +37,7 @@ public class ServiceController {
     public String serviceList(
             Model model,
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "2") int size,
             @RequestParam(defaultValue = "serviceStatus") String sortBy,
             @RequestParam(defaultValue = "desc") String sortType,
             @RequestParam(required = false) Boolean statusFilter,

@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -134,12 +135,15 @@
                             </tr>
                             <tr>
                                 <th>Date Created</th>
-                                <td>${contract.dateCreate}</td>
+                                <td><fmt:formatDate value="${contract.dateCreate}" pattern="MMM dd yyyy" /></td>
                             </tr>
-                            <tr>
-                                <th>Estimated End Date</th>
-                                <td>${contract.estimatedEndDate}</td>
-                            </tr>
+                            <c:if test="${not empty estimatedEndDate}">
+                                <tr>
+                                    <th>Estimated End Date</th>
+                                    <td>${estimatedEndDate}</td>
+                                </tr>
+                            </c:if>
+
                             <tr>
                                 <th>Contract Status</th>
                                 <td>
@@ -163,13 +167,20 @@
                                             <span class="badge badge-success status-badge">Accepted</span>
                                         </c:when>
                                         <c:when test="${contract.contractStatus == 7}">
-                                            <span class="badge badge-success status-badge">Accepted</span>
+                                            <span class="badge badge-success status-badge">Project Created</span>
+                                        </c:when>
+                                        <c:when test="${contract.contractStatus == 8}">
+                                            <span class="badge badge-success status-badge">Confirmed Deposit</span>
                                         </c:when>
                                     </c:choose>
                                 </td>
                             </tr>
                             <tr>
-                                <th>Total Price</th>
+                                <th>Deposit Cost:</th>
+                                <td>${contract.depositOnContract}</td>
+                            </tr>
+                            <tr>
+                                <th>Total Price (not include deposit)</th>
                                 <td>${contract.totalPrice}</td>
                             </tr>
                             <tr>
@@ -196,6 +207,9 @@
                         <div class="action-buttons">
                             <c:choose>
                                 <c:when test="${contract.contractStatus == 1}">
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                        View Quote Detail
+                                    </a>
                                     <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
                                         <input type="hidden" name="id" value="${contract.contractId}">
                                         <input type="hidden" name="status" value="2">
@@ -225,6 +239,9 @@
                                             <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                         </div>
                                         <p>Status: <span class="badge badge-danger">Refused by Customer</span></p>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                            View Quote Detail
+                                        </a>
                                         <form action="${pageContext.request.contextPath}/manager/contract/edit" method="GET" class="d-inline">
                                             <input type="hidden" name="id" value="${contract.contractId}">
                                             <button type="submit" class="btn btn-primary">Edit</button>
@@ -242,27 +259,60 @@
                                         <div class="alert alert-danger text-center" role="alert">
                                             <strong>Rejection Reason: </strong> ${feedback.feedbackContent}
                                         </div>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                            View Quote Detail
+                                        </a>
                                     </div>
                                 </c:when>
 
                                 <c:when test="${contract.contractStatus == 6 && empty contract.project}">
                                     <div class="mt-4 text-center">
                                         <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
-                                        <form action="${pageContext.request.contextPath}/manager/project/create" method="GET" class="d-inline">
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                            View Quote Detail
+                                        </a>
+                                        <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
                                             <input type="hidden" name="id" value="${contract.contractId}">
-                                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
+                                            <input type="hidden" name="status" value="8">
+                                            <button type="submit" class="btn btn-success">Confirm Payment</button>
+                                        </form>
+                                        <form action="${pageContext.request.contextPath}/manager/contract/editStatus" method="POST" class="d-inline">
+                                            <input type="hidden" name="id" value="${contract.contractId}">
+                                            <input type="hidden" name="status" value="5">
+                                            <button type="submit" class="btn btn-danger">Cancel</button>
                                         </form>
                                     </div>
 
                                 </c:when>
-                                <c:when test="${not empty contract.project}">
+                                <c:when test="${contract.contractStatus == 7 && not empty contract.project}">
                                     <div class="mt-4 text-center">
-                                        <p>Status: <span class="badge badge-success">Accepted by Customer</span></p>
+                                        <p>Status: <span class="badge badge-success">Project Created</span></p>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                            View Quote Detail
+                                        </a>
                                         <form action="${pageContext.request.contextPath}/manager/projects/detail/${contract.project.projectId}" method="GET" class="d-inline">
                                             <button type="submit" class="btn btn-success">VIEW PROJECT</button>
                                         </form>
                                     </div>
                                 </c:when>
+                                <c:when test="${contract.contractStatus == 8}">
+                                    <div class="mt-4 text-center">
+                                        <p>Status: <span class="badge badge-success">Confirmed payment</span></p>
+                                        <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                            View Quote Detail
+                                        </a>
+
+                                        <form action="${pageContext.request.contextPath}/manager/project/create" method="GET" class="d-inline">
+                                            <input type="hidden" name="id" value="${contract.contractId}">
+                                            <button type="submit" class="btn btn-primary"><i class="fas fa-plus icon-btn"></i> Create Project</button>
+                                        </form>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <a class="btn btn-primary" href="${pageContext.request.contextPath}/manager/quote/detail/${contract.quote.quotesId}">
+                                        View Quote Detail
+                                    </a>
+                                </c:otherwise>
                             </c:choose>
                         </div>
                     </div>
@@ -412,6 +462,10 @@
                                         <tr>
                                             <th>Customer Phone</th>
                                             <td>${contract.customer.phone}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Point</th>
+                                            <td>${totalPoint}</td>
                                         </tr>
                                     </table>
                                 </c:if>

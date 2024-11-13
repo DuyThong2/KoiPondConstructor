@@ -89,11 +89,11 @@
                 <table class="table table-bordered table-hover">
                     <thead class="thead-dark">
                         <tr>
-                            <th>Date Created</th>
+                            <th style="width: 12%">Date Created</th>
                             <th>Customer Name</th>
                             <th>Phone</th>
                             <th>Email</th>
-                            <th>Content</th>
+                            <th style="width: 22%">Content</th>
                             <th>Pre Design</th>
                             <th>Staff</th>
                             <th>Status</th>
@@ -103,7 +103,7 @@
                     <tbody>
                         <c:forEach var="consultant" items="${consultants}">
                             <tr>
-                                <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="yyyy-MM-dd HH:mm"/></td>
+                                <td><fmt:formatDate value="${consultant.consultantDateTime.time}" pattern="MMM dd yyyy HH:mm"/></td>
                                 <td>${consultant.consultantCustomerName}</td>
                                 <td>${consultant.consultantPhone}</td>
                                 <td>${consultant.consultant_email}</td>

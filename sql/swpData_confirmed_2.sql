@@ -167,6 +167,7 @@ CREATE TABLE Quotes (
     consultant_id int,
     staff_id INT,
 	package_id int,
+	deposit_on_contract decimal(10,2),
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
     FOREIGN KEY (consultant_id) references Consultant(consultant_id),
     FOREIGN KEY (staff_id) REFERENCES Staffs(id),
@@ -186,12 +187,13 @@ CREATE TABLE [Contract] (
     price_on_raw_construction DECIMAL(10, 2),
     price_on_complete_construction DECIMAL(10, 2),
     contract_term NVARCHAR(255),
-    contract_status INT, -- 1:Pending 2: Approved 3: Rejected(customer) 4:rejected(manager) 5:cancel 6:accepted 7: contract created
+    contract_status INT, -- 1:Pending 2: Approved 3: Rejected(customer) 4:rejected(manager) 5:cancel 6:accepted 7: project created 8: confirmed payment
     contract_note NVARCHAR(255),
 	estimated_end_date date,
     term_id int ,
     customer_id INT,
 	quote_id int,
+	deposit_on_contract_confirmed decimal(10,2),
     FOREIGN key (term_id) references Term(term_id),
     FOREIGN KEY (customer_id) REFERENCES Customers(id),
 	FOREIGN KEY (quote_id) REFERENCES Quotes(quotes_id)
@@ -211,7 +213,8 @@ CREATE TABLE Project (
     stage INT, -- 1: Planning; 2: Design; 3: Construction; 4:Maintance; 5: Finish
 	is_shareable bit, --accept; reject  
 	contract_id int foreign key references [Contract](contract_id),
-    project_cancel_message NVARCHAR(max)
+    project_cancel_message NVARCHAR(max),
+	pre_design_id int foreign key references  Pre_Design(pre_design_id)
 );
 
 -- 7. Design

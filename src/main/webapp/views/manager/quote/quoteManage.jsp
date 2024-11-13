@@ -5,7 +5,7 @@
 <html>
 
     <head>
-        <title>Contract Details</title>
+        <title>Quote Management</title>
         <!-- Bootstrap CSS -->
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet"
@@ -241,7 +241,7 @@
                         <tbody>
                             <c:forEach var="quote" items="${quoteList}">
                                 <tr>
-                                    <td>${quote.quotesDate}</td>
+                                    <td><fmt:formatDate value="${quote.quotesDate}" pattern="MMM dd yyyy" /></td>
                                     <td>${quote.quotesName}</td>
                                     <td>${quote.quotesContent}</td>
                                     <td>${quote.quotesArea} m&sup2</td>

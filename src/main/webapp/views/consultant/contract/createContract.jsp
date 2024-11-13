@@ -139,6 +139,7 @@
                         <p><strong>Total Design Cost:</strong> ${quote.quotesDesignCost}</p>
                         <p><strong>Total Construction Cost:</strong> ${quote.quotesConstructionCost}</p>
                         <p><strong>Area:</strong> ${quote.quotesArea}m<sup>2</sup></p>
+                        <p><strong>Presumed deposit:</strong> ${quote.depositOnContract}</p>
                         <p><strong>Total Price:</strong> ${quote.quotesTotalPrice}</p>
                     </div>
                 </div>
@@ -153,7 +154,11 @@
                         <form:hidden path="quote.quotesId" value="${quote.quotesId}"/>
                         <form:hidden path="customer.id" value="${customer.id}" />
 
-
+                        <!-- Total Price -->
+                        <div class="form-group">
+                            <label for="totalPrice">Total Price (not include deposit):</label>
+                            <form:input path="totalPrice" id="totalPrice" step="0.01" class="form-control" readonly="true"/>
+                        </div>
 
                         <!-- Design Phases -->
                         <div class="section-title">
@@ -287,11 +292,14 @@
                                 <input type="date" id="estimatedEndDate" name="estimatedEndDate" class="form-control" style="width: 50%;" min="" required>
                             </div>
                         </div>
-                        <!-- Total Price -->
-                        <div class="form-group">
-                            <label for="totalPrice">Total Price:</label>
-                            <form:input path="totalPrice" id="totalPrice" step="0.01" class="form-control" readonly="true"/>
+
+                        <div style="margin: 25px 0 0 0">
+                            <div class="form-group form-check-inline">
+                                <label>Contract Deposit:</label>
+                                <form:input type="number" path="depositOnContract" style="width: 50%;" id="depositOnContract" step="0.01" min="0" value="${quote.depositOnContract}" required="true" class="form-control"/>
+                            </div>
                         </div>
+                        
                         <!-- Button to Adjust Costs -->
                         <div class="form-group">
                             <button type="button" class="btn btn-warning" onclick="autoAdjust()">Auto Adjust Costs</button>
@@ -583,6 +591,7 @@
                 document.querySelector('form').addEventListener('submit', function (event) {
                     const termOption = document.querySelector('input[name="termOption"]:checked');
                     const estimatedEndDate = document.getElementById('estimatedEndDate').value;
+                    const depositOnContract = parseFloat(document.getElementById('depositOnContract').value);
 
                     // Check if estimated end date is provided
                     if (!estimatedEndDate) {
@@ -651,6 +660,12 @@
 
                     if (Math.abs(totalConstruction - maxConstructionCost) > 0.1) {
                         alert('The total of construction costs must match the quoted construction cost within a small tolerance.');
+                        event.preventDefault();
+                        return;
+                    }
+
+                    if (depositOnContract <= 0) {
+                        alert('The deposit amount must be greater than 0.');
                         event.preventDefault();
                         return;
                     }

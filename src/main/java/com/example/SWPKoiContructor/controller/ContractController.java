@@ -9,6 +9,7 @@ import com.example.SWPKoiContructor.dao.ContractDAO;
 import com.example.SWPKoiContructor.entities.Contract;
 import com.example.SWPKoiContructor.entities.Customer;
 import com.example.SWPKoiContructor.entities.Feedback;
+import com.example.SWPKoiContructor.entities.PaymentHistory;
 import com.example.SWPKoiContructor.entities.Quotes;
 import com.example.SWPKoiContructor.entities.Staff;
 import com.example.SWPKoiContructor.entities.Term;
@@ -17,12 +18,18 @@ import com.example.SWPKoiContructor.services.TermService;
 import com.example.SWPKoiContructor.services.ContractService;
 import com.example.SWPKoiContructor.services.CustomerService;
 import com.example.SWPKoiContructor.services.FeedbackService;
+import com.example.SWPKoiContructor.services.LoyaltyPointService;
 import com.example.SWPKoiContructor.services.QuoteService;
 import com.example.SWPKoiContructor.services.StaffService;
 import com.example.SWPKoiContructor.services.UserService;
 import com.example.SWPKoiContructor.services.NotificationService;
+import com.example.SWPKoiContructor.services.PaymentHistoryService;
+import com.example.SWPKoiContructor.services.functionalService.EmailService;
 import com.example.SWPKoiContructor.utils.FileUtility;
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.http.HttpSession;
@@ -33,10 +40,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  *
@@ -54,11 +59,19 @@ public class ContractController {
     private ContractDAO contractDAO;
     private UserService userService;
     private FeedbackService feedbackService;
+    private EmailService emailService;
+    private PaymentHistoryService paymentHistoryService;
+    private LoyaltyPointService loyaltyPointService;
 
     private NotificationService notificationService;
 
     public ContractController(ContractService contractService, TermService termService, CustomerService customerService,
-            StaffService staffService, QuoteService quotesService, ContractDAO contractDAO, UserService userService, FeedbackService feedbackService, FileUtility fileUtility, NotificationService notificationService) {
+            StaffService staffService, QuoteService quotesService, PaymentHistoryService paymentHistoryService,
+            ContractDAO contractDAO, UserService userService, FeedbackService feedbackService,
+
+            FileUtility fileUtility, NotificationService notificationService, EmailService emailService,
+            LoyaltyPointService loyaltyPointService) {
+
         this.contractService = contractService;
         this.termService = termService;
         this.customerService = customerService;
@@ -67,8 +80,11 @@ public class ContractController {
         this.contractDAO = contractDAO;
         this.userService = userService;
         this.feedbackService = feedbackService;
-        this.fileUtility = fileUtility;
+        this.emailService = emailService;
+        this.paymentHistoryService = paymentHistoryService;
+        this.loyaltyPointService = loyaltyPointService;
         this.notificationService = notificationService;
+        this.fileUtility = fileUtility;
     }
 
     @GetMapping("/manager/contract")
@@ -87,7 +103,8 @@ public class ContractController {
 
         // Apply filtering based on the name, date range, and status
         if (statusFilter != null || searchName != null || fromDate != null || toDate != null) {
-            contracts = contractService.getFilteredContracts(page, size, sortBy, sortDirection, statusFilter, searchName, fromDate, toDate);
+            contracts = contractService.getFilteredContracts(page, size, sortBy, sortDirection, statusFilter,
+                    searchName, fromDate, toDate);
             totalContracts = contractService.countFilteredContracts(statusFilter, searchName, fromDate, toDate);
         } else {
             contracts = contractService.getContractListBaseOnSortAndPaging(page, size, sortBy, sortDirection);
@@ -105,11 +122,11 @@ public class ContractController {
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDirection", sortDirection);
         model.addAttribute("statusFilter", statusFilter);
-        model.addAttribute("searchName", searchName);  // Add searchName to model
-        model.addAttribute("fromDate", fromDate);  // Add fromDate to model
-        model.addAttribute("toDate", toDate);  // Add toDate to model
+        model.addAttribute("searchName", searchName); // Add searchName to model
+        model.addAttribute("fromDate", fromDate); // Add fromDate to model
+        model.addAttribute("toDate", toDate); // Add toDate to model
 
-        return "manager/contract/contractManage";  // JSP page to display the contract list
+        return "manager/contract/contractManage"; // JSP page to display the contract list
     }
 
     @GetMapping("/consultant/contract")
@@ -152,7 +169,7 @@ public class ContractController {
         model.addAttribute("fromDate", fromDate);
         model.addAttribute("toDate", toDate);
 
-        return "consultant/contract/contractManage";  // JSP page to display the contract list
+        return "consultant/contract/contractManage"; // JSP page to display the contract list
     }
 
     @GetMapping("/customer/contract")
@@ -169,7 +186,8 @@ public class ContractController {
         if (page > totalPages) {
             page = 0;
         }
-        List<Contract> contracts = contractService.getContractListOfCustomer(user.getId(), page, size, sortBy, sortDirection);
+        List<Contract> contracts = contractService.getContractListOfCustomer(user.getId(), page, size, sortBy,
+                sortDirection);
         contracts.forEach(System.out::println);
         // Fetch the total number of contracts for pagination
 
@@ -180,7 +198,7 @@ public class ContractController {
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("sortDirection", sortDirection);
 
-        return "customer/contract/contractManage";  // JSP page to display the contract list
+        return "customer/contract/contractManage"; // JSP page to display the contract list
     }
 
     @GetMapping("/manager/contract/detail/{id}")
@@ -188,6 +206,11 @@ public class ContractController {
         Contract contract = contractService.getContractById(id);
         if (contract != null) {
             model.addAttribute("contract", contract);
+            if (contract.getEstimatedEndDate() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+                String formattedDate = contract.getEstimatedEndDate().format(formatter);
+                model.addAttribute("estimatedEndDate", formattedDate);
+            }
             if (contract.getContractStatus() == 3) {
                 User toUser = contract.getQuote().getStaff();
                 User fromUser = contract.getCustomer();
@@ -199,6 +222,9 @@ public class ContractController {
                 User fromUser = (User) session.getAttribute("user");
                 Feedback fb = feedbackService.getManagerSelfFeedback(id);
                 model.addAttribute("feedback", fb);
+            }
+            if (contract.getCustomer() != null) {
+                model.addAttribute("totalPoint", loyaltyPointService.TotalPoints(contract.getCustomer().getId()));
             }
             return "manager/contract/contractDetail";
         } else {
@@ -213,6 +239,11 @@ public class ContractController {
         Staff staff = (Staff) session.getAttribute("user");
         if (contract != null && contract.isContractBelongToStaff(staff, contract)) {
             model.addAttribute("contract", contract);
+            if (contract.getEstimatedEndDate() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+                String formattedDate = contract.getEstimatedEndDate().format(formatter);
+                model.addAttribute("estimatedEndDate", formattedDate);
+            }
             if (contract.getContractStatus() == 3) {
                 User toUser = (User) session.getAttribute("user");
                 User fromUser = contract.getCustomer();
@@ -223,6 +254,9 @@ public class ContractController {
                 User toUser = (User) session.getAttribute("user");
                 Feedback fb = feedbackService.getLatestContractFeedbackFromManager(id, toUser.getId());
                 model.addAttribute("feedback", fb);
+            }
+            if (contract.getCustomer() != null) {
+                model.addAttribute("totalPoint", loyaltyPointService.TotalPoints(contract.getCustomer().getId()));
             }
             return "consultant/contract/contractDetail";
         } else {
@@ -237,6 +271,11 @@ public class ContractController {
         Customer customer = (Customer) session.getAttribute("user");
         if (contract != null && contract.isContractBelongToCustomer(customer, contract)) {
             model.addAttribute("contract", contract);
+            if (contract.getEstimatedEndDate() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd yyyy");
+                String formattedDate = contract.getEstimatedEndDate().format(formatter);
+                model.addAttribute("estimatedEndDate", formattedDate);
+            }
             if (contract.getContractStatus() == 3) {
                 User toUser = contract.getQuote().getStaff();
                 User fromUser = (User) session.getAttribute("user");
@@ -255,8 +294,9 @@ public class ContractController {
         Contract contract = new Contract();
         Quotes quote = quotesService.getQuoteById(quoteId);
         Staff staff = (Staff) session.getAttribute("user");
-        if (quote != null && quote.getContract() == null && quote.isQuoteBelongToStaff(quote, staff) //                && quote.getQuotesStatus()==5
-                ) {
+        if (quote != null && quote.getContract() == null && quote.isQuoteBelongToStaff(quote, staff) // &&
+                                                                                                     // quote.getQuotesStatus()==5
+        ) {
 
             model.addAttribute("quote", quote);
             model.addAttribute("customer", quote.getCustomer());
@@ -274,129 +314,132 @@ public class ContractController {
 
     @PostMapping("/consultant/contract/create")
     public String saveContract(@ModelAttribute("contract") Contract contract,
-                           @RequestParam("file") MultipartFile file,
-                           @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate,
-                           @RequestParam("termOption") String termOption) {
-    try {
-        // Handle file upload
-        String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
-        contract.setFileURL(fileURL);
-        contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
-        contract.setDateCreate(new Date());
-        contract.setEstimatedEndDate(estimatedEndDate);
-        Quotes quote = contract.getQuote();
-        quotesService.updateQuoteStatus(quote.getQuotesId(), 8);
-
-        // Handle term based on the selected termOption
-        handleTermOption(contract, termOption);
-
-        // Save the contract entity
-        contract = contractService.createContract(contract);
-
-        // Create notification for the new contract
-        notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId(), contract.getCustomer().getId());
-
-        return "redirect:/consultant/contract/detail/" + contract.getContractId();
-    } catch (Exception e) {
-        return "redirect:/consultant/contract";
-    }
-}
-
-@GetMapping("/consultant/contract/edit")
-public String updateContractByConsultant(@RequestParam("id") int contractId, Model model, HttpSession session) {
-    Contract contract = contractService.getContractById(contractId);
-    Staff staff = (Staff) session.getAttribute("user");
-    if (contract != null && contract.isContractBelongToStaff(staff, contract)) {
-        model.addAttribute("contract", contract);
-        model.addAttribute("quote", contract.getQuote());
-        model.addAttribute("terms", termService.getAllTemplateTerm());
-        model.addAttribute("term", contract.getTerm());
-        model.addAttribute("customer", contract.getCustomer());
-        return "consultant/contract/editContract";
-    } else {
-        return "redirect:/consultant/contract";
-    }
-}
-
-@PostMapping("/consultant/contract/edit")
-public String saveUpdatedContractByConsultant(
-        @ModelAttribute("contract") Contract contract,
-        @RequestParam("file") MultipartFile file,
-        @RequestParam("termOption") String termOption,
-        @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate) {
-
-    try {
-        // Update file URL if a new file is provided
-        String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
-        if (fileURL != null) {
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate,
+            @RequestParam("termOption") String termOption) {
+        try {
+            // Handle file upload
+            String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
             contract.setFileURL(fileURL);
+            contract.setContractStatus(1); // Assuming 1 is for 'Pending'
+            contract.setDateCreate(new Date());
+            contract.setEstimatedEndDate(estimatedEndDate);
+            Quotes quote = contract.getQuote();
+            quotesService.updateQuoteStatus(quote.getQuotesId(), 8);
+
+            // Handle term based on the selected termOption
+            handleTermOption(contract, termOption);
+
+            // Save the contract entity
+            contract = contractService.createContract(contract);
+
+            // Create notification for the new contract
+            notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId(),
+                    contract.getCustomer().getId());
+
+            return "redirect:/consultant/contract/detail/" + contract.getContractId();
+        } catch (Exception e) {
+            return "redirect:/consultant/contract";
         }
-        contract.setEstimatedEndDate(estimatedEndDate);
-
-        // Handle term based on the selected termOption
-        handleTermOption(contract, termOption);
-
-        // Update the contract
-        contract.setDateCreate(new Date());
-        contract.setContractStatus(1);  // Assuming 1 is for 'Pending'
-        contract = contractService.createContract(contract);
-
-        // Create notification
-        notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId(), contract.getCustomer().getId());
-
-        return "redirect:/consultant/contract/detail/" + contract.getContractId();
-    } catch (Exception e) {
-        return "redirect:/consultant/contract";
     }
-}
 
-@GetMapping("/manager/contract/edit")
-public String updateContractByManager(@RequestParam("id") int contractId, Model model) {
-    Contract contract = contractService.getContractById(contractId);
-    if (contract != null) {
-        model.addAttribute("contract", contract);
-        model.addAttribute("quote", contract.getQuote());
-        model.addAttribute("terms", termService.getAllTemplateTerm());
-        model.addAttribute("customer", contract.getCustomer());
-        model.addAttribute("term", contract.getTerm());
-        return "manager/contract/editContract";
-    } else {
-        return "redirect:/manager/contract";
-    }
-}
-
-@PostMapping("/manager/contract/edit")
-public String saveUpdatedContractByManager(
-        @ModelAttribute("contract") Contract contract,
-        @RequestParam("file") MultipartFile file,
-        @RequestParam("termOption") String termOption,
-        @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate) {
-
-    try {
-        // Update file URL if a new file is provided
-        String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
-        if (fileURL != null) {
-            contract.setFileURL(fileURL);
+    @GetMapping("/consultant/contract/edit")
+    public String updateContractByConsultant(@RequestParam("id") int contractId, Model model, HttpSession session) {
+        Contract contract = contractService.getContractById(contractId);
+        Staff staff = (Staff) session.getAttribute("user");
+        if (contract != null && contract.isContractBelongToStaff(staff, contract)) {
+            model.addAttribute("contract", contract);
+            model.addAttribute("quote", contract.getQuote());
+            model.addAttribute("terms", termService.getAllTemplateTerm());
+            model.addAttribute("term", contract.getTerm());
+            model.addAttribute("customer", contract.getCustomer());
+            return "consultant/contract/editContract";
+        } else {
+            return "redirect:/consultant/contract";
         }
-        contract.setEstimatedEndDate(estimatedEndDate);
-
-        // Handle term based on the selected termOption
-        handleTermOption(contract, termOption);
-
-        // Update contract status and date
-        contract.setDateCreate(new Date());
-        contract.setContractStatus(2);  // Assuming 2 is for 'Updated by Manager'
-        contract = contractService.createContract(contract);
-
-        // Notify the customer of the update
-        Customer customer = contract.getCustomer();
-        notificationService.createNotification(contract.getContractId(), "contract", customer.getId(), "customer", "Your contract has been updated! Please check it");
-
-        return "redirect:/manager/contract/detail/" + contract.getContractId();
-    } catch (Exception e) {
-        return "redirect:/manager/contract";
     }
-}
+
+    @PostMapping("/consultant/contract/edit")
+    public String saveUpdatedContractByConsultant(
+            @ModelAttribute("contract") Contract contract,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("termOption") String termOption,
+            @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate) {
+
+        try {
+            // Update file URL if a new file is provided
+            String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
+            if (fileURL != null) {
+                contract.setFileURL(fileURL);
+            }
+            contract.setEstimatedEndDate(estimatedEndDate);
+
+            // Handle term based on the selected termOption
+            handleTermOption(contract, termOption);
+
+            // Update the contract
+            contract.setDateCreate(new Date());
+            contract.setContractStatus(1); // Assuming 1 is for 'Pending'
+            contract = contractService.createContract(contract);
+
+            // Create notification
+            notificationService.createContractNotification(contract.getCustomer().getName(), contract.getContractId(),
+                    contract.getCustomer().getId());
+
+            return "redirect:/consultant/contract/detail/" + contract.getContractId();
+        } catch (Exception e) {
+            return "redirect:/consultant/contract";
+        }
+    }
+
+    @GetMapping("/manager/contract/edit")
+    public String updateContractByManager(@RequestParam("id") int contractId, Model model) {
+        Contract contract = contractService.getContractById(contractId);
+        if (contract != null) {
+            model.addAttribute("contract", contract);
+            model.addAttribute("quote", contract.getQuote());
+            model.addAttribute("terms", termService.getAllTemplateTerm());
+            model.addAttribute("customer", contract.getCustomer());
+            model.addAttribute("term", contract.getTerm());
+            return "manager/contract/editContract";
+        } else {
+            return "redirect:/manager/contract";
+        }
+    }
+
+    @PostMapping("/manager/contract/edit")
+    public String saveUpdatedContractByManager(
+            @ModelAttribute("contract") Contract contract,
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("termOption") String termOption,
+            @RequestParam("estimatedEndDate") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate estimatedEndDate) {
+
+        try {
+            // Update file URL if a new file is provided
+            String fileURL = fileUtility.handleFileUpload(file, FileUtility.CONTRACT_DIR);
+            if (fileURL != null) {
+                contract.setFileURL(fileURL);
+            }
+            contract.setEstimatedEndDate(estimatedEndDate);
+
+            // Handle term based on the selected termOption
+            handleTermOption(contract, termOption);
+
+            // Update contract status and date
+            contract.setDateCreate(new Date());
+            contract.setContractStatus(2); // Assuming 2 is for 'Updated by Manager'
+            contract = contractService.createContract(contract);
+
+            // Notify the customer of the update
+            Customer customer = contract.getCustomer();
+            notificationService.createNotification(contract.getContractId(), "contract", customer.getId(), "customer",
+                    "Your contract has been updated! Please check it");
+
+            return "redirect:/manager/contract/detail/" + contract.getContractId();
+        } catch (Exception e) {
+            return "redirect:/manager/contract";
+        }
+    }
 
     @PostMapping("/customer/contract/editStatus")
     public String editStatusByCustomer(@RequestParam("id") int contractId, @RequestParam("status") int status) {
@@ -405,7 +448,8 @@ public String saveUpdatedContractByManager(
         // Create notification for the status change
         String statusDescription = getStatusDescription(status);
         Customer customer = contract.getCustomer();
-        notificationService.createContractStatusNotification(contract.getCustomer().getName(), contractId, statusDescription);
+        notificationService.createContractStatusNotification(contract.getCustomer().getName(), contractId,
+                statusDescription);
 
         return "redirect:/customer/contract/detail/" + contractId;
     }
@@ -425,6 +469,8 @@ public String saveUpdatedContractByManager(
                 return "Canceled";
             case 6:
                 return "Accepted";
+            case 8:
+                return "payment confirmed";
             default:
                 return "Unknown";
         }
@@ -443,31 +489,72 @@ public String saveUpdatedContractByManager(
         newFeedback = feedbackService.saveFeedback(newFeedback);
         String statusDescription = getStatusDescription(status);
         Customer customer = contract.getCustomer();
-        notificationService.createContractStatusNotification(contract.getCustomer().getName(), contractId, statusDescription);
+        notificationService.createContractStatusNotification(contract.getCustomer().getName(), contractId,
+                statusDescription);
         return "redirect:/customer/contract/detail/" + contractId;
 
     }
 
     @PostMapping("/manager/contract/editStatus")
-    public String editStatusByManager(@RequestParam("id") int contractId, @RequestParam("status") int status) {
-        Contract contract = contractService.changeStatusContract(status, contractId);
-        Staff staff = contract.getQuote().getStaff();
-        String statusString = "";
-        Customer customer = contract.getCustomer();
-        if (status == 2) {
-            statusString = "Accepted";
-            notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract has been approved! Please check it!");
-        } else if (status == 4) {
-            statusString = "Rejected";
+    public String editStatusByManager(@RequestParam("id") int contractId, @RequestParam("status") int newStatus) {
+        // Retrieve the contract without changing its status
+        Contract contract = contractService.getContractById(contractId);
+        int currentStatus = contract.getContractStatus();
+
+        // If the current status is 8, prevent editing and reload the page
+        if (currentStatus == 8) {
+            return "redirect:/manager/contract/detail/" + contractId;
         }
-        if (status == 5) {
-            statusString = "Cancelled";
-            notificationService.createNotification(contractId, "contract", customer.getId(), "customer", "Your contract has been cancelled!");
+
+        // Only proceed with updating if the new status is different from the current
+        // status
+        if (newStatus != currentStatus) {
+            contract = contractService.changeStatusContract(newStatus, contractId); // Update the status now
+            Staff staff = contract.getQuote().getStaff();
+            String statusString = "";
+            Customer customer = contract.getCustomer();
+
+            // Determine the new status and send notifications
+            switch (newStatus) {
+                case 2:
+                    statusString = "Accepted";
+                    notificationService.createNotification(contractId, "contract", customer.getId(), "customer",
+                            "Your contract has been approved! Please check it!");
+                    break;
+                case 4:
+                    statusString = "Rejected";
+                    break;
+                case 5:
+                    statusString = "Cancelled";
+                    notificationService.createNotification(contractId, "contract", customer.getId(), "customer",
+                            "Your contract has been cancelled!");
+                    break;
+                case 8:
+                    statusString = "Payment Done";
+                    notificationService.createNotification(contractId, "contract", customer.getId(), "customer",
+                            "Your contract is done. Please review if needed.");
+                    // Create a PaymentHistory record
+                    PaymentHistory paymentHistory = new PaymentHistory();
+                    paymentHistory.setCustomer(customer);
+                    BigDecimal amount = BigDecimal.valueOf(contract.getDepositOnContract());
+                    paymentHistory.setAmount(amount);
+                    paymentHistory.setPaymentDate(LocalDateTime.now());
+                    paymentHistory.setPaymentMethod("PayPal");
+                    paymentHistory.setDescription(
+                            "Payment of " + amount + " for contract " + contractId + " by " + customer.getName());
+                    paymentHistoryService.createPayment(paymentHistory);
+                    notificationService.createNotification(contractId, "contract", customer.getId(), "customer",
+                            "Your contract has become effective!");
+                    break;
+                default:
+                    break;
+            }
+
+            notificationService.changeNotificationToConsultant(staff.getId(), contract.getCustomer().getName(),
+                    contractId, newStatus, "Manager", "contract", statusString);
         }
-        notificationService.changeNotificationToConsultant(staff.getId(), contract.getCustomer().getName(), contractId, status, "Manager", "contract", statusString);
 
         return "redirect:/manager/contract/detail/" + contractId;
-
     }
 
     @PostMapping("/manager/contract/editStatusAndFeedback")
@@ -491,7 +578,8 @@ public String saveUpdatedContractByManager(
         if (status == 5) {
             statusString = "Cancelled";
         }
-        notificationService.changeNotificationToConsultant(staff.getId(), contract.getCustomer().getName(), contractId, status, "Manager", "contract", statusString);
+        notificationService.changeNotificationToConsultant(staff.getId(), contract.getCustomer().getName(), contractId,
+                status, "Manager", "contract", statusString);
 
         return "redirect:/manager/contract/detail/" + contractId;
 
@@ -503,35 +591,34 @@ public String saveUpdatedContractByManager(
         return "redirect:/consultant/contract/detail/" + contractId;
 
     }
-    
-    
+
     private void handleTermOption(Contract contract, String termOption) {
-    Term savedTerm = null;
+        Term savedTerm = null;
 
-    if ("custom".equals(termOption)) {
-        // Create a new custom term
-        Term newTerm = contract.getTerm();
-        newTerm.setFollowContract(false);
-        newTerm.setIsTemplate(false);
-        savedTerm = termService.save(newTerm);
-        contract.setTerm(savedTerm);
+        if ("custom".equals(termOption)) {
+            // Create a new custom term
+            Term newTerm = contract.getTerm();
+            newTerm.setFollowContract(false);
+            newTerm.setIsTemplate(false);
+            savedTerm = termService.save(newTerm);
+            contract.setTerm(savedTerm);
 
-    } else if ("contract".equals(termOption)) {
-        // Create a new follow-contract term
-        Term followContractTerm = new Term();
-        followContractTerm.setFollowContract(true);
-        followContractTerm.setPayOnStartOfDesign(contract.getTerm().isPayOnStartOfDesign());
-        followContractTerm.setPayOnStartOfConstruction(contract.getTerm().isPayOnStartOfConstruction());
-        followContractTerm.setDescription("Follow contract default term");
-        followContractTerm.setIsTemplate(false);
-        savedTerm = termService.save(followContractTerm);
-        contract.setTerm(savedTerm);
+        } else if ("contract".equals(termOption)) {
+            // Create a new follow-contract term
+            Term followContractTerm = new Term();
+            followContractTerm.setFollowContract(true);
+            followContractTerm.setPayOnStartOfDesign(contract.getTerm().isPayOnStartOfDesign());
+            followContractTerm.setPayOnStartOfConstruction(contract.getTerm().isPayOnStartOfConstruction());
+            followContractTerm.setDescription("Follow contract default term");
+            followContractTerm.setIsTemplate(false);
+            savedTerm = termService.save(followContractTerm);
+            contract.setTerm(savedTerm);
 
-    } else if ("existing".equals(termOption) && contract.getTerm() != null) {
-        // Load the existing term by ID
-        Term existingTerm = termService.findTermById(contract.getTerm().getTermId());
-        contract.setTerm(existingTerm);
+        } else if ("existing".equals(termOption) && contract.getTerm() != null) {
+            // Load the existing term by ID
+            Term existingTerm = termService.findTermById(contract.getTerm().getTermId());
+            contract.setTerm(existingTerm);
+        }
     }
-}
 
 }

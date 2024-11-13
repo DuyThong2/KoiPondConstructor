@@ -15,10 +15,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+
 
 /**
  *
@@ -76,6 +79,10 @@ public class Project implements HaveImagesFile{
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private Design design;
 
+    @ManyToOne()
+    @JoinColumn(name ="pre_design_id")
+    private PreDesign preDesign;
+    
     public Project(String projectName, String address, String style, String description, Date dateStart, Date dateEnd, int status, String imgURL, int stage, boolean isSharedAble,String cancelMessage) {
         this.projectName = projectName;
         this.address = address;
@@ -260,4 +267,14 @@ public class Project implements HaveImagesFile{
     public void setSharedAble(boolean sharedAble) {
         isSharedAble = sharedAble;
     }
+
+    public PreDesign getPreDesign() {
+        return preDesign;
+    }
+
+    public void setPreDesign(PreDesign preDesign) {
+        this.preDesign = preDesign;
+    }
+    
+    
 }

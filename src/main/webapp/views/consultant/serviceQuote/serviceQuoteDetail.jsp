@@ -1,6 +1,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -12,18 +13,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
         <link href="<c:url value='/css/consultant/consultantNav.css'/>" rel="stylesheet">
         <style>
-            body {
-                background-color: #f7f9fc;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            }
-
-            /* General Layout */
-            .container {
-                max-width: 1200px;
-                margin: auto;
-                padding: 20px;
-            }
-
+   
             .section-header {
                 margin-bottom: 20px;
                 padding-bottom: 10px;
@@ -125,12 +115,12 @@
         </style>
     </head>
     <body>
-        <div class="container-fluid mt-5">
+        <div class="container mt-5">
             <jsp:include page="../consultantNav.jsp"/>                <!-- Include Navbar -->
 
             <div class="row">
 
-                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+                <main role="main" class=" col-lg-12">
                     <!-- Contract Details Section -->
                     <div class="section-card">
                         <h2 class="section-header"><i class="fas fa-file-contract"></i> Service Quote Details</h2>
@@ -147,7 +137,7 @@
                             </tr>
                             <tr>
                                 <th>Date Created</th>
-                                <td>${serviceQuote.serviceQuotesDate}</td>
+                                <td><fmt:formatDate value="${serviceQuote.serviceQuotesDate}" pattern="MMM dd yyyy HH:mm" /></td>
                             </tr>
                             <tr>
                                 <th>Service Quote Content</th>
@@ -158,39 +148,39 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${serviceQuote.serviceQuotesStatus == 1}">
-                                                <span class="badge badge-warning badge-status">Pending</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
-                                                <span class="badge badge-success badge-status">Approved By Manager</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 3}">
-                                                <span class="badge badge-warning badge-status">Rejected (Manager)</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
-                                                <span class="badge badge-warning badge-status">Awaiting payment 1</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
-                                                <span class="badge badge-warning badge-status">Rejected (Customer)</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
-                                                <span class="badge badge-warning badge-status">Rejected (Staff)</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
-                                                <span class="badge badge-danger badge-status">Canceled</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
-                                                <span class="badge badge-success badge-status">Deposit Paid</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
-                                                <span class="badge badge-warning badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
-                                                                                                 'Awaiting Payment 2':'Service In Progress'}</span>
+                                            <span class="badge badge-warning badge-status">Pending</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 2}">
+                                            <span class="badge badge-success badge-status">Approved By Manager</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 3}">
+                                            <span class="badge badge-warning badge-status">Rejected (Manager)</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 4}">
+                                            <span class="badge badge-warning badge-status">Awaiting payment 1</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 5}">
+                                            <span class="badge badge-warning badge-status">Rejected (Customer)</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 6}">
+                                            <span class="badge badge-warning badge-status">Rejected (Staff)</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 7}">
+                                            <span class="badge badge-danger badge-status">Canceled</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 8}">
+                                            <span class="badge badge-success badge-status">Deposit Paid</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
+                                            <span class="badge badge-warning badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
+                                                                                             'Awaiting Payment 2':'Service In Progress'}</span>
                                             </c:when>
                                             <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
-                                                <span class="badge badge-success badge-status">Fully Paid</span>
-                                            </c:when>
-                                            <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
-                                                <span class="badge badge-success badge-status">Completed</span>
-                                            </c:when>
+                                            <span class="badge badge-success badge-status">Fully Paid</span>
+                                        </c:when>
+                                        <c:when test="${serviceQuote.serviceQuotesStatus == 11}">
+                                            <span class="badge badge-success badge-status">Completed</span>
+                                        </c:when>
                                     </c:choose>
                                 </td>
                             </tr>
@@ -215,6 +205,11 @@
                                 <td>${serviceQuote.calculateFullPaid()}</td>
                             </tr>
                         </table>
+                        <c:if test="${serviceQuote.consultant != null}">
+                            <a class="btn btn-primary" href="${pageContext.request.contextPath}/consultant/consultant/detail/${serviceQuote.consultant.consultantId}">
+                                View Consultant Detail
+                            </a>
+                        </c:if>
                     </div>
 
                     <c:if test="${serviceQuote.serviceQuotesStatus == 3 || serviceQuote.serviceQuotesStatus == 5 || serviceQuote.serviceQuotesStatus == 6}">
@@ -432,7 +427,7 @@
         </div>
 
         <!-- Bootstrap JS and dependencies -->
-        
+
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </body>
 </html>
