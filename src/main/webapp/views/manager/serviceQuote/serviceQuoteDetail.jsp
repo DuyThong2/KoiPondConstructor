@@ -285,10 +285,11 @@
                                 <c:when test="${serviceQuote.serviceQuotesStatus == 9 && serviceQuote.isServiceDetailOfQuoteFinished()}">
                                     <c:choose>
                                         <c:when test="${!serviceQuote.isFree() && !serviceQuote.isAllServiceFailed() && !serviceQuote.isPayAfter && serviceQuote.calculateFullPaid() != 0}">
-                                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#acceptModalForPayment"
-                                                    onclick="document.getElementById('acceptForm').id.value = '${serviceQuote.serviceQuotesId}';
-                                                            document.getElementById('acceptForm').status.value = '10';">Confirm Payment
-                                            </button>
+                                            <form action="${pageContext.request.contextPath}/manager/serviceQuote/savePayment" method="post" class="d-inline">
+                                                <input type="hidden" name="id" value="${serviceQuote.serviceQuotesId}">
+                                                <input type="hidden" name="status" value="10">
+                                                <button type="submit" class="btn btn-success">Confirm Payment</button>
+                                            </form>
                                         </c:when>
 
                                         <c:when test="${serviceQuote.isAllServiceFailed()}">

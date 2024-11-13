@@ -253,7 +253,7 @@
                                             </c:when>
                                             <c:when test="${serviceQuote.serviceQuotesStatus == 9}">
                                                 <span class="badge badge-success badge-status">${serviceQuote.isServiceDetailOfQuoteFinished()? 
-                                                                                                 'Awaiting Payment 2':'Service In Progress'}</span>
+                                                                                                 'Service Done':'Service In Progress'}</span>
                                             </c:when>
                                             <c:when test="${serviceQuote.serviceQuotesStatus == 10}">
                                                 <span class="badge badge-success badge-status">Fully Paid</span>
